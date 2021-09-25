@@ -23,11 +23,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.started, isNotNull);
     expect(dummy.stopped, isNull);
-    expect(dummy.upTime, greaterThan(Duration.zero));
-    expect(dummy.idleTime, greaterThanOrEqualTo(dummy.upTime));
+    var upTime = dummy.upTime;
+    expect(upTime, greaterThan(Duration.zero));
+    expect(dummy.idleTime, greaterThanOrEqualTo(upTime));
 
     dummy.stop();
-    final upTime = dummy.upTime;
+    upTime = dummy.upTime;
     expect(dummy.commandPort, isNull);
     expect(dummy.started, isNotNull);
     expect(dummy.stopped, isNotNull);
