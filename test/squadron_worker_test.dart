@@ -24,7 +24,7 @@ void main() {
     expect(dummy.started, isNotNull);
     expect(dummy.stopped, isNull);
     expect(dummy.upTime, greaterThan(Duration.zero));
-    expect(dummy.idleTime, equals(dummy.upTime));
+    expect(dummy.idleTime, greaterThanOrEqualTo(dummy.upTime));
 
     dummy.stop();
     final upTime = dummy.upTime;
