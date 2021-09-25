@@ -92,6 +92,7 @@ You can then distribute workloads to a worker pool, e.g.:
     var pool = WorkerPool(() => SampleWorker(), maxWorkers: 4, maxParallel: 2);
     await pool.start();
 
+    var n = 42;
     var cpuResult = await pool.compute((w) => w.cpuOperation(n));
     var ioResult = await pool.compute((w) => w.ioOperation(n));
 ```
