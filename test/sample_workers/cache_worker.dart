@@ -15,18 +15,18 @@ class CacheClient implements Cache {
 
   @override
   Future<dynamic> get(dynamic key) {
-    return WorkerRequest(CacheWorker._get, [ key ]).send(_remote);
+    return WorkerRequest(CacheWorker._get, [key]).send(_remote);
   }
 
   @override
   Future<bool> containsKey(dynamic key) {
-    return WorkerRequest(CacheWorker._contains, [ key ]).send<bool>(_remote);
+    return WorkerRequest(CacheWorker._contains, [key]).send<bool>(_remote);
   }
 
   @override
   Future set(dynamic key, dynamic value) {
     assert(value != null); // null means not in cache; cannot store null
-    return WorkerRequest(CacheWorker._set, [ key, value ]).send(_remote);
+    return WorkerRequest(CacheWorker._set, [key, value]).send(_remote);
   }
 }
 
@@ -38,18 +38,18 @@ class CacheWorker extends Worker implements Cache {
 
   @override
   Future<dynamic> get(dynamic key) {
-    return send(_get, [ key ]);
+    return send(_get, [key]);
   }
 
   @override
   Future<bool> containsKey(dynamic key) {
-    return send(_contains, [ key ]);
+    return send(_contains, [key]);
   }
 
   @override
   Future set(dynamic key, dynamic value) {
     assert(value != null); // null means not in cache; cannot store null
-    return send(_set, [ key, value ]);
+    return send(_set, [key, value]);
   }
 
   // private implementation, this is the thread's main program
@@ -81,7 +81,8 @@ class CacheWorker extends Worker implements Cache {
           req.reply();
           return;
         default:
-          req.exception(WorkerException('unknown message ${req.command}'), StackTrace.current);
+          req.exception(WorkerException('unknown message ${req.command}'),
+              StackTrace.current);
           return;
       }
     });

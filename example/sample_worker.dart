@@ -9,11 +9,11 @@ class SampleWorker extends Worker {
   final startArguments = [];
 
   Future<int> cpuOperation(int number) {
-    return send<int>(_cpuOperation, [ number ]);
+    return send<int>(_cpuOperation, [number]);
   }
 
   Future<int> ioOperation(int number) {
-    return send<int>(_ioOperation, [ number ]);
+    return send<int>(_ioOperation, [number]);
   }
 
   // private implementation, this is the thread's main program
@@ -38,7 +38,8 @@ class SampleWorker extends Worker {
           req.reply(await ioOperationImpl(req.args[0]));
           return;
         default:
-          req.exception(WorkerException('unknown message ${req.command}'), StackTrace.current);
+          req.exception(WorkerException('unknown message ${req.command}'),
+              StackTrace.current);
           return;
       }
     });

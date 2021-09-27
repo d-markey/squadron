@@ -39,7 +39,8 @@ void main() async {
     final maxWorkers = 8;
     final maxParallel = 2;
 
-    pool = WorkerPool(() => SampleWorker(), maxWorkers: maxWorkers, maxParallel: maxParallel);
+    pool = WorkerPool(() => SampleWorker(),
+        maxWorkers: maxWorkers, maxParallel: maxParallel);
     await pool.start();
 
     final asyncTs = DateTime.now().microsecondsSinceEpoch;
@@ -58,7 +59,6 @@ void main() async {
       print('  * $stat');
     }
     print('');
-
   } on WorkerException catch (e) {
     print(e.message);
     print(e.stackTrace);

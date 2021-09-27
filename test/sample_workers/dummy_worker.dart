@@ -8,8 +8,8 @@ class DummyWorker extends Worker {
   @override
   final startArguments = List.empty();
 
-  Future<dynamic> wait({ required int milliseconds }) {
-    return send(_wait, [ milliseconds ]);
+  Future wait({required int milliseconds}) {
+    return send(_wait, [milliseconds]);
   }
 
   // private implementation, this is the thread's main program
@@ -31,7 +31,8 @@ class DummyWorker extends Worker {
           req.reply();
           return;
         default:
-          req.exception(WorkerException('unknown message ${req.command}'), StackTrace.current);
+          req.exception(WorkerException('unknown message ${req.command}'),
+              StackTrace.current);
           return;
       }
     });

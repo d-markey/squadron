@@ -6,7 +6,7 @@ import 'package:squadron/squadron.dart';
 import 'cache_worker.dart';
 
 class PrimeWorker extends Worker {
-  PrimeWorker([ CacheWorker? cache ]) : super(PrimeWorker._main) {
+  PrimeWorker([CacheWorker? cache]) : super(PrimeWorker._main) {
     startArguments.add(cache?.commandPort);
   }
 
@@ -14,13 +14,189 @@ class PrimeWorker extends Worker {
   final startArguments = [];
 
   Future<bool> isPrime(int number) {
-    return send(_isPrime, [ number ]);
+    return send(_isPrime, [number]);
   }
 
   Stream<int> getPrimes(int min, int max) {
     assert(min <= max);
-    return stream(_getPrimes, [ min, max ]);
+    return stream(_getPrimes, [min, max]);
   }
+
+  static const primesTo1000 = <int>[
+    2,
+    3,
+    5,
+    7,
+    11,
+    13,
+    17,
+    19,
+    23,
+    29,
+    31,
+    37,
+    41,
+    43,
+    47,
+    53,
+    59,
+    61,
+    67,
+    71,
+    73,
+    79,
+    83,
+    89,
+    97,
+    101,
+    103,
+    107,
+    109,
+    113,
+    127,
+    131,
+    137,
+    139,
+    149,
+    151,
+    157,
+    163,
+    167,
+    173,
+    179,
+    181,
+    191,
+    193,
+    197,
+    199,
+    211,
+    223,
+    227,
+    229,
+    233,
+    239,
+    241,
+    251,
+    257,
+    263,
+    269,
+    271,
+    277,
+    281,
+    283,
+    293,
+    307,
+    311,
+    313,
+    317,
+    331,
+    337,
+    347,
+    349,
+    353,
+    359,
+    367,
+    373,
+    379,
+    383,
+    389,
+    397,
+    401,
+    409,
+    419,
+    421,
+    431,
+    433,
+    439,
+    443,
+    449,
+    457,
+    461,
+    463,
+    467,
+    479,
+    487,
+    491,
+    499,
+    503,
+    509,
+    521,
+    523,
+    541,
+    547,
+    557,
+    563,
+    569,
+    571,
+    577,
+    587,
+    593,
+    599,
+    601,
+    607,
+    613,
+    617,
+    619,
+    631,
+    641,
+    643,
+    647,
+    653,
+    659,
+    661,
+    673,
+    677,
+    683,
+    691,
+    701,
+    709,
+    719,
+    727,
+    733,
+    739,
+    743,
+    751,
+    757,
+    761,
+    769,
+    773,
+    787,
+    797,
+    809,
+    811,
+    821,
+    823,
+    827,
+    829,
+    839,
+    853,
+    857,
+    859,
+    863,
+    877,
+    881,
+    883,
+    887,
+    907,
+    911,
+    919,
+    929,
+    937,
+    941,
+    947,
+    953,
+    967,
+    971,
+    977,
+    983,
+    991,
+    997
+  ];
+
+  static const largePrimes = <int>[
+    6643838879,
+    1111111111111111111,
+  ];
 
   // private implementation, this is the thread's main program
   static const _isPrime = 1;
@@ -53,7 +229,8 @@ class PrimeWorker extends Worker {
           req.endOfStream();
           return;
         default:
-          req.exception(WorkerException('unknown message ${req.command}'), StackTrace.current);
+          req.exception(WorkerException('unknown message ${req.command}'),
+              StackTrace.current);
           return;
       }
     });
@@ -81,12 +258,12 @@ class PrimeWorker extends Worker {
     // all other primes are of the form (6 * k) +/- 1
     // start with k = (min + 1) ~/ 6
     var p = 6 * ((min + 1) ~/ 6) - 1;
-    while (p <= max) {                    // p = 6 * k - 1
+    while (p <= max) {
+      // p = 6 * k - 1
       if (_inRange(p)) yield p;
-      p += 2;                             // p = 6 * k + 1
-      if (_inRange(p)) yield p;           
-      p += 4;                             // p = 6 * (k+1) - 1
+      p += 2; // p = 6 * k + 1
+      if (_inRange(p)) yield p;
+      p += 4; // p = 6 * (k+1) - 1
     }
   }
-
 }
