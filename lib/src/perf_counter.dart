@@ -34,8 +34,9 @@ class PerfCounter implements PerfCounterSnapshot {
   /// * add specified time to the total elapsed time
   /// * increment the total number of calls by 1
   void update(int timeInMicroseconds) {
-    if (timeInMicroseconds > _maxTimeInMicroseconds)
+    if (timeInMicroseconds > _maxTimeInMicroseconds) {
       _maxTimeInMicroseconds = timeInMicroseconds;
+    }
     _totalTimeInMicroseconds += timeInMicroseconds;
     _totalCount++;
   }
