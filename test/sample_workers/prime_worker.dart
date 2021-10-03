@@ -7,7 +7,7 @@ import 'cache_worker.dart';
 
 class PrimeWorker extends Worker {
   PrimeWorker([CacheWorker? cache]) : super(PrimeWorker._main) {
-    startArguments.add(cache?.commandPort);
+    startArguments.add(cache?.workerPort);
   }
 
   @override
@@ -194,8 +194,14 @@ class PrimeWorker extends Worker {
   ];
 
   static const largePrimes = <int>[
+    1000000007,
+    1000000009,
+    1000001789,
+    1000001791,
     6643838879,
-    1111111111111111111,
+    99999199999,
+    999999000001,
+    67280421310721,
   ];
 
   // private implementation, this is the thread's main program

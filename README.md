@@ -27,62 +27,71 @@ import 'dart:isolate';
 import 'package:squadron/squadron.dart';
 
 class SampleWorker extends Worker {
-    SampleWorker() : super(SampleWorker._main);
+  SampleWorker() : super(SampleWorker._main);
 
-    @override
-    final startArguments = [];
+  @override
+  final startArguments = [];
 
-    Future<int> cpuOperation(int number) {
-        return send<int>(_cpuOperation, [ number ]);
-    }
+  Future<int> cpuOperation(int number) {
+    return send<int>(_cpuOperation, [number]);
+  }
 
-    Future<int> ioOperation(int number) {
-        return send<int>(_ioOperation, [ number ]);
-    }
+  Future<int> ioOperation(int number) {
+    return send<int>(_ioOperation, [number]);
+  }
 
-    // private implementation, this is the thread's main program
-    static const _cpuOperation = 1;
-    static const _ioOperation = 2;
+  // private implementation, this is the thread's main program
+  static const _cpuOperation = 1;
+  static const _ioOperation = 2;
 
-    static void _main(List command) {
-        final receiver = ReceivePort();
-        WorkerRequest.fromMessage(command).connect(receiver);
+  static void _main(List command) {
+    final receiver = ReceivePort();
+    WorkerRequest.fromMessage(command).connect(receiver);
 
-        receiver.listen((command) async {
-            final req = WorkerRequest.fromMessage(command);
-            if (req.command == null) {
-                receiver.close();
-                return;
-            }
-            switch (req.command) {
-                case _cpuOperation:
-                    req.reply(cpuOperationImpl(req.args[0]));
-                    return;
-                case _ioOperation:
-                    req.reply(await ioOperationImpl(req.args[0]));
-                    return;
-                default:
-                    req.exception(WorkerException('unknown message ${req.command}'), StackTrace.current);
-                    return;
-            }
-        });
-    }
-
-    static int cpuOperationImpl(int n) {
-        // simulate a CPU computation taking ~ 2ms
-        var start = DateTime.now().millisecondsSinceEpoch;
-        var elapsed = 0;
-        while (elapsed < 2) {
-            elapsed = DateTime.now().millisecondsSinceEpoch - start;
+    receiver.listen((command) async {
+      WorkerRequest? req;
+      try {
+        req = WorkerRequest.fromMessage(command);
+        if (req.command == null) {
+          receiver.close();
+          return;
         }
-        return n;
-    }
+        switch (req.command) {
+          case _cpuOperation:
+            req.reply(cpuOperationImpl(req.args[0]));
+            return;
+          case _ioOperation:
+            req.reply(await ioOperationImpl(req.args[0]));
+            return;
+          default:
+            req.exception(WorkerException('unknown message ${req.command}'),
+                StackTrace.current);
+            return;
+        }
+      } on WorkerException catch (e, st) {
+        req?.exception(e, st);
+      } catch (e, st) {
+        req?.exception(
+            WorkerException('unexpected exception: ${e.runtimeType} => $e}',
+                stackTrace: st.toString()),
+            st);
+      }
+    });
+  }
 
-    static Future<int> ioOperationImpl(int n) async {
-        // simulate an I/O operation taking ~ 2ms
-        await Future.delayed(Duration(milliseconds: 2));
-        return n;
+  static int cpuOperationImpl(int n) {
+    var start = DateTime.now().millisecondsSinceEpoch;
+    var elapsed = 0;
+    while (elapsed < 2) {
+      elapsed = DateTime.now().millisecondsSinceEpoch - start;
     }
+    return n;
+  }
+
+  static Future<int> ioOperationImpl(int n) async {
+    await Future.delayed(Duration(milliseconds: 2));
+    return n;
+  }
 }
 ```
 

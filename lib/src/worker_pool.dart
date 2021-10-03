@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math' as math;
 
 import 'package:squadron/squadron.dart';
 
@@ -17,11 +18,17 @@ class WorkerPool<W extends Worker> {
   ///
   /// The [maxParallel] setting controls how many workloads are distributed
   /// to workers in parallel.
-  WorkerPool(this._workerFactory, {this.maxWorkers = 0, this.maxParallel = 1})
-      : assert(maxWorkers >= 0),
+  WorkerPool(this._workerFactory,
+      {this.minWorkers = 0, this.maxWorkers = 0, this.maxParallel = 1})
+      : assert(minWorkers >= 0),
+        assert(maxWorkers >= 0),
+        assert(minWorkers <= maxWorkers),
         assert(maxParallel >= 1);
 
   final W Function() _workerFactory;
+
+  /// Minimum number of live workers
+  final int minWorkers;
 
   /// Maximum number of live workers
   final int maxWorkers;
@@ -31,12 +38,36 @@ class WorkerPool<W extends Worker> {
 
   final _workers = <W>[];
 
+  /// Current workload
+  int get workload => _workers.fold<int>(0, (p, w) => p + w.stats.workload);
+
+  final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
+
+  /// Maximum workload
+  int get maxWorkload => math.max(
+      _deadWorkerStats.fold<int>(0, (p, s) => math.max(p, s.maxWorkload)),
+      _workers.fold<int>(0, (p, w) => math.max(p, w.stats.maxWorkload)));
+
+  /// Total workload
+  int get totalWorkload =>
+      _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalWorkload) +
+      _workers.fold<int>(0, (p, w) => p + w.stats.totalWorkload);
+
+  /// Number of errors
+  int get totalErrors =>
+      _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalErrors) +
+      _workers.fold<int>(0, (p, w) => p + w.stats.totalErrors);
+
   /// Number of workers
   int get size => _workers.length;
 
-  /// Ensure at least [maxWorkers] workers are started (defaulting to 1 if [maxWorkers] is zero).
+  /// Maximum number of workers
+  int get maxSize => _maxSize;
+  int _maxSize = 0;
+
+  /// Ensure at least [minWorkers] workers are started (defaulting to 1 if [minWorkers] is zero).
   Future start() async {
-    var count = ((maxWorkers == 0) ? 1 : maxWorkers) - _workers.length;
+    var count = ((minWorkers == 0) ? 1 : minWorkers) - _workers.length;
     if (count > 0) {
       var newWorkers = <W>[];
       while (count > 0) {
@@ -47,20 +78,35 @@ class WorkerPool<W extends Worker> {
       }
       _workers.addAll(newWorkers);
     }
+    _maxSize = math.max(_maxSize, _workers.length);
+  }
+
+  bool _removeWorker(Worker worker) {
+    if (minWorkers == 0 || _workers.length > minWorkers) {
+      if (!worker.isStopped) {
+        worker.stop();
+      }
+      _workers.remove(worker);
+      _deadWorkerStats.add(worker.stats);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /// Stop workers matching the [predicate].
   /// If [predicate] is null or not provided, all workers will be stopped.
   int stop([bool Function(W worker)? predicate]) {
-    Iterable<W> targets = _workers;
+    var targets = _workers.where((w) => !w.isStopped && w.workload == 0);
     if (predicate != null) targets = targets.where(predicate);
-    final workersToRemove = targets.toList();
-    for (var i = 0; i < workersToRemove.length; i++) {
-      final w = workersToRemove[i];
-      _workers.remove(w);
-      w.stop();
+    final workersToStop = targets.toList();
+    var stopped = 0;
+    for (var w in workersToStop) {
+      if (_removeWorker(w)) {
+        stopped++;
+      }
     }
-    return workersToRemove.length;
+    return stopped;
   }
 
   final _queue = LinkedList<WorkerTask<W>>();
@@ -95,10 +141,9 @@ class WorkerPool<W extends Worker> {
   ///    2. sort workers by ascending [Worker.workload]
   ///    3. distribute tasks to workers having [Worker.workload] < [maxParallel]
   void _schedule() {
-    for (var i = _workers.length - 1; i >= 0; i--) {
-      if (_workers[i].isStopped) {
-        _workers.removeAt(i);
-      }
+    final workersToRemove = _workers.where((w) => w.isStopped).toList();
+    for (var w in workersToRemove) {
+      _removeWorker(w);
     }
     if (_queue.isNotEmpty) {
       final max = (maxWorkers > 0 && _queue.length > maxWorkers)
@@ -107,6 +152,7 @@ class WorkerPool<W extends Worker> {
       while (_workers.length < max) {
         _workers.add(_workerFactory());
       }
+      _maxSize = math.max(_maxSize, _workers.length);
       _workers.sort((a, b) => a.workload.compareTo(b.workload));
       for (var i = 0; _queue.isNotEmpty && i < _workers.length; i++) {
         final w = _workers[i];
@@ -123,4 +169,8 @@ class WorkerPool<W extends Worker> {
 
   /// Worker statistics
   Iterable<WorkerStat> get stats => _workers.map((w) => w.stats);
+
+  /// Full worker statistics
+  Iterable<WorkerStat> get fullStats =>
+      _deadWorkerStats.followedBy(_workers.map((w) => w.stats));
 }

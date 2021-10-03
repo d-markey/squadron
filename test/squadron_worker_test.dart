@@ -16,14 +16,14 @@ void main() {
     final dummy = DummyWorker();
 
     await Future.delayed(Duration(milliseconds: 5));
-    expect(dummy.commandPort, isNull);
+    expect(dummy.workerPort, isNull);
     expect(dummy.started, isNull);
     expect(dummy.stopped, isNull);
     expect(dummy.upTime, Duration.zero);
     expect(dummy.idleTime, Duration.zero);
 
     await dummy.start();
-    expect(dummy.commandPort, isNotNull);
+    expect(dummy.workerPort, isNotNull);
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.started, isNotNull);
@@ -34,7 +34,7 @@ void main() {
 
     dummy.stop();
     upTime = dummy.upTime;
-    expect(dummy.commandPort, isNull);
+    expect(dummy.workerPort, isNull);
     expect(dummy.started, isNotNull);
     expect(dummy.stopped, isNotNull);
     expect(dummy.stopped!.isAfter(dummy.started!), isTrue);

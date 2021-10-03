@@ -87,8 +87,10 @@ abstract class Worker {
       workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);
 
   /// Command port to communicate with  the worker's [Isolate]
-  SendPort? get commandPort => _commandPort;
-  SendPort? _commandPort;
+  SendPort? get workerPort => _workerPort;
+  SendPort? _workerPort;
+
+  Isolate? _isolate;
 
   /// Send a workload to the woker's main program running in the worker's [Isolate]
   Future<T> send<T>(int command, [List args = const []]) async {
@@ -100,10 +102,10 @@ abstract class Worker {
       }
 
       // ensure the Isolate is up and running
-      _commandPort ??= await start();
+      _workerPort ??= await start();
 
       // send request and return response
-      return await WorkerRequest(command, args).send<T>(_commandPort!);
+      return await WorkerRequest(command, args).send<T>(_workerPort!);
     } on WorkerException catch (e) {
       _totalErrors++;
       throw WorkerException(e.message, stackTrace: e.stackTrace, workerId: id);
@@ -129,11 +131,11 @@ abstract class Worker {
       }
 
       // ensure the Isolate is up and running
-      _commandPort ??= await start();
+      _workerPort ??= await start();
 
       // send request and stream response elements
       await for (var res
-          in WorkerRequest(command, args).stream<T>(_commandPort!)) {
+          in WorkerRequest(command, args).stream<T>(_workerPort!)) {
         yield res;
       }
     } on WorkerException {
@@ -156,14 +158,18 @@ abstract class Worker {
 
   /// Creates the worker's [Isolate].
   Future<SendPort> start() async {
+    if (_isolate != null) {
+      _isolate!.kill();
+      _isolate = null;
+    }
     final receiver = ReceivePort();
     // final req = WorkerRequest.start(receiver, startArguments);
-    await Isolate.spawn(
+    _isolate = await Isolate.spawn(
         _main, WorkerRequest.startArguments(receiver, startArguments));
-    _commandPort = await receiver.first;
-    if (_commandPort == null) throw Exception('Failed to create a new Isolate');
+    _workerPort = await receiver.first;
+    if (_workerPort == null) throw Exception('Failed to create a new Isolate');
     onStarted();
-    return _commandPort!;
+    return _workerPort!;
   }
 
   /// Method called when the [Isolate] has been created.
@@ -176,12 +182,14 @@ abstract class Worker {
   void stop() {
     if (_stopped == null) {
       _stopped = DateTime.now().microsecondsSinceEpoch;
-      final commandPort = _commandPort;
-      if (commandPort != null) {
-        _commandPort = null;
+      final port = _workerPort;
+      if (port != null) {
+        _workerPort = null;
         final receiver = ReceivePort();
-        commandPort.send(WorkerRequest.stopArguments(receiver));
+        port.send(WorkerRequest.stopArguments(receiver));
         receiver.close();
+        _isolate?.kill();
+        _isolate = null;
       }
     }
   }

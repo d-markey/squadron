@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:squadron/squadron.dart';
@@ -17,33 +18,49 @@ class SampleWorker extends Worker {
   }
 
   // private implementation, this is the thread's main program
-  static const _cpuOperation = 1;
-  static const _ioOperation = 2;
-
   static void _main(List command) {
     final receiver = ReceivePort();
     WorkerRequest.fromMessage(command).connect(receiver);
 
     receiver.listen((command) async {
-      final req = WorkerRequest.fromMessage(command);
-      if (req.command == null) {
-        receiver.close();
-        return;
-      }
-      switch (req.command) {
-        case _cpuOperation:
-          req.reply(cpuOperationImpl(req.args[0]));
+      WorkerRequest? req;
+      try {
+        req = WorkerRequest.fromMessage(command);
+        if (req.command == null) {
+          receiver.close();
           return;
-        case _ioOperation:
-          req.reply(await ioOperationImpl(req.args[0]));
-          return;
-        default:
-          req.exception(WorkerException('unknown message ${req.command}'),
+        }
+        var op = _operations[req.command];
+        if (req.command == null) {
+          req.exception(WorkerException('unknown command ${req.command}'),
               StackTrace.current);
           return;
+        }
+        req.reply(await op!(req));
+      } on WorkerException catch (e, st) {
+        req?.exception(e, st);
+      } catch (e, st) {
+        req?.exception(
+            WorkerException('unexpected exception: ${e.runtimeType} => $e}',
+                stackTrace: st.toString()),
+            st);
       }
     });
   }
+
+  static const _cpuOperation = 1;
+  static const _ioOperation = 2;
+
+  static final Map<int, FutureOr<dynamic> Function(WorkerRequest req)>
+      _operations = {
+    _cpuOperation: _cpuOperationImpl,
+    _ioOperation: _ioOperationImpl,
+  };
+
+  static int _cpuOperationImpl(WorkerRequest req) =>
+      cpuOperationImpl(req.args[0]);
+  static Future<int> _ioOperationImpl(WorkerRequest req) =>
+      ioOperationImpl(req.args[0]);
 
   static int cpuOperationImpl(int n) {
     var start = DateTime.now().millisecondsSinceEpoch;

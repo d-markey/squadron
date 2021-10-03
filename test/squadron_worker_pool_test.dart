@@ -54,45 +54,46 @@ void main() {
     var stopped = 0;
     final maxIdle = Duration(milliseconds: 1000 ~/ timeFactor);
 
-    final maxWorkers = 50;
+    final minWorkers = 3;
+    final maxWorkers = 11;
     final maxParallel = 2;
 
     final pool = WorkerPool(() => DummyWorker(),
-        maxWorkers: maxWorkers, maxParallel: maxParallel);
+        minWorkers: minWorkers,
+        maxWorkers: maxWorkers,
+        maxParallel: maxParallel);
 
     // start pool will instantiate 100 workers
     await pool.start();
 
-    expect(pool.stats.length, equals(maxWorkers));
+    expect(pool.size, equals(minWorkers));
 
     // install worker monitor
     final timer =
         Timer.periodic(Duration(milliseconds: 200 ~/ timeFactor), (timer) {
-      var count =
-          pool.stats.where((s) => !s.isStopped && s.idleTime > maxIdle).length;
-      var n = pool.stop((w) => !w.isStopped && w.idleTime > maxIdle);
-      expect(n, greaterThanOrEqualTo(count));
-      stopped += n;
+      stopped += pool.stop((w) => !w.isStopped && w.idleTime > maxIdle);
     });
 
-    var task = pool.compute((w) => w.wait(milliseconds: 2000 ~/ timeFactor));
-
-    await Future.delayed(Duration(milliseconds: 400 ~/ timeFactor));
-    while (stopped < maxWorkers - 1) {
-      await Future.delayed(Duration(milliseconds: 200 ~/ timeFactor));
+    final tasks = <Future>[];
+    for (var i = 0; i < 2.5 * maxWorkers; i++) {
+      tasks.add(pool.compute((w) => w.wait(milliseconds: 2000 ~/ timeFactor)));
     }
 
-    expect(stopped, equals(maxWorkers - 1));
+    await Future.delayed(Duration(milliseconds: 250 ~/ timeFactor));
 
-    await task;
+    expect(pool.size, equals(maxWorkers));
+    expect(stopped, equals(0));
 
-    await Future.delayed(Duration(milliseconds: 400 ~/ timeFactor));
+    await Future.wait(tasks);
 
-    expect(stopped, equals(maxWorkers - 1));
+    await Future.delayed(Duration(milliseconds: 1000 ~/ timeFactor));
 
-    await Future.delayed(Duration(milliseconds: 800 ~/ timeFactor));
+    expect(stopped, greaterThan(0));
+    expect(stopped, lessThanOrEqualTo(maxWorkers - minWorkers));
 
-    expect(stopped, equals(maxWorkers));
+    await Future.delayed(Duration(milliseconds: 1000 ~/ timeFactor));
+
+    expect(stopped, equals(maxWorkers - minWorkers));
 
     timer.cancel();
     pool.stop();
