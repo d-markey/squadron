@@ -287,7 +287,7 @@ await pool.start();
 
 
 ```
-Arcitecture Diagram
+Architecture Diagram
 
                                    +-----------------------+
                               +--> | CacheWorker singleton | <--+
