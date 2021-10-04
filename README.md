@@ -264,7 +264,7 @@ class OtherWorker extends Worker {
     var result = await cache?.get(n);
     if (result == null) {
       result = _crunch(n);
-      cache?.set(n, Duration(hours: 6));
+      cache?.set(n, result, Duration(hours: 6));
     }
     return result;
   }
