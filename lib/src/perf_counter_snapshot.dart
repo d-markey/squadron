@@ -7,7 +7,8 @@ class PerfCounterSnapshot {
       : name = counter.name,
         maxTimeInMicroseconds = counter.maxTimeInMicroseconds,
         totalTimeInMicroseconds = counter.totalTimeInMicroseconds,
-        totalCount = counter.totalCount;
+        totalCount = counter.totalCount,
+        totalErrors = counter.totalErrors;
 
   /// The counter's name or label
   final String name;
@@ -21,11 +22,14 @@ class PerfCounterSnapshot {
   /// Total number of calls
   final int totalCount;
 
+  /// Total number of errors
+  final int totalErrors;
+
   @override
   String toString() {
     final average = Duration(
         microseconds:
             (totalCount < 1) ? 0 : (totalTimeInMicroseconds ~/ totalCount));
-    return '$name: average = $average ($totalCount), max = ${Duration(microseconds: maxTimeInMicroseconds)})';
+    return '$name: average = $average ($totalCount / $totalErrors errors), max = ${Duration(microseconds: maxTimeInMicroseconds)})';
   }
 }

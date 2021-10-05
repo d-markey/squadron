@@ -1,7 +1,7 @@
 library squadron;
 
 export 'src/perf_counter.dart';
-export 'src/perf_counter_value.dart';
+export 'src/perf_counter_snapshot.dart';
 export 'src/worker.dart';
 export 'src/worker_exception.dart';
 export 'src/worker_pool.dart';

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'perf_counter_value.dart';
+import 'perf_counter_snapshot.dart';
 
 /// Simple performance counter to consolidate statistics about [Future] completion: total number of calls, total elapsed time, and max elapsed time.
 class PerfCounter implements PerfCounterSnapshot {
@@ -8,7 +8,8 @@ class PerfCounter implements PerfCounterSnapshot {
   PerfCounter(this.name)
       : _maxTimeInMicroseconds = 0,
         _totalTimeInMicroseconds = 0,
-        _totalCount = 0;
+        _totalCount = 0,
+        _totalErrors = 0;
 
   /// The counter's name or label
   @override
@@ -29,6 +30,11 @@ class PerfCounter implements PerfCounterSnapshot {
   int get totalCount => _totalCount;
   int _totalCount;
 
+  /// Total number of errors
+  @override
+  int get totalErrors => _totalErrors;
+  int _totalErrors;
+
   /// Updates counter value with the duration indicated by [timeInMicroseconds]
   /// * update the maximum elapsed time if required
   /// * add specified time to the total elapsed time
@@ -46,6 +52,9 @@ class PerfCounter implements PerfCounterSnapshot {
         var ts = DateTime.now().microsecondsSinceEpoch;
         try {
           return await task();
+        } catch (e) {
+          _totalErrors += 1;
+          rethrow;
         } finally {
           update(DateTime.now().microsecondsSinceEpoch - ts);
         }
@@ -53,12 +62,4 @@ class PerfCounter implements PerfCounterSnapshot {
 
   /// Returns a snapshot of the [counter]'s values
   PerfCounterSnapshot get value => PerfCounterSnapshot(this);
-
-  @override
-  String toString() {
-    final average = Duration(
-        microseconds:
-            (totalCount < 1) ? 0 : (totalTimeInMicroseconds ~/ totalCount));
-    return '$name: average = $average ($totalCount), max = ${Duration(microseconds: maxTimeInMicroseconds)})';
-  }
 }
