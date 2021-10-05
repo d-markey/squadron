@@ -80,10 +80,10 @@ class SampleWorker extends Worker {
   };
 
   static int _cpuOperationImpl(WorkerRequest req) {
-    var start = DateTime.now().millisecondsSinceEpoch;
-    var elapsed = 0;
-    while (elapsed < 2) {
-      elapsed = DateTime.now().millisecondsSinceEpoch - start;
+    final sw = Stopwatch();
+    sw.start();
+    while (sw.elapsedMilliseconds < 2) {
+      /* CPU loop */
     }
     return req.args[0];
   }

@@ -20,7 +20,8 @@ void main() async {
     ///////////// SYNC /////////////
     print('///////////// SYNC /////////////');
 
-    final syncTs = DateTime.now().microsecondsSinceEpoch;
+    final syncSw = Stopwatch();
+    syncSw.start();
     for (var loop = 0; loop < loops; loop++) {
       final syncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
@@ -29,7 +30,8 @@ void main() async {
       }
       await Future.wait(syncFutures);
     }
-    final syncElapsed = DateTime.now().microsecondsSinceEpoch - syncTs;
+    syncSw.stop();
+    final syncElapsed = syncSw.elapsedMicroseconds;
 
     print('sync version completed in ${Duration(microseconds: syncElapsed)}');
     print('');
@@ -47,7 +49,8 @@ void main() async {
     final monitor = WorkerMonitor(pool, 100);
     monitor.start();
 
-    final asyncTs = DateTime.now().microsecondsSinceEpoch;
+    final asyncSw = Stopwatch();
+    asyncSw.start();
     for (var loop = 0; loop < loops; loop++) {
       final asyncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
@@ -57,12 +60,14 @@ void main() async {
       }
       await Future.wait(asyncFutures);
     }
-    final asyncElapsed = DateTime.now().microsecondsSinceEpoch - asyncTs;
+    asyncSw.stop();
+    final asyncElapsed = asyncSw.elapsedMicroseconds;
 
     print('async version completed in ${Duration(microseconds: asyncElapsed)}');
 
     print('waiting for monitor to stop workers...');
-    final ts = DateTime.now().microsecondsSinceEpoch;
+    final sw = Stopwatch();
+    sw.start();
     var prevSize = 0;
     while (true) {
       final size = pool.size;
@@ -72,8 +77,7 @@ void main() async {
       }
       if (size == pool.minWorkers) break;
       await Future.delayed(monitor.maxIdle ~/ 500);
-      if (DateTime.now().microsecondsSinceEpoch - ts >
-          monitor.maxIdle.inMicroseconds * 2) {
+      if (sw.elapsedMicroseconds > monitor.maxIdle.inMicroseconds * 2) {
         print('Houston, we\'ve got a problem...');
       }
     }

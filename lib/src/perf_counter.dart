@@ -49,14 +49,15 @@ class PerfCounter implements PerfCounterSnapshot {
 
   /// Returns a [Future] that will measure the elapsed time to completion of the specified [task]
   Future<T> measure<T>(Future<T> Function() task) => Future(() async {
-        var ts = DateTime.now().microsecondsSinceEpoch;
+        final sw = Stopwatch();
         try {
-          return await task();
+          sw.start();
+          return await task().whenComplete(() => sw.stop());
         } catch (e) {
           _totalErrors += 1;
           rethrow;
         } finally {
-          update(DateTime.now().microsecondsSinceEpoch - ts);
+          update(sw.elapsedMicroseconds);
         }
       });
 

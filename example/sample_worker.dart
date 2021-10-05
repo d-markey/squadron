@@ -63,10 +63,10 @@ class SampleWorker extends Worker {
       ioOperationImpl(req.args[0]);
 
   static int cpuOperationImpl(int n) {
-    var start = DateTime.now().millisecondsSinceEpoch;
-    var elapsed = 0;
-    while (elapsed < 2) {
-      elapsed = DateTime.now().millisecondsSinceEpoch - start;
+    var sw = Stopwatch();
+    sw.start();
+    while (sw.elapsedMilliseconds < 2) {
+      /* CPU loop */
     }
     return n;
   }

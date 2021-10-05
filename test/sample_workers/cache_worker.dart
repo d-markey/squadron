@@ -6,7 +6,7 @@ import 'package:squadron/squadron.dart';
 abstract class Cache {
   Future<dynamic> get(dynamic key);
   Future<bool> containsKey(dynamic key);
-  Future set(dynamic key, dynamic value, { Duration? timeToLive });
+  Future set(dynamic key, dynamic value, {Duration? timeToLive});
 }
 
 class CacheClient implements Cache {
@@ -25,9 +25,11 @@ class CacheClient implements Cache {
   }
 
   @override
-  Future set(dynamic key, dynamic value, { Duration? timeToLive }) {
+  Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
-    return WorkerRequest(CacheWorker._set, [key, value, timeToLive?.inMicroseconds]).send(_remote);
+    return WorkerRequest(
+            CacheWorker._set, [key, value, timeToLive?.inMicroseconds])
+        .send(_remote);
   }
 }
 
@@ -48,7 +50,7 @@ class CacheWorker extends Worker implements Cache {
   }
 
   @override
-  Future set(dynamic key, dynamic value, { Duration? timeToLive }) {
+  Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
     return send(_set, [key, value, timeToLive?.inMicroseconds]);
   }
@@ -106,7 +108,8 @@ class CacheWorker extends Worker implements Cache {
     if (entry == null) {
       // not in cache
       return null;
-    } else if (entry._expires == null || entry._expires!.isBefore(DateTime.now())) {
+    } else if (entry._expires == null ||
+        entry._expires!.isBefore(DateTime.now())) {
       // in cache, still valid
       return entry._data;
     } else {
@@ -127,7 +130,9 @@ class CacheWorker extends Worker implements Cache {
 
 class _CacheEntry {
   _CacheEntry._(this._data, int? ttl)
-    : _expires = (ttl == null || ttl <= 0) ? null : DateTime.now().add(Duration(microseconds: ttl));
+      : _expires = (ttl == null || ttl <= 0)
+            ? null
+            : DateTime.now().add(Duration(microseconds: ttl));
 
   final dynamic _data;
   final DateTime? _expires;
