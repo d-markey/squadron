@@ -1,3 +1,4 @@
+@Skip()
 @TestOn('browser')
 
 import 'dart:html';
