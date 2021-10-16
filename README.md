@@ -191,7 +191,7 @@ a local, in-memory cache at worker level. Each worker would have their own copy 
 update propagation difficult to implement.
 
 As a workaround, it is possible to implement a cache worker as a Singleton (no pooling) and to share the worker's
-`Channel` across other workers (`Channel` objects can be sent across platform workers via the `serialize()' method).
+`Channel` across other workers (`Channel` objects can be sent across platform workers via the `serialize()` method).
 
 An example is provided in `cache_worker.dart`. To access the cache API seamlessly, an abstract class is first
 defined:
