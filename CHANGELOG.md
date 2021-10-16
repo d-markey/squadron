@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Remove dependency on js package.
+
 ## 2.0.0
 
 - This version supports workers running in Isolates as well as Web Workers.
