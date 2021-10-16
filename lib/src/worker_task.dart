@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:squadron/src/worker_exception.dart';
-
 import 'perf_counter.dart';
 import 'worker.dart';
+import 'worker_exception.dart';
 
 class WorkerTask<W extends Worker> extends LinkedListEntry<WorkerTask<W>> {
   WorkerTask._future(

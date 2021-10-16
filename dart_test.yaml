@@ -1,0 +1,5 @@
+platforms: 
+  - vm
+  - chrome
+
+chain_stack_traces: true

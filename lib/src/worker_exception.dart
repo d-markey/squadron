@@ -1,4 +1,4 @@
-/// Exception to keep track of errors encountered in a worker's [Isolate]
+/// Exception to keep track of errors encountered in a worker
 class WorkerException implements Exception {
   /// Create a new [WorkerException] to capture error context
   WorkerException(this.message, {String? stackTrace, this.workerId})
@@ -14,5 +14,5 @@ class WorkerException implements Exception {
   final String? workerId;
 
   @override
-  String toString() => 'WorkerException: $message';
+  String toString() => 'WorkerException: $message\n$stackTrace';
 }

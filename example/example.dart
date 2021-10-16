@@ -2,51 +2,63 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'sample_worker.dart';
+import 'sample_service.dart';
+import 'sample_worker_vm.dart';
 import 'worker_monitor.dart';
 
 void main() async {
-  final loops = 100;
+  final sw = Stopwatch()..start();
+
+  void log(String message) {
+    print(message.isEmpty ? '' : '[${sw.elapsed}] $message');
+  }
+
+  final loops = 5;
   final max = 50;
 
-  print('');
-  print('loops = $loops');
-  print('max = $max');
-  print('');
+  log('');
+  log('loops = $loops');
+  log('max = $max');
+  log('');
 
   WorkerPool<SampleWorker>? pool;
 
   try {
     ///////////// SYNC /////////////
-    print('///////////// SYNC /////////////');
+    log('///////////// SYNC /////////////');
+
+    final sampleService = SampleService();
 
     final syncSw = Stopwatch();
     syncSw.start();
     for (var loop = 0; loop < loops; loop++) {
       final syncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
-        syncFutures.add(Future.value(SampleWorker.cpuOperationImpl(n)));
-        syncFutures.add(SampleWorker.ioOperationImpl(n));
+        syncFutures.add(Future(() => sampleService.cpu(milliseconds: n)));
+        syncFutures.add(sampleService.io(milliseconds: n));
       }
       await Future.wait(syncFutures);
     }
     syncSw.stop();
     final syncElapsed = syncSw.elapsedMicroseconds;
 
-    print('sync version completed in ${Duration(microseconds: syncElapsed)}');
-    print('');
+    log('sync version completed in ${Duration(microseconds: syncElapsed)}');
+    log('');
 
     ///////////// POOL /////////////
-    print('///////////// POOL /////////////');
+    log('///////////// POOL /////////////');
 
-    final maxWorkers = 8;
+    final minWorkers = 2;
+    final maxWorkers = 4;
     final maxParallel = 2;
 
-    pool = WorkerPool(() => SampleWorker(),
-        minWorkers: 1, maxWorkers: maxWorkers, maxParallel: maxParallel);
+    pool = WorkerPool(() => createVmSampleWorker(),
+        minWorkers: minWorkers,
+        maxWorkers: maxWorkers,
+        maxParallel: maxParallel);
     await pool.start();
 
-    final monitor = WorkerMonitor(pool, 100);
+    final monitor = WorkerMonitor(pool, maxIdleInMilliseconds: 250);
     monitor.start();
 
     final asyncSw = Stopwatch();
@@ -54,52 +66,51 @@ void main() async {
     for (var loop = 0; loop < loops; loop++) {
       final asyncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
-        asyncFutures.add(
-            Future.value(pool.compute((worker) => worker.cpuOperation(n))));
-        asyncFutures.add(pool.compute((worker) => worker.ioOperation(n)));
+        asyncFutures.add(pool.compute((worker) => worker.cpu(milliseconds: n)));
+        asyncFutures.add(pool.compute((worker) => worker.io(milliseconds: n)));
       }
       await Future.wait(asyncFutures);
     }
     asyncSw.stop();
     final asyncElapsed = asyncSw.elapsedMicroseconds;
 
-    print('async version completed in ${Duration(microseconds: asyncElapsed)}');
+    log('async version completed in ${Duration(microseconds: asyncElapsed)}');
 
-    print('waiting for monitor to stop workers...');
+    log('waiting for monitor to stop workers...');
     final sw = Stopwatch();
     sw.start();
     var prevSize = 0;
     while (true) {
       final size = pool.size;
       if (prevSize != size) {
-        print('   pool.size = $size');
+        log('   pool.size = $size');
         prevSize = size;
       }
       if (size == pool.minWorkers) break;
       await Future.delayed(monitor.maxIdle ~/ 500);
       if (sw.elapsedMicroseconds > monitor.maxIdle.inMicroseconds * 2) {
-        print('Houston, we\'ve got a problem...');
+        log('Houston, we\'ve got a problem...');
       }
     }
 
-    print('worker stats:');
+    log('worker stats:');
     for (var stat in pool.fullStats) {
-      print('  * $stat');
+      log('  * $stat');
     }
 
     monitor.stop();
 
-    print('pool stats:');
-    print(
-        '  * load = ${pool.workload}, max load = ${pool.maxWorkload}, total load = ${pool.totalWorkload}, total errors = ${pool.totalErrors}');
+    log('pool stats:');
+    log('  * load = ${pool.workload}, max load = ${pool.maxWorkload}, total load = ${pool.totalWorkload}, total errors = ${pool.totalErrors}');
 
-    print('');
+    log('');
   } on WorkerException catch (e) {
-    print(e.message);
-    print(e.stackTrace);
+    log(e.message);
+    log(e.stackTrace.toString());
   } finally {
     pool?.stop();
   }
 
-  print('');
+  log('Done.');
+  log('');
 }

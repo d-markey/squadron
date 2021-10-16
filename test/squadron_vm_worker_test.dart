@@ -1,29 +1,35 @@
+@TestOn('vm')
+
+import 'dart:io';
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import 'sample_workers/cache_worker.dart';
-import 'sample_workers/dummy_worker.dart';
-import 'sample_workers/prime_worker.dart';
-import 'sample_workers/rogue_worker.dart';
+import 'prime_numbers.dart';
+import 'sample_vm_workers/cache_worker.dart';
+import 'sample_vm_workers/sample_worker.dart';
+import 'sample_vm_workers/prime_worker.dart';
+import 'sample_vm_workers/rogue_worker.dart';
 
 void main() {
+  print('Running tests on ${Platform.operatingSystem}...');
+
   final timeFactor =
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('start & stop', () async {
-    final dummy = DummyWorker();
+    final dummy = createVmSampleWorker();
 
     await Future.delayed(Duration(milliseconds: 5));
-    expect(dummy.workerPort, isNull);
+    expect(dummy.channel, isNull);
     expect(dummy.started, isNull);
     expect(dummy.stopped, isNull);
     expect(dummy.upTime, Duration.zero);
     expect(dummy.idleTime, Duration.zero);
 
     await dummy.start();
-    expect(dummy.workerPort, isNotNull);
+    expect(dummy.channel, isNotNull);
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.started, isNotNull);
@@ -34,7 +40,7 @@ void main() {
 
     dummy.stop();
     upTime = dummy.upTime;
-    expect(dummy.workerPort, isNull);
+    expect(dummy.channel, isNull);
     expect(dummy.started, isNotNull);
     expect(dummy.stopped, isNotNull);
     expect(dummy.stopped!.isAfter(dummy.started!), isTrue);
@@ -51,14 +57,14 @@ void main() {
   });
 
   test('workload - sequential', () async {
-    final dummy = DummyWorker();
+    final dummy = createVmSampleWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 
     Future createDummyTask({required int milliseconds}) {
       var id = ++taskId;
       return dummy
-          .wait(milliseconds: milliseconds)
+          .io(milliseconds: milliseconds)
           .whenComplete(() => completedTasks.add(id));
     }
 
@@ -119,14 +125,14 @@ void main() {
   });
 
   test('workload - parallel', () async {
-    final dummy = DummyWorker();
+    final dummy = createVmSampleWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 
     Future createDummyTask({required int milliseconds}) {
       var id = ++taskId;
       return dummy
-          .wait(milliseconds: milliseconds)
+          .io(milliseconds: milliseconds)
           .whenComplete(() => completedTasks.add(id));
     }
 
@@ -227,7 +233,7 @@ void main() {
   });
 
   test('cache worker', () async {
-    final cache = CacheWorker();
+    final cache = createVmCacheWorker();
     await cache.start();
 
     expect(await cache.get(1), isNull);
@@ -241,12 +247,11 @@ void main() {
   });
 
   test('prime worker', () async {
-    final primeWorker = PrimeWorker();
+    final primeWorker = createVmPrimeWorker();
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
-      expect(
-          await primeWorker.isPrime(i), PrimeWorker.primesTo1000.contains(i));
+      expect(await primeWorker.isPrime(i), primesTo1000.contains(i));
     }
 
     primeWorker.stop();
@@ -254,59 +259,98 @@ void main() {
   });
 
   test('prime worker - stream', () async {
-    final primeWorker = PrimeWorker();
+    final primeWorker = createVmPrimeWorker();
     await primeWorker.start();
 
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
 
-    expect(computedPrimes, equals(PrimeWorker.primesTo1000));
+    expect(computedPrimes, equals(primesTo1000));
 
     primeWorker.stop();
     expect(primeWorker.stopped, isNotNull);
   });
 
   test('prime worker with cache', () async {
-    final cache = CacheWorker();
+    final cache = createVmCacheWorker();
     await cache.start();
 
-    final primeWorker = PrimeWorker(cache);
+    var shared = cache.channel?.share();
+    expect(shared, isNotNull);
+
+    final initialStats = await cache.getStats();
+
+    expect(initialStats.hit, isZero);
+    expect(initialStats.miss, isZero);
+    expect(initialStats.expired, isZero);
+    expect(initialStats.size, isZero);
+    expect(initialStats.maxSize, isZero);
+
+    final primeWorker = createVmPrimeWorker(cache);
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
-      expect(
-          await primeWorker.isPrime(i), PrimeWorker.primesTo1000.contains(i));
+      expect(await primeWorker.isPrime(i), primesTo1000.contains(i));
     }
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
 
-    expect(computedPrimes, equals(PrimeWorker.primesTo1000));
+    expect(computedPrimes, equals(primesTo1000));
 
     primeWorker.stop();
     expect(primeWorker.stopped, isNotNull);
+
+    final stats = await cache.getStats();
+    expect(stats.hit, isPositive);
+    expect(stats.miss, isPositive);
+    expect(stats.expired, isZero);
+    expect(stats.size, isPositive);
+    expect(stats.maxSize, equals(stats.size));
 
     cache.stop();
     expect(cache.stopped, isNotNull);
   });
 
   test('prime worker with cache - perf', () async {
-    final cache = CacheWorker();
+    final cache = createVmCacheWorker();
     await cache.start();
 
-    final primeWorker = PrimeWorker(cache);
+    var cacheStats = await cache.getStats();
+    expect(cacheStats.hit, isZero);
+    expect(cacheStats.miss, isZero);
+    expect(cacheStats.expired, isZero);
+    expect(cacheStats.size, isZero);
+    expect(cacheStats.maxSize, isZero);
+
+    final primeWorker = createVmPrimeWorker(cache);
     await primeWorker.start();
 
     var firstPerf = PerfCounter('with empty cache');
     await firstPerf.measure(() async {
-      for (var prime in PrimeWorker.largePrimes) {
+      for (var prime in largePrimes) {
         expect(await primeWorker.isPrime(prime), isTrue);
       }
     });
 
+    cacheStats = await cache.getStats();
+    expect(cacheStats.hit, isZero);
+    expect(cacheStats.miss, isPositive);
+    expect(cacheStats.expired, isZero);
+    expect(cacheStats.size, isPositive);
+    expect(cacheStats.maxSize, equals(cacheStats.size));
+
     var secondPerf = PerfCounter('with full cache');
     await secondPerf.measure(() async {
-      for (var prime in PrimeWorker.largePrimes) {
+      for (var prime in largePrimes) {
         expect(await primeWorker.isPrime(prime), isTrue);
       }
     });
+
+    cacheStats = await cache.getStats();
+    expect(cacheStats.hit, isPositive);
+    expect(cacheStats.miss, isPositive);
+    expect(cacheStats.hit, equals(cacheStats.miss));
+    expect(cacheStats.expired, isZero);
+    expect(cacheStats.size, isPositive);
+    expect(cacheStats.maxSize, equals(cacheStats.size));
 
     expect(secondPerf.totalTimeInMicroseconds,
         lessThan(firstPerf.totalTimeInMicroseconds));
@@ -322,7 +366,7 @@ void main() {
   });
 
   test('exception handling from worker', () async {
-    final rogue = RogueWorker();
+    final rogue = createVmRogueWorker();
 
     try {
       final res = await rogue.throwWorkerException();
@@ -332,8 +376,8 @@ void main() {
     } on WorkerException catch (e) {
       // expected exception
       expect(true, isTrue);
-      expect(e.message, equals('expected'));
-      expect(e.stackTrace, contains('_throwWorkerExceptionImpl'));
+      expect(e.message, equals('intended worker exception'));
+      expect(e.stackTrace, contains('throwWorkerException'));
       expect(e.workerId, isNotNull);
     } catch (e) {
       // should never happen
@@ -350,8 +394,8 @@ void main() {
     } on WorkerException catch (e) {
       // expected exception
       expect(true, isTrue);
-      expect(e.message, contains('unexpected'));
-      expect(e.stackTrace, contains('_throwExceptionImpl'));
+      expect(e.message, contains('intended exception'));
+      expect(e.stackTrace, contains('throwException'));
       expect(e.workerId, isNotNull);
     } catch (e) {
       // should never happen

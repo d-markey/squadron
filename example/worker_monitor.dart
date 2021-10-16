@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 class WorkerMonitor {
-  WorkerMonitor(this._pool, int maxIdleInMilliseconds)
+  WorkerMonitor(this._pool, {required int maxIdleInMilliseconds})
       : maxIdle = Duration(milliseconds: maxIdleInMilliseconds);
 
   final WorkerPool _pool;

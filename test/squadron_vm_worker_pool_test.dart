@@ -1,34 +1,43 @@
+@TestOn('vm')
+
 import 'dart:async';
+import 'dart:io';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import 'sample_workers/cache_worker.dart';
-import 'sample_workers/dummy_worker.dart';
-import 'sample_workers/prime_worker.dart';
-import 'sample_workers/rogue_worker.dart';
+import 'sample_vm_workers/cache_worker.dart';
+import 'sample_vm_workers/sample_worker.dart';
+import 'sample_vm_workers/prime_worker.dart';
+import 'sample_vm_workers/rogue_worker.dart';
+import 'worker_services/rogue_service.dart';
 
 void main() {
+  print('Running tests on ${Platform.operatingSystem}...');
+
   final timeFactor =
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('prime worker pool with cache', () async {
-    final cache = CacheWorker();
+    final cache = createVmCacheWorker();
     await cache.start();
 
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    final pool = WorkerPool(() => PrimeWorker(cache),
+    final pool = WorkerPool(() => createVmPrimeWorker(),
         maxWorkers: maxWorkers, maxParallel: maxParallel);
 
     final completedTasks = <int>[];
+    final completedComputes = <int>[];
     int taskId = 0;
 
     Future primeTest(int i) {
       var id = ++taskId;
-      return pool.compute(
-          (w) => w.isPrime(i).whenComplete(() => completedTasks.add(id)));
+      return pool
+          .compute(
+              (w) => w.isPrime(i).whenComplete(() => completedTasks.add(id)))
+          .whenComplete(() => completedComputes.add(id));
     }
 
     // start 1000 tasks
@@ -40,6 +49,7 @@ void main() {
     await Future.wait(tasks);
 
     expect(completedTasks.length, equals(tasks.length));
+    expect(completedComputes.length, equals(tasks.length));
 
     final stats = pool.stats.toList();
     expect(stats.length, equals(maxWorkers));
@@ -58,7 +68,7 @@ void main() {
     final maxWorkers = 11;
     final maxParallel = 2;
 
-    final pool = WorkerPool(() => DummyWorker(),
+    final pool = WorkerPool(() => createVmSampleWorker(),
         minWorkers: minWorkers,
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);
@@ -76,7 +86,7 @@ void main() {
 
     final tasks = <Future>[];
     for (var i = 0; i < 2.5 * maxWorkers; i++) {
-      tasks.add(pool.compute((w) => w.wait(milliseconds: 2000 ~/ timeFactor)));
+      tasks.add(pool.compute((w) => w.io(milliseconds: 2000 ~/ timeFactor)));
     }
 
     await Future.delayed(Duration(milliseconds: 250 ~/ timeFactor));
@@ -103,7 +113,7 @@ void main() {
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    final pool = WorkerPool(() => RogueWorker(),
+    final pool = WorkerPool<RogueWorker>(() => createVmRogueWorker(),
         maxWorkers: maxWorkers, maxParallel: maxParallel);
     await pool.start();
 
@@ -115,8 +125,8 @@ void main() {
     } on WorkerException catch (e) {
       // expected
       expect(true, isTrue);
-      expect(e.message, equals('expected'));
-      expect(e.stackTrace, contains('_throwWorkerExceptionImpl'));
+      expect(e.message, equals('intended worker exception'));
+      expect(e.stackTrace, contains('throwWorkerException'));
       expect(e.workerId, isNotNull);
     } catch (e) {
       // should never happen
@@ -133,8 +143,8 @@ void main() {
     } on WorkerException catch (e) {
       // expected
       expect(true, isTrue);
-      expect(e.message, contains('unexpected'));
-      expect(e.stackTrace, contains('_throwExceptionImpl'));
+      expect(e.message, contains('intended exception'));
+      expect(e.stackTrace, contains('throwException'));
       expect(e.workerId, isNotNull);
     } catch (e) {
       // should never happen

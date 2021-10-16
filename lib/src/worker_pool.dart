@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
 
-import 'package:squadron/squadron.dart';
-
 import 'worker.dart';
+import 'perf_counter.dart';
+import 'worker_stat.dart';
 import 'worker_task.dart';
 
 /// Worker pool responsible for instantiating, stopping and scheduling workers
@@ -66,26 +66,20 @@ class WorkerPool<W extends Worker> {
   int _maxSize = 0;
 
   /// Ensure at least [minWorkers] workers are started (defaulting to 1 if [minWorkers] is zero).
-  Future start() async {
-    var count = ((minWorkers == 0) ? 1 : minWorkers) - _workers.length;
-    if (count > 0) {
-      var newWorkers = <W>[];
-      while (count > 0) {
-        final worker = _workerFactory();
-        await worker.start();
-        newWorkers.add(worker);
-        count--;
-      }
-      _workers.addAll(newWorkers);
+  Future start() {
+    final tasks = <Future>[];
+    final min = ((minWorkers == 0) ? 1 : minWorkers);
+    while (_workers.length < min) {
+      final w = _workerFactory();
+      _workers.add(w);
+      tasks.add(w.start());
     }
-    _maxSize = math.max(_maxSize, _workers.length);
+    return Future.wait(tasks);
   }
 
-  bool _removeWorker(Worker worker) {
-    if (minWorkers == 0 || _workers.length > minWorkers) {
-      if (!worker.isStopped) {
-        worker.stop();
-      }
+  bool _removeWorker(Worker worker, bool force) {
+    if (force || _workers.length > minWorkers) {
+      worker.stop();
       _workers.remove(worker);
       _deadWorkerStats.add(worker.stats);
       return true;
@@ -96,13 +90,19 @@ class WorkerPool<W extends Worker> {
 
   /// Stop workers matching the [predicate].
   /// If [predicate] is null or not provided, all workers will be stopped.
+  /// Returns the number of workers that have been stopped
   int stop([bool Function(W worker)? predicate]) {
-    var targets = _workers.where((w) => !w.isStopped && w.workload == 0);
-    if (predicate != null) targets = targets.where(predicate);
+    Iterable<W> targets = _workers;
+    var force = true;
+    if (predicate != null) {
+      force = false;
+      targets =
+          targets.where((w) => !w.isStopped && w.workload == 0 && predicate(w));
+    }
     final workersToStop = targets.toList();
     var stopped = 0;
     for (var w in workersToStop) {
-      if (_removeWorker(w)) {
+      if (_removeWorker(w, force)) {
         stopped++;
       }
     }
@@ -112,7 +112,7 @@ class WorkerPool<W extends Worker> {
   final _queue = LinkedList<WorkerTask<W>>();
 
   /// Gets remaining workload
-  int get taskCount => _queue.length;
+  int get pendingWorkload => _queue.length;
 
   /// Registers and schedules a [task] that returns a single value.
   Future<T> compute<T>(Future<T> Function(W worker) task,
@@ -141,14 +141,11 @@ class WorkerPool<W extends Worker> {
   ///    2. sort workers by ascending [Worker.workload]
   ///    3. distribute tasks to workers having [Worker.workload] < [maxParallel]
   void _schedule() {
-    final workersToRemove = _workers.where((w) => w.isStopped).toList();
-    for (var w in workersToRemove) {
-      _removeWorker(w);
-    }
+    _workers.removeWhere((w) => w.isStopped);
     if (_queue.isNotEmpty) {
-      final max = (maxWorkers > 0 && _queue.length > maxWorkers)
-          ? maxWorkers
-          : _queue.length;
+      final max = (maxWorkers == 0 || _queue.length <= maxWorkers)
+          ? _queue.length
+          : maxWorkers;
       while (_workers.length < max) {
         _workers.add(_workerFactory());
       }
