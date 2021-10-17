@@ -1,7 +1,6 @@
 @TestOn('vm')
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
@@ -12,9 +11,7 @@ import 'sample_vm_workers/prime_worker.dart';
 import 'sample_vm_workers/rogue_worker.dart';
 import 'worker_services/rogue_service.dart';
 
-void main() {
-  print('Running tests on ${Platform.operatingSystem}...');
-
+void poolTests() {
   final timeFactor =
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
