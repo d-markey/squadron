@@ -18,7 +18,7 @@ class SampleWorker extends Worker implements SampleService {
   final Map<int, CommandHandler> operations = const {};
 }
 
-class SampleService {
+class SampleService implements WorkerService {
   Future io({required int milliseconds}) =>
       Future.delayed(Duration(milliseconds: milliseconds));
 
@@ -32,6 +32,7 @@ class SampleService {
   static const cpuCommand = 2;
 
   // map of command ids to command handlers
+  @override
   Map<int, CommandHandler> get operations => {
         ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
         cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),

@@ -57,7 +57,7 @@ class CacheWorker extends Worker implements Cache {
       CacheStat.deserialize(await send(CacheService.statsOperation));
 }
 
-class CacheService {
+class CacheService implements WorkerService {
   final _cache = <dynamic, _CacheEntry>{};
 
   int _hit = 0;
@@ -106,6 +106,7 @@ class CacheService {
   static const setOperation = 3;
   static const statsOperation = 4;
 
+  @override
   Map<int, CommandHandler> get operations => {
         getOperation: (r) => get(r.args[0]),
         containsOperation: (r) => containsKey(r.args[0]),

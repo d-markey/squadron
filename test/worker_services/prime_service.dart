@@ -23,7 +23,7 @@ class PrimeWorker extends Worker implements PrimeService {
   final Map<int, CommandHandler> operations = const {};
 }
 
-class PrimeService {
+class PrimeService implements WorkerService {
   PrimeService([this._cache]);
 
   final Cache? _cache;
@@ -50,6 +50,7 @@ class PrimeService {
   static const isPrimeCommand = 1;
   static const getPrimesCommand = 2;
 
+  @override
   Map<int, CommandHandler> get operations => {
         PrimeService.isPrimeCommand: (r) => isPrime(r.args[0]),
         PrimeService.getPrimesCommand: (r) => getPrimes(r.args[0], r.args[1]),

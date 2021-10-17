@@ -16,7 +16,7 @@ class RogueWorker extends Worker implements RogueService {
   final Map<int, CommandHandler> operations = const {};
 }
 
-class RogueService {
+class RogueService implements WorkerService {
   FutureOr throwWorkerException() =>
       throw WorkerException('intended worker exception');
 
@@ -25,6 +25,7 @@ class RogueService {
   static const workerException = 1;
   static const exception = 2;
 
+  @override
   Map<int, CommandHandler> get operations => {
         RogueService.workerException: (r) => throwWorkerException(),
         RogueService.exception: (r) => throwException(),
