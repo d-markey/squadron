@@ -4,8 +4,6 @@ import 'package:squadron/squadron.dart';
 
 import '../worker_services/rogue_service.dart';
 
-RogueWorker createJsRogueWorker() => RogueWorker('rogue_worker.dart.js');
-
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;
   final operations = <int, CommandHandler>{};

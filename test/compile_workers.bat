@@ -1,0 +1,6 @@
+CALL dart.bat compile js "%~dp0sample_js_workers\sample_worker.dart" -o "%~dp0sample_js_workers\sample_worker.dart.js"
+CALL dart.bat compile js "%~dp0sample_js_workers\cache_worker.dart" -o "%~dp0sample_js_workers\cache_worker.dart.js"
+CALL dart.bat compile js "%~dp0sample_js_workers\prime_worker.dart" -o "%~dp0sample_js_workers\prime_worker.dart.js"
+CALL dart.bat compile js "%~dp0sample_js_workers\rogue_worker.dart" -o "%~dp0sample_js_workers\rogue_worker.dart.js"
+DEL "%~dp0sample_js_workers\*.dart.js.deps"
+DEL "%~dp0sample_js_workers\*.dart.js.map"

@@ -5,18 +5,20 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
+import 'builders.dart';
+
 import 'prime_numbers.dart';
-import 'sample_vm_workers/cache_worker.dart';
-import 'sample_vm_workers/sample_worker.dart';
-import 'sample_vm_workers/prime_worker.dart';
-import 'sample_vm_workers/rogue_worker.dart';
+import 'worker_services/cache_service.dart';
+import 'worker_services/prime_service.dart';
+import 'worker_services/rogue_service.dart';
+import 'worker_services/sample_service.dart';
 
 void workerTests() {
   final timeFactor =
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('start & stop', () async {
-    final dummy = createVmSampleWorker();
+    final dummy = getWorker<SampleWorker>();
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.channel, isNull);
@@ -54,7 +56,7 @@ void workerTests() {
   });
 
   test('workload - sequential', () async {
-    final dummy = createVmSampleWorker();
+    final dummy = getWorker<SampleWorker>();
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -122,7 +124,7 @@ void workerTests() {
   });
 
   test('workload - parallel', () async {
-    final dummy = createVmSampleWorker();
+    final dummy = getWorker<SampleWorker>();
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -230,7 +232,7 @@ void workerTests() {
   });
 
   test('cache worker', () async {
-    final cache = createVmCacheWorker();
+    final cache = getWorker<CacheWorker>();
     await cache.start();
 
     expect(await cache.get(1), isNull);
@@ -244,7 +246,7 @@ void workerTests() {
   });
 
   test('prime worker', () async {
-    final primeWorker = createVmPrimeWorker();
+    final primeWorker = getWorker<PrimeWorker>();
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -256,7 +258,7 @@ void workerTests() {
   });
 
   test('prime worker - stream', () async {
-    final primeWorker = createVmPrimeWorker();
+    final primeWorker = getWorker<PrimeWorker>();
     await primeWorker.start();
 
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
@@ -268,7 +270,7 @@ void workerTests() {
   });
 
   test('prime worker with cache', () async {
-    final cache = createVmCacheWorker();
+    final cache = getWorker<CacheWorker>();
     await cache.start();
 
     var shared = cache.channel?.share();
@@ -282,7 +284,7 @@ void workerTests() {
     expect(initialStats.size, isZero);
     expect(initialStats.maxSize, isZero);
 
-    final primeWorker = createVmPrimeWorker(cache);
+    final primeWorker = getWorker<PrimeWorker>(cache);
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -307,7 +309,7 @@ void workerTests() {
   });
 
   test('prime worker with cache - perf', () async {
-    final cache = createVmCacheWorker();
+    final cache = getWorker<CacheWorker>();
     await cache.start();
 
     var cacheStats = await cache.getStats();
@@ -317,7 +319,7 @@ void workerTests() {
     expect(cacheStats.size, isZero);
     expect(cacheStats.maxSize, isZero);
 
-    final primeWorker = createVmPrimeWorker(cache);
+    final primeWorker = getWorker<PrimeWorker>(cache);
     await primeWorker.start();
 
     var firstPerf = PerfCounter('with empty cache');
@@ -363,16 +365,14 @@ void workerTests() {
   });
 
   test('exception handling from worker', () async {
-    final rogue = createVmRogueWorker();
+    final rogue = getWorker<RogueWorker>();
 
     try {
-      final res = await rogue.throwWorkerException();
+      await rogue.throwWorkerException();
       // should never happen
-      expect(res, isNull);
       expect(false, isTrue);
     } on WorkerException catch (e) {
       // expected exception
-      expect(true, isTrue);
       expect(e.message, equals('intended worker exception'));
       expect(e.stackTrace, contains('throwWorkerException'));
       expect(e.workerId, isNotNull);
@@ -384,13 +384,11 @@ void workerTests() {
     expect(rogue.stats.totalErrors, equals(1));
 
     try {
-      final res = await rogue.throwException();
+      await rogue.throwException();
       // should never happen
-      expect(res, isNull);
       expect(false, isTrue);
     } on WorkerException catch (e) {
       // expected exception
-      expect(true, isTrue);
       expect(e.message, contains('intended exception'));
       expect(e.stackTrace, contains('throwException'));
       expect(e.workerId, isNotNull);

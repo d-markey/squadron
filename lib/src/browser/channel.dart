@@ -6,26 +6,22 @@ import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
 
-/// [Channel] implementation for the JavaScript world
+/// [Channel] implementation for the JavaScript world.
 class JsChannel implements Channel {
-  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner
-  /// otherwise, [web.MessagePort] to return values to the client
+  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner.
+  /// Otherwise, [web.MessagePort] to return values to the client.
   web.MessagePort? _sendPort;
 
-  /// [Channel] serialization in JavaScript world returns the [web.MessagePort]
+  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   @override
-  dynamic serialize() {
-    return _sendPort;
-  }
+  dynamic serialize() => _sendPort;
 
-  /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel]
+  /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].
   @override
-  Channel share() {
-    return _JsForwardChannel(_sendPort!);
-  }
+  Channel share() => _JsForwardChannel(_sendPort!);
 
-  /// sends the [web.MessagePort] to communicate with the [web.Worker]
-  /// this method must be called by the [web.Worker] upon startup
+  /// Sends the [web.MessagePort] to communicate with the [web.Worker].
+  /// This method must be called by the [web.Worker] upon startup.
   @override
   void connect(Object channelInfo) {
     if (channelInfo is web.MessagePort) {
@@ -36,14 +32,14 @@ class JsChannel implements Channel {
     }
   }
 
-  /// wrapper of [web.Worker.postMessage] to send a [WorkerRequest]
+  /// Wrapper of [web.Worker.postMessage] to send a [WorkerRequest].
   void _postRequest(WorkerRequest req) {
     final message = req.serialize();
     final transfer = _getTransferables(message).toList();
     _sendPort!.postMessage(message, transfer);
   }
 
-  /// sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort]
+  /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].
   @override
   FutureOr close() {
     if (_sendPort != null) {
@@ -52,8 +48,8 @@ class JsChannel implements Channel {
     }
   }
 
-  /// creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]
-  /// this method expects a single value from the [web.Worker]
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
+  /// This method expects a single value from the [web.Worker].
   @override
   Future<T> sendRequest<T>(int command, List args) {
     final completer = Completer<T>();
@@ -71,9 +67,9 @@ class JsChannel implements Channel {
     return completer.future;
   }
 
-  /// creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]
-  /// this method expects a stream of values from the [web.Worker]
-  /// the [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream]
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
+  /// This method expects a stream of values from the [web.Worker].
+  /// The [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args) {
     final streamController = StreamController<T>();
@@ -94,8 +90,8 @@ class JsChannel implements Channel {
     return streamController.stream;
   }
 
-  /// sends the [WorkerResponse] to the worker client
-  /// this method must be called from the [web.Worker] only
+  /// Sends the [WorkerResponse] to the worker client.
+  /// This method must be called from the [web.Worker] only.
   @override
   void reply(WorkerResponse response) {
     final message = response.serialize();
@@ -104,8 +100,8 @@ class JsChannel implements Channel {
   }
 }
 
-/// [Channel] used to communicate between [web.Worker]s
-/// creates a [web.MessageChannel] to receive commands on [port2] and forwards them to the worker's [web.MessagePort] via [port1]
+/// [Channel] used to communicate between [web.Worker]s.
+/// Creates a [web.MessageChannel] to receive commands on [port2] and forwards them to the worker's [web.MessagePort] via [port1].
 class _JsForwardChannel extends JsChannel {
   /// [remote] is the worker's [web.MessagePort]
   _JsForwardChannel(web.MessagePort remote) {
@@ -114,13 +110,13 @@ class _JsForwardChannel extends JsChannel {
     _sendPort = _com.port2;
   }
 
-  /// [web.MessagePort] to the worker
+  /// [web.MessagePort] to the worker.
   web.MessagePort? _remote;
 
-  /// [web.MessageChannel] used for forwarding messages
+  /// [web.MessageChannel] used for forwarding messages.
   final _com = web.MessageChannel();
 
-  /// forwards [web.MessageEvent.data] to the worker
+  /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
     try {
       final transfer = _getTransferables(e.data).toList();
@@ -130,7 +126,7 @@ class _JsForwardChannel extends JsChannel {
     }
   }
 
-  /// closes this [Channel], effectively stopping message forwarding
+  /// Closes this [Channel], effectively stopping message forwarding.
   @override
   void close() {
     _remote = null;
@@ -138,17 +134,17 @@ class _JsForwardChannel extends JsChannel {
   }
 }
 
-/// checks if [value] is a base type value or an object
+/// Checks if [value] is a base type value or an object.
 bool _isObject(dynamic value) =>
     value != null && value is! num && value is! bool && value is! String;
 
-/// excludes base type values from [list]
+/// Excludes base type values from [list].
 Iterable<Object> _getObjects(Iterable list) =>
     list.where(_isObject).cast<Object>();
 
-/// yields objects contained in JSON object [args] (a Map, a List, or a base type)
-/// used to identify non-base type objects and provide them to [web.Worker.postMessage]
-/// [web.Worker.postMessage] will clone these objects -- essentially [web.MessagePort]s
+/// Yields objects contained in JSON object [args] (a Map, a List, or a base type).
+/// Used to identify non-base type objects and provide them to [web.Worker.postMessage].
+/// [web.Worker.postMessage] will clone these objects -- essentially [web.MessagePort]s.
 Iterable<Object> _getTransferables(dynamic args) sync* {
   if (_isObject(args)) {
     if (args is Map) args = args.values;
@@ -175,8 +171,8 @@ Iterable<Object> _getTransferables(dynamic args) sync* {
   }
 }
 
-/// starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]
-/// the future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [JsChannel.connect]
+/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
+/// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [JsChannel.connect].
 Future<Channel> _openChannel(dynamic entryPoint, List startArguments) {
   final channel = JsChannel();
   final completer = Completer<Channel>();
@@ -184,6 +180,12 @@ Future<Channel> _openChannel(dynamic entryPoint, List startArguments) {
   final message = WorkerRequest.start(com.port2, startArguments).serialize();
   final transfer = _getTransferables(message).toList();
   final worker = web.Worker(entryPoint);
+  worker.onError.listen((event) {
+    com.port1.close();
+    completer.completeError(WorkerException(
+        'Failed to open channel for $entryPoint',
+        stackTrace: StackTrace.current.toString()));
+  });
   worker.postMessage(message, transfer);
   com.port1.onMessage.listen((event) {
     com.port1.close();
@@ -193,8 +195,8 @@ Future<Channel> _openChannel(dynamic entryPoint, List startArguments) {
   return completer.future;
 }
 
-/// creates a [JsChannel] from a [web.MessagePort]
-/// to be used in the [web.Worker] when the [WorkerRequest] includes a [Channel]
+/// Creates a [JsChannel] from a [web.MessagePort].
+/// To be used in the [web.Worker] when the [WorkerRequest] includes a [Channel].
 Channel? _deserializeChannel(dynamic channelInfo) {
   if (channelInfo == null) return null;
   final channel = JsChannel();
@@ -202,7 +204,7 @@ Channel? _deserializeChannel(dynamic channelInfo) {
   return channel;
 }
 
-/// stub implementations
+/// Stub implementations
 Future<Channel> Function(dynamic entryPoint, List startArguments)
     get openChannel => _openChannel;
 

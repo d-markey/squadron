@@ -1,3 +1,8 @@
+## 2.0.2
+
+- Single test code base for both platforms.
+- Retaining attempts based on manually operating a browser to run tests in /web (different test code base) and /test/browser-tests (same test code base)
+
 ## 2.0.1
 
 - Remove dependency on js package.

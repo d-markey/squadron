@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:squadron/squadron.dart';
 
-import '../worker_services/cache_service.dart';
+import '../../test/worker_services/sample_service.dart';
 
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;
@@ -22,6 +22,6 @@ void main() {
     final startRequest = WorkerRequest.deserialize(e.data);
     assert(startRequest.connect == true);
     Worker.connect(startRequest.client, com.port2,
-        operations: operations, serviceOperations: CacheService().operations);
+        operations: operations, serviceOperations: SampleService().operations);
   });
 }

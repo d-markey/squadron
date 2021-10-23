@@ -4,9 +4,7 @@ import 'package:squadron/squadron.dart';
 
 import '../worker_services/cache_service.dart';
 
-CacheWorker createVmCacheWorker() => CacheWorker(_main);
-
-void _main(Map command) {
+void start(Map command) {
   final operations = <int, CommandHandler>{};
 
   final workerPort = ReceivePort();

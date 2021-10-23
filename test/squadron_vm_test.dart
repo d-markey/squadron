@@ -1,13 +1,14 @@
 @TestOn('vm')
 
 import 'dart:io';
+
 import 'package:test/test.dart';
 
-import 'squadron_vm_worker_pool_test.dart';
-import 'squadron_vm_worker_test.dart';
+import 'squadron_worker_pool_test_suite.dart';
+import 'squadron_worker_test_suite.dart';
 
 void main() {
-  print('Running tests on ${Platform.operatingSystem}...');
+  print('Running vm tests on ${Platform.operatingSystemVersion}...');
 
   group("Worker", () {
     workerTests();

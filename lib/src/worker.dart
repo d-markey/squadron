@@ -11,71 +11,70 @@ typedef CommandHandler = FutureOr Function(WorkerRequest req);
 /// Base worker class.
 ///
 /// This base class takes care of creating the [Channel] and firing up the worker.
-///
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
 abstract class Worker {
-  /// Creates a [Worker] with the specified entrypoint
+  /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint, {String? id, this.args = const []}) {
     this.id = id ?? hashCode.toString();
   }
 
-  /// The [Worker]'s entry point
-  /// Typically, a top-level function in native world or a JavaScript script Uri in browser world
+  /// The [Worker]'s entry point.
+  /// Typically, a top-level function in native world or a JavaScript script Uri in browser world.
   final dynamic _entryPoint;
 
-  /// The [Worker]'s start arguments
+  /// The [Worker]'s start arguments.
   final List args;
 
-  /// The [Worker] id
+  /// The [Worker] id.
   late final String id;
 
-  /// Start timestamp (in microseconds since Epoch)
+  /// Start timestamp (in microseconds since Epoch).
   DateTime? get started => (_started == null)
       ? null
       : DateTime.fromMicrosecondsSinceEpoch(_started!);
   int? _started;
 
-  /// Idle timestamp (in microseconds since Epoch)
+  /// Idle timestamp (in microseconds since Epoch).
   int? _idle;
 
-  /// Stopped timestamp (in microseconds since Epoch)
+  /// Stopped timestamp (in microseconds since Epoch).
   DateTime? get stopped => (_stopped == null)
       ? null
       : DateTime.fromMicrosecondsSinceEpoch(_stopped!);
   int? _stopped;
 
-  /// Current workload
+  /// Current workload.
   int get workload => _workload;
   int _workload = 0;
 
-  /// Maximum acceptable workload
+  /// Maximum acceptable workload.
   int get maxWorkload => _maxWorkload;
   int _maxWorkload = 0;
 
-  /// Total processed workload
+  /// Total processed workload.
   int get totalWorkload => _totalWorkload;
   int _totalWorkload = 0;
 
-  /// Total errors
+  /// Total errors.
   int get totalErrors => _totalErrors;
   int _totalErrors = 0;
 
-  /// Up time
+  /// Up time.
   Duration get upTime => (_started == null)
       ? Duration.zero
       : Duration(
           microseconds:
               (_stopped ?? DateTime.now().microsecondsSinceEpoch) - _started!);
 
-  /// Idle time
+  /// Idle time.
   Duration get idleTime => (_workload > 0 || _idle == null)
       ? Duration.zero
       : Duration(microseconds: DateTime.now().microsecondsSinceEpoch - _idle!);
 
-  /// Indicates if the [Worker] has been stopped
+  /// Indicates if the [Worker] has been stopped.
   bool get isStopped => _stopped != null;
 
-  /// [Worker] status
+  /// [Worker] status.
   String get status {
     if (isStopped) {
       return 'STOPPED';
@@ -86,16 +85,16 @@ abstract class Worker {
     }
   }
 
-  /// [Worker] statistics
+  /// [Worker] statistics.
   WorkerStat get stats => WorkerStat(runtimeType, id, isStopped, status,
       workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);
 
-  /// [Channel] to communicate with the worker
+  /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
   Future? _starting;
 
-  /// Sends a workload to the worker
+  /// Sends a workload to the worker.
   Future<T> send<T>(int command, [List args = const []]) async {
     try {
       // update stats
@@ -128,7 +127,7 @@ abstract class Worker {
     }
   }
 
-  /// Sends a streaming workload to the worker
+  /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command, [List args = const []]) async* {
     try {
       // update stats
@@ -191,15 +190,15 @@ abstract class Worker {
   }
 
   /// Called by the platform worker upon startup, in response to a start [WorkerRequest].
-  /// [channelInfo] is an opaque object sent back from the platform worker to the Squadron [Worker] and used to communicate with the platform worker.
-  /// Typically, [channelInfo] would be a [SendPort] (native) or a [MessagePort] (browser).
-  /// [operations] and [serviceOperations] are optional maps of command ids to command methods.
-  /// The idea is to provide the actual map of supported commands in [serviceOperations] and an empty map in [operations].
-  /// [operations] will be populated with entries from [serviceOperations].
-  /// If [operations] is not empty, it should mean that [connect] has already been called.
-  /// [operations] make it easier to implement the [Worker]'s message handler.
-  /// See also [process].
-  static void connect(Channel? client, Object incoming,
+  /// [channelInfo] is an opaque object sent back from the platform worker to the Squadron [Worker]
+  /// and used to communicate with the platform worker. Typically, [channelInfo] would be a [SendPort]
+  /// (native) or a [MessagePort] (browser). [operations] and [serviceOperations] are optional maps of
+  /// command ids to command methods. The idea is to provide the actual map of supported commands in
+  /// [serviceOperations] and an empty map in [operations]. [operations] will be populated with entries
+  /// from [serviceOperations]. If [operations] is not empty, it should mean that [connect] has already
+  /// been called.   /// [operations] make it easier to implement the [Worker]'s message handler. See
+  /// also [process].
+  static void connect(Channel? client, Object channelInfo,
       {Map<int, CommandHandler>? operations,
       Map<int, CommandHandler>? serviceOperations}) {
     if (client == null) {
@@ -212,7 +211,7 @@ abstract class Worker {
             'Already connected', StackTrace.current.toString()));
         return;
       }
-      client.connect(incoming);
+      client.connect(channelInfo);
       operations?.addAll(serviceOperations ?? {});
     } on WorkerException catch (e) {
       client.reply(WorkerResponse.withError(e.message, e.stackTrace));
@@ -222,7 +221,7 @@ abstract class Worker {
   }
 
   /// Generic [WorkerRequest] handler based on a map of command ids/command methods.
-  /// [operations] contains the map of commands used to
+  /// [operations] contains a map of command handlers indexed by command ID.
   static void process(
       Map<int, CommandHandler> operations, WorkerRequest request) async {
     // start and termination requests must be handled beforehand

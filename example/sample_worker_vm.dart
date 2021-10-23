@@ -4,9 +4,7 @@ import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
 
-SampleWorker createVmSampleWorker() => SampleWorker(_main);
-
-void _main(Map command) {
+void start(Map command) {
   final operations = <int, CommandHandler>{};
 
   final workerPort = ReceivePort();

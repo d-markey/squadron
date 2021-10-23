@@ -134,8 +134,8 @@ Using a `WorkerPool`, you are now able to distribute your workloads:
     await pool.start();
 
     var n = 42;
-    var cpuResult = await pool.compute((w) => w.cpu(n));
-    var ioResult = await pool.compute((w) => w.io(n));
+    var cpuResult = await pool.compute((w) => w.cpu(milliseconds: n));
+    var ioResult = await pool.compute((w) => w.io(milliseconds: n));
 ```
 
 ## Remarks on Isolates / Web Workers
@@ -225,7 +225,7 @@ class CacheService implements Cache {
 
   @override
   void set(dynamic key, dynamic value, {Duration? timeToLive}) {
-    // cache the value with the specified key
+    // cache the value with the specified key and TTL
   }
 
   @override
@@ -361,13 +361,13 @@ class OtherWorker extends Worker implements OtherService {
 }
 ```
 
-The platform worker assembles everything. It is essentially the same as above, with some extra initialization
-code to create a `CacheClient`.
+The platform worker assembles everything. It is essentially the same as above, with some extra initialization code
+to set up a `CacheClient`.
 
-To create this `CacheClient` inside the platform worker, the `CacheWorker`'s `Channel` must be somehow passed to
-the `OtherWorker` upon construction. This is done using the `share()` and the `serialize()` methods provided by
-`Channel`. These methods will return an opaque object that can be safely sent across workers and deserialized to
-recreate a `Channel`, thereby bridging the gap between the `OtherService` and the `CacheService`.
+To create a `CacheClient` from within the platform worker, the `CacheWorker`'s `Channel` must be somehow passed to
+the `OtherWorker`. This is done using the `share()` and the `serialize()` methods provided by `Channel`. These
+methods will return an opaque object that can be safely sent across workers and deserialized to recreate a
+`Channel`, thereby bridging the gap between the `OtherService` instances and the `CacheService` Singleton.
 
 ```dart
 OtherWorker createOtherWorker([CacheWorker? cache]) =>
@@ -428,8 +428,8 @@ Architecture Diagram
                               +----|                            |
                                    |      +----------------+    |
                                    +----> | otherWorker #2 |    |
-                                          | -------------- | ---+
-                                          | cacheClient #2 |
+                                          | -------------- |    |
+                                          | cacheClient #2 | ---+
                                           +----------------+
 
 1: the main program first spawns a CacheWorker

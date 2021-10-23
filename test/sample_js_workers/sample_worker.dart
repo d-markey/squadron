@@ -4,8 +4,6 @@ import 'package:squadron/squadron.dart';
 
 import '../worker_services/sample_service.dart';
 
-SampleWorker createJsSampleWorker() => SampleWorker('sample_worker.dart.js');
-
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;
   final operations = <int, CommandHandler>{};

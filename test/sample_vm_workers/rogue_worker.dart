@@ -4,9 +4,7 @@ import 'package:squadron/squadron.dart';
 
 import '../worker_services/rogue_service.dart';
 
-RogueWorker createVmRogueWorker() => RogueWorker(_main);
-
-void _main(Map command) {
+void start(Map command) {
   final operations = <int, CommandHandler>{};
 
   final workerPort = ReceivePort();

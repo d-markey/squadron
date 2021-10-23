@@ -13,9 +13,7 @@ class WorkerPool<W extends Worker> {
   /// Create a worker pool.
   ///
   /// Workers are instantiated using the provided [_workerFactory].
-  ///
   /// The pool will only instantiate workers as needed, up to [maxWorkers].
-  ///
   /// The [maxParallel] setting controls how many workloads are distributed
   /// to workers in parallel.
   WorkerPool(this._workerFactory,
@@ -27,41 +25,41 @@ class WorkerPool<W extends Worker> {
 
   final W Function() _workerFactory;
 
-  /// Minimum number of live workers
+  /// Minimum number of live workers.
   final int minWorkers;
 
-  /// Maximum number of live workers
+  /// Maximum number of live workers.
   final int maxWorkers;
 
-  /// Maximum work items delivered to workers in parallel
+  /// Maximum work items delivered to workers in parallel.
   final int maxParallel;
 
   final _workers = <W>[];
 
-  /// Current workload
+  /// Current workload.
   int get workload => _workers.fold<int>(0, (p, w) => p + w.stats.workload);
 
   final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
 
-  /// Maximum workload
+  /// Maximum workload.
   int get maxWorkload => math.max(
       _deadWorkerStats.fold<int>(0, (p, s) => math.max(p, s.maxWorkload)),
       _workers.fold<int>(0, (p, w) => math.max(p, w.stats.maxWorkload)));
 
-  /// Total workload
+  /// Total workload.
   int get totalWorkload =>
       _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalWorkload) +
       _workers.fold<int>(0, (p, w) => p + w.stats.totalWorkload);
 
-  /// Number of errors
+  /// Number of errors.
   int get totalErrors =>
       _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalErrors) +
       _workers.fold<int>(0, (p, w) => p + w.stats.totalErrors);
 
-  /// Number of workers
+  /// Number of workers.
   int get size => _workers.length;
 
-  /// Maximum number of workers
+  /// Maximum number of workers.
   int get maxSize => _maxSize;
   int _maxSize = 0;
 
@@ -90,7 +88,7 @@ class WorkerPool<W extends Worker> {
 
   /// Stop workers matching the [predicate].
   /// If [predicate] is null or not provided, all workers will be stopped.
-  /// Returns the number of workers that have been stopped
+  /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
     Iterable<W> targets = _workers;
     var force = true;
@@ -132,14 +130,14 @@ class WorkerPool<W extends Worker> {
     return workerTask.stream as Stream<T>;
   }
 
-  /// The main scheduler
+  /// The main scheduler.
   ///
   /// Steps:
-  /// 1. remove stopped workers
+  /// 1. remove stopped workers.
   /// 2. if the task queue is not empty:
-  ///    1. instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks)
-  ///    2. sort workers by ascending [Worker.workload]
-  ///    3. distribute tasks to workers having [Worker.workload] < [maxParallel]
+  ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).
+  ///    (b) sort workers by ascending [Worker.workload].
+  ///    (c) distribute tasks to workers having [Worker.workload] < [maxParallel].
   void _schedule() {
     _workers.removeWhere((w) => w.isStopped);
     if (_queue.isNotEmpty) {
@@ -164,10 +162,10 @@ class WorkerPool<W extends Worker> {
     }
   }
 
-  /// Worker statistics
+  /// Worker statistics.
   Iterable<WorkerStat> get stats => _workers.map((w) => w.stats);
 
-  /// Full worker statistics
+  /// Full worker statistics.
   Iterable<WorkerStat> get fullStats =>
       _deadWorkerStats.followedBy(_workers.map((w) => w.stats));
 }

@@ -5,10 +5,7 @@ import 'package:squadron/squadron.dart';
 import '../worker_services/cache_service.dart';
 import '../worker_services/prime_service.dart';
 
-PrimeWorker createVmPrimeWorker([CacheWorker? cache]) =>
-    PrimeWorker(_main, args: [cache?.channel?.share().serialize()]);
-
-void _main(Map command) {
+void start(Map command) {
   final operations = <int, CommandHandler>{};
 
   final workerPort = ReceivePort();

@@ -22,7 +22,7 @@ class SampleService implements WorkerService {
   Future io({required int milliseconds}) =>
       Future.delayed(Duration(milliseconds: milliseconds));
 
-  FutureOr cpu({required int milliseconds}) {
+  void cpu({required int milliseconds}) {
     final sw = Stopwatch()..start();
     while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
   }
@@ -31,8 +31,8 @@ class SampleService implements WorkerService {
   static const cpuCommand = 2;
 
   @override
-  Map<int, CommandHandler> get operations => {
-        SampleService.ioCommand: (r) => io(milliseconds: r.args[0]),
-        SampleService.cpuCommand: (r) => cpu(milliseconds: r.args[0]),
-      };
+  late final Map<int, CommandHandler> operations = {
+    SampleService.ioCommand: (r) => io(milliseconds: r.args[0]),
+    SampleService.cpuCommand: (r) => cpu(milliseconds: r.args[0]),
+  };
 }

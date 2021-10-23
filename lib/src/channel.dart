@@ -7,43 +7,44 @@ import 'channel_stub.dart'
     if (dart.library.html) 'browser/channel.dart'
     if (dart.library.io) 'native/channel.dart';
 
+/// [Channel]s enable communication between workers and clients.
 abstract class Channel {
-  /// [Channel] serialization
-  /// return an opaque object that can be transfered from the client to the worker
+  /// [Channel] serialization.
+  /// Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
 
-  /// [Channel] sharing
-  /// return a [Channel] that can be provided to enable another worker to call the channel's worker
+  /// [Channel] sharing.
+  /// Returns a [Channel] object that can be provided to enable another worker to call the channel's worker.
   Channel share();
 
-  /// connects the [Channel] with the Squadron [Worker]
-  /// [channelInfo] is an opaque object than can be deserialized as a [Channel]
-  /// this method must be called by the worker upon startup
+  /// Connects the [Channel] with the Squadron [Worker].
+  /// [channelInfo] is an opaque object than can be deserialized as a [Channel].
+  /// This method must be called by the worker upon startup.
   void connect(Object channelInfo);
 
-  /// sends a termination [WorkerRequest] to the worker
-  /// the [Channel] should release any resource related to the worker and should not be useable after calling this method
+  /// Sends a termination [WorkerRequest] to the worker.
+  /// The [Channel] should release any resource related to the worker and should not be used after this method has been called.
   FutureOr close();
 
-  /// creates a [WorkerRequest] and sends it to the worker
-  /// this method expects a single value from the worker
+  /// Creates a [WorkerRequest] and sends it to the worker.
+  /// This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args);
 
-  /// creates a [WorkerRequest] and sends it to the worker
-  /// this method expects a stream of values from the worker
-  /// the worker must send a [WorkerResponse.endOfStream] to close the [Stream]
+  /// Creates a [WorkerRequest] and sends it to the worker.
+  /// This method expects a stream of values from the worker.
+  /// The worker must send a [WorkerResponse.endOfStream] to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args);
 
-  /// sends the [WorkerResponse] to the worker client
-  /// this method must be called from the worker only
+  /// Sends the [WorkerResponse] to the worker client.
+  /// This method must be called from the worker only.
   void reply(WorkerResponse data);
 
-  /// starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]
-  /// the future must not complete before the worker is ready to serve requests
+  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
+  /// The future must not complete before the worker is ready to serve requests.
   static Future<Channel> open(dynamic entryPoint, List startArguments) =>
       openChannel(entryPoint, startArguments);
 
-  /// deserializes a [Channel] from an opaque [channelInfo]
+  /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(dynamic channelInfo) =>
       deserializeChannel(channelInfo);
 }

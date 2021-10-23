@@ -1,4 +1,5 @@
 import 'channel.dart';
+import 'worker.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker].
 /// Typically a [WorkerRequest] consists of a command ID and a list of arguments.
@@ -34,7 +35,6 @@ class WorkerRequest {
         connect = false,
         terminate = true;
 
-  /// Map keys for serialization
   static const _$client = 'a';
   static const _$command = 'b';
   static const _$args = 'c';
@@ -49,31 +49,31 @@ class WorkerRequest {
         connect = message[_$connect] ?? false,
         terminate = message[_$terminate] ?? false;
 
-  /// The client
+  /// The client's [Channel].
   final Channel? client;
 
-  /// The [command]'s ID
+  /// The [command]'s ID.
   final int? command;
 
-  /// The command's arguments, if any
+  /// The command's arguments, if any.
   final List args;
 
-  /// flag for start requests
+  /// flag for start requests.
   final bool connect;
 
-  /// flag for termination requests
+  /// flag for termination requests.
   final bool terminate;
 
   @override
   String toString() =>
       'client = $client, command = $command, args = $args, connect = $connect, terminate = $terminate';
 
-  /// [WorkerRequest] serialization
+  /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
     if (terminate) {
       return {_$terminate: true};
     } else if (connect) {
-      return {_$client: client?.serialize(), _$args: args, _$connect: true};
+      return {_$client: client?.serialize(), _$connect: true, _$args: args};
     } else {
       return {_$client: client?.serialize(), _$command: command, _$args: args};
     }

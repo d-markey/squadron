@@ -113,14 +113,14 @@ class CacheService implements Cache, WorkerService {
   static const statsOperation = 4;
 
   @override
-  Map<int, CommandHandler> get operations => {
-        getOperation: (r) => get(r.args[0]),
-        containsOperation: (r) => containsKey(r.args[0]),
-        setOperation: (r) => set(r.args[0], r.args[1],
-            timeToLive:
-                (r.args[2] == null) ? null : Duration(microseconds: r.args[2])),
-        statsOperation: (r) => getStats().serialize()
-      };
+  late final Map<int, CommandHandler> operations = {
+    getOperation: (r) => get(r.args[0]),
+    containsOperation: (r) => containsKey(r.args[0]),
+    setOperation: (r) => set(r.args[0], r.args[1],
+        timeToLive:
+            (r.args[2] == null) ? null : Duration(microseconds: r.args[2])),
+    statsOperation: (r) => getStats().serialize()
+  };
 }
 
 class _CacheEntry {

@@ -26,8 +26,8 @@ class RogueService implements WorkerService {
   static const exception = 2;
 
   @override
-  Map<int, CommandHandler> get operations => {
-        RogueService.workerException: (r) => throwWorkerException(),
-        RogueService.exception: (r) => throwException(),
-      };
+  late final Map<int, CommandHandler> operations = {
+    RogueService.workerException: (r) => throwWorkerException(),
+    RogueService.exception: (r) => throwException(),
+  };
 }

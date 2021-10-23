@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
-import 'sample_worker_vm.dart';
+import 'sample_worker_vm.dart' as sample_isolate;
 import 'worker_monitor.dart';
 
 void main() async {
@@ -52,7 +52,7 @@ void main() async {
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    pool = WorkerPool(() => createVmSampleWorker(),
+    pool = WorkerPool(() => SampleWorker(sample_isolate.start),
         minWorkers: minWorkers,
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);

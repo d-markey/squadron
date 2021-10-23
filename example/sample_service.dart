@@ -33,8 +33,8 @@ class SampleService implements WorkerService {
 
   // map of command ids to command handlers
   @override
-  Map<int, CommandHandler> get operations => {
-        ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
-        cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),
-      };
+  late final Map<int, CommandHandler> operations = {
+    ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
+    cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),
+  };
 }

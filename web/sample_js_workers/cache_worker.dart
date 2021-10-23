@@ -2,9 +2,7 @@ import 'dart:html';
 
 import 'package:squadron/squadron.dart';
 
-import '../test/worker_services/cache_service.dart';
-
-CacheWorker createJsCacheWorker() => CacheWorker('cache_worker_js.dart.js');
+import '../../test/worker_services/cache_service.dart';
 
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;

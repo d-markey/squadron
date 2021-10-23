@@ -6,7 +6,7 @@ import '../worker_services/cache_service.dart';
 import '../worker_services/prime_service.dart';
 
 PrimeWorker createJsPrimeWorker([CacheWorker? cache]) =>
-    PrimeWorker('prime_worker.dart.js',
+    PrimeWorker('sample_js_workers/prime_worker.dart.js',
         args: [cache?.channel?.share().serialize()]);
 
 void main() {

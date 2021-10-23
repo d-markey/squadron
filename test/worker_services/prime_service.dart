@@ -51,10 +51,10 @@ class PrimeService implements WorkerService {
   static const getPrimesCommand = 2;
 
   @override
-  Map<int, CommandHandler> get operations => {
-        PrimeService.isPrimeCommand: (r) => isPrime(r.args[0]),
-        PrimeService.getPrimesCommand: (r) => getPrimes(r.args[0], r.args[1]),
-      };
+  late final Map<int, CommandHandler> operations = {
+    PrimeService.isPrimeCommand: (r) => isPrime(r.args[0]),
+    PrimeService.getPrimesCommand: (r) => getPrimes(r.args[0], r.args[1]),
+  };
 
   static Iterable<int> _getPrimeCandidates(int min, int max) sync* {
     bool _inRange(int p) => (min <= p && p <= max);
