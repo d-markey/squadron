@@ -19,7 +19,8 @@ class BitcoinWorker extends Worker implements BitcoinService {
 
 class BitcoinService implements WorkerService {
   Future<double?> getRate(String currency) async {
-    final currentPrice = jsonDecode(await http.read(Uri.parse('https://api.coindesk.com/v1/bpi/currentprice.json')));
+    final currentPrice = jsonDecode(await http
+        .read(Uri.parse('https://api.coindesk.com/v1/bpi/currentprice.json')));
     return currentPrice?['bpi']?[currency]?['rate_float'];
   }
 

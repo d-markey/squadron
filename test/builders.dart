@@ -7,6 +7,7 @@ import 'worker_services/builders_stub.dart'
 
 final _workerBuilders = workerBuilders;
 
-void setWorker<T extends Worker>(T Function([dynamic arg]) value) => _workerBuilders[T] = value;
+void setWorker<T extends Worker>(T Function([dynamic arg]) value) =>
+    _workerBuilders[T] = value;
 
 T getWorker<T extends Worker>([dynamic arg]) => _workerBuilders[T]!(arg) as T;

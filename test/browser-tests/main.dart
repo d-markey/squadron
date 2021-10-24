@@ -26,8 +26,8 @@ void main() async {
   setWorker<PrimeWorker>(([dynamic arg]) => PrimeWorker(
       '/sample_js_workers/prime_worker.dart.js',
       args: [(arg as CacheWorker?)?.channel?.share().serialize()]));
-  setWorker<RogueWorker>(([dynamic arg]) =>
-      RogueWorker('sample_js_workers/rogue_worker.dart.js'));
+  setWorker<RogueWorker>(
+      ([dynamic arg]) => RogueWorker('sample_js_workers/rogue_worker.dart.js'));
   setWorker<SampleWorker>(([dynamic arg]) =>
       SampleWorker('sample_js_workers/sample_worker.dart.js'));
 
