@@ -1,5 +1,7 @@
 import 'package:squadron/squadron.dart';
 
+import '../worker_services/bitcoin_service.dart';
+import 'bitcoin_worker.dart' as bitcoin_isolate;
 import 'cache_worker.dart' as cache_isolate;
 import 'prime_worker.dart' as prime_isolate;
 import 'rogue_worker.dart' as rogue_isolate;
@@ -10,6 +12,7 @@ import '../worker_services/rogue_service.dart';
 import '../worker_services/sample_service.dart';
 
 Map<Type, Worker Function([dynamic arg])> get workerBuilders => {
+      BitcoinWorker: ([dynamic arg]) => BitcoinWorker(bitcoin_isolate.start),
       CacheWorker: ([dynamic arg]) => CacheWorker(cache_isolate.start),
       PrimeWorker: ([dynamic arg]) => PrimeWorker(prime_isolate.start,
           args: [(arg as CacheWorker?)?.channel?.share().serialize()]),

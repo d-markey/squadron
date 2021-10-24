@@ -8,6 +8,7 @@ import 'package:test/test.dart';
 import 'builders.dart';
 
 import 'prime_numbers.dart';
+import 'worker_services/bitcoin_service.dart';
 import 'worker_services/cache_service.dart';
 import 'worker_services/prime_service.dart';
 import 'worker_services/rogue_service.dart';
@@ -400,5 +401,32 @@ void workerTests() {
     expect(rogue.stats.totalErrors, equals(2));
 
     rogue.stop();
+  });
+
+  test('bitcoin service', () async {
+    final bitcoin = getWorker<BitcoinWorker>();
+
+    final eur = await bitcoin.getRate('EUR');
+    expect(eur, isNotNull);
+    expect(eur, isA<double>());
+    expect(eur, isPositive);
+
+    final gbp = await bitcoin.getRate('GBP');
+    expect(gbp, isNotNull);
+    expect(gbp, isA<double>());
+    expect(gbp, isPositive);
+
+    final usd = await bitcoin.getRate('USD');
+    expect(usd, isNotNull);
+    expect(usd, isA<double>());
+    expect(usd, isPositive);
+
+    expect(eur!, greaterThan(gbp!));
+    expect(eur, lessThan(usd!));
+
+    final rub = await bitcoin.getRate('RUB');
+    expect(rub, isNull);
+
+    bitcoin.stop();
   });
 }
