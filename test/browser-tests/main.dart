@@ -4,14 +4,11 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
-import '../builders.dart';
-import '../squadron_worker_pool_test_suite.dart';
-import '../squadron_worker_test_suite.dart';
+import '../web_worker_test_suite.dart';
+import '../worker_entry_points.dart';
+import '../worker_pool_test_suite.dart';
+import '../worker_test_suite.dart';
 
-import '../worker_services/cache_service.dart';
-import '../worker_services/prime_service.dart';
-import '../worker_services/rogue_service.dart';
-import '../worker_services/sample_service.dart';
 import 'logger.dart';
 
 @JS()
@@ -21,15 +18,13 @@ external get dartPrint;
 external set dartPrint(value);
 
 void main() async {
-  setWorker<CacheWorker>(([dynamic arg]) =>
-      CacheWorker('/sample_js_workers/cache_worker.dart.js'));
-  setWorker<PrimeWorker>(([dynamic arg]) => PrimeWorker(
-      '/sample_js_workers/prime_worker.dart.js',
-      args: [(arg as CacheWorker?)?.channel?.share().serialize()]));
-  setWorker<RogueWorker>(
-      ([dynamic arg]) => RogueWorker('sample_js_workers/rogue_worker.dart.js'));
-  setWorker<SampleWorker>(([dynamic arg]) =>
-      SampleWorker('sample_js_workers/sample_worker.dart.js'));
+  setEntryPoint('cache', '/sample_js_workers/cache_worker.dart.js');
+  setEntryPoint('bitcoin', '/sample_js_workers/bitcoin_worker.dart.js');
+  setEntryPoint('prime', '/sample_js_workers/prime_worker.dart.js');
+  setEntryPoint('pi_digits', '/sample_js_workers/pi_digits_worker.dart.js');
+  setEntryPoint('rogue', '/sample_js_workers/rogue_worker.dart.js');
+  setEntryPoint('sample', '/sample_js_workers/sample_worker.dart.js');
+  setEntryPoint('echo', '/sample_js_workers/echo_worker.dart.js');
 
   final logger = Logger(querySelector('#output') as DivElement);
 
@@ -58,15 +53,21 @@ void main() async {
   runButton.onClick.listen((MouseEvent m) {
     runButton.disabled = true;
     try {
+      webWorkerTests();
+    } catch (e) {
+      logger.log('Classic Web Worker tests failed with exception: $e');
+    }
+
+    try {
       workerTests();
     } catch (e) {
-      logger.log('Worker tests failed with exception: $e');
+      logger.log('Squadron Worker tests failed with exception: $e');
     }
 
     try {
       poolTests();
     } catch (e) {
-      logger.log('Pool tests failed with exception: $e');
+      logger.log('Squadron Worker Pool tests failed with exception: $e');
     }
     runButton.disabled = false;
   });

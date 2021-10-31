@@ -15,7 +15,7 @@ Import squadron from your `pubspec.yaml` file:
 
 ```
 dependencies:
-   squadron: ^2.0.0
+   squadron: ^2.0.2
 ```
 
 ## Usage

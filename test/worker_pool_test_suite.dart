@@ -1,13 +1,13 @@
-@TestOn('vm')
-
 import 'dart:async';
+import 'dart:math';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import 'builders.dart';
+import 'worker_entry_points.dart';
 
 import 'worker_services/cache_service.dart';
+import 'worker_services/pi_digits_service.dart';
 import 'worker_services/prime_service.dart';
 import 'worker_services/rogue_service.dart';
 import 'worker_services/sample_service.dart';
@@ -17,14 +17,17 @@ void poolTests() {
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('prime worker pool with cache', () async {
-    final cache = getWorker<CacheWorker>();
+    final cache = CacheWorker(getEntryPoint('cache'));
     await cache.start();
 
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    final pool = WorkerPool(() => getWorker<PrimeWorker>(),
-        maxWorkers: maxWorkers, maxParallel: maxParallel);
+    final pool = WorkerPool(
+        () => PrimeWorker(getEntryPoint('prime'),
+            args: [cache.channel?.share().serialize()]),
+        maxWorkers: maxWorkers,
+        maxParallel: maxParallel);
 
     final completedTasks = <int>[];
     final completedComputes = <int>[];
@@ -62,7 +65,7 @@ void poolTests() {
     final maxWorkers = 11;
     final maxParallel = 2;
 
-    final pool = WorkerPool(() => getWorker<SampleWorker>(),
+    final pool = WorkerPool(() => SampleWorker(getEntryPoint('sample')),
         minWorkers: minWorkers,
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);
@@ -107,8 +110,10 @@ void poolTests() {
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    final pool = WorkerPool<RogueWorker>(() => getWorker<RogueWorker>(),
-        maxWorkers: maxWorkers, maxParallel: maxParallel);
+    final pool = WorkerPool<RogueWorker>(
+        () => RogueWorker(getEntryPoint('rogue')),
+        maxWorkers: maxWorkers,
+        maxParallel: maxParallel);
     await pool.start();
 
     try {
@@ -142,6 +147,36 @@ void poolTests() {
       expect(false, isTrue);
     }
     expect(pool.stats.fold<int>(0, (p, s) => p + s.totalErrors), equals(2));
+
+    pool.stop();
+  });
+
+  test('pi digits worker pool', () async {
+    final maxWorkers = 8;
+
+    final pool = WorkerPool(() => PiDigitsWorker(getEntryPoint('pi_digits')),
+        maxWorkers: maxWorkers);
+
+    final N = 50;
+    final digits = <int, int>{};
+
+    // start N tasks
+    final tasks = <Future>[];
+    for (var i = 0; i <= N; i++) {
+      tasks.add(
+          pool.compute((w) => w.getNth(i).then((digit) => digits[i] = digit)));
+    }
+
+    await Future.wait(tasks);
+
+    double valueOfPi = 0;
+    double base = 1;
+    for (var i = 0; i <= N; i++) {
+      if (i > 0) base *= 16;
+      valueOfPi += digits[i]! / base;
+    }
+
+    expect(valueOfPi, equals(pi));
 
     pool.stop();
   });

@@ -7,7 +7,18 @@ import 'sample_worker_pool_test_suite.dart';
 import 'logger.dart';
 import 'sample_worker_test_suite.dart';
 
-typedef UnitTest = Future<bool> Function(Logger logger);
+typedef UnitTest = Future<bool> Function(
+    Logger logger, Map<String, String> entryPoints);
+
+Map<String, String> _entryPoints = {
+  'cache': '/sample_js_workers/cache_worker.dart.js',
+  'bitcoin': '/sample_js_workers/bitcoin_worker.dart.js',
+  'prime': '/sample_js_workers/prime_worker.dart.js',
+  'pi_digits': '/sample_js_workers/pi_digits_worker.dart.js',
+  'rogue': '/sample_js_workers/rogue_worker.dart.js',
+  'sample': '/sample_js_workers/sample_worker.dart.js',
+  'echo': '/sample_js_workers/echo_worker.dart.js'
+};
 
 void main() async {
   final logger = Logger(querySelector('#output') as DivElement);
@@ -68,7 +79,7 @@ void main() async {
       log(entry.key);
       var success = false;
       try {
-        success = await entry.value(logger);
+        success = await entry.value(logger, _entryPoints);
       } on TestFailedException catch (e) {
         logger.log('<b><span class="red">TEST FAILED: ${e.message}</span></b>');
       } catch (e) {

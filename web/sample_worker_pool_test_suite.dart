@@ -9,7 +9,8 @@ import 'logger.dart';
 
 final sampleWorkerPoolTests = {'Sample Worker Pool': testSampleWorkerPool};
 
-Future<bool> testSampleWorkerPool(Logger logger) async {
+Future<bool> testSampleWorkerPool(
+    Logger logger, Map<String, String> entryPoints) async {
   final w = SampleService();
 
   const sampleTaskDuration = 500;
@@ -31,7 +32,7 @@ Future<bool> testSampleWorkerPool(Logger logger) async {
       replaceLastLine: true);
 
   final pool = WorkerPool<SampleWorker>(
-      () => SampleWorker('/sample_js_workers/sample_worker.dart.js'),
+      () => SampleWorker(entryPoints['sample']),
       minWorkers: 1,
       maxWorkers: 4,
       maxParallel: 3);

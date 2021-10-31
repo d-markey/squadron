@@ -302,6 +302,14 @@
     Frame_Frame$parseFriendly_closure: function Frame_Frame$parseFriendly_closure(t0) {
       this.frame = t0;
     },
+    PiDigitsWorker: function PiDigitsWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
+    },
     IterableNullableExtension_whereNotNull(_this, $T) {
       return A.IterableNullableExtension_whereNotNull$body(_this, $T, $T);
     },
@@ -643,7 +651,7 @@
     main() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        t1, t2, t3, logger, separator, clearLink, t4, t5, runButton;
+        t2, t3, logger, separator, clearLink, t4, t5, runButton, t1;
       var $async$main = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -651,17 +659,21 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              X.setWorker(new F.main_closure(), type$.CacheWorker);
-              X.setWorker(new F.main_closure0(), type$.PrimeWorker);
-              X.setWorker(new F.main_closure1(), type$.RogueWorker);
-              X.setWorker(new F.main_closure2(), type$.SampleWorker);
+              t1 = $.$get$_entryPoints();
+              t1.$indexSet(0, "cache", "/sample_js_workers/cache_worker.dart.js");
+              t1.$indexSet(0, "bitcoin", "/sample_js_workers/bitcoin_worker.dart.js");
+              t1.$indexSet(0, "prime", "/sample_js_workers/prime_worker.dart.js");
+              t1.$indexSet(0, "pi_digits", "/sample_js_workers/pi_digits_worker.dart.js");
+              t1.$indexSet(0, "rogue", "/sample_js_workers/rogue_worker.dart.js");
+              t1.$indexSet(0, "sample", "/sample_js_workers/sample_worker.dart.js");
+              t1.$indexSet(0, "echo", "/sample_js_workers/echo_worker.dart.js");
               t1 = document;
               t2 = type$.DivElement._as(t1.querySelector("#output"));
               t3 = new P.Stopwatch();
               $.$get$Stopwatch__frequency();
               logger = new F.Logger(t3, t2);
               t3.start$0(0);
-              self.dartPrint = P.allowInterop(new F.main_closure3(logger), type$.void_Function_dynamic);
+              self.dartPrint = P.allowInterop(new F.main_closure(logger), type$.void_Function_dynamic);
               t3 = t1.querySelector("#log-header");
               t3.toString;
               separator = type$.Element._as(W._ElementFactoryProvider_createElement_tag("span", null));
@@ -672,7 +684,7 @@
               clearLink.setAttribute("href", "#");
               t2 = type$._ElementEventStreamImpl_MouseEvent;
               t4 = t2._eval$1("~(1)?");
-              t5 = t4._as(new F.main_closure4(logger));
+              t5 = t4._as(new F.main_closure0(logger));
               type$.nullable_void_Function._as(null);
               t2 = t2._precomputed1;
               W._EventStreamSubscription$(clearLink, "click", t5, false, t2);
@@ -682,7 +694,7 @@
               t1 = t1.createElement("button");
               C.ButtonElement_methods.set$text(t1, "Run all tests");
               runButton = type$.ButtonElement._as(t3.appendChild(t1));
-              W._EventStreamSubscription$(runButton, "click", t4._as(new F.main_closure5(runButton, logger)), false, t2);
+              W._EventStreamSubscription$(runButton, "click", t4._as(new F.main_closure1(runButton, logger)), false, t2);
               logger.log$1("Ready");
               logger.log$1("");
               // implicit return
@@ -691,76 +703,15 @@
       });
       return P._asyncStartSync($async$main, $async$completer);
     },
-    main_closure: function main_closure() {
-    },
-    main_closure0: function main_closure0() {
-    },
-    main_closure1: function main_closure1() {
-    },
-    main_closure2: function main_closure2() {
-    },
-    main_closure3: function main_closure3(t0) {
+    main_closure: function main_closure(t0) {
       this.logger = t0;
     },
-    main_closure4: function main_closure4(t0) {
+    main_closure0: function main_closure0(t0) {
       this.logger = t0;
     },
-    main_closure5: function main_closure5(t0, t1) {
+    main_closure1: function main_closure1(t0, t1) {
       this.runButton = t0;
       this.logger = t1;
-    },
-    poolTests() {
-      N.test("prime worker pool with cache", new F.poolTests_closure());
-      N.test("worker pool monitoring", new F.poolTests_closure0(5));
-      N.test("exception handling from worker pool", new F.poolTests_closure1());
-    },
-    poolTests_closure: function poolTests_closure() {
-    },
-    poolTests__closure7: function poolTests__closure7() {
-    },
-    poolTests__closure8: function poolTests__closure8(t0, t1, t2) {
-      this.i = t0;
-      this.completedTasks = t1;
-      this.id = t2;
-    },
-    poolTests___closure0: function poolTests___closure0(t0, t1) {
-      this.completedTasks = t0;
-      this.id = t1;
-    },
-    poolTests__closure9: function poolTests__closure9(t0, t1) {
-      this.completedComputes = t0;
-      this.id = t1;
-    },
-    poolTests__closure10: function poolTests__closure10(t0) {
-      this.maxParallel = t0;
-    },
-    poolTests_closure0: function poolTests_closure0(t0) {
-      this.timeFactor = t0;
-    },
-    poolTests__closure4: function poolTests__closure4() {
-    },
-    poolTests__closure5: function poolTests__closure5(t0, t1, t2) {
-      this._box_0 = t0;
-      this.pool = t1;
-      this.maxIdle = t2;
-    },
-    poolTests___closure: function poolTests___closure(t0) {
-      this.maxIdle = t0;
-    },
-    poolTests__closure6: function poolTests__closure6(t0) {
-      this.timeFactor = t0;
-    },
-    poolTests_closure1: function poolTests_closure1() {
-    },
-    poolTests__closure: function poolTests__closure() {
-    },
-    poolTests__closure0: function poolTests__closure0() {
-    },
-    poolTests__closure1: function poolTests__closure1() {
-    },
-    poolTests__closure2: function poolTests__closure2() {
-    },
-    poolTests__closure3: function poolTests__closure3() {
     }
   },
   G = {Matcher: function Matcher() {
@@ -1287,7 +1238,7 @@
       this.$ti = t1;
     },
     Symbol: function Symbol(t0) {
-      this.__internal$_name = t0;
+      this._name = t0;
     },
     ConstantMap__throwUnmodifiable() {
       throw H.wrapException(P.UnsupportedError$("Cannot modify unmodifiable Map"));
@@ -2577,7 +2528,7 @@
       return t1.__late_helper$_value = t1;
     },
     _Cell: function _Cell(t0) {
-      this._name = t0;
+      this.__late_helper$_name = t0;
       this.__late_helper$_value = null;
     },
     _ensureNativeList(list) {
@@ -4630,7 +4581,8 @@
     }, DelegatingSet: function DelegatingSet(t0, t1) {
       this._base = t0;
       this.$ti = t1;
-    }, TypeMatcher: function TypeMatcher() {
+    }, TypeMatcher: function TypeMatcher(t0) {
+      this.$ti = t0;
     },
     wrapMatcher(valueOrMatcher) {
       var _s18_ = "satisfies function";
@@ -4826,13 +4778,15 @@
       }, type$.Object);
     },
     _openChannel(entryPoint, startArguments) {
-      var t1 = new P._Future($.Zone__current, type$._Future_Channel),
+      var worker,
+        t1 = new P._Future($.Zone__current, type$._Future_Channel),
         completer = new P._AsyncCompleter(t1, type$._AsyncCompleter_Channel),
         com = new MessageChannel(),
         message = new X.WorkerRequest(N._deserializeChannel(com.port2), null, startArguments, true, false).serialize$0(),
         t2 = N._getTransferables(message),
-        transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E")),
-        worker = new Worker(entryPoint);
+        transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
+      H._asString(entryPoint);
+      worker = new Worker(entryPoint);
       t2 = type$.nullable_void_Function_Event._as(new N._openChannel_closure(com, completer, entryPoint));
       type$.nullable_void_Function._as(null);
       W._EventStreamSubscription$(worker, "error", t2, false, type$.Event);
@@ -4916,6 +4870,17 @@
     },
     _declarer__closure: function _declarer__closure(t0) {
       this.engine = t0;
+    },
+    webWorkerTests() {
+      N.test("classic Web Worker", new N.webWorkerTests_closure());
+    },
+    webWorkerTests_closure: function webWorkerTests_closure() {
+    },
+    webWorkerTests__closure: function webWorkerTests__closure(t0) {
+      this.completer = t0;
+    },
+    webWorkerTests__closure0: function webWorkerTests__closure0(t0) {
+      this.completer = t0;
     }
   },
   O = {DelegatingSink: function DelegatingSink(t0, t1) {
@@ -5178,7 +5143,17 @@
       this._iterable_set$_base = t0;
       this.$ti = t1;
     },
-    _IterableSet_SetMixin_UnmodifiableSetMixin: function _IterableSet_SetMixin_UnmodifiableSetMixin() {
+    _IterableSet_Object_SetMixin: function _IterableSet_Object_SetMixin() {
+    },
+    _IterableSet_Object_SetMixin_UnmodifiableSetMixin: function _IterableSet_Object_SetMixin_UnmodifiableSetMixin() {
+    },
+    BitcoinWorker: function BitcoinWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
     },
     CacheWorker$(entryPoint) {
       var t1 = new O.CacheWorker(entryPoint, C.List_empty0);
@@ -8872,6 +8847,73 @@
     ExpandedReporter__onTestStarted_closure1: function ExpandedReporter__onTestStarted_closure1(t0, t1) {
       this.$this = t0;
       this.liveTest = t1;
+    },
+    poolTests() {
+      N.test("prime worker pool with cache", new R.poolTests_closure());
+      N.test("worker pool monitoring", new R.poolTests_closure0(5));
+      N.test("exception handling from worker pool", new R.poolTests_closure1());
+      N.test("pi digits worker pool", new R.poolTests_closure2());
+    },
+    poolTests_closure: function poolTests_closure() {
+    },
+    poolTests__closure9: function poolTests__closure9(t0) {
+      this.cache = t0;
+    },
+    poolTests__closure10: function poolTests__closure10(t0, t1, t2) {
+      this.i = t0;
+      this.completedTasks = t1;
+      this.id = t2;
+    },
+    poolTests___closure1: function poolTests___closure1(t0, t1) {
+      this.completedTasks = t0;
+      this.id = t1;
+    },
+    poolTests__closure11: function poolTests__closure11(t0, t1) {
+      this.completedComputes = t0;
+      this.id = t1;
+    },
+    poolTests__closure12: function poolTests__closure12(t0) {
+      this.maxParallel = t0;
+    },
+    poolTests_closure0: function poolTests_closure0(t0) {
+      this.timeFactor = t0;
+    },
+    poolTests__closure6: function poolTests__closure6() {
+    },
+    poolTests__closure7: function poolTests__closure7(t0, t1, t2) {
+      this._box_0 = t0;
+      this.pool = t1;
+      this.maxIdle = t2;
+    },
+    poolTests___closure0: function poolTests___closure0(t0) {
+      this.maxIdle = t0;
+    },
+    poolTests__closure8: function poolTests__closure8(t0) {
+      this.timeFactor = t0;
+    },
+    poolTests_closure1: function poolTests_closure1() {
+    },
+    poolTests__closure1: function poolTests__closure1() {
+    },
+    poolTests__closure2: function poolTests__closure2() {
+    },
+    poolTests__closure3: function poolTests__closure3() {
+    },
+    poolTests__closure4: function poolTests__closure4() {
+    },
+    poolTests__closure5: function poolTests__closure5() {
+    },
+    poolTests_closure2: function poolTests_closure2() {
+    },
+    poolTests__closure: function poolTests__closure() {
+    },
+    poolTests__closure0: function poolTests__closure0(t0, t1) {
+      this.i = t0;
+      this.digits = t1;
+    },
+    poolTests___closure: function poolTests___closure(t0, t1) {
+      this.i = t0;
+      this.digits = t1;
     }
   },
   S = {AsyncMemoizer: function AsyncMemoizer(t0, t1) {
@@ -8894,61 +8936,6 @@
       _._stopped = _._idle = _._started = _.__Worker_id = null;
       _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
       _._starting = _._channel = null;
-    },
-    workerTests() {
-      N.test("start & stop", new T.workerTests_closure());
-      N.test("workload - sequential", new T.workerTests_closure0(5));
-      N.test("workload - parallel", new T.workerTests_closure1(5));
-      N.test("cache worker", new T.workerTests_closure2());
-      N.test("prime worker", new T.workerTests_closure3());
-      N.test("prime worker - stream", new T.workerTests_closure4());
-      N.test("prime worker with cache", new T.workerTests_closure5());
-      N.test("prime worker with cache - perf", new T.workerTests_closure6());
-      N.test("exception handling from worker", new T.workerTests_closure7());
-    },
-    workerTests_closure: function workerTests_closure() {
-    },
-    workerTests_closure0: function workerTests_closure0(t0) {
-      this.timeFactor = t0;
-    },
-    workerTests_closure_createDummyTask0: function workerTests_closure_createDummyTask0(t0, t1, t2) {
-      this._box_0 = t0;
-      this.dummy = t1;
-      this.completedTasks = t2;
-    },
-    workerTests__createDummyTask_closure0: function workerTests__createDummyTask_closure0(t0, t1) {
-      this.completedTasks = t0;
-      this.id = t1;
-    },
-    workerTests_closure1: function workerTests_closure1(t0) {
-      this.timeFactor = t0;
-    },
-    workerTests_closure_createDummyTask: function workerTests_closure_createDummyTask(t0, t1, t2) {
-      this._box_1 = t0;
-      this.dummy = t1;
-      this.completedTasks = t2;
-    },
-    workerTests__createDummyTask_closure: function workerTests__createDummyTask_closure(t0, t1) {
-      this.completedTasks = t0;
-      this.id = t1;
-    },
-    workerTests_closure2: function workerTests_closure2() {
-    },
-    workerTests_closure3: function workerTests_closure3() {
-    },
-    workerTests_closure4: function workerTests_closure4() {
-    },
-    workerTests_closure5: function workerTests_closure5() {
-    },
-    workerTests_closure6: function workerTests_closure6() {
-    },
-    workerTests__closure: function workerTests__closure(t0) {
-      this.primeWorker = t0;
-    },
-    workerTests__closure0: function workerTests__closure0(t0) {
-      this.primeWorker = t0;
-    },
-    workerTests_closure7: function workerTests_closure7() {
     }
   },
   U = {
@@ -9582,24 +9569,6 @@
     },
     PrintSink: function PrintSink(t0) {
       this._buffer = t0;
-    },
-    workerBuilders() {
-      return P.LinkedHashMap_LinkedHashMap$_literal([C.Type_CacheWorker_VzM, new X.workerBuilders_closure(), C.Type_PrimeWorker_Wk1, new X.workerBuilders_closure0(), C.Type_RogueWorker_qJs, new X.workerBuilders_closure1(), C.Type_SampleWorker_O1u, new X.workerBuilders_closure2()], type$.Type, type$.Worker_Function_$opt_dynamic);
-    },
-    workerBuilders_closure: function workerBuilders_closure() {
-    },
-    workerBuilders_closure0: function workerBuilders_closure0() {
-    },
-    workerBuilders_closure1: function workerBuilders_closure1() {
-    },
-    workerBuilders_closure2: function workerBuilders_closure2() {
-    },
-    setWorker(value, $T) {
-      $.$get$_workerBuilders().$indexSet(0, H.createRuntimeType($T), value);
-      return value;
-    },
-    getWorker(arg, $T) {
-      return $T._as($.$get$_workerBuilders().$index(0, H.createRuntimeType($T)).call$1(arg));
     }
   },
   Y = {
@@ -9819,6 +9788,64 @@
       this.indent = t0;
     },
     LiveTest: function LiveTest() {
+    },
+    workerTests() {
+      N.test("start & stop", new Z.workerTests_closure());
+      N.test("workload - sequential", new Z.workerTests_closure0(5));
+      N.test("workload - parallel", new Z.workerTests_closure1(5));
+      N.test("cache worker", new Z.workerTests_closure2());
+      N.test("prime worker", new Z.workerTests_closure3());
+      N.test("prime worker - stream", new Z.workerTests_closure4());
+      N.test("prime worker with cache", new Z.workerTests_closure5());
+      N.test("prime worker with cache - perf", new Z.workerTests_closure6());
+      N.test("exception handling from worker", new Z.workerTests_closure7());
+      N.test("bitcoin service", new Z.workerTests_closure8());
+    },
+    workerTests_closure: function workerTests_closure() {
+    },
+    workerTests_closure0: function workerTests_closure0(t0) {
+      this.timeFactor = t0;
+    },
+    workerTests_closure_createDummyTask0: function workerTests_closure_createDummyTask0(t0, t1, t2) {
+      this._box_0 = t0;
+      this.dummy = t1;
+      this.completedTasks = t2;
+    },
+    workerTests__createDummyTask_closure0: function workerTests__createDummyTask_closure0(t0, t1) {
+      this.completedTasks = t0;
+      this.id = t1;
+    },
+    workerTests_closure1: function workerTests_closure1(t0) {
+      this.timeFactor = t0;
+    },
+    workerTests_closure_createDummyTask: function workerTests_closure_createDummyTask(t0, t1, t2) {
+      this._box_1 = t0;
+      this.dummy = t1;
+      this.completedTasks = t2;
+    },
+    workerTests__createDummyTask_closure: function workerTests__createDummyTask_closure(t0, t1) {
+      this.completedTasks = t0;
+      this.id = t1;
+    },
+    workerTests_closure2: function workerTests_closure2() {
+    },
+    workerTests_closure3: function workerTests_closure3() {
+    },
+    workerTests_closure4: function workerTests_closure4() {
+    },
+    workerTests_closure5: function workerTests_closure5() {
+    },
+    workerTests_closure6: function workerTests_closure6() {
+    },
+    workerTests__closure: function workerTests__closure(t0) {
+      this.primeWorker = t0;
+    },
+    workerTests__closure0: function workerTests__closure0(t0) {
+      this.primeWorker = t0;
+    },
+    workerTests_closure7: function workerTests_closure7() {
+    },
+    workerTests_closure8: function workerTests_closure8() {
     },
     pluralize($name, number) {
       if (number === 1)
@@ -11166,17 +11193,17 @@
       var hash = this._hashCode;
       if (hash != null)
         return hash;
-      hash = 664597 * J.get$hashCode$(this.__internal$_name) & 536870911;
+      hash = 664597 * J.get$hashCode$(this._name) & 536870911;
       this._hashCode = hash;
       return hash;
     },
     toString$0(_) {
-      return 'Symbol("' + H.S(this.__internal$_name) + '")';
+      return 'Symbol("' + H.S(this._name) + '")';
     },
     $eq(_, other) {
       if (other == null)
         return false;
-      return other instanceof H.Symbol && this.__internal$_name == other.__internal$_name;
+      return other instanceof H.Symbol && this._name == other._name;
     },
     $isSymbol0: 1
   };
@@ -11312,7 +11339,7 @@
     call$0() {
       return C.JSNumber_methods.floor$0(1000 * this.performance.now());
     },
-    $signature: 33
+    $signature: 34
   };
   H.Primitives_functionNoSuchMethod_closure.prototype = {
     call$2($name, argument) {
@@ -11324,7 +11351,7 @@
       C.JSArray_methods.add$1(this.$arguments, argument);
       ++t1.argumentCount;
     },
-    $signature: 126
+    $signature: 109
   };
   H.TypeErrorDecoder.prototype = {
     matchTypeError$1(message) {
@@ -11755,19 +11782,19 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 110
+    $signature: 107
   };
   H.initHooks_closure0.prototype = {
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 108
+    $signature: 74
   };
   H.initHooks_closure1.prototype = {
     call$1(tag) {
       return this.prototypeForTag(H._asString(tag));
     },
-    $signature: 107
+    $signature: 57
   };
   H.JSSyntaxRegExp.prototype = {
     toString$0(_) {
@@ -11952,7 +11979,7 @@
     _readLocal$0() {
       var t1 = this.__late_helper$_value;
       if (t1 === this)
-        throw H.wrapException(new H.LateError("Local '" + this._name + "' has not been initialized."));
+        throw H.wrapException(new H.LateError("Local '" + this.__late_helper$_name + "' has not been initialized."));
       return t1;
     }
   };
@@ -12123,7 +12150,7 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 97
+    $signature: 125
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0() {
@@ -12220,19 +12247,19 @@
     call$1(result) {
       return this.bodyFunction.call$2(0, result);
     },
-    $signature: 9
+    $signature: 8
   };
   P._awaitOnObject_closure0.prototype = {
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 95
+    $signature: 103
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(H._asInt(errorCode), result);
     },
-    $signature: 94
+    $signature: 102
   };
   P._asyncStarHelper_closure.prototype = {
     call$0() {
@@ -12729,7 +12756,7 @@
       } else if (t2 === 0 && !_this.eagerError)
         _this._future._completeError$2(_this.error._readLocal$0(), _this.stackTrace._readLocal$0());
     },
-    $signature: 11
+    $signature: 9
   };
   P.Future_wait_closure.prototype = {
     call$1(value) {
@@ -12761,7 +12788,7 @@
         return result.then$1$1(P.async_Future__kTrue$closure(), type$.bool);
       return true;
     },
-    $signature: 86
+    $signature: 78
   };
   P.Future_doWhile_closure.prototype = {
     call$1(keepGoing) {
@@ -12792,7 +12819,7 @@
           t2 = _this.nextIteration;
           t3 = t2.__late_helper$_value;
           if (t3 === t2)
-            H.throwExpression(H.LateError$localNI(t2._name));
+            H.throwExpression(H.LateError$localNI(t2.__late_helper$_name));
           t1.then$1$2$onError(t3, _this.doneSignal.get$_completeError(), type$.void);
           return;
         }
@@ -12800,7 +12827,7 @@
       }
       _this.doneSignal._complete$1(null);
     },
-    $signature: 78
+    $signature: 77
   };
   P.FutureExtensions_onError_closure.prototype = {
     call$2(error, stackTrace) {
@@ -12821,7 +12848,7 @@
         t1 = false;
       return t1;
     },
-    $signature: 14
+    $signature: 15
   };
   P.TimeoutException.prototype = {
     toString$0(_) {
@@ -13152,7 +13179,7 @@
     call$2(error, stackTrace) {
       this.$this._completeError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
     },
-    $signature: 22
+    $signature: 18
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0() {
@@ -13217,7 +13244,7 @@
     call$1(_) {
       return this.originalSource;
     },
-    $signature: 48
+    $signature: 69
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -13299,7 +13326,7 @@
       t1._addError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
       t1._closeUnchecked$0();
     },
-    $signature: 25
+    $signature: 30
   };
   P.Stream_length_closure.prototype = {
     call$1(_) {
@@ -14873,7 +14900,7 @@
     call$1(v) {
       return this.K._is(v);
     },
-    $signature: 21
+    $signature: 16
   };
   P._LinkedHashSet.prototype = {
     _newSet$0() {
@@ -15283,7 +15310,7 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 70
+    $signature: 66
   };
   P.MapMixin.prototype = {
     forEach$1(_, action) {
@@ -15560,10 +15587,7 @@
         ++elementIndex;
       }
       throw H.wrapException(P.IndexError$(index, this, _s5_, null, elementIndex));
-    },
-    $isEfficientLengthIterable: 1,
-    $isIterable: 1,
-    $isSet: 1
+    }
   };
   P.SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1, $isSet: 1};
   P._SetBase.prototype = {
@@ -15591,7 +15615,7 @@
       }
       return null;
     },
-    $signature: 30
+    $signature: 33
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0() {
@@ -15604,7 +15628,7 @@
       }
       return null;
     },
-    $signature: 30
+    $signature: 33
   };
   P.AsciiCodec.prototype = {
     encode$1(source) {
@@ -16007,13 +16031,13 @@
       t1 = this.sb;
       t2 = this._box_0;
       t3 = t1._contents += t2.comma;
-      t3 += key.__internal$_name;
+      t3 += key._name;
       t1._contents = t3;
       t1._contents = t3 + ": ";
       t1._contents += P.Error_safeToString(value);
       t2.comma = ", ";
     },
-    $signature: 69
+    $signature: 65
   };
   P.DateTime.prototype = {
     $eq(_, other) {
@@ -16089,7 +16113,7 @@
         return "0000" + n;
       return "00000" + n;
     },
-    $signature: 32
+    $signature: 35
   };
   P.Duration_toString_twoDigits.prototype = {
     call$1(n) {
@@ -16097,7 +16121,7 @@
         return "" + n;
       return "0" + n;
     },
-    $signature: 32
+    $signature: 35
   };
   P.Error.prototype = {
     get$stackTrace() {
@@ -16189,7 +16213,7 @@
       _this._namedArguments.forEach$1(0, new P.NoSuchMethodError_toString_closure(_box_0, sb));
       receiverText = P.Error_safeToString(_this._core$_receiver);
       actualParameters = sb.toString$0(0);
-      t1 = "NoSuchMethodError: method not found: '" + _this._core$_memberName.__internal$_name + "'\nReceiver: " + receiverText + "\nArguments: [" + actualParameters + "]";
+      t1 = "NoSuchMethodError: method not found: '" + _this._core$_memberName._name + "'\nReceiver: " + receiverText + "\nArguments: [" + actualParameters + "]";
       return t1;
     }
   };
@@ -16543,7 +16567,7 @@
     call$2(msg, position) {
       throw H.wrapException(P.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 66
+    $signature: 63
   };
   P.Uri_parseIPv6Address_error.prototype = {
     call$2(msg, position) {
@@ -16552,7 +16576,7 @@
     call$1(msg) {
       return this.call$2(msg, null);
     },
-    $signature: 65
+    $signature: 62
   };
   P.Uri_parseIPv6Address_parseHex.prototype = {
     call$2(start, end) {
@@ -16564,7 +16588,7 @@
         this.error.call$2("each part must be in the range of `0x0..0xFFFF`", start);
       return value;
     },
-    $signature: 63
+    $signature: 60
   };
   P._Uri.prototype = {
     get$_text() {
@@ -16891,7 +16915,7 @@
       C.NativeUint8List_methods.fillRange$3(t1, 0, 96, defaultTransition);
       return t1;
     },
-    $signature: 62
+    $signature: 56
   };
   P._createTables_setChars.prototype = {
     call$3(target, chars, transition) {
@@ -16903,7 +16927,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 38
+    $signature: 40
   };
   P._createTables_setRange.prototype = {
     call$3(target, range, transition) {
@@ -16915,7 +16939,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 38
+    $signature: 40
   };
   P._SimpleUri.prototype = {
     get$hasAuthority() {
@@ -17306,7 +17330,7 @@
     call$1(e) {
       return type$.Element._is(type$.Node._as(e));
     },
-    $signature: 60
+    $signature: 55
   };
   W.Event.prototype = {$isEvent: 1};
   W.EventTarget.prototype = {
@@ -17504,8 +17528,15 @@
   W.Worker.prototype = {
     postMessage$2(receiver, message, transfer) {
       type$.nullable_List_Object._as(transfer);
-      this._postMessage_1$2(receiver, new P._StructuredCloneDart2Js([], []).walk$1(message), transfer);
+      if (transfer != null) {
+        this._postMessage_1$2(receiver, new P._StructuredCloneDart2Js([], []).walk$1(message), transfer);
+        return;
+      }
+      receiver.postMessage(new P._StructuredCloneDart2Js([], []).walk$1(message));
       return;
+    },
+    postMessage$1($receiver, message) {
+      return this.postMessage$2($receiver, message, null);
     },
     _postMessage_1$2(receiver, message, transfer) {
       return receiver.postMessage(message, type$.nullable_List_Object._as(transfer));
@@ -17662,7 +17693,7 @@
     call$1(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 40
+    $signature: 22
   };
   W._Html5NodeValidator.prototype = {
     _Html5NodeValidator$1$uriPolicy(uriPolicy) {
@@ -17705,13 +17736,13 @@
     call$1(v) {
       return type$.NodeValidator._as(v).allowsElement$1(this.element);
     },
-    $signature: 41
+    $signature: 42
   };
   W.NodeValidatorBuilder_allowsAttribute_closure.prototype = {
     call$1(v) {
       return type$.NodeValidator._as(v).allowsAttribute$3(this.element, this.attributeName, this.value);
     },
-    $signature: 41
+    $signature: 42
   };
   W._SimpleNodeValidator.prototype = {
     _SimpleNodeValidator$4$allowedAttributes$allowedElements$allowedUriAttributes(uriPolicy, allowedAttributes, allowedElements, allowedUriAttributes) {
@@ -17993,7 +18024,7 @@
         child = nextChild;
       }
     },
-    $signature: 56
+    $signature: 46
   };
   W._NodeList_Interceptor_ListMixin.prototype = {};
   W._NodeList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
@@ -18092,7 +18123,7 @@
     call$2(key, value) {
       this._box_0.copy[key] = this.$this.walk$1(value);
     },
-    $signature: 25
+    $signature: 30
   };
   P._AcceptStructuredClone.prototype = {
     findSlot$1(value) {
@@ -18178,7 +18209,7 @@
       J.$indexSet$ax(t1, key, t2);
       return t2;
     },
-    $signature: 55
+    $signature: 44
   };
   P._StructuredCloneDart2Js.prototype = {
     forEachObjectKey$2(object, action) {
@@ -18210,7 +18241,7 @@
     call$1(r) {
       return this.completer.complete$1(0, this.T._eval$1("0/?")._as(r));
     },
-    $signature: 9
+    $signature: 8
   };
   P.promiseToFuture_closure0.prototype = {
     call$1(e) {
@@ -18218,7 +18249,7 @@
         return this.completer.completeError$1(new P.NullRejectionException(e === undefined));
       return this.completer.completeError$1(e);
     },
-    $signature: 9
+    $signature: 8
   };
   P.ScriptElement0.prototype = {$isScriptElement0: 1};
   P.SvgElement.prototype = {
@@ -18314,7 +18345,7 @@
         return null;
       t1.completeError$2(error, stackTrace);
     },
-    $signature: 22
+    $signature: 18
   };
   L.StreamGroup.prototype = {
     get$_controller() {
@@ -19011,7 +19042,7 @@
       var _this = this;
       return _this.matcher.call$4(_this.expectedElement, actualElement, _this.location, _this.depth) != null;
     },
-    $signature: 21
+    $signature: 16
   };
   D._DeepMatcher__compareSets_closure0.prototype = {
     call$2(description, verbose) {
@@ -19178,13 +19209,13 @@
         }
       }
     },
-    $signature: 100
+    $signature: 47
   };
   Z.prettyPrint__prettyPrint_pp.prototype = {
     call$1(child) {
       return this._prettyPrint.call$4(child, this.indent + 2, this._box_0.seen, false);
     },
-    $signature: 74
+    $signature: 48
   };
   Z.prettyPrint__prettyPrint_closure.prototype = {
     call$1(string) {
@@ -19230,7 +19261,7 @@
     call$1(a) {
       return H._asBool(this.valueOrMatcher.call$1(a));
     },
-    $signature: 12
+    $signature: 14
   };
   M.escape_closure.prototype = {
     call$1(match) {
@@ -19962,7 +19993,7 @@
       type$.StackTrace._as(stackTrace);
       this.$this._onReleaseCompleters.removeFirst$0().completeError$2(error, stackTrace);
     },
-    $signature: 22
+    $signature: 18
   };
   O.PoolResource.prototype = {};
   N.JsChannel.prototype = {
@@ -20017,7 +20048,7 @@
       } else
         t1.complete$1(0, this.T._eval$1("0/?")._as(res._result));
     },
-    $signature: 13
+    $signature: 10
   };
   N.JsChannel_sendStreamingRequest_closure.prototype = {
     call$1($event) {
@@ -20037,7 +20068,7 @@
           t1.add$1(0, _this.T._as(res._result));
       }
     },
-    $signature: 13
+    $signature: 10
   };
   N._JsForwardChannel.prototype = {
     _forward$1(e) {
@@ -20063,29 +20094,29 @@
     call$1(o) {
       return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
     },
-    $signature: 14
+    $signature: 15
   };
   N._getTransferables_closure0.prototype = {
     call$1(o) {
       return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
     },
-    $signature: 14
+    $signature: 15
   };
   N._getTransferables_closure1.prototype = {
     call$1(o) {
       return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
     },
-    $signature: 14
+    $signature: 15
   };
   N._openChannel_closure.prototype = {
     call$1($event) {
       var t1, t2;
       this.com.port1.close();
-      t1 = "Failed to open channel for " + this.entryPoint;
+      t1 = "Failed to open channel for " + H.S(this.entryPoint);
       t2 = J.toString$0$(P.StackTrace_current());
       this.completer.completeError$1(new M.WorkerException(t1, t2, null));
     },
-    $signature: 40
+    $signature: 22
   };
   N._openChannel_closure0.prototype = {
     call$1($event) {
@@ -20096,7 +20127,7 @@
       t1._sendPort = type$.nullable_MessagePort._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy($event.data, true));
       this.completer.complete$1(0, t1);
     },
-    $signature: 13
+    $signature: 10
   };
   F.PerfCounter.prototype = {
     measure$1$1(task, $T) {
@@ -20713,7 +20744,7 @@
       t1._completer.completeError$2(error, stackTrace);
       t1._onDone.call$0();
     },
-    $signature: 44
+    $signature: 41
   };
   U.Chain.prototype = {
     toTrace$0() {
@@ -20740,13 +20771,13 @@
       C.JSArray_methods.addAll$1(t2, H.SubListIterable$(t1, 1, null, H._arrayInstanceType(t1)._precomputed1));
       return new U.Chain(P.List_List$unmodifiable(t2, type$.Trace));
     },
-    $signature: 18
+    $signature: 21
   };
   U.Chain_Chain$forTrace_closure.prototype = {
     call$0() {
       return U.Chain_Chain$parse(this.trace.toString$0(0));
     },
-    $signature: 18
+    $signature: 21
   };
   U.Chain_Chain$parse_closure.prototype = {
     call$1(line) {
@@ -20758,13 +20789,13 @@
     call$1(trace) {
       return Y.Trace$parseVM(H._asString(trace));
     },
-    $signature: 42
+    $signature: 39
   };
   U.Chain_Chain$parse_closure1.prototype = {
     call$1(trace) {
       return Y.Trace$parseFriendly(H._asString(trace));
     },
-    $signature: 42
+    $signature: 39
   };
   U.Chain_toTrace_closure.prototype = {
     call$1(trace) {
@@ -20785,7 +20816,7 @@
       type$.Frame._as(frame);
       return frame.get$location(frame).length;
     },
-    $signature: 39
+    $signature: 38
   };
   U.Chain_toString_closure.prototype = {
     call$1(trace) {
@@ -21096,7 +21127,7 @@
     call$0() {
       return this.$this.get$_chain().toTrace$0();
     },
-    $signature: 15
+    $signature: 13
   };
   T.LazyTrace.prototype = {
     get$_lazy_trace$_trace() {
@@ -21130,13 +21161,13 @@
     call$0() {
       return U.Chain_Chain$parse(this._box_0.trace.toString$0(0));
     },
-    $signature: 18
+    $signature: 21
   };
   O.StackZoneSpecification_chainFor_closure0.prototype = {
     call$0() {
       return Y.Trace_Trace$parse(this.$this._trimVMChain$1(this.original));
     },
-    $signature: 15
+    $signature: 13
   };
   O.StackZoneSpecification__currentTrace_closure.prototype = {
     call$0() {
@@ -21144,7 +21175,7 @@
         t1 = Y.Trace_Trace$parse(text).frames;
       return Y.Trace$(H.SubListIterable$(t1, this.level + 2, null, H._arrayInstanceType(t1)._precomputed1), text);
     },
-    $signature: 15
+    $signature: 13
   };
   O._Node.prototype = {
     toChain$0() {
@@ -21175,7 +21206,7 @@
     call$0() {
       return Y.Trace_Trace$parse(this.trace.toString$0(0));
     },
-    $signature: 15
+    $signature: 13
   };
   Y.Trace__parseVM_closure.prototype = {
     call$1(line) {
@@ -21187,7 +21218,7 @@
     call$1(line) {
       return A.Frame_Frame$parseVM(H._asString(line));
     },
-    $signature: 10
+    $signature: 12
   };
   Y.Trace$parseV8_closure.prototype = {
     call$1(line) {
@@ -21199,7 +21230,7 @@
     call$1(line) {
       return A.Frame_Frame$parseV8(H._asString(line));
     },
-    $signature: 10
+    $signature: 12
   };
   Y.Trace$parseJSCore_closure.prototype = {
     call$1(line) {
@@ -21211,7 +21242,7 @@
     call$1(line) {
       return A.Frame_Frame$parseV8(H._asString(line));
     },
-    $signature: 10
+    $signature: 12
   };
   Y.Trace$parseFirefox_closure.prototype = {
     call$1(line) {
@@ -21224,7 +21255,7 @@
     call$1(line) {
       return A.Frame_Frame$parseFirefox(H._asString(line));
     },
-    $signature: 10
+    $signature: 12
   };
   Y.Trace$parseFriendly_closure.prototype = {
     call$1(line) {
@@ -21236,14 +21267,14 @@
     call$1(line) {
       return A.Frame_Frame$parseFriendly(H._asString(line));
     },
-    $signature: 10
+    $signature: 12
   };
   Y.Trace_toString_closure0.prototype = {
     call$1(frame) {
       type$.Frame._as(frame);
       return frame.get$location(frame).length;
     },
-    $signature: 39
+    $signature: 38
   };
   Y.Trace_toString_closure.prototype = {
     call$1(frame) {
@@ -21480,13 +21511,13 @@
         t2 = type$.nullable_Object;
       return P.runZoned(new X.Declarer__tearDownAll__closure(t1), null, P.LinkedHashMap_LinkedHashMap$_literal([C.Symbol_Drw, t1], t2, t2), type$.Future_void);
     },
-    $signature: 8
+    $signature: 11
   };
   X.Declarer__tearDownAll__closure.prototype = {
     call$0() {
       return type$.nullable_Invoker._as($.Zone__current.$index(0, C.Symbol_cQL)).runTearDowns$1(this.$this._tearDownAlls);
     },
-    $signature: 8
+    $signature: 11
   };
   X.DuplicateTestNameException.prototype = {
     toString$0(_) {
@@ -21524,13 +21555,13 @@
     call$1(entry) {
       return entry.forPlatform$1(this.platform);
     },
-    $signature: 29
+    $signature: 28
   };
   O.Group__map_closure.prototype = {
     call$1(entry) {
       return this.callback.call$1(type$.GroupEntry._as(entry));
     },
-    $signature: 29
+    $signature: 28
   };
   U.LocalTest.prototype = {
     load$2$groups(_, suite, groups) {
@@ -21706,7 +21737,7 @@
       });
       return P._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 11
   };
   U.Invoker_runTearDowns__closure.prototype = {
     call$0() {
@@ -21899,14 +21930,14 @@
       var t1 = this.$this;
       return t1.runTearDowns$1(t1._invoker$_tearDowns);
     },
-    $signature: 8
+    $signature: 11
   };
   U.Invoker__onRun___closure0.prototype = {
     call$4(_, __, ___, line) {
       H._asString(line);
       return this.$this.get$_invoker$_controller().message$1(0, new D.Message(C.MessageType_print, line));
     },
-    $signature: 24
+    $signature: 43
   };
   U._AsyncCounter.prototype = {
     decrement$0() {
@@ -22077,21 +22108,21 @@
       selector.validate$1(t1);
       metadata.validatePlatformSelectors$1(t1);
     },
-    $signature: 23
+    $signature: 26
   };
   O.Metadata_merge_closure.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 28
+    $signature: 25
   };
   O.Metadata_merge_closure0.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 28
+    $signature: 25
   };
   O.Metadata_forPlatform_closure.prototype = {
     call$2(platformSelector, platformMetadata) {
@@ -22103,7 +22134,7 @@
       t1 = this._box_0;
       t1.metadata = t1.metadata.merge$1(platformMetadata);
     },
-    $signature: 23
+    $signature: 26
   };
   N.OperatingSystem.prototype = {
     toString$0(_) {
@@ -22246,7 +22277,7 @@
     call$0() {
       return B.pumpEventQueue(this.times - 1);
     },
-    $signature: 35
+    $signature: 24
   };
   N._declarer_closure.prototype = {
     call$0() {
@@ -22640,7 +22671,7 @@
   O.Engine_closure0.prototype = {
     call$2(_, __) {
     },
-    $signature: 44
+    $signature: 41
   };
   O.Engine_run_closure.prototype = {
     call$1(suite) {
@@ -22651,7 +22682,7 @@
       t1._onSuiteAddedController.add$1(0, suite);
       t1._group.add$1(0, new O.Engine_run__closure(t1, suite).call$0());
     },
-    $signature: 106
+    $signature: 126
   };
   O.Engine_run__closure.prototype = {
     call$0() {
@@ -22744,7 +22775,7 @@
       t1 = this.$this._active;
       t1.remove$1(t1, this.liveTest);
     },
-    $signature: 19
+    $signature: 23
   };
   O.Engine__runLiveTest_closure0.prototype = {
     call$0() {
@@ -22826,7 +22857,7 @@
         t1._failed.remove$1(0, t2);
       }
     },
-    $signature: 19
+    $signature: 23
   };
   B.LiveSuiteController_close_closure.prototype = {
     call$0() {
@@ -22999,7 +23030,7 @@
     call$1(state) {
       return this.$this._expanded$_onStateChange$2(this.liveTest, type$.State._as(state));
     },
-    $signature: 19
+    $signature: 23
   };
   R.ExpandedReporter__onTestStarted_closure0.prototype = {
     call$1(error) {
@@ -23071,9 +23102,13 @@
     toSet$0(_) {
       var t1 = this._iterable_set$_base;
       return t1.toSet$0(t1);
-    }
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isSet: 1
   };
-  O._IterableSet_SetMixin_UnmodifiableSetMixin.prototype = {};
+  O._IterableSet_Object_SetMixin.prototype = {};
+  O._IterableSet_Object_SetMixin_UnmodifiableSetMixin.prototype = {};
   U.currentOSGuess_closure.prototype = {
     call$0() {
       var t1 = $.$get$context().style;
@@ -23101,55 +23136,7 @@
     },
     $isStringSink: 1
   };
-  X.workerBuilders_closure.prototype = {
-    call$1(arg) {
-      return O.CacheWorker$("sample_js_workers/cache_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    $signature: 43
-  };
-  X.workerBuilders_closure0.prototype = {
-    call$1(arg) {
-      var t1;
-      if (arg == null)
-        t1 = null;
-      else {
-        t1 = arg._channel;
-        if (t1 == null)
-          t1 = null;
-        else {
-          t1 = t1._sendPort;
-          t1.toString;
-          t1 = N._JsForwardChannel$(t1)._sendPort;
-        }
-      }
-      return E.PrimeWorker$("sample_js_workers/prime_worker.dart.js", [t1]);
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    $signature: 46
-  };
-  X.workerBuilders_closure1.prototype = {
-    call$1(arg) {
-      return U.RogueWorker$("sample_js_workers/rogue_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    $signature: 45
-  };
-  X.workerBuilders_closure2.prototype = {
-    call$1(arg) {
-      return T.SampleWorker$("sample_js_workers/sample_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    $signature: 31
-  };
+  O.BitcoinWorker.prototype = {};
   O.CacheWorker.prototype = {
     getStats$0() {
       var $async$goto = 0,
@@ -23259,7 +23246,7 @@
     call$1(s) {
       return type$.SequenceReplacement._as(s).match$2(this.codeUnits, this._box_0.i);
     },
-    $signature: 96
+    $signature: 92
   };
   F.SequenceReplacement.prototype = {
     get$length(_) {
@@ -23279,85 +23266,15 @@
     }
   };
   F.main_closure.prototype = {
-    call$1(arg) {
-      return O.CacheWorker$("/sample_js_workers/cache_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    "call*": "call$1",
-    $requiredArgCount: 0,
-    $defaultValues() {
-      return [null];
-    },
-    $signature: 43
-  };
-  F.main_closure0.prototype = {
-    call$1(arg) {
-      var t1;
-      type$.nullable_CacheWorker._as(arg);
-      if (arg == null)
-        t1 = null;
-      else {
-        t1 = arg._channel;
-        if (t1 == null)
-          t1 = null;
-        else {
-          t1 = t1._sendPort;
-          t1.toString;
-          t1 = N._JsForwardChannel$(t1)._sendPort;
-        }
-      }
-      return E.PrimeWorker$("/sample_js_workers/prime_worker.dart.js", [t1]);
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    "call*": "call$1",
-    $requiredArgCount: 0,
-    $defaultValues() {
-      return [null];
-    },
-    $signature: 46
-  };
-  F.main_closure1.prototype = {
-    call$1(arg) {
-      return U.RogueWorker$("sample_js_workers/rogue_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    "call*": "call$1",
-    $requiredArgCount: 0,
-    $defaultValues() {
-      return [null];
-    },
-    $signature: 45
-  };
-  F.main_closure2.prototype = {
-    call$1(arg) {
-      return T.SampleWorker$("sample_js_workers/sample_worker.dart.js");
-    },
-    call$0() {
-      return this.call$1(null);
-    },
-    "call*": "call$1",
-    $requiredArgCount: 0,
-    $defaultValues() {
-      return [null];
-    },
-    $signature: 31
-  };
-  F.main_closure3.prototype = {
     call$1(message) {
       var t1 = message == null ? null : J.toString$0$(message);
       if (t1 == null)
         t1 = "";
       return this.logger.print$1(0, t1);
     },
-    $signature: 9
+    $signature: 8
   };
-  F.main_closure4.prototype = {
+  F.main_closure0.prototype = {
     call$1(e) {
       var t1;
       type$.MouseEvent._as(e);
@@ -23366,38 +23283,45 @@
       t1.log$1("Ready");
       t1.log$1("");
     },
-    $signature: 26
+    $signature: 32
   };
-  F.main_closure5.prototype = {
+  F.main_closure1.prototype = {
     call$1(m) {
-      var e, e0, t1, exception;
+      var e, e0, e1, t1, exception, _this = this;
       type$.MouseEvent._as(m);
-      t1 = this.runButton;
+      t1 = _this.runButton;
       t1.disabled = true;
       try {
-        T.workerTests();
+        N.webWorkerTests();
       } catch (exception) {
         e = H.unwrapException(exception);
-        this.logger.log$1("Worker tests failed with exception: " + H.S(e));
+        _this.logger.log$1("Classic Web Worker tests failed with exception: " + H.S(e));
       }
       try {
-        F.poolTests();
+        Z.workerTests();
       } catch (exception) {
         e0 = H.unwrapException(exception);
-        this.logger.log$1("Pool tests failed with exception: " + H.S(e0));
+        _this.logger.log$1("Squadron Worker tests failed with exception: " + H.S(e0));
+      }
+      try {
+        R.poolTests();
+      } catch (exception) {
+        e1 = H.unwrapException(exception);
+        _this.logger.log$1("Squadron Worker Pool tests failed with exception: " + H.S(e1));
       }
       t1.disabled = false;
     },
-    $signature: 26
+    $signature: 32
   };
+  A.PiDigitsWorker.prototype = {};
   E.PrimeWorker.prototype = {};
   U.RogueWorker.prototype = {};
   T.SampleWorker.prototype = {};
-  F.poolTests_closure.prototype = {
+  N.webWorkerTests_closure.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        pool, t1, completedTasks, completedComputes, tasks, taskId, i, t2, stats, cache;
+        worker, completer, t2, t1, $async$temp1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -23405,19 +23329,78 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              cache = X.getWorker(null, type$.CacheWorker);
+              t1 = $.$get$_entryPoints().$index(0, "echo");
+              t1.toString;
+              worker = new Worker(t1);
+              G.expect(worker, C.C__IsNotNull, null);
+              t1 = new P._Future($.Zone__current, type$._Future_String);
+              completer = new P._AsyncCompleter(t1, type$._AsyncCompleter_String);
+              t2 = type$.nullable_void_Function_Event._as(new N.webWorkerTests__closure(completer));
+              type$.nullable_void_Function._as(null);
+              W._EventStreamSubscription$(worker, "error", t2, false, type$.Event);
+              W._EventStreamSubscription$(worker, "message", type$.nullable_void_Function_MessageEvent._as(new N.webWorkerTests__closure0(completer)), false, type$.MessageEvent);
+              C.Worker_methods.postMessage$1(worker, "Hello");
+              $async$temp1 = G;
+              $async$goto = 2;
+              return P._asyncAwait(t1, $async$call$0);
+            case 2:
+              // returning from await.
+              $async$temp1.expect($async$result, 'ECHO "Hello"', null);
+              worker.terminate();
+              // implicit return
+              return P._asyncReturn(null, $async$completer);
+          }
+      });
+      return P._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 1
+  };
+  N.webWorkerTests__closure.prototype = {
+    call$1(error) {
+      this.completer.complete$1(0, "Instance of '" + H.Primitives_objectTypeName(error) + "'");
+    },
+    $signature: 22
+  };
+  N.webWorkerTests__closure0.prototype = {
+    call$1(e) {
+      var error, exception;
+      type$.MessageEvent._as(e);
+      try {
+        this.completer.complete$1(0, type$.nullable_FutureOr_String._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(e.data, true)));
+      } catch (exception) {
+        error = H.unwrapException(exception);
+        this.completer.complete$1(0, J.toString$0$(error));
+      }
+    },
+    $signature: 10
+  };
+  R.poolTests_closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
+        cache, pool, completedTasks, completedComputes, tasks, taskId, i, t2, stats, t1;
+      var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return P._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_entryPoints().$index(0, "cache");
+              t1.toString;
+              cache = O.CacheWorker$(t1);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
               // returning from await.
-              pool = L.WorkerPool$(new F.poolTests__closure7(), 2, 4, 0, type$.PrimeWorker);
+              pool = L.WorkerPool$(new R.poolTests__closure9(cache), 2, 4, 0, type$.PrimeWorker);
               t1 = type$.JSArray_int;
               completedTasks = H._setArrayType([], t1);
               completedComputes = H._setArrayType([], t1);
               tasks = H._setArrayType([], type$.JSArray_Future_dynamic);
               for (t1 = type$.bool, taskId = 0, i = 1; i <= 1000; ++i) {
                 ++taskId;
-                C.JSArray_methods.add$1(tasks, pool.compute$1$1(new F.poolTests__closure8(i, completedTasks, taskId), t1).whenComplete$1(new F.poolTests__closure9(completedComputes, taskId)));
+                C.JSArray_methods.add$1(tasks, pool.compute$1$1(new R.poolTests__closure10(i, completedTasks, taskId), t1).whenComplete$1(new R.poolTests__closure11(completedComputes, taskId)));
               }
               $async$goto = 3;
               return P._asyncAwait(P.Future_wait(tasks, false, type$.dynamic), $async$call$0);
@@ -23433,7 +23416,7 @@
               stats = P.List_List$of(t1, true, t1.$ti._eval$1("ListIterable.E"));
               t1 = stats.length;
               G.expect(t1, new D._DeepMatcher(4, 100), null);
-              G.expect(C.JSArray_methods.every$1(stats, new F.poolTests__closure10(2)), C.C__IsTrue, null);
+              G.expect(C.JSArray_methods.every$1(stats, new R.poolTests__closure12(2)), C.C__IsTrue, null);
               pool.stop$0(0);
               cache.stop$0(0);
               // implicit return
@@ -23444,37 +23427,48 @@
     },
     $signature: 1
   };
-  F.poolTests__closure7.prototype = {
+  R.poolTests__closure9.prototype = {
     call$0() {
-      return X.getWorker(null, type$.PrimeWorker);
+      var t2,
+        t1 = $.$get$_entryPoints().$index(0, "prime");
+      t1.toString;
+      t2 = this.cache._channel;
+      if (t2 == null)
+        t2 = null;
+      else {
+        t2 = t2._sendPort;
+        t2.toString;
+        t2 = N._JsForwardChannel$(t2)._sendPort;
+      }
+      return E.PrimeWorker$(t1, [t2]);
     },
-    $signature: 98
+    $signature: 94
   };
-  F.poolTests__closure8.prototype = {
+  R.poolTests__closure10.prototype = {
     call$1(w) {
-      return type$.PrimeWorker._as(w).send$1$2(1, [this.i], type$.bool).whenComplete$1(new F.poolTests___closure0(this.completedTasks, this.id));
+      return type$.PrimeWorker._as(w).send$1$2(1, [this.i], type$.bool).whenComplete$1(new R.poolTests___closure1(this.completedTasks, this.id));
     },
-    $signature: 99
+    $signature: 95
   };
-  F.poolTests___closure0.prototype = {
+  R.poolTests___closure1.prototype = {
     call$0() {
       return C.JSArray_methods.add$1(this.completedTasks, this.id);
     },
     $signature: 0
   };
-  F.poolTests__closure9.prototype = {
+  R.poolTests__closure11.prototype = {
     call$0() {
       return C.JSArray_methods.add$1(this.completedComputes, this.id);
     },
     $signature: 0
   };
-  F.poolTests__closure10.prototype = {
+  R.poolTests__closure12.prototype = {
     call$1(s) {
       return type$.WorkerStat._as(s).maxWorkload <= this.maxParallel;
     },
-    $signature: 127
+    $signature: 96
   };
-  F.poolTests_closure0.prototype = {
+  R.poolTests_closure0.prototype = {
     call$0() {
       return this.$call$body$poolTests_closure();
     },
@@ -23494,7 +23488,7 @@
               t1 = $async$self.timeFactor;
               t2 = C.JSInt_methods.$tdiv(1000, t1);
               maxIdle = P.Duration$(0, t2, 0);
-              pool = L.WorkerPool$(new F.poolTests__closure4(), 2, 11, 3, type$.SampleWorker);
+              pool = L.WorkerPool$(new R.poolTests__closure6(), 2, 11, 3, type$.SampleWorker);
               $async$goto = 2;
               return P._asyncAwait(pool.start$0(0), $async$call$0);
             case 2:
@@ -23502,10 +23496,10 @@
               t3 = pool._workers;
               t4 = t3.length;
               G.expect(t4, new D._DeepMatcher(3, 100), null);
-              timer = P.Timer_Timer$periodic(P.Duration$(0, C.JSInt_methods.$tdiv(200, t1), 0), new F.poolTests__closure5(_box_0, pool, maxIdle));
+              timer = P.Timer_Timer$periodic(P.Duration$(0, C.JSInt_methods.$tdiv(200, t1), 0), new R.poolTests__closure7(_box_0, pool, maxIdle));
               tasks = H._setArrayType([], type$.JSArray_Future_dynamic);
               for (t4 = type$.dynamic, i = 0; i < 27.5; ++i)
-                C.JSArray_methods.add$1(tasks, pool.compute$1$1(new F.poolTests__closure6(t1), t4));
+                C.JSArray_methods.add$1(tasks, pool.compute$1$1(new R.poolTests__closure8(t1), t4));
               $async$goto = 3;
               return P._asyncAwait(P.Future_Future$delayed(P.Duration$(0, C.JSInt_methods.$tdiv(250, t1), 0), t4), $async$call$0);
             case 3:
@@ -23540,35 +23534,37 @@
     },
     $signature: 1
   };
-  F.poolTests__closure4.prototype = {
+  R.poolTests__closure6.prototype = {
     call$0() {
-      return X.getWorker(null, type$.SampleWorker);
+      var t1 = $.$get$_entryPoints().$index(0, "sample");
+      t1.toString;
+      return T.SampleWorker$(t1);
     },
-    $signature: 101
+    $signature: 97
   };
-  F.poolTests__closure5.prototype = {
+  R.poolTests__closure7.prototype = {
     call$1(timer) {
       var t1;
       type$.Timer._as(timer);
       t1 = this._box_0;
-      t1.stopped = t1.stopped + this.pool.stop$1(0, new F.poolTests___closure(this.maxIdle));
+      t1.stopped = t1.stopped + this.pool.stop$1(0, new R.poolTests___closure0(this.maxIdle));
     },
-    $signature: 102
+    $signature: 98
   };
-  F.poolTests___closure.prototype = {
+  R.poolTests___closure0.prototype = {
     call$1(w) {
       type$.SampleWorker._as(w);
       return w._stopped == null && w.get$idleTime()._duration > this.maxIdle._duration;
     },
-    $signature: 103
+    $signature: 99
   };
-  F.poolTests__closure6.prototype = {
+  R.poolTests__closure8.prototype = {
     call$1(w) {
       return type$.SampleWorker._as(w).send$1$2(1, [C.JSInt_methods.$tdiv(2000, this.timeFactor)], type$.dynamic);
     },
-    $signature: 104
+    $signature: 100
   };
-  F.poolTests_closure1.prototype = {
+  R.poolTests_closure1.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
@@ -23582,14 +23578,14 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              pool = L.WorkerPool$(new F.poolTests__closure(), 2, 4, 0, type$.RogueWorker);
+              pool = L.WorkerPool$(new R.poolTests__closure1(), 2, 4, 0, type$.RogueWorker);
               $async$goto = 2;
               return P._asyncAwait(J.start$0$x(pool), $async$call$0);
             case 2:
               // returning from await.
               $async$handler = 4;
               $async$goto = 7;
-              return P._asyncAwait(pool.compute$1$1(new F.poolTests__closure0(), type$.dynamic), $async$call$0);
+              return P._asyncAwait(pool.compute$1$1(new R.poolTests__closure2(), type$.dynamic), $async$call$0);
             case 7:
               // returning from await.
               G.expect(false, C.C__IsTrue, null);
@@ -23624,11 +23620,11 @@
             case 6:
               // after finally
               t1 = type$.int;
-              t2 = pool.get$stats().fold$1$2(0, 0, new F.poolTests__closure1(), t1);
+              t2 = pool.get$stats().fold$1$2(0, 0, new R.poolTests__closure3(), t1);
               G.expect(t2, new D._DeepMatcher(1, 100), null);
               $async$handler = 9;
               $async$goto = 12;
-              return P._asyncAwait(pool.compute$1$1(new F.poolTests__closure2(), type$.dynamic), $async$call$0);
+              return P._asyncAwait(pool.compute$1$1(new R.poolTests__closure4(), type$.dynamic), $async$call$0);
             case 12:
               // returning from await.
               G.expect(false, C.C__IsTrue, null);
@@ -23661,7 +23657,7 @@
               break;
             case 11:
               // after finally
-              t1 = pool.get$stats().fold$1$2(0, 0, new F.poolTests__closure3(), t1);
+              t1 = pool.get$stats().fold$1$2(0, 0, new R.poolTests__closure5(), t1);
               G.expect(t1, new D._DeepMatcher(2, 100), null);
               J.stop$0$z(pool);
               // implicit return
@@ -23675,41 +23671,43 @@
     },
     $signature: 1
   };
-  F.poolTests__closure.prototype = {
+  R.poolTests__closure1.prototype = {
     call$0() {
-      return X.getWorker(null, type$.RogueWorker);
+      var t1 = $.$get$_entryPoints().$index(0, "rogue");
+      t1.toString;
+      return U.RogueWorker$(t1);
     },
-    $signature: 105
+    $signature: 101
   };
-  F.poolTests__closure0.prototype = {
+  R.poolTests__closure2.prototype = {
     call$1(w) {
       return type$.RogueWorker._as(w).send$1$1(1, type$.dynamic);
     },
-    $signature: 47
+    $signature: 31
   };
-  F.poolTests__closure1.prototype = {
+  R.poolTests__closure3.prototype = {
     call$2(p, s) {
       return H._asInt(p) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 36
+    $signature: 29
   };
-  F.poolTests__closure2.prototype = {
+  R.poolTests__closure4.prototype = {
     call$1(w) {
       return type$.RogueWorker._as(w).send$1$1(2, type$.dynamic);
     },
-    $signature: 47
+    $signature: 31
   };
-  F.poolTests__closure3.prototype = {
+  R.poolTests__closure5.prototype = {
     call$2(p, s) {
       return H._asInt(p) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 36
+    $signature: 29
   };
-  T.workerTests_closure.prototype = {
+  R.poolTests_closure2.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        t2, upTime, t3, dummy, t1;
+        i, valueOfPi, base, pool, t1, digits, tasks;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -23717,7 +23715,74 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              dummy = X.getWorker(null, type$.SampleWorker);
+              pool = L.WorkerPool$(new R.poolTests__closure(), 1, 8, 0, type$.PiDigitsWorker);
+              t1 = type$.int;
+              digits = P.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              tasks = H._setArrayType([], type$.JSArray_Future_dynamic);
+              for (t1 = type$.dynamic, i = 0; i <= 50; ++i)
+                C.JSArray_methods.add$1(tasks, pool.compute$1$1(new R.poolTests__closure0(i, digits), t1));
+              $async$goto = 2;
+              return P._asyncAwait(P.Future_wait(tasks, false, t1), $async$call$0);
+            case 2:
+              // returning from await.
+              for (valueOfPi = 0, base = 1, i = 0; i <= 50; ++i) {
+                if (i > 0)
+                  base *= 16;
+                t1 = digits.$index(0, i);
+                t1.toString;
+                valueOfPi += t1 / base;
+              }
+              G.expect(valueOfPi, new D._DeepMatcher(3.141592653589793, 100), null);
+              pool.stop$0(0);
+              // implicit return
+              return P._asyncReturn(null, $async$completer);
+          }
+      });
+      return P._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 1
+  };
+  R.poolTests__closure.prototype = {
+    call$0() {
+      var t2,
+        t1 = $.$get$_entryPoints().$index(0, "pi_digits");
+      t1.toString;
+      t2 = new A.PiDigitsWorker(t1, C.List_empty0);
+      t2.Worker$3$args$id(t1, C.List_empty0, null);
+      return t2;
+    },
+    $signature: 104
+  };
+  R.poolTests__closure0.prototype = {
+    call$1(w) {
+      var t1 = this.i;
+      return type$.PiDigitsWorker._as(w).send$1$2(1, [t1], type$.int).then$1$1(new R.poolTests___closure(t1, this.digits), type$.dynamic);
+    },
+    $signature: 105
+  };
+  R.poolTests___closure.prototype = {
+    call$1(digit) {
+      H._asInt(digit);
+      this.digits.$indexSet(0, this.i, digit);
+      return digit;
+    },
+    $signature: 106
+  };
+  Z.workerTests_closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
+        dummy, t2, upTime, t3, t1;
+      var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return P._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_entryPoints().$index(0, "sample");
+              t1.toString;
+              dummy = T.SampleWorker$(t1);
               t1 = type$.dynamic;
               $async$goto = 2;
               return P._asyncAwait(P.Future_Future$delayed(P.Duration$(0, 5, 0), t1), $async$call$0);
@@ -23779,14 +23844,14 @@
     },
     $signature: 1
   };
-  T.workerTests_closure0.prototype = {
+  Z.workerTests_closure0.prototype = {
     call$0() {
       return this.$call$body$workerTests_closure0();
     },
     $call$body$workerTests_closure0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t3, t4, t5, t6, task, t1, dummy, t2, completedTasks;
+        $async$self = this, dummy, completedTasks, t3, t4, t5, t6, task, t1, t2;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -23795,11 +23860,13 @@
             case 0:
               // Function start
               t1 = {};
-              dummy = X.getWorker(null, type$.SampleWorker);
+              t2 = $.$get$_entryPoints().$index(0, "sample");
+              t2.toString;
+              dummy = T.SampleWorker$(t2);
               t2 = type$.JSArray_int;
               completedTasks = H._setArrayType([], t2);
               t1.taskId = 0;
-              t1 = new T.workerTests_closure_createDummyTask0(t1, dummy, completedTasks);
+              t1 = new Z.workerTests_closure_createDummyTask0(t1, dummy, completedTasks);
               t3 = type$.dynamic;
               $async$goto = 2;
               return P._asyncAwait(P.Future_Future$delayed(P.Duration$(0, 5, 0), t3), $async$call$0);
@@ -23891,27 +23958,27 @@
     },
     $signature: 1
   };
-  T.workerTests_closure_createDummyTask0.prototype = {
+  Z.workerTests_closure_createDummyTask0.prototype = {
     call$1$milliseconds(milliseconds) {
       var t1 = ++this._box_0.taskId;
-      return this.dummy.send$1$2(1, [milliseconds], type$.dynamic).whenComplete$1(new T.workerTests__createDummyTask_closure0(this.completedTasks, t1));
+      return this.dummy.send$1$2(1, [milliseconds], type$.dynamic).whenComplete$1(new Z.workerTests__createDummyTask_closure0(this.completedTasks, t1));
     },
     $signature: 27
   };
-  T.workerTests__createDummyTask_closure0.prototype = {
+  Z.workerTests__createDummyTask_closure0.prototype = {
     call$0() {
       return C.JSArray_methods.add$1(this.completedTasks, this.id);
     },
     $signature: 0
   };
-  T.workerTests_closure1.prototype = {
+  Z.workerTests_closure1.prototype = {
     call$0() {
       return this.$call$body$workerTests_closure();
     },
     $call$body$workerTests_closure() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t3, t4, t5, t6, t7, t8, tasks, t1, dummy, t2, completedTasks;
+        $async$self = this, dummy, completedTasks, t3, t4, t5, t6, t7, t8, tasks, t1, t2;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -23920,11 +23987,13 @@
             case 0:
               // Function start
               t1 = {};
-              dummy = X.getWorker(null, type$.SampleWorker);
+              t2 = $.$get$_entryPoints().$index(0, "sample");
+              t2.toString;
+              dummy = T.SampleWorker$(t2);
               t2 = type$.JSArray_int;
               completedTasks = H._setArrayType([], t2);
               t1.taskId = 0;
-              t1 = new T.workerTests_closure_createDummyTask(t1, dummy, completedTasks);
+              t1 = new Z.workerTests_closure_createDummyTask(t1, dummy, completedTasks);
               t3 = type$.dynamic;
               $async$goto = 2;
               return P._asyncAwait(P.Future_Future$delayed(P.Duration$(0, 5, 0), t3), $async$call$0);
@@ -24053,24 +24122,24 @@
     },
     $signature: 1
   };
-  T.workerTests_closure_createDummyTask.prototype = {
+  Z.workerTests_closure_createDummyTask.prototype = {
     call$1$milliseconds(milliseconds) {
       var t1 = ++this._box_1.taskId;
-      return this.dummy.send$1$2(1, [milliseconds], type$.dynamic).whenComplete$1(new T.workerTests__createDummyTask_closure(this.completedTasks, t1));
+      return this.dummy.send$1$2(1, [milliseconds], type$.dynamic).whenComplete$1(new Z.workerTests__createDummyTask_closure(this.completedTasks, t1));
     },
     $signature: 27
   };
-  T.workerTests__createDummyTask_closure.prototype = {
+  Z.workerTests__createDummyTask_closure.prototype = {
     call$0() {
       return C.JSArray_methods.add$1(this.completedTasks, this.id);
     },
     $signature: 0
   };
-  T.workerTests_closure2.prototype = {
+  Z.workerTests_closure2.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        t1, t2, cache, $async$temp1;
+        cache, t2, t1, $async$temp1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -24078,7 +24147,9 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              cache = X.getWorker(null, type$.CacheWorker);
+              t1 = $.$get$_entryPoints().$index(0, "cache");
+              t1.toString;
+              cache = O.CacheWorker$(t1);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -24124,11 +24195,11 @@
     },
     $signature: 1
   };
-  T.workerTests_closure3.prototype = {
+  Z.workerTests_closure3.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        t1, i, primeWorker, $async$temp1;
+        primeWorker, i, t1, $async$temp1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -24136,7 +24207,9 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              primeWorker = X.getWorker(null, type$.PrimeWorker);
+              t1 = $.$get$_entryPoints().$index(0, "prime");
+              t1.toString;
+              primeWorker = E.PrimeWorker$(t1, C.List_empty0);
               $async$goto = 2;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 2:
@@ -24174,11 +24247,11 @@
     },
     $signature: 1
   };
-  T.workerTests_closure4.prototype = {
+  Z.workerTests_closure4.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        computedPrimes, t1, primeWorker;
+        primeWorker, computedPrimes, t1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -24186,7 +24259,9 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              primeWorker = X.getWorker(null, type$.PrimeWorker);
+              t1 = $.$get$_entryPoints().$index(0, "prime");
+              t1.toString;
+              primeWorker = E.PrimeWorker$(t1, C.List_empty0);
               $async$goto = 2;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 2:
@@ -24208,11 +24283,11 @@
     },
     $signature: 1
   };
-  T.workerTests_closure5.prototype = {
+  Z.workerTests_closure5.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        t1, shared, initialStats, primeWorker, i, computedPrimes, stats, t2, cache, $async$temp1;
+        cache, shared, initialStats, primeWorker, i, computedPrimes, stats, t1, t2, $async$temp1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -24220,18 +24295,21 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              cache = X.getWorker(null, type$.CacheWorker);
+              t1 = $.$get$_entryPoints();
+              t2 = t1.$index(0, "cache");
+              t2.toString;
+              cache = O.CacheWorker$(t2);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
               // returning from await.
-              t1 = cache._channel;
-              if (t1 == null)
+              t2 = cache._channel;
+              if (t2 == null)
                 shared = null;
               else {
-                t1 = t1._sendPort;
-                t1.toString;
-                shared = N._JsForwardChannel$(t1);
+                t2 = t2._sendPort;
+                t2.toString;
+                shared = N._JsForwardChannel$(t2);
               }
               G.expect(shared, C.C__IsNotNull, null);
               $async$goto = 3;
@@ -24244,7 +24322,17 @@
               G.expect(initialStats.expired, C._OrderingMatcher_sey, null);
               G.expect(initialStats.size, C._OrderingMatcher_sey, null);
               G.expect(initialStats.maxSize, C._OrderingMatcher_sey, null);
-              primeWorker = X.getWorker(cache, type$.PrimeWorker);
+              t1 = t1.$index(0, "prime");
+              t1.toString;
+              t2 = cache._channel;
+              if (t2 == null)
+                t2 = null;
+              else {
+                t2 = t2._sendPort;
+                t2.toString;
+                t2 = N._JsForwardChannel$(t2)._sendPort;
+              }
+              primeWorker = E.PrimeWorker$(t1, [t2]);
               $async$goto = 4;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 4:
@@ -24303,11 +24391,11 @@
     },
     $signature: 1
   };
-  T.workerTests_closure6.prototype = {
+  Z.workerTests_closure6.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        cacheStats, primeWorker, firstPerf, t1, t2, t3, secondPerf, cache;
+        cache, cacheStats, primeWorker, firstPerf, t3, secondPerf, t1, t2;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -24315,7 +24403,10 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              cache = X.getWorker(null, type$.CacheWorker);
+              t1 = $.$get$_entryPoints();
+              t2 = t1.$index(0, "cache");
+              t2.toString;
+              cache = O.CacheWorker$(t2);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -24330,15 +24421,25 @@
               G.expect(cacheStats.expired, C._OrderingMatcher_sey, null);
               G.expect(cacheStats.size, C._OrderingMatcher_sey, null);
               G.expect(cacheStats.maxSize, C._OrderingMatcher_sey, null);
-              primeWorker = X.getWorker(cache, type$.PrimeWorker);
+              t1 = t1.$index(0, "prime");
+              t1.toString;
+              t2 = cache._channel;
+              if (t2 == null)
+                t2 = null;
+              else {
+                t2 = t2._sendPort;
+                t2.toString;
+                t2 = N._JsForwardChannel$(t2)._sendPort;
+              }
+              primeWorker = E.PrimeWorker$(t1, [t2]);
               $async$goto = 4;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 4:
               // returning from await.
               firstPerf = F.PerfCounter$("with empty cache");
-              t1 = type$.Null;
+              t2 = type$.Null;
               $async$goto = 5;
-              return P._asyncAwait(firstPerf.measure$1$1(new T.workerTests__closure(primeWorker), t1), $async$call$0);
+              return P._asyncAwait(firstPerf.measure$1$1(new Z.workerTests__closure(primeWorker), t2), $async$call$0);
             case 5:
               // returning from await.
               $async$goto = 6;
@@ -24349,13 +24450,13 @@
               G.expect(cacheStats.hit, C._OrderingMatcher_sey, null);
               G.expect(cacheStats.miss, C._OrderingMatcher_ifx, null);
               G.expect(cacheStats.expired, C._OrderingMatcher_sey, null);
-              t2 = cacheStats.size;
-              G.expect(t2, C._OrderingMatcher_ifx, null);
+              t1 = cacheStats.size;
+              G.expect(t1, C._OrderingMatcher_ifx, null);
               t3 = cacheStats.maxSize;
-              G.expect(t3, new D._DeepMatcher(t2, 100), null);
+              G.expect(t3, new D._DeepMatcher(t1, 100), null);
               secondPerf = F.PerfCounter$("with full cache");
               $async$goto = 7;
-              return P._asyncAwait(secondPerf.measure$1$1(new T.workerTests__closure0(primeWorker), t1), $async$call$0);
+              return P._asyncAwait(secondPerf.measure$1$1(new Z.workerTests__closure0(primeWorker), t2), $async$call$0);
             case 7:
               // returning from await.
               $async$goto = 8;
@@ -24389,7 +24490,7 @@
     },
     $signature: 1
   };
-  T.workerTests__closure.prototype = {
+  Z.workerTests__closure.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
@@ -24431,7 +24532,7 @@
     },
     $signature: 1
   };
-  T.workerTests__closure0.prototype = {
+  Z.workerTests__closure0.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
@@ -24473,11 +24574,11 @@
     },
     $signature: 1
   };
-  T.workerTests_closure7.prototype = {
+  Z.workerTests_closure7.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
-        $async$handler = 1, $async$currentError, $async$next = [], e, e0, e1, e2, exception, t1, rogue, $async$exception, $async$exception1;
+        $async$handler = 1, $async$currentError, $async$next = [], rogue, e, e0, e1, e2, exception, t1, $async$exception, $async$exception1;
       var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -24487,7 +24588,9 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              rogue = X.getWorker(null, type$.RogueWorker);
+              t1 = $.$get$_entryPoints().$index(0, "rogue");
+              t1.toString;
+              rogue = U.RogueWorker$(t1);
               $async$handler = 3;
               $async$goto = 6;
               return P._asyncAwait(rogue.send$1$1(1, type$.dynamic), $async$call$0);
@@ -24575,6 +24678,68 @@
     },
     $signature: 1
   };
+  Z.workerTests_closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.Null),
+        bitcoin, eur, t2, gbp, usd, t1, $async$temp1;
+      var $async$call$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return P._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_entryPoints().$index(0, "bitcoin");
+              t1.toString;
+              bitcoin = new O.BitcoinWorker(t1, C.List_empty0);
+              bitcoin.Worker$3$args$id(t1, C.List_empty0, null);
+              t1 = type$.nullable_double;
+              $async$goto = 2;
+              return P._asyncAwait(bitcoin.send$1$2(1, ["EUR"], t1), $async$call$0);
+            case 2:
+              // returning from await.
+              eur = $async$result;
+              G.expect(eur, C.C__IsNotNull, null);
+              t2 = type$.TypeMatcher_double;
+              G.expect(eur, new M.TypeMatcher(t2), null);
+              G.expect(eur, C._OrderingMatcher_ifx, null);
+              $async$goto = 3;
+              return P._asyncAwait(bitcoin.send$1$2(1, ["GBP"], t1), $async$call$0);
+            case 3:
+              // returning from await.
+              gbp = $async$result;
+              G.expect(gbp, C.C__IsNotNull, null);
+              G.expect(gbp, new M.TypeMatcher(t2), null);
+              G.expect(gbp, C._OrderingMatcher_ifx, null);
+              $async$goto = 4;
+              return P._asyncAwait(bitcoin.send$1$2(1, ["USD"], t1), $async$call$0);
+            case 4:
+              // returning from await.
+              usd = $async$result;
+              G.expect(usd, C.C__IsNotNull, null);
+              G.expect(usd, new M.TypeMatcher(t2), null);
+              G.expect(usd, C._OrderingMatcher_ifx, null);
+              eur.toString;
+              gbp.toString;
+              G.expect(eur, new V._OrderingMatcher(gbp, false, false, true, "a value greater than", true), null);
+              usd.toString;
+              G.expect(eur, new V._OrderingMatcher(usd, false, true, false, "a value less than", true), null);
+              $async$temp1 = G;
+              $async$goto = 5;
+              return P._asyncAwait(bitcoin.send$1$2(1, ["RUB"], t1), $async$call$0);
+            case 5:
+              // returning from await.
+              $async$temp1.expect($async$result, C.C__IsNull, null);
+              bitcoin.stop$0(0);
+              // implicit return
+              return P._asyncReturn(null, $async$completer);
+          }
+      });
+      return P._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 1
+  };
   (function aliases() {
     var _ = J.Interceptor.prototype;
     _.super$Interceptor$toString = _.toString$0;
@@ -24613,84 +24778,84 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _instance_2_u = hunkHelpers._instance_2u,
       _instance_1_u = hunkHelpers._instance_1u;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 109);
-    _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 57, 0, 0);
-    _static_0(H, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 33);
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 16);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 16);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 16);
-    _static_1(P, "async_Future__kTrue$closure", "Future__kTrue", 12);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 108);
+    _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 53, 0, 0);
+    _static_0(H, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 34);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 17);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 17);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 17);
+    _static_1(P, "async_Future__kTrue$closure", "Future__kTrue", 14);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
-    _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 9);
-    _static_2(P, "async___nullErrorHandler$closure", "_nullErrorHandler", 11);
+    _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 8);
+    _static_2(P, "async___nullErrorHandler$closure", "_nullErrorHandler", 9);
     _static_0(P, "async___nullDoneHandler$closure", "_nullDoneHandler", 0);
-    _static(P, "async___rootHandleUncaughtError$closure", 5, null, ["call$5"], ["_rootHandleUncaughtError"], 111, 0);
+    _static(P, "async___rootHandleUncaughtError$closure", 5, null, ["call$5"], ["_rootHandleUncaughtError"], 110, 0);
     _static(P, "async___rootRun$closure", 4, null, ["call$1$4", "call$4"], ["_rootRun", function($self, $parent, zone, f) {
       return P._rootRun($self, $parent, zone, f, type$.dynamic);
-    }], 112, 1);
+    }], 111, 1);
     _static(P, "async___rootRunUnary$closure", 5, null, ["call$2$5", "call$5"], ["_rootRunUnary", function($self, $parent, zone, f, arg) {
       return P._rootRunUnary($self, $parent, zone, f, arg, type$.dynamic, type$.dynamic);
-    }], 113, 1);
+    }], 112, 1);
     _static(P, "async___rootRunBinary$closure", 6, null, ["call$3$6", "call$6"], ["_rootRunBinary", function($self, $parent, zone, f, arg1, arg2) {
       return P._rootRunBinary($self, $parent, zone, f, arg1, arg2, type$.dynamic, type$.dynamic, type$.dynamic);
-    }], 114, 1);
+    }], 113, 1);
     _static(P, "async___rootRegisterCallback$closure", 4, null, ["call$1$4", "call$4"], ["_rootRegisterCallback", function($self, $parent, zone, f) {
       return P._rootRegisterCallback($self, $parent, zone, f, type$.dynamic);
-    }], 115, 0);
+    }], 114, 0);
     _static(P, "async___rootRegisterUnaryCallback$closure", 4, null, ["call$2$4", "call$4"], ["_rootRegisterUnaryCallback", function($self, $parent, zone, f) {
       return P._rootRegisterUnaryCallback($self, $parent, zone, f, type$.dynamic, type$.dynamic);
-    }], 116, 0);
+    }], 115, 0);
     _static(P, "async___rootRegisterBinaryCallback$closure", 4, null, ["call$3$4", "call$4"], ["_rootRegisterBinaryCallback", function($self, $parent, zone, f) {
       return P._rootRegisterBinaryCallback($self, $parent, zone, f, type$.dynamic, type$.dynamic, type$.dynamic);
-    }], 117, 0);
-    _static(P, "async___rootErrorCallback$closure", 5, null, ["call$5"], ["_rootErrorCallback"], 118, 0);
-    _static(P, "async___rootScheduleMicrotask$closure", 4, null, ["call$4"], ["_rootScheduleMicrotask"], 119, 0);
-    _static(P, "async___rootCreateTimer$closure", 5, null, ["call$5"], ["_rootCreateTimer"], 120, 0);
-    _static(P, "async___rootCreatePeriodicTimer$closure", 5, null, ["call$5"], ["_rootCreatePeriodicTimer"], 121, 0);
-    _static(P, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 24, 0);
-    _static_1(P, "async___printToZone$closure", "_printToZone", 122);
-    _static(P, "async___rootFork$closure", 5, null, ["call$5"], ["_rootFork"], 123, 0);
+    }], 116, 0);
+    _static(P, "async___rootErrorCallback$closure", 5, null, ["call$5"], ["_rootErrorCallback"], 117, 0);
+    _static(P, "async___rootScheduleMicrotask$closure", 4, null, ["call$4"], ["_rootScheduleMicrotask"], 118, 0);
+    _static(P, "async___rootCreateTimer$closure", 5, null, ["call$5"], ["_rootCreateTimer"], 119, 0);
+    _static(P, "async___rootCreatePeriodicTimer$closure", 5, null, ["call$5"], ["_rootCreatePeriodicTimer"], 120, 0);
+    _static(P, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 43, 0);
+    _static_1(P, "async___printToZone$closure", "_printToZone", 121);
+    _static(P, "async___rootFork$closure", 5, null, ["call$5"], ["_rootFork"], 122, 0);
     var _;
     _instance_0_u(_ = P._BroadcastSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
-    _instance_1_i(_ = P._BroadcastStreamController.prototype, "get$add", "add$1", 17);
+    _instance_1_i(_ = P._BroadcastStreamController.prototype, "get$add", "add$1", 19);
     _instance(_, "get$addError", 0, 1, function() {
       return [null];
-    }, ["call$2", "call$1"], ["addError$2", "addError$1"], 92, 0, 0);
-    _instance_0_i(_, "get$close", "close$0", 35);
+    }, ["call$2", "call$1"], ["addError$2", "addError$1"], 86, 0, 0);
+    _instance_0_i(_, "get$close", "close$0", 24);
     _instance(P._AsyncCompleter.prototype, "get$complete", 1, 0, function() {
       return [null];
-    }, ["call$1", "call$0"], ["complete$1", "complete$0"], 77, 0, 0);
-    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 11);
-    _instance_1_u(_ = P._StreamController.prototype, "get$_async$_add", "_async$_add$1", 17);
-    _instance_2_u(_, "get$_addError", "_addError$2", 11);
+    }, ["call$1", "call$0"], ["complete$1", "complete$0"], 70, 0, 0);
+    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 9);
+    _instance_1_u(_ = P._StreamController.prototype, "get$_async$_add", "_async$_add$1", 19);
+    _instance_2_u(_, "get$_addError", "_addError$2", 9);
     _instance_0_u(_, "get$_async$_close", "_async$_close$0", 0);
     _instance_0_u(_ = P._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(_ = P._BufferingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 17);
-    _instance_2_u(_, "get$_onError", "_onError$2", 11);
+    _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 19);
+    _instance_2_u(_, "get$_onError", "_onError$2", 9);
     _instance_0_u(_, "get$_async$_onDone", "_async$_onDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 124);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 125);
-    _instance_1_i(P._LinkedHashSet.prototype, "get$contains", "contains$1", 12);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 123);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 124);
+    _instance_1_i(P._LinkedHashSet.prototype, "get$contains", "contains$1", 14);
     _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 4);
-    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 34, 0);
-    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 34, 0);
+    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 36, 0);
+    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 36, 0);
     _instance_0_u(_ = L.StreamGroup.prototype, "get$_onListen", "_onListen$0", 0);
     _instance_0_u(_, "get$_onCancelBroadcast", "_onCancelBroadcast$0", 0);
-    _instance_1_i(M._DelegatingIterableBase.prototype, "get$contains", "contains$1", 12);
-    _instance(D._DeepMatcher.prototype, "get$_recursiveMatch", 0, 4, null, ["call$4"], ["_recursiveMatch$4"], 53, 0, 0);
+    _instance_1_i(M._DelegatingIterableBase.prototype, "get$contains", "contains$1", 14);
+    _instance(D._DeepMatcher.prototype, "get$_recursiveMatch", 0, 4, null, ["call$4"], ["_recursiveMatch$4"], 45, 0, 0);
     _static_1(Z, "pretty_print___escapeString$closure", "_escapeString", 4);
     _static_1(M, "util___getHexLiteral$closure", "_getHexLiteral", 4);
-    _static_1(N, "channel___isObject$closure", "_isObject0", 21);
-    _instance_1_u(N._JsForwardChannel.prototype, "get$_forward", "_forward$1", 13);
+    _static_1(N, "channel___isObject$closure", "_isObject0", 16);
+    _instance_1_u(N._JsForwardChannel.prototype, "get$_forward", "_forward$1", 10);
     _instance_1_u(Y.Worker0.prototype, "get$onStarted", "onStarted$1", 54);
     _instance_0_u(L.WorkerPool.prototype, "get$_schedule", "_schedule$0", 0);
     _instance_0_u(U.Invoker.prototype, "get$_onRun", "_onRun$0", 0);
-    _instance_0_u(V.LiveTestController.prototype, "get$run", "run$0", 8);
+    _instance_0_u(V.LiveTestController.prototype, "get$run", "run$0", 11);
     _instance_0_u(O.Engine.prototype, "get$run", "run$0", 81);
     _instance_1_u(_ = R.ExpandedReporter.prototype, "get$_onTestStarted", "_onTestStarted$1", 87);
     _instance_1_u(_, "get$_expanded$_onDone", "_expanded$_onDone$1", 88);
@@ -24703,7 +24868,7 @@
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Iterable, H.CastIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.Symbol, P.MapView, H.ConstantMap, H.JSInvocationMirror, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, H._Required, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H._Cell, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P._AsyncStarStreamController, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P.Stream, P._BufferingStreamSubscription, P._BroadcastStreamController, P.TimeoutException, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.StreamSubscription, P.StreamTransformerBase, P._StreamController, P._SyncStreamControllerDispatch, P._AsyncStreamControllerDispatch, P._StreamSinkWrapper, P._AddStreamState, P._DelayedEvent, P._DelayedDone, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._ZoneFunction, P._RunNullaryZoneFunction, P._RunUnaryZoneFunction, P._RunBinaryZoneFunction, P._RegisterNullaryZoneFunction, P._RegisterUnaryZoneFunction, P._RegisterBinaryZoneFunction, P._ZoneSpecification, P._ZoneDelegate, P._Zone, P._HashMapKeyIterator, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P._LinkedListIterator, P.LinkedListEntry, P.ListMixin, P._MapBaseValueIterator, P._UnmodifiableMapMixin, P._ListQueueIterator, P.SetMixin, P._SetBase_Object_SetMixin, P.Codec, P._Utf8Encoder, P._Utf8Decoder, P.DateTime, P.Duration, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.Expando, P.MapEntry, P.Null, P._StringStackTrace, P.Stopwatch, P.RuneIterator, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W._Html5NodeValidator, W.ImmutableListMixin, W.NodeValidatorBuilder, W._SimpleNodeValidator, W._SvgNodeValidator, W.FixedSizeListIterator, W._SameOriginUriPolicy, W._ValidatingTreeSanitizer, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, S.AsyncMemoizer, O.DelegatingSink, F.FutureGroup, L.StreamGroup, L._StreamGroupState, X.All, Q._QueueList_Object_ListMixin, Y.UnionSetController, M._DelegatingIterableBase, L.UnmodifiableSetMixin, G.Matcher, E.StringDescription, D._Mismatch, M.Context, O.Style, X.ParsedPath, X.PathException, O.Pool, O.PoolResource, N.JsChannel, F.PerfCounter, Y.Worker0, M.WorkerException, L.WorkerPool, X.WorkerRequest, R.WorkerResponse, X.WorkerStat, U.Chain, A.Frame, X.LazyChain, T.LazyTrace, O._Node, Y.Trace, N.UnparsedFrame, E.OutsideTestException, K.ClosedException, R.Timeout, X.Declarer, X.DuplicateTestNameException, O.Group, V.Test, U.Invoker, U._AsyncCounter, Z.LiveTest, D.Message, D.MessageType, O.Metadata, N.OperatingSystem, E.PlatformSelector, B.Runtime, U.StackTraceFormatter, G.State, G.Status, G.Result, U.Suite, E.SuitePlatform, D.TestFailure, O.Engine, E.LiveSuite, B.LiveSuiteController, R.ExpandedReporter, Y.RunnerSuiteController, U.SuiteConfiguration, X.PrintSink, O.CacheStat, F.Logger, F.SequenceReplacement]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Iterable, H.CastIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.Symbol, P.MapView, H.ConstantMap, H.JSInvocationMirror, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, H._Required, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H._Cell, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P._AsyncStarStreamController, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P.Stream, P._BufferingStreamSubscription, P._BroadcastStreamController, P.TimeoutException, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.StreamSubscription, P.StreamTransformerBase, P._StreamController, P._SyncStreamControllerDispatch, P._AsyncStreamControllerDispatch, P._StreamSinkWrapper, P._AddStreamState, P._DelayedEvent, P._DelayedDone, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._ZoneFunction, P._RunNullaryZoneFunction, P._RunUnaryZoneFunction, P._RunBinaryZoneFunction, P._RegisterNullaryZoneFunction, P._RegisterUnaryZoneFunction, P._RegisterBinaryZoneFunction, P._ZoneSpecification, P._ZoneDelegate, P._Zone, P._HashMapKeyIterator, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P._LinkedListIterator, P.LinkedListEntry, P.ListMixin, P._MapBaseValueIterator, P._UnmodifiableMapMixin, P._ListQueueIterator, P.SetMixin, P._SetBase_Object_SetMixin, P.Codec, P._Utf8Encoder, P._Utf8Decoder, P.DateTime, P.Duration, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.Expando, P.MapEntry, P.Null, P._StringStackTrace, P.Stopwatch, P.RuneIterator, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W._Html5NodeValidator, W.ImmutableListMixin, W.NodeValidatorBuilder, W._SimpleNodeValidator, W._SvgNodeValidator, W.FixedSizeListIterator, W._SameOriginUriPolicy, W._ValidatingTreeSanitizer, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, S.AsyncMemoizer, O.DelegatingSink, F.FutureGroup, L.StreamGroup, L._StreamGroupState, X.All, Q._QueueList_Object_ListMixin, Y.UnionSetController, M._DelegatingIterableBase, L.UnmodifiableSetMixin, G.Matcher, E.StringDescription, D._Mismatch, M.Context, O.Style, X.ParsedPath, X.PathException, O.Pool, O.PoolResource, N.JsChannel, F.PerfCounter, Y.Worker0, M.WorkerException, L.WorkerPool, X.WorkerRequest, R.WorkerResponse, X.WorkerStat, U.Chain, A.Frame, X.LazyChain, T.LazyTrace, O._Node, Y.Trace, N.UnparsedFrame, E.OutsideTestException, K.ClosedException, R.Timeout, X.Declarer, X.DuplicateTestNameException, O.Group, V.Test, U.Invoker, U._AsyncCounter, Z.LiveTest, D.Message, D.MessageType, O.Metadata, N.OperatingSystem, E.PlatformSelector, B.Runtime, U.StackTraceFormatter, G.State, G.Status, G.Result, U.Suite, E.SuitePlatform, D.TestFailure, O.Engine, E.LiveSuite, B.LiveSuiteController, R.ExpandedReporter, Y.RunnerSuiteController, U.SuiteConfiguration, O._IterableSet_Object_SetMixin, X.PrintSink, O.CacheStat, F.Logger, F.SequenceReplacement]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.Blob, W.DomException, W.DomImplementation, W.Event, W.Location, W.MessageChannel, W._NodeList_Interceptor_ListMixin, W.__NamedNodeMap_Interceptor_ListMixin]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
@@ -24715,8 +24880,8 @@
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
     _inheritMany(P.ListBase, [H.UnmodifiableListBase, W._ChildNodeListLazy]);
     _inheritMany(H.UnmodifiableListBase, [H.CodeUnits, P.UnmodifiableListView]);
-    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Instantiation, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._asyncStarHelper_closure0, P._SyncBroadcastStreamController__sendData_closure, P._SyncBroadcastStreamController__sendError_closure, P._SyncBroadcastStreamController__sendDone_closure, P.Future_wait_closure, P.Future_doWhile_closure, P.FutureExtensions_onError_closure0, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_Stream$fromFuture_closure, P.Stream_length_closure, P.Stream_toList_closure, P._CustomZone_bindUnaryCallback_closure, P._CustomZone_bindUnaryCallbackGuarded_closure, P._RootZone_bindUnaryCallback_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._HashMap_values_closure, P._LinkedCustomHashMap_closure, P.MapMixin_entries_closure, P.Duration_toString_sixDigits, P.Duration_toString_twoDigits, P.Uri_parseIPv6Address_error, P._Uri__makePath_closure, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W._EventStreamSubscription_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, F.FutureGroup_add_closure, L.StreamGroup__onListen_closure, L.StreamGroup__onCancel_closure, M.UnionSet__iterable_closure, M.UnionSet_contains_closure, D._DeepMatcher__compareSets_closure, Z.prettyPrint__prettyPrint, Z.prettyPrint__prettyPrint_pp, Z.prettyPrint__prettyPrint_closure, Z.prettyPrint__prettyPrint_closure0, Z.prettyPrint__prettyPrint_closure1, M.wrapMatcher_closure, M.escape_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, L.WindowsStyle_absolutePathToUri_closure, O.Pool__runOnRelease_closure, N.JsChannel_sendRequest_closure, N.JsChannel_sendStreamingRequest_closure, N._getTransferables_closure, N._getTransferables_closure0, N._getTransferables_closure1, N._openChannel_closure, N._openChannel_closure0, L.WorkerPool_stop_closure, L.WorkerPool__schedule_closure, L.WorkerPool_stats_closure, K.WorkerTask_run_closure, U.Chain_Chain$parse_closure, U.Chain_Chain$parse_closure0, U.Chain_Chain$parse_closure1, U.Chain_toTrace_closure, U.Chain_toString_closure0, U.Chain_toString__closure0, U.Chain_toString_closure, U.Chain_toString__closure, Y.Trace__parseVM_closure, Y.Trace__parseVM_closure0, Y.Trace$parseV8_closure, Y.Trace$parseV8_closure0, Y.Trace$parseJSCore_closure, Y.Trace$parseJSCore_closure0, Y.Trace$parseFirefox_closure, Y.Trace$parseFirefox_closure0, Y.Trace$parseFriendly_closure, Y.Trace$parseFriendly_closure0, Y.Trace_toString_closure0, Y.Trace_toString_closure, X.Declarer_build_closure, X.Declarer__runSetUps_closure, O.Group_forPlatform_closure, O.Group__map_closure, U.Invoker_guard_closure, U.Invoker_runTearDowns__closure0, U.Invoker__onRun___closure0, O.Metadata__validateTags_closure, O.Metadata__validateTags_closure0, E.PlatformSelector_validate__closure, E.PlatformSelector_evaluate_closure, G._expect_closure0, O.Engine_success_closure, O.Engine_closure, O.Engine_run_closure, O.Engine__runLiveTest_closure, B.LiveSuiteController_reportLiveTest_closure, R.ExpandedReporter__onTestStarted_closure, R.ExpandedReporter__onTestStarted_closure0, R.ExpandedReporter__onTestStarted_closure1, X.workerBuilders_closure, X.workerBuilders_closure0, X.workerBuilders_closure1, X.workerBuilders_closure2, F.Logger_print_closure, F.main_closure, F.main_closure0, F.main_closure1, F.main_closure2, F.main_closure3, F.main_closure4, F.main_closure5, F.poolTests__closure8, F.poolTests__closure10, F.poolTests__closure5, F.poolTests___closure, F.poolTests__closure6, F.poolTests__closure0, F.poolTests__closure2, T.workerTests_closure_createDummyTask0, T.workerTests_closure_createDummyTask]);
-    _inheritMany(H.Closure0Args, [H.nullFuture_closure, H.Primitives_initTicker_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._TimerImpl$periodic_closure, P._asyncStarHelper_closure, P._AsyncStarStreamController__resumeBody, P._AsyncStarStreamController__resumeBody_closure, P._AsyncStarStreamController_closure0, P._AsyncStarStreamController_closure1, P._AsyncStarStreamController_closure, P._AsyncStarStreamController__closure, P.Future_Future_closure, P.Future_Future$microtask_closure, P.Future_Future$delayed_closure, P.Future_forEach_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P.Stream_toList_closure0, P._StreamController__subscribe_closure, P._StreamController__recordCancel_complete, P._AddStreamState_cancel_closure, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._CustomZone_bindCallback_closure, P._CustomZone_bindCallbackGuarded_closure, P._rootHandleError_closure, P._RootZone_bindCallback_closure, P._RootZone_bindCallbackGuarded_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, L.StreamGroup_add_closure, L.StreamGroup_add_closure0, L.StreamGroup__listenToStream_closure, O.Pool_close_closure, O.Pool__onResourceReleaseAllowed_closure, F.PerfCounter_measure_closure, F.PerfCounter_measure__closure, L.WorkerPool_compute_closure, U.Chain_Chain$current_closure, U.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, X.LazyChain_toTrace_closure, O.StackZoneSpecification_chainFor_closure, O.StackZoneSpecification_chainFor_closure0, O.StackZoneSpecification__currentTrace_closure, Y.Trace_Trace$from_closure, X.Declarer_test_closure, X.Declarer_test__closure, X.Declarer_build__closure, X.Declarer__tearDownAll_closure, X.Declarer__tearDownAll__closure, U.Invoker_guard__closure, U.Invoker_runTearDowns_closure, U.Invoker_runTearDowns__closure, U.Invoker__waitForOutstandingCallbacks_closure, U.Invoker__waitForOutstandingCallbacks_closure0, U.Invoker_heartbeat_message, U.Invoker_heartbeat_closure, U.Invoker_heartbeat__closure, U.Invoker__handleError_closure, U.Invoker__handleError_closure0, U.Invoker__onRun_closure, U.Invoker__onRun__closure, U.Invoker__onRun___closure, U.Invoker__onRun____closure, U.Invoker__onRun____closure0, O.Metadata_Metadata__unresolved, E.PlatformSelector_validate_closure, G._expect_closure, B.pumpEventQueue_closure, N._declarer_closure, N._declarer__closure, O.Engine_run__closure, O.Engine_run___closure, O.Engine_run_closure0, O.Engine__runLiveTest_closure0, O.Engine__runLiveTest_closure1, O.Engine__runSkippedTest_closure, O.Engine__runSkippedTest_closure0, O.Engine__runSkippedTest_closure1, B.LiveSuiteController_close_closure, Y.RunnerSuiteController__close_closure, U.currentOSGuess_closure, F.poolTests_closure, F.poolTests__closure7, F.poolTests___closure0, F.poolTests__closure9, F.poolTests_closure0, F.poolTests__closure4, F.poolTests_closure1, F.poolTests__closure, T.workerTests_closure, T.workerTests_closure0, T.workerTests__createDummyTask_closure0, T.workerTests_closure1, T.workerTests__createDummyTask_closure, T.workerTests_closure2, T.workerTests_closure3, T.workerTests_closure4, T.workerTests_closure5, T.workerTests_closure6, T.workerTests__closure, T.workerTests__closure0, T.workerTests_closure7]);
+    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Instantiation, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._asyncStarHelper_closure0, P._SyncBroadcastStreamController__sendData_closure, P._SyncBroadcastStreamController__sendError_closure, P._SyncBroadcastStreamController__sendDone_closure, P.Future_wait_closure, P.Future_doWhile_closure, P.FutureExtensions_onError_closure0, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_Stream$fromFuture_closure, P.Stream_length_closure, P.Stream_toList_closure, P._CustomZone_bindUnaryCallback_closure, P._CustomZone_bindUnaryCallbackGuarded_closure, P._RootZone_bindUnaryCallback_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._HashMap_values_closure, P._LinkedCustomHashMap_closure, P.MapMixin_entries_closure, P.Duration_toString_sixDigits, P.Duration_toString_twoDigits, P.Uri_parseIPv6Address_error, P._Uri__makePath_closure, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W._EventStreamSubscription_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, F.FutureGroup_add_closure, L.StreamGroup__onListen_closure, L.StreamGroup__onCancel_closure, M.UnionSet__iterable_closure, M.UnionSet_contains_closure, D._DeepMatcher__compareSets_closure, Z.prettyPrint__prettyPrint, Z.prettyPrint__prettyPrint_pp, Z.prettyPrint__prettyPrint_closure, Z.prettyPrint__prettyPrint_closure0, Z.prettyPrint__prettyPrint_closure1, M.wrapMatcher_closure, M.escape_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, L.WindowsStyle_absolutePathToUri_closure, O.Pool__runOnRelease_closure, N.JsChannel_sendRequest_closure, N.JsChannel_sendStreamingRequest_closure, N._getTransferables_closure, N._getTransferables_closure0, N._getTransferables_closure1, N._openChannel_closure, N._openChannel_closure0, L.WorkerPool_stop_closure, L.WorkerPool__schedule_closure, L.WorkerPool_stats_closure, K.WorkerTask_run_closure, U.Chain_Chain$parse_closure, U.Chain_Chain$parse_closure0, U.Chain_Chain$parse_closure1, U.Chain_toTrace_closure, U.Chain_toString_closure0, U.Chain_toString__closure0, U.Chain_toString_closure, U.Chain_toString__closure, Y.Trace__parseVM_closure, Y.Trace__parseVM_closure0, Y.Trace$parseV8_closure, Y.Trace$parseV8_closure0, Y.Trace$parseJSCore_closure, Y.Trace$parseJSCore_closure0, Y.Trace$parseFirefox_closure, Y.Trace$parseFirefox_closure0, Y.Trace$parseFriendly_closure, Y.Trace$parseFriendly_closure0, Y.Trace_toString_closure0, Y.Trace_toString_closure, X.Declarer_build_closure, X.Declarer__runSetUps_closure, O.Group_forPlatform_closure, O.Group__map_closure, U.Invoker_guard_closure, U.Invoker_runTearDowns__closure0, U.Invoker__onRun___closure0, O.Metadata__validateTags_closure, O.Metadata__validateTags_closure0, E.PlatformSelector_validate__closure, E.PlatformSelector_evaluate_closure, G._expect_closure0, O.Engine_success_closure, O.Engine_closure, O.Engine_run_closure, O.Engine__runLiveTest_closure, B.LiveSuiteController_reportLiveTest_closure, R.ExpandedReporter__onTestStarted_closure, R.ExpandedReporter__onTestStarted_closure0, R.ExpandedReporter__onTestStarted_closure1, F.Logger_print_closure, F.main_closure, F.main_closure0, F.main_closure1, N.webWorkerTests__closure, N.webWorkerTests__closure0, R.poolTests__closure10, R.poolTests__closure12, R.poolTests__closure7, R.poolTests___closure0, R.poolTests__closure8, R.poolTests__closure2, R.poolTests__closure4, R.poolTests__closure0, R.poolTests___closure, Z.workerTests_closure_createDummyTask0, Z.workerTests_closure_createDummyTask]);
+    _inheritMany(H.Closure0Args, [H.nullFuture_closure, H.Primitives_initTicker_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._TimerImpl$periodic_closure, P._asyncStarHelper_closure, P._AsyncStarStreamController__resumeBody, P._AsyncStarStreamController__resumeBody_closure, P._AsyncStarStreamController_closure0, P._AsyncStarStreamController_closure1, P._AsyncStarStreamController_closure, P._AsyncStarStreamController__closure, P.Future_Future_closure, P.Future_Future$microtask_closure, P.Future_Future$delayed_closure, P.Future_forEach_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P.Stream_toList_closure0, P._StreamController__subscribe_closure, P._StreamController__recordCancel_complete, P._AddStreamState_cancel_closure, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._CustomZone_bindCallback_closure, P._CustomZone_bindCallbackGuarded_closure, P._rootHandleError_closure, P._RootZone_bindCallback_closure, P._RootZone_bindCallbackGuarded_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, L.StreamGroup_add_closure, L.StreamGroup_add_closure0, L.StreamGroup__listenToStream_closure, O.Pool_close_closure, O.Pool__onResourceReleaseAllowed_closure, F.PerfCounter_measure_closure, F.PerfCounter_measure__closure, L.WorkerPool_compute_closure, U.Chain_Chain$current_closure, U.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, X.LazyChain_toTrace_closure, O.StackZoneSpecification_chainFor_closure, O.StackZoneSpecification_chainFor_closure0, O.StackZoneSpecification__currentTrace_closure, Y.Trace_Trace$from_closure, X.Declarer_test_closure, X.Declarer_test__closure, X.Declarer_build__closure, X.Declarer__tearDownAll_closure, X.Declarer__tearDownAll__closure, U.Invoker_guard__closure, U.Invoker_runTearDowns_closure, U.Invoker_runTearDowns__closure, U.Invoker__waitForOutstandingCallbacks_closure, U.Invoker__waitForOutstandingCallbacks_closure0, U.Invoker_heartbeat_message, U.Invoker_heartbeat_closure, U.Invoker_heartbeat__closure, U.Invoker__handleError_closure, U.Invoker__handleError_closure0, U.Invoker__onRun_closure, U.Invoker__onRun__closure, U.Invoker__onRun___closure, U.Invoker__onRun____closure, U.Invoker__onRun____closure0, O.Metadata_Metadata__unresolved, E.PlatformSelector_validate_closure, G._expect_closure, B.pumpEventQueue_closure, N._declarer_closure, N._declarer__closure, O.Engine_run__closure, O.Engine_run___closure, O.Engine_run_closure0, O.Engine__runLiveTest_closure0, O.Engine__runLiveTest_closure1, O.Engine__runSkippedTest_closure, O.Engine__runSkippedTest_closure0, O.Engine__runSkippedTest_closure1, B.LiveSuiteController_close_closure, Y.RunnerSuiteController__close_closure, U.currentOSGuess_closure, N.webWorkerTests_closure, R.poolTests_closure, R.poolTests__closure9, R.poolTests___closure1, R.poolTests__closure11, R.poolTests_closure0, R.poolTests__closure6, R.poolTests_closure1, R.poolTests__closure1, R.poolTests_closure2, R.poolTests__closure, Z.workerTests_closure, Z.workerTests_closure0, Z.workerTests__createDummyTask_closure0, Z.workerTests_closure1, Z.workerTests__createDummyTask_closure, Z.workerTests_closure2, Z.workerTests_closure3, Z.workerTests_closure4, Z.workerTests_closure5, Z.workerTests_closure6, Z.workerTests__closure, Z.workerTests__closure0, Z.workerTests_closure7, Z.workerTests_closure8]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable, P._HashMapKeyIterable, P._MapBaseValueIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P.ListQueue]);
     _inherit(H.EfficientLengthMappedIterable, H.MappedIterable);
@@ -24728,7 +24893,7 @@
     _inherit(H.ConstantMapView, P.UnmodifiableMapView);
     _inherit(H.ConstantStringMap, H.ConstantMap);
     _inherit(H.Instantiation1, H.Instantiation);
-    _inheritMany(H.Closure2Args, [H.Primitives_functionNoSuchMethod_closure, H.JsLinkedHashMap_addAll_closure, H.initHooks_closure0, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait_handleError, P.FutureExtensions_onError_closure, P._Future__chainForeignFuture_closure0, P.Stream_Stream$fromFuture_closure0, P.HashMap_HashMap$from_closure, P.LinkedHashMap_LinkedHashMap$from_closure, P.MapBase_mapToString_closure, P.NoSuchMethodError_toString_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._StructuredClone_walk_closure, P._StructuredClone_walk_closure0, P._AcceptStructuredClone_walk_closure, F.FutureGroup_add_closure0, L.StreamGroup__onCancelBroadcast_closure, Y.mergeMaps_closure, M.UnionSet_length_closure, D._DeepMatcher__compareSets_closure0, D._DeepMatcher__recursiveMatch_closure, D._DeepMatcher__recursiveMatch_closure0, D._DeepMatcher__recursiveMatch_closure1, D._DeepMatcher__recursiveMatch_closure2, D._DeepMatcher__recursiveMatch_closure3, D._Mismatch$simple_closure, O.Pool__runOnRelease_closure0, L.WorkerPool__schedule_closure0, K.WorkerTask_run_closure0, A.Frame_Frame$parseV8_closure_parseLocation, O.Metadata_Metadata_closure, O.Metadata_validatePlatformSelectors_closure, O.Metadata_merge_closure, O.Metadata_merge_closure0, O.Metadata_forPlatform_closure, O.Engine_closure0, F.poolTests__closure1, F.poolTests__closure3]);
+    _inheritMany(H.Closure2Args, [H.Primitives_functionNoSuchMethod_closure, H.JsLinkedHashMap_addAll_closure, H.initHooks_closure0, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait_handleError, P.FutureExtensions_onError_closure, P._Future__chainForeignFuture_closure0, P.Stream_Stream$fromFuture_closure0, P.HashMap_HashMap$from_closure, P.LinkedHashMap_LinkedHashMap$from_closure, P.MapBase_mapToString_closure, P.NoSuchMethodError_toString_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._StructuredClone_walk_closure, P._StructuredClone_walk_closure0, P._AcceptStructuredClone_walk_closure, F.FutureGroup_add_closure0, L.StreamGroup__onCancelBroadcast_closure, Y.mergeMaps_closure, M.UnionSet_length_closure, D._DeepMatcher__compareSets_closure0, D._DeepMatcher__recursiveMatch_closure, D._DeepMatcher__recursiveMatch_closure0, D._DeepMatcher__recursiveMatch_closure1, D._DeepMatcher__recursiveMatch_closure2, D._DeepMatcher__recursiveMatch_closure3, D._Mismatch$simple_closure, O.Pool__runOnRelease_closure0, L.WorkerPool__schedule_closure0, K.WorkerTask_run_closure0, A.Frame_Frame$parseV8_closure_parseLocation, O.Metadata_Metadata_closure, O.Metadata_validatePlatformSelectors_closure, O.Metadata_merge_closure, O.Metadata_merge_closure0, O.Metadata_forPlatform_closure, O.Engine_closure0, R.poolTests__closure3, R.poolTests__closure5]);
     _inherit(H.NullError, P.TypeError);
     _inheritMany(H.TearOffClosure, [H.StaticClosure, H.BoundClosure]);
     _inherit(H._AssertionError, P.AssertionError);
@@ -24804,9 +24969,9 @@
     _inherit(V.LiveTestController, Z.LiveTest);
     _inherit(B._LiveSuite, E.LiveSuite);
     _inherit(Y.RunnerSuite, U.Suite);
-    _inherit(O._IterableSet_SetMixin_UnmodifiableSetMixin, P.SetMixin);
-    _inherit(O.IterableSet, O._IterableSet_SetMixin_UnmodifiableSetMixin);
-    _inheritMany(Y.Worker0, [O.CacheWorker, E.PrimeWorker, U.RogueWorker, T.SampleWorker]);
+    _inherit(O._IterableSet_Object_SetMixin_UnmodifiableSetMixin, O._IterableSet_Object_SetMixin);
+    _inherit(O.IterableSet, O._IterableSet_Object_SetMixin_UnmodifiableSetMixin);
+    _inheritMany(Y.Worker0, [O.BitcoinWorker, O.CacheWorker, A.PiDigitsWorker, E.PrimeWorker, U.RogueWorker, T.SampleWorker]);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
@@ -24826,19 +24991,20 @@
     _mixin(Q._QueueList_Object_ListMixin, P.ListMixin);
     _mixin(M._UnionSet_SetBase_UnmodifiableSetMixin, L.UnmodifiableSetMixin);
     _mixin(L._UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin, L.UnmodifiableSetMixin);
-    _mixin(O._IterableSet_SetMixin_UnmodifiableSetMixin, L.UnmodifiableSetMixin);
+    _mixin(O._IterableSet_Object_SetMixin, P.SetMixin);
+    _mixin(O._IterableSet_Object_SetMixin_UnmodifiableSetMixin, L.UnmodifiableSetMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "Future<Null>()", "Null()", "bool(String)", "String(String)", "~(Description,bool)", "Null(@)", "Frame()", "Future<~>()", "~(@)", "Frame(String)", "~(Object,StackTrace)", "bool(Object?)", "~(MessageEvent)", "bool(Object)", "Trace()", "~(~())", "~(Object?)", "Chain()", "~(State)", "~(@,@)", "bool(@)", "Null(Object,StackTrace)", "~(PlatformSelector,Metadata)", "~(Zone,ZoneDelegate,Zone,String)", "Null(@,@)", "~(MouseEvent)", "Future<@>({milliseconds!int})", "Metadata(Metadata,Metadata)", "GroupEntry?(GroupEntry)", "@()", "SampleWorker([@])", "String(int)", "int()", "bool(Element,String,String,_Html5NodeValidator)", "Future<@>()", "int(int,WorkerStat)", "String(Frame)", "~(Uint8List,String,int)", "int(Frame)", "~(Event)", "bool(NodeValidator)", "Trace(String)", "CacheWorker([@])", "Null(Object?,StackTrace)", "RogueWorker([@])", "PrimeWorker([@])", "Future<@>(RogueWorker)", "_Future<@>(@)", "String(@)", "String(Match)", "String(String?)", "Future<List<@>>()", "_Mismatch?(Object?,Object?,String,int)", "~(Channel)", "@(@,@)", "~(Node,Node?)", "bool(Pattern[int])", "List<Frame>(Trace)", "int(Trace)", "bool(Node)", "String(Trace)", "Uint8List(@,@)", "int(int,int)", "Frame(String,String)", "~(String[@])", "~(String,int)", "GroupEntry(GroupEntry)", "@(Function)", "~(Symbol0,@)", "~(Object?,Object?)", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "~(~)", "String()", "String(Object?)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~([Object?])", "~(bool)", "String(@,Matcher,String?,Map<@,@>,bool)", "Future<bool?>?()", "Future<bool?>()", "bool(LiveTest)", "Null(List<@>)", "0^(0^,0^)<num>", "Future<@>?()", "bool/()", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "OperatingSystem()", "~(Object[StackTrace?])", "_Future<@>?()", "~(int,@)", "Null(@,StackTrace)", "bool(SequenceReplacement)", "Null(~())", "PrimeWorker()", "Future<bool>(PrimeWorker)", "String(Object?,int,Set<Object?>,bool)", "SampleWorker()", "~(Timer)", "bool(SampleWorker)", "Future<@>(SampleWorker)", "RogueWorker()", "~(RunnerSuite)", "@(String)", "@(@,String)", "int(@,@)", "@(@)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?Object?Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?Object?Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "bool(Object?,Object?)", "int(Object?)", "~(String,@)", "bool(WorkerStat)"],
+    types: ["~()", "Future<Null>()", "Null()", "bool(String)", "String(String)", "~(Description,bool)", "Null(@)", "Frame()", "~(@)", "~(Object,StackTrace)", "~(MessageEvent)", "Future<~>()", "Frame(String)", "Trace()", "bool(Object?)", "bool(Object)", "bool(@)", "~(~())", "Null(Object,StackTrace)", "~(Object?)", "~(@,@)", "Chain()", "~(Event)", "~(State)", "Future<@>()", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "Future<@>({milliseconds!int})", "GroupEntry?(GroupEntry)", "int(int,WorkerStat)", "Null(@,@)", "Future<@>(RogueWorker)", "~(MouseEvent)", "@()", "int()", "String(int)", "bool(Element,String,String,_Html5NodeValidator)", "String(Frame)", "int(Frame)", "Trace(String)", "~(Uint8List,String,int)", "Null(Object?,StackTrace)", "bool(NodeValidator)", "~(Zone,ZoneDelegate,Zone,String)", "@(@,@)", "_Mismatch?(Object?,Object?,String,int)", "~(Node,Node?)", "String(Object?,int,Set<Object?>,bool)", "String(Object?)", "String(@)", "String(Match)", "String(String?)", "Future<List<@>>()", "bool(Pattern[int])", "~(Channel)", "bool(Node)", "Uint8List(@,@)", "@(String)", "List<Frame>(Trace)", "int(Trace)", "int(int,int)", "String(Trace)", "~(String[@])", "~(String,int)", "Frame(String,String)", "~(Symbol0,@)", "~(Object?,Object?)", "GroupEntry(GroupEntry)", "@(Function)", "_Future<@>(@)", "~([Object?])", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "~(~)", "String()", "@(@,String)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~(bool)", "bool/()", "String(@,Matcher,String?,Map<@,@>,bool)", "Future<bool?>?()", "Future<bool?>()", "bool(LiveTest)", "Null(List<@>)", "0^(0^,0^)<num>", "Future<@>?()", "~(Object[StackTrace?])", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "OperatingSystem()", "bool(SequenceReplacement)", "_Future<@>?()", "PrimeWorker()", "Future<bool>(PrimeWorker)", "bool(WorkerStat)", "SampleWorker()", "~(Timer)", "bool(SampleWorker)", "Future<@>(SampleWorker)", "RogueWorker()", "~(int,@)", "Null(@,StackTrace)", "PiDigitsWorker()", "Future<@>(PiDigitsWorker)", "int(int)", "@(@)", "int(@,@)", "~(String,@)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?Object?Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?Object?Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "bool(Object?,Object?)", "int(Object?)", "Null(~())", "~(RunnerSuite)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"Symbol":{"Symbol0":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_ConstantMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteData":{"NativeTypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeFloat64List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"_Future":{"Future":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"]},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"TimeoutException":{"Exception":[]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"]},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamControllerAddStreamState":{"_AddStreamState":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapMixin":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","UnmodifiableListMixin.E":"1"},"IterableBase":{"Iterable":["1"]},"LinkedList":{"Iterable":["1"],"Iterable.E":"1"},"_LinkedListIterator":{"Iterator":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"ListIterable":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetMixin":{"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"MessageEvent":{"Event":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"File":{"Blob":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlDocument":{"Node":[],"EventTarget":[]},"MessagePort":{"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Worker":{"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListMixin":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","QueueList.E":"1"},"UnionSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"JsChannel":{"Channel":[]},"_JsForwardChannel":{"Channel":[]},"WorkerException":{"Exception":[]},"WorkerTask":{"LinkedListEntry":["WorkerTask<1>"],"LinkedListEntry.E":"WorkerTask<1>"},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"CacheWorker":{"Worker0":[],"Cache":[]},"PrimeWorker":{"Worker0":[]},"RogueWorker":{"Worker0":[]},"SampleWorker":{"Worker0":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]}}'));
-  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"SetBase":1,"_ListBase_Object_ListMixin":1,"_SetBase_Object_SetMixin":1,"__SetBase_Object_SetMixin":1,"_EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin":1,"_QueueList_Object_ListMixin":1,"_UnionSet_SetBase_UnmodifiableSetMixin":1,"_IterableSet_SetMixin_UnmodifiableSetMixin":1}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"Symbol":{"Symbol0":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_ConstantMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteData":{"NativeTypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeFloat64List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"_Future":{"Future":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"]},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"TimeoutException":{"Exception":[]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"]},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamControllerAddStreamState":{"_AddStreamState":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapMixin":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","UnmodifiableListMixin.E":"1"},"IterableBase":{"Iterable":["1"]},"LinkedList":{"Iterable":["1"],"Iterable.E":"1"},"_LinkedListIterator":{"Iterator":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"ListIterable":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"MessageEvent":{"Event":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"File":{"Blob":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlDocument":{"Node":[],"EventTarget":[]},"MessagePort":{"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Worker":{"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListMixin":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","QueueList.E":"1"},"UnionSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"JsChannel":{"Channel":[]},"_JsForwardChannel":{"Channel":[]},"WorkerException":{"Exception":[]},"WorkerTask":{"LinkedListEntry":["WorkerTask<1>"],"LinkedListEntry.E":"WorkerTask<1>"},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"BitcoinWorker":{"Worker0":[]},"CacheWorker":{"Worker0":[],"Cache":[]},"PiDigitsWorker":{"Worker0":[]},"PrimeWorker":{"Worker0":[]},"RogueWorker":{"Worker0":[]},"SampleWorker":{"Worker0":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]}}'));
+  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"SetBase":1,"_ListBase_Object_ListMixin":1,"_SetBase_Object_SetMixin":1,"__SetBase_Object_SetMixin":1,"_EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin":1,"_QueueList_Object_ListMixin":1,"_UnionSet_SetBase_UnmodifiableSetMixin":1,"_IterableSet_Object_SetMixin":1,"_IterableSet_Object_SetMixin_UnmodifiableSetMixin":1}'));
   var string$ = {
     ______: "===== asynchronous gap ===========================\n",
     Cannoteff: "Cannot extract a file path from a URI with a fragment component",
@@ -24858,7 +25024,6 @@
       BooleanSelector: findType("BooleanSelector"),
       ButtonElement: findType("ButtonElement"),
       CacheStat: findType("CacheStat"),
-      CacheWorker: findType("CacheWorker"),
       Chain: findType("Chain"),
       Channel: findType("Channel"),
       Comparable_dynamic: findType("Comparable<@>"),
@@ -24942,6 +25107,7 @@
       Null: findType("Null"),
       Object: findType("Object"),
       Pattern: findType("Pattern"),
+      PiDigitsWorker: findType("PiDigitsWorker"),
       PlatformSelector: findType("PlatformSelector"),
       PoolResource: findType("PoolResource"),
       PrimeWorker: findType("PrimeWorker"),
@@ -24976,6 +25142,7 @@
       Trace_Function_String: findType("Trace(String)"),
       Type: findType("Type"),
       TypeError: findType("TypeError"),
+      TypeMatcher_double: findType("TypeMatcher<double>"),
       Uint8List: findType("Uint8List"),
       UnionSetController_LiveTest: findType("UnionSetController<LiveTest>"),
       UnionSet_LiveTest: findType("UnionSet<LiveTest>"),
@@ -24990,7 +25157,6 @@
       WhereTypeIterable_GroupEntry: findType("WhereTypeIterable<GroupEntry>"),
       WhereTypeIterable_String: findType("WhereTypeIterable<String>"),
       WorkerStat: findType("WorkerStat"),
-      Worker_Function_$opt_dynamic: findType("Worker0([@])"),
       Zone: findType("Zone"),
       _AsyncBroadcastStreamController_LiveSuite: findType("_AsyncBroadcastStreamController<LiveSuite>"),
       _AsyncBroadcastStreamController_RunnerSuite: findType("_AsyncBroadcastStreamController<RunnerSuite>"),
@@ -24998,6 +25164,7 @@
       _AsyncCompleter_Channel: findType("_AsyncCompleter<Channel>"),
       _AsyncCompleter_List_dynamic: findType("_AsyncCompleter<List<@>>"),
       _AsyncCompleter_PoolResource: findType("_AsyncCompleter<PoolResource>"),
+      _AsyncCompleter_String: findType("_AsyncCompleter<String>"),
       _AsyncCompleter_dynamic: findType("_AsyncCompleter<@>"),
       _AsyncCompleter_void: findType("_AsyncCompleter<~>"),
       _Attr: findType("_Attr"),
@@ -25006,6 +25173,7 @@
       _Future_Channel: findType("_Future<Channel>"),
       _Future_List_dynamic: findType("_Future<List<@>>"),
       _Future_PoolResource: findType("_Future<PoolResource>"),
+      _Future_String: findType("_Future<String>"),
       _Future_bool: findType("_Future<bool>"),
       _Future_dynamic: findType("_Future<@>"),
       _Future_int: findType("_Future<int>"),
@@ -25037,9 +25205,9 @@
       int: findType("int"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
-      nullable_CacheWorker: findType("CacheWorker?"),
       nullable_Chain: findType("Chain?"),
       nullable_Declarer: findType("Declarer?"),
+      nullable_FutureOr_String: findType("String/?"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_Future_RunnerSuite: findType("Future<RunnerSuite>?"),
       nullable_Future_nullable_bool: findType("Future<bool?>?"),
@@ -25072,6 +25240,7 @@
       nullable__Mismatch_Function_4_nullable_Object_and_nullable_Object_and_String_and_int: findType("_Mismatch?(Object?,Object?,String,int)"),
       nullable_bool: findType("bool?"),
       nullable_bool_Function_Object: findType("bool(Object)?"),
+      nullable_double: findType("double?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
       nullable_void_Function: findType("~()?"),
       nullable_void_Function_Event: findType("~(Event)?"),
@@ -25313,16 +25482,12 @@
     C.Timeout_null_null = new R.Timeout(null, null);
     C.Type_ByteBuffer_RkP = H.typeLiteral("ByteBuffer");
     C.Type_ByteData_zNC = H.typeLiteral("ByteData");
-    C.Type_CacheWorker_VzM = H.typeLiteral("CacheWorker");
     C.Type_Float32List_LB7 = H.typeLiteral("Float32List");
     C.Type_Float64List_LB7 = H.typeLiteral("Float64List");
     C.Type_Int16List_uXf = H.typeLiteral("Int16List");
     C.Type_Int32List_O50 = H.typeLiteral("Int32List");
     C.Type_Int8List_ekJ = H.typeLiteral("Int8List");
     C.Type_JSObject_8k0 = H.typeLiteral("JSObject");
-    C.Type_PrimeWorker_Wk1 = H.typeLiteral("PrimeWorker");
-    C.Type_RogueWorker_qJs = H.typeLiteral("RogueWorker");
-    C.Type_SampleWorker_O1u = H.typeLiteral("SampleWorker");
     C.Type_String_k8F = H.typeLiteral("String");
     C.Type_Uint16List_2bx = H.typeLiteral("Uint16List");
     C.Type_Uint32List_2bx = H.typeLiteral("Uint32List");
@@ -25617,9 +25782,6 @@
     _lazyFinal($, "currentOSGuess", "$get$currentOSGuess", function() {
       return new U.currentOSGuess_closure().call$0();
     });
-    _lazyFinal($, "_workerBuilders", "$get$_workerBuilders", function() {
-      return X.workerBuilders();
-    });
     _lazyFinal($, "Logger_cr", "$get$Logger_cr", function() {
       return F.SequenceReplacement$(H.CodeUnits$("\n"), "", null);
     });
@@ -25657,6 +25819,9 @@
     });
     _lazyFinal($, "Logger_sequences", "$get$Logger_sequences", function() {
       return H._setArrayType([$.$get$Logger_cr(), $.$get$Logger_lf(), $.$get$Logger_amp(), $.$get$Logger_lt(), $.$get$Logger_gt(), $.$get$Logger_resetSeq(), $.$get$Logger_boldSeq(), $.$get$Logger_redSeq(), $.$get$Logger_greenSeq()], H.findType("JSArray<SequenceReplacement>"));
+    });
+    _lazyFinal($, "_entryPoints", "$get$_entryPoints", function() {
+      return P.LinkedHashMap_LinkedHashMap$_literal(["bitcoin", "sample_js_workers/bitcoin_worker.dart.js", "cache", "sample_js_workers/cache_worker.dart.js", "echo", "sample_js_workers/echo_worker.dart.js", "pi_digits", "sample_js_workers/pi_digits_worker.dart.js", "prime", "sample_js_workers/prime_worker.dart.js", "rogue", "sample_js_workers/rogue_worker.dart.js", "sample", "sample_js_workers/sample_worker.dart.js"], type$.String, type$.dynamic);
     });
   })();
   (function nativeSupport() {

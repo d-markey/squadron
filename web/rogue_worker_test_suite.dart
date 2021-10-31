@@ -8,10 +8,11 @@ final rogueWorkerTests = {
   'Exception': testException,
 };
 
-Future<bool> testWorkerException(Logger logger) async {
+Future<bool> testWorkerException(
+    Logger logger, Map<String, String> entryPoints) async {
   var success = false;
 
-  final rogueWorker = RogueWorker('/sample_js_workers/rogue_worker.dart.js');
+  final rogueWorker = RogueWorker(entryPoints['rogue']);
   await rogueWorker.start();
 
   try {
@@ -26,10 +27,11 @@ Future<bool> testWorkerException(Logger logger) async {
   return success;
 }
 
-Future<bool> testException(Logger logger) async {
+Future<bool> testException(
+    Logger logger, Map<String, String> entryPoints) async {
   var success = false;
 
-  final rogueWorker = RogueWorker('/sample_js_workers/rogue_worker.dart.js');
+  final rogueWorker = RogueWorker(entryPoints['rogue']);
   await rogueWorker.start();
 
   try {

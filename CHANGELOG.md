@@ -2,7 +2,8 @@
 
 - Single test code base for both platforms.
 - Added BitCoin service to test live network access from workers (courtesy of coindesk.com).
-- Retaining attempts based on manually operating a browser to run tests in /web (different test code base) and /test/browser-tests (same test code base)
+- Added PiDigits service (related to https://github.com/d-markey/squadron/issues/1).
+- Retaining attempts based on manually operating a browser to run tests in /web (different test code base) and /test/browser-tests (same test code base).
 
 ## 2.0.1
 

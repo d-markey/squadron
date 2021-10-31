@@ -1,11 +1,9 @@
-@TestOn('vm')
-
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import 'builders.dart';
+import 'worker_entry_points.dart';
 
 import 'prime_numbers.dart';
 import 'worker_services/bitcoin_service.dart';
@@ -19,7 +17,7 @@ void workerTests() {
       5; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('start & stop', () async {
-    final dummy = getWorker<SampleWorker>();
+    final dummy = SampleWorker(getEntryPoint('sample'));
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.channel, isNull);
@@ -57,7 +55,7 @@ void workerTests() {
   });
 
   test('workload - sequential', () async {
-    final dummy = getWorker<SampleWorker>();
+    final dummy = SampleWorker(getEntryPoint('sample'));
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -125,7 +123,7 @@ void workerTests() {
   });
 
   test('workload - parallel', () async {
-    final dummy = getWorker<SampleWorker>();
+    final dummy = SampleWorker(getEntryPoint('sample'));
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -233,7 +231,7 @@ void workerTests() {
   });
 
   test('cache worker', () async {
-    final cache = getWorker<CacheWorker>();
+    final cache = CacheWorker(getEntryPoint('cache'));
     await cache.start();
 
     expect(await cache.get(1), isNull);
@@ -247,7 +245,7 @@ void workerTests() {
   });
 
   test('prime worker', () async {
-    final primeWorker = getWorker<PrimeWorker>();
+    final primeWorker = PrimeWorker(getEntryPoint('prime'));
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -259,7 +257,7 @@ void workerTests() {
   });
 
   test('prime worker - stream', () async {
-    final primeWorker = getWorker<PrimeWorker>();
+    final primeWorker = PrimeWorker(getEntryPoint('prime'));
     await primeWorker.start();
 
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
@@ -271,7 +269,7 @@ void workerTests() {
   });
 
   test('prime worker with cache', () async {
-    final cache = getWorker<CacheWorker>();
+    final cache = CacheWorker(getEntryPoint('cache'));
     await cache.start();
 
     var shared = cache.channel?.share();
@@ -285,7 +283,8 @@ void workerTests() {
     expect(initialStats.size, isZero);
     expect(initialStats.maxSize, isZero);
 
-    final primeWorker = getWorker<PrimeWorker>(cache);
+    final primeWorker = PrimeWorker(getEntryPoint('prime'),
+        args: [cache.channel?.share().serialize()]);
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -310,7 +309,7 @@ void workerTests() {
   });
 
   test('prime worker with cache - perf', () async {
-    final cache = getWorker<CacheWorker>();
+    final cache = CacheWorker(getEntryPoint('cache'));
     await cache.start();
 
     var cacheStats = await cache.getStats();
@@ -320,7 +319,8 @@ void workerTests() {
     expect(cacheStats.size, isZero);
     expect(cacheStats.maxSize, isZero);
 
-    final primeWorker = getWorker<PrimeWorker>(cache);
+    final primeWorker = PrimeWorker(getEntryPoint('prime'),
+        args: [cache.channel?.share().serialize()]);
     await primeWorker.start();
 
     var firstPerf = PerfCounter('with empty cache');
@@ -366,7 +366,7 @@ void workerTests() {
   });
 
   test('exception handling from worker', () async {
-    final rogue = getWorker<RogueWorker>();
+    final rogue = RogueWorker(getEntryPoint('rogue'));
 
     try {
       await rogue.throwWorkerException();
@@ -404,7 +404,7 @@ void workerTests() {
   });
 
   test('bitcoin service', () async {
-    final bitcoin = getWorker<BitcoinWorker>();
+    final bitcoin = BitcoinWorker(getEntryPoint('bitcoin'));
 
     final eur = await bitcoin.getRate('EUR');
     expect(eur, isNotNull);

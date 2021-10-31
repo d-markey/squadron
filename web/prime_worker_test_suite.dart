@@ -14,9 +14,9 @@ final count = 1000;
 final first = 123456789; // first number must be odd
 final last = first + count - 1;
 
-Future<bool> testPrimesWithoutCache(Logger logger) async {
-  final primeWorkerWithoutCache =
-      PrimeWorker('/sample_js_workers/prime_worker.dart.js');
+Future<bool> testPrimesWithoutCache(
+    Logger logger, Map<String, String> entryPoints) async {
+  final primeWorkerWithoutCache = PrimeWorker(entryPoints['prime']);
   await primeWorkerWithoutCache.start();
 
   logger.log('Prime test, range $first-$last - stream (no cache)...');
@@ -52,12 +52,12 @@ Future<bool> testPrimesWithoutCache(Logger logger) async {
   return true;
 }
 
-Future<bool> testPrimesWithCache(Logger logger) async {
-  final cacheWorker = CacheWorker('/sample_js_workers/cache_worker.dart.js');
+Future<bool> testPrimesWithCache(
+    Logger logger, Map<String, String> entryPoints) async {
+  final cacheWorker = CacheWorker(entryPoints['cache']);
   await cacheWorker.start();
 
-  final primeWorkerWithCache = PrimeWorker(
-      '/sample_js_workers/prime_worker.dart.js',
+  final primeWorkerWithCache = PrimeWorker(entryPoints['prime'],
       args: [cacheWorker.channel?.share().serialize()]);
   await primeWorkerWithCache.start();
 
