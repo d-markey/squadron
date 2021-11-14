@@ -2,7 +2,9 @@
 
 - Split library into squadron_service.dart (worker services only), squadron.dart (worker services and workers without pool) vs. squadron_pool.dart (worker services, workers and pools).
 - Moved 'connect()' and 'process()' from Worker to WorkerService.
-- Provided bootstrappers to facilitate implementation of platform workers.
+- Provided the 'run()' function to facilitate implementation of platform workers.
+- Adapted tests and examples.
+- Updated README.md.
 
 ## 2.0.2
 

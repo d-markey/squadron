@@ -24,7 +24,7 @@ Import squadron from your `pubspec.yaml` file:
 
 ```
 dependencies:
-   squadron: ^2.0.2
+   squadron: ^3.0.0
 ```
 
 ## Usage
@@ -83,63 +83,38 @@ class SampleWorker extends Worker implements SampleService {
 }
 ```
 
-If the requirements above are met, the Isolate's main program can be implemented like this:
+If the requirements above are met, the platform worker's main program can be implemented using the `run()`
+function provided by Squadron 3. The first argument passed to this function is a `WorkerService` initializer
+responsible for creating the service to be used by the platform Worker. This function will be passed the first
+`WorkerRequest` to enable setting up the service. The second argument passed to `run()` is only used in
+native scenarios and must be set to the data passed to the `Isolate`'s main program; in Web scenarios, simply
+pass an empty map eg. `const {}`.
+
+* native implementation:
 
 ```dart
 SampleWorker createVmSampleWorker() => SampleWorker(_main);
 
 void _main(Map command) {
-  final operations = <int, CommandHandler>{};
-
-  final workerPort = ReceivePort();
-  workerPort.listen((command) {
-    final req = WorkerRequest.deserialize(command);
-    if (req.terminate) {
-      Isolate.current.kill(priority: Isolate.immediate);
-    } else {
-      Worker.process(operations, req);
-    }
-  });
-
-  final startRequest = WorkerRequest.deserialize(command);
-  assert(startRequest.connect == true);
-  Worker.connect(startRequest.client, workerPort,
-      operations: operations, serviceOperations: SampleService().operations);
+  run((startRequest) => SampleService(), command);
 }
 ```
 
-And the Web Worker version is just as easy:
+* browser implementation:
 
 ```dart
-SampleWorker createSampleWorker() => SampleWorker('sample_worker_js.dart.js');
+SampleWorker createJsSampleWorker() => SampleWorker('sample_worker_js.dart.js');
 
 void main() {
-  final scope = DedicatedWorkerGlobalScope.instance;
-  final operations = <int, CommandHandler>{};
-
-  final com = MessageChannel();
-  com.port1.onMessage.listen((MessageEvent e) {
-    final req = WorkerRequest.deserialize(e.data);
-    if (req.terminate) {
-      scope.close();
-    } else {
-      Worker.process(operations, req);
-    }
-  });
-
-  scope.onMessage.listen((MessageEvent e) {
-    final startRequest = WorkerRequest.deserialize(e.data);
-    assert(startRequest.connect == true);
-    Worker.connect(startRequest.client, com.port2,
-        operations: operations, serviceOperations: SampleService().operations);
-  });
+  run((startRequest) => SampleService(), const {});
 }
 ```
 
 Using a `WorkerPool`, you are now able to distribute your workloads:
 
 ```dart
-    var pool = WorkerPool(() => createSampleWorker(), maxWorkers: 4, maxParallel: 2);
+    var pool = WorkerPool(() => createVmSampleWorker(), maxWorkers: 4, maxParallel: 2); /* native version */
+    // var pool = WorkerPool(() => createJsSampleWorker(), maxWorkers: 4, maxParallel: 2); /* browser version */
     await pool.start();
 
     var n = 42;
@@ -159,9 +134,9 @@ While `Isolates` enable multithreading in Dart applications, several aspects mus
 have to be initialized multiple times thus increasing the application's memory footprint and startup time.
 
 * Communicating with an `Isolate` invoves marshalling data in and out; theoretically, only primitive types
-(`num`, `String`, `bool`, `null`...) and `List`/`Map` of primitive types are supported. However, object
-instances may be sent across `Isolate`s on some platforms, e.g. the Dart Native platform (instances will
-still be copied).
+(`num`, `String`, `bool`, `null`...), `List`/`Map` of primitive types and some specific types like `SendPort`
+are supported. However, object instances may be sent across `Isolate`s on some platforms, e.g. the Dart
+Native platform (instances will still be copied).
 
 Web Workers have similar characteristics. Only primitive types and objects implementing
 [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across
@@ -383,27 +358,13 @@ OtherWorker createOtherWorker([CacheWorker? cache]) =>
     OtherWorker(_main, args: [cache?.channel?.share().serialize()]);
 
 void _main(Map command) {
-  final operations = <int, CommandHandler>{};
-
-  final workerPort = ReceivePort();
-  workerPort.listen((command) {
-    final req = WorkerRequest.deserialize(command);
-    if (req.terminate) {
-      Isolate.current.kill(priority: Isolate.immediate);
-    } else {
-      Worker.process(operations, req);
-    }
-  });
-
-  final startRequest = WorkerRequest.deserialize(command);
-  assert(startRequest.connect == true);
-  final cacheEndPoint = startRequest.args.isEmpty
-      ? null
-      : Channel.deserialize(startRequest.args[0]);
-  Cache? cache = (cacheEndPoint == null) ? null : CacheClient(cacheEndPoint);
-  Worker.connect(startRequest.client, workerPort,
-      operations: operations,
-      serviceOperations: OtherService(cache).operations);
+  run((startRequest) {
+    final cacheEndPoint = startRequest.args.isEmpty
+        ? null
+        : Channel.deserialize(startRequest.args[0]);
+    Cache? cache = (cacheEndPoint == null) ? null : CacheClient(cacheEndPoint);
+    return OtherService(cache);
+  }, command);
 }
 ```
 
