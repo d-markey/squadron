@@ -1,6 +1,6 @@
 name: squadron
 description: Multithreading and worker thread pool in Dart to offload CPU-bound and heavy I/O tasks to Isolate or Web Worker threads.
-version: 2.0.2
+version: 3.0.0
 homepage: https://github.com/d-markey/squadron
 repository: https://github.com/d-markey/squadron
 
