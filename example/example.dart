@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:squadron/squadron.dart';
+import 'package:squadron/squadron_pool.dart';
 
 import 'sample_service.dart';
-import 'sample_worker_vm.dart' as sample_isolate;
+import 'sample_service_worker.dart';
 import 'worker_monitor.dart';
+import 'sample_worker_vm.dart' as sample_isolate;
 
 void main() async {
   final sw = Stopwatch()..start();

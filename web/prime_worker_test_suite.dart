@@ -1,8 +1,6 @@
 import 'expect.dart';
-// import '../test/sample_js_workers/prime_worker.dart';
-// import '../test/sample_js_workers/prime_worker.dart';
-import '../test/worker_services/prime_service.dart';
-import '../test/worker_services/cache_service.dart';
+import '../test/worker_services/prime_service_worker.dart';
+import '../test/worker_services/cache_service_worker.dart';
 import 'logger.dart';
 
 final primeWorkerTests = {

@@ -3,19 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:squadron/squadron.dart';
-
-class BitcoinWorker extends Worker implements BitcoinService {
-  BitcoinWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
-
-  @override
-  Future<double?> getRate(String currency) =>
-      send(BitcoinService.rateCommand, [currency]);
-
-  @override
-  final Map<int, CommandHandler> operations = const {};
-}
+import 'package:squadron/squadron_service.dart';
 
 class BitcoinService implements WorkerService {
   Future<double?> getRate(String currency) async {

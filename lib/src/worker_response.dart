@@ -1,5 +1,4 @@
 import 'worker_exception.dart';
-import 'worker.dart';
 
 /// Class used to communicate from a [Worker] to clients.
 /// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a

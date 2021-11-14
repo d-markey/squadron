@@ -302,14 +302,6 @@
     Frame_Frame$parseFriendly_closure: function Frame_Frame$parseFriendly_closure(t0) {
       this.frame = t0;
     },
-    PiDigitsWorker: function PiDigitsWorker(t0, t1) {
-      var _ = this;
-      _._entryPoint = t0;
-      _.args = t1;
-      _._stopped = _._idle = _._started = _.__Worker_id = null;
-      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
-      _._starting = _._channel = null;
-    },
     IterableNullableExtension_whereNotNull(_this, $T) {
       return A.IterableNullableExtension_whereNotNull$body(_this, $T, $T);
     },
@@ -582,19 +574,6 @@
       this.os = t1;
     },
     LiveSuite: function LiveSuite() {
-    },
-    PrimeWorker$(entryPoint, args) {
-      var t1 = new E.PrimeWorker(entryPoint, args);
-      t1.Worker$3$args$id(entryPoint, args, null);
-      return t1;
-    },
-    PrimeWorker: function PrimeWorker(t0, t1) {
-      var _ = this;
-      _._entryPoint = t0;
-      _.args = t1;
-      _._stopped = _._idle = _._started = _.__Worker_id = null;
-      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
-      _._starting = _._channel = null;
     }
   },
   F = {FutureGroup: function FutureGroup(t0, t1, t2) {
@@ -4658,6 +4637,14 @@
       this.message = t0;
       this.stackTrace = t1;
       this.workerId = t2;
+    },
+    BitcoinWorker: function BitcoinWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
     }
   },
   N = {
@@ -4872,7 +4859,7 @@
       this.engine = t0;
     },
     webWorkerTests() {
-      N.test("classic Web Worker", new N.webWorkerTests_closure());
+      N.test("classic Web worker", new N.webWorkerTests_closure());
     },
     webWorkerTests_closure: function webWorkerTests_closure() {
     },
@@ -5147,27 +5134,6 @@
     },
     _IterableSet_Object_SetMixin_UnmodifiableSetMixin: function _IterableSet_Object_SetMixin_UnmodifiableSetMixin() {
     },
-    BitcoinWorker: function BitcoinWorker(t0, t1) {
-      var _ = this;
-      _._entryPoint = t0;
-      _.args = t1;
-      _._stopped = _._idle = _._started = _.__Worker_id = null;
-      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
-      _._starting = _._channel = null;
-    },
-    CacheWorker$(entryPoint) {
-      var t1 = new O.CacheWorker(entryPoint, C.List_empty0);
-      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
-      return t1;
-    },
-    CacheWorker: function CacheWorker(t0, t1) {
-      var _ = this;
-      _._entryPoint = t0;
-      _.args = t1;
-      _._stopped = _._idle = _._started = _.__Worker_id = null;
-      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
-      _._starting = _._channel = null;
-    },
     CacheStat: function CacheStat(t0, t1, t2, t3, t4) {
       var _ = this;
       _.hit = t0;
@@ -5175,6 +5141,32 @@
       _.expired = t2;
       _.size = t3;
       _.maxSize = t4;
+    },
+    RogueWorker$(entryPoint) {
+      var t1 = new O.RogueWorker(entryPoint, C.List_empty0);
+      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
+      return t1;
+    },
+    RogueWorker: function RogueWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
+    },
+    SampleWorker$(entryPoint) {
+      var t1 = new O.SampleWorker(entryPoint, C.List_empty0);
+      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
+      return t1;
+    },
+    SampleWorker: function SampleWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
     }
   },
   P = {
@@ -8833,6 +8825,7 @@
       _._lastProgressFailed = _._lastProgressSkipped = _._lastProgressPassed = 0;
       _._lastProgressMessage = "";
       _._lastProgressSuffix = null;
+      _._shouldPrintStackTraceChainingNotice = false;
       _._subscriptions = t11;
       _._sink = t12;
     },
@@ -8919,25 +8912,18 @@
   S = {AsyncMemoizer: function AsyncMemoizer(t0, t1) {
       this._async_memoizer$_completer = t0;
       this.$ti = t1;
-    }},
-  T = {LazyTrace: function LazyTrace(t0) {
-      this._lazy_trace$_thunk = t0;
-      this.__LazyTrace__trace = null;
-    },
-    SampleWorker$(entryPoint) {
-      var t1 = new T.SampleWorker(entryPoint, C.List_empty0);
-      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
-      return t1;
-    },
-    SampleWorker: function SampleWorker(t0, t1) {
+    }, PiDigitsWorker: function PiDigitsWorker(t0, t1) {
       var _ = this;
       _._entryPoint = t0;
       _.args = t1;
       _._stopped = _._idle = _._started = _.__Worker_id = null;
       _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
       _._starting = _._channel = null;
-    }
-  },
+    }},
+  T = {LazyTrace: function LazyTrace(t0) {
+      this._lazy_trace$_thunk = t0;
+      this.__LazyTrace__trace = null;
+    }},
   U = {
     Chain_capture(callback, errorZone, when, $T) {
       var t1 = P.runZoned(callback, null, null, $T);
@@ -9144,19 +9130,6 @@
       this._runSkipped = t1;
     },
     currentOSGuess_closure: function currentOSGuess_closure() {
-    },
-    RogueWorker$(entryPoint) {
-      var t1 = new U.RogueWorker(entryPoint, C.List_empty0);
-      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
-      return t1;
-    },
-    RogueWorker: function RogueWorker(t0, t1) {
-      var _ = this;
-      _._entryPoint = t0;
-      _.args = t1;
-      _._stopped = _._idle = _._started = _.__Worker_id = null;
-      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
-      _._starting = _._channel = null;
     }
   },
   V = {_OrderingMatcher: function _OrderingMatcher(t0, t1, t2, t3, t4, t5) {
@@ -9191,6 +9164,19 @@
       _._live_test_controller$_runCalled = false;
     },
     Test: function Test() {
+    },
+    CacheWorker$(entryPoint) {
+      var t1 = new V.CacheWorker(entryPoint, C.List_empty0);
+      t1.Worker$3$args$id(entryPoint, C.List_empty0, null);
+      return t1;
+    },
+    CacheWorker: function CacheWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
     }
   },
   W = {
@@ -9788,6 +9774,19 @@
       this.indent = t0;
     },
     LiveTest: function LiveTest() {
+    },
+    PrimeWorker$(entryPoint, args) {
+      var t1 = new Z.PrimeWorker(entryPoint, args);
+      t1.Worker$3$args$id(entryPoint, args, null);
+      return t1;
+    },
+    PrimeWorker: function PrimeWorker(t0, t1) {
+      var _ = this;
+      _._entryPoint = t0;
+      _.args = t1;
+      _._stopped = _._idle = _._started = _.__Worker_id = null;
+      _._totalErrors = _._totalWorkload = _._maxWorkload = _._workload = 0;
+      _._starting = _._channel = null;
     },
     workerTests() {
       N.test("start & stop", new Z.workerTests_closure());
@@ -21652,10 +21651,7 @@
       t3.toString;
       t2.addError$2(error, t3);
       zone.run$1$1(new U.Invoker__handleError_closure0(_this), type$.void);
-      _this.get$_invoker$_controller().test.metadata.get$chainStackTraces();
-      _this.get$_invoker$_controller();
       t2 = _this._printsOnFailure;
-      C.JSArray_methods.add$1(t2, "Consider enabling the flag chain-stack-traces to receive more detailed exceptions.\nFor example, 'dart test --chain-stack-traces'.");
       if (t2.length !== 0) {
         P.print(C.JSArray_methods.join$1(t2, "\n\n"));
         C.JSArray_methods.set$length(t2, 0);
@@ -22943,6 +22939,8 @@
     },
     _expanded$_onError$3(liveTest, error, stackTrace) {
       var t1, _this = this;
+      liveTest.test.metadata.get$chainStackTraces();
+      _this._shouldPrintStackTraceChainingNotice = true;
       if (liveTest.state.status !== C.Status_complete)
         return;
       _this._progressLine$2$suffix(_this._expanded$_description$1(liveTest), " " + _this._bold + _this._red + "[E]" + _this._noColor);
@@ -22971,6 +22969,11 @@
           _this._progressLine$1("All tests skipped.");
         else
           _this._progressLine$1("All tests passed!");
+      }
+      if (_this._shouldPrintStackTraceChainingNotice) {
+        t1 = _this._sink;
+        t1.writeln$1("");
+        t1.writeln$1("Consider enabling the flag chain-stack-traces to receive more detailed exceptions.\nFor example, 'dart test --chain-stack-traces'.");
       }
     },
     _progressLine$3$color$suffix(message, color, suffix) {
@@ -23136,8 +23139,14 @@
     },
     $isStringSink: 1
   };
-  O.BitcoinWorker.prototype = {};
-  O.CacheWorker.prototype = {
+  M.BitcoinWorker.prototype = {};
+  O.CacheStat.prototype = {
+    toString$0(_) {
+      var _this = this;
+      return "hit = " + _this.hit + ", miss = " + _this.miss + ", expired = " + _this.expired + ", size = " + _this.size + ", maxSize = " + _this.maxSize;
+    }
+  };
+  V.CacheWorker.prototype = {
     getStats$0() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.CacheStat),
@@ -23165,13 +23174,6 @@
           }
       });
       return P._asyncStartSync($async$getStats$0, $async$completer);
-    },
-    $isCache: 1
-  };
-  O.CacheStat.prototype = {
-    toString$0(_) {
-      var _this = this;
-      return "hit = " + _this.hit + ", miss = " + _this.miss + ", expired = " + _this.expired + ", size = " + _this.size + ", maxSize = " + _this.maxSize;
     }
   };
   F.Logger.prototype = {
@@ -23313,10 +23315,10 @@
     },
     $signature: 32
   };
-  A.PiDigitsWorker.prototype = {};
-  E.PrimeWorker.prototype = {};
-  U.RogueWorker.prototype = {};
-  T.SampleWorker.prototype = {};
+  S.PiDigitsWorker.prototype = {};
+  Z.PrimeWorker.prototype = {};
+  O.RogueWorker.prototype = {};
+  O.SampleWorker.prototype = {};
   N.webWorkerTests_closure.prototype = {
     call$0() {
       var $async$goto = 0,
@@ -23388,7 +23390,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "cache");
               t1.toString;
-              cache = O.CacheWorker$(t1);
+              cache = V.CacheWorker$(t1);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -23440,7 +23442,7 @@
         t2.toString;
         t2 = N._JsForwardChannel$(t2)._sendPort;
       }
-      return E.PrimeWorker$(t1, [t2]);
+      return Z.PrimeWorker$(t1, [t2]);
     },
     $signature: 94
   };
@@ -23538,7 +23540,7 @@
     call$0() {
       var t1 = $.$get$_entryPoints().$index(0, "sample");
       t1.toString;
-      return T.SampleWorker$(t1);
+      return O.SampleWorker$(t1);
     },
     $signature: 97
   };
@@ -23675,7 +23677,7 @@
     call$0() {
       var t1 = $.$get$_entryPoints().$index(0, "rogue");
       t1.toString;
-      return U.RogueWorker$(t1);
+      return O.RogueWorker$(t1);
     },
     $signature: 101
   };
@@ -23747,7 +23749,7 @@
       var t2,
         t1 = $.$get$_entryPoints().$index(0, "pi_digits");
       t1.toString;
-      t2 = new A.PiDigitsWorker(t1, C.List_empty0);
+      t2 = new S.PiDigitsWorker(t1, C.List_empty0);
       t2.Worker$3$args$id(t1, C.List_empty0, null);
       return t2;
     },
@@ -23782,7 +23784,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "sample");
               t1.toString;
-              dummy = T.SampleWorker$(t1);
+              dummy = O.SampleWorker$(t1);
               t1 = type$.dynamic;
               $async$goto = 2;
               return P._asyncAwait(P.Future_Future$delayed(P.Duration$(0, 5, 0), t1), $async$call$0);
@@ -23862,7 +23864,7 @@
               t1 = {};
               t2 = $.$get$_entryPoints().$index(0, "sample");
               t2.toString;
-              dummy = T.SampleWorker$(t2);
+              dummy = O.SampleWorker$(t2);
               t2 = type$.JSArray_int;
               completedTasks = H._setArrayType([], t2);
               t1.taskId = 0;
@@ -23989,7 +23991,7 @@
               t1 = {};
               t2 = $.$get$_entryPoints().$index(0, "sample");
               t2.toString;
-              dummy = T.SampleWorker$(t2);
+              dummy = O.SampleWorker$(t2);
               t2 = type$.JSArray_int;
               completedTasks = H._setArrayType([], t2);
               t1.taskId = 0;
@@ -24149,7 +24151,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "cache");
               t1.toString;
-              cache = O.CacheWorker$(t1);
+              cache = V.CacheWorker$(t1);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -24209,7 +24211,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "prime");
               t1.toString;
-              primeWorker = E.PrimeWorker$(t1, C.List_empty0);
+              primeWorker = Z.PrimeWorker$(t1, C.List_empty0);
               $async$goto = 2;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 2:
@@ -24261,7 +24263,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "prime");
               t1.toString;
-              primeWorker = E.PrimeWorker$(t1, C.List_empty0);
+              primeWorker = Z.PrimeWorker$(t1, C.List_empty0);
               $async$goto = 2;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 2:
@@ -24298,7 +24300,7 @@
               t1 = $.$get$_entryPoints();
               t2 = t1.$index(0, "cache");
               t2.toString;
-              cache = O.CacheWorker$(t2);
+              cache = V.CacheWorker$(t2);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -24332,7 +24334,7 @@
                 t2.toString;
                 t2 = N._JsForwardChannel$(t2)._sendPort;
               }
-              primeWorker = E.PrimeWorker$(t1, [t2]);
+              primeWorker = Z.PrimeWorker$(t1, [t2]);
               $async$goto = 4;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 4:
@@ -24406,7 +24408,7 @@
               t1 = $.$get$_entryPoints();
               t2 = t1.$index(0, "cache");
               t2.toString;
-              cache = O.CacheWorker$(t2);
+              cache = V.CacheWorker$(t2);
               $async$goto = 2;
               return P._asyncAwait(cache.start$0(0), $async$call$0);
             case 2:
@@ -24431,7 +24433,7 @@
                 t2.toString;
                 t2 = N._JsForwardChannel$(t2)._sendPort;
               }
-              primeWorker = E.PrimeWorker$(t1, [t2]);
+              primeWorker = Z.PrimeWorker$(t1, [t2]);
               $async$goto = 4;
               return P._asyncAwait(primeWorker.start$0(0), $async$call$0);
             case 4:
@@ -24590,7 +24592,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "rogue");
               t1.toString;
-              rogue = U.RogueWorker$(t1);
+              rogue = O.RogueWorker$(t1);
               $async$handler = 3;
               $async$goto = 6;
               return P._asyncAwait(rogue.send$1$1(1, type$.dynamic), $async$call$0);
@@ -24692,7 +24694,7 @@
               // Function start
               t1 = $.$get$_entryPoints().$index(0, "bitcoin");
               t1.toString;
-              bitcoin = new O.BitcoinWorker(t1, C.List_empty0);
+              bitcoin = new M.BitcoinWorker(t1, C.List_empty0);
               bitcoin.Worker$3$args$id(t1, C.List_empty0, null);
               t1 = type$.nullable_double;
               $async$goto = 2;
@@ -24971,7 +24973,7 @@
     _inherit(Y.RunnerSuite, U.Suite);
     _inherit(O._IterableSet_Object_SetMixin_UnmodifiableSetMixin, O._IterableSet_Object_SetMixin);
     _inherit(O.IterableSet, O._IterableSet_Object_SetMixin_UnmodifiableSetMixin);
-    _inheritMany(Y.Worker0, [O.BitcoinWorker, O.CacheWorker, A.PiDigitsWorker, E.PrimeWorker, U.RogueWorker, T.SampleWorker]);
+    _inheritMany(Y.Worker0, [M.BitcoinWorker, V.CacheWorker, S.PiDigitsWorker, Z.PrimeWorker, O.RogueWorker, O.SampleWorker]);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
@@ -25003,7 +25005,7 @@
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"Symbol":{"Symbol0":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_ConstantMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteData":{"NativeTypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeFloat64List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"_Future":{"Future":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"]},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"TimeoutException":{"Exception":[]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"]},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamControllerAddStreamState":{"_AddStreamState":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapMixin":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","UnmodifiableListMixin.E":"1"},"IterableBase":{"Iterable":["1"]},"LinkedList":{"Iterable":["1"],"Iterable.E":"1"},"_LinkedListIterator":{"Iterator":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"ListIterable":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"MessageEvent":{"Event":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"File":{"Blob":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlDocument":{"Node":[],"EventTarget":[]},"MessagePort":{"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Worker":{"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListMixin":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","QueueList.E":"1"},"UnionSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"JsChannel":{"Channel":[]},"_JsForwardChannel":{"Channel":[]},"WorkerException":{"Exception":[]},"WorkerTask":{"LinkedListEntry":["WorkerTask<1>"],"LinkedListEntry.E":"WorkerTask<1>"},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"BitcoinWorker":{"Worker0":[]},"CacheWorker":{"Worker0":[],"Cache":[]},"PiDigitsWorker":{"Worker0":[]},"PrimeWorker":{"Worker0":[]},"RogueWorker":{"Worker0":[]},"SampleWorker":{"Worker0":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"Symbol":{"Symbol0":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_ConstantMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteData":{"NativeTypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeFloat64List":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"_Future":{"Future":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"]},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"TimeoutException":{"Exception":[]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"]},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamControllerAddStreamState":{"_AddStreamState":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapMixin":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","UnmodifiableListMixin.E":"1"},"IterableBase":{"Iterable":["1"]},"LinkedList":{"Iterable":["1"],"Iterable.E":"1"},"_LinkedListIterator":{"Iterator":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"ListIterable":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"MessageEvent":{"Event":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"File":{"Blob":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlDocument":{"Node":[],"EventTarget":[]},"MessagePort":{"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Worker":{"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node","ImmutableListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListMixin":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListMixin.E":"1","QueueList.E":"1"},"UnionSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"JsChannel":{"Channel":[]},"_JsForwardChannel":{"Channel":[]},"WorkerException":{"Exception":[]},"WorkerTask":{"LinkedListEntry":["WorkerTask<1>"],"LinkedListEntry.E":"WorkerTask<1>"},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetMixin":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"BitcoinWorker":{"Worker0":[]},"CacheWorker":{"Worker0":[]},"PiDigitsWorker":{"Worker0":[]},"PrimeWorker":{"Worker0":[]},"RogueWorker":{"Worker0":[]},"SampleWorker":{"Worker0":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"Iterable":["double"]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"SetBase":1,"_ListBase_Object_ListMixin":1,"_SetBase_Object_SetMixin":1,"__SetBase_Object_SetMixin":1,"_EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin":1,"_QueueList_Object_ListMixin":1,"_UnionSet_SetBase_UnmodifiableSetMixin":1,"_IterableSet_Object_SetMixin":1,"_IterableSet_Object_SetMixin_UnmodifiableSetMixin":1}'));
   var string$ = {
     ______: "===== asynchronous gap ===========================\n",

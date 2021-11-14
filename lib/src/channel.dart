@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:squadron/squadron.dart';
-
 import 'channel_stub.dart'
     if (dart.library.js) 'browser/channel.dart'
     if (dart.library.html) 'browser/channel.dart'
     if (dart.library.io) 'native/channel.dart';
+
+import 'worker_response.dart';
 
 /// [Channel]s enable communication between workers and clients.
 abstract class Channel {

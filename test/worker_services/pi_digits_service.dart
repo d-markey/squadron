@@ -1,23 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:squadron/squadron.dart';
-
-class PiDigitsWorker extends Worker implements PiDigitsService {
-  PiDigitsWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
-
-  @override
-  Future<int> getNth(int n) =>
-      send(PiDigitsService.getNthCommand, [n]);
-
-  @override
-  Stream<int> getNDigits(int start, int n) =>
-      stream(PiDigitsService.getNDigitsCommand, [start, n]);
-
-  @override
-  final Map<int, CommandHandler> operations = const {};
-}
+import 'package:squadron/squadron_service.dart';
 
 class PiDigitsService implements WorkerService {
   // see https://dept-info.labri.fr/~denis/Enseignement/2017-PG306/TP01/pi.java

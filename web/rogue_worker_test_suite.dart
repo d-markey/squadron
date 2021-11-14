@@ -1,6 +1,6 @@
 import 'package:squadron/squadron.dart';
 
-import '../test/worker_services/rogue_service.dart';
+import '../test/worker_services/rogue_service_worker.dart';
 import 'logger.dart';
 
 final rogueWorkerTests = {

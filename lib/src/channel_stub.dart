@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:squadron/squadron.dart';
 
 import 'channel.dart' show Channel;
 

@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:squadron/squadron.dart';
+import 'package:squadron/squadron_pool.dart';
 
 import '../test/worker_services/sample_service.dart';
+import '../test/worker_services/sample_service_worker.dart';
 
 import 'expect.dart';
 import 'logger.dart';

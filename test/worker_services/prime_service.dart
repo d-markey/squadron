@@ -1,27 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:squadron/squadron.dart';
+import 'package:squadron/squadron_service.dart';
 
 import 'cache_service.dart';
-
-class PrimeWorker extends Worker implements PrimeService {
-  PrimeWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
-
-  @override
-  Future<bool> isPrime(int n) => send<bool>(PrimeService.isPrimeCommand, [n]);
-
-  @override
-  Stream<int> getPrimes(int min, int max) =>
-      stream<int>(PrimeService.getPrimesCommand, [min, max]);
-
-  @override
-  final Cache? _cache = null;
-
-  @override
-  final Map<int, CommandHandler> operations = const {};
-}
 
 class PrimeService implements WorkerService {
   PrimeService([this._cache]);

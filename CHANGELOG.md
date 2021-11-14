@@ -1,3 +1,9 @@
+## 3.0.0
+
+- Split library into squadron_service.dart (worker services only), squadron.dart (worker services and workers without pool) vs. squadron_pool.dart (worker services, workers and pools).
+- Moved 'connect()' and 'process()' from Worker to WorkerService.
+- Provided bootstrappers to facilitate implementation of platform workers.
+
 ## 2.0.2
 
 - Single test code base for both platforms.

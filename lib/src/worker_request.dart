@@ -1,5 +1,4 @@
 import 'channel.dart';
-import 'worker.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker].
 /// Typically a [WorkerRequest] consists of a command ID and a list of arguments.

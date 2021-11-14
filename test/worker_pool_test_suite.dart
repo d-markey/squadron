@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:squadron/squadron.dart';
+import 'package:squadron/squadron_pool.dart';
 import 'package:test/test.dart';
 
 import 'worker_entry_points.dart';
 
-import 'worker_services/cache_service.dart';
-import 'worker_services/pi_digits_service.dart';
-import 'worker_services/prime_service.dart';
-import 'worker_services/rogue_service.dart';
-import 'worker_services/sample_service.dart';
+import 'worker_services/cache_service_worker.dart';
+import 'worker_services/pi_digits_service_worker.dart';
+import 'worker_services/prime_service_worker.dart';
+import 'worker_services/rogue_service_worker.dart';
+import 'worker_services/sample_service_worker.dart';
 
 void poolTests() {
   final timeFactor =

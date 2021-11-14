@@ -3,7 +3,7 @@ import 'dart:html';
 
 import 'expect.dart';
 import 'logger.dart';
-import '../test/worker_services/sample_service.dart';
+import '../test/worker_services/sample_service_worker.dart';
 
 final sampleWorkerTests = {
   'Sample Worker - start / stop': testSampleWorkerStartStop,
