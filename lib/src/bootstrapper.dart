@@ -8,7 +8,8 @@ import 'bootstrapper_stub.dart'
     if (dart.library.html) 'browser/bootstrapper.dart'
     if (dart.library.io) 'native/bootstrapper.dart';
 
-typedef WorkerInitializer = FutureOr<WorkerService> Function(WorkerRequest startRequest);
+typedef WorkerInitializer = FutureOr<WorkerService> Function(
+    WorkerRequest startRequest);
 
 FutureOr run(WorkerInitializer initializer, Map command) =>
-  bootstrap(initializer, command);
+    bootstrap(initializer, command);

@@ -18,4 +18,3 @@ class PrimeWorker extends Worker implements PrimeService {
   @override
   final Map<int, CommandHandler> operations = const {};
 }
-
