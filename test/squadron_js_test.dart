@@ -60,10 +60,11 @@ void main() async {
           messages.add(
               'Worker $path must be generated with:\n   dart compile js ${path.substring(0, path.length - '.js'.length)} -o $path');
         } else {
-          messages.add('Worker $path is invalid; path must end with .dart or .js');
+          messages
+              .add('Worker $path is invalid; path must end with .dart or .js');
         }
       }
-      
+
       throw Exception('''
 
 ============================================================================ 

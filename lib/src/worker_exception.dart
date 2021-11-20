@@ -18,8 +18,7 @@ class WorkerException implements Exception {
 }
 
 class CancelledException extends WorkerException {
-  CancelledException(
-      {String? message, String? stackTrace, String? workerId})
+  CancelledException({String? message, String? stackTrace, String? workerId})
       : super(message ?? 'The task has been cancelled',
             stackTrace: stackTrace, workerId: workerId);
 }

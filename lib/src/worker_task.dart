@@ -74,8 +74,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
       _cancelled = _timeStamp();
       if (_executed == null) {
         if (_completer != null) {
-          _wrapUp(() => _completer!.completeError(CancelledException()),
-              false);
+          _wrapUp(() => _completer!.completeError(CancelledException()), false);
         }
         if (_streamer != null) {
           _streamer!.addError(CancelledException());
