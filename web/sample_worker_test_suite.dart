@@ -14,22 +14,24 @@ Future<bool> testSampleWorkerStartStop(
     Logger logger, Map<String, String> entryPoints) async {
   try {
     final worker = SampleWorker(entryPoints['sample']);
-    expect(worker.started == null, 'worker.started should be null');
+    expect(worker.upTime == Duration.zero, 'worker.upTime should be zero');
     expect(worker.idleTime == Duration.zero, 'worker.idleTime should be zero');
-    expect(worker.stopped == null, 'worker.stopped should be null');
+    expect(worker.isStopped == false, 'worker.isStopped should be false');
 
     await worker.start();
     await Future.delayed(Duration(milliseconds: 5));
-    expect(worker.started != null, 'worker.started should not be null');
+    expect(
+        worker.upTime > Duration.zero, 'worker.upTime should not be positive');
     expect(
         worker.idleTime > Duration.zero, 'worker.idleTime should be positive');
-    expect(worker.stopped == null, 'worker.stopped should be null');
+    expect(worker.isStopped == false, 'worker.isStopped should be false');
 
     worker.stop();
-    expect(worker.started != null, 'worker.started should not be null');
+    expect(
+        worker.upTime > Duration.zero, 'worker.upTime should not be positive');
     expect(
         worker.idleTime > Duration.zero, 'worker.idleTime should be positive');
-    expect(worker.stopped != null, 'worker.stopped should not be null');
+    expect(worker.isStopped == true, 'worker.isStopped should be true');
   } on TestFailedException {
     rethrow;
   } catch (e) {

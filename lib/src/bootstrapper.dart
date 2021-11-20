@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'worker_request.dart';
 import 'worker_service.dart';
 
 import 'bootstrapper_stub.dart'
@@ -8,8 +5,8 @@ import 'bootstrapper_stub.dart'
     if (dart.library.html) 'browser/bootstrapper.dart'
     if (dart.library.io) 'native/bootstrapper.dart';
 
-typedef WorkerInitializer = FutureOr<WorkerService> Function(
-    WorkerRequest startRequest);
-
-FutureOr run(WorkerInitializer initializer, Map command) =>
+/// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.
+/// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument must be
+/// set to the [Isolate]'s startup parameter.
+void run(WorkerInitializer initializer, [Map? command]) =>
     bootstrap(initializer, command);

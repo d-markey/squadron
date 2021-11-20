@@ -3,17 +3,27 @@ import 'dart:math';
 
 import 'package:squadron/squadron_service.dart';
 
-class PiDigitsService implements WorkerService {
+abstract class PiDigitsService {
+  Stream<int> getNDigits(int start, int n);
+  FutureOr<int> getNth(int n);
+
+  static const getNthCommand = 1;
+  static const getNDigitsCommand = 2;
+}
+
+class PiDigitsServiceImpl implements PiDigitsService, WorkerService {
   // see https://dept-info.labri.fr/~denis/Enseignement/2017-PG306/TP01/pi.java
 
+  @override
   Stream<int> getNDigits(int start, int n) async* {
     final end = start + n;
     for (var i = start; i < end; i++) {
-      yield await getNth(i);
+      yield getNth(i);
     }
   }
 
-  FutureOr<int> getNth(int n) {
+  @override
+  int getNth(int n) {
     if (n < 0) return -1;
     n -= 1;
     double x =
@@ -65,9 +75,6 @@ class PiDigitsService implements WorkerService {
     }
     return tempo;
   }
-
-  static const getNthCommand = 1;
-  static const getNDigitsCommand = 2;
 
   @override
   late final Map<int, CommandHandler> operations = {

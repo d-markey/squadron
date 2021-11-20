@@ -4,9 +4,38 @@ import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
 
+class SampleWorkerPool extends WorkerPool<SampleWorker>
+    implements SampleService {
+  SampleWorkerPool(dynamic entryPoint,
+      [ConcurrencySettings? concurrencySettings])
+      : super(() => SampleWorker(entryPoint),
+            concurrencySettings:
+                concurrencySettings ?? ConcurrencySettings.fourIoThreads);
+
+  @override
+  Future io({required int milliseconds}) =>
+      execute((w) => w.io(milliseconds: milliseconds));
+
+  @override
+  Future cpu({required int milliseconds}) =>
+      execute((w) => w.cpu(milliseconds: milliseconds));
+
+  @override
+  Future<int> delayedIdentity(int n) => execute((w) => w.delayedIdentity(n));
+
+  @override
+  Stream<int> delayedSequence(int count) =>
+      stream((w) => w.delayedSequence(count));
+
+  ValueTask<int> delayedIdentityTask(int n) =>
+      scheduleTask((w) => w.delayedIdentity(n));
+
+  StreamTask<int> delayedSequenceTask(int n) =>
+      scheduleStream((w) => w.delayedSequence(n));
+}
+
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  SampleWorker(dynamic entryPoint) : super(entryPoint);
 
   @override
   Future io({required int milliseconds}) =>
@@ -17,5 +46,10 @@ class SampleWorker extends Worker implements SampleService {
       send(SampleService.cpuCommand, [milliseconds]);
 
   @override
-  final Map<int, CommandHandler> operations = const {};
+  Future<int> delayedIdentity(int n) =>
+      send(SampleService.delayedIdentityCommand, [n]);
+
+  @override
+  Stream<int> delayedSequence(int count) =>
+      stream(SampleService.delayedSequenceCommand, [count]);
 }

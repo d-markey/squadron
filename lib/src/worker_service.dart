@@ -1,9 +1,12 @@
 import 'dart:async';
 
-import 'channel.dart';
 import 'worker_exception.dart';
+import 'worker_monitor.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
+
+typedef WorkerInitializer = FutureOr<WorkerService> Function(
+    WorkerRequest startRequest);
 
 typedef CommandHandler = FutureOr Function(WorkerRequest req);
 
@@ -13,27 +16,31 @@ abstract class WorkerService {
   /// Called by the platform worker upon startup, in response to a start [WorkerRequest].
   /// [channelInfo] is an opaque object sent back from the platform worker to the Squadron [Worker]
   /// and used to communicate with the platform worker. Typically, [channelInfo] would be a [SendPort]
-  /// (native) or a [MessagePort] (browser). [operations] and [serviceOperations] are optional maps of
-  /// command ids to command methods. The idea is to provide the actual map of supported commands in
-  /// [serviceOperations] and an empty map in [operations]. [operations] will be populated with entries
-  /// from [serviceOperations]. If [operations] is not empty, it should mean that [connect] has already
-  /// been called.   /// [operations] make it easier to implement the [Worker]'s message handler. See
-  /// also [process].
-  static void connect(Channel? client, Object channelInfo,
-      {Map<int, CommandHandler>? operations,
-      Map<int, CommandHandler>? serviceOperations}) {
+  /// (native) or a [MessagePort] (browser). [operations] is an optional map of command ids to command
+  /// methods which will be initialized with operations exposed by the [service]. If [operations] is
+  /// empty, it should mean that [connect] has not been called.
+  static Future connect(
+      Map? message,
+      Object channelInfo,
+      Map<int, CommandHandler>? operations,
+      WorkerInitializer? initializer) async {
+    final startRequest = WorkerRequest.deserialize(message);
+    final client = startRequest.client;
     if (client == null) {
       print('Missing client for connection request');
       return;
     }
     try {
       if (operations?.isNotEmpty ?? false) {
-        client.reply(WorkerResponse.withError(
-            'Already connected', StackTrace.current.toString()));
+        client.reply(WorkerResponse.withError('Already connected'));
         return;
       }
+      if (operations != null && initializer != null) {
+        final init = initializer(startRequest);
+        final service = (init is Future) ? await init : init;
+        operations.addAll(service.operations);
+      }
       client.connect(channelInfo);
-      operations?.addAll(serviceOperations ?? {});
     } on WorkerException catch (e) {
       client.reply(WorkerResponse.withError(e.message, e.stackTrace));
     } catch (e, st) {
@@ -43,14 +50,19 @@ abstract class WorkerService {
 
   /// Generic [WorkerRequest] handler based on a map of command ids/command methods.
   /// [operations] contains a map of command handlers indexed by command ID.
-  static void process(
-      Map<int, CommandHandler> operations, WorkerRequest request) async {
-    // start and termination requests must be handled beforehand
-    if (request.connect || request.terminate) {
-      request.client?.reply(WorkerResponse.withError(
-          'Unhandled start or termination request: $request',
-          StackTrace.current.toString()));
-      print('Unhandled start or termination request: $request');
+  static void process(Map<int, CommandHandler> operations, Map message,
+      WorkerMonitor monitor) async {
+    final request = WorkerRequest.deserialize(message);
+    if (request.terminate) {
+      monitor.terminate();
+      return;
+    }
+
+    // start request must be handled beforehand
+    if (request.connect) {
+      final msg = 'Unhandled start or termination request: $request';
+      request.client?.reply(WorkerResponse.withError(msg));
+      print(msg);
       return;
     }
 
@@ -61,19 +73,18 @@ abstract class WorkerService {
       return;
     }
 
+    monitor.begin();
     try {
       // commands are not available yet (maybe connect() wasn't called or awaited)
       if (operations.isEmpty) {
-        client.reply(WorkerResponse.withError(
-            'Worker service is not ready', StackTrace.current.toString()));
+        client.reply(WorkerResponse.withError('Worker service is not ready'));
         return;
       }
       // retrieve operation matching the request command
       final op = operations[request.command];
       if (op == null) {
         // unknown command
-        client.reply(WorkerResponse.withError(
-            'Unknown command: $request', StackTrace.current.toString()));
+        client.reply(WorkerResponse.withError('Unknown command: $request'));
         return;
       }
       // process
@@ -87,7 +98,7 @@ abstract class WorkerService {
           client.reply(WorkerResponse(res));
         }
         // close the stream
-        client.reply(WorkerResponse.endOfStream());
+        client.reply(WorkerResponse.closeStream);
       } else {
         // send result to client
         client.reply(WorkerResponse(result));
@@ -98,6 +109,8 @@ abstract class WorkerService {
     } catch (e, st) {
       // send exception to the client
       client.reply(WorkerResponse.withError(e.toString(), st.toString()));
+    } finally {
+      monitor.done();
     }
   }
 }

@@ -241,17 +241,12 @@
   var C = {},
   E = {
     main() {
-      X.bootstrap(new E.main_closure(), C.Map_empty);
+      return X.bootstrap(new E.main_closure(), null);
     },
     main_closure: function main_closure() {
     }
   },
   H = {JS_CONST: function JS_CONST() {
-    },
-    CastIterable_CastIterable(source, $S, $T) {
-      if ($S._eval$1("EfficientLengthIterable<0>")._is(source))
-        return new H._EfficientLengthCastIterable(source, $S._eval$1("@<0>")._bind$1($T)._eval$1("_EfficientLengthCastIterable<1,2>"));
-      return new H.CastIterable(source, $S._eval$1("@<0>")._bind$1($T)._eval$1("CastIterable<1,2>"));
     },
     LateError$fieldADI(fieldName) {
       return new H.LateError("Field '" + fieldName + "' has been assigned during initialization.");
@@ -262,22 +257,8 @@
     MappedIterable_MappedIterable(iterable, $function, $S, $T) {
       return new H.EfficientLengthMappedIterable(iterable, $function, $S._eval$1("@<0>")._bind$1($T)._eval$1("EfficientLengthMappedIterable<1,2>"));
     },
-    _CastIterableBase: function _CastIterableBase() {
-    },
-    CastIterator: function CastIterator(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
-    CastIterable: function CastIterable(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
-    _EfficientLengthCastIterable: function _EfficientLengthCastIterable(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
     LateError: function LateError(t0) {
-      this.__internal$_message = t0;
+      this._message = t0;
     },
     nullFuture_closure: function nullFuture_closure() {
     },
@@ -1072,9 +1053,9 @@
     },
     ConstantStringMap: function ConstantStringMap(t0, t1, t2, t3) {
       var _ = this;
-      _._length = t0;
+      _.__js_helper$_length = t0;
       _._jsObject = t1;
-      _._keys = t2;
+      _.__js_helper$_keys = t2;
       _.$ti = t3;
     },
     ConstantStringMap_values_closure: function ConstantStringMap_values_closure(t0) {
@@ -1134,9 +1115,9 @@
     },
     JsLinkedHashMap: function JsLinkedHashMap(t0) {
       var _ = this;
-      _._length = 0;
-      _.__js_helper$_last = _.__js_helper$_first = _.__js_helper$_rest = _.__js_helper$_nums = _.__js_helper$_strings = null;
-      _.__js_helper$_modifications = 0;
+      _.__js_helper$_length = 0;
+      _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
+      _._modifications = 0;
       _.$ti = t0;
     },
     JsLinkedHashMap_values_closure: function JsLinkedHashMap_values_closure(t0) {
@@ -1149,17 +1130,17 @@
       var _ = this;
       _.hashMapCellKey = t0;
       _.hashMapCellValue = t1;
-      _._previous = _.__js_helper$_next = null;
+      _._previous = _._next = null;
     },
     LinkedHashMapKeyIterable: function LinkedHashMapKeyIterable(t0, t1) {
-      this.__js_helper$_map = t0;
+      this._map = t0;
       this.$ti = t1;
     },
     LinkedHashMapKeyIterator: function LinkedHashMapKeyIterator(t0, t1, t2) {
       var _ = this;
-      _.__js_helper$_map = t0;
-      _.__js_helper$_modifications = t1;
-      _.__js_helper$_current = _.__js_helper$_cell = null;
+      _._map = t0;
+      _._modifications = t1;
+      _.__js_helper$_current = _._cell = null;
       _.$ti = t2;
     },
     initHooks_closure: function initHooks_closure(t0) {
@@ -2645,7 +2626,7 @@
     _Error: function _Error() {
     },
     _TypeError: function _TypeError(t0) {
-      this._message = t0;
+      this.__rti$_message = t0;
     },
     printString(string) {
       if (typeof dartPrint == "function") {
@@ -2830,9 +2811,6 @@
     addEventListener$3$x(receiver, a0, a1, a2) {
       return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
     },
-    elementAt$1$ax(receiver, a0) {
-      return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
-    },
     reply$1$z(receiver, a0) {
       return J.getInterceptor$z(receiver).reply$1(receiver, a0);
     },
@@ -2865,7 +2843,7 @@
     ArrayIterator: function ArrayIterator(t0, t1, t2) {
       var _ = this;
       _._iterable = t0;
-      _.__interceptors$_length = t1;
+      _._length = t1;
       _._index = 0;
       _._current = null;
       _.$ti = t2;
@@ -2879,23 +2857,70 @@
     JSString: function JSString() {
     }
   },
-  M = {
-    WorkerException$(message, stackTrace) {
-      return new M.WorkerException(message, stackTrace == null ? J.toString$0$(P.StackTrace_current()) : stackTrace);
-    },
-    WorkerException: function WorkerException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
-    }
-  },
+  K = {WorkerMonitor: function WorkerMonitor(t0) {
+      this._terminate = t0;
+      this._terminationRequested = false;
+      this._executing = 0;
+    }},
+  M = {WorkerException: function WorkerException() {
+    }},
   N = {
     _isObject0(value) {
       return value != null && typeof value != "number" && !H._isBool(value) && typeof value != "string";
     },
+    _getObjects($async$list, $async$seen) {
+      return P._makeSyncStarIterable(function() {
+        var list = $async$list,
+          seen = $async$seen;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, t3, o, h;
+        return function $async$_getObjects($async$errorCode, $async$result) {
+          if ($async$errorCode === 1) {
+            $async$currentError = $async$result;
+            $async$goto = $async$handler;
+          }
+          while (true)
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                t1 = J.where$1$ax(list, N.channel___isObject$closure()), t2 = J.get$iterator$ax(t1.__internal$_iterable), t1 = new H.WhereIterator(t2, t1._f, t1.$ti._eval$1("WhereIterator<1>")), t3 = type$.Object;
+              case 2:
+                // for condition
+                if (!t1.moveNext$0()) {
+                  // goto after for
+                  $async$goto = 3;
+                  break;
+                }
+                o = t2.get$current();
+                h = J.get$hashCode$(o);
+                $async$goto = !C.JSArray_methods.contains$1(seen, h) ? 4 : 5;
+                break;
+              case 4:
+                // then
+                C.JSArray_methods.add$1(seen, h);
+                $async$goto = 6;
+                return t3._as(o);
+              case 6:
+                // after yield
+              case 5:
+                // join
+                // goto for condition
+                $async$goto = 2;
+                break;
+              case 3:
+                // after for
+                // implicit return
+                return P._IterationMarker_endOfIteration();
+              case 1:
+                // rethrow
+                return P._IterationMarker_uncaughtError($async$currentError);
+            }
+        };
+      }, type$.Object);
+    },
     _getTransferables($async$args) {
       return P._makeSyncStarIterable(function() {
         var args = $async$args;
-        var $async$goto = 0, $async$handler = 1, $async$currentError, seen, toBeInspected, t1, t2, t3, i, i0, arg, t4, t5;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, seen, toBeInspected, t1, t2, i, i0, arg;
         return function $async$_getTransferables($async$errorCode, $async$result) {
           if ($async$errorCode === 1) {
             $async$currentError = $async$result;
@@ -2910,14 +2935,10 @@
               case 2:
                 // then
                 args = args.get$values();
-                seen = P.LinkedHashSet_LinkedHashSet$_empty(type$.int);
+                seen = H._setArrayType([], type$.JSArray_int);
                 toBeInspected = H._setArrayType([], type$.JSArray_Object);
-                t1 = args.where$1(0, N.channel___isObject$closure());
-                t2 = type$.Object;
-                t1 = H.CastIterable_CastIterable(t1, t1.$ti._eval$1("Iterable.E"), t2);
-                t3 = H._instanceType(t1);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t1, t3._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure(seen)), t3._eval$1("WhereIterable<Iterable.E>")));
-                t1 = type$.List_dynamic, t3 = type$.Map_dynamic_dynamic, i = 0;
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(args, seen));
+                t1 = type$.List_dynamic, t2 = type$.Map_dynamic_dynamic, i = 0;
               case 4:
                 // for condition
                 if (!(i < toBeInspected.length)) {
@@ -2927,14 +2948,11 @@
                 }
                 i0 = i + 1;
                 arg = toBeInspected[i];
-                $async$goto = t3._is(arg) ? 7 : 9;
+                $async$goto = t2._is(arg) ? 7 : 9;
                 break;
               case 7:
                 // then
-                t4 = arg.get$values().where$1(0, N.channel___isObject$closure());
-                t4 = H.CastIterable_CastIterable(t4, t4.$ti._eval$1("Iterable.E"), t2);
-                t5 = H._instanceType(t4);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t4, t5._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure0(seen)), t5._eval$1("WhereIterable<Iterable.E>")));
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(arg.get$values(), seen));
                 // goto join
                 $async$goto = 8;
                 break;
@@ -2944,10 +2962,7 @@
                 break;
               case 10:
                 // then
-                t4 = J.where$1$ax(arg, N.channel___isObject$closure());
-                t4 = H.CastIterable_CastIterable(t4, t4.$ti._eval$1("Iterable.E"), t2);
-                t5 = H._instanceType(t4);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t4, t5._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure1(seen)), t5._eval$1("WhereIterable<Iterable.E>")));
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(arg, seen));
                 // goto join
                 $async$goto = 11;
                 break;
@@ -2980,25 +2995,10 @@
         };
       }, type$.Object);
     },
-    _deserializeChannel(channelInfo) {
-      var channel;
-      if (channelInfo == null)
-        return null;
-      channel = new N.JsChannel();
-      channel._sendPort = type$.nullable_MessagePort._as(channelInfo);
-      return channel;
+    _MessagePort: function _MessagePort() {
     },
-    JsChannel: function JsChannel() {
+    JsWorkerChannel: function JsWorkerChannel() {
       this._sendPort = null;
-    },
-    _getTransferables_closure: function _getTransferables_closure(t0) {
-      this.seen = t0;
-    },
-    _getTransferables_closure0: function _getTransferables_closure0(t0) {
-      this.seen = t0;
-    },
-    _getTransferables_closure1: function _getTransferables_closure1(t0) {
-      this.seen = t0;
     }
   },
   O = {CacheService: function CacheService(t0) {
@@ -3531,20 +3531,6 @@
     LinkedHashMap_LinkedHashMap$_empty($K, $V) {
       return new H.JsLinkedHashMap($K._eval$1("@<0>")._bind$1($V)._eval$1("JsLinkedHashMap<1,2>"));
     },
-    LinkedHashSet_LinkedHashSet$_empty($E) {
-      return new P._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"));
-    },
-    _LinkedHashSet__newHashTable() {
-      var table = Object.create(null);
-      table["<non-identifier-key>"] = table;
-      delete table["<non-identifier-key>"];
-      return table;
-    },
-    _LinkedHashSetIterator$(_set, _modifications, $E) {
-      var t1 = new P._LinkedHashSetIterator(_set, _modifications, $E._eval$1("_LinkedHashSetIterator<0>"));
-      t1._cell = _set._first;
-      return t1;
-    },
     IterableBase_iterableToShortString(iterable, leftDelimiter, rightDelimiter) {
       var parts, t1;
       if (P._isToStringVisiting(iterable)) {
@@ -3689,24 +3675,6 @@
       t1 = result._contents;
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     },
-    _LinkedHashSet: function _LinkedHashSet(t0) {
-      var _ = this;
-      _._collection$_length = 0;
-      _._last = _._first = _._collection$_rest = _._nums = _._strings = null;
-      _._modifications = 0;
-      _.$ti = t0;
-    },
-    _LinkedHashSetCell: function _LinkedHashSetCell(t0) {
-      this._element = t0;
-      this._next = null;
-    },
-    _LinkedHashSetIterator: function _LinkedHashSetIterator(t0, t1, t2) {
-      var _ = this;
-      _._set = t0;
-      _._modifications = t1;
-      _._collection$_current = _._cell = null;
-      _.$ti = t2;
-    },
     IterableBase: function IterableBase() {
     },
     ListMixin: function ListMixin() {
@@ -3720,21 +3688,15 @@
     MapMixin: function MapMixin() {
     },
     _MapBaseValueIterable: function _MapBaseValueIterable(t0, t1) {
-      this._map = t0;
+      this._collection$_map = t0;
       this.$ti = t1;
     },
     _MapBaseValueIterator: function _MapBaseValueIterator(t0, t1, t2) {
       var _ = this;
-      _._collection$_keys = t0;
-      _._map = t1;
+      _._keys = t0;
+      _._collection$_map = t1;
       _._collection$_current = null;
       _.$ti = t2;
-    },
-    SetMixin: function SetMixin() {
-    },
-    _SetBase: function _SetBase() {
-    },
-    __SetBase_Object_SetMixin: function __SetBase_Object_SetMixin() {
     },
     Error__objectToString(object) {
       if (object instanceof H.Closure)
@@ -3746,11 +3708,9 @@
       return t1;
     },
     List_List$_of(elements, $E) {
-      var list, t1;
-      if (Array.isArray(elements))
-        return H._setArrayType(elements.slice(0), $E._eval$1("JSArray<0>"));
-      list = H._setArrayType([], $E._eval$1("JSArray<0>"));
-      for (t1 = J.get$iterator$ax(elements); t1.moveNext$0();)
+      var t1,
+        list = H._setArrayType([], $E._eval$1("JSArray<0>"));
+      for (t1 = elements.get$iterator(elements); t1.moveNext$0();)
         C.JSArray_methods.add$1(list, t1.get$current());
       return list;
     },
@@ -3768,18 +3728,6 @@
           string = string + separator + H.S(iterator.get$current());
       }
       return string;
-    },
-    StackTrace_current() {
-      var stackTrace, exception;
-      if (H.boolConversionCheck($.$get$_hasErrorStackProperty()))
-        return H.getTraceFromException(new Error());
-      try {
-        throw H.wrapException("");
-      } catch (exception) {
-        H.unwrapException(exception);
-        stackTrace = H.getTraceFromException(exception);
-        return stackTrace;
-      }
     },
     DateTime$_withValue(_value, isUtc) {
       var t1;
@@ -3833,9 +3781,6 @@
     },
     ArgumentError$value(value, $name, message) {
       return new P.ArgumentError(true, value, $name, message);
-    },
-    RangeError_checkNotNegative(value, $name) {
-      return value;
     },
     IndexError$(invalidValue, indexable, $name, message, $length) {
       return new P.IndexError($length, true, invalidValue, $name, "Index out of range");
@@ -3975,41 +3920,104 @@
     }
   },
   Q = {
-    WorkerService_connect(client, channelInfo, operations, serviceOperations) {
-      var e, e0, st, t1, exception;
-      if (client == null) {
-        P.print("Missing client for connection request");
-        return;
-      }
-      try {
-        t1 = operations.get$isNotEmpty(operations);
-        if (t1) {
-          client.reply$1(0, new R.WorkerResponse("Already connected", J.toString$0$(P.StackTrace_current()), null, false));
-          return;
-        }
-        t1 = client._sendPort;
-        t1.toString;
-        C.MessagePort_methods.postMessage$2(t1, channelInfo, H._setArrayType([channelInfo], type$.JSArray_Object));
-        operations.addAll$1(0, serviceOperations);
-      } catch (exception) {
-        t1 = H.unwrapException(exception);
-        if (t1 instanceof M.WorkerException) {
-          e = t1;
-          client.reply$1(0, new R.WorkerResponse(e.message, e.stackTrace, null, false));
-        } else {
-          e0 = t1;
-          st = H.getTraceFromException(exception);
-          client.reply$1(0, new R.WorkerResponse(J.toString$0$(e0), J.toString$0$(st), null, false));
-        }
-      }
+    WorkerService_connect(message, channelInfo, operations, initializer) {
+      return Q.WorkerService_connect$body(message, channelInfo, operations, initializer);
     },
-    WorkerService_process(operations, request) {
-      return Q.WorkerService_process$body(operations, request);
-    },
-    WorkerService_process$body(operations, request) {
+    WorkerService_connect$body(message, channelInfo, operations, initializer) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, op, result, res, e, e0, st, t1, message, t2, transfer, exception, $async$exception, $async$temp1, $async$temp2, $async$temp3;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $init, service, e, e0, st, t1, exception, startRequest, client, $async$exception;
+      var $async$WorkerService_connect = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1) {
+          $async$currentError = $async$result;
+          $async$goto = $async$handler;
+        }
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              startRequest = X.WorkerRequest$deserialize(message);
+              client = startRequest.client;
+              if (client == null) {
+                P.print("Missing client for connection request");
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $async$handler = 4;
+              t1 = operations.get$isNotEmpty(operations);
+              if (t1) {
+                J.reply$1$z(client, new R.WorkerResponse(false, "Already connected", null, null));
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $init = initializer.call$1(startRequest);
+              $async$goto = type$.Future_dynamic._is($init) ? 7 : 9;
+              break;
+            case 7:
+              // then
+              $async$goto = 10;
+              return P._asyncAwait($init, $async$WorkerService_connect);
+            case 10:
+              // returning from await.
+              // goto join
+              $async$goto = 8;
+              break;
+            case 9:
+              // else
+              $async$result = $init;
+            case 8:
+              // join
+              service = $async$result;
+              operations.addAll$1(0, service.get$operations());
+              t1 = client._sendPort;
+              t1.toString;
+              C.MessagePort_methods.postMessage$2(t1, channelInfo, H._setArrayType([channelInfo], type$.JSArray_Object));
+              $async$handler = 2;
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 4:
+              // catch
+              $async$handler = 3;
+              $async$exception = $async$currentError;
+              t1 = H.unwrapException($async$exception);
+              if (t1 instanceof M.WorkerException) {
+                e = t1;
+                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
+              } else {
+                e0 = t1;
+                st = H.getTraceFromException($async$exception);
+                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
+              }
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 3:
+              // uncaught
+              // goto rethrow
+              $async$goto = 2;
+              break;
+            case 6:
+              // after finally
+            case 1:
+              // return
+              return P._asyncReturn($async$returnValue, $async$completer);
+            case 2:
+              // rethrow
+              return P._asyncRethrow($async$currentError, $async$completer);
+          }
+      });
+      return P._asyncStartSync($async$WorkerService_connect, $async$completer);
+    },
+    WorkerService_process(operations, message, monitor) {
+      return Q.WorkerService_process$body(operations, message, monitor);
+    },
+    WorkerService_process$body(operations, message, monitor) {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, op, result, res, e, e0, st, msg, t1, t2, transfer, exception, request, $async$exception, $async$temp1, $async$temp2, $async$temp3;
       var $async$WorkerService_process = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -4019,34 +4027,48 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              if (request.connect || request.terminate) {
+              request = X.WorkerRequest$deserialize(message);
+              if (request.terminate) {
+                if (monitor._executing === 0)
+                  monitor._terminate.call$0();
+                else
+                  monitor._terminationRequested = true;
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              if (request.connect) {
+                msg = "Unhandled start or termination request: " + H.S(request);
                 t1 = request.client;
                 if (t1 != null)
-                  t1.reply$1(0, new R.WorkerResponse("Unhandled start or termination request: " + request.toString$0(0), J.toString$0$(P.StackTrace_current()), null, false));
-                P.print("Unhandled start or termination request: " + request.toString$0(0));
+                  t1.reply$1(0, new R.WorkerResponse(false, msg, null, null));
+                P.print(msg);
                 // goto return
                 $async$goto = 1;
                 break;
               }
               client = request.client;
               if (client == null) {
-                P.print("Missing client for request: " + request.toString$0(0));
+                P.print("Missing client for request: " + H.S(request));
                 // goto return
                 $async$goto = 1;
                 break;
               }
+              ++monitor._executing;
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
-                J.reply$1$z(client, new R.WorkerResponse("Worker service is not ready", J.toString$0$(P.StackTrace_current()), null, false));
-                // goto return
-                $async$goto = 1;
+                J.reply$1$z(client, new R.WorkerResponse(false, "Worker service is not ready", null, null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
                 break;
               }
               op = operations.$index(0, request.command);
               if (op == null) {
-                J.reply$1$z(client, new R.WorkerResponse("Unknown command: " + request.toString$0(0), J.toString$0$(P.StackTrace_current()), null, false));
-                // goto return
-                $async$goto = 1;
+                J.reply$1$z(client, new R.WorkerResponse(false, "Unknown command: " + H.S(request), null, null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
                 break;
               }
               result = op.call$1(request);
@@ -4061,7 +4083,7 @@
               return P._asyncAwait(result, $async$WorkerService_process);
             case 10:
               // returning from await.
-              $async$temp1.reply$1$z($async$temp2, new $async$temp3.WorkerResponse(null, null, $async$result, false));
+              $async$temp1.reply$1$z($async$temp2, new $async$temp3.WorkerResponse(false, null, $async$result, null));
               // goto join
               $async$goto = 8;
               break;
@@ -4086,7 +4108,7 @@
                 break;
               }
               res = t1.get$current();
-              message = new R.WorkerResponse(null, null, res, false).serialize$0();
+              message = new R.WorkerResponse(false, null, res, null).serialize$0();
               t2 = N._getTransferables(message);
               transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
               t2 = client._sendPort;
@@ -4116,20 +4138,20 @@
               break;
             case 16:
               // after finally
-              J.reply$1$z(client, new R.WorkerResponse(null, null, null, true));
+              J.reply$1$z(client, C.WorkerResponse_true_null_null_null);
               // goto join
               $async$goto = 12;
               break;
             case 13:
               // else
-              J.reply$1$z(client, new R.WorkerResponse(null, null, result, false));
+              J.reply$1$z(client, new R.WorkerResponse(false, null, result, null));
             case 12:
               // join
             case 8:
               // join
-              $async$handler = 2;
-              // goto after finally
-              $async$goto = 6;
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
               break;
             case 4:
               // catch
@@ -4138,19 +4160,27 @@
               t1 = H.unwrapException($async$exception);
               if (t1 instanceof M.WorkerException) {
                 e = t1;
-                J.reply$1$z(client, new R.WorkerResponse(e.message, e.stackTrace, null, false));
+                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
               } else {
                 e0 = t1;
                 st = H.getTraceFromException($async$exception);
-                J.reply$1$z(client, new R.WorkerResponse(J.toString$0$(e0), J.toString$0$(st), null, false));
+                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
               }
-              // goto after finally
-              $async$goto = 6;
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
               break;
             case 3:
               // uncaught
-              // goto rethrow
-              $async$goto = 2;
+              $async$next = [2];
+            case 5:
+              // finally
+              $async$handler = 2;
+              t1 = --monitor._executing;
+              if (monitor._terminationRequested && t1 === 0)
+                monitor._terminate.call$0();
+              // goto the next finally handler
+              $async$goto = $async$next.pop();
               break;
             case 6:
               // after finally
@@ -4167,10 +4197,10 @@
   },
   R = {WorkerResponse: function WorkerResponse(t0, t1, t2, t3) {
       var _ = this;
-      _._error = t0;
-      _._stackTrace = t1;
+      _._eos = t0;
+      _._error = t1;
       _._result = t2;
-      _._eos = t3;
+      _._stackTrace = t3;
     }},
   W = {
     _EventStreamSubscription$(_target, _eventType, onData, _useCapture, $T) {
@@ -4228,53 +4258,50 @@
   },
   X = {
     bootstrap(initializer, command) {
-      var $async$goto = 0,
-        $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        t4, scope, operations, com, t1, t2, t3;
-      var $async$bootstrap = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return P._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              scope = type$.DedicatedWorkerGlobalScope._as(self);
-              operations = P.LinkedHashMap_LinkedHashMap$_empty(type$.int, type$.dynamic_Function_WorkerRequest);
-              com = new MessageChannel();
-              t1 = com.port1;
-              t2 = type$.nullable_void_Function_MessageEvent;
-              t3 = t2._as(new X.bootstrap_closure(scope, operations));
-              type$.nullable_void_Function._as(null);
-              t4 = type$.MessageEvent;
-              W._EventStreamSubscription$(t1, "message", t3, false, t4);
-              W._EventStreamSubscription$(scope, "message", t2._as(new X.bootstrap_closure0(initializer, com, operations)), false, t4);
-              // implicit return
-              return P._asyncReturn(null, $async$completer);
-          }
-      });
-      return P._asyncStartSync($async$bootstrap, $async$completer);
+      var t4,
+        scope = type$.DedicatedWorkerGlobalScope._as(self),
+        operations = P.LinkedHashMap_LinkedHashMap$_empty(type$.int, type$.dynamic_Function_WorkerRequest),
+        com = new MessageChannel(),
+        t1 = com.port1,
+        t2 = type$.nullable_void_Function_MessageEvent,
+        t3 = t2._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope))));
+      type$.nullable_void_Function._as(null);
+      t4 = type$.MessageEvent;
+      W._EventStreamSubscription$(t1, "message", t3, false, t4);
+      W._EventStreamSubscription$(scope, "message", t2._as(new X.bootstrap_closure1(com, operations, initializer)), false, t4);
+    },
+    bootstrap_closure0: function bootstrap_closure0(t0) {
+      this.scope = t0;
     },
     bootstrap_closure: function bootstrap_closure(t0, t1) {
-      this.scope = t0;
-      this.operations = t1;
+      this.operations = t0;
+      this.monitor = t1;
     },
-    bootstrap_closure0: function bootstrap_closure0(t0, t1, t2) {
-      this.initializer = t0;
-      this.com = t1;
-      this.operations = t2;
+    bootstrap_closure1: function bootstrap_closure1(t0, t1, t2) {
+      this.com = t0;
+      this.operations = t1;
+      this.initializer = t2;
     },
     WorkerRequest$deserialize(message) {
-      var t4, t5,
-        t1 = N._deserializeChannel(message.$index(0, "a")),
-        t2 = H._asIntQ(message.$index(0, "b")),
-        t3 = message.$index(0, "c");
-      if (t3 == null)
-        t3 = C.List_empty;
-      type$.List_dynamic._as(t3);
-      t4 = message.$index(0, "d");
-      t4 = H._asBool(t4 == null ? false : t4);
-      t5 = message.$index(0, "e");
-      return new X.WorkerRequest(t1, t2, t3, t4, H._asBool(t5 == null ? false : t5));
+      var t3, t4, t5, _null = null,
+        t1 = message == null,
+        t2 = t1 ? _null : message.$index(0, "a");
+      if (t2 == null)
+        t2 = _null;
+      else {
+        t3 = new N.JsWorkerChannel();
+        t3._sendPort = type$.nullable_MessagePort._as(t2);
+        t2 = t3;
+      }
+      t3 = H._asIntQ(t1 ? _null : message.$index(0, "b"));
+      t4 = t1 ? _null : message.$index(0, "c");
+      if (t4 == null)
+        t4 = C.List_empty;
+      type$.List_dynamic._as(t4);
+      t5 = t1 ? _null : message.$index(0, "d");
+      t5 = H._asBool(t5 == null ? false : t5);
+      t1 = t1 ? _null : message.$index(0, "e");
+      return new X.WorkerRequest(t2, t3, t4, t5, H._asBool(t1 == null ? false : t1));
     },
     WorkerRequest: function WorkerRequest(t0, t1, t2, t3, t4) {
       var _ = this;
@@ -4285,7 +4312,7 @@
       _.terminate = t4;
     }
   };
-  var holders = [C, E, H, J, M, N, O, P, Q, R, W, X];
+  var holders = [C, E, H, J, K, M, N, O, P, Q, R, W, X];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
   var $ = {};
   H.JS_CONST.prototype = {};
@@ -4357,13 +4384,15 @@
       H._arrayInstanceType(receiver)._eval$1("Iterable<1>")._as(collection);
       if (!!receiver.fixed$length)
         H.throwExpression(P.UnsupportedError$("addAll"));
-      for (t1 = collection.get$iterator(collection); t1.moveNext$0();)
+      for (t1 = new P._SyncStarIterator(collection._outerHelper(), collection.$ti._eval$1("_SyncStarIterator<1>")); t1.moveNext$0();)
         receiver.push(t1.get$current());
     },
-    elementAt$1(receiver, index) {
-      if (index >= receiver.length)
-        return H.ioore(receiver, index);
-      return receiver[index];
+    contains$1(receiver, other) {
+      var i;
+      for (i = 0; i < receiver.length; ++i)
+        if (J.$eq$(receiver[i], other))
+          return true;
+      return false;
     },
     toString$0(receiver) {
       return P.IterableBase_iterableToFullString(receiver, "[", "]");
@@ -4391,7 +4420,6 @@
         throw H.wrapException(H.diagnoseIndexError(receiver, index));
       receiver[index] = value;
     },
-    $isEfficientLengthIterable: 1,
     $isIterable: 1,
     $isList: 1
   };
@@ -4404,7 +4432,7 @@
       var t2, _this = this,
         t1 = _this._iterable,
         $length = t1.length;
-      if (_this.__interceptors$_length !== $length)
+      if (_this._length !== $length)
         throw H.wrapException(H.throwConcurrentModificationError(t1));
       t2 = _this._index;
       if (t2 >= $length) {
@@ -4493,39 +4521,9 @@
     },
     $isString: 1
   };
-  H._CastIterableBase.prototype = {
-    get$iterator(_) {
-      var t1 = H._instanceType(this);
-      return new H.CastIterator(J.get$iterator$ax(this.get$_source()), t1._eval$1("@<1>")._bind$1(t1._rest[1])._eval$1("CastIterator<1,2>"));
-    },
-    get$length(_) {
-      return J.get$length$asx(this.get$_source());
-    },
-    elementAt$1(_, index) {
-      return H._instanceType(this)._rest[1]._as(J.elementAt$1$ax(this.get$_source(), index));
-    },
-    toString$0(_) {
-      return J.toString$0$(this.get$_source());
-    }
-  };
-  H.CastIterator.prototype = {
-    moveNext$0() {
-      return this._source.moveNext$0();
-    },
-    get$current() {
-      return this.$ti._rest[1]._as(this._source.get$current());
-    },
-    $isIterator: 1
-  };
-  H.CastIterable.prototype = {
-    get$_source() {
-      return this._source;
-    }
-  };
-  H._EfficientLengthCastIterable.prototype = {$isEfficientLengthIterable: 1};
   H.LateError.prototype = {
     toString$0(_) {
-      var t1 = "LateInitializationError: " + this.__internal$_message;
+      var t1 = "LateInitializationError: " + this._message;
       return t1;
     }
   };
@@ -4554,7 +4552,7 @@
         _this.set$__internal$_current(null);
         return false;
       }
-      _this.set$__internal$_current(t2.elementAt$1(t1, t3));
+      _this.set$__internal$_current(t2.$index(t1, t3));
       ++_this.__internal$_index;
       return true;
     },
@@ -4570,12 +4568,9 @@
     },
     get$length(_) {
       return J.get$length$asx(this.__internal$_iterable);
-    },
-    elementAt$1(_, index) {
-      return this._f.call$1(J.elementAt$1$ax(this.__internal$_iterable, index));
     }
   };
-  H.EfficientLengthMappedIterable.prototype = {$isEfficientLengthIterable: 1};
+  H.EfficientLengthMappedIterable.prototype = {};
   H.MappedIterator.prototype = {
     moveNext$0() {
       var _this = this,
@@ -4620,7 +4615,7 @@
   };
   H.ConstantStringMap.prototype = {
     get$length(_) {
-      return this._length;
+      return this.__js_helper$_length;
     },
     containsKey$1(key) {
       if ("__proto__" === key)
@@ -4636,7 +4631,7 @@
       var keys, t2, t3, i, t4,
         t1 = this.$ti;
       t1._eval$1("~(1,2)")._as(f);
-      keys = this._keys;
+      keys = this.__js_helper$_keys;
       for (t2 = keys.length, t3 = this._jsObject, t1 = t1._rest[1], i = 0; i < t2; ++i) {
         t4 = H._asString(keys[i]);
         f.call$2(t4, t1._as(t3[t4]));
@@ -4644,7 +4639,7 @@
     },
     get$values() {
       var t1 = this.$ti;
-      return H.MappedIterable_MappedIterable(this._keys, new H.ConstantStringMap_values_closure(this), t1._precomputed1, t1._rest[1]);
+      return H.MappedIterable_MappedIterable(this.__js_helper$_keys, new H.ConstantStringMap_values_closure(this), t1._precomputed1, t1._rest[1]);
     }
   };
   H.ConstantStringMap_values_closure.prototype = {
@@ -4781,10 +4776,10 @@
   };
   H.JsLinkedHashMap.prototype = {
     get$length(_) {
-      return this._length;
+      return this.__js_helper$_length;
     },
     get$isEmpty(_) {
-      return this._length === 0;
+      return this.__js_helper$_length === 0;
     },
     get$isNotEmpty(_) {
       return !this.get$isEmpty(this);
@@ -4802,14 +4797,14 @@
     $index(_, key) {
       var strings, cell, t1, nums, _this = this, _null = null;
       if (typeof key == "string") {
-        strings = _this.__js_helper$_strings;
+        strings = _this._strings;
         if (strings == null)
           return _null;
         cell = _this._getTableCell$2(strings, key);
         t1 = cell == null ? _null : cell.hashMapCellValue;
         return t1;
       } else if (typeof key == "number" && (key & 0x3ffffff) === key) {
-        nums = _this.__js_helper$_nums;
+        nums = _this._nums;
         if (nums == null)
           return _null;
         cell = _this._getTableCell$2(nums, key);
@@ -4835,11 +4830,11 @@
       t1._precomputed1._as(key);
       t1._rest[1]._as(value);
       if (typeof key == "string") {
-        strings = _this.__js_helper$_strings;
-        _this.__js_helper$_addHashTableEntry$3(strings == null ? _this.__js_helper$_strings = _this._newHashTable$0() : strings, key, value);
+        strings = _this._strings;
+        _this._addHashTableEntry$3(strings == null ? _this._strings = _this._newHashTable$0() : strings, key, value);
       } else if (typeof key == "number" && (key & 0x3ffffff) === key) {
-        nums = _this.__js_helper$_nums;
-        _this.__js_helper$_addHashTableEntry$3(nums == null ? _this.__js_helper$_nums = _this._newHashTable$0() : nums, key, value);
+        nums = _this._nums;
+        _this._addHashTableEntry$3(nums == null ? _this._nums = _this._newHashTable$0() : nums, key, value);
       } else
         _this.internalSet$2(key, value);
     },
@@ -4854,21 +4849,21 @@
       hash = _this.internalComputeHashCode$1(key);
       bucket = _this._getTableBucket$2(rest, hash);
       if (bucket == null)
-        _this._setTableEntry$3(rest, hash, [_this.__js_helper$_newLinkedCell$2(key, value)]);
+        _this._setTableEntry$3(rest, hash, [_this._newLinkedCell$2(key, value)]);
       else {
         index = _this.internalFindBucketIndex$2(bucket, key);
         if (index >= 0)
           bucket[index].hashMapCellValue = value;
         else
-          bucket.push(_this.__js_helper$_newLinkedCell$2(key, value));
+          bucket.push(_this._newLinkedCell$2(key, value));
       }
     },
     remove$1(_, key) {
       var _this = this;
       if (typeof key == "string")
-        return _this._removeHashTableEntry$2(_this.__js_helper$_strings, key);
+        return _this._removeHashTableEntry$2(_this._strings, key);
       else if (typeof key == "number" && (key & 0x3ffffff) === key)
-        return _this._removeHashTableEntry$2(_this.__js_helper$_nums, key);
+        return _this._removeHashTableEntry$2(_this._nums, key);
       else
         return _this.internalRemove$1(key);
     },
@@ -4891,23 +4886,23 @@
     forEach$1(_, action) {
       var cell, modifications, _this = this;
       H._instanceType(_this)._eval$1("~(1,2)")._as(action);
-      cell = _this.__js_helper$_first;
-      modifications = _this.__js_helper$_modifications;
+      cell = _this._first;
+      modifications = _this._modifications;
       for (; cell != null;) {
         action.call$2(cell.hashMapCellKey, cell.hashMapCellValue);
-        if (modifications !== _this.__js_helper$_modifications)
+        if (modifications !== _this._modifications)
           throw H.wrapException(P.ConcurrentModificationError$(_this));
-        cell = cell.__js_helper$_next;
+        cell = cell._next;
       }
     },
-    __js_helper$_addHashTableEntry$3(table, key, value) {
+    _addHashTableEntry$3(table, key, value) {
       var cell, _this = this,
         t1 = H._instanceType(_this);
       t1._precomputed1._as(key);
       t1._rest[1]._as(value);
       cell = _this._getTableCell$2(table, key);
       if (cell == null)
-        _this._setTableEntry$3(table, key, _this.__js_helper$_newLinkedCell$2(key, value));
+        _this._setTableEntry$3(table, key, _this._newLinkedCell$2(key, value));
       else
         cell.hashMapCellValue = value;
     },
@@ -4923,37 +4918,37 @@
       return cell.hashMapCellValue;
     },
     _modified$0() {
-      this.__js_helper$_modifications = this.__js_helper$_modifications + 1 & 67108863;
+      this._modifications = this._modifications + 1 & 67108863;
     },
-    __js_helper$_newLinkedCell$2(key, value) {
+    _newLinkedCell$2(key, value) {
       var _this = this,
         t1 = H._instanceType(_this),
         cell = new H.LinkedHashMapCell(t1._precomputed1._as(key), t1._rest[1]._as(value));
-      if (_this.__js_helper$_first == null)
-        _this.__js_helper$_first = _this.__js_helper$_last = cell;
+      if (_this._first == null)
+        _this._first = _this._last = cell;
       else {
-        t1 = _this.__js_helper$_last;
+        t1 = _this._last;
         t1.toString;
         cell._previous = t1;
-        _this.__js_helper$_last = t1.__js_helper$_next = cell;
+        _this._last = t1._next = cell;
       }
-      ++_this._length;
+      ++_this.__js_helper$_length;
       _this._modified$0();
       return cell;
     },
     _unlinkCell$1(cell) {
       var _this = this,
         previous = cell._previous,
-        next = cell.__js_helper$_next;
+        next = cell._next;
       if (previous == null)
-        _this.__js_helper$_first = next;
+        _this._first = next;
       else
-        previous.__js_helper$_next = next;
+        previous._next = next;
       if (next == null)
-        _this.__js_helper$_last = previous;
+        _this._last = previous;
       else
         next._previous = previous;
-      --_this._length;
+      --_this.__js_helper$_length;
       _this._modified$0();
     },
     internalComputeHashCode$1(key) {
@@ -5016,12 +5011,12 @@
   H.LinkedHashMapCell.prototype = {};
   H.LinkedHashMapKeyIterable.prototype = {
     get$length(_) {
-      return this.__js_helper$_map._length;
+      return this._map.__js_helper$_length;
     },
     get$iterator(_) {
-      var t1 = this.__js_helper$_map,
-        t2 = new H.LinkedHashMapKeyIterator(t1, t1.__js_helper$_modifications, this.$ti._eval$1("LinkedHashMapKeyIterator<1>"));
-      t2.__js_helper$_cell = t1.__js_helper$_first;
+      var t1 = this._map,
+        t2 = new H.LinkedHashMapKeyIterator(t1, t1._modifications, this.$ti._eval$1("LinkedHashMapKeyIterator<1>"));
+      t2._cell = t1._first;
       return t2;
     }
   };
@@ -5031,16 +5026,16 @@
     },
     moveNext$0() {
       var cell, _this = this,
-        t1 = _this.__js_helper$_map;
-      if (_this.__js_helper$_modifications !== t1.__js_helper$_modifications)
+        t1 = _this._map;
+      if (_this._modifications !== t1._modifications)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
-      cell = _this.__js_helper$_cell;
+      cell = _this._cell;
       if (cell == null) {
         _this.set$__js_helper$_current(null);
         return false;
       } else {
         _this.set$__js_helper$_current(cell.hashMapCellKey);
-        _this.__js_helper$_cell = cell.__js_helper$_next;
+        _this._cell = cell._next;
         return true;
       }
     },
@@ -5086,7 +5081,6 @@
       H._checkValidIndex(index, receiver, receiver.length);
       receiver[index] = value;
     },
-    $isEfficientLengthIterable: 1,
     $isIterable: 1,
     $isList: 1
   };
@@ -5097,7 +5091,6 @@
       H._checkValidIndex(index, receiver, receiver.length);
       receiver[index] = value;
     },
-    $isEfficientLengthIterable: 1,
     $isIterable: 1,
     $isList: 1
   };
@@ -5164,7 +5157,7 @@
   H._FunctionParameters.prototype = {};
   H._Error.prototype = {
     toString$0(_) {
-      return this._message;
+      return this.__rti$_message;
     }
   };
   H._TypeError.prototype = {$isTypeError: 1};
@@ -5175,7 +5168,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 4
+    $signature: 3
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -5191,13 +5184,13 @@
     call$0() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 4
   };
   P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 4
   };
   P._TimerImpl.prototype = {
     _TimerImpl$2(milliseconds, callback) {
@@ -5603,7 +5596,7 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 4
+    $signature: 3
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -5924,104 +5917,10 @@
       return this.T._eval$1("~(0)");
     }
   };
-  P._LinkedHashSet.prototype = {
-    get$iterator(_) {
-      var _this = this,
-        t1 = new P._LinkedHashSetIterator(_this, _this._modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
-      t1._cell = _this._first;
-      return t1;
-    },
-    get$length(_) {
-      return this._collection$_length;
-    },
-    add$1(_, element) {
-      var strings, nums, _this = this;
-      _this.$ti._precomputed1._as(element);
-      if (typeof element == "string" && element !== "__proto__") {
-        strings = _this._strings;
-        return _this._addHashTableEntry$2(strings == null ? _this._strings = P._LinkedHashSet__newHashTable() : strings, element);
-      } else if (typeof element == "number" && (element & 1073741823) === element) {
-        nums = _this._nums;
-        return _this._addHashTableEntry$2(nums == null ? _this._nums = P._LinkedHashSet__newHashTable() : nums, element);
-      } else
-        return _this._add$1(element);
-    },
-    _add$1(element) {
-      var rest, hash, bucket, _this = this;
-      _this.$ti._precomputed1._as(element);
-      rest = _this._collection$_rest;
-      if (rest == null)
-        rest = _this._collection$_rest = P._LinkedHashSet__newHashTable();
-      hash = J.get$hashCode$(element) & 1073741823;
-      bucket = rest[hash];
-      if (bucket == null)
-        rest[hash] = [_this._newLinkedCell$1(element)];
-      else {
-        if (_this._findBucketIndex$2(bucket, element) >= 0)
-          return false;
-        bucket.push(_this._newLinkedCell$1(element));
-      }
-      return true;
-    },
-    _addHashTableEntry$2(table, element) {
-      this.$ti._precomputed1._as(element);
-      if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
-        return false;
-      table[element] = this._newLinkedCell$1(element);
-      return true;
-    },
-    _newLinkedCell$1(element) {
-      var _this = this,
-        cell = new P._LinkedHashSetCell(_this.$ti._precomputed1._as(element));
-      if (_this._first == null)
-        _this._first = _this._last = cell;
-      else
-        _this._last = _this._last._next = cell;
-      ++_this._collection$_length;
-      _this._modifications = _this._modifications + 1 & 1073741823;
-      return cell;
-    },
-    _findBucketIndex$2(bucket, element) {
-      var i,
-        $length = bucket.length;
-      for (i = 0; i < $length; ++i)
-        if (J.$eq$(bucket[i]._element, element))
-          return i;
-      return -1;
-    }
-  };
-  P._LinkedHashSetCell.prototype = {};
-  P._LinkedHashSetIterator.prototype = {
-    get$current() {
-      return this.$ti._precomputed1._as(this._collection$_current);
-    },
-    moveNext$0() {
-      var _this = this,
-        cell = _this._cell,
-        t1 = _this._set;
-      if (_this._modifications !== t1._modifications)
-        throw H.wrapException(P.ConcurrentModificationError$(t1));
-      else if (cell == null) {
-        _this.set$_collection$_current(null);
-        return false;
-      } else {
-        _this.set$_collection$_current(_this.$ti._eval$1("1?")._as(cell._element));
-        _this._cell = cell._next;
-        return true;
-      }
-    },
-    set$_collection$_current(_current) {
-      this._collection$_current = this.$ti._eval$1("1?")._as(_current);
-    },
-    $isIterator: 1
-  };
   P.IterableBase.prototype = {};
   P.ListMixin.prototype = {
     get$iterator(receiver) {
       return new H.ListIterator(receiver, this.get$length(receiver), H.instanceType(receiver)._eval$1("ListIterator<ListMixin.E>"));
-    },
-    elementAt$1(receiver, index) {
-      return this.$index(receiver, index);
     },
     where$1(receiver, test) {
       var t1 = H.instanceType(receiver);
@@ -6071,11 +5970,11 @@
   };
   P._MapBaseValueIterable.prototype = {
     get$length(_) {
-      var t1 = this._map;
+      var t1 = this._collection$_map;
       return t1.get$length(t1);
     },
     get$iterator(_) {
-      var t1 = this._map,
+      var t1 = this._collection$_map,
         t2 = this.$ti,
         t3 = t1.get$keys();
       return new P._MapBaseValueIterator(t3.get$iterator(t3), t1, t2._eval$1("@<1>")._bind$1(t2._rest[1])._eval$1("_MapBaseValueIterator<1,2>"));
@@ -6084,9 +5983,9 @@
   P._MapBaseValueIterator.prototype = {
     moveNext$0() {
       var _this = this,
-        t1 = _this._collection$_keys;
+        t1 = _this._keys;
       if (t1.moveNext$0()) {
-        _this.set$_collection$_current(_this._map.$index(0, t1.get$current()));
+        _this.set$_collection$_current(_this._collection$_map.$index(0, t1.get$current()));
         return true;
       }
       _this.set$_collection$_current(null);
@@ -6100,25 +5999,6 @@
     },
     $isIterator: 1
   };
-  P.SetMixin.prototype = {
-    toString$0(_) {
-      return P.IterableBase_iterableToFullString(this, "{", "}");
-    },
-    elementAt$1(_, index) {
-      var t1, t2, elementIndex, element, _this = this, _s5_ = "index";
-      H.checkNotNullable(index, _s5_, type$.int);
-      P.RangeError_checkNotNegative(index, _s5_);
-      for (t1 = P._LinkedHashSetIterator$(_this, _this._modifications, _this.$ti._precomputed1), t2 = t1.$ti._precomputed1, elementIndex = 0; t1.moveNext$0();) {
-        element = t2._as(t1._collection$_current);
-        if (index === elementIndex)
-          return element;
-        ++elementIndex;
-      }
-      throw H.wrapException(P.IndexError$(index, _this, _s5_, null, elementIndex));
-    }
-  };
-  P._SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1};
-  P.__SetBase_Object_SetMixin.prototype = {};
   P.DateTime.prototype = {
     $eq(_, other) {
       if (other == null)
@@ -6179,7 +6059,7 @@
         return "0000" + n;
       return "00000" + n;
     },
-    $signature: 6
+    $signature: 5
   };
   P.Duration_toString_twoDigits.prototype = {
     call$1(n) {
@@ -6187,7 +6067,7 @@
         return "" + n;
       return "0" + n;
     },
-    $signature: 6
+    $signature: 5
   };
   P.Error.prototype = {
     get$stackTrace() {
@@ -6319,17 +6199,6 @@
       for (count = 0; it.moveNext$0();)
         ++count;
       return count;
-    },
-    elementAt$1(_, index) {
-      var t1, elementIndex, element;
-      P.RangeError_checkNotNegative(index, "index");
-      for (t1 = this.get$iterator(this), elementIndex = 0; t1.moveNext$0();) {
-        element = t1.get$current();
-        if (index === elementIndex)
-          return element;
-        ++elementIndex;
-      }
-      throw H.wrapException(P.IndexError$(index, this, "index", null, elementIndex));
     },
     toString$0(_) {
       return P.IterableBase_iterableToShortString(this, "(", ")");
@@ -6686,47 +6555,26 @@
     },
     $signature: 1
   };
+  X.bootstrap_closure0.prototype = {
+    call$0() {
+      return this.scope.close();
+    },
+    $signature: 0
+  };
   X.bootstrap_closure.prototype = {
     call$1(e) {
-      var req = X.WorkerRequest$deserialize(type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
-      if (req.terminate)
-        this.scope.close();
-      else
-        Q.WorkerService_process(this.operations, req);
+      return Q.WorkerService_process(this.operations, type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.monitor);
     },
-    $signature: 22
+    $signature: 6
   };
-  X.bootstrap_closure0.prototype = {
+  X.bootstrap_closure1.prototype = {
     call$1(e) {
-      return this.$call$body$bootstrap_closure(type$.MessageEvent._as(e));
+      Q.WorkerService_connect(type$.nullable_Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.com.port2, this.operations, this.initializer);
     },
-    $call$body$bootstrap_closure(e) {
-      var $async$goto = 0,
-        $async$completer = P._makeAsyncAwaitCompleter(type$.void),
-        $async$self = this, startRequest, service;
-      var $async$call$1 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return P._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              startRequest = X.WorkerRequest$deserialize(type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(e.data, true)));
-              $async$goto = 2;
-              return P._asyncAwait($async$self.initializer.call$1(startRequest), $async$call$1);
-            case 2:
-              // returning from await.
-              service = $async$result;
-              Q.WorkerService_connect(startRequest.client, $async$self.com.port2, $async$self.operations, service.get$operations());
-              // implicit return
-              return P._asyncReturn(null, $async$completer);
-          }
-      });
-      return P._asyncStartSync($async$call$1, $async$completer);
-    },
-    $signature: 23
+    $signature: 6
   };
-  N.JsChannel.prototype = {
+  N._MessagePort.prototype = {};
+  N.JsWorkerChannel.prototype = {
     reply$1(_, response) {
       var message = response.serialize$0(),
         t1 = N._getTransferables(message),
@@ -6735,60 +6583,23 @@
       t1.toString;
       C.MessagePort_methods.postMessage$2(t1, message, transfer);
     },
-    $isChannel: 1
+    $isWorkerChannel: 1
   };
-  N._getTransferables_closure.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 2
-  };
-  N._getTransferables_closure0.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 2
-  };
-  N._getTransferables_closure1.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 2
-  };
-  M.WorkerException.prototype = {
-    toString$0(_) {
-      return "WorkerException: " + this.message + "\n" + this.stackTrace;
-    }
-  };
-  X.WorkerRequest.prototype = {
-    toString$0(_) {
-      var _this = this;
-      return "client = " + H.S(_this.client) + ", command = " + H.S(_this.command) + ", args = " + H.S(_this.args) + ", connect = " + _this.connect + ", terminate = " + _this.terminate;
-    }
-  };
+  M.WorkerException.prototype = {};
+  K.WorkerMonitor.prototype = {};
+  X.WorkerRequest.prototype = {};
   R.WorkerResponse.prototype = {
-    get$hasError() {
-      return this._error != null;
-    },
-    toString$0(_) {
-      var t2, _this = this,
-        t1 = _this._error;
-      if (t1 != null) {
-        t2 = _this.get$hasError() ? M.WorkerException$(t1, _this._stackTrace) : null;
-        t2.toString;
-        t2 = H.throwExpression(t2);
-      } else
-        t2 = _this._result;
-      return "result = " + H.S(t2) + ", error = " + H.S(t1) + ", stackTrace=" + H.S(_this._stackTrace) + ", endOfStream=" + _this._eos;
-    },
     serialize$0() {
       var _this = this,
         t1 = _this._error;
       if (t1 != null)
         return P.LinkedHashMap_LinkedHashMap$_literal(["b", t1, "c", _this._stackTrace], type$.String, type$.dynamic);
       if (_this._eos)
-        return P.LinkedHashMap_LinkedHashMap$_literal(["d", true], type$.String, type$.dynamic);
-      return P.LinkedHashMap_LinkedHashMap$_literal(["a", _this._result], type$.String, type$.dynamic);
+        return C.Map_9sMLP;
+      t1 = _this._result;
+      if (t1 == null)
+        return C.Map_empty;
+      return P.LinkedHashMap_LinkedHashMap$_literal(["a", t1], type$.String, type$.dynamic);
     }
   };
   O.CacheService.prototype = {
@@ -6837,13 +6648,13 @@
     call$1(r) {
       return this.$this.$get$1(J.$index$ax(type$.WorkerRequest._as(r).args, 0));
     },
-    $signature: 24
+    $signature: 22
   };
   O.CacheService_operations_closure0.prototype = {
     call$1(r) {
       return this.$this.$get$1(J.$index$ax(type$.WorkerRequest._as(r).args, 0)) != null;
     },
-    $signature: 25
+    $signature: 23
   };
   O.CacheService_operations_closure1.prototype = {
     call$1(r) {
@@ -6861,7 +6672,7 @@
         t1._maxSize = t3.get$length(t3);
       return _null;
     },
-    $signature: 26
+    $signature: 24
   };
   O.CacheService_operations_closure2.prototype = {
     call$1(r) {
@@ -6871,14 +6682,14 @@
       t2 = t1._cache;
       return [t1._hit, t1._miss, t1._expired, t2.get$length(t2), t1._maxSize];
     },
-    $signature: 27
+    $signature: 25
   };
   O._CacheEntry.prototype = {};
   E.main_closure.prototype = {
     call$1(startRequest) {
       return new O.CacheService(P.LinkedHashMap_LinkedHashMap$_empty(type$.dynamic, type$._CacheEntry));
     },
-    $signature: 28
+    $signature: 26
   };
   (function aliases() {
     var _ = J.JavaScriptObject.prototype;
@@ -6891,31 +6702,29 @@
       _static_0 = hunkHelpers._static_0,
       _instance_1_u = hunkHelpers._instance_1u,
       _instance_0_u = hunkHelpers._instance_0u;
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 3);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 3);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 3);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     var _;
     _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 16);
     _instance_0_u(_, "get$_onDone", "_onDone$0", 0);
-    _static_1(N, "channel___isObject$closure", "_isObject0", 29);
+    _static_1(N, "channel___isObject$closure", "_isObject0", 27);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Iterable, H.CastIterator, P.Error, H.Closure, H.ListIterator, P.Iterator, H.FixedLengthListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.Rti, H._FunctionParameters, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._MapBaseValueIterator, P.SetMixin, P.DateTime, P.Duration, P.StackOverflowError, P._Exception, P.Null, P._StringStackTrace, P.StringBuffer, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, N.JsChannel, M.WorkerException, X.WorkerRequest, R.WorkerResponse, O.CacheService, O._CacheEntry]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.FixedLengthListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.Rti, H._FunctionParameters, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P._StreamIterator, P._Zone, P.ListMixin, P._MapBaseValueIterator, P.DateTime, P.Duration, P.StackOverflowError, P._Exception, P.Null, P._StringStackTrace, P.StringBuffer, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, N._MessagePort, M.WorkerException, K.WorkerMonitor, X.WorkerRequest, R.WorkerResponse, O.CacheService, O._CacheEntry]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.Blob, W.EventTarget, W.DomException, W.Event]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
-    _inheritMany(P.Iterable, [H._CastIterableBase, H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, P.IterableBase]);
-    _inherit(H.CastIterable, H._CastIterableBase);
-    _inherit(H._EfficientLengthCastIterable, H.CastIterable);
     _inheritMany(P.Error, [H.LateError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
-    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_length_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P.Duration_toString_sixDigits, P.Duration_toString_twoDigits, W._EventStreamSubscription_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, X.bootstrap_closure, X.bootstrap_closure0, N._getTransferables_closure, N._getTransferables_closure0, N._getTransferables_closure1, O.CacheService_operations_closure, O.CacheService_operations_closure0, O.CacheService_operations_closure1, O.CacheService_operations_closure2, E.main_closure]);
-    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure]);
+    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_length_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P.Duration_toString_sixDigits, P.Duration_toString_twoDigits, W._EventStreamSubscription_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, X.bootstrap_closure, X.bootstrap_closure1, O.CacheService_operations_closure, O.CacheService_operations_closure0, O.CacheService_operations_closure1, O.CacheService_operations_closure2, E.main_closure]);
+    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure, X.bootstrap_closure0]);
+    _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, P.IterableBase]);
     _inherit(H.EfficientLengthMappedIterable, H.MappedIterable);
     _inheritMany(P.Iterator, [H.MappedIterator, H.WhereIterator]);
     _inherit(H.ConstantStringMap, H.ConstantMap);
@@ -6937,8 +6746,6 @@
     _inherit(P._SyncStarIterable, P.IterableBase);
     _inherit(P._AsyncCompleter, P._Completer);
     _inherit(P._RootZone, P._Zone);
-    _inherit(P._SetBase, P.__SetBase_Object_SetMixin);
-    _inherit(P._LinkedHashSet, P._SetBase);
     _inheritMany(P.ArgumentError, [P.RangeError, P.IndexError]);
     _inheritMany(W.EventTarget, [W.WorkerGlobalScope, W.MessagePort]);
     _inherit(W.DedicatedWorkerGlobalScope, W.WorkerGlobalScope);
@@ -6948,23 +6755,23 @@
     _inherit(W._EventStreamSubscription, P.StreamSubscription);
     _inherit(P._StructuredCloneDart2Js, P._StructuredClone);
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
+    _inherit(N.JsWorkerChannel, N._MessagePort);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
-    _mixin(P.__SetBase_Object_SetMixin, P.SetMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "bool(Object)", "~(~())", "Null(@)", "Null()", "String(int)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "~(MessageEvent)", "Future<~>(MessageEvent)", "@(WorkerRequest)", "bool(WorkerRequest)", "~(WorkerRequest)", "List<@>(WorkerRequest)", "CacheService(WorkerRequest)", "bool(@)"],
+    types: ["~()", "~(@)", "~(~())", "Null(@)", "Null()", "String(int)", "~(MessageEvent)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "@(WorkerRequest)", "bool(WorkerRequest)", "~(WorkerRequest)", "List<@>(WorkerRequest)", "CacheService(WorkerRequest)", "bool(@)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"_SetBase":{"SetMixin":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"double":{"num":[]},"int":{"num":[]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsChannel":{"Channel":[]}}'));
-  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"NativeTypedArray":1,"IterableBase":1,"MapBase":2,"__SetBase_Object_SetMixin":1}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"List":{"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsWorkerChannel":{"WorkerChannel":[]}}'));
+  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"EfficientLengthIterable":1,"NativeTypedArray":1,"IterableBase":1,"MapBase":2}'));
   var string$ = {
     Error_: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"
   };
@@ -6973,6 +6780,7 @@
     return {
       AsyncError: findType("AsyncError"),
       Blob: findType("Blob"),
+      ConstantStringMap_String_dynamic: findType("ConstantStringMap<String,@>"),
       DedicatedWorkerGlobalScope: findType("DedicatedWorkerGlobalScope"),
       Error: findType("Error"),
       Event: findType("Event"),
@@ -6983,6 +6791,7 @@
       JSArray_Object: findType("JSArray<Object>"),
       JSArray_String: findType("JSArray<String>"),
       JSArray_dynamic: findType("JSArray<@>"),
+      JSArray_int: findType("JSArray<int>"),
       JSNull: findType("JSNull"),
       JSObject: findType("JSObject"),
       JavaScriptFunction: findType("JavaScriptFunction"),
@@ -7021,11 +6830,11 @@
       legacy_Object: findType("Object*"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_List_Object: findType("List<Object>?"),
+      nullable_Map_dynamic_dynamic: findType("Map<@,@>?"),
       nullable_Map_of_int_and_dynamic_Function_WorkerRequest: findType("Map<int,@(WorkerRequest)>?"),
       nullable_MessagePort: findType("MessagePort?"),
       nullable_Object: findType("Object?"),
       nullable__FutureListener_dynamic_dynamic: findType("_FutureListener<@,@>?"),
-      nullable__LinkedHashSetCell: findType("_LinkedHashSetCell?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
       nullable_void_Function: findType("~()?"),
       nullable_void_Function_MessageEvent: findType("~(MessageEvent)?"),
@@ -7167,7 +6976,11 @@
     C.C__RootZone = new P._RootZone();
     C.C__StringStackTrace = new P._StringStackTrace();
     C.List_empty = H._setArrayType(makeConstList([]), type$.JSArray_dynamic);
-    C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty, H.findType("ConstantStringMap<@,@>"));
+    C.List_d = H._setArrayType(makeConstList(["d"]), type$.JSArray_String);
+    C.Map_9sMLP = new H.ConstantStringMap(1, {d: true}, C.List_d, type$.ConstantStringMap_String_dynamic);
+    C.List_empty0 = H._setArrayType(makeConstList([]), type$.JSArray_String);
+    C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty0, type$.ConstantStringMap_String_dynamic);
+    C.WorkerResponse_true_null_null_null = new R.WorkerResponse(true, null, null, null);
     C._IterationMarker_null_2 = new P._IterationMarker(null, 2);
   })();
   (function staticFields() {
@@ -7189,8 +7002,7 @@
     $._toStringVisiting = H._setArrayType([], type$.JSArray_Object);
   })();
   (function lazyInitializers() {
-    var _lazyFinal = hunkHelpers.lazyFinal,
-      _lazy = hunkHelpers.lazy;
+    var _lazyFinal = hunkHelpers.lazyFinal;
     _lazyFinal($, "DART_CLOSURE_PROPERTY_NAME", "$get$DART_CLOSURE_PROPERTY_NAME", function() {
       return H.getIsolateAffinityTag("_$dart_dartClosure");
     });
@@ -7271,9 +7083,6 @@
       var t1 = new P._Future(C.C__RootZone, type$._Future_bool);
       t1._setValue$1(false);
       return t1;
-    });
-    _lazy($, "_hasErrorStackProperty", "$get$_hasErrorStackProperty", function() {
-      return new Error().stack != void 0;
     });
   })();
   (function nativeSupport() {

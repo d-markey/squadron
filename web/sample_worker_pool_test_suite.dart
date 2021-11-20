@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:squadron/squadron_pool.dart';
+import 'package:squadron/squadron.dart';
 
 import '../test/worker_services/sample_service.dart';
 import '../test/worker_services/sample_service_worker.dart';
@@ -32,11 +32,13 @@ Future<bool> testSampleWorkerPool(
       'running 2 x $taskCount tasks with a single worker... completed in ${workerSw.elapsed}',
       replaceLastLine: true);
 
-  final pool = WorkerPool<SampleWorker>(
-      () => SampleWorker(entryPoints['sample']),
-      minWorkers: 1,
-      maxWorkers: 4,
-      maxParallel: 3);
+  final pool = SampleWorkerPool(
+      entryPoints['sample'],
+      ConcurrencySettings(
+        minWorkers: 1,
+        maxWorkers: 3,
+        maxParallel: 5,
+      ));
   await pool.start();
 
   expect(pool.stats.where((s) => !s.isStopped).length == 1,
@@ -47,10 +49,8 @@ Future<bool> testSampleWorkerPool(
   final poolFutures = <Future>[];
   final poolSw = Stopwatch()..start();
   for (var i = 1; i <= taskCount; i++) {
-    poolFutures.add(
-        pool.compute((worker) => worker.cpu(milliseconds: sampleTaskDuration)));
-    poolFutures.add(
-        pool.compute((worker) => worker.io(milliseconds: sampleTaskDuration)));
+    poolFutures.add(pool.cpu(milliseconds: sampleTaskDuration));
+    poolFutures.add(pool.io(milliseconds: sampleTaskDuration));
   }
   await Future.wait(poolFutures);
   poolSw.stop();

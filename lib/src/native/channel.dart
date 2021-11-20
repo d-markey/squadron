@@ -1,44 +1,31 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import '../channel.dart';
+import '../channel.dart' show Channel, WorkerChannel;
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
 
-/// [Channel] implementation for the native world.
-class VmChannel implements Channel {
+class _SendPort {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner.
   /// Otherwise, [SendPort] to return values to the client.
   SendPort? _sendPort;
 
-  /// [Channel] serialization in native world returns the [SendPort].
-  @override
+  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   dynamic serialize() => _sendPort;
+}
 
+/// [Channel] implementation for the native world.
+class VmChannel extends _SendPort implements Channel {
   /// [Channel] sharing in native world returns the same instance.
   @override
   Channel share() => this;
-
-  /// Sends the [SendPort] to communicate with the [Isolate].
-  /// This method must be called by the [Isolate] upon startup.
-  @override
-  void connect(Object channelInfo) {
-    if (channelInfo is ReceivePort) {
-      _sendPort!.send(channelInfo.sendPort);
-    } else if (channelInfo is SendPort) {
-      _sendPort!.send(channelInfo);
-    } else {
-      throw WorkerException(
-          'Invalid channelInfo $channelInfo; expected ReceivePort or SendPort');
-    }
-  }
 
   /// Sends a termination [WorkerRequest] to the [Isolate] and clears the [SendPort].
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _sendPort?.send(WorkerRequest.terminate().serialize());
+      _sendPort?.send(WorkerRequest.stop.serialize());
       _sendPort = null;
     }
   }
@@ -68,18 +55,35 @@ class VmChannel implements Channel {
       yield res.result as T;
     }
   }
+}
+
+/// [WorkerChannel] implementation for the native world.
+class VmWorkerChannel extends _SendPort implements WorkerChannel {
+  /// Sends the [SendPort] to communicate with the [Isolate].
+  /// This method must be called by the [Isolate] upon startup.
+  @override
+  void connect(Object channelInfo) {
+    if (channelInfo is ReceivePort) {
+      _sendPort!.send(channelInfo.sendPort);
+    } else if (channelInfo is SendPort) {
+      _sendPort!.send(channelInfo);
+    } else {
+      throw WorkerException(
+          'Invalid channelInfo $channelInfo; expected ReceivePort or SendPort');
+    }
+  }
 
   /// Sends the [WorkerResponse] to the worker client.
   /// This method must be called from the [Isolate] only.
   @override
-  void reply(WorkerResponse response) {
-    _sendPort?.send(response.serialize());
-  }
+  void reply(WorkerResponse response) => _sendPort?.send(response.serialize());
 }
 
+/// Stub implementations.
+
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [VmChannel.connect].
-Future<Channel> _openChannel(dynamic entryPoint, List startArguments) async {
+/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [VmWorkerChannel.connect].
+Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final channel = VmChannel();
   final receiver = ReceivePort();
   await Isolate.spawn(entryPoint,
@@ -89,17 +93,9 @@ Future<Channel> _openChannel(dynamic entryPoint, List startArguments) async {
 }
 
 /// Creates a [VmChannel] from a [SendPort].
-/// To be used in the [Isolate] when the [WorkerRequest] includes a [Channel].
-Channel? _deserializeChannel(dynamic channelInfo) {
-  if (channelInfo == null) return null;
-  final channel = VmChannel();
-  channel._sendPort = channelInfo;
-  return channel;
-}
+Channel? deserializeChannel(dynamic channelInfo) =>
+    channelInfo == null ? null : (VmChannel().._sendPort = channelInfo);
 
-/// Stub implementations.
-Future<Channel> Function(dynamic entryPoint, List startArguments)
-    get openChannel => _openChannel;
-
-Channel? Function(dynamic channelInfo) get deserializeChannel =>
-    _deserializeChannel;
+/// Creates a [VmWorkerChannel] from a [SendPort].
+WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
+    channelInfo == null ? null : (VmWorkerChannel().._sendPort = channelInfo);

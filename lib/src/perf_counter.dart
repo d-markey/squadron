@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'perf_counter_snapshot.dart';
 
-/// Simple performance counter to consolidate statistics about [Future] completion: total number of calls, total elapsed time, and max elapsed time.
+/// Simple performance counter to consolidate statistics about [Future] completion: total
+/// number of calls, total number of errors, total elapsed time, and max elapsed time.
 class PerfCounter implements PerfCounterSnapshot {
   /// Creates a performance counter.
   PerfCounter(this.name)
@@ -38,28 +37,18 @@ class PerfCounter implements PerfCounterSnapshot {
   /// Updates counter value with the duration indicated by [timeInMicroseconds].
   /// 1. update the maximum elapsed time if required.
   /// 2. add specified time to the total elapsed time.
-  /// 3. increment the total number of calls by 1.
-  void update(int timeInMicroseconds) {
+  /// 3. depending on [success], increment the total number of calls or errors by 1.
+  void update(int timeInMicroseconds, bool success) {
     if (timeInMicroseconds > _maxTimeInMicroseconds) {
       _maxTimeInMicroseconds = timeInMicroseconds;
     }
     _totalTimeInMicroseconds += timeInMicroseconds;
-    _totalCount++;
+    if (success) {
+      _totalCount++;
+    } else {
+      _totalErrors++;
+    }
   }
-
-  /// Returns a [Future] that will measure the elapsed time to completion of the specified [task].
-  Future<T> measure<T>(Future<T> Function() task) => Future(() async {
-        final sw = Stopwatch();
-        try {
-          sw.start();
-          return await task().whenComplete(() => sw.stop());
-        } catch (e) {
-          _totalErrors += 1;
-          rethrow;
-        } finally {
-          update(sw.elapsedMicroseconds);
-        }
-      });
 
   /// Returns a snapshot of the [PerfCounter]'s values.
   PerfCounterSnapshot get value => PerfCounterSnapshot(this);

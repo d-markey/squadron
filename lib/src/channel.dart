@@ -7,7 +7,7 @@ import 'channel_stub.dart'
 
 import 'worker_response.dart';
 
-/// [Channel]s enable communication between workers and clients.
+/// [Channel]s enable communication from clients to workers.
 abstract class Channel {
   /// [Channel] serialization.
   /// Returns an opaque object that can be transfered from the client to the worker.
@@ -16,11 +16,6 @@ abstract class Channel {
   /// [Channel] sharing.
   /// Returns a [Channel] object that can be provided to enable another worker to call the channel's worker.
   Channel share();
-
-  /// Connects the [Channel] with the Squadron [Worker].
-  /// [channelInfo] is an opaque object than can be deserialized as a [Channel].
-  /// This method must be called by the worker upon startup.
-  void connect(Object channelInfo);
 
   /// Sends a termination [WorkerRequest] to the worker.
   /// The [Channel] should release any resource related to the worker and should not be used after this method has been called.
@@ -32,12 +27,8 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker.
   /// This method expects a stream of values from the worker.
-  /// The worker must send a [WorkerResponse.endOfStream] to close the [Stream].
+  /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args);
-
-  /// Sends the [WorkerResponse] to the worker client.
-  /// This method must be called from the worker only.
-  void reply(WorkerResponse data);
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
   /// The future must not complete before the worker is ready to serve requests.
@@ -47,4 +38,24 @@ abstract class Channel {
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(dynamic channelInfo) =>
       deserializeChannel(channelInfo);
+}
+
+/// [WorkerChannel]s enable communication from workers to clients.
+abstract class WorkerChannel {
+  /// [WorkerChannel] serialization.
+  /// Returns an opaque object that can be transfered from the client to the worker.
+  dynamic serialize();
+
+  /// Connects the [Channel] with the Squadron [Worker].
+  /// [channelInfo] is an opaque object than can be deserialized as a [Channel].
+  /// This method must be called by the worker upon startup.
+  void connect(Object channelInfo);
+
+  /// Sends the [WorkerResponse] to the worker client.
+  /// This method must be called from the worker only.
+  void reply(WorkerResponse data);
+
+  /// Deserializes a [Channel] from an opaque [channelInfo].
+  static WorkerChannel? deserialize(dynamic channelInfo) =>
+      deserializeWorkerChannel(channelInfo);
 }

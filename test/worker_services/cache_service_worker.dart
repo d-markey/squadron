@@ -5,8 +5,7 @@ import 'package:squadron/squadron.dart';
 import 'cache_service.dart';
 
 class CacheWorker extends Worker implements Cache {
-  CacheWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  CacheWorker(dynamic entryPoint) : super(entryPoint);
 
   @override
   Future<dynamic> get(dynamic key) => send(CacheService.getOperation, [key]);

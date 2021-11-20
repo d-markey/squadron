@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'channel.dart';
 import 'worker_exception.dart';
+import 'worker_service.dart';
 import 'worker_stat.dart';
 
 /// Base worker class.
@@ -15,7 +16,7 @@ abstract class Worker {
   }
 
   /// The [Worker]'s entry point.
-  /// Typically, a top-level function in native world or a JavaScript script Uri in browser world.
+  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
   final dynamic _entryPoint;
 
   /// The [Worker]'s start arguments.
@@ -25,18 +26,9 @@ abstract class Worker {
   late final String id;
 
   /// Start timestamp (in microseconds since Epoch).
-  DateTime? get started => (_started == null)
-      ? null
-      : DateTime.fromMicrosecondsSinceEpoch(_started!);
   int? _started;
 
-  /// Idle timestamp (in microseconds since Epoch).
-  int? _idle;
-
   /// Stopped timestamp (in microseconds since Epoch).
-  DateTime? get stopped => (_stopped == null)
-      ? null
-      : DateTime.fromMicrosecondsSinceEpoch(_stopped!);
   int? _stopped;
 
   /// Current workload.
@@ -66,6 +58,7 @@ abstract class Worker {
   Duration get idleTime => (_workload > 0 || _idle == null)
       ? Duration.zero
       : Duration(microseconds: DateTime.now().microsecondsSinceEpoch - _idle!);
+  int? _idle;
 
   /// Indicates if the [Worker] has been stopped.
   bool get isStopped => _stopped != null;
@@ -88,20 +81,23 @@ abstract class Worker {
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
-  Future? _starting;
+  Future<Channel>? _starting;
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command, [List args = const []]) async {
+    // ensure the worker is up and running
+    if (_channel == null) {
+      var channel = start();
+      if (channel is Future) {
+        await channel;
+      }
+    }
+
     try {
       // update stats
       _workload++;
       if (_workload > _maxWorkload) {
         _maxWorkload = _workload;
-      }
-
-      // ensure the worker is up and running
-      if (_channel == null) {
-        await start();
       }
 
       // send request and return response
@@ -125,16 +121,19 @@ abstract class Worker {
 
   /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command, [List args = const []]) async* {
+    // ensure the worker is up and running
+    if (_channel == null) {
+      var channel = start();
+      if (channel is Future) {
+        await channel;
+      }
+    }
+
     try {
       // update stats
       _workload++;
       if (_workload > _maxWorkload) {
         _maxWorkload = _workload;
-      }
-
-      // ensure the worker is up and running
-      if (_channel == null) {
-        await start();
       }
 
       // send request and stream response items
@@ -159,21 +158,32 @@ abstract class Worker {
   }
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
-  Future start() {
+  FutureOr<Channel> start() {
     if (_stopped != null) {
-      throw Exception('Worker is stopped');
+      throw WorkerException('Worker is stopped', workerId: id);
     }
-    _starting ??= Channel.open(_entryPoint, args).then(onStarted);
-    return _starting!;
+    if (_channel != null) {
+      return _channel!;
+    } else {
+      _starting ??= Channel.open(_entryPoint, args).then((channel) async {
+        _started = DateTime.now().microsecondsSinceEpoch;
+        _idle = _started;
+        _channel = channel;
+        var result = onStarted();
+        if (result is Future) {
+          await result;
+          return channel;
+        } else {
+          return channel;
+        }
+      });
+      return _starting!;
+    }
   }
 
   /// Method called after the worker has been started.
   /// Override this method to add custom initialization.
-  void onStarted(Channel channel) {
-    _started = DateTime.now().microsecondsSinceEpoch;
-    _idle = _started;
-    _channel = channel;
-  }
+  FutureOr onStarted() {}
 
   /// Stops this worker.
   void stop() {
@@ -184,4 +194,7 @@ abstract class Worker {
       _starting = null;
     }
   }
+
+  /// workers inheriting from [WorkerService] do not need an [operations] map
+  final Map<int, CommandHandler> operations = const {};
 }

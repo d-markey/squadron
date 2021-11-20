@@ -484,11 +484,6 @@
   },
   H = {JS_CONST: function JS_CONST() {
     },
-    CastIterable_CastIterable(source, $S, $T) {
-      if ($S._eval$1("EfficientLengthIterable<0>")._is(source))
-        return new H._EfficientLengthCastIterable(source, $S._eval$1("@<0>")._bind$1($T)._eval$1("_EfficientLengthCastIterable<1,2>"));
-      return new H.CastIterable(source, $S._eval$1("@<0>")._bind$1($T)._eval$1("CastIterable<1,2>"));
-    },
     LateError$fieldADI(fieldName) {
       return new H.LateError("Field '" + fieldName + "' has been assigned during initialization.");
     },
@@ -779,22 +774,8 @@
       } else
         H.Sort__doSort(a, less, great, compare, $E);
     },
-    _CastIterableBase: function _CastIterableBase() {
-    },
-    CastIterator: function CastIterator(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
-    CastIterable: function CastIterable(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
-    _EfficientLengthCastIterable: function _EfficientLengthCastIterable(t0, t1) {
-      this._source = t0;
-      this.$ti = t1;
-    },
     LateError: function LateError(t0) {
-      this.__internal$_message = t0;
+      this._message = t0;
     },
     CodeUnits: function CodeUnits(t0) {
       this.__internal$_string = t0;
@@ -1857,7 +1838,7 @@
     },
     ConstantStringMap: function ConstantStringMap(t0, t1, t2, t3) {
       var _ = this;
-      _._length = t0;
+      _.__js_helper$_length = t0;
       _._jsObject = t1;
       _._keys = t2;
       _.$ti = t3;
@@ -1925,9 +1906,9 @@
     },
     JsLinkedHashMap: function JsLinkedHashMap(t0) {
       var _ = this;
-      _._length = 0;
-      _.__js_helper$_last = _.__js_helper$_first = _.__js_helper$_rest = _.__js_helper$_nums = _.__js_helper$_strings = null;
-      _.__js_helper$_modifications = 0;
+      _.__js_helper$_length = 0;
+      _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
+      _._modifications = 0;
       _.$ti = t0;
     },
     JsLinkedHashMap_values_closure: function JsLinkedHashMap_values_closure(t0) {
@@ -1940,17 +1921,17 @@
       var _ = this;
       _.hashMapCellKey = t0;
       _.hashMapCellValue = t1;
-      _.__js_helper$_previous = _.__js_helper$_next = null;
+      _._previous = _._next = null;
     },
     LinkedHashMapKeyIterable: function LinkedHashMapKeyIterable(t0, t1) {
-      this.__js_helper$_map = t0;
+      this._map = t0;
       this.$ti = t1;
     },
     LinkedHashMapKeyIterator: function LinkedHashMapKeyIterator(t0, t1, t2) {
       var _ = this;
-      _.__js_helper$_map = t0;
-      _.__js_helper$_modifications = t1;
-      _.__js_helper$_current = _.__js_helper$_cell = null;
+      _._map = t0;
+      _._modifications = t1;
+      _.__js_helper$_current = _._cell = null;
       _.$ti = t2;
     },
     initHooks_closure: function initHooks_closure(t0) {
@@ -3542,7 +3523,7 @@
     _Error: function _Error() {
     },
     _TypeError: function _TypeError(t0) {
-      this._message = t0;
+      this.__rti$_message = t0;
     },
     printString(string) {
       if (typeof dartPrint == "function") {
@@ -3735,9 +3716,6 @@
     get$hashCode$(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
-    get$isEmpty$asx(receiver) {
-      return J.getInterceptor$asx(receiver).get$isEmpty(receiver);
-    },
     get$iterator$ax(receiver) {
       return J.getInterceptor$ax(receiver).get$iterator(receiver);
     },
@@ -3844,7 +3822,7 @@
     ArrayIterator: function ArrayIterator(t0, t1, t2) {
       var _ = this;
       _._iterable = t0;
-      _.__interceptors$_length = t1;
+      _._length = t1;
       _._index = 0;
       _._current = null;
       _.$ti = t2;
@@ -3858,6 +3836,11 @@
     JSString: function JSString() {
     }
   },
+  K = {WorkerMonitor: function WorkerMonitor(t0) {
+      this._terminate = t0;
+      this._terminationRequested = false;
+      this._executing = 0;
+    }},
   L = {WindowsStyle: function WindowsStyle(t0, t1, t2, t3) {
       var _ = this;
       _.separatorPattern = t0;
@@ -3911,12 +3894,7 @@
     },
     _validateArgList_closure: function _validateArgList_closure() {
     },
-    WorkerException$(message, stackTrace) {
-      return new M.WorkerException(message, stackTrace == null ? J.toString$0$(P.StackTrace_current()) : stackTrace);
-    },
-    WorkerException: function WorkerException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
+    WorkerException: function WorkerException() {
     }
   },
   N = {
@@ -3931,10 +3909,59 @@
     _isObject0(value) {
       return value != null && typeof value != "number" && !H._isBool(value) && typeof value != "string";
     },
+    _getObjects($async$list, $async$seen) {
+      return P._makeSyncStarIterable(function() {
+        var list = $async$list,
+          seen = $async$seen;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, o, h;
+        return function $async$_getObjects($async$errorCode, $async$result) {
+          if ($async$errorCode === 1) {
+            $async$currentError = $async$result;
+            $async$goto = $async$handler;
+          }
+          while (true)
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                t1 = J.where$1$ax(list, N.channel___isObject$closure()), t1 = t1.get$iterator(t1), t2 = type$.Object;
+              case 2:
+                // for condition
+                if (!t1.moveNext$0()) {
+                  // goto after for
+                  $async$goto = 3;
+                  break;
+                }
+                o = t1.get$current();
+                h = J.get$hashCode$(o);
+                $async$goto = !C.JSArray_methods.contains$1(seen, h) ? 4 : 5;
+                break;
+              case 4:
+                // then
+                C.JSArray_methods.add$1(seen, h);
+                $async$goto = 6;
+                return t2._as(o);
+              case 6:
+                // after yield
+              case 5:
+                // join
+                // goto for condition
+                $async$goto = 2;
+                break;
+              case 3:
+                // after for
+                // implicit return
+                return P._IterationMarker_endOfIteration();
+              case 1:
+                // rethrow
+                return P._IterationMarker_uncaughtError($async$currentError);
+            }
+        };
+      }, type$.Object);
+    },
     _getTransferables($async$args) {
       return P._makeSyncStarIterable(function() {
         var args = $async$args;
-        var $async$goto = 0, $async$handler = 1, $async$currentError, seen, toBeInspected, t1, t2, t3, i, i0, arg, t4, t5;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, seen, toBeInspected, t1, t2, i, i0, arg;
         return function $async$_getTransferables($async$errorCode, $async$result) {
           if ($async$errorCode === 1) {
             $async$currentError = $async$result;
@@ -3949,14 +3976,10 @@
               case 2:
                 // then
                 args = args.get$values();
-                seen = P.LinkedHashSet_LinkedHashSet$_empty(type$.int);
+                seen = H._setArrayType([], type$.JSArray_int);
                 toBeInspected = H._setArrayType([], type$.JSArray_Object);
-                t1 = args.where$1(0, N.channel___isObject$closure());
-                t2 = type$.Object;
-                t1 = H.CastIterable_CastIterable(t1, t1.$ti._eval$1("Iterable.E"), t2);
-                t3 = H._instanceType(t1);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t1, t3._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure(seen)), t3._eval$1("WhereIterable<Iterable.E>")));
-                t1 = type$.List_dynamic, t3 = type$.Map_dynamic_dynamic, i = 0;
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(args, seen));
+                t1 = type$.List_dynamic, t2 = type$.Map_dynamic_dynamic, i = 0;
               case 4:
                 // for condition
                 if (!(i < toBeInspected.length)) {
@@ -3966,14 +3989,11 @@
                 }
                 i0 = i + 1;
                 arg = toBeInspected[i];
-                $async$goto = t3._is(arg) ? 7 : 9;
+                $async$goto = t2._is(arg) ? 7 : 9;
                 break;
               case 7:
                 // then
-                t4 = arg.get$values().where$1(0, N.channel___isObject$closure());
-                t4 = H.CastIterable_CastIterable(t4, t4.$ti._eval$1("Iterable.E"), t2);
-                t5 = H._instanceType(t4);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t4, t5._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure0(seen)), t5._eval$1("WhereIterable<Iterable.E>")));
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(arg.get$values(), seen));
                 // goto join
                 $async$goto = 8;
                 break;
@@ -3983,10 +4003,7 @@
                 break;
               case 10:
                 // then
-                t4 = J.where$1$ax(arg, N.channel___isObject$closure());
-                t4 = H.CastIterable_CastIterable(t4, t4.$ti._eval$1("Iterable.E"), t2);
-                t5 = H._instanceType(t4);
-                C.JSArray_methods.addAll$1(toBeInspected, new H.WhereIterable(t4, t5._eval$1("bool(Iterable.E)")._as(new N._getTransferables_closure1(seen)), t5._eval$1("WhereIterable<Iterable.E>")));
+                C.JSArray_methods.addAll$1(toBeInspected, N._getObjects(arg, seen));
                 // goto join
                 $async$goto = 11;
                 break;
@@ -4019,25 +4036,10 @@
         };
       }, type$.Object);
     },
-    _deserializeChannel(channelInfo) {
-      var channel;
-      if (channelInfo == null)
-        return null;
-      channel = new N.JsChannel();
-      channel._sendPort = type$.nullable_MessagePort._as(channelInfo);
-      return channel;
+    _MessagePort: function _MessagePort() {
     },
-    JsChannel: function JsChannel() {
+    JsWorkerChannel: function JsWorkerChannel() {
       this._sendPort = null;
-    },
-    _getTransferables_closure: function _getTransferables_closure(t0) {
-      this.seen = t0;
-    },
-    _getTransferables_closure0: function _getTransferables_closure0(t0) {
-      this.seen = t0;
-    },
-    _getTransferables_closure1: function _getTransferables_closure1(t0) {
-      this.seen = t0;
     }
   },
   O = {BrowserClient: function BrowserClient(t0) {
@@ -4106,7 +4108,7 @@
       this.$this = t0;
     },
     main() {
-      X.bootstrap(new O.main_closure(), C.Map_empty);
+      return X.bootstrap(new O.main_closure(), null);
     },
     main_closure: function main_closure() {
     }
@@ -4784,7 +4786,7 @@
     },
     _LinkedHashSetIterator$(_set, _modifications, $E) {
       var t1 = new P._LinkedHashSetIterator(_set, _modifications, $E._eval$1("_LinkedHashSetIterator<0>"));
-      t1._cell = _set._first;
+      t1._collection$_cell = _set._collection$_first;
       return t1;
     },
     _defaultEquals(a, b) {
@@ -4943,9 +4945,9 @@
     },
     _LinkedIdentityHashMap: function _LinkedIdentityHashMap(t0) {
       var _ = this;
-      _._length = 0;
-      _.__js_helper$_last = _.__js_helper$_first = _.__js_helper$_rest = _.__js_helper$_nums = _.__js_helper$_strings = null;
-      _.__js_helper$_modifications = 0;
+      _.__js_helper$_length = 0;
+      _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
+      _._modifications = 0;
       _.$ti = t0;
     },
     _LinkedCustomHashMap: function _LinkedCustomHashMap(t0, t1, t2, t3) {
@@ -4953,9 +4955,9 @@
       _._equals = t0;
       _._hashCode = t1;
       _._validKey = t2;
-      _._length = 0;
-      _.__js_helper$_last = _.__js_helper$_first = _.__js_helper$_rest = _.__js_helper$_nums = _.__js_helper$_strings = null;
-      _.__js_helper$_modifications = 0;
+      _.__js_helper$_length = 0;
+      _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
+      _._modifications = 0;
       _.$ti = t3;
     },
     _LinkedCustomHashMap_closure: function _LinkedCustomHashMap_closure(t0) {
@@ -4964,19 +4966,19 @@
     _LinkedHashSet: function _LinkedHashSet(t0) {
       var _ = this;
       _._collection$_length = 0;
-      _._last = _._first = _._collection$_rest = _._nums = _._strings = null;
-      _._modifications = 0;
+      _._collection$_last = _._collection$_first = _._collection$_rest = _._collection$_nums = _._collection$_strings = null;
+      _._collection$_modifications = 0;
       _.$ti = t0;
     },
     _LinkedHashSetCell: function _LinkedHashSetCell(t0) {
       this._element = t0;
-      this._previous = this._next = null;
+      this._collection$_previous = this._collection$_next = null;
     },
     _LinkedHashSetIterator: function _LinkedHashSetIterator(t0, t1, t2) {
       var _ = this;
       _._set = t0;
-      _._modifications = t1;
-      _._collection$_current = _._cell = null;
+      _._collection$_modifications = t1;
+      _._collection$_current = _._collection$_cell = null;
       _.$ti = t2;
     },
     IterableBase: function IterableBase() {
@@ -4994,13 +4996,13 @@
     MapMixin: function MapMixin() {
     },
     _MapBaseValueIterable: function _MapBaseValueIterable(t0, t1) {
-      this._map = t0;
+      this._collection$_map = t0;
       this.$ti = t1;
     },
     _MapBaseValueIterator: function _MapBaseValueIterator(t0, t1, t2) {
       var _ = this;
       _._collection$_keys = t0;
-      _._map = t1;
+      _._collection$_map = t1;
       _._collection$_current = null;
       _.$ti = t2;
     },
@@ -5009,7 +5011,7 @@
     MapView: function MapView() {
     },
     UnmodifiableMapView: function UnmodifiableMapView(t0, t1) {
-      this._map = t0;
+      this._collection$_map = t0;
       this.$ti = t1;
     },
     SetMixin: function SetMixin() {
@@ -6742,41 +6744,104 @@
     }
   },
   Q = {
-    WorkerService_connect(client, channelInfo, operations, serviceOperations) {
-      var e, e0, st, t1, exception;
-      if (client == null) {
-        P.print("Missing client for connection request");
-        return;
-      }
-      try {
-        t1 = operations.get$isNotEmpty(operations);
-        if (t1) {
-          client.reply$1(0, new R.WorkerResponse("Already connected", J.toString$0$(P.StackTrace_current()), null, false));
-          return;
-        }
-        t1 = client._sendPort;
-        t1.toString;
-        C.MessagePort_methods.postMessage$2(t1, channelInfo, H._setArrayType([channelInfo], type$.JSArray_Object));
-        operations.addAll$1(0, serviceOperations);
-      } catch (exception) {
-        t1 = H.unwrapException(exception);
-        if (t1 instanceof M.WorkerException) {
-          e = t1;
-          client.reply$1(0, new R.WorkerResponse(e.message, e.stackTrace, null, false));
-        } else {
-          e0 = t1;
-          st = H.getTraceFromException(exception);
-          client.reply$1(0, new R.WorkerResponse(J.toString$0$(e0), J.toString$0$(st), null, false));
-        }
-      }
+    WorkerService_connect(message, channelInfo, operations, initializer) {
+      return Q.WorkerService_connect$body(message, channelInfo, operations, initializer);
     },
-    WorkerService_process(operations, request) {
-      return Q.WorkerService_process$body(operations, request);
-    },
-    WorkerService_process$body(operations, request) {
+    WorkerService_connect$body(message, channelInfo, operations, initializer) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, op, result, res, e, e0, st, t1, message, t2, transfer, exception, $async$exception, $async$temp1, $async$temp2, $async$temp3;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $init, service, e, e0, st, t1, exception, startRequest, client, $async$exception;
+      var $async$WorkerService_connect = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1) {
+          $async$currentError = $async$result;
+          $async$goto = $async$handler;
+        }
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              startRequest = X.WorkerRequest$deserialize(message);
+              client = startRequest.client;
+              if (client == null) {
+                P.print("Missing client for connection request");
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $async$handler = 4;
+              t1 = operations.get$isNotEmpty(operations);
+              if (t1) {
+                J.reply$1$z(client, new R.WorkerResponse(false, "Already connected", null, null));
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $init = initializer.call$1(startRequest);
+              $async$goto = type$.Future_dynamic._is($init) ? 7 : 9;
+              break;
+            case 7:
+              // then
+              $async$goto = 10;
+              return P._asyncAwait($init, $async$WorkerService_connect);
+            case 10:
+              // returning from await.
+              // goto join
+              $async$goto = 8;
+              break;
+            case 9:
+              // else
+              $async$result = $init;
+            case 8:
+              // join
+              service = $async$result;
+              operations.addAll$1(0, service.get$operations());
+              t1 = client._sendPort;
+              t1.toString;
+              C.MessagePort_methods.postMessage$2(t1, channelInfo, H._setArrayType([channelInfo], type$.JSArray_Object));
+              $async$handler = 2;
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 4:
+              // catch
+              $async$handler = 3;
+              $async$exception = $async$currentError;
+              t1 = H.unwrapException($async$exception);
+              if (t1 instanceof M.WorkerException) {
+                e = t1;
+                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
+              } else {
+                e0 = t1;
+                st = H.getTraceFromException($async$exception);
+                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
+              }
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 3:
+              // uncaught
+              // goto rethrow
+              $async$goto = 2;
+              break;
+            case 6:
+              // after finally
+            case 1:
+              // return
+              return P._asyncReturn($async$returnValue, $async$completer);
+            case 2:
+              // rethrow
+              return P._asyncRethrow($async$currentError, $async$completer);
+          }
+      });
+      return P._asyncStartSync($async$WorkerService_connect, $async$completer);
+    },
+    WorkerService_process(operations, message, monitor) {
+      return Q.WorkerService_process$body(operations, message, monitor);
+    },
+    WorkerService_process$body(operations, message, monitor) {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, op, result, res, e, e0, st, msg, t1, t2, transfer, exception, request, $async$exception, $async$temp1, $async$temp2, $async$temp3;
       var $async$WorkerService_process = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -6786,34 +6851,48 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              if (request.connect || request.terminate) {
+              request = X.WorkerRequest$deserialize(message);
+              if (request.terminate) {
+                if (monitor._executing === 0)
+                  monitor._terminate.call$0();
+                else
+                  monitor._terminationRequested = true;
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              if (request.connect) {
+                msg = "Unhandled start or termination request: " + H.S(request);
                 t1 = request.client;
                 if (t1 != null)
-                  t1.reply$1(0, new R.WorkerResponse("Unhandled start or termination request: " + request.toString$0(0), J.toString$0$(P.StackTrace_current()), null, false));
-                P.print("Unhandled start or termination request: " + request.toString$0(0));
+                  t1.reply$1(0, new R.WorkerResponse(false, msg, null, null));
+                P.print(msg);
                 // goto return
                 $async$goto = 1;
                 break;
               }
               client = request.client;
               if (client == null) {
-                P.print("Missing client for request: " + request.toString$0(0));
+                P.print("Missing client for request: " + H.S(request));
                 // goto return
                 $async$goto = 1;
                 break;
               }
+              ++monitor._executing;
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
-                J.reply$1$z(client, new R.WorkerResponse("Worker service is not ready", J.toString$0$(P.StackTrace_current()), null, false));
-                // goto return
-                $async$goto = 1;
+                J.reply$1$z(client, new R.WorkerResponse(false, "Worker service is not ready", null, null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
                 break;
               }
               op = operations.$index(0, request.command);
               if (op == null) {
-                J.reply$1$z(client, new R.WorkerResponse("Unknown command: " + request.toString$0(0), J.toString$0$(P.StackTrace_current()), null, false));
-                // goto return
-                $async$goto = 1;
+                J.reply$1$z(client, new R.WorkerResponse(false, "Unknown command: " + H.S(request), null, null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
                 break;
               }
               result = op.call$1(request);
@@ -6828,7 +6907,7 @@
               return P._asyncAwait(result, $async$WorkerService_process);
             case 10:
               // returning from await.
-              $async$temp1.reply$1$z($async$temp2, new $async$temp3.WorkerResponse(null, null, $async$result, false));
+              $async$temp1.reply$1$z($async$temp2, new $async$temp3.WorkerResponse(false, null, $async$result, null));
               // goto join
               $async$goto = 8;
               break;
@@ -6853,7 +6932,7 @@
                 break;
               }
               res = t1.get$current();
-              message = new R.WorkerResponse(null, null, res, false).serialize$0();
+              message = new R.WorkerResponse(false, null, res, null).serialize$0();
               t2 = N._getTransferables(message);
               transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
               t2 = client._sendPort;
@@ -6883,20 +6962,20 @@
               break;
             case 16:
               // after finally
-              J.reply$1$z(client, new R.WorkerResponse(null, null, null, true));
+              J.reply$1$z(client, C.WorkerResponse_true_null_null_null);
               // goto join
               $async$goto = 12;
               break;
             case 13:
               // else
-              J.reply$1$z(client, new R.WorkerResponse(null, null, result, false));
+              J.reply$1$z(client, new R.WorkerResponse(false, null, result, null));
             case 12:
               // join
             case 8:
               // join
-              $async$handler = 2;
-              // goto after finally
-              $async$goto = 6;
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
               break;
             case 4:
               // catch
@@ -6905,19 +6984,27 @@
               t1 = H.unwrapException($async$exception);
               if (t1 instanceof M.WorkerException) {
                 e = t1;
-                J.reply$1$z(client, new R.WorkerResponse(e.message, e.stackTrace, null, false));
+                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
               } else {
                 e0 = t1;
                 st = H.getTraceFromException($async$exception);
-                J.reply$1$z(client, new R.WorkerResponse(J.toString$0$(e0), J.toString$0$(st), null, false));
+                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
               }
-              // goto after finally
-              $async$goto = 6;
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
               break;
             case 3:
               // uncaught
-              // goto rethrow
-              $async$goto = 2;
+              $async$next = [2];
+            case 5:
+              // finally
+              $async$handler = 2;
+              t1 = --monitor._executing;
+              if (monitor._terminationRequested && t1 === 0)
+                monitor._terminate.call$0();
+              // goto the next finally handler
+              $async$goto = $async$next.pop();
               break;
             case 6:
               // after finally
@@ -6956,10 +7043,10 @@
     },
     WorkerResponse: function WorkerResponse(t0, t1, t2, t3) {
       var _ = this;
-      _._error = t0;
-      _._stackTrace = t1;
+      _._eos = t0;
+      _._error = t1;
       _._result = t2;
-      _._eos = t3;
+      _._stackTrace = t3;
     }
   },
   T = {BaseResponse: function BaseResponse() {
@@ -7400,53 +7487,50 @@
       _.text = t3;
     },
     bootstrap(initializer, command) {
-      var $async$goto = 0,
-        $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        t4, scope, operations, com, t1, t2, t3;
-      var $async$bootstrap = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return P._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              scope = type$.DedicatedWorkerGlobalScope._as(self);
-              operations = P.LinkedHashMap_LinkedHashMap$_empty(type$.int, type$.dynamic_Function_WorkerRequest);
-              com = new MessageChannel();
-              t1 = com.port1;
-              t2 = type$.nullable_void_Function_MessageEvent;
-              t3 = t2._as(new X.bootstrap_closure(scope, operations));
-              type$.nullable_void_Function._as(null);
-              t4 = type$.MessageEvent;
-              W._EventStreamSubscription$(t1, "message", t3, false, t4);
-              W._EventStreamSubscription$(scope, "message", t2._as(new X.bootstrap_closure0(initializer, com, operations)), false, t4);
-              // implicit return
-              return P._asyncReturn(null, $async$completer);
-          }
-      });
-      return P._asyncStartSync($async$bootstrap, $async$completer);
+      var t4,
+        scope = type$.DedicatedWorkerGlobalScope._as(self),
+        operations = P.LinkedHashMap_LinkedHashMap$_empty(type$.int, type$.dynamic_Function_WorkerRequest),
+        com = new MessageChannel(),
+        t1 = com.port1,
+        t2 = type$.nullable_void_Function_MessageEvent,
+        t3 = t2._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope))));
+      type$.nullable_void_Function._as(null);
+      t4 = type$.MessageEvent;
+      W._EventStreamSubscription$(t1, "message", t3, false, t4);
+      W._EventStreamSubscription$(scope, "message", t2._as(new X.bootstrap_closure1(com, operations, initializer)), false, t4);
+    },
+    bootstrap_closure0: function bootstrap_closure0(t0) {
+      this.scope = t0;
     },
     bootstrap_closure: function bootstrap_closure(t0, t1) {
-      this.scope = t0;
-      this.operations = t1;
+      this.operations = t0;
+      this.monitor = t1;
     },
-    bootstrap_closure0: function bootstrap_closure0(t0, t1, t2) {
-      this.initializer = t0;
-      this.com = t1;
-      this.operations = t2;
+    bootstrap_closure1: function bootstrap_closure1(t0, t1, t2) {
+      this.com = t0;
+      this.operations = t1;
+      this.initializer = t2;
     },
     WorkerRequest$deserialize(message) {
-      var t4, t5,
-        t1 = N._deserializeChannel(message.$index(0, "a")),
-        t2 = H._asIntQ(message.$index(0, "b")),
-        t3 = message.$index(0, "c");
-      if (t3 == null)
-        t3 = C.List_empty0;
-      type$.List_dynamic._as(t3);
-      t4 = message.$index(0, "d");
-      t4 = H._asBool(t4 == null ? false : t4);
-      t5 = message.$index(0, "e");
-      return new X.WorkerRequest(t1, t2, t3, t4, H._asBool(t5 == null ? false : t5));
+      var t3, t4, t5, _null = null,
+        t1 = message == null,
+        t2 = t1 ? _null : message.$index(0, "a");
+      if (t2 == null)
+        t2 = _null;
+      else {
+        t3 = new N.JsWorkerChannel();
+        t3._sendPort = type$.nullable_MessagePort._as(t2);
+        t2 = t3;
+      }
+      t3 = H._asIntQ(t1 ? _null : message.$index(0, "b"));
+      t4 = t1 ? _null : message.$index(0, "c");
+      if (t4 == null)
+        t4 = C.List_empty0;
+      type$.List_dynamic._as(t4);
+      t5 = t1 ? _null : message.$index(0, "d");
+      t5 = H._asBool(t5 == null ? false : t5);
+      t1 = t1 ? _null : message.$index(0, "e");
+      return new X.WorkerRequest(t2, t3, t4, t5, H._asBool(t1 == null ? false : t1));
     },
     WorkerRequest: function WorkerRequest(t0, t1, t2, t3, t4) {
       var _ = this;
@@ -7526,7 +7610,7 @@
     CaseInsensitiveMap$from_closure: function CaseInsensitiveMap$from_closure() {
     }
   };
-  var holders = [B, C, D, E, F, G, H, J, L, M, N, O, P, Q, R, T, U, V, W, X, Y, Z];
+  var holders = [B, C, D, E, F, G, H, J, K, L, M, N, O, P, Q, R, T, U, V, W, X, Y, Z];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
   var $ = {};
   H.JS_CONST.prototype = {};
@@ -7760,9 +7844,6 @@
           return true;
       return false;
     },
-    get$isEmpty(receiver) {
-      return receiver.length === 0;
-    },
     toString$0(receiver) {
       return P.IterableBase_iterableToFullString(receiver, "[", "]");
     },
@@ -7830,7 +7911,7 @@
       var t2, _this = this,
         t1 = _this._iterable,
         $length = t1.length;
-      if (_this.__interceptors$_length !== $length)
+      if (_this._length !== $length)
         throw H.wrapException(H.throwConcurrentModificationError(t1));
       t2 = _this._index;
       if (t2 >= $length) {
@@ -8092,46 +8173,9 @@
     $isPattern: 1,
     $isString: 1
   };
-  H._CastIterableBase.prototype = {
-    get$iterator(_) {
-      var t1 = H._instanceType(this);
-      return new H.CastIterator(J.get$iterator$ax(this.get$_source()), t1._eval$1("@<1>")._bind$1(t1._rest[1])._eval$1("CastIterator<1,2>"));
-    },
-    get$length(_) {
-      return J.get$length$asx(this.get$_source());
-    },
-    get$isEmpty(_) {
-      return J.get$isEmpty$asx(this.get$_source());
-    },
-    skip$1(_, count) {
-      var t1 = H._instanceType(this);
-      return H.CastIterable_CastIterable(J.skip$1$ax(this.get$_source(), count), t1._precomputed1, t1._rest[1]);
-    },
-    elementAt$1(_, index) {
-      return H._instanceType(this)._rest[1]._as(J.elementAt$1$ax(this.get$_source(), index));
-    },
-    toString$0(_) {
-      return J.toString$0$(this.get$_source());
-    }
-  };
-  H.CastIterator.prototype = {
-    moveNext$0() {
-      return this._source.moveNext$0();
-    },
-    get$current() {
-      return this.$ti._rest[1]._as(this._source.get$current());
-    },
-    $isIterator: 1
-  };
-  H.CastIterable.prototype = {
-    get$_source() {
-      return this._source;
-    }
-  };
-  H._EfficientLengthCastIterable.prototype = {$isEfficientLengthIterable: 1};
   H.LateError.prototype = {
     toString$0(_) {
-      var t1 = "LateInitializationError: " + this.__internal$_message;
+      var t1 = "LateInitializationError: " + this._message;
       return t1;
     }
   };
@@ -8149,16 +8193,13 @@
       t1._asyncComplete$1(null);
       return t1;
     },
-    $signature: 25
+    $signature: 51
   };
   H.EfficientLengthIterable.prototype = {};
   H.ListIterable.prototype = {
     get$iterator(_) {
       var _this = this;
       return new H.ListIterator(_this, _this.get$length(_this), H._instanceType(_this)._eval$1("ListIterator<ListIterable.E>"));
-    },
-    get$isEmpty(_) {
-      return this.get$length(this) === 0;
     },
     get$first(_) {
       if (this.get$length(this) === 0)
@@ -8188,6 +8229,9 @@
         }
         return t1.charCodeAt(0) == 0 ? t1 : t1;
       }
+    },
+    where$1(_, test) {
+      return this.super$Iterable$where(0, H._instanceType(this)._eval$1("bool(ListIterable.E)")._as(test));
     },
     reduce$1(_, combine) {
       var $length, value, i, _this = this;
@@ -8317,12 +8361,6 @@
     },
     get$length(_) {
       return J.get$length$asx(this.__internal$_iterable);
-    },
-    get$isEmpty(_) {
-      return J.get$isEmpty$asx(this.__internal$_iterable);
-    },
-    elementAt$1(_, index) {
-      return this._f.call$1(J.elementAt$1$ax(this.__internal$_iterable, index));
     }
   };
   H.EfficientLengthMappedIterable.prototype = {$isEfficientLengthIterable: 1};
@@ -8440,14 +8478,12 @@
     get$iterator(_) {
       return C.C_EmptyIterator;
     },
-    get$isEmpty(_) {
-      return true;
-    },
     get$length(_) {
       return 0;
     },
-    elementAt$1(_, index) {
-      throw H.wrapException(P.RangeError$range(index, 0, 0, "index", null));
+    where$1(_, test) {
+      this.$ti._eval$1("bool(1)")._as(test);
+      return this;
     },
     skip$1(_, count) {
       P.RangeError_checkNotNegative(count, "count");
@@ -8516,7 +8552,7 @@
   };
   H.ConstantStringMap.prototype = {
     get$length(_) {
-      return this._length;
+      return this.__js_helper$_length;
     },
     containsKey$1(key) {
       if (typeof key != "string")
@@ -8694,10 +8730,10 @@
   };
   H.JsLinkedHashMap.prototype = {
     get$length(_) {
-      return this._length;
+      return this.__js_helper$_length;
     },
     get$isEmpty(_) {
-      return this._length === 0;
+      return this.__js_helper$_length === 0;
     },
     get$isNotEmpty(_) {
       return !this.get$isEmpty(this);
@@ -8712,12 +8748,12 @@
     containsKey$1(key) {
       var strings, nums, _this = this;
       if (typeof key == "string") {
-        strings = _this.__js_helper$_strings;
+        strings = _this._strings;
         if (strings == null)
           return false;
         return _this._containsTableEntry$2(strings, key);
       } else if (typeof key == "number" && (key & 0x3ffffff) === key) {
-        nums = _this.__js_helper$_nums;
+        nums = _this._nums;
         if (nums == null)
           return false;
         return _this._containsTableEntry$2(nums, key);
@@ -8737,14 +8773,14 @@
     $index(_, key) {
       var strings, cell, t1, nums, _this = this, _null = null;
       if (typeof key == "string") {
-        strings = _this.__js_helper$_strings;
+        strings = _this._strings;
         if (strings == null)
           return _null;
         cell = _this._getTableCell$2(strings, key);
         t1 = cell == null ? _null : cell.hashMapCellValue;
         return t1;
       } else if (typeof key == "number" && (key & 0x3ffffff) === key) {
-        nums = _this.__js_helper$_nums;
+        nums = _this._nums;
         if (nums == null)
           return _null;
         cell = _this._getTableCell$2(nums, key);
@@ -8770,11 +8806,11 @@
       t1._precomputed1._as(key);
       t1._rest[1]._as(value);
       if (typeof key == "string") {
-        strings = _this.__js_helper$_strings;
-        _this.__js_helper$_addHashTableEntry$3(strings == null ? _this.__js_helper$_strings = _this._newHashTable$0() : strings, key, value);
+        strings = _this._strings;
+        _this._addHashTableEntry$3(strings == null ? _this._strings = _this._newHashTable$0() : strings, key, value);
       } else if (typeof key == "number" && (key & 0x3ffffff) === key) {
-        nums = _this.__js_helper$_nums;
-        _this.__js_helper$_addHashTableEntry$3(nums == null ? _this.__js_helper$_nums = _this._newHashTable$0() : nums, key, value);
+        nums = _this._nums;
+        _this._addHashTableEntry$3(nums == null ? _this._nums = _this._newHashTable$0() : nums, key, value);
       } else
         _this.internalSet$2(key, value);
     },
@@ -8789,55 +8825,55 @@
       hash = _this.internalComputeHashCode$1(key);
       bucket = _this._getTableBucket$2(rest, hash);
       if (bucket == null)
-        _this._setTableEntry$3(rest, hash, [_this.__js_helper$_newLinkedCell$2(key, value)]);
+        _this._setTableEntry$3(rest, hash, [_this._newLinkedCell$2(key, value)]);
       else {
         index = _this.internalFindBucketIndex$2(bucket, key);
         if (index >= 0)
           bucket[index].hashMapCellValue = value;
         else
-          bucket.push(_this.__js_helper$_newLinkedCell$2(key, value));
+          bucket.push(_this._newLinkedCell$2(key, value));
       }
     },
     forEach$1(_, action) {
       var cell, modifications, _this = this;
       H._instanceType(_this)._eval$1("~(1,2)")._as(action);
-      cell = _this.__js_helper$_first;
-      modifications = _this.__js_helper$_modifications;
+      cell = _this._first;
+      modifications = _this._modifications;
       for (; cell != null;) {
         action.call$2(cell.hashMapCellKey, cell.hashMapCellValue);
-        if (modifications !== _this.__js_helper$_modifications)
+        if (modifications !== _this._modifications)
           throw H.wrapException(P.ConcurrentModificationError$(_this));
-        cell = cell.__js_helper$_next;
+        cell = cell._next;
       }
     },
-    __js_helper$_addHashTableEntry$3(table, key, value) {
+    _addHashTableEntry$3(table, key, value) {
       var cell, _this = this,
         t1 = H._instanceType(_this);
       t1._precomputed1._as(key);
       t1._rest[1]._as(value);
       cell = _this._getTableCell$2(table, key);
       if (cell == null)
-        _this._setTableEntry$3(table, key, _this.__js_helper$_newLinkedCell$2(key, value));
+        _this._setTableEntry$3(table, key, _this._newLinkedCell$2(key, value));
       else
         cell.hashMapCellValue = value;
     },
-    __js_helper$_modified$0() {
-      this.__js_helper$_modifications = this.__js_helper$_modifications + 1 & 67108863;
+    _modified$0() {
+      this._modifications = this._modifications + 1 & 67108863;
     },
-    __js_helper$_newLinkedCell$2(key, value) {
+    _newLinkedCell$2(key, value) {
       var _this = this,
         t1 = H._instanceType(_this),
         cell = new H.LinkedHashMapCell(t1._precomputed1._as(key), t1._rest[1]._as(value));
-      if (_this.__js_helper$_first == null)
-        _this.__js_helper$_first = _this.__js_helper$_last = cell;
+      if (_this._first == null)
+        _this._first = _this._last = cell;
       else {
-        t1 = _this.__js_helper$_last;
+        t1 = _this._last;
         t1.toString;
-        cell.__js_helper$_previous = t1;
-        _this.__js_helper$_last = t1.__js_helper$_next = cell;
+        cell._previous = t1;
+        _this._last = t1._next = cell;
       }
-      ++_this._length;
-      _this.__js_helper$_modified$0();
+      ++_this.__js_helper$_length;
+      _this._modified$0();
       return cell;
     },
     internalComputeHashCode$1(key) {
@@ -8903,15 +8939,12 @@
   H.LinkedHashMapCell.prototype = {};
   H.LinkedHashMapKeyIterable.prototype = {
     get$length(_) {
-      return this.__js_helper$_map._length;
-    },
-    get$isEmpty(_) {
-      return this.__js_helper$_map._length === 0;
+      return this._map.__js_helper$_length;
     },
     get$iterator(_) {
-      var t1 = this.__js_helper$_map,
-        t2 = new H.LinkedHashMapKeyIterator(t1, t1.__js_helper$_modifications, this.$ti._eval$1("LinkedHashMapKeyIterator<1>"));
-      t2.__js_helper$_cell = t1.__js_helper$_first;
+      var t1 = this._map,
+        t2 = new H.LinkedHashMapKeyIterator(t1, t1._modifications, this.$ti._eval$1("LinkedHashMapKeyIterator<1>"));
+      t2._cell = t1._first;
       return t2;
     }
   };
@@ -8921,16 +8954,16 @@
     },
     moveNext$0() {
       var cell, _this = this,
-        t1 = _this.__js_helper$_map;
-      if (_this.__js_helper$_modifications !== t1.__js_helper$_modifications)
+        t1 = _this._map;
+      if (_this._modifications !== t1._modifications)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
-      cell = _this.__js_helper$_cell;
+      cell = _this._cell;
       if (cell == null) {
         _this.set$__js_helper$_current(null);
         return false;
       } else {
         _this.set$__js_helper$_current(cell.hashMapCellKey);
-        _this.__js_helper$_cell = cell.__js_helper$_next;
+        _this._cell = cell._next;
         return true;
       }
     },
@@ -8943,13 +8976,13 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 56
+    $signature: 52
   };
   H.initHooks_closure0.prototype = {
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 55
+    $signature: 38
   };
   H.initHooks_closure1.prototype = {
     call$1(tag) {
@@ -9284,7 +9317,7 @@
   };
   H._Error.prototype = {
     toString$0(_) {
-      return this._message;
+      return this.__rti$_message;
     }
   };
   H._TypeError.prototype = {$isTypeError: 1};
@@ -9295,7 +9328,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 11
+    $signature: 5
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -9305,7 +9338,7 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 54
+    $signature: 33
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0() {
@@ -9368,13 +9401,13 @@
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 28
+    $signature: 24
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(H._asInt(errorCode), result);
     },
-    $signature: 53
+    $signature: 25
   };
   P._IterationMarker.prototype = {
     toString$0(_) {
@@ -9742,13 +9775,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 11
+    $signature: 5
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
       this.$this._completeError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
     },
-    $signature: 38
+    $signature: 35
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0() {
@@ -9813,7 +9846,7 @@
     call$1(_) {
       return this.originalSource;
     },
-    $signature: 35
+    $signature: 37
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -10602,30 +10635,27 @@
     call$1(v) {
       return this.K._is(v);
     },
-    $signature: 10
+    $signature: 9
   };
   P._LinkedHashSet.prototype = {
     get$iterator(_) {
       var _this = this,
-        t1 = new P._LinkedHashSetIterator(_this, _this._modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
-      t1._cell = _this._first;
+        t1 = new P._LinkedHashSetIterator(_this, _this._collection$_modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
+      t1._collection$_cell = _this._collection$_first;
       return t1;
     },
     get$length(_) {
       return this._collection$_length;
     },
-    get$isEmpty(_) {
-      return this._collection$_length === 0;
-    },
     add$1(_, element) {
       var strings, nums, _this = this;
       _this.$ti._precomputed1._as(element);
       if (typeof element == "string" && element !== "__proto__") {
-        strings = _this._strings;
-        return _this._addHashTableEntry$2(strings == null ? _this._strings = P._LinkedHashSet__newHashTable() : strings, element);
+        strings = _this._collection$_strings;
+        return _this._collection$_addHashTableEntry$2(strings == null ? _this._collection$_strings = P._LinkedHashSet__newHashTable() : strings, element);
       } else if (typeof element == "number" && (element & 1073741823) === element) {
-        nums = _this._nums;
-        return _this._addHashTableEntry$2(nums == null ? _this._nums = P._LinkedHashSet__newHashTable() : nums, element);
+        nums = _this._collection$_nums;
+        return _this._collection$_addHashTableEntry$2(nums == null ? _this._collection$_nums = P._LinkedHashSet__newHashTable() : nums, element);
       } else
         return _this._add$1(element);
     },
@@ -10638,11 +10668,11 @@
       hash = J.get$hashCode$(element) & 1073741823;
       bucket = rest[hash];
       if (bucket == null)
-        rest[hash] = [_this._newLinkedCell$1(element)];
+        rest[hash] = [_this._collection$_newLinkedCell$1(element)];
       else {
         if (_this._findBucketIndex$2(bucket, element) >= 0)
           return false;
-        bucket.push(_this._newLinkedCell$1(element));
+        bucket.push(_this._collection$_newLinkedCell$1(element));
       }
       return true;
     },
@@ -10666,45 +10696,45 @@
       this._unlinkCell$1(cell);
       return true;
     },
-    _addHashTableEntry$2(table, element) {
+    _collection$_addHashTableEntry$2(table, element) {
       this.$ti._precomputed1._as(element);
       if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
         return false;
-      table[element] = this._newLinkedCell$1(element);
+      table[element] = this._collection$_newLinkedCell$1(element);
       return true;
     },
-    _modified$0() {
-      this._modifications = this._modifications + 1 & 1073741823;
+    _collection$_modified$0() {
+      this._collection$_modifications = this._collection$_modifications + 1 & 1073741823;
     },
-    _newLinkedCell$1(element) {
+    _collection$_newLinkedCell$1(element) {
       var t1, _this = this,
         cell = new P._LinkedHashSetCell(_this.$ti._precomputed1._as(element));
-      if (_this._first == null)
-        _this._first = _this._last = cell;
+      if (_this._collection$_first == null)
+        _this._collection$_first = _this._collection$_last = cell;
       else {
-        t1 = _this._last;
+        t1 = _this._collection$_last;
         t1.toString;
-        cell._previous = t1;
-        _this._last = t1._next = cell;
+        cell._collection$_previous = t1;
+        _this._collection$_last = t1._collection$_next = cell;
       }
       ++_this._collection$_length;
-      _this._modified$0();
+      _this._collection$_modified$0();
       return cell;
     },
     _unlinkCell$1(cell) {
       var _this = this,
-        previous = cell._previous,
-        next = cell._next;
+        previous = cell._collection$_previous,
+        next = cell._collection$_next;
       if (previous == null)
-        _this._first = next;
+        _this._collection$_first = next;
       else
-        previous._next = next;
+        previous._collection$_next = next;
       if (next == null)
-        _this._last = previous;
+        _this._collection$_last = previous;
       else
-        next._previous = previous;
+        next._collection$_previous = previous;
       --_this._collection$_length;
-      _this._modified$0();
+      _this._collection$_modified$0();
     },
     _findBucketIndex$2(bucket, element) {
       var $length, i;
@@ -10724,16 +10754,16 @@
     },
     moveNext$0() {
       var _this = this,
-        cell = _this._cell,
+        cell = _this._collection$_cell,
         t1 = _this._set;
-      if (_this._modifications !== t1._modifications)
+      if (_this._collection$_modifications !== t1._collection$_modifications)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
       else if (cell == null) {
         _this.set$_collection$_current(null);
         return false;
       } else {
         _this.set$_collection$_current(_this.$ti._eval$1("1?")._as(cell._element));
-        _this._cell = cell._next;
+        _this._collection$_cell = cell._collection$_next;
         return true;
       }
     },
@@ -10834,7 +10864,7 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 33
+    $signature: 48
   };
   P.MapMixin.prototype = {
     forEach$1(_, action) {
@@ -10850,10 +10880,6 @@
       var t1 = this.get$keys();
       return t1.get$length(t1);
     },
-    get$isEmpty(_) {
-      var t1 = this.get$keys();
-      return t1.get$isEmpty(t1);
-    },
     get$values() {
       var t1 = H._instanceType(this);
       return new P._MapBaseValueIterable(this, t1._eval$1("@<MapMixin.K>")._bind$1(t1._eval$1("MapMixin.V"))._eval$1("_MapBaseValueIterable<1,2>"));
@@ -10865,15 +10891,11 @@
   };
   P._MapBaseValueIterable.prototype = {
     get$length(_) {
-      var t1 = this._map;
+      var t1 = this._collection$_map;
       return t1.get$length(t1);
     },
-    get$isEmpty(_) {
-      var t1 = this._map;
-      return t1.get$isEmpty(t1);
-    },
     get$iterator(_) {
-      var t1 = this._map,
+      var t1 = this._collection$_map,
         t2 = this.$ti,
         t3 = t1.get$keys();
       return new P._MapBaseValueIterator(t3.get$iterator(t3), t1, t2._eval$1("@<1>")._bind$1(t2._rest[1])._eval$1("_MapBaseValueIterator<1,2>"));
@@ -10884,7 +10906,7 @@
       var _this = this,
         t1 = _this._collection$_keys;
       if (t1.moveNext$0()) {
-        _this.set$_collection$_current(_this._map.$index(0, t1.get$current()));
+        _this.set$_collection$_current(_this._collection$_map.$index(0, t1.get$current()));
         return true;
       }
       _this.set$_collection$_current(null);
@@ -10901,45 +10923,34 @@
   P._UnmodifiableMapMixin.prototype = {};
   P.MapView.prototype = {
     $index(_, key) {
-      return this._map.$index(0, key);
+      return this._collection$_map.$index(0, key);
     },
     forEach$1(_, action) {
-      this._map.forEach$1(0, this.$ti._eval$1("~(1,2)")._as(action));
+      this._collection$_map.forEach$1(0, this.$ti._eval$1("~(1,2)")._as(action));
     },
     get$length(_) {
-      var t1 = this._map;
+      var t1 = this._collection$_map;
       return t1.get$length(t1);
     },
     toString$0(_) {
-      return this._map.toString$0(0);
+      return this._collection$_map.toString$0(0);
     },
     get$values() {
-      return this._map.get$values();
+      return this._collection$_map.get$values();
     },
     $isMap: 1
   };
   P.UnmodifiableMapView.prototype = {};
   P.SetMixin.prototype = {
-    get$isEmpty(_) {
-      return this._collection$_length === 0;
-    },
     toString$0(_) {
       return P.IterableBase_iterableToFullString(this, "{", "}");
     },
+    where$1(_, f) {
+      var t1 = this.$ti;
+      return new H.WhereIterable(this, t1._eval$1("bool(1)")._as(f), t1._eval$1("WhereIterable<1>"));
+    },
     skip$1(_, n) {
       return H.SkipIterable_SkipIterable(this, n, this.$ti._precomputed1);
-    },
-    elementAt$1(_, index) {
-      var t1, t2, elementIndex, element, _this = this, _s5_ = "index";
-      H.checkNotNullable(index, _s5_, type$.int);
-      P.RangeError_checkNotNegative(index, _s5_);
-      for (t1 = P._LinkedHashSetIterator$(_this, _this._modifications, _this.$ti._precomputed1), t2 = t1.$ti._precomputed1, elementIndex = 0; t1.moveNext$0();) {
-        element = t2._as(t1._collection$_current);
-        if (index === elementIndex)
-          return element;
-        ++elementIndex;
-      }
-      throw H.wrapException(P.IndexError$(index, _this, _s5_, null, elementIndex));
     }
   };
   P._SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1, $isSet: 1};
@@ -10967,9 +10978,6 @@
       } else
         t1 = this._computeKeys$0().length;
       return t1;
-    },
-    get$isEmpty(_) {
-      return this.get$length(this) === 0;
     },
     get$keys() {
       if (this._processed == null)
@@ -11018,7 +11026,7 @@
     call$1(each) {
       return this.$this.$index(0, each);
     },
-    $signature: 26
+    $signature: 21
   };
   P._JsonMapKeyIterable.prototype = {
     get$length(_) {
@@ -11060,7 +11068,7 @@
       }
       return null;
     },
-    $signature: 7
+    $signature: 10
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0() {
@@ -11073,7 +11081,7 @@
       }
       return null;
     },
-    $signature: 7
+    $signature: 10
   };
   P.AsciiCodec.prototype = {
     decode$1(bytes) {
@@ -11741,7 +11749,7 @@
     call$2(msg, position) {
       throw H.wrapException(P.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 24
+    $signature: 53
   };
   P.Uri_parseIPv6Address_error.prototype = {
     call$2(msg, position) {
@@ -11750,7 +11758,7 @@
     call$1(msg) {
       return this.call$2(msg, null);
     },
-    $signature: 21
+    $signature: 54
   };
   P.Uri_parseIPv6Address_parseHex.prototype = {
     call$2(start, end) {
@@ -12095,7 +12103,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 20
+    $signature: 11
   };
   P._createTables_setRange.prototype = {
     call$3(target, range, transition) {
@@ -12107,7 +12115,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 20
+    $signature: 11
   };
   P._SimpleUri.prototype = {
     get$hasAuthority() {
@@ -12518,13 +12526,13 @@
     call$1(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 18
+    $signature: 13
   };
   W._EventStreamSubscription_onData_closure.prototype = {
     call$1(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 18
+    $signature: 13
   };
   P._StructuredClone.prototype = {
     findSlot$1(value) {
@@ -12619,7 +12627,7 @@
     call$2(key, value) {
       this._box_0.copy[key] = this.$this.walk$1(value);
     },
-    $signature: 57
+    $signature: 28
   };
   P._AcceptStructuredClone.prototype = {
     findSlot$1(value) {
@@ -12853,7 +12861,7 @@
               // returning from await.
               response = $async$result;
               $async$self._checkResponseSuccess$2(url, response);
-              $async$returnValue = B.encodingForCharset(U._contentTypeForHeaders(response.headers).parameters._map.$index(0, "charset")).decode$1(response.bodyBytes);
+              $async$returnValue = B.encodingForCharset(U._contentTypeForHeaders(response.headers).parameters._collection$_map.$index(0, "charset")).decode$1(response.bodyBytes);
               // goto return
               $async$goto = 1;
               break;
@@ -13013,7 +13021,7 @@
     },
     close$0(_) {
       var t1, t2;
-      for (t1 = this._xhrs, t1 = P._LinkedHashSetIterator$(t1, t1._modifications, t1.$ti._precomputed1), t2 = t1.$ti._precomputed1; t1.moveNext$0();)
+      for (t1 = this._xhrs, t1 = P._LinkedHashSetIterator$(t1, t1._collection$_modifications, t1.$ti._precomputed1), t2 = t1.$ti._precomputed1; t1.moveNext$0();)
         t2._as(t1._collection$_current).abort();
     }
   };
@@ -13034,14 +13042,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       this.completer.complete$1(t2);
     },
-    $signature: 17
+    $signature: 14
   };
   O.BrowserClient_send_closure0.prototype = {
     call$1(_) {
       type$.ProgressEvent._as(_);
       this.completer.completeError$2(new E.ClientException("XMLHttpRequest error."), P.StackTrace_current());
     },
-    $signature: 17
+    $signature: 14
   };
   Z.ByteStream.prototype = {
     toBytes$0() {
@@ -13072,7 +13080,7 @@
     call$1(key) {
       return H._asString(key).toLowerCase();
     },
-    $signature: 14
+    $signature: 15
   };
   R.MediaType.prototype = {
     toString$0(_) {
@@ -13083,7 +13091,7 @@
       buffer._contents = t1;
       buffer._contents = t1 + this.subtype;
       t1 = this.parameters;
-      t1._map.forEach$1(0, t1.$ti._eval$1("~(1,2)")._as(new R.MediaType_toString_closure(buffer)));
+      t1._collection$_map.forEach$1(0, t1.$ti._eval$1("~(1,2)")._as(new R.MediaType_toString_closure(buffer)));
       t1 = buffer._contents;
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     }
@@ -13150,7 +13158,7 @@
       scanner.expectDone$0();
       return R.MediaType$(t4, t5, parameters);
     },
-    $signature: 36
+    $signature: 55
   };
   R.MediaType_toString_closure.prototype = {
     call$2(attribute, value) {
@@ -13169,13 +13177,13 @@
       } else
         t1._contents = t3 + value;
     },
-    $signature: 19
+    $signature: 12
   };
   R.MediaType_toString__closure.prototype = {
     call$1(match) {
       return "\\" + H.S(match.$index(0, 0));
     },
-    $signature: 5
+    $signature: 16
   };
   N.expectQuotedString_closure.prototype = {
     call$1(match) {
@@ -13183,7 +13191,7 @@
       t1.toString;
       return t1;
     },
-    $signature: 5
+    $signature: 16
   };
   M.Context.prototype = {
     absolute$1(_, part1) {
@@ -13403,13 +13411,13 @@
     call$1(part) {
       return H._asString(part) !== "";
     },
-    $signature: 13
+    $signature: 17
   };
   M.Context_split_closure.prototype = {
     call$1(part) {
       return H._asString(part).length !== 0;
     },
-    $signature: 13
+    $signature: 17
   };
   M._validateArgList_closure.prototype = {
     call$1(arg) {
@@ -14153,7 +14161,7 @@
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$start().get$line() !== t1.get$end().get$line();
     },
-    $signature: 3
+    $signature: 2
   };
   U.Highlighter$__closure0.prototype = {
     call$1(line) {
@@ -14225,14 +14233,14 @@
         t2 = this.line;
       return !J.$eq$(t1.get$sourceUrl(), t2.url) || t1.get$end().get$line() < t2.number;
     },
-    $signature: 3
+    $signature: 2
   };
   U.Highlighter_highlight_closure.prototype = {
     call$1(highlight) {
       type$._Highlight._as(highlight);
       return true;
     },
-    $signature: 3
+    $signature: 2
   };
   U.Highlighter__writeFileStart_closure.prototype = {
     call$0() {
@@ -14571,47 +14579,26 @@
       return this._context;
     }
   };
+  X.bootstrap_closure0.prototype = {
+    call$0() {
+      return this.scope.close();
+    },
+    $signature: 0
+  };
   X.bootstrap_closure.prototype = {
     call$1(e) {
-      var req = X.WorkerRequest$deserialize(type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
-      if (req.terminate)
-        this.scope.close();
-      else
-        Q.WorkerService_process(this.operations, req);
+      return Q.WorkerService_process(this.operations, type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.monitor);
     },
-    $signature: 48
+    $signature: 18
   };
-  X.bootstrap_closure0.prototype = {
+  X.bootstrap_closure1.prototype = {
     call$1(e) {
-      return this.$call$body$bootstrap_closure(type$.MessageEvent._as(e));
+      Q.WorkerService_connect(type$.nullable_Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.com.port2, this.operations, this.initializer);
     },
-    $call$body$bootstrap_closure(e) {
-      var $async$goto = 0,
-        $async$completer = P._makeAsyncAwaitCompleter(type$.void),
-        $async$self = this, startRequest, service;
-      var $async$call$1 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return P._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              startRequest = X.WorkerRequest$deserialize(type$.Map_dynamic_dynamic._as(new P._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(e.data, true)));
-              $async$goto = 2;
-              return P._asyncAwait($async$self.initializer.call$1(startRequest), $async$call$1);
-            case 2:
-              // returning from await.
-              service = $async$result;
-              Q.WorkerService_connect(startRequest.client, $async$self.com.port2, $async$self.operations, service.get$operations());
-              // implicit return
-              return P._asyncReturn(null, $async$completer);
-          }
-      });
-      return P._asyncStartSync($async$call$1, $async$completer);
-    },
-    $signature: 49
+    $signature: 18
   };
-  N.JsChannel.prototype = {
+  N._MessagePort.prototype = {};
+  N.JsWorkerChannel.prototype = {
     reply$1(_, response) {
       var message = response.serialize$0(),
         t1 = N._getTransferables(message),
@@ -14620,61 +14607,23 @@
       t1.toString;
       C.MessagePort_methods.postMessage$2(t1, message, transfer);
     },
-    $isChannel: 1
+    $isWorkerChannel: 1
   };
-  N._getTransferables_closure.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 4
-  };
-  N._getTransferables_closure0.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 4
-  };
-  N._getTransferables_closure1.prototype = {
-    call$1(o) {
-      return this.seen.add$1(0, J.get$hashCode$(type$.Object._as(o)));
-    },
-    $signature: 4
-  };
-  M.WorkerException.prototype = {
-    toString$0(_) {
-      return "WorkerException: " + this.message + "\n" + this.stackTrace;
-    },
-    $isException: 1
-  };
-  X.WorkerRequest.prototype = {
-    toString$0(_) {
-      var _this = this;
-      return "client = " + H.S(_this.client) + ", command = " + H.S(_this.command) + ", args = " + H.S(_this.args) + ", connect = " + _this.connect + ", terminate = " + _this.terminate;
-    }
-  };
+  M.WorkerException.prototype = {};
+  K.WorkerMonitor.prototype = {};
+  X.WorkerRequest.prototype = {};
   R.WorkerResponse.prototype = {
-    get$hasError() {
-      return this._error != null;
-    },
-    toString$0(_) {
-      var t2, _this = this,
-        t1 = _this._error;
-      if (t1 != null) {
-        t2 = _this.get$hasError() ? M.WorkerException$(t1, _this._stackTrace) : null;
-        t2.toString;
-        t2 = H.throwExpression(t2);
-      } else
-        t2 = _this._result;
-      return "result = " + H.S(t2) + ", error = " + H.S(t1) + ", stackTrace=" + H.S(_this._stackTrace) + ", endOfStream=" + _this._eos;
-    },
     serialize$0() {
       var _this = this,
         t1 = _this._error;
       if (t1 != null)
         return P.LinkedHashMap_LinkedHashMap$_literal(["b", t1, "c", _this._stackTrace], type$.String, type$.dynamic);
       if (_this._eos)
-        return P.LinkedHashMap_LinkedHashMap$_literal(["d", true], type$.String, type$.dynamic);
-      return P.LinkedHashMap_LinkedHashMap$_literal(["a", _this._result], type$.String, type$.dynamic);
+        return C.Map_9sMLP;
+      t1 = _this._result;
+      if (t1 == null)
+        return C.Map_empty;
+      return P.LinkedHashMap_LinkedHashMap$_literal(["a", t1], type$.String, type$.dynamic);
     }
   };
   E.StringScannerException.prototype = {
@@ -14750,7 +14699,7 @@
     getRate$1(currency) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.nullable_double),
-        $async$returnValue, t1, currentPrice, $async$temp1;
+        $async$returnValue, rate, t1, currentPrice, $async$temp1;
       var $async$getRate$1 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
@@ -14765,17 +14714,18 @@
               // returning from await.
               currentPrice = $async$temp1.decode$2$reviver($async$result, null);
               if (currentPrice == null)
-                t1 = null;
+                rate = null;
               else {
                 t1 = J.$index$asx(currentPrice, "bpi");
                 if (t1 == null)
-                  t1 = null;
+                  rate = null;
                 else {
                   t1 = J.$index$asx(t1, currency);
                   t1 = t1 == null ? null : J.$index$asx(t1, "rate_float");
+                  rate = t1;
                 }
               }
-              $async$returnValue = type$.FutureOr_nullable_double._as(t1);
+              $async$returnValue = typeof rate == "number" ? rate : null;
               // goto return
               $async$goto = 1;
               break;
@@ -14806,13 +14756,13 @@
     call$1(r) {
       return this.$this.getRate$1(H._asString(J.$index$asx(type$.WorkerRequest._as(r).args, 0)));
     },
-    $signature: 51
+    $signature: 49
   };
   O.main_closure.prototype = {
     call$1(startRequest) {
       return new O.BitcoinService();
     },
-    $signature: 52
+    $signature: 50
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -14825,6 +14775,8 @@
     _.super$JsLinkedHashMap$internalSet = _.internalSet$2;
     _ = P.ListMixin.prototype;
     _.super$ListMixin$setRange = _.setRange$4;
+    _ = P.Iterable.prototype;
+    _.super$Iterable$where = _.where$1;
     _ = W.EventTarget.prototype;
     _.super$EventTarget$addEventListener = _.addEventListener$3;
     _ = G.BaseRequest.prototype;
@@ -14845,56 +14797,54 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _instance_2_i = hunkHelpers._instance_2i,
       _static = hunkHelpers.installStaticTearOff;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 16);
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 19);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 3);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 3);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 3);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 1);
-    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 50, 0, 0);
-    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 8);
+    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 26, 0, 0);
+    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 7);
     var _;
     _instance_0_u(_ = P._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(_ = P._BufferingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 9);
-    _instance_2_u(_, "get$_onError", "_onError$2", 8);
+    _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 8);
+    _instance_2_u(_, "get$_onError", "_onError$2", 7);
     _instance_0_u(_, "get$_onDone", "_onDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 12);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 15);
-    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 16);
-    _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 9);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 20);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 4);
+    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 19);
+    _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 8);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 15);
-    _static_2(P, "core__identical$closure", "identical", 12);
-    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 14);
-    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 19);
-    _static_1(N, "channel___isObject$closure", "_isObject0", 10);
+    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 4);
+    _static_2(P, "core__identical$closure", "identical", 20);
+    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 15);
+    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 12);
+    _static_1(N, "channel___isObject$closure", "_isObject0", 9);
     _static(P, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return P.max(a, b, type$.num);
-    }], 37, 0);
+    }], 36, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Iterable, H.CastIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._StreamController, P._AsyncStreamControllerDispatch, P._BufferingStreamSubscription, P._DelayedEvent, P._DelayedDone, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._MapBaseValueIterator, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, N.JsChannel, M.WorkerException, X.WorkerRequest, R.WorkerResponse, X.StringScanner, O.BitcoinService]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._StreamController, P._AsyncStreamControllerDispatch, P._BufferingStreamSubscription, P._DelayedEvent, P._DelayedDone, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._MapBaseValueIterator, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, N._MessagePort, M.WorkerException, K.WorkerMonitor, X.WorkerRequest, R.WorkerResponse, X.StringScanner, O.BitcoinService]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.Blob, W.EventTarget, W.DomException, W.Event]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
-    _inheritMany(P.Iterable, [H._CastIterableBase, H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
-    _inherit(H.CastIterable, H._CastIterableBase);
-    _inherit(H._EfficientLengthCastIterable, H.CastIterable);
     _inheritMany(P.Error, [H.LateError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
     _inherit(H.UnmodifiableListBase, P.ListBase);
     _inherit(H.CodeUnits, H.UnmodifiableListBase);
-    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Instantiation, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_length_closure, P.Stream_first_closure0, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P._JsonMap_values_closure, P.Uri_parseIPv6Address_error, P._createTables_setChars, P._createTables_setRange, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_values_closure, G.read_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, X.bootstrap_closure, X.bootstrap_closure0, N._getTransferables_closure, N._getTransferables_closure0, N._getTransferables_closure1, O.BitcoinService_operations_closure, O.main_closure]);
-    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P.Stream_first_closure, P._StreamController__subscribe_closure, P._StreamController__recordCancel_complete, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, R.MediaType_MediaType$parse_closure, U.Highlighter_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure]);
+    _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Instantiation, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_length_closure, P.Stream_first_closure0, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P._JsonMap_values_closure, P.Uri_parseIPv6Address_error, P._createTables_setChars, P._createTables_setRange, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_values_closure, G.read_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, X.bootstrap_closure, X.bootstrap_closure1, O.BitcoinService_operations_closure, O.main_closure]);
+    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P.Stream_first_closure, P._StreamController__subscribe_closure, P._StreamController__recordCancel_complete, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, R.MediaType_MediaType$parse_closure, U.Highlighter_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, X.bootstrap_closure0]);
+    _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable, P._MapBaseValueIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P._JsonMapKeyIterable]);
     _inherit(H.EfficientLengthMappedIterable, H.MappedIterable);
@@ -14960,6 +14910,7 @@
     _inheritMany(Y.SourceSpanMixin, [Y._FileSpan, V.SourceSpanBase]);
     _inherit(G.SourceSpanFormatException, G.SourceSpanException);
     _inherit(X.SourceSpanWithContext, V.SourceSpanBase);
+    _inherit(N.JsWorkerChannel, N._MessagePort);
     _inherit(E.StringScannerException, G.SourceSpanFormatException);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
@@ -14975,13 +14926,13 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "bool(Object)", "String(Match)", "Null()", "@()", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "Null(@)", "bool(Object?,Object?)", "bool(String)", "String(String)", "int(Object?)", "int(@,@)", "Null(ProgressEvent)", "~(Event)", "~(String,String)", "~(Uint8List,String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "~(String,int)", "Future<Null>()", "@(Object?)", "~(@,@)", "Null(@,StackTrace)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "~(Object?,Object?)", "~(List<int>)", "_Future<@>(@)", "MediaType()", "0^(0^,0^)<num>", "Null(Object,StackTrace)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "~(MessageEvent)", "Future<~>(MessageEvent)", "~(Object[StackTrace?])", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "~(int,@)", "Null(~())", "@(@,String)", "@(@)", "Null(@,@)"],
+    types: ["~()", "~(@)", "bool(_Highlight)", "~(~())", "int(Object?)", "Null(@)", "Null()", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "@()", "~(Uint8List,String,int)", "~(String,String)", "~(Event)", "Null(ProgressEvent)", "String(String)", "String(Match)", "bool(String)", "~(MessageEvent)", "int(@,@)", "bool(Object?,Object?)", "@(Object?)", "int(int,int)", "Uint8List(@,@)", "Null(@,StackTrace)", "~(int,@)", "~(Object[StackTrace?])", "~(@,@)", "Null(@,@)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "Null(~())", "~(List<int>)", "Null(Object,StackTrace)", "0^(0^,0^)<num>", "_Future<@>(@)", "@(@,String)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "~(Object?,Object?)", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "Future<Null>()", "@(@)", "~(String,int)", "~(String[@])", "MediaType()"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2","ListIterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"_SetBase":["1"],"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"Iterable.E":"String","ListIterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.V":"1","CanonicalizedMap.K":"String","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"JsChannel":{"Channel":[]},"WorkerException":{"Exception":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
-  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"JsWorkerChannel":{"WorkerChannel":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     _must_: " must not be greater than the number of characters in the file, ",
     Cannotff: "Cannot extract a file path from a URI with a fragment component",
@@ -14998,6 +14949,7 @@
       ByteBuffer: findType("ByteBuffer"),
       CodeUnits: findType("CodeUnits"),
       Comparable_dynamic: findType("Comparable<@>"),
+      ConstantStringMap_String_dynamic: findType("ConstantStringMap<String,@>"),
       DateTime: findType("DateTime"),
       DedicatedWorkerGlobalScope: findType("DedicatedWorkerGlobalScope"),
       Document: findType("Document"),
@@ -15009,7 +14961,6 @@
       FileSpan: findType("FileSpan"),
       FormatException: findType("FormatException"),
       Function: findType("Function"),
-      FutureOr_nullable_double: findType("double?/"),
       Future_dynamic: findType("Future<@>"),
       Future_void: findType("Future<~>"),
       HttpRequest: findType("HttpRequest"),
@@ -15100,6 +15051,7 @@
       nullable_List_String: findType("List<String>?"),
       nullable_List_dynamic: findType("List<@>?"),
       nullable_Map_String_String: findType("Map<String,String>?"),
+      nullable_Map_dynamic_dynamic: findType("Map<@,@>?"),
       nullable_Map_of_int_and_dynamic_Function_WorkerRequest: findType("Map<int,@(WorkerRequest)>?"),
       nullable_MessagePort: findType("MessagePort?"),
       nullable_Object: findType("Object?"),
@@ -15283,9 +15235,12 @@
     C.List_nxB = H._setArrayType(makeConstList([0, 0, 24576, 1023, 65534, 34815, 65534, 18431]), type$.JSArray_int);
     C.List_qNA = H._setArrayType(makeConstList([0, 0, 32754, 11263, 65534, 34815, 65534, 18431]), type$.JSArray_int);
     C.List_qg4 = H._setArrayType(makeConstList([0, 0, 65490, 12287, 65535, 34815, 65534, 18431]), type$.JSArray_int);
+    C.List_d = H._setArrayType(makeConstList(["d"]), type$.JSArray_String);
+    C.Map_9sMLP = new H.ConstantStringMap(1, {d: true}, C.List_d, type$.ConstantStringMap_String_dynamic);
     C.Map_empty0 = new H.ConstantStringMap(0, {}, C.List_empty, H.findType("ConstantStringMap<String,String>"));
-    C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty0, H.findType("ConstantStringMap<@,@>"));
+    C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty, type$.ConstantStringMap_String_dynamic);
     C.Utf8Decoder_false = new P.Utf8Decoder(false);
+    C.WorkerResponse_true_null_null_null = new R.WorkerResponse(true, null, null, null);
     C._IterationMarker_null_2 = new P._IterationMarker(null, 2);
   })();
   (function staticFields() {

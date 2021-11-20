@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 abstract class Cache {
   FutureOr<dynamic> get(dynamic key);
@@ -13,6 +13,9 @@ class CacheClient implements Cache {
   CacheClient(this._remote);
 
   final Channel _remote;
+
+  static CacheClient? connect(Channel? remote) =>
+      (remote == null) ? null : CacheClient(remote);
 
   @override
   Future<dynamic> get(dynamic key) =>
@@ -34,7 +37,7 @@ class CacheClient implements Cache {
       await _remote.sendRequest(CacheService.statsOperation, []));
 }
 
-class CacheService implements WorkerService {
+class CacheService implements Cache, WorkerService {
   final _cache = <dynamic, _CacheEntry>{};
 
   int _hit = 0;
@@ -43,6 +46,7 @@ class CacheService implements WorkerService {
   int get size => _cache.length;
   int _maxSize = 0;
 
+  @override
   dynamic get(dynamic key) {
     final entry = _cache[key];
     if (entry == null) {
@@ -62,6 +66,7 @@ class CacheService implements WorkerService {
     }
   }
 
+  @override
   bool containsKey(dynamic key) {
     // don't use _cache.containsKey()
     // use get() as it implements the expiration logic
@@ -69,6 +74,7 @@ class CacheService implements WorkerService {
     return data != null;
   }
 
+  @override
   void set(dynamic key, dynamic value, {Duration? timeToLive}) {
     _cache[key] = _CacheEntry._(value, timeToLive?.inMicroseconds);
     if (_cache.length > _maxSize) {
@@ -76,6 +82,7 @@ class CacheService implements WorkerService {
     }
   }
 
+  @override
   CacheStat getStats() => CacheStat(_hit, _miss, _expired, size, _maxSize);
 
   static const getOperation = 1;

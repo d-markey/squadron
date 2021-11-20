@@ -34,9 +34,13 @@ the code in different scenarios: unit tests, direct call from your app, or wrapp
 Worker.
 
 The example below implements a `SampleService` with a synchronous `cpu()` method and an asynchronous `io()` method.
+The service inherits from `WorkerService` and must implement the `operations` map. This collection is essentially a
+dispatcher used to map service commands with command actual handlers. Squadron uses this map in platform workers to
+serve worker requests. The command handlers provided in this map are responsible for retrieving arguments from the
+`WorkerRequest` message and providing them to the service method.
 
 ```dart
-class SampleService {
+class SampleService implements WorkerService {
   Future io({required int milliseconds}) =>
       Future.delayed(Duration(milliseconds: milliseconds));
 
@@ -50,16 +54,13 @@ class SampleService {
   static const cpuCommand = 2;
 
   // map of command ids to implementatons
+  @override
   Map<int, CommandHandler> get operations => {
     ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
     cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),
   };
 }
 ```
-
-The `operations` getter implemented in the service will be used by platform workers to dispatch incoming requests to
-the right method. The command handlers provided in this map are also responsible for retrieving arguments from the
-`WorkerRequest` message and providing them to the service methods.
 
 This `SampleService` can easily be used as a contract to implemented the `Worker`. This worker can then be used for
 Dart Isolates as well as Web Workers.
@@ -76,28 +77,21 @@ class SampleWorker extends Worker implements SampleService {
   @override
   Future cpu({required int milliseconds}) =>
       send(SampleService.cpuCommand, [milliseconds]);
-
-  // not used in Workers, just return an empty map
-  @override
-  final Map<int, CommandHandler> operations = const {};
 }
 ```
 
 If the requirements above are met, the platform worker's main program can be implemented using the `run()`
 function provided by Squadron 3. The first argument passed to this function is a `WorkerService` initializer
 responsible for creating the service to be used by the platform Worker. This function will be passed the first
-`WorkerRequest` to enable setting up the service. The second argument passed to `run()` is only used in
-native scenarios and must be set to the data passed to the `Isolate`'s main program; in Web scenarios, simply
-pass an empty map eg. `const {}`.
+`WorkerRequest` to enable setting up the service. The second argument passed to `run()` is optional and only
+used in native scenarios where it must be set to the data passed to the `Isolate`'s main program.
 
 * native implementation:
 
 ```dart
 SampleWorker createVmSampleWorker() => SampleWorker(_main);
 
-void _main(Map command) {
-  run((startRequest) => SampleService(), command);
-}
+void _main(Map command) => run((startRequest) => SampleService(), command);
 ```
 
 * browser implementation:
@@ -105,21 +99,19 @@ void _main(Map command) {
 ```dart
 SampleWorker createJsSampleWorker() => SampleWorker('sample_worker_js.dart.js');
 
-void main() {
-  run((startRequest) => SampleService(), const {});
-}
+void main() => run((startRequest) => SampleService());
 ```
 
 Using a `WorkerPool`, you are now able to distribute your workloads:
 
 ```dart
-    var pool = WorkerPool(() => createVmSampleWorker(), maxWorkers: 4, maxParallel: 2); /* native version */
-    // var pool = WorkerPool(() => createJsSampleWorker(), maxWorkers: 4, maxParallel: 2); /* browser version */
+    var pool = WorkerPool(createVmSampleWorker, maxWorkers: 4, maxParallel: 2); /* native version */
+    // var pool = WorkerPool(createJsSampleWorker, maxWorkers: 4, maxParallel: 2); /* browser version */
     await pool.start();
 
     var n = 42;
-    var cpuResult = await pool.compute((w) => w.cpu(milliseconds: n));
-    var ioResult = await pool.compute((w) => w.io(milliseconds: n));
+    var cpuResult = await pool.execute((w) => w.cpu(milliseconds: n));
+    var ioResult = await pool.execute((w) => w.io(milliseconds: n));
 ```
 
 ## Remarks on Isolates / Web Workers
@@ -193,7 +185,7 @@ A cache service is then implemented (internal details skipped, please refer to t
 the `CacheService` implementation can be synchronous.
 
 ```dart
-class CacheService implements Cache {
+class CacheService implements Cache, WorkerService {
   @override
   dynamic get(dynamic key) {
     // retrieve the value associated for the specified key
@@ -295,7 +287,7 @@ Note how `getStats()` implementations require serialization/deserialization of t
 necessary to cross platform worker boundaries.
 
 ```dart
-class OtherService {
+class OtherService implements WorkerService {
   OtherService([this._cache]);
 
   final Cache? _cache;
@@ -318,6 +310,7 @@ class OtherService {
   // some command ids
   static const computeCommand = 1;
 
+  @override
   Map<int, CommandHandler> get operations => {
     // the comand handlers for the command ids
     computeCommand: (r) => compute(r.args[0])
@@ -339,9 +332,6 @@ class OtherWorker extends Worker implements OtherService {
 
   @override
   final Cache? _cache = null;
-
-  @override
-  final Map<int, CommandHandler> operations = const {};
 }
 ```
 
@@ -408,6 +398,79 @@ Architecture Diagram
 4: OtherWorkers query the CacheWorker via their local CacheClient to avoid expensive computations that have been done already 
 ```
 
+## Task Cancellation
+
+Tasks registered with the worker pool may be cancelled by calling `pool.cancel()`. A `CancelledException` will be
+raised (for value tasks: the future completes with an error) or emitted (for streaming tasks: the stream will emit
+an error) for each pending task. Tasks still pending will fail immediately; tasks already executing when the
+`cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
+
+```dart
+  final future = pool.execute((w) => w.computeData());
+  final stream = pool.stream((w) => w.streamData());
+
+  // no async suspension means Squadron could not schedule any task
+  // as a result this cancellation request will cancel both tasks
+  pool.cancel();
+
+  stream.listen(
+    (value) => print('received value: $value'),   // will not be called
+    onError: (e) => print('received error: $e')); // receives a CancelledException
+
+  final result = await future; // throws a CancelledException
+```
+
+```dart
+  final future = pool.execute((w) => w.computeData());
+  final stream = pool.stream((w) => w.streamData());
+
+  // asynchronous suspension gives Squadron a chance to schedule some tasks
+  Future(() => null);
+
+  // depending on concurrency settings, this cancellation request should cancel the stream task
+  // however the value task should have been scheduled and should complete
+  pool.cancel(); 
+
+  stream.listen(
+    (value) => print('received value: $value'),   // may be called for a few values
+    onError: (e) => print('received error: $e')); // will receive a CancelledException
+
+  final result = await future; // should get the task's result
+```
+
+It is also possible to schedule and cancel individual tasks, eg.:
+
+```dart
+  final valueTask = pool.scheduleTask((w) => w.computeData());
+  final streamTask = pool.scheduleStream((w) => w.streamData());
+
+  // no async suspension means Squadron could not schedule any task
+
+  streamTask.cancel(); // or pool.cancel(streamTask)
+  stream.listen(
+    (value) => print('received value: $value'),   // will not be called
+    onError: (e) => print('received error: $e')); // receives a CancelledException
+
+  valueTask.cancel(); // or pool.cancel(valueTask)
+  final result = await valueTask.value; // throws a CancelledException
+```
+
+```dart
+  final valueTask = pool.scheduleTask((w) => w.computeData());
+  final streamTask = pool.scheduleStream((w) => w.streamData());
+
+  // asynchronous suspension gives Squadron a chance to schedule some tasks
+  Future(() => null);
+
+  streamTask.cancel(); // or pool.cancel(streamTask)
+  stream.listen(
+    (value) => print('received value: $value'),   // may be called for a few values
+    onError: (e) => print('received error: $e')); // will receive a CancelledException
+
+  valueTask.cancel(); // or pool.cancel(valueTask)
+  final result = await valueTask.value;  // should get the task's result
+```
+
 ## Worker Monitoring
 
 Monitoring workers in a pool can be done with a simple timer. For instance, to stop workers after a given idle
@@ -422,9 +485,20 @@ period:
 
 Please note that some idle workers may remain alive, depending on the `minWorker` pool option.
 
-To kill all workers, simply call the pool's `stop()` method with no predicate.
+To stop all workers, simply call the pool's `stop()` method with no predicate.
 
 ```dart
-  // kills all workers
+  // stops all workers
   pool.stop();
 ```
+
+All workers will be stopped as soon as all pending tasks have been processed. Of course, it is possible to cancel
+pending tasks before stopping the worker pool.
+
+```dart
+  // cancels pending tasks and stops all workers
+  pool.cancel();
+  pool.stop();
+```
+
+The pool will not accept new tasks unless it is restarted with `pool.start()`. 

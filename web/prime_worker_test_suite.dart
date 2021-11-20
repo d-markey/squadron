@@ -55,8 +55,8 @@ Future<bool> testPrimesWithCache(
   final cacheWorker = CacheWorker(entryPoints['cache']);
   await cacheWorker.start();
 
-  final primeWorkerWithCache = PrimeWorker(entryPoints['prime'],
-      args: [cacheWorker.channel?.share().serialize()]);
+  final primeWorkerWithCache =
+      PrimeWorker(entryPoints['prime'], cacheWorker.channel);
   await primeWorkerWithCache.start();
 
   logger.log('Prime test, range $first-$last - stream (cache is empty)...');

@@ -1,5 +1,7 @@
 import 'dart:html';
 
+// this is a regular Web worker
+
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;
   scope.onMessage.listen((MessageEvent e) {

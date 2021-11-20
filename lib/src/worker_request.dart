@@ -15,24 +15,27 @@ import 'channel.dart';
 class WorkerRequest {
   /// Creates a new request with the specified [command] ID and optional arguments.
   WorkerRequest(dynamic channelInfo, this.command, [this.args = const []])
-      : client = Channel.deserialize(channelInfo),
+      : client = WorkerChannel.deserialize(channelInfo),
         connect = false,
         terminate = false;
 
   /// Creates a new start request.
   WorkerRequest.start(dynamic channelInfo, [this.args = const []])
-      : client = Channel.deserialize(channelInfo),
+      : client = WorkerChannel.deserialize(channelInfo),
         command = null,
         connect = true,
         terminate = false;
 
   /// Creates a new termination request.
-  WorkerRequest.terminate()
+  const WorkerRequest._terminate()
       : client = null,
         command = null,
         args = const [],
         connect = false,
         terminate = true;
+
+  /// Termination request.
+  static const stop = WorkerRequest._terminate();
 
   static const _$client = 'a';
   static const _$command = 'b';
@@ -41,15 +44,34 @@ class WorkerRequest {
   static const _$terminate = 'e';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
-  WorkerRequest.deserialize(Map message)
-      : client = Channel.deserialize(message[_$client]),
-        command = message[_$command],
-        args = message[_$args] ?? const [],
-        connect = message[_$connect] ?? false,
-        terminate = message[_$terminate] ?? false;
+  WorkerRequest.deserialize(Map? message)
+      : client = WorkerChannel.deserialize(message?[_$client]),
+        command = message?[_$command],
+        args = message?[_$args] ?? const [],
+        connect = message?[_$connect] ?? false,
+        terminate = message?[_$terminate] ?? false;
 
-  /// The client's [Channel].
-  final Channel? client;
+  /// [WorkerRequest] serialization.
+  Map<String, dynamic> serialize() {
+    if (terminate) {
+      return const {_$terminate: true};
+    } else if (connect) {
+      return {
+        _$client: client?.serialize(),
+        _$connect: true,
+        if (args.isNotEmpty) _$args: args
+      };
+    } else {
+      return {
+        _$client: client?.serialize(),
+        _$command: command,
+        if (args.isNotEmpty) _$args: args
+      };
+    }
+  }
+
+  /// The client's [WorkerChannel].
+  final WorkerChannel? client;
 
   /// The [command]'s ID.
   final int? command;
@@ -62,19 +84,4 @@ class WorkerRequest {
 
   /// flag for termination requests.
   final bool terminate;
-
-  @override
-  String toString() =>
-      'client = $client, command = $command, args = $args, connect = $connect, terminate = $terminate';
-
-  /// [WorkerRequest] serialization.
-  Map<String, dynamic> serialize() {
-    if (terminate) {
-      return {_$terminate: true};
-    } else if (connect) {
-      return {_$client: client?.serialize(), _$connect: true, _$args: args};
-    } else {
-      return {_$client: client?.serialize(), _$command: command, _$args: args};
-    }
-  }
 }

@@ -51,19 +51,28 @@ void main() async {
     }
 
     if (missingWorkers.isNotEmpty) {
-      print('Browser tests need JavaScript versions for Web Workers.');
+      final messages = <String>[];
+      messages.add('Browser tests need JavaScript versions for Web Workers.');
       for (var path in missingWorkers) {
         if (path.endsWith('.dart')) {
-          print('Worker $path does not exist');
+          messages.add('Worker $path does not exist');
         } else if (path.endsWith('.js')) {
-          print(
-              'Worker $path must be generated with: dart compile js ${path.substring(0, path.length - '.js'.length)} -o $path');
+          messages.add(
+              'Worker $path must be generated with:\n   dart compile js ${path.substring(0, path.length - '.js'.length)} -o $path');
         } else {
-          print('Worker $path is invalid; path must end with .dart or .js');
+          messages.add('Worker $path is invalid; path must end with .dart or .js');
         }
       }
-      throw Exception(
-          'Cannot run tests because some workers are missing or invalid.');
+      
+      throw Exception('''
+
+============================================================================ 
+Cannot run tests because some workers are missing or invalid.
+Please ensure Web Workers have been compiled prior to running Browser tests.
+
+${messages.join('\n')}
+============================================================================ 
+''');
     }
 
     group("Web Worker", () {

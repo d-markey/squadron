@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:squadron/squadron_pool.dart';
+import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
-import 'sample_service_worker.dart';
+import 'sample_service_worker_pool.dart';
 import 'worker_monitor.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
 
@@ -22,13 +22,13 @@ void main() async {
   log('max = $max');
   log('');
 
-  WorkerPool<SampleWorker>? pool;
+  SampleWorkerPool? pool;
 
   try {
     ///////////// SYNC /////////////
     log('///////////// SYNC /////////////');
 
-    final sampleService = SampleService();
+    final sampleService = SampleServiceImpl();
 
     final syncSw = Stopwatch();
     syncSw.start();
@@ -53,10 +53,12 @@ void main() async {
     final maxWorkers = 4;
     final maxParallel = 2;
 
-    pool = WorkerPool(() => SampleWorker(sample_isolate.start),
+    final concurrencySettings = ConcurrencySettings(
         minWorkers: minWorkers,
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);
+
+    pool = SampleWorkerPool(sample_isolate.start, concurrencySettings);
     await pool.start();
 
     final monitor = WorkerMonitor(pool, maxIdleInMilliseconds: 250);
@@ -67,8 +69,8 @@ void main() async {
     for (var loop = 0; loop < loops; loop++) {
       final asyncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
-        asyncFutures.add(pool.compute((worker) => worker.cpu(milliseconds: n)));
-        asyncFutures.add(pool.compute((worker) => worker.io(milliseconds: n)));
+        asyncFutures.add(pool.cpu(milliseconds: n));
+        asyncFutures.add(pool.io(milliseconds: n));
       }
       await Future.wait(asyncFutures);
     }
@@ -87,7 +89,7 @@ void main() async {
         log('   pool.size = $size');
         prevSize = size;
       }
-      if (size == pool.minWorkers) break;
+      if (size == pool.concurrencySettings.minWorkers) break;
       await Future.delayed(monitor.maxIdle ~/ 500);
       if (sw.elapsedMicroseconds > monitor.maxIdle.inMicroseconds * 2) {
         log('Houston, we\'ve got a problem...');

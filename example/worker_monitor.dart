@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:squadron/squadron_pool.dart';
+import 'package:squadron/squadron.dart';
 
 class WorkerMonitor {
   WorkerMonitor(this._pool, {required int maxIdleInMilliseconds})

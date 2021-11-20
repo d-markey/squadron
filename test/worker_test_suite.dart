@@ -21,17 +21,16 @@ void workerTests() {
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.channel, isNull);
-    expect(dummy.started, isNull);
-    expect(dummy.stopped, isNull);
     expect(dummy.upTime, Duration.zero);
     expect(dummy.idleTime, Duration.zero);
+    expect(dummy.isStopped, isFalse);
 
     await dummy.start();
     expect(dummy.channel, isNotNull);
 
     await Future.delayed(Duration(milliseconds: 5));
-    expect(dummy.started, isNotNull);
-    expect(dummy.stopped, isNull);
+    expect(dummy.upTime, greaterThan(Duration.zero));
+    expect(dummy.isStopped, false);
     var upTime = dummy.upTime;
     expect(upTime, greaterThan(Duration.zero));
     expect(dummy.idleTime, greaterThanOrEqualTo(upTime));
@@ -39,17 +38,11 @@ void workerTests() {
     dummy.stop();
     upTime = dummy.upTime;
     expect(dummy.channel, isNull);
-    expect(dummy.started, isNotNull);
-    expect(dummy.stopped, isNotNull);
-    expect(dummy.stopped!.isAfter(dummy.started!), isTrue);
+    expect(dummy.upTime, greaterThan(Duration.zero));
+    expect(dummy.isStopped, isTrue);
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.upTime, equals(upTime));
-    expect(
-        dummy.upTime,
-        equals(Duration(
-            microseconds: dummy.stopped!.microsecondsSinceEpoch -
-                dummy.started!.microsecondsSinceEpoch)));
     expect(dummy.idleTime.inMicroseconds,
         greaterThan(dummy.upTime.inMicroseconds));
   });
@@ -241,7 +234,7 @@ void workerTests() {
     expect(await cache.get(1), 'in cache');
 
     cache.stop();
-    expect(cache.stopped, isNotNull);
+    expect(cache.isStopped, isTrue);
   });
 
   test('prime worker', () async {
@@ -253,7 +246,7 @@ void workerTests() {
     }
 
     primeWorker.stop();
-    expect(primeWorker.stopped, isNotNull);
+    expect(primeWorker.isStopped, isTrue);
   });
 
   test('prime worker - stream', () async {
@@ -265,7 +258,7 @@ void workerTests() {
     expect(computedPrimes, equals(primesTo1000));
 
     primeWorker.stop();
-    expect(primeWorker.stopped, isNotNull);
+    expect(primeWorker.isStopped, isTrue);
   });
 
   test('prime worker with cache', () async {
@@ -283,8 +276,7 @@ void workerTests() {
     expect(initialStats.size, isZero);
     expect(initialStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(getEntryPoint('prime'),
-        args: [cache.channel?.share().serialize()]);
+    final primeWorker = PrimeWorker(getEntryPoint('prime'), cache.channel);
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -295,7 +287,7 @@ void workerTests() {
     expect(computedPrimes, equals(primesTo1000));
 
     primeWorker.stop();
-    expect(primeWorker.stopped, isNotNull);
+    expect(primeWorker.isStopped, isTrue);
 
     final stats = await cache.getStats();
     expect(stats.hit, isPositive);
@@ -305,7 +297,7 @@ void workerTests() {
     expect(stats.maxSize, equals(stats.size));
 
     cache.stop();
-    expect(cache.stopped, isNotNull);
+    expect(cache.isStopped, isTrue);
   });
 
   test('prime worker with cache - perf', () async {
@@ -319,16 +311,15 @@ void workerTests() {
     expect(cacheStats.size, isZero);
     expect(cacheStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(getEntryPoint('prime'),
-        args: [cache.channel?.share().serialize()]);
+    final primeWorker = PrimeWorker(getEntryPoint('prime'), cache.channel);
     await primeWorker.start();
 
-    var firstPerf = PerfCounter('with empty cache');
-    await firstPerf.measure(() async {
-      for (var prime in largePrimes) {
-        expect(await primeWorker.isPrime(prime), isTrue);
-      }
-    });
+    final sw = Stopwatch();
+    sw.start();
+    for (var prime in largePrimes) {
+      expect(await primeWorker.isPrime(prime), isTrue);
+    }
+    final elapsedWithEmptyCache = sw.elapsedMicroseconds;
 
     cacheStats = await cache.getStats();
     expect(cacheStats.hit, isZero);
@@ -337,12 +328,11 @@ void workerTests() {
     expect(cacheStats.size, isPositive);
     expect(cacheStats.maxSize, equals(cacheStats.size));
 
-    var secondPerf = PerfCounter('with full cache');
-    await secondPerf.measure(() async {
-      for (var prime in largePrimes) {
-        expect(await primeWorker.isPrime(prime), isTrue);
-      }
-    });
+    sw.reset();
+    for (var prime in largePrimes) {
+      expect(await primeWorker.isPrime(prime), isTrue);
+    }
+    final elapsedWithFullCache = sw.elapsedMicroseconds;
 
     cacheStats = await cache.getStats();
     expect(cacheStats.hit, isPositive);
@@ -352,17 +342,13 @@ void workerTests() {
     expect(cacheStats.size, isPositive);
     expect(cacheStats.maxSize, equals(cacheStats.size));
 
-    expect(secondPerf.totalTimeInMicroseconds,
-        lessThan(firstPerf.totalTimeInMicroseconds));
-    expect(
-        secondPerf.totalTimeInMicroseconds / firstPerf.totalTimeInMicroseconds,
-        lessThan(0.1));
+    expect(elapsedWithEmptyCache, greaterThan(10 * elapsedWithFullCache));
 
     primeWorker.stop();
-    expect(primeWorker.stopped, isNotNull);
+    expect(primeWorker.isStopped, isTrue);
 
     cache.stop();
-    expect(cache.stopped, isNotNull);
+    expect(cache.isStopped, isTrue);
   });
 
   test('exception handling from worker', () async {

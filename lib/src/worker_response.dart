@@ -12,19 +12,22 @@ class WorkerResponse {
         _stackTrace = null,
         _eos = false;
 
-  /// Special [WorkerResponse] message to indicate the end of the stream.
-  WorkerResponse.endOfStream()
-      : _result = null,
-        _error = null,
-        _stackTrace = null,
-        _eos = true;
-
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
   WorkerResponse.withError(this._error, [String? stackTrace])
       : assert(_error != null),
         _stackTrace = stackTrace,
         _result = null,
         _eos = false;
+
+  /// Special [WorkerResponse] message to indicate the end of a stream.
+  const WorkerResponse._endOfStream()
+      : _result = null,
+        _error = null,
+        _stackTrace = null,
+        _eos = true;
+
+  /// End of stream response.
+  static const closeStream = WorkerResponse._endOfStream();
 
   static const _$result = 'a';
   static const _$error = 'b';
@@ -38,13 +41,21 @@ class WorkerResponse {
         _stackTrace = message[_$stackTrace],
         _eos = message[_$eos] ?? false;
 
-  final String? _error;
-  final String? _stackTrace;
-  final dynamic _result;
-  final bool _eos;
+  /// [WorkerResponse] serialization.
+  Map<String, dynamic> serialize() {
+    if (_error != null) return {_$error: _error, _$stackTrace: _stackTrace};
+    if (_eos) return const {_$eos: true};
+    if (_result == null) return const {};
+    return {_$result: _result};
+  }
 
   /// Flag indicating the end of the [Stream]ing operation.
   bool get endOfStream => _eos;
+  final bool _eos;
+
+  /// The [WorkerResponse] error message, if any.
+  String? get error => _error;
+  final String? _error;
 
   /// Flag indicating whether an error occured.
   bool get hasError => _error != null;
@@ -52,25 +63,13 @@ class WorkerResponse {
   /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,
   /// an [exception] is thrown.
   dynamic get result => hasError ? throw exception! : _result;
-
-  /// The [WorkerResponse] error message, if any.
-  String? get error => _error;
+  final dynamic _result;
 
   /// The [WorkerResponse] stackTrace information as [String], if any.
   String? get stackTrace => _stackTrace;
+  final String? _stackTrace;
 
   /// The [WorkerResponse] stackTrace information as [String], if any.
   WorkerException? get exception =>
       hasError ? WorkerException(_error!, stackTrace: _stackTrace) : null;
-
-  @override
-  String toString() =>
-      'result = $result, error = $error, stackTrace=$stackTrace, endOfStream=$endOfStream';
-
-  /// [WorkerResponse] serialization.
-  Map<String, dynamic> serialize() {
-    if (_error != null) return {_$error: _error, _$stackTrace: _stackTrace};
-    if (_eos) return {_$eos: true};
-    return {_$result: _result};
-  }
 }

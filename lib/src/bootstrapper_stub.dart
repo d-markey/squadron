@@ -1,7 +1,4 @@
-import 'dart:async';
+import 'worker_service.dart';
 
-import 'bootstrapper.dart' show WorkerInitializer;
-
-FutureOr bootstrap(WorkerInitializer initializer, Map command) {
-  throw UnsupportedError('bootstrap() is not supported on this platform.');
-}
+void bootstrap(WorkerInitializer initializer, Map? command) =>
+    throw UnsupportedError('bootstrap() is not supported on this platform.');

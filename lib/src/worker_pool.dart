@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:math' as math;
 
+import 'concurrency_settings.dart';
+import 'squadron_exception.dart';
 import 'worker.dart';
 import 'perf_counter.dart';
+import 'worker_service.dart';
 import 'worker_stat.dart';
+
 import 'worker_task.dart';
+import 'pool_worker.dart';
 
 /// Worker pool responsible for instantiating, stopping and scheduling workers
 /// asynchronously and in parallel.
@@ -13,48 +17,33 @@ class WorkerPool<W extends Worker> {
   /// Create a worker pool.
   ///
   /// Workers are instantiated using the provided [_workerFactory].
-  /// The pool will only instantiate workers as needed, up to [maxWorkers].
-  /// The [maxParallel] setting controls how many workloads are distributed
-  /// to workers in parallel.
+  /// The pool will only instantiate workers as needed, depending on [concurrencySettings].
+  /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control
+  /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting
+  /// controls how many workloads can be posted to each individual worker in the pool.
   WorkerPool(this._workerFactory,
-      {this.minWorkers = 0, this.maxWorkers = 0, this.maxParallel = 1})
-      : assert(minWorkers >= 0),
-        assert(maxWorkers >= 0),
-        assert(minWorkers <= maxWorkers),
-        assert(maxParallel >= 1);
+      {ConcurrencySettings? concurrencySettings,
+      @Deprecated('use concurrencySettings instead') int minWorkers = 0,
+      @Deprecated('use concurrencySettings instead') int maxWorkers = 0,
+      @Deprecated('use concurrencySettings instead') int maxParallel = 1})
+      : concurrencySettings = concurrencySettings ??
+            ConcurrencySettings(
+                minWorkers: minWorkers,
+                maxWorkers: maxWorkers,
+                maxParallel: maxParallel);
 
   final W Function() _workerFactory;
 
-  /// Minimum number of live workers.
-  final int minWorkers;
+  /// Concurrency settings.
+  final ConcurrencySettings concurrencySettings;
 
-  /// Maximum number of live workers.
-  final int maxWorkers;
-
-  /// Maximum work items delivered to workers in parallel.
-  final int maxParallel;
-
-  final _workers = <W>[];
-
-  /// Current workload.
-  int get workload => _workers.fold<int>(0, (p, w) => p + w.stats.workload);
+  final _workers = <PoolWorker<W>>[];
 
   final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
 
-  /// Maximum workload.
-  int get maxWorkload => math.max(
-      _deadWorkerStats.fold<int>(0, (p, s) => math.max(p, s.maxWorkload)),
-      _workers.fold<int>(0, (p, w) => math.max(p, w.stats.maxWorkload)));
-
-  /// Total workload.
-  int get totalWorkload =>
-      _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalWorkload) +
-      _workers.fold<int>(0, (p, w) => p + w.stats.totalWorkload);
-
-  /// Number of errors.
-  int get totalErrors =>
-      _deadWorkerStats.fold<int>(0, (p, s) => p + s.totalErrors) +
-      _workers.fold<int>(0, (p, w) => p + w.stats.totalErrors);
+  /// Number of workers.
+  bool get stopped => _stopped;
+  bool _stopped = false;
 
   /// Number of workers.
   int get size => _workers.length;
@@ -63,72 +52,126 @@ class WorkerPool<W extends Worker> {
   int get maxSize => _maxSize;
   int _maxSize = 0;
 
-  /// Ensure at least [minWorkers] workers are started (defaulting to 1 if [minWorkers] is zero).
-  Future start() {
-    final tasks = <Future>[];
-    final min = ((minWorkers == 0) ? 1 : minWorkers);
-    while (_workers.length < min) {
-      final w = _workerFactory();
-      _workers.add(w);
-      tasks.add(w.start());
+  /// Current workload.
+  int get workload => stats.fold<int>(0, (p, w) => p + w.workload);
+
+  /// Maximum workload.
+  int get maxWorkload => fullStats.fold<int>(
+      0, (p, s) => (p >= s.maxWorkload) ? p : s.maxWorkload);
+
+  /// Total workload.
+  int get totalWorkload =>
+      fullStats.fold<int>(0, (p, s) => p + s.totalWorkload);
+
+  /// Number of errors.
+  int get totalErrors => fullStats.fold<int>(0, (p, s) => p + s.totalErrors);
+
+  FutureOr _provisionWorkers(int count) {
+    if (_workers.length < count) {
+      List<Future>? tasks;
+      while (_workers.length < count) {
+        final worker =
+            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
+        _workers.add(worker);
+        final task = worker.worker.start();
+        if (task is Future) {
+          tasks ??= <Future>[];
+          tasks.add(task as Future);
+        }
+      }
+      if (_workers.length > _maxSize) {
+        _maxSize = _workers.length;
+      }
+      if (tasks != null) {
+        return Future.wait(tasks);
+      }
     }
-    return Future.wait(tasks);
   }
 
-  bool _removeWorker(Worker worker, bool force) {
-    if (force || _workers.length > minWorkers) {
-      worker.stop();
-      _workers.remove(worker);
-      _deadWorkerStats.add(worker.stats);
-      return true;
+  /// Ensure at least [ConcurrencySettings.minWorkers] workers are started
+  /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
+  FutureOr start() {
+    _stopped = false;
+    return _provisionWorkers(concurrencySettings.min(1));
+  }
+
+  int _removeWorker(PoolWorker poolWorker, bool force) {
+    if (force || _workers.length > concurrencySettings.minWorkers) {
+      poolWorker.worker.stop();
+      _workers.remove(poolWorker);
+      _deadWorkerStats.add(poolWorker.worker.stats);
+      return 1;
     } else {
-      return false;
+      return 0;
     }
   }
 
-  /// Stop workers matching the [predicate].
+  /// Stop idle pool workers matching the [predicate].
   /// If [predicate] is null or not provided, all workers will be stopped.
+  /// Stopping a worker does not interrupt or cancel processing. Workers will
+  /// complete pending tasks before shutting down. In the meantime, they will
+  /// not receive any new workload.
   /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
-    Iterable<W> targets = _workers;
+    Iterable<PoolWorker<W>> targets = _workers;
     var force = true;
     if (predicate != null) {
       force = false;
-      targets =
-          targets.where((w) => !w.isStopped && w.workload == 0 && predicate(w));
+      targets = targets.where((w) => w.isIdle && predicate(w.worker));
+    } else {
+      _stopped = true;
     }
-    final workersToStop = targets.toList();
     var stopped = 0;
-    for (var w in workersToStop) {
-      if (_removeWorker(w, force)) {
-        stopped++;
-      }
+    for (var poolWorker in targets.toList()) {
+      stopped += _removeWorker(poolWorker, force);
     }
     return stopped;
   }
 
-  final _queue = LinkedList<WorkerTask<W>>();
+  final _queue = Queue<WorkerTask>();
+  final _executing = <int, WorkerTask>{};
 
   /// Gets remaining workload
   int get pendingWorkload => _queue.length;
 
-  /// Registers and schedules a [task] that returns a single value.
-  Future<T> compute<T>(Future<T> Function(W worker) task,
-      [PerfCounter? counter]) {
-    final workerTask = WorkerTask.prepareFuture<T, W>(task, counter, _schedule);
-    _queue.add(workerTask);
+  WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
+    if (_stopped) {
+      throw SquadronException('stopped pool cannot accept new requests');
+    }
+    _queue.add(task);
     Future(() => _schedule());
-    return workerTask.future as Future<T>;
+    return task;
   }
 
+  /// Registers and schedules a [task] that returns a single value.
+  @Deprecated('use execute() instead')
+  Future<T> compute<T>(Future<T> Function(W worker) task,
+          [PerfCounter? counter]) =>
+      execute(task, counter);
+
+  /// Registers and schedules a [task] that returns a single value.
+  /// Returns a future that completes with the task's value.
+  Future<T> execute<T>(Future<T> Function(W worker) task,
+          [PerfCounter? counter]) =>
+      scheduleTask(task, counter).value;
+
   /// Registers and schedules a [task] that returns a stream of values.
+  /// Returns a stream containing the task's values.
   Stream<T> stream<T>(Stream<T> Function(W worker) task,
-      [PerfCounter? counter]) {
-    final workerTask = WorkerTask.prepareStream<T, W>(task, counter, _schedule);
-    _queue.add(workerTask);
-    Future(() => _schedule());
-    return workerTask.stream as Stream<T>;
-  }
+          [PerfCounter? counter]) =>
+      scheduleStream(task).stream;
+
+  /// Registers and schedules a [task] that returns a single value.
+  /// Returns a [ValueTask]<T>.
+  ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
+          [PerfCounter? counter]) =>
+      _enqueue<T>(WorkerTask.value(task, counter, _schedule));
+
+  /// Registers and schedules a [task] that returns a stream of values.
+  /// Returns a [StreamTask]<T>.
+  StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
+          [PerfCounter? counter]) =>
+      _enqueue<T>(WorkerTask.stream(task, counter, _schedule));
 
   /// The main scheduler.
   ///
@@ -137,35 +180,59 @@ class WorkerPool<W extends Worker> {
   /// 2. if the task queue is not empty:
   ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).
   ///    (b) sort workers by ascending [Worker.workload].
-  ///    (c) distribute tasks to workers having [Worker.workload] < [maxParallel].
+  ///    (c) distribute tasks to workers as loong as [Worker.workload] < [maxParallel].
   void _schedule() {
-    _workers.removeWhere((w) => w.isStopped);
+    _workers.removeWhere(PoolWorker.isStopped);
     if (_queue.isNotEmpty) {
-      final max = (maxWorkers == 0 || _queue.length <= maxWorkers)
-          ? _queue.length
-          : maxWorkers;
-      while (_workers.length < max) {
-        _workers.add(_workerFactory());
-      }
-      _maxSize = math.max(_maxSize, _workers.length);
-      _workers.sort((a, b) => a.workload.compareTo(b.workload));
-      for (var i = 0; _queue.isNotEmpty && i < _workers.length; i++) {
-        final w = _workers[i];
-        if (w.workload < maxParallel) {
-          final task = _queue.first;
-          _queue.remove(task);
-          task.run(w);
-        } else {
-          break;
+      _provisionWorkers(concurrencySettings.max(_queue.length));
+      _workers.sort(PoolWorker.compareCapacityDesc);
+      while (_queue.isNotEmpty && _workers.first.capacity > 0) {
+        final curCapacity = _workers.first.capacity;
+        for (var idx = 0, w = _workers[idx];
+            idx < _workers.length &&
+                w.capacity == curCapacity &&
+                _queue.isNotEmpty;
+            idx++) {
+          final task = _queue.removeFirst();
+          if (!task.isCancelled) {
+            _executing[task.hashCode] = task;
+            w.run(task).whenComplete(() => _executing.remove(task.hashCode));
+          }
         }
       }
     }
   }
 
+  void cancel([Task? task]) {
+    if (task != null) {
+      WorkerTask? workerTask = _executing.remove(task.hashCode);
+      if (workerTask == null) {
+        _queue.removeWhere((t) {
+          if (t == task) {
+            workerTask = t;
+            return true;
+          } else {
+            return false;
+          }
+        });
+      }
+      workerTask?.cancel();
+    } else {
+      final cancelled = _executing.values.followedBy(_queue).toList();
+      _executing.clear();
+      _queue.clear();
+      for (var task in cancelled) {
+        task.cancel();
+      }
+    }
+  }
+
   /// Worker statistics.
-  Iterable<WorkerStat> get stats => _workers.map((w) => w.stats);
+  Iterable<WorkerStat> get stats => _workers.map(PoolWorker.getStats);
 
   /// Full worker statistics.
-  Iterable<WorkerStat> get fullStats =>
-      _deadWorkerStats.followedBy(_workers.map((w) => w.stats));
+  Iterable<WorkerStat> get fullStats => _deadWorkerStats.followedBy(stats);
+
+  /// worker pools inheriting from [WorkerService] do not need an [operations] map
+  final Map<int, CommandHandler> operations = const {};
 }

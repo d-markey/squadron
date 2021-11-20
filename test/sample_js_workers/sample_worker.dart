@@ -2,6 +2,4 @@ import 'package:squadron/squadron_service.dart';
 
 import '../worker_services/sample_service.dart';
 
-void main() {
-  run((startRequest) => SampleService(), const {});
-}
+void main() => run((startRequest) => SampleService());
