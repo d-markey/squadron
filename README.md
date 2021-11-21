@@ -53,8 +53,8 @@ Worker.
 
 The example below implements a `SampleService` with a synchronous `cpu()` method and an asynchronous `io()` method.
 The service inherits from `WorkerService` and must implement the `operations` map. This collection is essentially a
-dispatcher used to map service commands with command actual handlers. Squadron uses this map in platform workers to
-serve worker requests. The command handlers provided in this map are responsible for retrieving arguments from the
+dispatcher used to map service command ids with actual command handlers. Squadron uses this map in platform workers
+to serve worker requests. The command handlers provided in this map are responsible for retrieving arguments from the
 `WorkerRequest` message and providing them to the service method.
 
 ```dart
@@ -98,11 +98,11 @@ class SampleWorker extends Worker implements SampleService {
 }
 ```
 
-If the requirements above are met, the platform worker's main program can be implemented using the `run()`
-function provided by Squadron 3. The first argument passed to this function is a `WorkerService` initializer
-responsible for creating the service to be used by the platform Worker. This function will be passed the first
-`WorkerRequest` to enable setting up the service. The second argument passed to `run()` is optional and only
-used in native scenarios where it must be set to the data passed to the `Isolate`'s main program.
+The platform worker's main program can be implemented using the `run()` function provided by Squadron 3. The first
+argument passed to this function is a `WorkerService` initializer responsible for creating the service to be used by
+the platform worker. This function will be passed the first `WorkerRequest` to set up the service. The second argument
+passed to `run()` is optional for Web applications, but required in native scenarios where it must be set to the data
+passed to the `Isolate`'s main program.
 
 * native implementation:
 
@@ -181,8 +181,8 @@ event loop. Scaling such tasks can be achieved by increasing the `maxParallel` (
 It is possible to implement some kind of worker cooperation and support more complex scenarios.
 
 For instance, the fact that `Isolate`s and Web Workers do not share memory means it may be cumbersome to implement
-a local, in-memory cache at worker level. Each worker would have their own copy of the cache, making expiration and
-update propagation difficult to implement.
+a local, in-memory cache at worker level. Each worker would have their own cache, making expiration and update
+propagation difficult to implement.
 
 As a workaround, it is possible to implement a cache worker as a Singleton (no pooling) and to share the worker's
 `Channel` across other workers (`Channel` objects can be sent across platform workers via the `serialize()` method).
@@ -420,14 +420,14 @@ Architecture Diagram
 
 Tasks registered with the worker pool may be cancelled by calling `pool.cancel()`. A `CancelledException` will be
 raised (for value tasks: the future completes with an error) or emitted (for streaming tasks: the stream will emit
-an error) for each pending task. Tasks still pending will fail immediately; tasks already executing when the
+an error) for each cancelled task. Tasks still pending will fail immediately; tasks already executing when the
 `cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
 
-It should be noted that while task cancellation effectively cancels tasks in the main event loop, the current
-implementation does not notify platform workers of the cancellation. Tasks that have been assigned to a platform
-worker will continue executing until they are complete. As a result, value tasks that are executing cannot be
-cancelled, and while streaming tasks will report cancellation in the mail event loop, streaming will continue
-in the platform worker's event loop.
+It should be noted that the current implementation does not notify platform workers about the cancellation. Tasks
+that have been assigned to a platform worker will continue executing until they complete. As a result, a value task
+already executing cannot be cancelled: it will complete and return a value. The situation is slightly different for
+a streaming task: while it will report cancellation in the main event loop, streaming will continue in the platform
+worker's event loop.
 
 ```dart
   final future = pool.execute((w) => w.computeData());
@@ -471,7 +471,7 @@ It is also possible to schedule and cancel individual tasks, eg.:
   // no async suspension means Squadron could not schedule any task
 
   streamTask.cancel(); // or pool.cancel(streamTask)
-  stream.listen(
+  streamTask.stream.listen(
     (value) => print('received value: $value'),   // will not be called
     onError: (e) => print('received error: $e')); // receives a CancelledException
 
@@ -487,7 +487,7 @@ It is also possible to schedule and cancel individual tasks, eg.:
   Future(() => null);
 
   streamTask.cancel(); // or pool.cancel(streamTask)
-  stream.listen(
+  streamTask.stream.listen(
     (value) => print('received value: $value'),   // may be called for a few values
     onError: (e) => print('received error: $e')); // will receive a CancelledException
 
@@ -507,7 +507,7 @@ period:
   });
 ```
 
-Please note that some idle workers may remain alive, depending on the `minWorker` pool option.
+Please note that some idle workers may remain alive, depending on the `minWorker` concurrency setting.
 
 To stop all workers, simply call the pool's `stop()` method with no predicate.
 
@@ -516,8 +516,8 @@ To stop all workers, simply call the pool's `stop()` method with no predicate.
   pool.stop();
 ```
 
-All workers will be stopped as soon as all pending tasks have been processed. Of course, it is possible to cancel
-pending tasks before stopping the worker pool.
+All workers will be stopped as soon as all tasks registered with the pool have been processed. Of course, it
+is possible to cancel pending tasks before stopping the worker pool.
 
 ```dart
   // cancels pending tasks and stops all workers
