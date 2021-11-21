@@ -10,15 +10,33 @@
 Multithreading and worker pools in Dart to offload CPU-bound or long running tasks and give your mobile and Web apps
 some air.
 
-## Features
+## Summary
+
+* [Features](#features)
+* [Flutter Demo](#demo)
+* [Getting Started](#started)
+* [Usage](#usage)
+* [Remarks on Isolates / Web Workers](#remarks)
+* [Scaling Options](#scaling)
+* [Worker Cooperation](#cooperation)
+* [Task Cancellation](#cancellation)
+* [Monitoring](#monitoring)
+
+## <a name="features"></a>Features
 
 `Worker` class: a base worker class managing a platform thread (Isolate or Web Worker) and the communication between
 clients and  workers.
 
 `WorkerPool<W>` class: a worker pool for `W` workers. The number of workers is configurable as well as the degree of
-concurrent workloads distributed to workers in the pool.
+concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool may be cancelled.
 
-## Getting Started
+## <a name="demo"></a>Flutter Demo
+
+A demo is available from [GitHub: squadron_sample](https://github.com/d-markey/squadron_sample).
+
+It provides a Flutter App running on native and browser platforms, showcasing Squadron integration with [Flutter](https://flutter.dev/).
+
+## <a name="started"></a>Getting Started
 
 Import squadron from your `pubspec.yaml` file:
 
@@ -27,7 +45,7 @@ dependencies:
    squadron: ^3.1.0
 ```
 
-## Usage
+## <a name="usage"></a>Usage
 
 First implement a service with sync or async methods you want to expose from workers. This approach enables reusing
 the code in different scenarios: unit tests, direct call from your app, or wrapped in a native Isolate or in a Web
@@ -114,7 +132,7 @@ Using a `WorkerPool`, you are now able to distribute your workloads:
     var ioResult = await pool.execute((w) => w.io(milliseconds: n));
 ```
 
-## Remarks on Isolates / Web Workers
+## <a name="remarks"></a>Remarks on Isolates / Web Workers
 
 While `Isolates` enable multithreading in Dart applications, several aspects must be taken into account:
 
@@ -134,7 +152,7 @@ Web Workers have similar characteristics. Only primitive types and objects imple
 [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across
 Web Worker boundaries.
 
-## Scaling Options
+## <a name="scaling"></a>Scaling Options
 
 Squadron pools manage a collection of workers to avoid the cost of creating a new platform worker each time.
 Squadron also implements a simple load-balancing mechanism and posts new tasks to workers that are most
@@ -158,7 +176,7 @@ by the main event loop while more complex, long-running, I/O-bound tasks will be
 event loop. Scaling such tasks can be achieved by increasing the `maxParallel` (vertical scaling) or `maxWorkers`
 (horizontal scaling) pool options. In I/O scenarios, vertical scaling should be preferred.
 
-## Worker Cooperation
+## <a name="cooperation"></a>Worker Cooperation
 
 It is possible to implement some kind of worker cooperation and support more complex scenarios.
 
@@ -398,12 +416,18 @@ Architecture Diagram
 4: OtherWorkers query the CacheWorker via their local CacheClient to avoid expensive computations that have been done already 
 ```
 
-## Task Cancellation
+## <a name="cancellation"></a>Task Cancellation
 
 Tasks registered with the worker pool may be cancelled by calling `pool.cancel()`. A `CancelledException` will be
 raised (for value tasks: the future completes with an error) or emitted (for streaming tasks: the stream will emit
 an error) for each pending task. Tasks still pending will fail immediately; tasks already executing when the
 `cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
+
+It should be noted that while task cancellation effectively cancels tasks in the main event loop, the current
+implementation does not notify platform workers of the cancellation. Tasks that have been assigned to a platform
+worker will continue executing until they are complete. As a result, value tasks that are executing cannot be
+cancelled, and while streaming tasks will report cancellation in the mail event loop, streaming will continue
+in the platform worker's event loop.
 
 ```dart
   final future = pool.execute((w) => w.computeData());
@@ -471,7 +495,7 @@ It is also possible to schedule and cancel individual tasks, eg.:
   final result = await valueTask.value;  // should get the task's result
 ```
 
-## Worker Monitoring
+## <a name="monitoring"></a>Worker Monitoring
 
 Monitoring workers in a pool can be done with a simple timer. For instance, to stop workers after a given idle
 period:
