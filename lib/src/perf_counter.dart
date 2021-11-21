@@ -1,7 +1,7 @@
 import 'perf_counter_snapshot.dart';
 
-/// Simple performance counter to consolidate statistics about [Future] completion: total
-/// number of calls, total number of errors, total elapsed time, and max elapsed time.
+/// Simple performance counter to consolidate statistics about woker tast execution: total number of calls, total
+/// number of errors, total elapsed time, and max elapsed time.
 class PerfCounter implements PerfCounterSnapshot {
   /// Creates a performance counter.
   PerfCounter(this.name)

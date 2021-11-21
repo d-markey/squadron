@@ -7,7 +7,8 @@ import 'channel_stub.dart'
 
 import 'worker_response.dart';
 
-/// [Channel]s enable communication from clients to workers.
+/// A [Channel] supports communication from a client to a platform worker.
+/// It is used to send a [WorkerRequest] to a platform worker.
 abstract class Channel {
   /// [Channel] serialization.
   /// Returns an opaque object that can be transfered from the client to the worker.
@@ -40,7 +41,8 @@ abstract class Channel {
       deserializeChannel(channelInfo);
 }
 
-/// [WorkerChannel]s enable communication from workers to clients.
+/// A [WorkerChannel] supports communication from a platform worker to the client that posted the [WorkerRequest].
+/// It is used to send [WorkerResponse] back to the client.
 abstract class WorkerChannel {
   /// [WorkerChannel] serialization.
   /// Returns an opaque object that can be transfered from the client to the worker.

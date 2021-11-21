@@ -10,7 +10,10 @@ typedef WorkerInitializer = FutureOr<WorkerService> Function(
 
 typedef CommandHandler = FutureOr Function(WorkerRequest req);
 
+/// Base class for a worker service.
 abstract class WorkerService {
+  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request
+  /// to the [CommandHandler] mathing the value of [WorkerRequest.command].
   Map<int, CommandHandler> get operations;
 
   /// Called by the platform worker upon startup, in response to a start [WorkerRequest].

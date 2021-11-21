@@ -1,6 +1,6 @@
 /// Exception to keep track of errors encountered in a worker.
 class WorkerException implements Exception {
-  /// Create a new [WorkerException] to capture error context.
+  /// Creates a new [WorkerException] to capture error context.
   WorkerException(this.message, {String? stackTrace, this.workerId})
       : stackTrace = stackTrace ?? StackTrace.current.toString();
 
@@ -17,7 +17,9 @@ class WorkerException implements Exception {
   String toString() => 'WorkerException: $message\n$stackTrace';
 }
 
+/// Exception to keep track of task cancellations.
 class CancelledException extends WorkerException {
+  /// Creates a new [CancelledException].
   CancelledException({String? message, String? stackTrace, String? workerId})
       : super(message ?? 'The task has been cancelled',
             stackTrace: stackTrace, workerId: workerId);

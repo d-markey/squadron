@@ -11,8 +11,8 @@ import 'worker_stat.dart';
 import 'worker_task.dart';
 import 'pool_worker.dart';
 
-/// Worker pool responsible for instantiating, stopping and scheduling workers
-/// asynchronously and in parallel.
+/// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
+/// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
 class WorkerPool<W extends Worker> {
   /// Create a worker pool.
   ///
@@ -20,7 +20,7 @@ class WorkerPool<W extends Worker> {
   /// The pool will only instantiate workers as needed, depending on [concurrencySettings].
   /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control
   /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting
-  /// controls how many workloads can be posted to each individual worker in the pool.
+  /// controls how many tasks can be posted to each individual worker in the pool.
   WorkerPool(this._workerFactory,
       {ConcurrencySettings? concurrencySettings,
       @Deprecated('use concurrencySettings instead') int minWorkers = 0,
@@ -203,6 +203,8 @@ class WorkerPool<W extends Worker> {
     }
   }
 
+  /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.
+  /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.
   void cancel([Task? task]) {
     if (task != null) {
       WorkerTask? workerTask = _executing.remove(task.hashCode);
