@@ -176,6 +176,10 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     try {
       if (isCancelled) throw CancelledException(null);
       token?.start(onTimeout: _timeout);
+      await for (var value in producer(worker)) {
+        streamer.add(value);
+        if (isCancelled) throw CancelledException(null);
+      }
       _wrapUp(() => _close(), true);
     } on WorkerException catch (ex) {
       _wrapUp(() => _close(ex), false);
