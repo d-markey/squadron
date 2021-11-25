@@ -61,7 +61,7 @@ class TimeOutToken extends CancellationToken {
     }
   }
 
-  void _notifyListeners() => _listeners?.forEach(_safeInvoke);
+  void _notifyListeners() => _listeners?.toList().forEach(_safeInvoke);
 
   static void _safeInvoke(FutureOr Function() listener) {
     try {
