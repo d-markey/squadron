@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'cancellation_token.dart';
 import 'channel_stub.dart'
     if (dart.library.js) 'browser/channel.dart'
     if (dart.library.html) 'browser/channel.dart'
@@ -24,12 +25,18 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker.
   /// This method expects a single value from the worker.
-  Future<T> sendRequest<T>(int command, List args);
+  void cancelToken(CancellationToken cancelToken, String? message);
+
+  /// Creates a [WorkerRequest] and sends it to the worker.
+  /// This method expects a single value from the worker.
+  Future<T> sendRequest<T>(int command, List args,
+      {CancellationToken? cancelToken});
 
   /// Creates a [WorkerRequest] and sends it to the worker.
   /// This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
-  Stream<T> sendStreamingRequest<T>(int command, List args);
+  Stream<T> sendStreamingRequest<T>(int command, List args,
+      {CancellationToken? cancelToken});
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
   /// The future must not complete before the worker is ready to serve requests.

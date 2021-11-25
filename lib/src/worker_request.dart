@@ -1,4 +1,6 @@
+import 'cancellation_token.dart';
 import 'channel.dart';
+import 'worker_exception.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker].
 /// Typically a [WorkerRequest] consists of a command ID and a list of arguments.
@@ -14,58 +16,58 @@ import 'channel.dart';
 /// [WorkerRequest] also implements two specific requests used for worker startup and termination.
 class WorkerRequest {
   /// Creates a new request with the specified [command] ID and optional arguments.
-  WorkerRequest(dynamic channelInfo, this.command, [this.args = const []])
-      : client = WorkerChannel.deserialize(channelInfo),
-        connect = false,
-        terminate = false;
+  WorkerRequest(dynamic channelInfo, this.command,
+      [this.args = const [], this._cancelToken])
+      : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new start request.
   WorkerRequest.start(dynamic channelInfo, [this.args = const []])
       : client = WorkerChannel.deserialize(channelInfo),
-        command = null,
-        connect = true,
-        terminate = false;
+        _cancelToken = null,
+        command = _connectCommand;
+
+  /// Creates a new cancel request.
+  WorkerRequest.cancel(CancellationToken cancelToken, String? message)
+      : client = null,
+        _cancelToken = cancelToken,
+        command = _cancelCommand,
+        args = [ if(message != null) message ];
 
   /// Creates a new termination request.
-  const WorkerRequest._terminate()
+  WorkerRequest.stop()
       : client = null,
-        command = null,
-        args = const [],
-        connect = false,
-        terminate = true;
-
-  /// Termination request.
-  static const stop = WorkerRequest._terminate();
+        _cancelToken = null,
+        command = _terminateCommand,
+        args = const [];
 
   static const _$client = 'a';
   static const _$command = 'b';
   static const _$args = 'c';
-  static const _$connect = 'd';
-  static const _$terminate = 'e';
+  static const _$token = 'd';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
   WorkerRequest.deserialize(Map? message)
       : client = WorkerChannel.deserialize(message?[_$client]),
+        _cancelToken = CancellationToken.deserialize(message?[_$token]),
         command = message?[_$command],
-        args = message?[_$args] ?? const [],
-        connect = message?[_$connect] ?? false,
-        terminate = message?[_$terminate] ?? false;
+        args = message?[_$args] ?? const [];
 
   /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
     if (terminate) {
-      return const {_$terminate: true};
+      return const {_$command: _terminateCommand};
     } else if (connect) {
       return {
         _$client: client?.serialize(),
-        _$connect: true,
-        if (args.isNotEmpty) _$args: args
+        _$command: _connectCommand,
+        if (args.isNotEmpty) _$args: args,
       };
     } else {
       return {
-        _$client: client?.serialize(),
+        if (client != null) _$client: client?.serialize(),
         _$command: command,
-        if (args.isNotEmpty) _$args: args
+        if (args.isNotEmpty) _$args: args,
+        if (_cancelToken != null) _$token: _cancelToken!.serialize(),
       };
     }
   }
@@ -73,15 +75,33 @@ class WorkerRequest {
   /// The client's [WorkerChannel].
   final WorkerChannel? client;
 
+  /// Cancellation token.
+  CancellationToken? get cancelToken => _cancelToken;
+  CancellationToken? _cancelToken;
+
+  void overrideCancelToken(CancellationToken value) {
+    if (_cancelToken == null || _cancelToken!.token != value.token) {
+      throw WorkerException('Cancellation token mismatch');
+    }
+    _cancelToken = value;
+  }
+
   /// The [command]'s ID.
-  final int? command;
+  final int command;
 
   /// The command's arguments, if any.
   final List args;
 
   /// flag for start requests.
-  final bool connect;
+  bool get connect => command == _connectCommand;
+
+  /// flag for cancel requests.
+  bool get cancel => command == _cancelCommand;
 
   /// flag for termination requests.
-  final bool terminate;
+  bool get terminate => command == _terminateCommand;
+
+  static const int _connectCommand = -1;
+  static const int _cancelCommand = -2;
+  static const int _terminateCommand = -3;
 }

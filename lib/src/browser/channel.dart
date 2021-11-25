@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:html' as web;
 
+import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../worker_exception.dart';
 import '../worker_request.dart';
@@ -31,7 +32,7 @@ class JsChannel extends _MessagePort implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _postRequest(WorkerRequest.stop);
+      _postRequest(WorkerRequest.stop());
       _sendPort = null;
     }
   }
@@ -39,10 +40,24 @@ class JsChannel extends _MessagePort implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  Future<T> sendRequest<T>(int command, List args) {
+  void cancelToken(CancellationToken cancelToken, String? message) {
+    if (cancelToken.cancelled) {
+      _postRequest(WorkerRequest.cancel(cancelToken, message));
+    }
+  }
+
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
+  /// This method expects a single value from the [web.Worker].
+  @override
+  Future<T> sendRequest<T>(int command, List args,
+      {CancellationToken? cancelToken}) {
+    if (cancelToken?.cancelled ?? false) {
+      throw CancelledException(cancelToken?.message);
+    }
+
     final completer = Completer<T>();
     final com = web.MessageChannel();
-    _postRequest(WorkerRequest(com.port2, command, args));
+    _postRequest(WorkerRequest(com.port2, command, args, cancelToken));
     com.port1.onMessage.listen((event) {
       final res = WorkerResponse.deserialize(event.data);
       com.port1.close();
@@ -59,10 +74,15 @@ class JsChannel extends _MessagePort implements Channel {
   /// This method expects a stream of values from the [web.Worker].
   /// The [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
-  Stream<T> sendStreamingRequest<T>(int command, List args) {
+  Stream<T> sendStreamingRequest<T>(int command, List args,
+      {CancellationToken? cancelToken}) {
+    if (cancelToken?.cancelled ?? false) {
+      throw CancelledException(cancelToken?.message);
+    }
+
     final streamController = StreamController<T>();
     final com = web.MessageChannel();
-    _postRequest(WorkerRequest(com.port2, command, args));
+    _postRequest(WorkerRequest(com.port2, command, args, cancelToken));
     com.port1.onMessage.listen((event) {
       final res = WorkerResponse.deserialize(event.data);
       if (res.endOfStream) {
@@ -192,9 +212,20 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   final worker = web.Worker(entryPoint);
   worker.onError.listen((event) {
     com.port1.close();
-    completer.completeError(WorkerException(
-        'An error occurred in Web Worker $entryPoint: ${event.type}'));
-    worker.terminate();
+    String msg;
+    if (event is web.ErrorEvent) {
+      final error = event;
+      msg =
+          'Uncaught error in Web Worker $entryPoint => ${error.message} [${error.filename}(${error.lineno})]';
+    } else {
+      msg = 'Uncaught event in Web Worker $entryPoint: ${event.type} / $event';
+    }
+    if (!completer.isCompleted) {
+      completer.completeError(WorkerException(msg));
+      worker.terminate();
+    } else {
+      print(msg);
+    }
   });
   worker.postMessage(message, transfer);
   com.port1.onMessage.listen((event) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../worker_exception.dart';
 import '../worker_request.dart';
@@ -25,18 +26,32 @@ class VmChannel extends _SendPort implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _sendPort?.send(WorkerRequest.stop.serialize());
+      _sendPort?.send(WorkerRequest.stop().serialize());
       _sendPort = null;
+    }
+  }
+
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
+  /// This method expects a single value from the [web.Worker].
+  @override
+  void cancelToken(CancellationToken cancelToken, String? message) {
+    if (cancelToken.cancelled) {
+      _sendPort!.send(WorkerRequest.cancel(cancelToken, message).serialize());
     }
   }
 
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]
   /// this method expects a single value from the [Isolate]
   @override
-  Future<T> sendRequest<T>(int command, List args) async {
+  Future<T> sendRequest<T>(int command, List args,
+      {CancellationToken? cancelToken}) async {
+    if (cancelToken?.cancelled ?? false) {
+      throw CancelledException(cancelToken?.message);
+    }
+
     final receiver = ReceivePort();
-    _sendPort!
-        .send(WorkerRequest(receiver.sendPort, command, args).serialize());
+    _sendPort!.send(WorkerRequest(receiver.sendPort, command, args, cancelToken)
+        .serialize());
     final res = WorkerResponse.deserialize(await receiver.first);
     return res.result as T;
   }
@@ -45,10 +60,15 @@ class VmChannel extends _SendPort implements Channel {
   /// This method expects a stream of values from the [Isolate].
   /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
-  Stream<T> sendStreamingRequest<T>(int command, List args) async* {
+  Stream<T> sendStreamingRequest<T>(int command, List args,
+      {CancellationToken? cancelToken}) async* {
+    if (cancelToken?.cancelled ?? false) {
+      CancelledException(cancelToken?.message);
+    }
+
     final receiver = ReceivePort();
-    _sendPort!
-        .send(WorkerRequest(receiver.sendPort, command, args).serialize());
+    _sendPort!.send(WorkerRequest(receiver.sendPort, command, args, cancelToken)
+        .serialize());
     await for (var item in receiver) {
       final res = WorkerResponse.deserialize(item);
       if (res.endOfStream) break;

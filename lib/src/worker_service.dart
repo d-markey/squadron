@@ -10,6 +10,8 @@ typedef WorkerInitializer = FutureOr<WorkerService> Function(
 
 typedef CommandHandler = FutureOr Function(WorkerRequest req);
 
+// void _noop() {}
+
 /// Base class for a worker service.
 abstract class WorkerService {
   /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request
@@ -35,7 +37,8 @@ abstract class WorkerService {
     }
     try {
       if (operations?.isNotEmpty ?? false) {
-        client.reply(WorkerResponse.withError('Already connected'));
+        client.reply(
+            WorkerResponse.withError(WorkerException('Already connected')));
         return;
       }
       if (operations != null && initializer != null) {
@@ -45,9 +48,9 @@ abstract class WorkerService {
       }
       client.connect(channelInfo);
     } on WorkerException catch (e) {
-      client.reply(WorkerResponse.withError(e.message, e.stackTrace));
+      client.reply(WorkerResponse.withError(e));
     } catch (e, st) {
-      client.reply(WorkerResponse.withError(e.toString(), st.toString()));
+      client.reply(WorkerResponse.withError(e, st.toString()));
     }
   }
 
@@ -61,10 +64,15 @@ abstract class WorkerService {
       return;
     }
 
+    if (request.cancel) {
+      monitor.cancel(request.cancelToken!, request.args.isEmpty ? null : request.args[0]);
+      return;
+    }
+
     // start request must be handled beforehand
     if (request.connect) {
       final msg = 'Unhandled start or termination request: $request';
-      request.client?.reply(WorkerResponse.withError(msg));
+      request.client?.reply(WorkerResponse.withError(WorkerException(msg)));
       print(msg);
       return;
     }
@@ -76,44 +84,56 @@ abstract class WorkerService {
       return;
     }
 
-    monitor.begin();
+    final tokenRef = monitor.begin(request);
     try {
       // commands are not available yet (maybe connect() wasn't called or awaited)
       if (operations.isEmpty) {
-        client.reply(WorkerResponse.withError('Worker service is not ready'));
+        client.reply(WorkerResponse.withError(
+            WorkerException('Worker service is not ready')));
         return;
       }
       // retrieve operation matching the request command
       final op = operations[request.command];
       if (op == null) {
         // unknown command
-        client.reply(WorkerResponse.withError('Unknown command: $request'));
+        client.reply(WorkerResponse.withError(
+            WorkerException('Unknown command: $request')));
         return;
       }
       // process
-      final result = op(request);
+      dynamic result = op(request);
       if (result is Future) {
-        // send future result to the client
-        client.reply(WorkerResponse(await result));
-      } else if (result is Stream) {
+        result = await result;
+      }
+      if (result is Stream) {
         // stream values to the client
+        var cancelled = false;
         await for (var res in result) {
+          if (cancelled) {
+            // cancellation was not handled, so throw
+            throw CancelledException(tokenRef?.message);
+          }
           client.reply(WorkerResponse(res));
+          // Future(noop);
+          if (tokenRef?.cancelled ?? false) {
+            // the next call may handle cancellation
+            cancelled |= true;
+          }
         }
-        // close the stream
-        client.reply(WorkerResponse.closeStream);
       } else {
         // send result to client
         client.reply(WorkerResponse(result));
       }
     } on WorkerException catch (e) {
       // send worker exception to the client
-      client.reply(WorkerResponse.withError(e.message, e.stackTrace));
+      client.reply(WorkerResponse.withError(e));
     } catch (e, st) {
       // send exception to the client
-      client.reply(WorkerResponse.withError(e.toString(), st.toString()));
+      client.reply(WorkerResponse.withError(e, st.toString()));
     } finally {
-      monitor.done();
+      // always send a closeStream response to ensure streaming operations are closed
+      client.reply(WorkerResponse.closeStream);
+      monitor.done(tokenRef);
     }
   }
 }

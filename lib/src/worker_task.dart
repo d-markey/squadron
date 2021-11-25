@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:squadron/squadron.dart';
+
 import 'perf_counter.dart';
 import 'worker.dart';
 import 'worker_exception.dart';
@@ -25,7 +27,7 @@ abstract class Task<T> {
   /// For a running [ValueTask], cancellation is ignored and the task's [ValueTask.value] will eventually complete.
   /// For a running [StreamTask], cancellation will be effective after receiving the next value and the task's [StreamTask.stream] will emit a [].
   /// It should be noted that cancellation of running tasks will not be notified to platform workers.
-  void cancel();
+  void cancel([String? message]);
 }
 
 /// Class representing a [Task] returning a single value.
@@ -43,26 +45,28 @@ abstract class StreamTask<T> extends Task<T> {
 /// [WorkerTask] registered in the [WorkerPool].
 class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   /// Creates a new [ValueTask].
-  WorkerTask.value(this._computer, this._counter, this._onDone)
+  WorkerTask.value(this._computer, this._counter, this._onDone, this.token)
       : assert(_computer != null),
         _completer = Completer<T>(),
         _producer = null,
         _streamer = null {
-    _submitted = _timeStamp();
+    _submitted = _usTimeStamp();
   }
 
   /// Creates a new [StreamTask].
-  WorkerTask.stream(this._producer, this._counter, this._onDone)
+  WorkerTask.stream(this._producer, this._counter, this._onDone, this.token)
       : assert(_producer != null),
         _streamer = StreamController<T>(),
         _computer = null,
         _completer = null {
-    _submitted = _timeStamp();
+    _submitted = _usTimeStamp();
   }
 
-  static int _timeStamp() => DateTime.now().microsecondsSinceEpoch;
+  static int _usTimeStamp() => DateTime.now().microsecondsSinceEpoch;
 
   late final int _submitted;
+
+  final CancellationToken? token;
 
   @override
   bool get isRunning =>
@@ -80,78 +84,114 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
 
   @override
   Duration get waitTime => Duration(
-      microseconds: (_executed ?? _cancelled ?? _timeStamp()) - _submitted);
+      microseconds: (_executed ?? _cancelled ?? _usTimeStamp()) - _submitted);
 
   @override
   Duration get runningTime => _executed == null
       ? Duration.zero
       : Duration(
-          microseconds: (_finished ?? _cancelled ?? _timeStamp()) - _executed!);
+          microseconds: (_cancelled ?? _finished ?? _usTimeStamp()) - _executed!);
+
+  void _completeWithError(Exception exception) {
+    if (!_completer!.isCompleted) {
+      _completer!.completeError(exception);
+    }
+  }
+
+  void _completeWithResult(dynamic data) {
+    if (!_completer!.isCompleted) {
+      _completer!.complete(data);
+    }
+  }
+
+  void _close([Exception? exception]) {
+    if (!_streamer!.isClosed) {
+      if (exception != null) {
+        _streamer!.addError(exception);
+      }
+      _streamer!.close();
+    }
+  }
 
   @override
-  void cancel() {
+  void cancel([String? message]) {
     if (_cancelled == null) {
-      _cancelled = _timeStamp();
+      token?.stop();
+      _cancelled = _usTimeStamp();
       if (_executed == null) {
         if (_completer != null) {
-          _wrapUp(() => _completer!.completeError(CancelledException()), false);
+          _wrapUp(() => _completeWithError(CancelledException(message)), false);
         }
         if (_streamer != null) {
-          _streamer!.addError(CancelledException());
-          _wrapUp(() => _streamer!.close(), false);
+          _wrapUp(() => _close(CancelledException(message)), false);
         }
+      }
+    }
+  }
+
+  void _timeout() {
+    if (_finished == null && _cancelled == null) {
+      _cancelled = _usTimeStamp();
+      if (_completer != null) {
+        _wrapUp(() => _completeWithError(TaskTimeoutException('The task timed out.', duration: runningTime)), false);
+      }
+      if (_streamer != null) {
+        _wrapUp(() => _close(TaskTimeoutException('The task timed out.', duration: runningTime)), false);
       }
     }
   }
 
   void _wrapUp(void Function() wrapper, bool success) async {
-    _finished = _timeStamp();
-    _counter?.update(_finished! - _executed!, success);
-    wrapper();
-    if (_onDone != null) {
-      _onDone!();
-    }
-  }
-
-  Future _runFuture(W worker, Future<T> Function(W worker) computer,
-      Completer completer) async {
-    if (completer.isCompleted) return completer.future;
-
-    try {
-      if (isCancelled) throw CancelledException();
-      final value = await computer(worker);
-      _wrapUp(() => completer.complete(value), true);
-    } catch (ex, st) {
-      _wrapUp(() => completer.completeError(ex, st), false);
-    }
-  }
-
-  Future _runStream(W worker, Stream<T> Function(W worker) producer,
-      StreamController streamer) async {
-    if (streamer.isClosed) return Future.value();
-
-    try {
-      if (isCancelled) throw CancelledException();
-      await for (var value in producer(worker)) {
-        streamer.add(value);
-        if (isCancelled) throw CancelledException();
+    token?.stop();
+    if (_finished == null) {
+      _finished = _usTimeStamp();
+      _counter?.update(_finished! - _executed!, success);
+      wrapper();
+      if (_onDone != null) {
+        _onDone!();
       }
-      _wrapUp(() => streamer.close(), true);
-    } catch (ex, st) {
-      streamer.addError(ex, st);
-      _wrapUp(() => streamer.close(), false);
     }
   }
 
-  Future run(W worker) {
-    _executed = _timeStamp();
+  FutureOr _runFuture(W worker, Future<T> Function(W worker) computer,
+      Completer completer) async {
+    if (completer.isCompleted) return;
+
+    try {
+      if (isCancelled) throw CancelledException(null);
+      token?.start(onTimeout: _timeout);
+      final value = await computer(worker);
+      _wrapUp(() => _completeWithResult(value), true);
+    } on WorkerException catch (ex) {
+      _wrapUp(() => _completeWithError(ex), false);
+    } catch (ex, st) {
+      _wrapUp(() => _completeWithError(WorkerException(ex.toString(), stackTrace: st.toString())), false);
+    }
+  }
+
+  FutureOr _runStream(W worker, Stream<T> Function(W worker) producer,
+      StreamController streamer) async {
+    if (streamer.isClosed) return;
+
+    try {
+      if (isCancelled) throw CancelledException(null);
+      token?.start(onTimeout: _timeout);
+      _wrapUp(() => _close(), true);
+    } on WorkerException catch (ex) {
+      _wrapUp(() => _close(ex), false);
+    } catch (ex, st) {
+      _wrapUp(() => _close(WorkerException(ex.toString(), stackTrace: st.toString())), false);
+    }
+  }
+
+  FutureOr run(W worker) {
+    _executed = _usTimeStamp();
     if (_computer != null && _completer != null) {
       return _runFuture(worker, _computer!, _completer!);
     } else if (_producer != null && _streamer != null) {
       return _runStream(worker, _producer!, _streamer!);
     } else {
-      return Future.error(
-          WorkerException('The worker task state is invalid; cannot run.'));
+      return WorkerException('The worker task state is invalid; cannot run.');
     }
   }
 

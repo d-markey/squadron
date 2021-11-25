@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'cancellation_token.dart';
 import 'concurrency_settings.dart';
 import 'squadron_exception.dart';
 import 'worker.dart';
@@ -134,11 +135,14 @@ class WorkerPool<W extends Worker> {
   /// Gets remaining workload
   int get pendingWorkload => _queue.length;
 
-  WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
+  WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task, CancellationToken? token) {
     if (_stopped) {
-      throw SquadronException('stopped pool cannot accept new requests');
+      throw SquadronException('The pool cannot accept new requests because it is stopped.');
     }
     _queue.add(task);
+    if (token != null) {
+      token.addListener(() => _cancelToken(token, token.message));
+    }
     Future(() => _schedule());
     return task;
   }
@@ -146,32 +150,32 @@ class WorkerPool<W extends Worker> {
   /// Registers and schedules a [task] that returns a single value.
   @Deprecated('use execute() instead')
   Future<T> compute<T>(Future<T> Function(W worker) task,
-          [PerfCounter? counter]) =>
-      execute(task, counter);
+          {PerfCounter? counter, CancellationToken? token}) =>
+      execute(task, counter: counter, token: token);
 
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a future that completes with the task's value.
   Future<T> execute<T>(Future<T> Function(W worker) task,
-          [PerfCounter? counter]) =>
-      scheduleTask(task, counter).value;
+          {PerfCounter? counter, CancellationToken? token}) =>
+      scheduleTask(task, counter: counter, token: token).value;
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a stream containing the task's values.
   Stream<T> stream<T>(Stream<T> Function(W worker) task,
-          [PerfCounter? counter]) =>
-      scheduleStream(task).stream;
+          {PerfCounter? counter, CancellationToken? token}) =>
+      scheduleStream(task, counter: counter, token: token).stream;
 
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a [ValueTask]<T>.
   ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
-          [PerfCounter? counter]) =>
-      _enqueue<T>(WorkerTask.value(task, counter, _schedule));
+          {PerfCounter? counter, CancellationToken? token}) =>
+      _enqueue<T>(WorkerTask.value(task, counter, _schedule, token), token);
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a [StreamTask]<T>.
   StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
-          [PerfCounter? counter]) =>
-      _enqueue<T>(WorkerTask.stream(task, counter, _schedule));
+          {PerfCounter? counter, CancellationToken? token}) =>
+      _enqueue<T>(WorkerTask.stream(task, counter, _schedule, token), token);
 
   /// The main scheduler.
   ///
@@ -200,6 +204,12 @@ class WorkerPool<W extends Worker> {
           }
         }
       }
+    }
+  }
+
+  void _cancelToken(CancellationToken token, [String? message]) {
+    for (var i = 0; i < _workers.length; i++) {
+      _workers[i].worker.cancelToken(token, message ?? token.message);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'cancellation_token.dart';
 import 'channel.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart';
@@ -83,8 +84,20 @@ abstract class Worker {
   Channel? _channel;
   Future<Channel>? _starting;
 
+  void cancelToken(CancellationToken cancelToken, String? message) async {
+    if (_channel == null) {
+      var channel = start();
+      if (channel is Future) {
+        await channel;
+      }
+    }
+
+    _channel!.cancelToken(cancelToken, message);
+  }
+
   /// Sends a workload to the worker.
-  Future<T> send<T>(int command, [List args = const []]) async {
+  Future<T> send<T>(int command,
+      [List args = const [], CancellationToken? cancelToken]) async {
     // ensure the worker is up and running
     if (_channel == null) {
       var channel = start();
@@ -101,7 +114,8 @@ abstract class Worker {
       }
 
       // send request and return response
-      return await channel!.sendRequest<T>(command, args);
+      return await _channel!
+          .sendRequest<T>(command, args, cancelToken: cancelToken);
     } on WorkerException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
@@ -120,7 +134,8 @@ abstract class Worker {
   }
 
   /// Sends a streaming workload to the worker.
-  Stream<T> stream<T>(int command, [List args = const []]) async* {
+  Stream<T> stream<T>(int command,
+      [List args = const [], CancellationToken? cancelToken]) async* {
     // ensure the worker is up and running
     if (_channel == null) {
       var channel = start();
@@ -137,13 +152,14 @@ abstract class Worker {
       }
 
       // send request and stream response items
-      await for (var res in _channel!.sendStreamingRequest<T>(command, args)) {
+      await for (var res in _channel!
+          .sendStreamingRequest<T>(command, args, cancelToken: cancelToken)) {
         yield res;
       }
     } on WorkerException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw WorkerException(e.message, stackTrace: e.stackTrace, workerId: id);
+      throw e.withWorkerId(id);
     } catch (e, st) {
       // update stats and rethrow as a [WorkerException] with worker id
       _totalErrors++;

@@ -23,12 +23,24 @@ class SampleService implements WorkerService {
     }
   }
 
+  Stream<int> cancellableSequence(
+      bool handleCancellation, [CancellationToken? token]) async* {
+    int i = 0;
+    while (true) {
+      if ((token?.cancelled ?? false) && handleCancellation) break;
+      await Future.delayed(Duration(milliseconds: delay));
+      yield i;
+      i++;
+    }
+  }
+
   static const delay = 100;
 
   static const ioCommand = 1;
   static const cpuCommand = 2;
   static const delayedIdentityCommand = 3;
   static const delayedSequenceCommand = 4;
+  static const cancellableSequenceCommand = 5;
 
   @override
   late final Map<int, CommandHandler> operations = {
@@ -36,5 +48,7 @@ class SampleService implements WorkerService {
     SampleService.cpuCommand: (r) => cpu(milliseconds: r.args[0]),
     SampleService.delayedIdentityCommand: (r) => delayedIdentity(r.args[0]),
     SampleService.delayedSequenceCommand: (r) => delayedSequence(r.args[0]),
+    SampleService.cancellableSequenceCommand: (r) =>
+        cancellableSequence(r.args[0], r.cancelToken)
   };
 }

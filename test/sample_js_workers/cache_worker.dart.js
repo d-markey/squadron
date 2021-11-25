@@ -2782,6 +2782,9 @@
     get$hashCode$(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
+    get$isEmpty$asx(receiver) {
+      return J.getInterceptor$asx(receiver).get$isEmpty(receiver);
+    },
     get$iterator$ax(receiver) {
       return J.getInterceptor$ax(receiver).get$iterator(receiver);
     },
@@ -2857,13 +2860,35 @@
     JSString: function JSString() {
     }
   },
-  K = {WorkerMonitor: function WorkerMonitor(t0) {
-      this._terminate = t0;
-      this._terminationRequested = false;
-      this._executing = 0;
+  K = {CancellationTokenReference: function CancellationTokenReference(t0) {
+      var _ = this;
+      _.refCount = 0;
+      _._worker_monitor$_cancelled = false;
+      _._worker_monitor$_message = null;
+      _.token = t0;
+    }, WorkerMonitor: function WorkerMonitor(t0, t1) {
+      var _ = this;
+      _._terminate = t0;
+      _._terminationRequested = false;
+      _._executing = 0;
+      _.cancelTokens = t1;
+    }, WorkerMonitor__getTokenRef_closure: function WorkerMonitor__getTokenRef_closure(t0) {
+      this.token = t0;
     }},
-  M = {WorkerException: function WorkerException() {
-    }},
+  M = {
+    WorkerException$(message, stackTrace, workerId) {
+      var t1 = J.toString$0$(P.StackTrace_current());
+      return new M.WorkerException(message, t1);
+    },
+    WorkerException: function WorkerException(t0, t1) {
+      this.message = t0;
+      this.stackTrace = t1;
+    },
+    CancelledException: function CancelledException(t0, t1) {
+      this.message = t0;
+      this.stackTrace = t1;
+    }
+  },
   N = {
     _isObject0(value) {
       return value != null && typeof value != "number" && !H._isBool(value) && typeof value != "string";
@@ -3729,6 +3754,18 @@
       }
       return string;
     },
+    StackTrace_current() {
+      var stackTrace, exception;
+      if (H.boolConversionCheck($.$get$_hasErrorStackProperty()))
+        return H.getTraceFromException(new Error());
+      try {
+        throw H.wrapException("");
+      } catch (exception) {
+        H.unwrapException(exception);
+        stackTrace = H.getTraceFromException(exception);
+        return stackTrace;
+      }
+    },
     DateTime$_withValue(_value, isUtc) {
       var t1;
       if (Math.abs(_value) <= 864e13)
@@ -3947,7 +3984,8 @@
               $async$handler = 4;
               t1 = operations.get$isNotEmpty(operations);
               if (t1) {
-                J.reply$1$z(client, new R.WorkerResponse(false, "Already connected", null, null));
+                t1 = J.toString$0$(P.StackTrace_current());
+                J.reply$1$z(client, R.WorkerResponse$withError(new M.WorkerException("Already connected", t1), null));
                 // goto return
                 $async$goto = 1;
                 break;
@@ -3985,11 +4023,11 @@
               t1 = H.unwrapException($async$exception);
               if (t1 instanceof M.WorkerException) {
                 e = t1;
-                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
+                J.reply$1$z(client, R.WorkerResponse$withError(e, null));
               } else {
                 e0 = t1;
                 st = H.getTraceFromException($async$exception);
-                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
+                J.reply$1$z(client, R.WorkerResponse$withError(e0, J.toString$0$(st)));
               }
               // goto after finally
               $async$goto = 6;
@@ -4017,7 +4055,7 @@
     WorkerService_process$body(operations, message, monitor) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, op, result, res, e, e0, st, msg, t1, t2, transfer, exception, request, $async$exception, $async$temp1, $async$temp2, $async$temp3;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, cancelled, res, e, e0, st, t1, t2, msg, tokenRef0, t3, transfer, exception, request, $async$exception, $async$temp1;
       var $async$WorkerService_process = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -4028,7 +4066,7 @@
             case 0:
               // Function start
               request = X.WorkerRequest$deserialize(message);
-              if (request.terminate) {
+              if (request.command === -3) {
                 if (monitor._executing === 0)
                   monitor._terminate.call$0();
                 else
@@ -4037,11 +4075,29 @@
                 $async$goto = 1;
                 break;
               }
-              if (request.connect) {
+              if (request.command === -2) {
+                t1 = request._cancelToken;
+                t1.toString;
+                t2 = H._asStringQ(J.get$isEmpty$asx(request.args) ? null : J.$index$ax(request.args, 0));
+                t1 = monitor._getTokenRef$1(t1);
+                if (t1 != null) {
+                  if (t2 == null)
+                    t2 = "The task has been cancelled";
+                  if (t1._worker_monitor$_message == null)
+                    t1._worker_monitor$_message = t2;
+                  t1._worker_monitor$_cancelled = C.JSBool_methods.$or(t1._worker_monitor$_cancelled, true);
+                }
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              if (request.command === -1) {
                 msg = "Unhandled start or termination request: " + H.S(request);
                 t1 = request.client;
-                if (t1 != null)
-                  t1.reply$1(0, new R.WorkerResponse(false, msg, null, null));
+                if (t1 != null) {
+                  t2 = J.toString$0$(P.StackTrace_current());
+                  t1.reply$1(0, R.WorkerResponse$withError(new M.WorkerException(msg, t2), null));
+                }
                 P.print(msg);
                 // goto return
                 $async$goto = 1;
@@ -4054,10 +4110,21 @@
                 $async$goto = 1;
                 break;
               }
+              t1 = type$.WorkerRequest._as(request);
               ++monitor._executing;
+              tokenRef0 = monitor._getTokenRef$1(t1._cancelToken);
+              if (tokenRef0 != null) {
+                ++tokenRef0.refCount;
+                t2 = t1._cancelToken;
+                if (t2 == null || t2.token !== tokenRef0.token)
+                  H.throwExpression(M.WorkerException$("Cancellation token mismatch", null, null));
+                t1._cancelToken = tokenRef0;
+              }
+              tokenRef = tokenRef0;
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
-                J.reply$1$z(client, new R.WorkerResponse(false, "Worker service is not ready", null, null));
+                t1 = J.toString$0$(P.StackTrace_current());
+                J.reply$1$z(client, R.WorkerResponse$withError(new M.WorkerException("Worker service is not ready", t1), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -4065,89 +4132,104 @@
               }
               op = operations.$index(0, request.command);
               if (op == null) {
-                J.reply$1$z(client, new R.WorkerResponse(false, "Unknown command: " + H.S(request), null, null));
+                t1 = "Unknown command: " + H.S(request);
+                t2 = J.toString$0$(P.StackTrace_current());
+                J.reply$1$z(client, R.WorkerResponse$withError(new M.WorkerException(t1, t2), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
                 break;
               }
               result = op.call$1(request);
-              $async$goto = type$.Future_dynamic._is(result) ? 7 : 9;
+              $async$goto = type$.Future_dynamic._is(result) ? 7 : 8;
               break;
             case 7:
               // then
-              $async$temp1 = J;
-              $async$temp2 = client;
-              $async$temp3 = R;
-              $async$goto = 10;
+              $async$goto = 9;
               return P._asyncAwait(result, $async$WorkerService_process);
-            case 10:
-              // returning from await.
-              $async$temp1.reply$1$z($async$temp2, new $async$temp3.WorkerResponse(false, null, $async$result, null));
-              // goto join
-              $async$goto = 8;
-              break;
             case 9:
-              // else
-              $async$goto = result instanceof P.Stream ? 11 : 13;
+              // returning from await.
+              result = $async$result;
+            case 8:
+              // join
+              $async$goto = result instanceof P.Stream ? 10 : 12;
               break;
-            case 11:
+            case 10:
               // then
+              cancelled = false;
               t1 = new P._StreamIterator(H.checkNotNullable(result, "stream", type$.Object), type$._StreamIterator_dynamic);
-              $async$handler = 14;
-            case 17:
+              $async$handler = 13;
+            case 16:
               // for condition
               $async$temp1 = H;
-              $async$goto = 19;
+              $async$goto = 18;
               return P._asyncAwait(t1.moveNext$0(), $async$WorkerService_process);
-            case 19:
+            case 18:
               // returning from await.
               if (!$async$temp1.boolConversionCheck($async$result)) {
                 // goto after for
-                $async$goto = 18;
+                $async$goto = 17;
                 break;
               }
               res = t1.get$current();
-              message = new R.WorkerResponse(false, null, res, null).serialize$0();
+              if (H.boolConversionCheck(cancelled)) {
+                t2 = tokenRef;
+                t2 = t2 == null ? null : t2._worker_monitor$_message;
+                if (t2 == null)
+                  t2 = "The task has been cancelled";
+                t3 = J.toString$0$(P.StackTrace_current());
+                throw H.wrapException(new M.CancelledException(t2, t3));
+              }
+              message = new R.WorkerResponse(false, null, res, null, false, false).serialize$0();
               t2 = N._getTransferables(message);
               transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
               t2 = client._sendPort;
               t2.toString;
               C.MessagePort_methods.postMessage$2(t2, message, transfer);
+              t2 = tokenRef;
+              t2 = t2 == null ? null : t2._worker_monitor$_cancelled;
+              if (t2 === true) {
+                t2 = cancelled;
+                if (typeof t2 !== "boolean") {
+                  $async$returnValue = t2.$or();
+                  $async$next = [1, 5];
+                  // goto finally
+                  $async$goto = 14;
+                  break;
+                }
+                cancelled = C.JSBool_methods.$or(t2, true);
+              }
               // goto for condition
-              $async$goto = 17;
+              $async$goto = 16;
               break;
-            case 18:
+            case 17:
               // after for
-              $async$next.push(16);
+              $async$next.push(15);
               // goto finally
-              $async$goto = 15;
+              $async$goto = 14;
               break;
-            case 14:
+            case 13:
               // uncaught
               $async$next = [4];
-            case 15:
+            case 14:
               // finally
               $async$handler = 4;
-              $async$goto = 20;
+              $async$goto = 19;
               return P._asyncAwait(t1.cancel$0(), $async$WorkerService_process);
-            case 20:
+            case 19:
               // returning from await.
               // goto the next finally handler
               $async$goto = $async$next.pop();
               break;
-            case 16:
+            case 15:
               // after finally
-              J.reply$1$z(client, C.WorkerResponse_true_null_null_null);
               // goto join
-              $async$goto = 12;
+              $async$goto = 11;
               break;
-            case 13:
-              // else
-              J.reply$1$z(client, new R.WorkerResponse(false, null, result, null));
             case 12:
-              // join
-            case 8:
+              // else
+              J.reply$1$z(client, R.WorkerResponse$(result));
+            case 11:
               // join
               $async$next.push(6);
               // goto finally
@@ -4160,11 +4242,11 @@
               t1 = H.unwrapException($async$exception);
               if (t1 instanceof M.WorkerException) {
                 e = t1;
-                J.reply$1$z(client, new R.WorkerResponse(false, e.message, null, e.stackTrace));
+                J.reply$1$z(client, R.WorkerResponse$withError(e, null));
               } else {
                 e0 = t1;
                 st = H.getTraceFromException($async$exception);
-                J.reply$1$z(client, new R.WorkerResponse(false, J.toString$0$(e0), null, J.toString$0$(st)));
+                J.reply$1$z(client, R.WorkerResponse$withError(e0, J.toString$0$(st)));
               }
               $async$next.push(6);
               // goto finally
@@ -4176,6 +4258,11 @@
             case 5:
               // finally
               $async$handler = 2;
+              J.reply$1$z(client, C.WorkerResponse_LpI);
+              t1 = type$.nullable_CancellationTokenReference._as(tokenRef);
+              if (t1 != null)
+                if (--t1.refCount === 0 && !t1._worker_monitor$_cancelled)
+                  monitor.cancelTokens.remove$1(0, t1.token);
               t1 = --monitor._executing;
               if (monitor._terminationRequested && t1 === 0)
                 monitor._terminate.call$0();
@@ -4195,13 +4282,29 @@
       return P._asyncStartSync($async$WorkerService_process, $async$completer);
     }
   },
-  R = {WorkerResponse: function WorkerResponse(t0, t1, t2, t3) {
+  R = {
+    WorkerResponse$(_result) {
+      return new R.WorkerResponse(false, null, _result, null, false, false);
+    },
+    WorkerResponse$withError(exception, stackTrace) {
+      var t1 = exception instanceof M.WorkerException,
+        t2 = t1 ? exception.message : J.toString$0$(exception);
+      if (stackTrace == null)
+        t1 = t1 ? exception.stackTrace : J.toString$0$(P.StackTrace_current());
+      else
+        t1 = stackTrace;
+      return new R.WorkerResponse(false, t2, null, t1, exception instanceof M.CancelledException, false);
+    },
+    WorkerResponse: function WorkerResponse(t0, t1, t2, t3, t4, t5) {
       var _ = this;
       _._eos = t0;
       _._error = t1;
       _._result = t2;
       _._stackTrace = t3;
-    }},
+      _._cancelled = t4;
+      _._timeout = t5;
+    }
+  },
   W = {
     _EventStreamSubscription$(_target, _eventType, onData, _useCapture, $T) {
       var t1 = W._wrapZone(new W._EventStreamSubscription_closure(onData), type$.Event);
@@ -4260,15 +4363,16 @@
     bootstrap(initializer, command) {
       var t4,
         scope = type$.DedicatedWorkerGlobalScope._as(self),
-        operations = P.LinkedHashMap_LinkedHashMap$_empty(type$.int, type$.dynamic_Function_WorkerRequest),
+        t1 = type$.int,
+        operations = P.LinkedHashMap_LinkedHashMap$_empty(t1, type$.dynamic_Function_WorkerRequest),
         com = new MessageChannel(),
-        t1 = com.port1,
-        t2 = type$.nullable_void_Function_MessageEvent,
-        t3 = t2._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope))));
+        t2 = com.port1,
+        t3 = type$.nullable_void_Function_MessageEvent;
+      t1 = t3._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope), P.LinkedHashMap_LinkedHashMap$_empty(t1, type$.CancellationTokenReference))));
       type$.nullable_void_Function._as(null);
       t4 = type$.MessageEvent;
-      W._EventStreamSubscription$(t1, "message", t3, false, t4);
-      W._EventStreamSubscription$(scope, "message", t2._as(new X.bootstrap_closure1(com, operations, initializer)), false, t4);
+      W._EventStreamSubscription$(t2, "message", t1, false, t4);
+      W._EventStreamSubscription$(scope, "message", t3._as(new X.bootstrap_closure1(com, operations, initializer)), false, t4);
     },
     bootstrap_closure0: function bootstrap_closure0(t0) {
       this.scope = t0;
@@ -4283,7 +4387,7 @@
       this.initializer = t2;
     },
     WorkerRequest$deserialize(message) {
-      var t3, t4, t5, _null = null,
+      var t3, t4, _null = null,
         t1 = message == null,
         t2 = t1 ? _null : message.$index(0, "a");
       if (t2 == null)
@@ -4293,26 +4397,27 @@
         t3._sendPort = type$.nullable_MessagePort._as(t2);
         t2 = t3;
       }
-      t3 = H._asIntQ(t1 ? _null : message.$index(0, "b"));
-      t4 = t1 ? _null : message.$index(0, "c");
-      if (t4 == null)
-        t4 = C.List_empty;
-      type$.List_dynamic._as(t4);
-      t5 = t1 ? _null : message.$index(0, "d");
-      t5 = H._asBool(t5 == null ? false : t5);
-      t1 = t1 ? _null : message.$index(0, "e");
-      return new X.WorkerRequest(t2, t3, t4, t5, H._asBool(t1 == null ? false : t1));
+      t3 = t1 ? _null : message.$index(0, "d");
+      type$.nullable_Map_dynamic_dynamic._as(t3);
+      t3 = t3 == null ? _null : new Y.CancellationToken(H._asInt(t3.$index(0, "a")));
+      t4 = H._asInt(t1 ? _null : message.$index(0, "b"));
+      t1 = t1 ? _null : message.$index(0, "c");
+      if (t1 == null)
+        t1 = C.List_empty;
+      return new X.WorkerRequest(t2, t3, t4, type$.List_dynamic._as(t1));
     },
-    WorkerRequest: function WorkerRequest(t0, t1, t2, t3, t4) {
+    WorkerRequest: function WorkerRequest(t0, t1, t2, t3) {
       var _ = this;
       _.client = t0;
-      _.command = t1;
-      _.args = t2;
-      _.connect = t3;
-      _.terminate = t4;
+      _._cancelToken = t1;
+      _.command = t2;
+      _.args = t3;
     }
-  };
-  var holders = [C, E, H, J, K, M, N, O, P, Q, R, W, X];
+  },
+  Y = {CancellationToken: function CancellationToken(t0) {
+      this.token = t0;
+    }};
+  var holders = [C, E, H, J, K, M, N, O, P, Q, R, W, X, Y];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
   var $ = {};
   H.JS_CONST.prototype = {};
@@ -4330,6 +4435,9 @@
   J.JSBool.prototype = {
     toString$0(receiver) {
       return String(receiver);
+    },
+    $or(receiver, other) {
+      return true || receiver;
     },
     get$hashCode(receiver) {
       return receiver ? 519018 : 218159;
@@ -4393,6 +4501,9 @@
         if (J.$eq$(receiver[i], other))
           return true;
       return false;
+    },
+    get$isEmpty(receiver) {
+      return receiver.length === 0;
     },
     toString$0(receiver) {
       return P.IterableBase_iterableToFullString(receiver, "[", "]");
@@ -4791,6 +4902,23 @@
       var t1 = H._instanceType(this);
       return H.MappedIterable_MappedIterable(this.get$keys(), new H.JsLinkedHashMap_values_closure(this), t1._precomputed1, t1._rest[1]);
     },
+    containsKey$1(key) {
+      var nums;
+      if ((key & 0x3ffffff) === key) {
+        nums = this._nums;
+        if (nums == null)
+          return false;
+        return this._containsTableEntry$2(nums, key);
+      } else
+        return this.internalContainsKey$1(key);
+    },
+    internalContainsKey$1(key) {
+      var _this = this,
+        rest = _this.__js_helper$_rest;
+      if (rest == null)
+        return false;
+      return _this.internalFindBucketIndex$2(_this._getTableBucket$2(rest, _this.internalComputeHashCode$1(key)), key) >= 0;
+    },
     addAll$1(_, other) {
       H._instanceType(this)._eval$1("Map<1,2>")._as(other).forEach$1(0, new H.JsLinkedHashMap_addAll_closure(this));
     },
@@ -4857,6 +4985,17 @@
         else
           bucket.push(_this._newLinkedCell$2(key, value));
       }
+    },
+    putIfAbsent$2(key, ifAbsent) {
+      var value, _this = this,
+        t1 = H._instanceType(_this);
+      t1._precomputed1._as(key);
+      t1._eval$1("2()")._as(ifAbsent);
+      if (_this.containsKey$1(key))
+        return t1._rest[1]._as(_this.$index(0, key));
+      value = ifAbsent.call$0();
+      _this.$indexSet(0, key, value);
+      return value;
     },
     remove$1(_, key) {
       var _this = this;
@@ -4978,6 +5117,9 @@
     },
     _deleteTableEntry$2(table, key) {
       delete table[key];
+    },
+    _containsTableEntry$2(table, key) {
+      return this._getTableCell$2(table, key) != null;
     },
     _newHashTable$0() {
       var _s20_ = "<non-identifier-key>",
@@ -5922,6 +6064,9 @@
     get$iterator(receiver) {
       return new H.ListIterator(receiver, this.get$length(receiver), H.instanceType(receiver)._eval$1("ListIterator<ListMixin.E>"));
     },
+    get$isEmpty(receiver) {
+      return this.get$length(receiver) === 0;
+    },
     where$1(receiver, test) {
       var t1 = H.instanceType(receiver);
       return new H.WhereIterable(receiver, t1._eval$1("bool(ListMixin.E)")._as(test), t1._eval$1("WhereIterable<ListMixin.E>"));
@@ -6585,15 +6730,40 @@
     },
     $isWorkerChannel: 1
   };
-  M.WorkerException.prototype = {};
-  K.WorkerMonitor.prototype = {};
+  Y.CancellationToken.prototype = {};
+  M.WorkerException.prototype = {
+    toString$0(_) {
+      return "WorkerException: " + this.message + "\n" + this.stackTrace;
+    }
+  };
+  M.CancelledException.prototype = {};
+  K.CancellationTokenReference.prototype = {};
+  K.WorkerMonitor.prototype = {
+    _getTokenRef$1(token) {
+      return token == null ? null : this.cancelTokens.putIfAbsent$2(token.token, new K.WorkerMonitor__getTokenRef_closure(token));
+    }
+  };
+  K.WorkerMonitor__getTokenRef_closure.prototype = {
+    call$0() {
+      return new K.CancellationTokenReference(this.token.token);
+    },
+    $signature: 22
+  };
   X.WorkerRequest.prototype = {};
   R.WorkerResponse.prototype = {
     serialize$0() {
-      var _this = this,
+      var t2, _this = this,
         t1 = _this._error;
-      if (t1 != null)
-        return P.LinkedHashMap_LinkedHashMap$_literal(["b", t1, "c", _this._stackTrace], type$.String, type$.dynamic);
+      if (t1 != null) {
+        t2 = P.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.dynamic);
+        t2.$indexSet(0, "b", t1);
+        t2.$indexSet(0, "c", _this._stackTrace);
+        if (_this._cancelled)
+          t2.$indexSet(0, "e", true);
+        if (_this._timeout)
+          t2.$indexSet(0, "f", true);
+        return t2;
+      }
       if (_this._eos)
         return C.Map_9sMLP;
       t1 = _this._result;
@@ -6648,13 +6818,13 @@
     call$1(r) {
       return this.$this.$get$1(J.$index$ax(type$.WorkerRequest._as(r).args, 0));
     },
-    $signature: 22
+    $signature: 23
   };
   O.CacheService_operations_closure0.prototype = {
     call$1(r) {
       return this.$this.$get$1(J.$index$ax(type$.WorkerRequest._as(r).args, 0)) != null;
     },
-    $signature: 23
+    $signature: 24
   };
   O.CacheService_operations_closure1.prototype = {
     call$1(r) {
@@ -6672,7 +6842,7 @@
         t1._maxSize = t3.get$length(t3);
       return _null;
     },
-    $signature: 24
+    $signature: 25
   };
   O.CacheService_operations_closure2.prototype = {
     call$1(r) {
@@ -6682,14 +6852,14 @@
       t2 = t1._cache;
       return [t1._hit, t1._miss, t1._expired, t2.get$length(t2), t1._maxSize];
     },
-    $signature: 25
+    $signature: 26
   };
   O._CacheEntry.prototype = {};
   E.main_closure.prototype = {
     call$1(startRequest) {
       return new O.CacheService(P.LinkedHashMap_LinkedHashMap$_empty(type$.dynamic, type$._CacheEntry));
     },
-    $signature: 26
+    $signature: 27
   };
   (function aliases() {
     var _ = J.JavaScriptObject.prototype;
@@ -6709,21 +6879,21 @@
     var _;
     _instance_1_u(_ = P._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 16);
     _instance_0_u(_, "get$_onDone", "_onDone$0", 0);
-    _static_1(N, "channel___isObject$closure", "_isObject0", 27);
+    _static_1(N, "channel___isObject$closure", "_isObject0", 28);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.FixedLengthListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.Rti, H._FunctionParameters, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P._StreamIterator, P._Zone, P.ListMixin, P._MapBaseValueIterator, P.DateTime, P.Duration, P.StackOverflowError, P._Exception, P.Null, P._StringStackTrace, P.StringBuffer, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, N._MessagePort, M.WorkerException, K.WorkerMonitor, X.WorkerRequest, R.WorkerResponse, O.CacheService, O._CacheEntry]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.FixedLengthListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.Rti, H._FunctionParameters, P._TimerImpl, P._AsyncAwaitCompleter, P._IterationMarker, P._SyncStarIterator, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P._StreamIterator, P._Zone, P.ListMixin, P._MapBaseValueIterator, P.DateTime, P.Duration, P.StackOverflowError, P._Exception, P.Null, P._StringStackTrace, P.StringBuffer, W.EventStreamProvider, P._StructuredClone, P._AcceptStructuredClone, P.NullRejectionException, N._MessagePort, Y.CancellationToken, M.WorkerException, K.WorkerMonitor, X.WorkerRequest, R.WorkerResponse, O.CacheService, O._CacheEntry]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.Blob, W.EventTarget, W.DomException, W.Event]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
     _inheritMany(P.Error, [H.LateError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
     _inheritMany(H.Closure, [H.Closure0Args, H.ConstantStringMap_values_closure, H.Closure2Args, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._awaitOnObject_closure, P._Future__chainForeignFuture_closure, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P.Stream_length_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P.Duration_toString_sixDigits, P.Duration_toString_twoDigits, W._EventStreamSubscription_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, X.bootstrap_closure, X.bootstrap_closure1, O.CacheService_operations_closure, O.CacheService_operations_closure0, O.CacheService_operations_closure1, O.CacheService_operations_closure2, E.main_closure]);
-    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure, X.bootstrap_closure0]);
+    _inheritMany(H.Closure0Args, [H.nullFuture_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_length_closure0, P._rootHandleError_closure, P._RootZone_bindCallbackGuarded_closure, X.bootstrap_closure0, K.WorkerMonitor__getTokenRef_closure]);
     _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, P.IterableBase]);
     _inherit(H.EfficientLengthMappedIterable, H.MappedIterable);
     _inheritMany(P.Iterator, [H.MappedIterator, H.WhereIterator]);
@@ -6756,6 +6926,8 @@
     _inherit(P._StructuredCloneDart2Js, P._StructuredClone);
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
     _inherit(N.JsWorkerChannel, N._MessagePort);
+    _inherit(M.CancelledException, M.WorkerException);
+    _inherit(K.CancellationTokenReference, Y.CancellationToken);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, P.ListMixin);
@@ -6765,12 +6937,12 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "~(~())", "Null(@)", "Null()", "String(int)", "~(MessageEvent)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "@(WorkerRequest)", "bool(WorkerRequest)", "~(WorkerRequest)", "List<@>(WorkerRequest)", "CacheService(WorkerRequest)", "bool(@)"],
+    types: ["~()", "~(@)", "~(~())", "Null(@)", "Null()", "String(int)", "~(MessageEvent)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "CancellationTokenReference()", "@(WorkerRequest)", "bool(WorkerRequest)", "~(WorkerRequest)", "List<@>(WorkerRequest)", "CacheService(WorkerRequest)", "bool(@)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"List":{"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsWorkerChannel":{"WorkerChannel":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"List":{"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsWorkerChannel":{"WorkerChannel":[]},"CancellationTokenReference":{"CancellationToken":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"EfficientLengthIterable":1,"NativeTypedArray":1,"IterableBase":1,"MapBase":2}'));
   var string$ = {
     Error_: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"
@@ -6780,6 +6952,7 @@
     return {
       AsyncError: findType("AsyncError"),
       Blob: findType("Blob"),
+      CancellationTokenReference: findType("CancellationTokenReference"),
       ConstantStringMap_String_dynamic: findType("ConstantStringMap<String,@>"),
       DedicatedWorkerGlobalScope: findType("DedicatedWorkerGlobalScope"),
       Error: findType("Error"),
@@ -6828,6 +7001,7 @@
       int: findType("int"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
+      nullable_CancellationTokenReference: findType("CancellationTokenReference?"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_List_Object: findType("List<Object>?"),
       nullable_Map_dynamic_dynamic: findType("Map<@,@>?"),
@@ -6847,6 +7021,7 @@
     var makeConstList = hunkHelpers.makeConstList;
     C.Interceptor_methods = J.Interceptor.prototype;
     C.JSArray_methods = J.JSArray.prototype;
+    C.JSBool_methods = J.JSBool.prototype;
     C.JSInt_methods = J.JSInt.prototype;
     C.JSString_methods = J.JSString.prototype;
     C.JavaScriptFunction_methods = J.JavaScriptFunction.prototype;
@@ -6980,7 +7155,7 @@
     C.Map_9sMLP = new H.ConstantStringMap(1, {d: true}, C.List_d, type$.ConstantStringMap_String_dynamic);
     C.List_empty0 = H._setArrayType(makeConstList([]), type$.JSArray_String);
     C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty0, type$.ConstantStringMap_String_dynamic);
-    C.WorkerResponse_true_null_null_null = new R.WorkerResponse(true, null, null, null);
+    C.WorkerResponse_LpI = new R.WorkerResponse(true, null, null, null, false, false);
     C._IterationMarker_null_2 = new P._IterationMarker(null, 2);
   })();
   (function staticFields() {
@@ -7002,7 +7177,8 @@
     $._toStringVisiting = H._setArrayType([], type$.JSArray_Object);
   })();
   (function lazyInitializers() {
-    var _lazyFinal = hunkHelpers.lazyFinal;
+    var _lazyFinal = hunkHelpers.lazyFinal,
+      _lazy = hunkHelpers.lazy;
     _lazyFinal($, "DART_CLOSURE_PROPERTY_NAME", "$get$DART_CLOSURE_PROPERTY_NAME", function() {
       return H.getIsolateAffinityTag("_$dart_dartClosure");
     });
@@ -7083,6 +7259,9 @@
       var t1 = new P._Future(C.C__RootZone, type$._Future_bool);
       t1._setValue$1(false);
       return t1;
+    });
+    _lazy($, "_hasErrorStackProperty", "$get$_hasErrorStackProperty", function() {
+      return new Error().stack != void 0;
     });
   })();
   (function nativeSupport() {

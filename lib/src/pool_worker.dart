@@ -13,9 +13,19 @@ class PoolWorker<W extends Worker> {
   int get capacity => _capacity;
   bool get isIdle => worker.isStopped || _capacity == _maxWorkload;
 
+  void _start() => _capacity--;
+  void _finish() => _capacity++;
+
   Future run(WorkerTask task) {
-    _capacity--;
-    return task.run(worker).whenComplete(() => _capacity++);
+    _start();
+    final res = task.run(worker);
+    if (res is Future) {
+      res.whenComplete(_finish);
+      return res;
+    } else {
+      _finish();
+      return Future.value();
+    }
   }
 
   static int compareCapacityDesc(PoolWorker a, PoolWorker b) =>

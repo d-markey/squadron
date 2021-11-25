@@ -27,6 +27,11 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Stream<int> delayedSequence(int count) =>
       stream((w) => w.delayedSequence(count));
 
+  @override
+  Stream<int> cancellableSequence(
+          bool handleCancellation, [CancellationToken? token]) =>
+      stream((w) => w.cancellableSequence(handleCancellation, token), token: token);
+
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayedIdentity(n));
 
@@ -52,4 +57,10 @@ class SampleWorker extends Worker implements SampleService {
   @override
   Stream<int> delayedSequence(int count) =>
       stream(SampleService.delayedSequenceCommand, [count]);
+
+  @override
+  Stream<int> cancellableSequence(
+          bool handleCancellation, [CancellationToken? token]) =>
+      stream(SampleService.cancellableSequenceCommand, [handleCancellation],
+          token);
 }

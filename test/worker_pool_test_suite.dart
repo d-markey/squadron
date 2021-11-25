@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:squadron/src/worker_exception.dart';
 import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
@@ -229,7 +230,8 @@ void poolTests() {
       final n = await pool.delayedIdentity(-1);
       throw Exception('received $n although the pool has been stopped');
     } on SquadronException catch (ex) {
-      expect(ex.message, contains('stopped pool cannot accept new requests'));
+      expect(ex.message, contains('cannot accept new requests'));
+      expect(ex.message, contains('stopped'));
     }
   });
 
@@ -249,7 +251,8 @@ void poolTests() {
       n = await pool.delayedIdentity(-1);
       throw Exception('received $n although the pool has been stopped');
     } on SquadronException catch (ex) {
-      expect(ex.message, contains('stopped pool cannot accept new requests'));
+      expect(ex.message, contains('cannot accept new requests'));
+      expect(ex.message, contains('stopped'));
     }
 
     pool.start(); // intentionally not awaited
@@ -315,6 +318,7 @@ void poolTests() {
         errors += 1;
       }));
     }
+
     await Future.delayed(
         Duration(milliseconds: (SampleService.delay * 1.5).toInt()));
     pool.cancel();
@@ -612,5 +616,124 @@ void poolTests() {
         equals(N - errors));
 
     pool.stop();
+  });
+
+  test('cancellation token - automatic', () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    final token = CancellableToken();
+    Timer(Duration(milliseconds: N * SampleService.delay), () {
+      token.cancel();
+    });
+
+    try {
+      await for (var n in pool.cancellableSequence(false, token)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } catch (e) {
+      expect(e, isA<CancelledException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+
+    pool.stop();
+  });
+
+  test('cancellation token - graceful', () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    var token = CancellableToken();
+    Timer(Duration(milliseconds: N * SampleService.delay), () {
+      token.cancel();
+    });
+
+    await for (var n in pool.cancellableSequence(true, token)) {
+      digits.add(n);
+      count++;
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+  });
+
+  test('task timeout - automatic', () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    final token = TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+
+    try {
+      await for (var n in pool.cancellableSequence(false, token)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } on WorkerException catch (ex) {
+      expect(ex, isA<TaskTimeoutException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+  });
+
+  test('task timeout - graceful throws anyway', () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    final token = TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+
+    try {
+      await for (var n in pool.cancellableSequence(true, token)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } on WorkerException catch (ex) {
+      expect(ex, isA<TaskTimeoutException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
   });
 }
