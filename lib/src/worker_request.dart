@@ -31,7 +31,7 @@ class WorkerRequest {
       : client = null,
         _cancelToken = cancelToken,
         command = _cancelCommand,
-        args = [ if(message != null) message ];
+        args = [if (message != null) message];
 
   /// Creates a new termination request.
   WorkerRequest.stop()

@@ -135,9 +135,11 @@ class WorkerPool<W extends Worker> {
   /// Gets remaining workload
   int get pendingWorkload => _queue.length;
 
-  WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task, CancellationToken? token) {
+  WorkerTask<T, W> _enqueue<T>(
+      WorkerTask<T, W> task, CancellationToken? token) {
     if (_stopped) {
-      throw SquadronException('The pool cannot accept new requests because it is stopped.');
+      throw SquadronException(
+          'The pool cannot accept new requests because it is stopped.');
     }
     _queue.add(task);
     if (token != null) {

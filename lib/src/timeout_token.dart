@@ -4,7 +4,8 @@ import 'dart:math';
 import 'cancellation_token.dart';
 
 class TimeOutToken extends CancellationToken {
-  TimeOutToken(this.timeOut, [this.message]) : super(Random.secure().nextInt(1 << 32 - 1));
+  TimeOutToken(this.timeOut, [this.message])
+      : super(Random.secure().nextInt(1 << 32 - 1));
 
   @override
   bool get isTimeout => true;
@@ -18,23 +19,23 @@ class TimeOutToken extends CancellationToken {
   @override
   final String? message;
 
-  List<FutureOr Function()>? _listeners;
+  List<void Function()>? _listeners;
 
   @override
-  void addListener(FutureOr Function() listener) {
-    _listeners ??= <FutureOr Function()>[];
+  void addListener(void Function() listener) {
+    _listeners ??= <void Function()>[];
     _listeners!.add(listener);
   }
 
   @override
-  void removeListener(FutureOr Function() listener) {
+  void removeListener(void Function() listener) {
     _listeners?.remove(listener);
   }
 
   Timer? _timer;
 
   @override
-  void start({FutureOr Function()? onTimeout}) {
+  void start({void Function()? onTimeout}) {
     if (onTimeout != null) {
       if (_timer != null) {
         _timer!.cancel();
@@ -63,7 +64,7 @@ class TimeOutToken extends CancellationToken {
 
   void _notifyListeners() => _listeners?.toList().forEach(_safeInvoke);
 
-  static void _safeInvoke(FutureOr Function() listener) {
+  static void _safeInvoke(void Function() listener) {
     try {
       listener();
     } catch (e) {

@@ -1,13 +1,10 @@
-import 'dart:async';
-
 class CancellationToken {
   CancellationToken(this.token);
 
   static const _$token = 'a';
 
-  static CancellationToken? deserialize(Map? token) => token == null
-      ? null
-      : CancellationToken(token[_$token]);
+  static CancellationToken? deserialize(Map? token) =>
+      token == null ? null : CancellationToken(token[_$token]);
 
   final bool isTimeout = false;
 
@@ -18,11 +15,11 @@ class CancellationToken {
 
   Map serialize() => {_$token: token};
 
-  void start({FutureOr Function()? onTimeout}) {}
+  void start({void Function()? onTimeout}) {}
 
   void stop() {}
 
-  void addListener(FutureOr Function() listener) {}
+  void addListener(void Function() listener) {}
 
-  void removeListener(FutureOr Function() listener) {}
+  void removeListener(void Function() listener) {}
 }

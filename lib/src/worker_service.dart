@@ -65,7 +65,8 @@ abstract class WorkerService {
     }
 
     if (request.cancel) {
-      monitor.cancel(request.cancelToken!, request.args.isEmpty ? null : request.args[0]);
+      monitor.cancel(
+          request.cancelToken!, request.args.isEmpty ? null : request.args[0]);
       return;
     }
 

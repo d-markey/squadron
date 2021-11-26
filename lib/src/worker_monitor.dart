@@ -2,8 +2,7 @@ import 'cancellation_token.dart';
 import 'worker_request.dart';
 
 class CancellationTokenReference extends CancellationToken {
-  CancellationTokenReference(CancellationToken token)
-      : super(token.token);
+  CancellationTokenReference(CancellationToken token) : super(token.token);
 
   int refCount = 0;
 
@@ -46,7 +45,8 @@ class WorkerMonitor {
     return tokenRef;
   }
 
-  void cancel(CancellationToken token, String? message) => _getTokenRef(token)?.cancel(message ?? 'The task has been cancelled');
+  void cancel(CancellationToken token, String? message) =>
+      _getTokenRef(token)?.cancel(message ?? 'The task has been cancelled');
 
   void done(CancellationTokenReference? tokenRef) {
     if (tokenRef != null) {

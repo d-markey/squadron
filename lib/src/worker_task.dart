@@ -90,7 +90,8 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   Duration get runningTime => _executed == null
       ? Duration.zero
       : Duration(
-          microseconds: (_cancelled ?? _finished ?? _usTimeStamp()) - _executed!);
+          microseconds:
+              (_cancelled ?? _finished ?? _usTimeStamp()) - _executed!);
 
   void _completeWithError(Exception exception) {
     if (!_completer!.isCompleted) {
@@ -133,10 +134,16 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     if (_finished == null && _cancelled == null) {
       _cancelled = _usTimeStamp();
       if (_completer != null) {
-        _wrapUp(() => _completeWithError(TaskTimeoutException('The task timed out.', duration: runningTime)), false);
+        _wrapUp(
+            () => _completeWithError(TaskTimeoutException('The task timed out.',
+                duration: runningTime)),
+            false);
       }
       if (_streamer != null) {
-        _wrapUp(() => _close(TaskTimeoutException('The task timed out.', duration: runningTime)), false);
+        _wrapUp(
+            () => _close(TaskTimeoutException('The task timed out.',
+                duration: runningTime)),
+            false);
       }
     }
   }
@@ -165,7 +172,10 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     } on WorkerException catch (ex) {
       _wrapUp(() => _completeWithError(ex), false);
     } catch (ex, st) {
-      _wrapUp(() => _completeWithError(WorkerException(ex.toString(), stackTrace: st.toString())), false);
+      _wrapUp(
+          () => _completeWithError(
+              WorkerException(ex.toString(), stackTrace: st.toString())),
+          false);
     }
   }
 
@@ -184,7 +194,10 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     } on WorkerException catch (ex) {
       _wrapUp(() => _close(ex), false);
     } catch (ex, st) {
-      _wrapUp(() => _close(WorkerException(ex.toString(), stackTrace: st.toString())), false);
+      _wrapUp(
+          () =>
+              _close(WorkerException(ex.toString(), stackTrace: st.toString())),
+          false);
     }
   }
 

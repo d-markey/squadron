@@ -23,8 +23,8 @@ class SampleService implements WorkerService {
     }
   }
 
-  Stream<int> cancellableSequence(
-      bool handleCancellation, [CancellationToken? token]) async* {
+  Stream<int> cancellableSequence(bool handleCancellation,
+      [CancellationToken? token]) async* {
     int i = 0;
     while (true) {
       if ((token?.cancelled ?? false) && handleCancellation) break;
