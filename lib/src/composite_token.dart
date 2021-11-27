@@ -75,7 +75,7 @@ class CompositeToken extends CancellableToken {
 
   void _check() {
     if (!cancelled) {
-      if (mode == CompositeMode.any ||
+      if ((mode == CompositeMode.any && _signaled >= 1) ||
           (mode == CompositeMode.all && _signaled >= _tokens.length)) {
         _tokens.forEach(_unregister);
         stop();
