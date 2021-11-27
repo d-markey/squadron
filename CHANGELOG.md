@@ -1,3 +1,10 @@
+## 3.1.4
+
+- Implemented cancellation token to enable worker task notification that cancellation has occured.
+- Implemented `TimeOutToken`, `CancellableToken` and `CompositeToken`.
+- Updated `README.md`.
+- Added unit tests.
+
 ## 3.1.0
 
 - Several minor changes (some possibly breaking changes but easy to fix).
