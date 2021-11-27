@@ -80,7 +80,7 @@ class WorkerRequest {
   CancellationToken? _cancelToken;
 
   void overrideCancelToken(CancellationToken value) {
-    if (_cancelToken == null || _cancelToken!.token != value.token) {
+    if (_cancelToken == null || _cancelToken!.id != value.id) {
       throw WorkerException('Cancellation token mismatch');
     }
     _cancelToken = value;

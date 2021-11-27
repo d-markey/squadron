@@ -1,45 +1,53 @@
-import 'dart:math';
-
 import 'cancellation_token.dart';
+import 'sequence_id.dart';
+import 'worker_service.dart' show SquadronCallback;
 
+void safeInvoke(SquadronCallback? callback) {
+  try {
+    if (callback != null) {
+      callback();
+    }
+  } catch (e) {
+    print('notification to listener $callback failed: $e');
+  }
+}
+
+/// Base class for cancellation tokens used by callers of worker services. It implements the logic to register,
+/// notify and unregister token listeners. This cancellation token can be cancelled programmatically by calling
+/// [cancel].
 class CancellableToken extends CancellationToken {
-  CancellableToken([this.message])
-      : super(Random.secure().nextInt(1 << 32 - 1));
-
-  @override
-  bool get cancelled => _cancelled;
-  bool _cancelled = false;
+  CancellableToken([this.message]) : super(SequenceId.instance.next());
 
   @override
   final String? message;
 
-  List<void Function()>? _listeners;
+  bool _cancelled = false;
 
   @override
-  void addListener(void Function() listener) {
-    _listeners ??= <void Function()>[];
+  bool get cancelled => _cancelled;
+
+  /// Cancels the token and notifies listeners.
+  void cancel() {
+    if (!_cancelled) {
+      _cancelled = true;
+      notifyListeners();
+    }
+  }
+
+  List<SquadronCallback>? _listeners;
+
+  /// Registers a listener that will be notified when the token is cancelled.
+  @override
+  void addListener(SquadronCallback listener) {
+    _listeners ??= <SquadronCallback>[];
     _listeners!.add(listener);
   }
 
   @override
-  void removeListener(void Function() listener) {
+  void removeListener(SquadronCallback listener) {
     _listeners?.remove(listener);
   }
 
-  void cancel() {
-    if (!_cancelled) {
-      _cancelled = true;
-      _notifyListeners();
-    }
-  }
-
-  void _notifyListeners() => _listeners?.toList().forEach(_safeInvoke);
-
-  static void _safeInvoke(void Function() listener) {
-    try {
-      listener();
-    } catch (e) {
-      print('notification to listener $listener failed: $e');
-    }
-  }
+  /// Used to notify listeners that have been registered with [addListener], that the token has been cancelled.
+  void notifyListeners() => _listeners?.toList().forEach(safeInvoke);
 }

@@ -76,15 +76,15 @@ ${messages.join('\n')}
 ''');
     }
 
-    group("Web Worker", () {
+    group("Web Worker - ", () {
       webWorkerTests();
     });
 
-    group("Worker", () {
+    group("Worker - ", () {
       workerTests();
     });
 
-    group("Worker pool", () {
+    group("Worker pool - ", () {
       poolTests();
     });
   }

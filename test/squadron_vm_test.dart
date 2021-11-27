@@ -10,11 +10,11 @@ import 'worker_test_suite.dart';
 void main() {
   print('Running vm tests on ${Platform.operatingSystemVersion}...');
 
-  group("Worker", () {
+  group("Worker - ", () {
     workerTests();
   });
 
-  group("Worker pool", () {
+  group("Worker pool - ", () {
     poolTests();
   });
 }

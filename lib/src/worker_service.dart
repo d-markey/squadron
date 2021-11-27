@@ -10,6 +10,8 @@ typedef WorkerInitializer = FutureOr<WorkerService> Function(
 
 typedef CommandHandler = FutureOr Function(WorkerRequest req);
 
+typedef SquadronCallback = void Function();
+
 // void _noop() {}
 
 /// Base class for a worker service.

@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:squadron/squadron.dart';
-
+import 'cancellation_token.dart';
 import 'perf_counter.dart';
 import 'worker.dart';
 import 'worker_exception.dart';
+import 'worker_service.dart';
 
 /// Base task class
 abstract class Task<T> {
@@ -148,7 +148,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     }
   }
 
-  void _wrapUp(void Function() wrapper, bool success) async {
+  void _wrapUp(SquadronCallback wrapper, bool success) async {
     token?.stop();
     if (_finished == null) {
       _finished = _usTimeStamp();
@@ -213,7 +213,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   }
 
   final PerfCounter? _counter;
-  final void Function()? _onDone;
+  final SquadronCallback? _onDone;
 
   final Future<T> Function(W worker)? _computer;
   final Completer<T>? _completer;

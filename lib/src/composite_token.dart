@@ -1,85 +1,90 @@
-import 'dart:math';
-
-import 'package:squadron/squadron.dart';
-
+import 'cancellable_token.dart';
 import 'cancellation_token.dart';
+import 'squadron_exception.dart';
+import 'worker_service.dart';
 
-enum CompositeMode { all, any }
+/// Composite token cancellation mode
+enum CompositeMode {
+  /// the [CompositeToken] is cancelled iif all tokens get cancelled
+  all,
 
-enum CompositeReason { none, cancelled, timeout }
+  /// the [CompositeToken] is cancelled as soon as one of the tokens gets cancelled
+  any
+}
 
-class CompositeToken extends CancellationToken {
-  CompositeToken(Iterable<CancellationToken> tokens, this.mode, [this.message])
+/// Composite token cancellation reason
+enum CompositeReason {
+  /// the token is not cancelled
+  none,
+
+  /// no timeout token was cancelled
+  cancelled,
+
+  /// at least one timeout token was cancelled
+  timeout
+}
+
+/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after
+/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a
+/// platform worker.
+class CompositeToken extends CancellableToken {
+  CompositeToken(Iterable<CancellationToken> tokens, this.mode,
+      [String? message])
       : assert(tokens.isNotEmpty),
         _tokens = tokens.toList(),
-        super(Random.secure().nextInt(1 << 32 - 1)) {
-    _signaled == 0;
-    _tokens.forEach(_register);
+        _signaled = 0,
+        super(message) {
+    for (var token in _tokens) {
+      if (token.cancelled) _signaled++;
+      _register(token);
+    }
+    _check();
   }
 
+  /// Throws an exception, composite tokens may not be cancelled programmatically.
   @override
-  bool get isTimeout => _tokens.whereType<TimeOutToken>().isNotEmpty;
-
-  @override
-  bool get cancelled => _cancelled;
-  bool _cancelled = false;
+  void cancel() => throw SquadronException(
+      'A $runtimeType cannot be cancelled programmatically.');
 
   final CompositeMode mode;
 
   final List<CancellationToken> _tokens;
-  int _signaled = 0;
+  int _signaled;
 
+  /// Called just before processing a [WorkerRequest]. The method actually calls the [start] method for all
+  /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these
+  /// tokens is a [TimeOutToken].
   @override
-  final String? message;
+  void start({SquadronCallback? onTimeout}) {
+    final starter = _start(onTimeout);
+    _tokens.forEach(starter);
+  }
 
-  @override
-  void start({void Function()? onTimeout}) =>
-      _tokens.forEach(_start(onTimeout));
-
-  void Function(CancellationToken token) _start(void Function()? onTimeout) =>
+  void Function(CancellationToken token) _start(SquadronCallback? onTimeout) =>
       (CancellationToken token) => token.start(onTimeout: onTimeout);
 
   @override
-  void stop() => _tokens.forEach(_stop);
+  void stop() => _tokens.forEach(_stopper);
 
-  void _stop(CancellationToken token) => token.stop();
+  void _stopper(CancellationToken token) => token.stop();
 
-  List<void Function()>? _listeners;
-
-  @override
-  void addListener(void Function() listener) {
-    _listeners ??= <void Function()>[];
-    _listeners!.add(listener);
+  void _signal() {
+    _signaled++;
+    _check();
   }
 
-  @override
-  void removeListener(void Function() listener) {
-    _listeners?.remove(listener);
+  void _check() {
+    if (!cancelled) {
+      if (mode == CompositeMode.any ||
+          (mode == CompositeMode.all && _signaled >= _tokens.length)) {
+        _tokens.forEach(_unregister);
+        stop();
+        super.cancel();
+      }
+    }
   }
 
   void _register(CancellationToken token) => token.addListener(_signal);
 
   void _unregister(CancellationToken token) => token.removeListener(_signal);
-
-  void _signal() {
-    _signaled++;
-    if (_cancelled == false) {
-      if (mode == CompositeMode.any ||
-          (mode == CompositeMode.all && _signaled == _tokens.length)) {
-        _tokens.forEach(_unregister);
-        _cancelled = true;
-        _notifyListeners();
-      }
-    }
-  }
-
-  void _notifyListeners() => _listeners?.forEach(_safeInvoke);
-
-  static void _safeInvoke(void Function() listener) {
-    try {
-      listener();
-    } catch (e) {
-      print('notification to listener $listener failed: $e');
-    }
-  }
 }

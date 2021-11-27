@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:squadron/src/worker_exception.dart';
 import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
@@ -618,7 +617,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('cancellation token - automatic', () async {
+  test('cancellable token - automatic always throws', () async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
@@ -652,7 +651,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('cancellation token - graceful', () async {
+  test('cancellatble token - graceful does not throw', () async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
@@ -679,7 +678,7 @@ void poolTests() {
     expect(digits, equals(Iterable.generate(count)));
   });
 
-  test('task timeout - automatic', () async {
+  test('timeout token - automatic always throws', () async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
@@ -708,7 +707,7 @@ void poolTests() {
     expect(digits, equals(Iterable.generate(count)));
   });
 
-  test('task timeout - graceful throws anyway', () async {
+  test('timeout token - graceful throws anyway', () async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
@@ -724,6 +723,111 @@ void poolTests() {
 
     try {
       await for (var n in pool.cancellableSequence(true, token)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } on WorkerException catch (ex) {
+      expect(ex, isA<TaskTimeoutException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+  });
+
+  test('composite cancellation token - automatic always throws', () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    final timeout1 =
+        TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+    final token1 = CancellableToken();
+    Timer(timeout1.duration * 0.5, token1.cancel);
+    final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
+
+    try {
+      await for (var n in pool.cancellableSequence(false, composite1)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } on WorkerException catch (ex) {
+      expect(ex, isA<CancelledException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+
+    digits.clear();
+    count = 0;
+
+    final timeout2 =
+        TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+    final token2 = CancellableToken();
+    final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
+
+    try {
+      await for (var n in pool.cancellableSequence(false, composite2)) {
+        digits.add(n);
+        count++;
+      }
+      expect(true, isFalse);
+    } on WorkerException catch (ex) {
+      expect(ex, isA<TaskTimeoutException>());
+    }
+
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+  });
+
+  test('composite cancellation token - graceful throws only on timeout',
+      () async {
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
+
+    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    await pool.start();
+
+    final digits = <int>[];
+    int count = 0;
+
+    final N = 15;
+
+    final timeout1 =
+        TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+    final token1 = CancellableToken();
+    Timer(timeout1.duration * 0.5, token1.cancel);
+    final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
+
+    await for (var n in pool.cancellableSequence(true, composite1)) {
+      digits.add(n);
+      count++;
+    }
+    expect(count, isPositive);
+    expect(count, lessThanOrEqualTo(N));
+    expect(digits, equals(Iterable.generate(count)));
+
+    digits.clear();
+    count = 0;
+
+    final timeout2 =
+        TimeOutToken(Duration(milliseconds: N * SampleService.delay));
+    final token2 = CancellableToken();
+    final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
+
+    try {
+      await for (var n in pool.cancellableSequence(true, composite2)) {
         digits.add(n);
         count++;
       }

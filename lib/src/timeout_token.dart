@@ -1,74 +1,52 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'cancellation_token.dart';
+import 'cancellable_token.dart';
+import 'squadron_exception.dart';
+import 'worker_service.dart';
 
-class TimeOutToken extends CancellationToken {
-  TimeOutToken(this.timeOut, [this.message])
-      : super(Random.secure().nextInt(1 << 32 - 1));
+/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after
+/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a
+/// platform worker.
+class TimeOutToken extends CancellableToken {
+  TimeOutToken(this.duration, [String? message]) : super(message);
 
+  /// Throws an exception, time-out tokens may not be cancelled programmatically.
   @override
-  bool get isTimeout => true;
+  void cancel() => throw SquadronException(
+      'A $runtimeType cannot be cancelled programmatically.');
 
-  final Duration? timeOut;
+  /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.
+  final Duration duration;
 
-  @override
-  bool get cancelled => _cancelled;
-  bool _cancelled = false;
-
-  @override
-  final String? message;
-
-  List<void Function()>? _listeners;
-
-  @override
-  void addListener(void Function() listener) {
-    _listeners ??= <void Function()>[];
-    _listeners!.add(listener);
-  }
-
-  @override
-  void removeListener(void Function() listener) {
-    _listeners?.remove(listener);
-  }
-
+  SquadronCallback? _onTimeout;
   Timer? _timer;
 
+  /// Used to execute the time-out callback, then notify listeners that have been registered with [addListener],
+  /// that the token has been cancelled.
   @override
-  void start({void Function()? onTimeout}) {
-    if (onTimeout != null) {
-      if (_timer != null) {
-        _timer!.cancel();
-        _listeners!.removeAt(0);
-      }
-      _listeners!.insert(0, onTimeout);
-      _timer ??= Timer(timeOut!, _cancel);
-    }
+  void notifyListeners() {
+    safeInvoke(_onTimeout);
+    super.notifyListeners();
   }
 
+  /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be
+  /// started that will automatically cancel this token if processing takes longer than [duration].
+  @override
+  void start({SquadronCallback? onTimeout}) {
+    assert(onTimeout != null);
+    stop();
+    _onTimeout = onTimeout;
+    _timer ??= Timer(duration, super.cancel);
+  }
+
+  /// Called just after processing a [WorkerRequest]. Will cancel the timer to prevent execution of the timeout
+  /// callback.
   @override
   void stop() {
     if (_timer != null) {
       _timer!.cancel();
-      _listeners!.removeAt(0);
+      _onTimeout = null;
       _timer = null;
-    }
-  }
-
-  void _cancel() {
-    if (!_cancelled) {
-      _cancelled = true;
-      _notifyListeners();
-    }
-  }
-
-  void _notifyListeners() => _listeners?.toList().forEach(_safeInvoke);
-
-  static void _safeInvoke(void Function() listener) {
-    try {
-      listener();
-    } catch (e) {
-      print('notification to listener $listener failed: $e');
     }
   }
 }
