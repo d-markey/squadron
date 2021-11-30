@@ -18,8 +18,9 @@ class SampleService implements WorkerService {
 
   Stream<int> delayedSequence(int count, [CancellationToken? token]) async* {
     for (var i = 1; i <= count; i++) {
-      if (token?.cancelled ?? false)
+      if (token?.cancelled ?? false) {
         throw CancelledException(message: token?.message);
+      }
       await Future.delayed(Duration(milliseconds: delay));
       yield i;
     }
