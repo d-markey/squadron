@@ -40,24 +40,19 @@ class JsChannel extends _MessagePort implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  void cancelToken(CancellationToken cancelToken, String? message) {
-    if (cancelToken.cancelled) {
-      _postRequest(WorkerRequest.cancel(cancelToken, message));
+  void cancelToken(CancellationToken token) {
+    if (token.cancelled) {
+      _postRequest(WorkerRequest.cancel(token));
     }
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? cancelToken}) {
-    if (cancelToken?.cancelled ?? false) {
-      throw CancelledException(cancelToken?.message);
-    }
-
+  Future<T> sendRequest<T>(int command, List args, {CancellationToken? token}) {
     final completer = Completer<T>();
     final com = web.MessageChannel();
-    _postRequest(WorkerRequest(com.port2, command, args, cancelToken));
+    _postRequest(WorkerRequest(com.port2, command, args, token));
     com.port1.onMessage.listen((event) {
       final res = WorkerResponse.deserialize(event.data);
       com.port1.close();
@@ -75,27 +70,14 @@ class JsChannel extends _MessagePort implements Channel {
   /// The [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? cancelToken}) {
-    if (cancelToken?.cancelled ?? false) {
-      throw CancelledException(cancelToken?.message);
-    }
-
-    final streamController = StreamController<T>();
+      {CancellationToken? token}) async* {
     final com = web.MessageChannel();
-    _postRequest(WorkerRequest(com.port2, command, args, cancelToken));
-    com.port1.onMessage.listen((event) {
+    _postRequest(WorkerRequest(com.port2, command, args, token));
+    await for (var event in com.port1.onMessage) {
       final res = WorkerResponse.deserialize(event.data);
-      if (res.endOfStream) {
-        streamController.close();
-        com.port1.close();
-        return;
-      } else if (res.hasError) {
-        streamController.addError(res.exception!);
-      } else {
-        streamController.add(res.result);
-      }
-    });
-    return streamController.stream;
+      if (res.endOfStream) break;
+      yield res.result as T;
+    }
   }
 }
 

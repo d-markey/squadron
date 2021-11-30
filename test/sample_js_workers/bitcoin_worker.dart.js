@@ -3716,9 +3716,6 @@
     get$hashCode$(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
-    get$isEmpty$asx(receiver) {
-      return J.getInterceptor$asx(receiver).get$isEmpty(receiver);
-    },
     get$iterator$ax(receiver) {
       return J.getInterceptor$ax(receiver).get$iterator(receiver);
     },
@@ -3839,12 +3836,12 @@
     JSString: function JSString() {
     }
   },
-  K = {CancellationTokenReference: function CancellationTokenReference(t0) {
+  K = {_CancellationTokenReference: function _CancellationTokenReference(t0, t1) {
       var _ = this;
       _.refCount = 0;
-      _._worker_monitor$_cancelled = false;
-      _._worker_monitor$_message = null;
-      _.token = t0;
+      _._worker_monitor$_exception = null;
+      _.id = t0;
+      _._cancellation_token$_message = t1;
     }, WorkerMonitor: function WorkerMonitor(t0, t1) {
       var _ = this;
       _._terminate = t0;
@@ -3910,6 +3907,11 @@
     WorkerException$(message, stackTrace, workerId) {
       var t1 = J.toString$0$(P.StackTrace_current());
       return new M.WorkerException(message, t1);
+    },
+    CancelledException$(message) {
+      var t1 = message == null ? "The task has been cancelled" : message,
+        t2 = J.toString$0$(P.StackTrace_current());
+      return new M.CancelledException(t1, t2);
     },
     WorkerException: function WorkerException(t0, t1) {
       this.message = t0;
@@ -6865,7 +6867,7 @@
     WorkerService_process$body(operations, message, monitor) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, cancelled, res, e, e0, st, t1, t2, msg, tokenRef0, t3, transfer, exception, request, $async$exception, $async$temp1;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, res, e, e0, st, t1, msg, t2, transfer, exception, request, $async$exception, $async$temp1;
       var $async$WorkerService_process = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -6888,15 +6890,9 @@
               if (request.command === -2) {
                 t1 = request._cancelToken;
                 t1.toString;
-                t2 = H._asStringQ(J.get$isEmpty$asx(request.args) ? null : J.$index$asx(request.args, 0));
                 t1 = monitor._getTokenRef$1(t1);
-                if (t1 != null) {
-                  if (t2 == null)
-                    t2 = "The task has been cancelled";
-                  if (t1._worker_monitor$_message == null)
-                    t1._worker_monitor$_message = t2;
-                  t1._worker_monitor$_cancelled = C.JSBool_methods.$or(t1._worker_monitor$_cancelled, true);
-                }
+                if (t1._worker_monitor$_exception == null)
+                  t1._worker_monitor$_exception = M.CancelledException$(null);
                 // goto return
                 $async$goto = 1;
                 break;
@@ -6920,21 +6916,20 @@
                 $async$goto = 1;
                 break;
               }
-              t1 = type$.WorkerRequest._as(request);
-              ++monitor._executing;
-              tokenRef0 = monitor._getTokenRef$1(t1._cancelToken);
-              if (tokenRef0 != null) {
-                ++tokenRef0.refCount;
-                t2 = t1._cancelToken;
-                if (t2 == null || t2.token !== tokenRef0.token)
-                  H.throwExpression(M.WorkerException$("Cancellation token mismatch", null, null));
-                t1._cancelToken = tokenRef0;
-              }
-              tokenRef = tokenRef0;
+              tokenRef = monitor.begin$1(request);
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
                 t1 = J.toString$0$(P.StackTrace_current());
                 J.reply$1$z(client, R.WorkerResponse$withError(new M.WorkerException("Worker service is not ready", t1), null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
+                break;
+              }
+              t1 = tokenRef;
+              t1 = t1 == null ? null : t1.get$exception() != null;
+              if (t1 === true) {
+                J.reply$1$z(client, R.WorkerResponse$withError(M.CancelledException$("Cancelled"), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -6966,7 +6961,6 @@
               break;
             case 10:
               // then
-              cancelled = false;
               t1 = new P._StreamIterator(H.checkNotNullable(result, "stream", type$.Object), type$._StreamIterator_dynamic);
               $async$handler = 13;
             case 16:
@@ -6982,14 +6976,6 @@
                 break;
               }
               res = t1.get$current();
-              if (H.boolConversionCheck(cancelled)) {
-                t2 = tokenRef;
-                t2 = t2 == null ? null : t2._worker_monitor$_message;
-                if (t2 == null)
-                  t2 = "The task has been cancelled";
-                t3 = J.toString$0$(P.StackTrace_current());
-                throw H.wrapException(new M.CancelledException(t2, t3));
-              }
               message = new R.WorkerResponse(false, null, res, null, false, false).serialize$0();
               t2 = N._getTransferables(message);
               transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
@@ -6997,17 +6983,15 @@
               t2.toString;
               C.MessagePort_methods.postMessage$2(t2, message, transfer);
               t2 = tokenRef;
-              t2 = t2 == null ? null : t2._worker_monitor$_cancelled;
+              t2 = t2 == null ? null : t2.get$exception() != null;
               if (t2 === true) {
-                t2 = cancelled;
-                if (typeof t2 !== "boolean") {
-                  $async$returnValue = t2.$or();
-                  $async$next = [1, 5];
-                  // goto finally
-                  $async$goto = 14;
-                  break;
-                }
-                cancelled = C.JSBool_methods.$or(t2, true);
+                t2 = J.toString$0$(P.StackTrace_current());
+                message = R.WorkerResponse$withError(new M.CancelledException("Cancelled", t2), null).serialize$0();
+                t2 = N._getTransferables(message);
+                transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
+                t2 = client._sendPort;
+                t2.toString;
+                C.MessagePort_methods.postMessage$2(t2, message, transfer);
               }
               // goto for condition
               $async$goto = 16;
@@ -7069,10 +7053,10 @@
               // finally
               $async$handler = 2;
               J.reply$1$z(client, C.WorkerResponse_LpI);
-              t1 = type$.nullable_CancellationTokenReference._as(tokenRef);
+              t1 = type$.nullable__CancellationTokenReference._as(tokenRef);
               if (t1 != null)
-                if (--t1.refCount === 0 && !t1._worker_monitor$_cancelled)
-                  monitor.cancelTokens.remove$1(0, t1.token);
+                if (--t1.refCount === 0 && t1.get$exception() == null)
+                  monitor.cancelTokens.remove$1(0, t1.id);
               t1 = --monitor._executing;
               if (monitor._terminationRequested && t1 === 0)
                 monitor._terminate.call$0();
@@ -7581,7 +7565,7 @@
         com = new MessageChannel(),
         t2 = com.port1,
         t3 = type$.nullable_void_Function_MessageEvent;
-      t1 = t3._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope), P.LinkedHashMap_LinkedHashMap$_empty(t1, type$.CancellationTokenReference))));
+      t1 = t3._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope), P.LinkedHashMap_LinkedHashMap$_empty(t1, type$._CancellationTokenReference))));
       type$.nullable_void_Function._as(null);
       t4 = type$.MessageEvent;
       W._EventStreamSubscription$(t2, "message", t1, false, t4);
@@ -7612,7 +7596,7 @@
       }
       t3 = t1 ? _null : message.$index(0, "d");
       type$.nullable_Map_dynamic_dynamic._as(t3);
-      t3 = t3 == null ? _null : new Y.CancellationToken(H._asInt(t3.$index(0, "a")));
+      t3 = t3 == null ? _null : new Y.CancellationToken(H._asInt(t3.$index(0, "a")), H._asStringQ(t3.$index(0, "b")));
       t4 = H._asInt(t1 ? _null : message.$index(0, "b"));
       t1 = t1 ? _null : message.$index(0, "c");
       if (t1 == null)
@@ -7660,8 +7644,9 @@
     },
     SourceSpanMixin: function SourceSpanMixin() {
     },
-    CancellationToken: function CancellationToken(t0) {
-      this.token = t0;
+    CancellationToken: function CancellationToken(t0, t1) {
+      this.id = t0;
+      this._cancellation_token$_message = t1;
     },
     groupBy(values, key, $S, $T) {
       var t1, _i, element, t2, t3,
@@ -7717,9 +7702,6 @@
   J.JSBool.prototype = {
     toString$0(receiver) {
       return String(receiver);
-    },
-    $or(receiver, other) {
-      return true || receiver;
     },
     get$hashCode(receiver) {
       return receiver ? 519018 : 218159;
@@ -7935,9 +7917,6 @@
         if (J.$eq$(receiver[i], other))
           return true;
       return false;
-    },
-    get$isEmpty(receiver) {
-      return receiver.length === 0;
     },
     toString$0(receiver) {
       return P.IterableBase_iterableToFullString(receiver, "[", "]");
@@ -14771,7 +14750,11 @@
     },
     $isWorkerChannel: 1
   };
-  Y.CancellationToken.prototype = {};
+  Y.CancellationToken.prototype = {
+    get$exception() {
+      return null;
+    }
+  };
   M.WorkerException.prototype = {
     toString$0(_) {
       return "WorkerException: " + this.message + "\n" + this.stackTrace;
@@ -14779,15 +14762,33 @@
     $isException: 1
   };
   M.CancelledException.prototype = {};
-  K.CancellationTokenReference.prototype = {};
+  K._CancellationTokenReference.prototype = {
+    get$exception() {
+      return this._worker_monitor$_exception;
+    }
+  };
   K.WorkerMonitor.prototype = {
     _getTokenRef$1(token) {
-      return token == null ? null : this.cancelTokens.putIfAbsent$2(token.token, new K.WorkerMonitor__getTokenRef_closure(token));
+      return this.cancelTokens.putIfAbsent$2(token.id, new K.WorkerMonitor__getTokenRef_closure(token));
+    },
+    begin$1(request) {
+      var token, tokenRef, t1;
+      ++this._executing;
+      token = request._cancelToken;
+      if (token == null)
+        return null;
+      tokenRef = this._getTokenRef$1(token);
+      ++tokenRef.refCount;
+      t1 = request._cancelToken;
+      if (t1 == null || t1.id !== tokenRef.id)
+        H.throwExpression(M.WorkerException$("Cancellation token mismatch", null, null));
+      return request._cancelToken = tokenRef;
     }
   };
   K.WorkerMonitor__getTokenRef_closure.prototype = {
     call$0() {
-      return new K.CancellationTokenReference(this.token.token);
+      var t1 = this.token;
+      return new K._CancellationTokenReference(t1.id, t1._cancellation_token$_message);
     },
     $signature: 49
   };
@@ -15101,7 +15102,7 @@
     _inherit(X.SourceSpanWithContext, V.SourceSpanBase);
     _inherit(N.JsWorkerChannel, N._MessagePort);
     _inherit(M.CancelledException, M.WorkerException);
-    _inherit(K.CancellationTokenReference, Y.CancellationToken);
+    _inherit(K._CancellationTokenReference, Y.CancellationToken);
     _inherit(E.StringScannerException, G.SourceSpanFormatException);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
@@ -15117,12 +15118,12 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "String(Match)", "Null()", "@()", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "int(@,@)", "~(MessageEvent)", "bool(Object?,Object?)", "bool(String)", "String(String)", "Null(@)", "int(Object?)", "Null(ProgressEvent)", "~(Event)", "~(String,String)", "~(Uint8List,String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "~(String,int)", "Future<Null>()", "@(Object?)", "~(@,@)", "Null(@,StackTrace)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "~(Object?,Object?)", "~(List<int>)", "_Future<@>(@)", "MediaType()", "0^(0^,0^)<num>", "Null(Object,StackTrace)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "~(Object[StackTrace?])", "CancellationTokenReference()", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "~(int,@)", "@(@,String)", "@(@)", "Null(~())", "Null(@,@)"],
+    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "String(Match)", "Null()", "@()", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "int(@,@)", "~(MessageEvent)", "bool(Object?,Object?)", "bool(String)", "String(String)", "Null(@)", "int(Object?)", "Null(ProgressEvent)", "~(Event)", "~(String,String)", "~(Uint8List,String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "~(String,int)", "Future<Null>()", "@(Object?)", "~(@,@)", "Null(@,StackTrace)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "~(Object?,Object?)", "~(List<int>)", "_Future<@>(@)", "MediaType()", "0^(0^,0^)<num>", "Null(Object,StackTrace)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "~(Object[StackTrace?])", "_CancellationTokenReference()", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "~(int,@)", "@(@,String)", "@(@)", "Null(~())", "Null(@,@)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"JsWorkerChannel":{"WorkerChannel":[]},"WorkerException":{"Exception":[]},"CancelledException":{"Exception":[]},"CancellationTokenReference":{"CancellationToken":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"JsWorkerChannel":{"WorkerChannel":[]},"WorkerException":{"Exception":[]},"CancelledException":{"Exception":[]},"_CancellationTokenReference":{"CancellationToken":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     _must_: " must not be greater than the number of characters in the file, ",
@@ -15138,7 +15139,6 @@
       AsyncError: findType("AsyncError"),
       Blob: findType("Blob"),
       ByteBuffer: findType("ByteBuffer"),
-      CancellationTokenReference: findType("CancellationTokenReference"),
       CodeUnits: findType("CodeUnits"),
       Comparable_dynamic: findType("Comparable<@>"),
       ConstantStringMap_String_dynamic: findType("ConstantStringMap<String,@>"),
@@ -15211,6 +15211,7 @@
       WorkerRequest: findType("WorkerRequest"),
       _AsyncCompleter_StreamedResponse: findType("_AsyncCompleter<StreamedResponse>"),
       _AsyncCompleter_Uint8List: findType("_AsyncCompleter<Uint8List>"),
+      _CancellationTokenReference: findType("_CancellationTokenReference"),
       _EventStream_ProgressEvent: findType("_EventStream<ProgressEvent>"),
       _Future_Null: findType("_Future<Null>"),
       _Future_StreamedResponse: findType("_Future<StreamedResponse>"),
@@ -15237,7 +15238,6 @@
       int: findType("int"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
-      nullable_CancellationTokenReference: findType("CancellationTokenReference?"),
       nullable_EventTarget: findType("EventTarget?"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_List_Object: findType("List<Object>?"),
@@ -15252,6 +15252,7 @@
       nullable_String_Function_Match: findType("String(Match)?"),
       nullable_String_Function_String: findType("String(String)?"),
       nullable_Uri: findType("Uri?"),
+      nullable__CancellationTokenReference: findType("_CancellationTokenReference?"),
       nullable__DelayedEvent_dynamic: findType("_DelayedEvent<@>?"),
       nullable__FutureListener_dynamic_dynamic: findType("_FutureListener<@,@>?"),
       nullable__Highlight: findType("_Highlight?"),
@@ -15274,7 +15275,6 @@
     C.HttpRequest_methods = W.HttpRequest.prototype;
     C.Interceptor_methods = J.Interceptor.prototype;
     C.JSArray_methods = J.JSArray.prototype;
-    C.JSBool_methods = J.JSBool.prototype;
     C.JSInt_methods = J.JSInt.prototype;
     C.JSString_methods = J.JSString.prototype;
     C.JavaScriptFunction_methods = J.JavaScriptFunction.prototype;

@@ -24,14 +24,16 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future<int> delayedIdentity(int n) => execute((w) => w.delayedIdentity(n));
 
   @override
-  Stream<int> delayedSequence(int count) =>
-      stream((w) => w.delayedSequence(count));
+  Stream<int> delayedSequence(int count, [CancellationToken? token]) =>
+      stream((w) => w.delayedSequence(count, token));
 
   @override
-  Stream<int> cancellableSequence(bool handleCancellation,
-          [CancellationToken? token]) =>
-      stream((w) => w.cancellableSequence(handleCancellation, token),
-          token: token);
+  Stream<int> cancellableSequence(CancellationToken token) =>
+      stream((w) => w.cancellableSequence(token));
+
+  @override
+  Future cancellableCpu(CancellationToken token) =>
+      execute((w) => w.cancellableCpu(token));
 
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayedIdentity(n));
@@ -56,12 +58,14 @@ class SampleWorker extends Worker implements SampleService {
       send(SampleService.delayedIdentityCommand, [n]);
 
   @override
-  Stream<int> delayedSequence(int count) =>
-      stream(SampleService.delayedSequenceCommand, [count]);
+  Stream<int> delayedSequence(int count, [CancellationToken? token]) =>
+      stream(SampleService.delayedSequenceCommand, [count], token);
 
   @override
-  Stream<int> cancellableSequence(bool handleCancellation,
-          [CancellationToken? token]) =>
-      stream(SampleService.cancellableSequenceCommand, [handleCancellation],
-          token);
+  Stream<int> cancellableSequence(CancellationToken token) =>
+      stream(SampleService.cancellableSequenceCommand, [], token);
+
+  @override
+  Future cancellableCpu(CancellationToken token) =>
+      send(SampleService.cancellableCpuCommand, [], token);
 }

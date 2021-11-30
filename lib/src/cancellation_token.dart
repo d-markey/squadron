@@ -1,3 +1,5 @@
+import 'package:squadron/squadron.dart';
+
 import 'squadron_exception.dart';
 import 'worker_service.dart' show SquadronCallback;
 
@@ -5,33 +7,35 @@ import 'worker_service.dart' show SquadronCallback;
 /// holders. Instead, worker services receiving a [CancellationToken] should verify the token's [cancelled] status
 /// and stop processing if the flag is set to [true].
 class CancellationToken {
-  CancellationToken(this.id);
+  CancellationToken(this.id, this._message);
 
   static const _$token = 'a';
+  static const _$message = 'b';
 
   /// Deseralization of a [CancellationToken]
-  static CancellationToken? deserialize(Map? token) =>
-      token == null ? null : CancellationToken(token[_$token]);
+  static CancellationToken? deserialize(Map? token) => token == null
+      ? null
+      : CancellationToken(token[_$token], token[_$message]);
 
   /// The token's id
   final int id;
 
   /// Flag indicating whether the token was cancelled or not.
-  bool get cancelled => false;
+  bool get cancelled => exception != null;
+
+  /// Exception to be thrown upon cancellation
+  CancelledException? get exception => null;
 
   /// Message associated with the token.
-  String? get message => null;
+  String? get message => _message;
+  final String? _message;
 
   /// Seralization of a [CancellationToken]
   Map serialize() => {_$token: id};
 
   /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that
-  /// need to cancel automatically after a given period of time, typically a [TimeOutToken].
-  void start({SquadronCallback? onTimeout}) {}
-
-  /// Called just after processing a [WorkerRequest]. Should only be used by automatically triggered tokens such as
-  /// [TimeOutToken], to ensure the [onTimeout] callback is not called after processing has completed.
-  void stop() {}
+  /// need to cancel automatically.
+  void start() {}
 
   /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not
   /// designed to be listened to, it always throws a [SquadronException].

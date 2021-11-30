@@ -2789,9 +2789,6 @@
     get$hashCode$(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
-    get$isEmpty$asx(receiver) {
-      return J.getInterceptor$asx(receiver).get$isEmpty(receiver);
-    },
     get$iterator$ax(receiver) {
       return J.getInterceptor$ax(receiver).get$iterator(receiver);
     },
@@ -2804,13 +2801,6 @@
       if (typeof receiver != "object")
         return a0 != null && receiver === a0;
       return J.getInterceptor$(receiver).$eq(receiver, a0);
-    },
-    $index$ax(receiver, a0) {
-      if (typeof a0 === "number")
-        if (receiver.constructor == Array || H.isJsIndexable(receiver, receiver[init.dispatchPropertyName]))
-          if (a0 >>> 0 === a0 && a0 < receiver.length)
-            return receiver[a0];
-      return J.getInterceptor$ax(receiver).$index(receiver, a0);
     },
     $indexSet$ax(receiver, a0, a1) {
       return J.getInterceptor$ax(receiver).$indexSet(receiver, a0, a1);
@@ -2867,12 +2857,12 @@
     JSString: function JSString() {
     }
   },
-  K = {CancellationTokenReference: function CancellationTokenReference(t0) {
+  K = {_CancellationTokenReference: function _CancellationTokenReference(t0, t1) {
       var _ = this;
       _.refCount = 0;
-      _._worker_monitor$_cancelled = false;
-      _._worker_monitor$_message = null;
-      _.token = t0;
+      _._worker_monitor$_exception = null;
+      _.id = t0;
+      _._cancellation_token$_message = t1;
     }, WorkerMonitor: function WorkerMonitor(t0, t1) {
       var _ = this;
       _._terminate = t0;
@@ -2886,6 +2876,11 @@
     WorkerException$(message, stackTrace, workerId) {
       var t1 = J.toString$0$(P.StackTrace_current());
       return new M.WorkerException(message, t1);
+    },
+    CancelledException$(message) {
+      var t1 = message == null ? "The task has been cancelled" : message,
+        t2 = J.toString$0$(P.StackTrace_current());
+      return new M.CancelledException(t1, t2);
     },
     WorkerException: function WorkerException(t0, t1) {
       this.message = t0;
@@ -4027,7 +4022,7 @@
     WorkerService_process$body(operations, message, monitor) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, cancelled, res, e, e0, st, t1, t2, msg, tokenRef0, t3, transfer, exception, request, $async$exception, $async$temp1;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, res, e, e0, st, t1, msg, t2, transfer, exception, request, $async$exception, $async$temp1;
       var $async$WorkerService_process = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -4050,15 +4045,9 @@
               if (request.command === -2) {
                 t1 = request._cancelToken;
                 t1.toString;
-                t2 = H._asStringQ(J.get$isEmpty$asx(request.args) ? null : J.$index$ax(request.args, 0));
                 t1 = monitor._getTokenRef$1(t1);
-                if (t1 != null) {
-                  if (t2 == null)
-                    t2 = "The task has been cancelled";
-                  if (t1._worker_monitor$_message == null)
-                    t1._worker_monitor$_message = t2;
-                  t1._worker_monitor$_cancelled = C.JSBool_methods.$or(t1._worker_monitor$_cancelled, true);
-                }
+                if (t1._worker_monitor$_exception == null)
+                  t1._worker_monitor$_exception = M.CancelledException$(null);
                 // goto return
                 $async$goto = 1;
                 break;
@@ -4082,21 +4071,20 @@
                 $async$goto = 1;
                 break;
               }
-              t1 = type$.WorkerRequest._as(request);
-              ++monitor._executing;
-              tokenRef0 = monitor._getTokenRef$1(t1._cancelToken);
-              if (tokenRef0 != null) {
-                ++tokenRef0.refCount;
-                t2 = t1._cancelToken;
-                if (t2 == null || t2.token !== tokenRef0.token)
-                  H.throwExpression(M.WorkerException$("Cancellation token mismatch", null, null));
-                t1._cancelToken = tokenRef0;
-              }
-              tokenRef = tokenRef0;
+              tokenRef = monitor.begin$1(request);
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
                 t1 = J.toString$0$(P.StackTrace_current());
                 J.reply$1$z(client, R.WorkerResponse$withError(new M.WorkerException("Worker service is not ready", t1), null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
+                break;
+              }
+              t1 = tokenRef;
+              t1 = t1 == null ? null : t1.get$exception() != null;
+              if (t1 === true) {
+                J.reply$1$z(client, R.WorkerResponse$withError(M.CancelledException$("Cancelled"), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -4128,7 +4116,6 @@
               break;
             case 10:
               // then
-              cancelled = false;
               t1 = new P._StreamIterator(H.checkNotNullable(result, "stream", type$.Object), type$._StreamIterator_dynamic);
               $async$handler = 13;
             case 16:
@@ -4144,14 +4131,6 @@
                 break;
               }
               res = t1.get$current();
-              if (H.boolConversionCheck(cancelled)) {
-                t2 = tokenRef;
-                t2 = t2 == null ? null : t2._worker_monitor$_message;
-                if (t2 == null)
-                  t2 = "The task has been cancelled";
-                t3 = J.toString$0$(P.StackTrace_current());
-                throw H.wrapException(new M.CancelledException(t2, t3));
-              }
               message = new R.WorkerResponse(false, null, res, null, false, false).serialize$0();
               t2 = N._getTransferables(message);
               transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
@@ -4159,17 +4138,15 @@
               t2.toString;
               C.MessagePort_methods.postMessage$2(t2, message, transfer);
               t2 = tokenRef;
-              t2 = t2 == null ? null : t2._worker_monitor$_cancelled;
+              t2 = t2 == null ? null : t2.get$exception() != null;
               if (t2 === true) {
-                t2 = cancelled;
-                if (typeof t2 !== "boolean") {
-                  $async$returnValue = t2.$or();
-                  $async$next = [1, 5];
-                  // goto finally
-                  $async$goto = 14;
-                  break;
-                }
-                cancelled = C.JSBool_methods.$or(t2, true);
+                t2 = J.toString$0$(P.StackTrace_current());
+                message = R.WorkerResponse$withError(new M.CancelledException("Cancelled", t2), null).serialize$0();
+                t2 = N._getTransferables(message);
+                transfer = P.List_List$of(t2, true, t2.$ti._eval$1("Iterable.E"));
+                t2 = client._sendPort;
+                t2.toString;
+                C.MessagePort_methods.postMessage$2(t2, message, transfer);
               }
               // goto for condition
               $async$goto = 16;
@@ -4231,10 +4208,10 @@
               // finally
               $async$handler = 2;
               J.reply$1$z(client, C.WorkerResponse_LpI);
-              t1 = type$.nullable_CancellationTokenReference._as(tokenRef);
+              t1 = type$.nullable__CancellationTokenReference._as(tokenRef);
               if (t1 != null)
-                if (--t1.refCount === 0 && !t1._worker_monitor$_cancelled)
-                  monitor.cancelTokens.remove$1(0, t1.token);
+                if (--t1.refCount === 0 && t1.get$exception() == null)
+                  monitor.cancelTokens.remove$1(0, t1.id);
               t1 = --monitor._executing;
               if (monitor._terminationRequested && t1 === 0)
                 monitor._terminate.call$0();
@@ -4347,7 +4324,7 @@
         com = new MessageChannel(),
         t2 = com.port1,
         t3 = type$.nullable_void_Function_MessageEvent;
-      t1 = t3._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope), P.LinkedHashMap_LinkedHashMap$_empty(t1, type$.CancellationTokenReference))));
+      t1 = t3._as(new X.bootstrap_closure(operations, new K.WorkerMonitor(new X.bootstrap_closure0(scope), P.LinkedHashMap_LinkedHashMap$_empty(t1, type$._CancellationTokenReference))));
       type$.nullable_void_Function._as(null);
       t4 = type$.MessageEvent;
       W._EventStreamSubscription$(t2, "message", t1, false, t4);
@@ -4378,23 +4355,23 @@
       }
       t3 = t1 ? _null : message.$index(0, "d");
       type$.nullable_Map_dynamic_dynamic._as(t3);
-      t3 = t3 == null ? _null : new Y.CancellationToken(H._asInt(t3.$index(0, "a")));
+      t3 = t3 == null ? _null : new Y.CancellationToken(H._asInt(t3.$index(0, "a")), H._asStringQ(t3.$index(0, "b")));
       t4 = H._asInt(t1 ? _null : message.$index(0, "b"));
       t1 = t1 ? _null : message.$index(0, "c");
       if (t1 == null)
         t1 = C.List_empty;
-      return new X.WorkerRequest(t2, t3, t4, type$.List_dynamic._as(t1));
+      type$.List_dynamic._as(t1);
+      return new X.WorkerRequest(t2, t3, t4);
     },
-    WorkerRequest: function WorkerRequest(t0, t1, t2, t3) {
-      var _ = this;
-      _.client = t0;
-      _._cancelToken = t1;
-      _.command = t2;
-      _.args = t3;
+    WorkerRequest: function WorkerRequest(t0, t1, t2) {
+      this.client = t0;
+      this._cancelToken = t1;
+      this.command = t2;
     }
   },
-  Y = {CancellationToken: function CancellationToken(t0) {
-      this.token = t0;
+  Y = {CancellationToken: function CancellationToken(t0, t1) {
+      this.id = t0;
+      this._cancellation_token$_message = t1;
     }};
   var holders = [A, C, H, J, K, M, N, P, Q, R, U, W, X, Y];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
@@ -4414,9 +4391,6 @@
   J.JSBool.prototype = {
     toString$0(receiver) {
       return String(receiver);
-    },
-    $or(receiver, other) {
-      return true || receiver;
     },
     get$hashCode(receiver) {
       return receiver ? 519018 : 218159;
@@ -4480,9 +4454,6 @@
         if (J.$eq$(receiver[i], other))
           return true;
       return false;
-    },
-    get$isEmpty(receiver) {
-      return receiver.length === 0;
     },
     toString$0(receiver) {
       return P.IterableBase_iterableToFullString(receiver, "[", "]");
@@ -6026,9 +5997,6 @@
     get$iterator(receiver) {
       return new H.ListIterator(receiver, this.get$length(receiver), H.instanceType(receiver)._eval$1("ListIterator<ListMixin.E>"));
     },
-    get$isEmpty(receiver) {
-      return this.get$length(receiver) === 0;
-    },
     where$1(receiver, test) {
       var t1 = H.instanceType(receiver);
       return new H.WhereIterable(receiver, t1._eval$1("bool(ListMixin.E)")._as(test), t1._eval$1("WhereIterable<ListMixin.E>"));
@@ -6645,22 +6613,44 @@
     },
     $isWorkerChannel: 1
   };
-  Y.CancellationToken.prototype = {};
+  Y.CancellationToken.prototype = {
+    get$exception() {
+      return null;
+    }
+  };
   M.WorkerException.prototype = {
     toString$0(_) {
       return "WorkerException: " + this.message + "\n" + this.stackTrace;
     }
   };
   M.CancelledException.prototype = {};
-  K.CancellationTokenReference.prototype = {};
+  K._CancellationTokenReference.prototype = {
+    get$exception() {
+      return this._worker_monitor$_exception;
+    }
+  };
   K.WorkerMonitor.prototype = {
     _getTokenRef$1(token) {
-      return token == null ? null : this.cancelTokens.putIfAbsent$2(token.token, new K.WorkerMonitor__getTokenRef_closure(token));
+      return this.cancelTokens.putIfAbsent$2(token.id, new K.WorkerMonitor__getTokenRef_closure(token));
+    },
+    begin$1(request) {
+      var token, tokenRef, t1;
+      ++this._executing;
+      token = request._cancelToken;
+      if (token == null)
+        return null;
+      tokenRef = this._getTokenRef$1(token);
+      ++tokenRef.refCount;
+      t1 = request._cancelToken;
+      if (t1 == null || t1.id !== tokenRef.id)
+        H.throwExpression(M.WorkerException$("Cancellation token mismatch", null, null));
+      return request._cancelToken = tokenRef;
     }
   };
   K.WorkerMonitor__getTokenRef_closure.prototype = {
     call$0() {
-      return new K.CancellationTokenReference(this.token.token);
+      var t1 = this.token;
+      return new K._CancellationTokenReference(t1.id, t1._cancellation_token$_message);
     },
     $signature: 22
   };
@@ -6796,7 +6786,7 @@
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
     _inherit(N.JsWorkerChannel, N._MessagePort);
     _inherit(M.CancelledException, M.WorkerException);
-    _inherit(K.CancellationTokenReference, Y.CancellationToken);
+    _inherit(K._CancellationTokenReference, Y.CancellationToken);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, P.ListMixin);
@@ -6806,12 +6796,12 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "~(~())", "Null(@)", "Null()", "~(MessageEvent)", "@(WorkerRequest)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "CancellationTokenReference()", "RogueService(WorkerRequest)", "bool(@)"],
+    types: ["~()", "~(@)", "~(~())", "Null(@)", "Null()", "~(MessageEvent)", "@(WorkerRequest)", "Future<Null>()", "@(@)", "@(@,String)", "@(String)", "Null(~())", "Null(@,StackTrace)", "~(int,@)", "Null(Object,StackTrace)", "_Future<@>(@)", "~(Object?)", "~(Object?,Object?)", "~(Event)", "~(@,@)", "Null(@,@)", "@(@,@)", "_CancellationTokenReference()", "RogueService(WorkerRequest)", "bool(@)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsWorkerChannel":{"WorkerChannel":[]},"CancellationTokenReference":{"CancellationToken":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"JsWorkerChannel":{"WorkerChannel":[]},"_CancellationTokenReference":{"CancellationToken":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"EfficientLengthIterable":1,"NativeTypedArray":1,"IterableBase":1,"MapBase":2}'));
   var string$ = {
     Error_: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"
@@ -6821,7 +6811,6 @@
     return {
       AsyncError: findType("AsyncError"),
       Blob: findType("Blob"),
-      CancellationTokenReference: findType("CancellationTokenReference"),
       ConstantStringMap_String_dynamic: findType("ConstantStringMap<String,@>"),
       DedicatedWorkerGlobalScope: findType("DedicatedWorkerGlobalScope"),
       Error: findType("Error"),
@@ -6852,6 +6841,7 @@
       TypeError: findType("TypeError"),
       UnknownJavaScriptObject: findType("UnknownJavaScriptObject"),
       WorkerRequest: findType("WorkerRequest"),
+      _CancellationTokenReference: findType("_CancellationTokenReference"),
       _Future_Null: findType("_Future<Null>"),
       _Future_bool: findType("_Future<bool>"),
       _Future_dynamic: findType("_Future<@>"),
@@ -6869,13 +6859,13 @@
       int: findType("int"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
-      nullable_CancellationTokenReference: findType("CancellationTokenReference?"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_List_Object: findType("List<Object>?"),
       nullable_Map_dynamic_dynamic: findType("Map<@,@>?"),
       nullable_Map_of_int_and_dynamic_Function_WorkerRequest: findType("Map<int,@(WorkerRequest)>?"),
       nullable_MessagePort: findType("MessagePort?"),
       nullable_Object: findType("Object?"),
+      nullable__CancellationTokenReference: findType("_CancellationTokenReference?"),
       nullable__FutureListener_dynamic_dynamic: findType("_FutureListener<@,@>?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
       nullable_void_Function: findType("~()?"),
@@ -6889,7 +6879,6 @@
     var makeConstList = hunkHelpers.makeConstList;
     C.Interceptor_methods = J.Interceptor.prototype;
     C.JSArray_methods = J.JSArray.prototype;
-    C.JSBool_methods = J.JSBool.prototype;
     C.JSInt_methods = J.JSInt.prototype;
     C.JSString_methods = J.JSString.prototype;
     C.JavaScriptFunction_methods = J.JavaScriptFunction.prototype;

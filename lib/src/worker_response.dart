@@ -103,8 +103,12 @@ class WorkerResponse {
   /// The [WorkerResponse] stackTrace information as [String], if any.
   dynamic get exception {
     if (!hasError) return null;
-    if (_cancelled) return CancelledException(_error!, stackTrace: _stackTrace);
-    if (_timeout) return TaskTimeoutException(_error!, stackTrace: _stackTrace);
-    return WorkerException(_error!, stackTrace: _stackTrace);
+    if (_cancelled) {
+      return CancelledException(message: _error!, stackTrace: _stackTrace);
+    } else if (_timeout) {
+      return TaskTimeoutException(message: _error!, stackTrace: _stackTrace);
+    } else {
+      return WorkerException(_error!, stackTrace: _stackTrace);
+    }
   }
 }

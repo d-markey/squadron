@@ -20,6 +20,7 @@ some air.
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
 * [Task Cancellation](#cancellation)
+  * [Cancellation Tokens](#tokens)
 * [Monitoring](#monitoring)
 
 ## <a name="features"></a>Features
@@ -423,11 +424,11 @@ raised (for value tasks: the future completes with an error) or emitted (for str
 an error) for each cancelled task. Tasks still pending will fail immediately; tasks already executing when the
 `cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
 
-It should be noted that the current implementation does not notify platform workers about the cancellation. Tasks
-that have been assigned to a platform worker will continue executing until they complete. As a result, a value task
-already executing cannot be cancelled: it will complete and return a value. The situation is slightly different for
-a streaming task: while it will report cancellation in the main event loop, streaming will continue in the platform
-worker's event loop.
+It should be noted that implementations relying on `pool.cancel()` will not notify platform workers about the
+cancellation. Tasks that have been assigned to a platform worker will continue executing until they complete. As a
+result, a value task already executing cannot be cancelled this way: it will complete and return a value. The
+situation is slightly different for a streaming task: while it will report cancellation in the main event loop,
+streaming will continue in the platform worker's event loop.
 
 ```dart
   final future = pool.execute((w) => w.computeData());
@@ -494,6 +495,85 @@ It is also possible to schedule and cancel individual tasks, eg.:
   valueTask.cancel(); // or pool.cancel(valueTask)
   final result = await valueTask.value;  // should get the task's result
 ```
+
+### <a name="tokens"></a>Cancellation Tokens
+
+To notify workers of the cancellation, Squadron 3 provides the generic `CancellationToken` class implementing the
+base functionality for cancellation tokens. To ensure workers are notified of a token's cancellation, the token must
+be provided to the worker. Cancellation notifications are posted to workers regardless of the `maxParallel` concurrency
+settings. It is the responsibility of the worker service (your code) to verify the token status and abort processing
+when requested. To ensure the cancellation can be processed, you code must therefore be asynchronous. If the service
+is essentially CPU-bound, this can be achieved by awaiting a simple `Future(() {})`.
+
+When a token is cancelled, all tasks associated with the token will be cancelled. A `CancelledException` will be
+thrown and the code that started the worker task will receive it.
+
+Squadron provides 3 kinds of cancellation tokens:
+* `CancellableToken`: a cancellation token that can be triggered programmatically by calling
+`CancellableToken.cancel()`.
+* `TimeOutToken`: a cancellation token that will be cancelled automatically after a given duration. Timeout countdown
+starts then the task is effectively posted to a worker.
+* `CompositeToken`: a cancellation token monitoring several other tokens. A `CompositeToken` will be cancelled
+automatically upon cancellation of one of the tokens (`CompositeMode.any`) or all of them (`CompositeMode.all`).
+
+Example:
+
+```dart
+class SampleService implements WorkerService {
+  Future io({required int milliseconds, CancellationToken? token}) async {
+    if (token?.cancelled ?? false) throw CancelledException();
+    await Future.delayed(Duration(milliseconds: milliseconds));
+  }
+
+  Future cpu({required int milliseconds, CancellationToken? token}) async {
+    final sw = Stopwatch()..start();
+    var count = 0;
+    while (sw.elapsedMilliseconds < milliseconds) {
+      if (count % 1000 == 0) {
+        // avoid flooding the event loop with noop futures, check every 1000 iterations only
+        if (token?.cancelled ?? false) throw CancelledException();
+        await Future(() {});
+      }
+      count++;
+    }
+  }
+
+  // command ids
+  static const ioCommand = 1;
+  static const cpuCommand = 2;
+
+  // map of command ids to implementatons
+  @override
+  Map<int, CommandHandler> get operations => {
+    ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0], token: r.cancelToken),
+    cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0], token: r.cancelToken),
+  };
+}
+```
+
+```dart
+  // create a token
+  final token = CancellableToken();
+  // trigger cancellation after 500 ms
+  // in real world, token.cancel() would be called in reaction to an event such as a user action for instance
+  // this is similar to a timeout token except that countdown starts immediately
+  Timer(Duration(milliseconds: 500), token.cancel);
+
+  // start a computation lasting 1000 ms
+  // pass the token to the service + the pool
+  // a CancelledException will be thrown after 500 ms
+  await pool.execute((w) => w.cpu(milliseconds: 1000, token));
+```
+
+Notes:
+
+* the token received by workers will not have the same runtime type as the token passed to the worker. The
+service code should not make any assumption on the token's runtime type and should only manipulate generic
+`CancellationToken` objects.
+* the same cancellation token may be used to control cancellation of several tasks.
+* when using a `TimeOutToken`, the timeout countdown will only start when the task is effectively posted to the
+worker for execution. If the token is shared across several tasks, the countdown starts with the first worker and
+applies to all workers.
 
 ## <a name="monitoring"></a>Worker Monitoring
 

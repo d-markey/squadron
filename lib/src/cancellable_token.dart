@@ -1,3 +1,5 @@
+import 'package:squadron/squadron.dart';
+
 import 'cancellation_token.dart';
 import 'sequence_id.dart';
 import 'worker_service.dart' show SquadronCallback;
@@ -16,38 +18,30 @@ void safeInvoke(SquadronCallback? callback) {
 /// notify and unregister token listeners. This cancellation token can be cancelled programmatically by calling
 /// [cancel].
 class CancellableToken extends CancellationToken {
-  CancellableToken([this.message]) : super(SequenceId.instance.next());
+  CancellableToken([String? message])
+      : super(SequenceId.instance.next(), message);
 
   @override
-  final String? message;
+  CancelledException? get exception => _exception;
+  CancelledException? _exception;
 
-  bool _cancelled = false;
-
-  @override
-  bool get cancelled => _cancelled;
+  void setException(CancelledException exception) {
+    _exception ??= exception;
+    _listeners?.toList().forEach(safeInvoke);
+  }
 
   /// Cancels the token and notifies listeners.
-  void cancel() {
-    if (!_cancelled) {
-      _cancelled = true;
-      notifyListeners();
-    }
-  }
+  void cancel() =>
+      setException(_exception ?? CancelledException(message: message));
 
   List<SquadronCallback>? _listeners;
 
   /// Registers a listener that will be notified when the token is cancelled.
   @override
-  void addListener(SquadronCallback listener) {
-    _listeners ??= <SquadronCallback>[];
-    _listeners!.add(listener);
-  }
+  void addListener(SquadronCallback listener) =>
+      _listeners = (_listeners ?? <SquadronCallback>[])..add(listener);
 
   @override
-  void removeListener(SquadronCallback listener) {
-    _listeners?.remove(listener);
-  }
-
-  /// Used to notify listeners that have been registered with [addListener], that the token has been cancelled.
-  void notifyListeners() => _listeners?.toList().forEach(safeInvoke);
+  void removeListener(SquadronCallback listener) =>
+      _listeners?.remove(listener);
 }

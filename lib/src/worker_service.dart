@@ -67,8 +67,7 @@ abstract class WorkerService {
     }
 
     if (request.cancel) {
-      monitor.cancel(
-          request.cancelToken!, request.args.isEmpty ? null : request.args[0]);
+      monitor.cancel(request.cancelToken!);
       return;
     }
 
@@ -95,6 +94,11 @@ abstract class WorkerService {
             WorkerException('Worker service is not ready')));
         return;
       }
+      if (tokenRef?.cancelled ?? false) {
+        client.reply(
+            WorkerResponse.withError(CancelledException(message: 'Cancelled')));
+        return;
+      }
       // retrieve operation matching the request command
       final op = operations[request.command];
       if (op == null) {
@@ -110,17 +114,11 @@ abstract class WorkerService {
       }
       if (result is Stream) {
         // stream values to the client
-        var cancelled = false;
         await for (var res in result) {
-          if (cancelled) {
-            // cancellation was not handled, so throw
-            throw CancelledException(tokenRef?.message);
-          }
           client.reply(WorkerResponse(res));
-          // Future(noop);
           if (tokenRef?.cancelled ?? false) {
-            // the next call may handle cancellation
-            cancelled |= true;
+            client.reply(WorkerResponse.withError(
+                CancelledException(message: 'Cancelled')));
           }
         }
       } else {

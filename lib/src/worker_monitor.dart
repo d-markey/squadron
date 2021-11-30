@@ -1,3 +1,5 @@
+import 'package:squadron/squadron_service.dart';
+
 import 'cancellation_token.dart';
 import 'worker_request.dart';
 import 'worker_service.dart';
@@ -17,21 +19,17 @@ import 'worker_service.dart';
 /// not inspected, processing will continue in platform workers, but will be interrupted on caller-side with a
 /// [CancellationException].
 class _CancellationTokenReference extends CancellationToken {
-  _CancellationTokenReference(CancellationToken token) : super(token.id);
+  _CancellationTokenReference(CancellationToken token)
+      : super(token.id, token.message);
 
   int refCount = 0;
 
   @override
-  bool get cancelled => _cancelled;
-  bool _cancelled = false;
+  CancelledException? get exception => _exception;
+  CancelledException? _exception;
 
-  @override
-  String? get message => _message;
-  String? _message;
-
-  void _cancel(String? message) {
-    _message ??= message;
-    _cancelled |= true;
+  void _cancel() {
+    _exception ??= CancelledException();
   }
 }
 
@@ -48,24 +46,21 @@ class WorkerMonitor {
 
   final cancelTokens = <int, _CancellationTokenReference>{};
 
-  _CancellationTokenReference? _getTokenRef(CancellationToken? token) =>
-      (token == null)
-          ? null
-          : cancelTokens.putIfAbsent(
-              token.id, () => _CancellationTokenReference(token));
+  _CancellationTokenReference _getTokenRef(CancellationToken token) =>
+      cancelTokens.putIfAbsent(
+          token.id, () => _CancellationTokenReference(token));
 
   _CancellationTokenReference? begin(WorkerRequest request) {
     _executing++;
-    final tokenRef = _getTokenRef(request.cancelToken);
-    if (tokenRef != null) {
-      tokenRef.refCount++;
-      request.overrideCancelToken(tokenRef);
-    }
+    var token = request.cancelToken;
+    if (token == null) return null;
+    final tokenRef = _getTokenRef(token);
+    tokenRef.refCount++;
+    request.overrideCancelToken(tokenRef);
     return tokenRef;
   }
 
-  void cancel(CancellationToken token, String? message) =>
-      _getTokenRef(token)?._cancel(message ?? 'The task has been cancelled');
+  void cancel(CancellationToken token) => _getTokenRef(token)._cancel();
 
   void done(_CancellationTokenReference? tokenRef) {
     if (tokenRef != null) {

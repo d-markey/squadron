@@ -84,20 +84,22 @@ abstract class Worker {
   Channel? _channel;
   Future<Channel>? _starting;
 
-  void cancelToken(CancellationToken cancelToken, String? message) async {
-    if (_channel == null) {
-      var channel = start();
-      if (channel is Future) {
-        await channel;
-      }
-    }
+  void cancelToken(CancellationToken token) {
+    _channel?.cancelToken(token);
+  }
 
-    _channel!.cancelToken(cancelToken, message);
+  static void _noop() {}
+
+  SquadronCallback _canceller(CancellationToken? token) {
+    if (token == null) return _noop;
+    return () {
+      cancelToken(token);
+    };
   }
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
-      [List args = const [], CancellationToken? cancelToken]) async {
+      [List args = const [], CancellationToken? token]) async {
     // ensure the worker is up and running
     if (_channel == null) {
       var channel = start();
@@ -106,56 +108,26 @@ abstract class Worker {
       }
     }
 
+    final canceller = _canceller(token);
     try {
       // update stats
       _workload++;
       if (_workload > _maxWorkload) {
         _maxWorkload = _workload;
       }
+
+      // check token
+      token?.addListener(canceller);
+      token?.start();
+      final ex = token?.exception;
+      if (ex != null) throw ex;
 
       // send request and return response
-      return await _channel!
-          .sendRequest<T>(command, args, cancelToken: cancelToken);
-    } on WorkerException catch (e) {
+      return await _channel!.sendRequest<T>(command, args, token: token);
+    } on CancelledException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw WorkerException(e.message, stackTrace: e.stackTrace, workerId: id);
-    } catch (e, st) {
-      // update stats and rethrow as a [WorkerException] with worker id
-      _totalErrors++;
-      throw WorkerException(e.toString(),
-          stackTrace: st.toString(), workerId: id);
-    } finally {
-      // update stats
-      _workload--;
-      _totalWorkload++;
-      _idle = DateTime.now().microsecondsSinceEpoch;
-    }
-  }
-
-  /// Sends a streaming workload to the worker.
-  Stream<T> stream<T>(int command,
-      [List args = const [], CancellationToken? cancelToken]) async* {
-    // ensure the worker is up and running
-    if (_channel == null) {
-      var channel = start();
-      if (channel is Future) {
-        await channel;
-      }
-    }
-
-    try {
-      // update stats
-      _workload++;
-      if (_workload > _maxWorkload) {
-        _maxWorkload = _workload;
-      }
-
-      // send request and stream response items
-      await for (var res in _channel!
-          .sendStreamingRequest<T>(command, args, cancelToken: cancelToken)) {
-        yield res;
-      }
+      throw (token?.exception ?? e).withWorkerId(id);
     } on WorkerException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
@@ -169,6 +141,62 @@ abstract class Worker {
       // update stats
       _workload--;
       _totalWorkload++;
+      token?.removeListener(canceller);
+      _idle = DateTime.now().microsecondsSinceEpoch;
+    }
+  }
+
+  /// Sends a streaming workload to the worker.
+  Stream<T> stream<T>(int command,
+      [List args = const [], CancellationToken? token]) async* {
+    // ensure the worker is up and running
+    if (_channel == null) {
+      var channel = start();
+      if (channel is Future) {
+        await channel;
+      }
+    }
+
+    final canceller = _canceller(token);
+    try {
+      // update stats
+      _workload++;
+      if (_workload > _maxWorkload) {
+        _maxWorkload = _workload;
+      }
+
+      // check token
+      token?.addListener(canceller);
+      token?.start();
+      var ex = token?.exception;
+      if (ex != null) throw ex;
+
+      // send request and stream response items
+      await for (var res
+          in _channel!.sendStreamingRequest<T>(command, args, token: token)) {
+        // check token
+        if (ex != null) throw ex;
+        yield res;
+        ex = token?.exception;
+      }
+    } on CancelledException catch (e) {
+      // update stats and rethrow with worker id
+      _totalErrors++;
+      throw (token?.exception ?? e).withWorkerId(id);
+    } on WorkerException catch (e) {
+      // update stats and rethrow with worker id
+      _totalErrors++;
+      throw e.withWorkerId(id);
+    } catch (e, st) {
+      // update stats and rethrow as a [WorkerException] with worker id
+      _totalErrors++;
+      throw WorkerException(e.toString(),
+          stackTrace: st.toString(), workerId: id);
+    } finally {
+      // update stats
+      _workload--;
+      _totalWorkload++;
+      token?.removeListener(canceller);
       _idle = DateTime.now().microsecondsSinceEpoch;
     }
   }

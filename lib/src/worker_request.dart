@@ -27,11 +27,11 @@ class WorkerRequest {
         command = _connectCommand;
 
   /// Creates a new cancel request.
-  WorkerRequest.cancel(CancellationToken cancelToken, String? message)
+  WorkerRequest.cancel(CancellationToken cancelToken)
       : client = null,
         _cancelToken = cancelToken,
         command = _cancelCommand,
-        args = [if (message != null) message];
+        args = const [];
 
   /// Creates a new termination request.
   WorkerRequest.stop()

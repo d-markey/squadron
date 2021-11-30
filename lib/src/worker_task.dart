@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'cancellation_token.dart';
 import 'perf_counter.dart';
 import 'worker.dart';
 import 'worker_exception.dart';
@@ -45,7 +44,7 @@ abstract class StreamTask<T> extends Task<T> {
 /// [WorkerTask] registered in the [WorkerPool].
 class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   /// Creates a new [ValueTask].
-  WorkerTask.value(this._computer, this._counter, this._onDone, this.token)
+  WorkerTask.value(this._computer, this._counter, this._onDone)
       : assert(_computer != null),
         _completer = Completer<T>(),
         _producer = null,
@@ -54,7 +53,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   }
 
   /// Creates a new [StreamTask].
-  WorkerTask.stream(this._producer, this._counter, this._onDone, this.token)
+  WorkerTask.stream(this._producer, this._counter, this._onDone)
       : assert(_producer != null),
         _streamer = StreamController<T>(),
         _computer = null,
@@ -65,8 +64,6 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   static int _usTimeStamp() => DateTime.now().microsecondsSinceEpoch;
 
   late final int _submitted;
-
-  final CancellationToken? token;
 
   @override
   bool get isRunning =>
@@ -117,39 +114,21 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   @override
   void cancel([String? message]) {
     if (_cancelled == null) {
-      token?.stop();
       _cancelled = _usTimeStamp();
       if (_executed == null) {
         if (_completer != null) {
-          _wrapUp(() => _completeWithError(CancelledException(message)), false);
+          _wrapUp(
+              () => _completeWithError(CancelledException(message: message)),
+              false);
         }
         if (_streamer != null) {
-          _wrapUp(() => _close(CancelledException(message)), false);
+          _wrapUp(() => _close(CancelledException(message: message)), false);
         }
-      }
-    }
-  }
-
-  void _timeout() {
-    if (_finished == null && _cancelled == null) {
-      _cancelled = _usTimeStamp();
-      if (_completer != null) {
-        _wrapUp(
-            () => _completeWithError(TaskTimeoutException('The task timed out.',
-                duration: runningTime)),
-            false);
-      }
-      if (_streamer != null) {
-        _wrapUp(
-            () => _close(TaskTimeoutException('The task timed out.',
-                duration: runningTime)),
-            false);
       }
     }
   }
 
   void _wrapUp(SquadronCallback wrapper, bool success) async {
-    token?.stop();
     if (_finished == null) {
       _finished = _usTimeStamp();
       _counter?.update(_finished! - _executed!, success);
@@ -165,8 +144,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     if (completer.isCompleted) return;
 
     try {
-      if (isCancelled) throw CancelledException(null);
-      token?.start(onTimeout: _timeout);
+      if (isCancelled) throw CancelledException();
       final value = await computer(worker);
       _wrapUp(() => _completeWithResult(value), true);
     } on WorkerException catch (ex) {
@@ -184,11 +162,10 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     if (streamer.isClosed) return;
 
     try {
-      if (isCancelled) throw CancelledException(null);
-      token?.start(onTimeout: _timeout);
+      if (isCancelled) throw CancelledException();
       await for (var value in producer(worker)) {
         streamer.add(value);
-        if (isCancelled) throw CancelledException(null);
+        if (isCancelled) throw CancelledException();
       }
       _wrapUp(() => _close(), true);
     } on WorkerException catch (ex) {

@@ -1,7 +1,8 @@
+import 'package:squadron/squadron.dart';
+
 import 'cancellable_token.dart';
 import 'cancellation_token.dart';
 import 'squadron_exception.dart';
-import 'worker_service.dart';
 
 /// Composite token cancellation mode
 enum CompositeMode {
@@ -10,18 +11,6 @@ enum CompositeMode {
 
   /// the [CompositeToken] is cancelled as soon as one of the tokens gets cancelled
   any
-}
-
-/// Composite token cancellation reason
-enum CompositeReason {
-  /// the token is not cancelled
-  none,
-
-  /// no timeout token was cancelled
-  cancelled,
-
-  /// at least one timeout token was cancelled
-  timeout
 }
 
 /// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after
@@ -38,7 +27,6 @@ class CompositeToken extends CancellableToken {
       if (token.cancelled) _signaled++;
       _register(token);
     }
-    _check();
   }
 
   /// Throws an exception, composite tokens may not be cancelled programmatically.
@@ -55,18 +43,9 @@ class CompositeToken extends CancellableToken {
   /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these
   /// tokens is a [TimeOutToken].
   @override
-  void start({SquadronCallback? onTimeout}) {
-    final starter = _start(onTimeout);
-    _tokens.forEach(starter);
-  }
+  void start() => _tokens.forEach(_starter);
 
-  void Function(CancellationToken token) _start(SquadronCallback? onTimeout) =>
-      (CancellationToken token) => token.start(onTimeout: onTimeout);
-
-  @override
-  void stop() => _tokens.forEach(_stopper);
-
-  void _stopper(CancellationToken token) => token.stop();
+  void _starter(CancellationToken token) => token.start();
 
   void _signal() {
     _signaled++;
@@ -77,8 +56,15 @@ class CompositeToken extends CancellableToken {
     if (!cancelled) {
       if ((mode == CompositeMode.any && _signaled >= 1) ||
           (mode == CompositeMode.all && _signaled >= _tokens.length)) {
+        if (mode == CompositeMode.all) {
+          setException(CancelledException(message: message ?? 'Cancelled'));
+        } else {
+          setException(_tokens.map((e) => e.exception).firstWhere(
+              (e) => e != null,
+              orElse: () =>
+                  CancelledException(message: message ?? 'Cancelled'))!);
+        }
         _tokens.forEach(_unregister);
-        stop();
         super.cancel();
       }
     }

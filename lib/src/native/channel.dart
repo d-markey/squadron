@@ -34,9 +34,9 @@ class VmChannel extends _SendPort implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  void cancelToken(CancellationToken cancelToken, String? message) {
-    if (cancelToken.cancelled) {
-      _sendPort!.send(WorkerRequest.cancel(cancelToken, message).serialize());
+  void cancelToken(CancellationToken token) {
+    if (token.cancelled) {
+      _sendPort!.send(WorkerRequest.cancel(token).serialize());
     }
   }
 
@@ -44,14 +44,10 @@ class VmChannel extends _SendPort implements Channel {
   /// this method expects a single value from the [Isolate]
   @override
   Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? cancelToken}) async {
-    if (cancelToken?.cancelled ?? false) {
-      throw CancelledException(cancelToken?.message);
-    }
-
+      {CancellationToken? token}) async {
     final receiver = ReceivePort();
-    _sendPort!.send(WorkerRequest(receiver.sendPort, command, args, cancelToken)
-        .serialize());
+    _sendPort!.send(
+        WorkerRequest(receiver.sendPort, command, args, token).serialize());
     final res = WorkerResponse.deserialize(await receiver.first);
     return res.result as T;
   }
@@ -61,14 +57,10 @@ class VmChannel extends _SendPort implements Channel {
   /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? cancelToken}) async* {
-    if (cancelToken?.cancelled ?? false) {
-      CancelledException(cancelToken?.message);
-    }
-
+      {CancellationToken? token}) async* {
     final receiver = ReceivePort();
-    _sendPort!.send(WorkerRequest(receiver.sendPort, command, args, cancelToken)
-        .serialize());
+    _sendPort!.send(
+        WorkerRequest(receiver.sendPort, command, args, token).serialize());
     await for (var item in receiver) {
       final res = WorkerResponse.deserialize(item);
       if (res.endOfStream) break;
