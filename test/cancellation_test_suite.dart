@@ -701,10 +701,10 @@ void cancellationTests() {
 
     tasks.clear();
     for (var i = 0; i < 2 * N + 1; i++) {
-      tasks.add(pool
-          .delayedSequence(4, composite2)
-          .toList()
-          .onError((error, stackTrace) {
+      tasks.add(pool.delayedSequence(4, composite2).toList().then((list) {
+        success++;
+        return list;
+      }).onError((error, stackTrace) {
         errors++;
         return []; /* swallow errors */
       }));
@@ -713,7 +713,7 @@ void cancellationTests() {
     expect(success, isZero);
     expect(errors, isZero);
 
-    Timer(Duration(milliseconds: 6 * SampleService.delay), composite2.cancel);
+    Timer(Duration(milliseconds: 6 * SampleService.delay), token2.cancel);
 
     await Future.wait(tasks);
 
