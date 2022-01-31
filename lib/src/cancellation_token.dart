@@ -1,6 +1,5 @@
-import 'package:squadron/squadron.dart';
-
 import 'squadron_exception.dart';
+import 'worker_exception.dart';
 import 'worker_service.dart' show SquadronCallback;
 
 /// Cancellation token used in platform workers. These tokens are not designed to be cancelled or listened to by

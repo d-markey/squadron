@@ -1,7 +1,6 @@
-import 'package:squadron/squadron.dart';
-
 import 'cancellation_token.dart';
 import 'sequence_id.dart';
+import 'worker_exception.dart';
 import 'worker_service.dart' show SquadronCallback;
 
 void safeInvoke(SquadronCallback? callback) {

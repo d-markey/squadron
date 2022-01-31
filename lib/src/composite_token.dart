@@ -1,8 +1,7 @@
-import 'package:squadron/squadron.dart';
-
 import 'cancellable_token.dart';
 import 'cancellation_token.dart';
 import 'squadron_exception.dart';
+import 'worker_exception.dart';
 
 /// Composite token cancellation mode
 enum CompositeMode {

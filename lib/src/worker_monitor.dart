@@ -1,6 +1,5 @@
-import 'package:squadron/squadron_service.dart';
-
 import 'cancellation_token.dart';
+import 'worker_exception.dart';
 import 'worker_request.dart';
 import 'worker_service.dart';
 
