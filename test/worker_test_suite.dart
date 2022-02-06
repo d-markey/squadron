@@ -8,6 +8,7 @@ import 'worker_entry_points.dart';
 import 'prime_numbers.dart';
 import 'worker_services/bitcoin_service_worker.dart';
 import 'worker_services/cache_service_worker.dart';
+import 'worker_services/failing_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 import 'worker_services/rogue_service_worker.dart';
 import 'worker_services/sample_service_worker.dart';
@@ -414,5 +415,11 @@ void workerTests() {
     expect(rub, isNull);
 
     bitcoin.stop();
+  });
+
+  test('failing worker', () async {
+    final failingWorker = FailingWorker(getEntryPoint('failing'));
+    expect(() async => await failingWorker.start(),
+        throwsA(isA<WorkerException>()));
   });
 }

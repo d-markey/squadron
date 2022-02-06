@@ -82,7 +82,7 @@ abstract class Worker {
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
-  Future<Channel>? _starting;
+  Future<Channel>? _channelRequest;
 
   void cancelToken(CancellationToken token) {
     _channel?.cancelToken(token);
@@ -100,22 +100,22 @@ abstract class Worker {
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
       [List args = const [], CancellationToken? token]) async {
+    // update stats
+    _workload++;
+    if (_workload > _maxWorkload) {
+      _maxWorkload = _workload;
+    }
+
     // ensure the worker is up and running
-    if (_channel == null) {
-      var channel = start();
-      if (channel is Future) {
-        await channel;
-      }
+    Channel channel;
+    if (_channel != null) {
+      channel = _channel!;
+    } else {
+      channel = await start();
     }
 
     final canceller = _canceller(token);
     try {
-      // update stats
-      _workload++;
-      if (_workload > _maxWorkload) {
-        _maxWorkload = _workload;
-      }
-
       // check token
       token?.addListener(canceller);
       token?.start();
@@ -123,7 +123,7 @@ abstract class Worker {
       if (ex != null) throw ex;
 
       // send request and return response
-      return await _channel!.sendRequest<T>(command, args, token: token);
+      return await channel.sendRequest<T>(command, args, token: token);
     } on CancelledException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
@@ -149,22 +149,22 @@ abstract class Worker {
   /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command,
       [List args = const [], CancellationToken? token]) async* {
+    // update stats
+    _workload++;
+    if (_workload > _maxWorkload) {
+      _maxWorkload = _workload;
+    }
+
     // ensure the worker is up and running
-    if (_channel == null) {
-      var channel = start();
-      if (channel is Future) {
-        await channel;
-      }
+    Channel channel;
+    if (_channel != null) {
+      channel = _channel!;
+    } else {
+      channel = await start();
     }
 
     final canceller = _canceller(token);
     try {
-      // update stats
-      _workload++;
-      if (_workload > _maxWorkload) {
-        _maxWorkload = _workload;
-      }
-
       // check token
       token?.addListener(canceller);
       token?.start();
@@ -173,7 +173,7 @@ abstract class Worker {
 
       // send request and stream response items
       await for (var res
-          in _channel!.sendStreamingRequest<T>(command, args, token: token)) {
+          in channel.sendStreamingRequest<T>(command, args, token: token)) {
         // check token
         if (ex != null) throw ex;
         yield res;
@@ -202,40 +202,29 @@ abstract class Worker {
   }
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
-  FutureOr<Channel> start() {
+  Future<Channel> start() async {
     if (_stopped != null) {
       throw WorkerException('Worker is stopped', workerId: id);
     }
-    if (_channel != null) {
-      return _channel!;
-    } else {
-      _starting ??= Channel.open(_entryPoint, args).then((channel) async {
+    if (_channel == null) {
+      _channelRequest ??= Channel.open(_entryPoint, args);
+      final channel = await _channelRequest!;
+      if (_channel == null) {
         _started = DateTime.now().microsecondsSinceEpoch;
         _idle = _started;
         _channel = channel;
-        var result = onStarted();
-        if (result is Future) {
-          await result;
-          return channel;
-        } else {
-          return channel;
-        }
-      });
-      return _starting!;
+      }
     }
+    return _channel!;
   }
-
-  /// Method called after the worker has been started.
-  /// Override this method to add custom initialization.
-  FutureOr onStarted() {}
 
   /// Stops this worker.
   void stop() {
     if (_stopped == null) {
       _stopped = DateTime.now().microsecondsSinceEpoch;
+      _channelRequest = null;
       _channel?.close();
       _channel = null;
-      _starting = null;
     }
   }
 

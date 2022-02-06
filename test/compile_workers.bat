@@ -3,6 +3,7 @@ rem do not minify compiled JavaScript because some tests inspect the stacktrace 
 CALL dart.bat compile js -o "%~dp0sample_js_workers\bitcoin_worker.dart.js"    "%~dp0sample_js_workers\bitcoin_worker.dart"
 CALL dart.bat compile js -o "%~dp0sample_js_workers\cache_worker.dart.js"      "%~dp0sample_js_workers\cache_worker.dart"
 CALL dart.bat compile js -o "%~dp0sample_js_workers\echo_worker.dart.js"       "%~dp0sample_js_workers\echo_worker.dart"
+CALL dart.bat compile js -o "%~dp0sample_js_workers\failing_worker.dart.js"    "%~dp0sample_js_workers\failing_worker.dart"
 CALL dart.bat compile js -o "%~dp0sample_js_workers\pi_digits_worker.dart.js"  "%~dp0sample_js_workers\pi_digits_worker.dart"
 CALL dart.bat compile js -o "%~dp0sample_js_workers\prime_worker.dart.js"      "%~dp0sample_js_workers\prime_worker.dart"
 CALL dart.bat compile js -o "%~dp0sample_js_workers\rogue_worker.dart.js"      "%~dp0sample_js_workers\rogue_worker.dart"

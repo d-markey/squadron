@@ -8,7 +8,7 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
   PrimeWorkerPool(dynamic entryPoint,
       [Channel? cacheChannel,
       ConcurrencySettings concurrencySettings =
-          ConcurrencySettings.fourCpuThreads])
+          ConcurrencySettings.threeCpuThreads])
       : super(() => PrimeWorker(entryPoint, cacheChannel),
             concurrencySettings: concurrencySettings);
 

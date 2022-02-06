@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
+import '../squadron.dart';
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
@@ -76,32 +77,57 @@ class VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   void connect(Object channelInfo) {
     if (channelInfo is ReceivePort) {
-      _sendPort!.send(channelInfo.sendPort);
+      _sendPort!.send(WorkerResponse(channelInfo.sendPort).serialize());
     } else if (channelInfo is SendPort) {
-      _sendPort!.send(channelInfo);
+      _sendPort!.send(WorkerResponse(channelInfo).serialize());
     } else {
-      throw WorkerException(
-          'Invalid channelInfo $channelInfo; expected ReceivePort or SendPort');
+      final msg =
+          'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort';
+      Squadron.severe(msg);
+      throw WorkerException(msg);
     }
   }
 
   /// Sends the [WorkerResponse] to the worker client.
   /// This method must be called from the [Isolate] only.
   @override
-  void reply(WorkerResponse response) => _sendPort?.send(response.serialize());
+  void reply(WorkerResponse response) {
+    if (response.hasError) {
+      Squadron.warning('replying with error: ${response.error}');
+    }
+    _sendPort?.send(response.serialize());
+  }
 }
 
 /// Stub implementations.
+
+int _counter = 0;
+String _getId() {
+  _counter++;
+  return '${Squadron.id}.$_counter';
+}
 
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
 /// The future completes after the [Isolate]'s main program has provided the [SendPort] via [VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final channel = VmChannel();
   final receiver = ReceivePort();
-  await Isolate.spawn(entryPoint,
-      WorkerRequest.start(receiver.sendPort, startArguments).serialize());
-  channel._sendPort = await receiver.first;
-  return channel;
+  final isolate = await Isolate.spawn(
+      entryPoint,
+      WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
+          .serialize());
+  Squadron.finest('created Isolate #${isolate.hashCode}');
+  final response = WorkerResponse.deserialize(await receiver.first);
+  if (response.hasError) {
+    isolate.kill(priority: Isolate.immediate);
+    Squadron.severe(
+        'connection to Isolate #${isolate.hashCode} failed: ${response.error}');
+    throw response.exception;
+  } else {
+    channel._sendPort = response.result;
+    Squadron.finest('connected to Isolate #${isolate.hashCode}');
+    return channel;
+  }
 }
 
 /// Creates a [VmChannel] from a [SendPort].

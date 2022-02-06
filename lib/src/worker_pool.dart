@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:squadron/squadron.dart';
+
 import 'concurrency_settings.dart';
 import 'squadron_exception.dart';
 import 'worker.dart';
@@ -9,7 +11,7 @@ import 'worker_service.dart';
 import 'worker_stat.dart';
 
 import 'worker_task.dart';
-import 'pool_worker.dart';
+import '_pool_worker.dart';
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
@@ -66,33 +68,27 @@ class WorkerPool<W extends Worker> {
   /// Number of errors.
   int get totalErrors => fullStats.fold<int>(0, (p, s) => p + s.totalErrors);
 
-  FutureOr _provisionWorkers(int count) {
+  Future<void> _provisionWorkers(int count) async {
     if (_workers.length < count) {
-      List<Future>? tasks;
+      final tasks = <Future>[];
       while (_workers.length < count) {
-        final worker =
+        final poolWorker =
             PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
-        _workers.add(worker);
-        final task = worker.worker.start();
-        if (task is Future) {
-          tasks ??= <Future>[];
-          tasks.add(task as Future);
-        }
+        _workers.add(poolWorker);
+        tasks.add(poolWorker.worker.start());
       }
+      await Future.wait(tasks);
       if (_workers.length > _maxSize) {
         _maxSize = _workers.length;
-      }
-      if (tasks != null) {
-        return Future.wait(tasks);
       }
     }
   }
 
   /// Ensure at least [ConcurrencySettings.minWorkers] workers are started
   /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
-  FutureOr start() {
+  Future start() {
     _stopped = false;
-    return _provisionWorkers(concurrencySettings.min(1));
+    return _provisionWorkers(concurrencySettings.min(0));
   }
 
   int _removeWorker(PoolWorker poolWorker, bool force) {
@@ -117,7 +113,7 @@ class WorkerPool<W extends Worker> {
     var force = true;
     if (predicate != null) {
       force = false;
-      targets = targets.where((w) => w.isIdle && predicate(w.worker));
+      targets = _workers.where((w) => w.isIdle && predicate(w.worker));
     } else {
       _stopped = true;
     }
@@ -139,8 +135,8 @@ class WorkerPool<W extends Worker> {
       throw SquadronException(
           'The pool cannot accept new requests because it is stopped.');
     }
-    _queue.add(task);
-    Future(() => _schedule());
+    _queue.addLast(task);
+    _schedule();
     return task;
   }
 
@@ -162,46 +158,82 @@ class WorkerPool<W extends Worker> {
           {PerfCounter? counter}) =>
       scheduleStream(task, counter: counter).stream;
 
+  void _onTaskStart(WorkerTask task) {
+    _executing[task.hashCode] = task;
+  }
+
+  void _onTaskDone(WorkerTask task) {
+    _executing.remove(task.hashCode);
+    _schedule();
+  }
+
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a [ValueTask]<T>.
   ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.value(task, counter, _schedule));
+      _enqueue<T>(WorkerTask.value(_onTaskStart, task, counter, _onTaskDone));
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a [StreamTask]<T>.
   StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.stream(task, counter, _schedule));
+      _enqueue<T>(WorkerTask.stream(_onTaskStart, task, counter, _onTaskDone));
 
-  /// The main scheduler.
+  Timer? _timer;
+
+  /// The scheduler.
   ///
   /// Steps:
   /// 1. remove stopped workers.
-  /// 2. if the task queue is not empty:
+  /// 2. remove cancelled tasks.
+  /// 3. if the task queue is not empty:
   ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).
-  ///    (b) sort workers by ascending [Worker.workload].
-  ///    (c) distribute tasks to workers as loong as [Worker.workload] < [maxParallel].
+  ///    (b) find max capacity available in the pool
+  ///    (c) distribute tasks to workers starting with workers with highest [PoolWorker.capacity], as long as [PoolWorker.capacity] > 0.
   void _schedule() {
-    _workers.removeWhere(PoolWorker.isStopped);
-    if (_queue.isNotEmpty) {
-      _provisionWorkers(concurrencySettings.max(_queue.length));
-      _workers.sort(PoolWorker.compareCapacityDesc);
-      while (_queue.isNotEmpty && _workers.first.capacity > 0) {
-        final curCapacity = _workers.first.capacity;
-        for (var idx = 0, w = _workers[idx];
-            idx < _workers.length &&
-                w.capacity == curCapacity &&
-                _queue.isNotEmpty;
-            idx++) {
-          final task = _queue.removeFirst();
-          if (!task.isCancelled) {
-            _executing[task.hashCode] = task;
-            w.run(task).whenComplete(() => _executing.remove(task.hashCode));
+    // ignore if a previous scheduling request has not executed yet
+    if (_timer?.isActive ?? false) {
+      return;
+    }
+    _timer = Timer(Duration.zero, () {
+      _workers.removeWhere(PoolWorker.isStopped);
+      _queue.removeWhere((t) => t.isCancelled);
+      if (_queue.isNotEmpty) {
+        _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {
+          int maxCapacity;
+          while (_queue.isNotEmpty && (maxCapacity = _getMaxCapacity()) > 0) {
+            if (maxCapacity > 1) {
+              maxCapacity -= 1;
+            }
+            for (var idx = 0;
+                idx < _workers.length && _queue.isNotEmpty;
+                idx++) {
+              final w = _workers[idx];
+              if (w.capacity >= maxCapacity) {
+                w.run(_queue.removeFirst());
+              }
+            }
           }
-        }
+        }).catchError((ex) {
+          Squadron.severe('provisionning workers failed');
+          while (_queue.isNotEmpty) {
+            final task = _queue.removeFirst();
+            task.cancel('provisionning workers failed');
+          }
+        });
+      }
+    });
+  }
+
+  int _getMaxCapacity() {
+    _workers.sort(PoolWorker.compareCapacityDesc);
+    var maxCapacity = -1;
+    for (var i = 0; i < _workers.length; i++) {
+      if (_workers[i].capacity > maxCapacity) {
+        maxCapacity = _workers[i].capacity;
       }
     }
+    return maxCapacity;
   }
 
   /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.

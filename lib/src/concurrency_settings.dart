@@ -11,6 +11,7 @@ class ConcurrencySettings {
   final int minWorkers;
 
   /// Maximum number of workers in the pool.
+  /// If this is set to 0, the number of workers is unbounded (as a result, any task posted to the pool will be assigned a worker asap).
   final int maxWorkers;
 
   /// Maximum number of tasks that can be posted to a worker.
@@ -29,27 +30,31 @@ class ConcurrencySettings {
     return max(minLive);
   }
 
-  /// 1 task per worker, unbounded number of workers.
-  static const manyCpuThreads =
-      ConcurrencySettings(minWorkers: 0, maxWorkers: 0, maxParallel: 1);
-
   /// 50 tasks per worker with at most 1 worker.
   static const oneIoThread =
       ConcurrencySettings(minWorkers: 0, maxWorkers: 1, maxParallel: 50);
 
-  /// 1 task per worker, 1 to 4 workers.
-  static const fourCpuThreads =
-      ConcurrencySettings(minWorkers: 1, maxWorkers: 4, maxParallel: 1);
+  /// 50 tasks per worker with at most 2 workers.
+  static const twoIoThreads =
+      ConcurrencySettings(minWorkers: 0, maxWorkers: 2, maxParallel: 50);
 
   /// 50 tasks per worker, 1 to 4 workers.
   static const fourIoThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 4, maxParallel: 50);
 
-  /// 1 tasks per worker, 1 to 8 workers.
-  static const eightCpuThreads =
-      ConcurrencySettings(minWorkers: 1, maxWorkers: 8, maxParallel: 1);
-
   /// 50 tasks per worker, 1 to 8 workers.
   static const eightIoThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 8, maxParallel: 50);
+
+  /// 1 task per worker, 1 to 3 workers.
+  static const threeCpuThreads =
+      ConcurrencySettings(minWorkers: 1, maxWorkers: 3, maxParallel: 1);
+
+  /// 1 tasks per worker, 1 to 7 workers.
+  static const sevenCpuThreads =
+      ConcurrencySettings(minWorkers: 1, maxWorkers: 7, maxParallel: 1);
+
+  /// 1 task per worker, unbounded number of workers.
+  static const manyCpuThreads =
+      ConcurrencySettings(minWorkers: 0, maxWorkers: 0, maxParallel: 1);
 }

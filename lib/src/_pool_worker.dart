@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'worker.dart';
 import 'worker_stat.dart';
 import 'worker_task.dart';
@@ -18,14 +20,7 @@ class PoolWorker<W extends Worker> {
 
   Future run(WorkerTask task) {
     _start();
-    final res = task.run(worker);
-    if (res is Future) {
-      res.whenComplete(_finish);
-      return res;
-    } else {
-      _finish();
-      return Future.value();
-    }
+    return task.run(worker).whenComplete(_finish);
   }
 
   static int compareCapacityDesc(PoolWorker a, PoolWorker b) =>

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'perf_counter.dart';
+import 'cancellation_token.dart';
 import 'worker.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart';
@@ -24,8 +26,9 @@ abstract class Task<T> {
 
   /// Cancels the task. If the task is still pending, cancellation is effective immediately with a [CancelledException].
   /// For a running [ValueTask], cancellation is ignored and the task's [ValueTask.value] will eventually complete.
-  /// For a running [StreamTask], cancellation will be effective after receiving the next value and the task's [StreamTask.stream] will emit a [].
-  /// It should be noted that cancellation of running tasks will not be notified to platform workers.
+  /// For a running [StreamTask], cancellation will be effective after receiving the next value and the task's [StreamTask.stream] will be closed.
+  /// It should be noted that cancellation of running tasks will not be notified to platform workers. To give running tasks a chance to get notified
+  /// of cancellation, a [CancellationToken] should be passed to the task at the time they are created.
   void cancel([String? message]);
 }
 
@@ -44,7 +47,7 @@ abstract class StreamTask<T> extends Task<T> {
 /// [WorkerTask] registered in the [WorkerPool].
 class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   /// Creates a new [ValueTask].
-  WorkerTask.value(this._computer, this._counter, this._onDone)
+  WorkerTask.value(this._onStart, this._computer, this._counter, this._onDone)
       : assert(_computer != null),
         _completer = Completer<T>(),
         _producer = null,
@@ -53,7 +56,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   }
 
   /// Creates a new [StreamTask].
-  WorkerTask.stream(this._producer, this._counter, this._onDone)
+  WorkerTask.stream(this._onStart, this._producer, this._counter, this._onDone)
       : assert(_producer != null),
         _streamer = StreamController<T>(),
         _computer = null,
@@ -133,23 +136,24 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
       _finished = _usTimeStamp();
       _counter?.update(_finished! - _executed!, success);
       wrapper();
-      if (_onDone != null) {
-        _onDone!();
-      }
+      _onDone(this);
     }
   }
 
-  FutureOr _runFuture(W worker, Future<T> Function(W worker) computer,
+  Future _runFuture(W worker, Future<T> Function(W worker) computer,
       Completer completer) async {
     if (completer.isCompleted) return;
 
     try {
       if (isCancelled) throw CancelledException();
+      _onStart(this);
       final value = await computer(worker);
       _wrapUp(() => _completeWithResult(value), true);
     } on WorkerException catch (ex) {
+      log(ex.toString());
       _wrapUp(() => _completeWithError(ex), false);
     } catch (ex, st) {
+      log(ex.toString());
       _wrapUp(
           () => _completeWithError(
               WorkerException(ex.toString(), stackTrace: st.toString())),
@@ -157,12 +161,13 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     }
   }
 
-  FutureOr _runStream(W worker, Stream<T> Function(W worker) producer,
+  Future _runStream(W worker, Stream<T> Function(W worker) producer,
       StreamController streamer) async {
     if (streamer.isClosed) return;
 
     try {
       if (isCancelled) throw CancelledException();
+      _onStart(this);
       await for (var value in producer(worker)) {
         streamer.add(value);
         if (isCancelled) throw CancelledException();
@@ -178,19 +183,21 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     }
   }
 
-  FutureOr run(W worker) {
+  Future run(W worker) {
     _executed = _usTimeStamp();
     if (_computer != null && _completer != null) {
       return _runFuture(worker, _computer!, _completer!);
     } else if (_producer != null && _streamer != null) {
       return _runStream(worker, _producer!, _streamer!);
     } else {
-      return WorkerException('The worker task state is invalid; cannot run.');
+      return Future.value(
+          WorkerException('The worker task state is invalid; cannot run.'));
     }
   }
 
   final PerfCounter? _counter;
-  final SquadronCallback? _onDone;
+  final void Function(WorkerTask task) _onStart;
+  final void Function(WorkerTask task) _onDone;
 
   final Future<T> Function(W worker)? _computer;
   final Completer<T>? _completer;

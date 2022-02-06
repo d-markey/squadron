@@ -3,6 +3,7 @@ import 'dart:html' as web;
 
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
+import '../squadron.dart';
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
@@ -88,10 +89,13 @@ class JsWorkerChannel extends _MessagePort implements WorkerChannel {
   @override
   void connect(Object channelInfo) {
     if (channelInfo is web.MessagePort) {
-      _sendPort!.postMessage(channelInfo, [channelInfo]);
+      _sendPort!
+          .postMessage(WorkerResponse(channelInfo).serialize(), [channelInfo]);
     } else {
-      throw WorkerException(
-          'Invalid channelInfo $channelInfo; expected ReceivePort or SendPort');
+      final msg =
+          'Invalid channelInfo ${channelInfo.runtimeType}; expected MessagePort';
+      Squadron.severe(msg);
+      throw WorkerException(msg);
     }
   }
 
@@ -99,9 +103,12 @@ class JsWorkerChannel extends _MessagePort implements WorkerChannel {
   /// This method must be called from the [web.Worker] only.
   @override
   void reply(WorkerResponse response) {
+    if (response.hasError) {
+      Squadron.warning('replying with error: ${response.error}');
+    }
     final message = response.serialize();
     final transfer = _getTransferables(message).toList();
-    _sendPort!.postMessage(message, transfer);
+    _sendPort?.postMessage(message, transfer);
   }
 }
 
@@ -183,37 +190,53 @@ Iterable<Object> _getTransferables(dynamic args) sync* {
 
 /// Stub implementations
 
+int _counter = 0;
+String _getId() {
+  _counter++;
+  return '${Squadron.id}.$_counter';
+}
+
 /// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
 /// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [JsWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   final channel = JsChannel();
   final completer = Completer<Channel>();
   final com = web.MessageChannel();
-  final message = WorkerRequest.start(com.port2, startArguments).serialize();
+  final message =
+      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();
   final transfer = _getTransferables(message).toList();
   final worker = web.Worker(entryPoint);
+  Squadron.finest('created Web Worker #${worker.hashCode}');
   worker.onError.listen((event) {
     com.port1.close();
     String msg;
     if (event is web.ErrorEvent) {
       final error = event;
       msg =
-          'Uncaught error in Web Worker $entryPoint => ${error.message} [${error.filename}(${error.lineno})]';
+          '$entryPoint => ${error.message} [${error.filename}(${error.lineno})]';
     } else {
-      msg = 'Uncaught event in Web Worker $entryPoint: ${event.type} / $event';
+      msg = '$entryPoint: ${event.type} / $event';
     }
+    Squadron.severe('error in Web Worker #${worker.hashCode}: $msg');
     if (!completer.isCompleted) {
-      completer.completeError(WorkerException(msg));
-      worker.terminate();
-    } else {
-      print(msg);
+      completer.completeError(
+          WorkerException('error in Web Worker #${worker.hashCode}: $msg'));
     }
   });
   worker.postMessage(message, transfer);
   com.port1.onMessage.listen((event) {
     com.port1.close();
-    channel._sendPort = event.data;
-    completer.complete(channel);
+    final response = WorkerResponse.deserialize(event.data);
+    if (response.hasError) {
+      worker.terminate();
+      Squadron.severe(
+          'connection to Web Worker #${worker.hashCode} failed: ${response.error}');
+      completer.completeError(response.exception);
+    } else {
+      channel._sendPort = response.result;
+      Squadron.finest('connected to Web Worker #${worker.hashCode}');
+      completer.complete(channel);
+    }
   });
   return completer.future;
 }

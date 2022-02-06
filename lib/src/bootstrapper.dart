@@ -1,6 +1,6 @@
 import 'worker_service.dart';
 
-import 'bootstrapper_stub.dart'
+import '_bootstrapper_stub.dart'
     if (dart.library.js) 'browser/bootstrapper.dart'
     if (dart.library.html) 'browser/bootstrapper.dart'
     if (dart.library.io) 'native/bootstrapper.dart';

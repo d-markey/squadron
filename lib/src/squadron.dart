@@ -5,16 +5,28 @@ import 'squadron_logger.dart';
 class Squadron {
   Squadron._();
 
+  static int _logLevel = SquadronLogLevel.OFF;
+
   /// Gets the log level. Propagates to workers with the value that is/was set at the time the worker it created. Changes to this property do not propagate by default.
-  static int get logLevel => logger?.logLevel ?? SquadronLogLevel.OFF;
+  static int get logLevel => logger?.logLevel ?? _logLevel;
 
   /// Sets the log level
-  static set logLevel(int value) => logger?.logLevel = value;
+  static set logLevel(int value) {
+    logger?.logLevel = value;
+    _logLevel = value;
+  }
 
-  /// Custom logger. The object must implement a "log()" method
-  /// following the definition from the loging package:
-  /// void log(level, message, error, stackTrace, zone);
-  static SquadronLogger? logger;
+  static SquadronLogger? _logger;
+
+  /// Gets the current logger, if set.
+  static SquadronLogger? get logger => _logger;
+
+  /// Sets the current logger
+  static set logger(SquadronLogger? logger) {
+    final level = logLevel;
+    _logger = logger;
+    _logger?.logLevel = level;
+  }
 
   static String? _id;
 
@@ -34,26 +46,26 @@ class Squadron {
   }
 
   /// Logs a message at [SquadronLogLevel.FINEST] level
-  static void finest(Object? message) => logger?.finest(message);
+  static void finest(dynamic message) => logger?.finest(message);
 
   /// Logs a message at [SquadronLogLevel.FINER] level
-  static void finer(Object? message) => logger?.finer(message);
+  static void finer(dynamic message) => logger?.finer(message);
 
   /// Logs a message at [SquadronLogLevel.FINE] level
-  static void fine(Object? message) => logger?.fine(message);
+  static void fine(dynamic message) => logger?.fine(message);
 
   /// Logs a message at [SquadronLogLevel.CONFIG] level
-  static void config(Object? message) => logger?.config(message);
+  static void config(dynamic message) => logger?.config(message);
 
   /// Logs a message at [SquadronLogLevel.CONFIG] level
-  static void info(Object? message) => logger?.info(message);
+  static void info(dynamic message) => logger?.info(message);
 
   /// Logs a message at [SquadronLogLevel.CONFIG] level
-  static void warning(Object? message) => logger?.warning(message);
+  static void warning(dynamic message) => logger?.warning(message);
 
   /// Logs a message at [SquadronLogLevel.CONFIG] level
-  static void severe(Object? message) => logger?.severe(message);
+  static void severe(dynamic message) => logger?.severe(message);
 
   /// Logs a message at [SquadronLogLevel.CONFIG] level
-  static void shout(Object? message) => logger?.shout(message);
+  static void shout(dynamic message) => logger?.shout(message);
 }

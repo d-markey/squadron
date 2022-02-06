@@ -1,3 +1,11 @@
+## 3.2.0
+
+- Added a logging mechanism to facilitate debugging Squadron's internals
+- Reworked connection flow between main program and worker
+- Reworked task scheduling
+- Fixed issue https://github.com/d-markey/squadron/issues/3
+- Added tests for logging and workers failing to initialize
+
 ## 3.1.4
 
 - Implemented cancellation token to enable worker task notification that cancellation has occured.

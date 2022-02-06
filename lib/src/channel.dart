@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'cancellation_token.dart';
-import 'channel_stub.dart'
+import '_channel_stub.dart'
     if (dart.library.js) 'browser/channel.dart'
     if (dart.library.html) 'browser/channel.dart'
     if (dart.library.io) 'native/channel.dart';

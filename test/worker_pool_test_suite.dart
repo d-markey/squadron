@@ -8,6 +8,7 @@ import 'package:squadron/squadron.dart';
 import 'worker_entry_points.dart';
 
 import 'worker_services/cache_service_worker.dart';
+import 'worker_services/failing_service_worker.dart';
 import 'worker_services/pi_digits_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 import 'worker_services/rogue_service_worker.dart';
@@ -82,7 +83,7 @@ void poolTests() {
       tasks.add(pool.io(milliseconds: 2000 ~/ timeFactor));
     }
 
-    await Future.delayed(Duration(milliseconds: 250 ~/ timeFactor));
+    await Future.delayed(Duration(milliseconds: 500 ~/ timeFactor));
 
     expect(pool.size, equals(maxWorkers));
     expect(stopped, equals(0));
@@ -100,6 +101,13 @@ void poolTests() {
 
     timer.cancel();
     pool.stop();
+  });
+
+  test('failing worker', () async {
+    final pool = FailingWorkerPool(
+        getEntryPoint('failing'), ConcurrencySettings.twoIoThreads);
+    await pool.start();
+    expect(() async => await pool.noop(), throwsA(isA<WorkerException>()));
   });
 
   test('exception handling from worker pool', () async {

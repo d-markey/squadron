@@ -39,55 +39,69 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   @override
   int logLevel = SquadronLogLevel.SEVERE;
 
-  void log(int level, dynamic message);
+  void log(dynamic message);
+
+  void _log(int level, dynamic message) {
+    if (level >= logLevel) {
+      if (message is Function) {
+        message = message();
+      }
+      final header =
+          '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
+      List<String> lines;
+      if (message is Iterable) {
+        lines = message
+            .map((m) => m?.toString() ?? '')
+            .expand((m) => m.toString().split('\n'))
+            .where((m) => m.isNotEmpty)
+            .toList();
+      } else {
+        lines = message
+                ?.toString()
+                .split('\n')
+                .where((m) => m.isNotEmpty)
+                .toList() ??
+            const [];
+      }
+      for (var i = 0; i < lines.length; i++) {
+        log('$header ${lines[i]}');
+      }
+    }
+  }
 
   @override
-  void finest(dynamic message) => log(SquadronLogLevel.FINEST, message);
+  void finest(dynamic message) => _log(SquadronLogLevel.FINEST, message);
 
   @override
-  void finer(dynamic message) => log(SquadronLogLevel.FINER, message);
+  void finer(dynamic message) => _log(SquadronLogLevel.FINER, message);
 
   @override
-  void fine(dynamic message) => log(SquadronLogLevel.FINE, message);
+  void fine(dynamic message) => _log(SquadronLogLevel.FINE, message);
 
   @override
-  void config(dynamic message) => log(SquadronLogLevel.CONFIG, message);
+  void config(dynamic message) => _log(SquadronLogLevel.CONFIG, message);
 
   @override
-  void info(dynamic message) => log(SquadronLogLevel.INFO, message);
+  void info(dynamic message) => _log(SquadronLogLevel.INFO, message);
 
   @override
-  void warning(dynamic message) => log(SquadronLogLevel.WARNING, message);
+  void warning(dynamic message) => _log(SquadronLogLevel.WARNING, message);
 
   @override
-  void severe(dynamic message) => log(SquadronLogLevel.SEVERE, message);
+  void severe(dynamic message) => _log(SquadronLogLevel.SEVERE, message);
 
   @override
-  void shout(dynamic message) => log(SquadronLogLevel.SHOUT, message);
+  void shout(dynamic message) => _log(SquadronLogLevel.SHOUT, message);
 }
 
 class DevSquadronLogger extends BaseSquadronLogger {
   @override
-  void log(int level, dynamic message) {
-    if (level >= logLevel) {
-      if (message is Function) {
-        message = message();
-      }
-      dev.log('[${Squadron.id}] $message');
-    }
-  }
+  void log(dynamic message) => dev.log(message?.toString() ?? '');
 }
 
 class ConsoleSquadronLogger extends BaseSquadronLogger {
   @override
-  void log(int level, dynamic message) {
-    if (level >= logLevel) {
-      if (message is Function) {
-        message = message();
-      }
-      print('[${Squadron.id}] $message');
-    }
-  }
+  void log(dynamic message) => print(message);
 }
 
 class SquadronLogLevel {
@@ -132,4 +146,17 @@ class SquadronLogLevel {
   /// No logging
   // ignore: constant_identifier_names
   static const OFF = 2000;
+
+  static String getName(int logLevel) {
+    if (logLevel < FINEST) return 'ALL';
+    if (logLevel < FINER) return 'FINEST';
+    if (logLevel < FINE) return 'FINER';
+    if (logLevel < CONFIG) return 'FINE';
+    if (logLevel < INFO) return 'CONFIG';
+    if (logLevel < WARNING) return 'INFO';
+    if (logLevel < SEVERE) return 'WARNING';
+    if (logLevel < SHOUT) return 'SEVERE';
+    if (logLevel < OFF) return 'SHOUT';
+    return 'OFF';
+  }
 }

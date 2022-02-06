@@ -6,4 +6,5 @@ Map<String, dynamic> get entryPoints => {
       'prime': 'sample_js_workers/prime_worker.dart.js',
       'rogue': 'sample_js_workers/rogue_worker.dart.js',
       'sample': 'sample_js_workers/sample_worker.dart.js',
+      'failing': 'sample_js_workers/failing_worker.dart.js',
     };

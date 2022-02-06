@@ -1,5 +1,6 @@
 import 'cancellation_token.dart';
 import 'channel.dart';
+import 'squadron.dart';
 import 'worker_exception.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker].
@@ -18,19 +19,26 @@ class WorkerRequest {
   /// Creates a new request with the specified [command] ID and optional arguments.
   WorkerRequest(dynamic channelInfo, this.command,
       [this.args = const [], this._cancelToken])
-      : client = WorkerChannel.deserialize(channelInfo);
+      : client = WorkerChannel.deserialize(channelInfo),
+        id = null,
+        logLevel = null;
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo, [this.args = const []])
+  WorkerRequest.start(dynamic channelInfo, String id, [this.args = const []])
       : client = WorkerChannel.deserialize(channelInfo),
+        command = _connectCommand,
         _cancelToken = null,
-        command = _connectCommand;
+        // ignore: prefer_initializing_formals
+        id = id,
+        logLevel = Squadron.logLevel;
 
   /// Creates a new cancel request.
   WorkerRequest.cancel(CancellationToken cancelToken)
       : client = null,
         _cancelToken = cancelToken,
         command = _cancelCommand,
+        id = null,
+        logLevel = null,
         args = const [];
 
   /// Creates a new termination request.
@@ -38,18 +46,24 @@ class WorkerRequest {
       : client = null,
         _cancelToken = null,
         command = _terminateCommand,
+        id = null,
+        logLevel = null,
         args = const [];
 
   static const _$client = 'a';
   static const _$command = 'b';
   static const _$args = 'c';
   static const _$token = 'd';
+  static const _$id = 'e';
+  static const _$logLevel = 'f';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
   WorkerRequest.deserialize(Map? message)
       : client = WorkerChannel.deserialize(message?[_$client]),
         _cancelToken = CancellationToken.deserialize(message?[_$token]),
         command = message?[_$command],
+        id = message?[_$id],
+        logLevel = message?[_$logLevel],
         args = message?[_$args] ?? const [];
 
   /// [WorkerRequest] serialization.
@@ -60,6 +74,8 @@ class WorkerRequest {
       return {
         _$client: client?.serialize(),
         _$command: _connectCommand,
+        _$id: id,
+        _$logLevel: logLevel,
         if (args.isNotEmpty) _$args: args,
       };
     } else {
@@ -91,6 +107,14 @@ class WorkerRequest {
 
   /// The command's arguments, if any.
   final List args;
+
+  /// The worker id set by the caller, used for logging/debugging purpose.
+  /// This is only used for connection commands.
+  final String? id;
+
+  /// The current Squadron log level.
+  /// This is set automaticallt and only used for connection commands.
+  final int? logLevel;
 
   /// flag for start requests.
   bool get connect => command == _connectCommand;

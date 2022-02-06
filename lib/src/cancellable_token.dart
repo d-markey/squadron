@@ -1,5 +1,5 @@
 import 'cancellation_token.dart';
-import 'sequence_id.dart';
+import '_sequence_id.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart' show SquadronCallback;
 

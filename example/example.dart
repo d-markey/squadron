@@ -4,7 +4,6 @@ import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
 import 'sample_service_worker_pool.dart';
-import 'worker_monitor.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
 
 void main() async {
@@ -61,8 +60,10 @@ void main() async {
     pool = SampleWorkerPool(sample_isolate.start, concurrencySettings);
     await pool.start();
 
-    final monitor = WorkerMonitor(pool, maxIdleInMilliseconds: 250);
-    monitor.start();
+    final maxIdle = Duration(seconds: 1);
+    final monitor = Timer.periodic(Duration(milliseconds: 250), (timer) {
+      pool?.stop((w) => w.idleTime > maxIdle);
+    });
 
     final asyncSw = Stopwatch();
     asyncSw.start();
@@ -90,9 +91,9 @@ void main() async {
         prevSize = size;
       }
       if (size == pool.concurrencySettings.minWorkers) break;
-      await Future.delayed(monitor.maxIdle ~/ 500);
-      if (sw.elapsedMicroseconds > monitor.maxIdle.inMicroseconds * 2) {
-        log('Houston, we\'ve got a problem...');
+      await Future.delayed(maxIdle ~/ 10);
+      if (sw.elapsedMicroseconds > maxIdle.inMicroseconds * 2) {
+        log('Houston, we have a problem...');
       }
     }
 
@@ -101,7 +102,7 @@ void main() async {
       log('  * $stat');
     }
 
-    monitor.stop();
+    monitor.cancel();
 
     log('pool stats:');
     log('  * load = ${pool.workload}, max load = ${pool.maxWorkload}, total load = ${pool.totalWorkload}, total errors = ${pool.totalErrors}');

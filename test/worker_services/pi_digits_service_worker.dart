@@ -10,7 +10,7 @@ class PiDigitsWorkerPool extends WorkerPool<PiDigitsWorker>
       dynamic entryPoint, ConcurrencySettings? concurrencySettings)
       : super(() => PiDigitsWorker(entryPoint),
             concurrencySettings:
-                concurrencySettings ?? ConcurrencySettings.fourCpuThreads);
+                concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
   @override
   Future<int> getNth(int n) => execute((w) => w.getNth(n));
