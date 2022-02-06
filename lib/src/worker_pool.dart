@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:squadron/squadron.dart';
-
 import 'concurrency_settings.dart';
+import 'squadron.dart';
 import 'squadron_exception.dart';
 import 'worker.dart';
 import 'perf_counter.dart';
