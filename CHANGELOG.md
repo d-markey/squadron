@@ -1,3 +1,8 @@
+## 3.2.1
+
+- Document logging feature
+- 
+
 ## 3.2.0
 
 - Added a logging mechanism to facilitate debugging Squadron's internals

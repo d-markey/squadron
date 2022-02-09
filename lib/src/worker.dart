@@ -127,16 +127,16 @@ abstract class Worker {
     } on CancelledException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw (token?.exception ?? e).withWorkerId(id);
+      throw (token?.exception ?? e).withWorkerId(id).withCommand(command);
     } on WorkerException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw e.withWorkerId(id);
+      throw e.withWorkerId(id).withCommand(command);
     } catch (e, st) {
       // update stats and rethrow as a [WorkerException] with worker id
       _totalErrors++;
       throw WorkerException(e.toString(),
-          stackTrace: st.toString(), workerId: id);
+          stackTrace: st.toString(), workerId: id, command: command);
     } finally {
       // update stats
       _workload--;
@@ -182,16 +182,16 @@ abstract class Worker {
     } on CancelledException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw (token?.exception ?? e).withWorkerId(id);
+      throw (token?.exception ?? e).withWorkerId(id).withCommand(command);
     } on WorkerException catch (e) {
       // update stats and rethrow with worker id
       _totalErrors++;
-      throw e.withWorkerId(id);
+      throw e.withWorkerId(id).withCommand(command);
     } catch (e, st) {
       // update stats and rethrow as a [WorkerException] with worker id
       _totalErrors++;
       throw WorkerException(e.toString(),
-          stackTrace: st.toString(), workerId: id);
+          stackTrace: st.toString(), workerId: id, command: command);
     } finally {
       // update stats
       _workload--;

@@ -108,16 +108,20 @@ class WorkerPool<W extends Worker> {
   /// not receive any new workload.
   /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
-    Iterable<PoolWorker<W>> targets = _workers;
-    var force = true;
+    List<PoolWorker<W>> targets;
+    bool force;
     if (predicate != null) {
+      // kill workers that are idle and satisfy the predicate
+      targets = _workers.where((w) => w.isIdle && predicate(w.worker)).toList();
       force = false;
-      targets = _workers.where((w) => w.isIdle && predicate(w.worker));
     } else {
+      // kill workers while keeping enough workers alive to process pending tasks
+      targets = _workers.skip(_queue.length).toList();
       _stopped = true;
+      force = true;
     }
     var stopped = 0;
-    for (var poolWorker in targets.toList()) {
+    for (var poolWorker in targets) {
       stopped += _removeWorker(poolWorker, force);
     }
     return stopped;
@@ -190,8 +194,8 @@ class WorkerPool<W extends Worker> {
   ///    (b) find max capacity available in the pool
   ///    (c) distribute tasks to workers starting with workers with highest [PoolWorker.capacity], as long as [PoolWorker.capacity] > 0.
   void _schedule() {
-    // ignore if a previous scheduling request has not executed yet
     if (_timer?.isActive ?? false) {
+      // ignore if the last scheduling request has not executed yet
       return;
     }
     _timer = Timer(Duration.zero, () {
@@ -213,6 +217,9 @@ class WorkerPool<W extends Worker> {
               }
             }
           }
+          if (_stopped) {
+            stop();
+          }
         }).catchError((ex) {
           Squadron.severe('provisionning workers failed');
           while (_queue.isNotEmpty) {
@@ -226,13 +233,7 @@ class WorkerPool<W extends Worker> {
 
   int _getMaxCapacity() {
     _workers.sort(PoolWorker.compareCapacityDesc);
-    var maxCapacity = -1;
-    for (var i = 0; i < _workers.length; i++) {
-      if (_workers[i].capacity > maxCapacity) {
-        maxCapacity = _workers[i].capacity;
-      }
-    }
-    return maxCapacity;
+    return _workers.first.capacity;
   }
 
   /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.

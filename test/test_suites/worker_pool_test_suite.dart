@@ -5,18 +5,18 @@ import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
 
-import 'worker_entry_points.dart';
+import '../classes/worker_entry_points.dart';
 
-import 'worker_services/cache_service_worker.dart';
-import 'worker_services/failing_service_worker.dart';
-import 'worker_services/pi_digits_service_worker.dart';
-import 'worker_services/prime_service_worker.dart';
-import 'worker_services/rogue_service_worker.dart';
-import 'worker_services/sample_service_worker.dart';
+import '../worker_services/cache_service_worker.dart';
+import '../worker_services/failing_service_worker.dart';
+import '../worker_services/pi_digits_service_worker.dart';
+import '../worker_services/prime_service_worker.dart';
+import '../worker_services/rogue_service_worker.dart';
+import '../worker_services/sample_service_worker.dart';
 
 void poolTests() {
   final timeFactor =
-      5; // speed up tests; 10 seems to exceed time resolution on some hardware
+      4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('prime worker pool with cache', () async {
     final cache = CacheWorker(getEntryPoint('cache'));

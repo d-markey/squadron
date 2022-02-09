@@ -4,10 +4,10 @@ import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
 
-import 'worker_entry_points.dart';
+import '../classes/worker_entry_points.dart';
 
-import 'worker_services/sample_service.dart';
-import 'worker_services/sample_service_worker.dart';
+import '../worker_services/sample_service.dart';
+import '../worker_services/sample_service_worker.dart';
 
 void cancellationTests() {
   test('value task cancellation', () async {

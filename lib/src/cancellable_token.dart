@@ -1,15 +1,16 @@
 import 'cancellation_token.dart';
 import '_sequence_id.dart';
+import 'squadron.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart' show SquadronCallback;
 
-void safeInvoke(SquadronCallback? callback) {
+void _safeInvoke(SquadronCallback? callback) {
   try {
     if (callback != null) {
       callback();
     }
   } catch (e) {
-    print('notification to listener $callback failed: $e');
+    Squadron.warning('notification to listener $callback failed: $e');
   }
 }
 
@@ -26,7 +27,7 @@ class CancellableToken extends CancellationToken {
 
   void setException(CancelledException exception) {
     _exception ??= exception;
-    _listeners?.toList().forEach(safeInvoke);
+    _listeners?.toList().forEach(_safeInvoke);
   }
 
   /// Cancels the token and notifies listeners.

@@ -4,10 +4,10 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
-import '../web_worker_test_suite.dart';
-import '../worker_entry_points.dart';
-import '../worker_pool_test_suite.dart';
-import '../worker_test_suite.dart';
+import '../classes/worker_entry_points.dart';
+import '../test_suites/web_worker_test_suite.dart';
+import '../test_suites/worker_pool_test_suite.dart';
+import '../test_suites/worker_test_suite.dart';
 
 import 'logger.dart';
 

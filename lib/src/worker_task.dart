@@ -28,7 +28,7 @@ abstract class Task<T> {
   /// For a running [ValueTask], cancellation is ignored and the task's [ValueTask.value] will eventually complete.
   /// For a running [StreamTask], cancellation will be effective after receiving the next value and the task's [StreamTask.stream] will be closed.
   /// It should be noted that cancellation of running tasks will not be notified to platform workers. To give running tasks a chance to get notified
-  /// of cancellation, a [CancellationToken] should be passed to the task at the time they are created.
+  /// of cancellation, a [CancellationToken] should be passed to the tasks at the time they are created.
   void cancel([String? message]);
 }
 
@@ -118,15 +118,11 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   void cancel([String? message]) {
     if (_cancelled == null) {
       _cancelled = _usTimeStamp();
-      if (_executed == null) {
-        if (_completer != null) {
-          _wrapUp(
-              () => _completeWithError(CancelledException(message: message)),
-              false);
-        }
-        if (_streamer != null) {
-          _wrapUp(() => _close(CancelledException(message: message)), false);
-        }
+      if (_completer != null && _executed == null) {
+        _wrapUp(() => _completeWithError(CancelledException(message: message)),
+            false);
+      } else if (_streamer != null) {
+        _wrapUp(() => _close(CancelledException(message: message)), false);
       }
     }
   }

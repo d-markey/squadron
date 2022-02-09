@@ -3,7 +3,7 @@ import 'dart:html' as browser;
 
 import 'package:test/test.dart';
 
-import 'worker_entry_points.dart';
+import '../classes/worker_entry_points.dart';
 
 void webWorkerTests() {
   test('classic Web worker', () async {

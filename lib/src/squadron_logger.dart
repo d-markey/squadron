@@ -35,11 +35,14 @@ abstract class SquadronLogger {
   void shout(dynamic message);
 }
 
+/// Base class for simple loggers
 abstract class BaseSquadronLogger implements SquadronLogger {
   @override
   int logLevel = SquadronLogLevel.SEVERE;
 
-  void log(dynamic message);
+  /// Base logging method. Implement this method to display the [message].
+  /// The method is called if the log level is enabled and is provided with a formatted message such as `[timestamp] [log-level] [Squadron.id] text of the message`
+  void log(String message);
 
   void _log(int level, dynamic message) {
     if (level >= logLevel) {
@@ -96,14 +99,18 @@ abstract class BaseSquadronLogger implements SquadronLogger {
 
 class DevSquadronLogger extends BaseSquadronLogger {
   @override
+
+  /// Log based on `dart:developer`
   void log(dynamic message) => dev.log(message?.toString() ?? '');
 }
 
 class ConsoleSquadronLogger extends BaseSquadronLogger {
+  /// Log to console
   @override
   void log(dynamic message) => print(message);
 }
 
+/// Log level constants, compatible with `package:logging`
 class SquadronLogLevel {
   SquadronLogLevel._();
 
@@ -147,6 +154,7 @@ class SquadronLogLevel {
   // ignore: constant_identifier_names
   static const OFF = 2000;
 
+  /// Gets the log level name
   static String getName(int logLevel) {
     if (logLevel < FINEST) return 'ALL';
     if (logLevel < FINER) return 'FINEST';

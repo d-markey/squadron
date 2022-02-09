@@ -22,6 +22,7 @@ some air.
 * [Task Cancellation](#cancellation)
   * [Cancellation Tokens](#tokens)
 * [Monitoring](#monitoring)
+* [Logging](#logging)
 
 ## <a name="features"></a>Features
 
@@ -606,3 +607,57 @@ is possible to cancel pending tasks before stopping the worker pool.
 ```
 
 The pool will not accept new tasks unless it is restarted with `pool.start()`. 
+
+## <a name="logging"></a>Logging
+
+Squadron provides a minimal logging infrastructure to facilitate logging and debugging. The interface to log
+messages is similar to that of the [logging](https://pub.dev/packages/logging) package, including compatible
+log levels.
+
+To enable logging in the main application, simply set the appropriate log level and install a logger. Squadron
+provides two simple loggers out of the box:
+* `DevSquadronLogger` where messages are logged via `dart:developper`'s `log()`
+* `ConsoleSquadronLogger` where messages are logged with `print()`
+
+For instance:
+
+```dart
+// this is your main app entry point
+void main() {
+  Squadron.logLevel = SquadronLogLevel.WARNING;
+  Squadron.logger = DevSquadronLogger();
+  // ... and then the rest of your code
+}
+```
+
+When your app fires up a worker, the log level will be passed on to the platform worker automatically. However,
+Squadron does not automatically selects a logger and it has to be initialized manually. The logger should be
+installed as early as possible in the worker's lifetime, for instance before calling the `run()` function, or
+in the service initialization function.
+
+Here are some examples:
+
+* in native workers, use a `DevSquadronLogger`:
+
+```dart
+SampleWorker createVmSampleWorker() => SampleWorker(_main);
+
+void _main(Map command) {
+  Squadron.logger = DevSquadronLogger();
+  run((startRequest) => SampleService(), command);
+}
+```
+
+* in Web workers, use a `ConsoleSquadronLogger`:
+
+```dart
+SampleWorker createJsSampleWorker() => SampleWorker('sample_worker_js.dart.js');
+
+void main() {
+  Squadron.logger = ConsoleSquadronLogger();
+  run((startRequest) => SampleService());
+}
+```
+
+Web Workers are not connected to the Dart debugger. As a result, debugging them can be challenging.
+`ConsoleSquadronLogger` will help and display log messages in your browser's JavaScript console.

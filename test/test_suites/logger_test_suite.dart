@@ -1,7 +1,7 @@
 import 'package:squadron/squadron_service.dart';
 import 'package:test/test.dart';
 
-import 'memory_logger.dart';
+import '../classes/memory_logger.dart';
 
 void loggerTests() {
   final memoryLogger = MemoryLogger();

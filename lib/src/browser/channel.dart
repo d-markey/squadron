@@ -50,20 +50,13 @@ class JsChannel extends _MessagePort implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  Future<T> sendRequest<T>(int command, List args, {CancellationToken? token}) {
-    final completer = Completer<T>();
+  Future<T> sendRequest<T>(int command, List args,
+      {CancellationToken? token}) async {
     final com = web.MessageChannel();
     _postRequest(WorkerRequest(com.port2, command, args, token));
-    com.port1.onMessage.listen((event) {
-      final res = WorkerResponse.deserialize(event.data);
-      com.port1.close();
-      if (res.hasError) {
-        completer.completeError(res.exception!);
-      } else {
-        completer.complete(res.result);
-      }
-    });
-    return completer.future;
+    final event = await com.port1.onMessage.first;
+    final res = WorkerResponse.deserialize(event.data);
+    return res.result as T;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
@@ -151,11 +144,10 @@ bool _isObject(dynamic value) =>
     value != null && value is! num && value is! bool && value is! String;
 
 /// Excludes base type values from [list].
-Iterable<Object> _getObjects(Iterable list, List<int> seen) sync* {
+Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
   for (var o in list.where(_isObject)) {
-    final h = o.hashCode;
-    if (!seen.contains(h)) {
-      seen.add(h);
+    if (!seen.contains(o)) {
+      seen.add(o);
       yield o as Object;
     }
   }
@@ -171,7 +163,7 @@ Iterable<Object> _getTransferables(dynamic args) sync* {
       yield args as Object;
     }
 
-    final seen = <int>[];
+    final seen = <Object>{};
     final toBeInspected = <Object>[];
     toBeInspected.addAll(_getObjects(args, seen));
     var i = 0;
