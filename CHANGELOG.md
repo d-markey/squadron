@@ -1,7 +1,12 @@
 ## 3.2.1
 
-- Document logging feature
-- 
+- Document the new logging feature
+- Make sendRequest() async in browser channel (implementation closer to that of native channel)
+- Add a timestamp to pool workers to record the time when it was assigned its last task
+- Sort pool workers to distribute tasks to those that have the largest capacity and the oldest timestamp
+- Add command property to WorkerException
+- Reorganized the test folder
+- Recompiled test Web workers
 
 ## 3.2.0
 

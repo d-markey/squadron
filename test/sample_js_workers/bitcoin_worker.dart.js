@@ -6681,7 +6681,7 @@
       return A._makeSyncStarIterable(function() {
         var list = $async$list,
           seen = $async$seen;
-        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, o, h;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, o;
         return function $async$_getObjects($async$errorCode, $async$result) {
           if ($async$errorCode === 1) {
             $async$currentError = $async$result;
@@ -6700,14 +6700,14 @@
                   break;
                 }
                 o = t1.get$current();
-                h = J.get$hashCode$(o);
-                $async$goto = !B.JSArray_methods.contains$1(seen, h) ? 4 : 5;
+                $async$goto = !seen.contains$1(0, o) ? 4 : 5;
                 break;
               case 4:
                 // then
-                B.JSArray_methods.add$1(seen, h);
+                t2._as(o);
+                seen.add$1(0, o);
                 $async$goto = 6;
-                return t2._as(o);
+                return o;
               case 6:
                 // after yield
               case 5:
@@ -6744,7 +6744,7 @@
               case 2:
                 // then
                 args = args.get$values();
-                seen = A._setArrayType([], type$.JSArray_int);
+                seen = A.LinkedHashSet_LinkedHashSet$_empty(type$.Object);
                 toBeInspected = A._setArrayType([], type$.JSArray_Object);
                 B.JSArray_methods.addAll$1(toBeInspected, A._getObjects(args, seen));
                 t1 = type$.List_dynamic, t2 = type$.Map_dynamic_dynamic, i = 0;
@@ -6813,22 +6813,28 @@
       this.id = t0;
       this._cancellation_token$_message = t1;
     },
-    WorkerException$(message, stackTrace, workerId) {
+    WorkerException$(message, command, stackTrace, workerId) {
       var t1 = J.toString$0$(A.StackTrace_current());
-      return new A.WorkerException(message, t1);
+      return new A.WorkerException(message, t1, workerId, command);
     },
     CancelledException$(message) {
       var t1 = message == null ? "The task has been cancelled" : message,
         t2 = J.toString$0$(A.StackTrace_current());
-      return new A.CancelledException(t1, t2);
+      return new A.CancelledException(t1, t2, null, null);
     },
-    WorkerException: function WorkerException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
+    WorkerException: function WorkerException(t0, t1, t2, t3) {
+      var _ = this;
+      _.message = t0;
+      _.stackTrace = t1;
+      _.workerId = t2;
+      _.command = t3;
     },
-    CancelledException: function CancelledException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
+    CancelledException: function CancelledException(t0, t1, t2, t3) {
+      var _ = this;
+      _.message = t0;
+      _.stackTrace = t1;
+      _.workerId = t2;
+      _.command = t3;
     },
     WorkerRequest$deserialize(message) {
       var t2, t3, t4, t5, t6,
@@ -7109,8 +7115,7 @@
               $async$handler = 4;
               t1 = operations.get$isNotEmpty(operations);
               if (t1) {
-                t1 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException("already connected", t1), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("already connected", null, null, null), null));
                 // goto return
                 $async$goto = 1;
                 break;
@@ -7213,10 +7218,8 @@
               if (request.command === -1) {
                 msg = "Unhandled connect request: " + message.toString$0(0);
                 t1 = request.client;
-                if (t1 != null) {
-                  t2 = J.toString$0$(A.StackTrace_current());
-                  t1.reply$1(0, A.WorkerResponse$withError(new A.WorkerException(msg, t2), null));
-                }
+                if (t1 != null)
+                  t1.reply$1(0, A.WorkerResponse$withError(A.WorkerException$(msg, null, null, null), null));
                 // goto return
                 $async$goto = 1;
                 break;
@@ -7231,8 +7234,7 @@
               tokenRef = monitor.begin$1(request);
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
-                t1 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException("Worker service is not ready", t1), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Worker service is not ready", null, null, null), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -7249,9 +7251,7 @@
               }
               op = operations.$index(0, request.command);
               if (op == null) {
-                t1 = "Unknown command: " + A.S(request);
-                t2 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException(t1, t2), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Unknown command: " + A.S(request), null, null, null), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -7291,10 +7291,8 @@
               J.reply$1$z(client, new A.WorkerResponse(false, null, res, null, false, false));
               t2 = tokenRef;
               t2 = t2 == null ? null : t2.get$exception() != null;
-              if (t2 === true) {
-                t2 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.CancelledException("Cancelled", t2), null));
-              }
+              if (t2 === true)
+                J.reply$1$z(client, A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null));
               // goto for condition
               $async$goto = 16;
               break;
@@ -10899,6 +10897,27 @@
     },
     get$length(_) {
       return this._collection$_length;
+    },
+    contains$1(_, object) {
+      var strings, nums;
+      if (typeof object == "string" && object !== "__proto__") {
+        strings = this._collection$_strings;
+        if (strings == null)
+          return false;
+        return type$.nullable__LinkedHashSetCell._as(strings[object]) != null;
+      } else if (typeof object == "number" && (object & 1073741823) === object) {
+        nums = this._collection$_nums;
+        if (nums == null)
+          return false;
+        return type$.nullable__LinkedHashSetCell._as(nums[object]) != null;
+      } else
+        return this._contains$1(object);
+    },
+    _contains$1(object) {
+      var rest = this._collection$_rest;
+      if (rest == null)
+        return false;
+      return this._findBucketIndex$2(rest[J.get$hashCode$(object) & 1073741823], object) >= 0;
     },
     add$1(_, element) {
       var strings, nums, _this = this;
@@ -14858,16 +14877,16 @@
       return this.cancelTokens.putIfAbsent$2(token.id, new A.WorkerMonitor__getTokenRef_closure(token));
     },
     begin$1(request) {
-      var token, tokenRef, t1;
+      var token, tokenRef, t1, _null = null;
       ++this._executing;
       token = request._cancelToken;
       if (token == null)
-        return null;
+        return _null;
       tokenRef = this._getTokenRef$1(token);
       ++tokenRef.refCount;
       t1 = request._cancelToken;
       if (t1 == null || t1.id !== tokenRef.id)
-        A.throwExpression(A.WorkerException$("Cancellation token mismatch", null, null));
+        A.throwExpression(A.WorkerException$("Cancellation token mismatch", _null, _null, _null));
       return request._cancelToken = tokenRef;
     }
   };
@@ -14918,7 +14937,13 @@
   };
   A.WorkerException.prototype = {
     toString$0(_) {
-      return "WorkerException: " + this.message + "\n" + this.stackTrace;
+      var info = A._setArrayType([], type$.JSArray_String),
+        t1 = this.message,
+        t2 = this.stackTrace;
+      if (info.length === 0)
+        return "WorkerException: " + t1 + "\n" + t2;
+      else
+        return "WorkerException (" + B.JSArray_methods.join$1(info, ", ") + "): " + t1 + "\n" + t2;
     },
     $isException: 1
   };

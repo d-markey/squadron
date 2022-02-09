@@ -3126,6 +3126,15 @@
     LinkedHashMap_LinkedHashMap$_empty($K, $V) {
       return new A.JsLinkedHashMap($K._eval$1("@<0>")._bind$1($V)._eval$1("JsLinkedHashMap<1,2>"));
     },
+    LinkedHashSet_LinkedHashSet$_empty($E) {
+      return new A._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"));
+    },
+    _LinkedHashSet__newHashTable() {
+      var table = Object.create(null);
+      table["<non-identifier-key>"] = table;
+      delete table["<non-identifier-key>"];
+      return table;
+    },
     IterableBase_iterableToShortString(iterable, leftDelimiter, rightDelimiter) {
       var parts, t1;
       if (A._isToStringVisiting(iterable)) {
@@ -3270,6 +3279,24 @@
       t1 = result._contents;
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     },
+    _LinkedHashSet: function _LinkedHashSet(t0) {
+      var _ = this;
+      _._collection$_length = 0;
+      _._collection$_last = _._collection$_first = _._collection$_rest = _._collection$_nums = _._collection$_strings = null;
+      _._collection$_modifications = 0;
+      _.$ti = t0;
+    },
+    _LinkedHashSetCell: function _LinkedHashSetCell(t0) {
+      this._element = t0;
+      this._collection$_next = null;
+    },
+    _LinkedHashSetIterator: function _LinkedHashSetIterator(t0, t1, t2) {
+      var _ = this;
+      _._set = t0;
+      _._collection$_modifications = t1;
+      _._collection$_current = _._collection$_cell = null;
+      _.$ti = t2;
+    },
     IterableBase: function IterableBase() {
     },
     ListMixin: function ListMixin() {
@@ -3293,19 +3320,35 @@
       _._collection$_current = null;
       _.$ti = t2;
     },
+    SetMixin: function SetMixin() {
+    },
+    _SetBase: function _SetBase() {
+    },
+    __SetBase_Object_SetMixin: function __SetBase_Object_SetMixin() {
+    },
     Error__objectToString(object) {
       if (object instanceof A.Closure)
         return object.toString$0(0);
       return "Instance of '" + A.Primitives_objectTypeName(object) + "'";
+    },
+    List_List$filled($length, fill, growable, $E) {
+      var i,
+        result = J.JSArray_JSArray$fixed($length, $E);
+      if ($length !== 0 && true)
+        for (i = 0; i < $length; ++i)
+          result[i] = fill;
+      return result;
     },
     List_List$of(elements, growable, $E) {
       var t1 = A.List_List$_of(elements, $E);
       return t1;
     },
     List_List$_of(elements, $E) {
-      var t1,
-        list = A._setArrayType([], $E._eval$1("JSArray<0>"));
-      for (t1 = elements.get$iterator(elements); t1.moveNext$0();)
+      var list, t1;
+      if (Array.isArray(elements))
+        return A._setArrayType(elements.slice(0), $E._eval$1("JSArray<0>"));
+      list = A._setArrayType([], $E._eval$1("JSArray<0>"));
+      for (t1 = J.get$iterator$ax(elements); t1.moveNext$0();)
         B.JSArray_methods.add$1(list, t1.get$current());
       return list;
     },
@@ -3391,6 +3434,9 @@
     },
     ArgumentError$value(value, $name, message) {
       return new A.ArgumentError(true, value, $name, message);
+    },
+    RangeError$range(invalidValue, minValue, maxValue, $name, message) {
+      return new A.RangeError(minValue, maxValue, true, invalidValue, $name, "Invalid value");
     },
     IndexError$(invalidValue, indexable, $name, message, $length) {
       return new A.IndexError($length, true, invalidValue, $name, "Index out of range");
@@ -3649,8 +3695,7 @@
                 t1 = $.Squadron__logger;
                 if (t1 != null)
                   t1._log$2(1000, "already connected");
-                t1 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException("already connected", t1), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("already connected", null, null, null), null));
                 // goto return
                 $async$goto = 1;
                 break;
@@ -3759,10 +3804,8 @@
                 if (t1 != null)
                   t1._log$2(900, msg);
                 t1 = request.client;
-                if (t1 != null) {
-                  t2 = J.toString$0$(A.StackTrace_current());
-                  t1.reply$1(0, A.WorkerResponse$withError(new A.WorkerException(msg, t2), null));
-                }
+                if (t1 != null)
+                  t1.reply$1(0, A.WorkerResponse$withError(A.WorkerException$(msg, null, null, null), null));
                 // goto return
                 $async$goto = 1;
                 break;
@@ -3780,8 +3823,7 @@
               tokenRef = monitor.begin$1(request);
               $async$handler = 4;
               if (operations.get$isEmpty(operations)) {
-                t1 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException("Worker service is not ready", t1), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Worker service is not ready", null, null, null), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -3798,9 +3840,7 @@
               }
               op = operations.$index(0, request.command);
               if (op == null) {
-                t1 = "Unknown command: " + A.S(request);
-                t2 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.WorkerException(t1, t2), null));
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Unknown command: " + A.S(request), null, null, null), null));
                 $async$next = [1];
                 // goto finally
                 $async$goto = 5;
@@ -3840,10 +3880,8 @@
               J.reply$1$z(client, new A.WorkerResponse(false, null, res, null, false, false));
               t2 = tokenRef;
               t2 = t2 == null ? null : t2.get$exception() != null;
-              if (t2 === true) {
-                t2 = J.toString$0$(A.StackTrace_current());
-                J.reply$1$z(client, A.WorkerResponse$withError(new A.CancelledException("Cancelled", t2), null));
-              }
+              if (t2 === true)
+                J.reply$1$z(client, A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null));
               // goto for condition
               $async$goto = 16;
               break;
@@ -3963,7 +4001,7 @@
       return A._makeSyncStarIterable(function() {
         var list = $async$list,
           seen = $async$seen;
-        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, t3, o, h;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, t2, t3, o;
         return function $async$_getObjects($async$errorCode, $async$result) {
           if ($async$errorCode === 1) {
             $async$currentError = $async$result;
@@ -3982,14 +4020,14 @@
                   break;
                 }
                 o = t2.get$current();
-                h = J.get$hashCode$(o);
-                $async$goto = !B.JSArray_methods.contains$1(seen, h) ? 4 : 5;
+                $async$goto = !seen.contains$1(0, o) ? 4 : 5;
                 break;
               case 4:
                 // then
-                B.JSArray_methods.add$1(seen, h);
+                t3._as(o);
+                seen.add$1(0, o);
                 $async$goto = 6;
-                return t3._as(o);
+                return o;
               case 6:
                 // after yield
               case 5:
@@ -4026,7 +4064,7 @@
               case 2:
                 // then
                 args = args.get$values();
-                seen = A._setArrayType([], type$.JSArray_int);
+                seen = A.LinkedHashSet_LinkedHashSet$_empty(type$.Object);
                 toBeInspected = A._setArrayType([], type$.JSArray_Object);
                 B.JSArray_methods.addAll$1(toBeInspected, A._getObjects(args, seen));
                 t1 = type$.List_dynamic, t2 = type$.Map_dynamic_dynamic, i = 0;
@@ -4129,22 +4167,28 @@
     ConsoleSquadronLogger: function ConsoleSquadronLogger() {
       this.logLevel = 1000;
     },
-    WorkerException$(message, stackTrace, workerId) {
+    WorkerException$(message, command, stackTrace, workerId) {
       var t1 = J.toString$0$(A.StackTrace_current());
-      return new A.WorkerException(message, t1);
+      return new A.WorkerException(message, t1, workerId, command);
     },
     CancelledException$(message) {
       var t1 = message == null ? "The task has been cancelled" : message,
         t2 = J.toString$0$(A.StackTrace_current());
-      return new A.CancelledException(t1, t2);
+      return new A.CancelledException(t1, t2, null, null);
     },
-    WorkerException: function WorkerException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
+    WorkerException: function WorkerException(t0, t1, t2, t3) {
+      var _ = this;
+      _.message = t0;
+      _.stackTrace = t1;
+      _.workerId = t2;
+      _.command = t3;
     },
-    CancelledException: function CancelledException(t0, t1) {
-      this.message = t0;
-      this.stackTrace = t1;
+    CancelledException: function CancelledException(t0, t1, t2, t3) {
+      var _ = this;
+      _.message = t0;
+      _.stackTrace = t1;
+      _.workerId = t2;
+      _.command = t3;
     },
     WorkerRequest$deserialize(message) {
       var t2, t3, t4, t5, t6,
@@ -4279,6 +4323,14 @@
         return B.UnknownJavaScriptObject_methods;
       }
       return B.UnknownJavaScriptObject_methods;
+    },
+    JSArray_JSArray$fixed($length, $E) {
+      if ($length > 4294967295)
+        throw A.wrapException(A.RangeError$range($length, 0, 4294967295, "length", null));
+      return J.JSArray_JSArray$markFixed(new Array($length), $E);
+    },
+    JSArray_JSArray$markFixed(allocation, $E) {
+      return J.JSArray_markFixedList(A._setArrayType(allocation, $E._eval$1("JSArray<0>")), $E);
     },
     JSArray_markFixedList(list, $T) {
       list.fixed$length = Array;
@@ -4572,17 +4624,17 @@
       var t1 = A._arrayInstanceType(receiver);
       return new A.MappedListIterable(receiver, t1._bind$1($T)._eval$1("1(2)")._as(f), t1._eval$1("@<1>")._bind$1($T)._eval$1("MappedListIterable<1,2>"));
     },
+    join$1(receiver, separator) {
+      var i,
+        list = A.List_List$filled(receiver.length, "", false, type$.String);
+      for (i = 0; i < receiver.length; ++i)
+        this.$indexSet(list, i, A.S(receiver[i]));
+      return list.join(separator);
+    },
     elementAt$1(receiver, index) {
       if (!(index < receiver.length))
         return A.ioore(receiver, index);
       return receiver[index];
-    },
-    contains$1(receiver, other) {
-      var i;
-      for (i = 0; i < receiver.length; ++i)
-        if (J.$eq$(receiver[i], other))
-          return true;
-      return false;
     },
     toString$0(receiver) {
       return A.IterableBase_iterableToFullString(receiver, "[", "]");
@@ -6218,6 +6270,120 @@
       return this.T._eval$1("~(0)");
     }
   };
+  A._LinkedHashSet.prototype = {
+    get$iterator(_) {
+      var _this = this,
+        t1 = new A._LinkedHashSetIterator(_this, _this._collection$_modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
+      t1._collection$_cell = _this._collection$_first;
+      return t1;
+    },
+    get$length(_) {
+      return this._collection$_length;
+    },
+    contains$1(_, object) {
+      var strings, nums;
+      if (typeof object == "string" && object !== "__proto__") {
+        strings = this._collection$_strings;
+        if (strings == null)
+          return false;
+        return type$.nullable__LinkedHashSetCell._as(strings[object]) != null;
+      } else if (typeof object == "number" && (object & 1073741823) === object) {
+        nums = this._collection$_nums;
+        if (nums == null)
+          return false;
+        return type$.nullable__LinkedHashSetCell._as(nums[object]) != null;
+      } else
+        return this._contains$1(object);
+    },
+    _contains$1(object) {
+      var rest = this._collection$_rest;
+      if (rest == null)
+        return false;
+      return this._findBucketIndex$2(rest[J.get$hashCode$(object) & 1073741823], object) >= 0;
+    },
+    add$1(_, element) {
+      var strings, nums, _this = this;
+      _this.$ti._precomputed1._as(element);
+      if (typeof element == "string" && element !== "__proto__") {
+        strings = _this._collection$_strings;
+        return _this._collection$_addHashTableEntry$2(strings == null ? _this._collection$_strings = A._LinkedHashSet__newHashTable() : strings, element);
+      } else if (typeof element == "number" && (element & 1073741823) === element) {
+        nums = _this._collection$_nums;
+        return _this._collection$_addHashTableEntry$2(nums == null ? _this._collection$_nums = A._LinkedHashSet__newHashTable() : nums, element);
+      } else
+        return _this._add$1(element);
+    },
+    _add$1(element) {
+      var rest, hash, bucket, _this = this;
+      _this.$ti._precomputed1._as(element);
+      rest = _this._collection$_rest;
+      if (rest == null)
+        rest = _this._collection$_rest = A._LinkedHashSet__newHashTable();
+      hash = J.get$hashCode$(element) & 1073741823;
+      bucket = rest[hash];
+      if (bucket == null)
+        rest[hash] = [_this._collection$_newLinkedCell$1(element)];
+      else {
+        if (_this._findBucketIndex$2(bucket, element) >= 0)
+          return false;
+        bucket.push(_this._collection$_newLinkedCell$1(element));
+      }
+      return true;
+    },
+    _collection$_addHashTableEntry$2(table, element) {
+      this.$ti._precomputed1._as(element);
+      if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
+        return false;
+      table[element] = this._collection$_newLinkedCell$1(element);
+      return true;
+    },
+    _collection$_newLinkedCell$1(element) {
+      var _this = this,
+        cell = new A._LinkedHashSetCell(_this.$ti._precomputed1._as(element));
+      if (_this._collection$_first == null)
+        _this._collection$_first = _this._collection$_last = cell;
+      else
+        _this._collection$_last = _this._collection$_last._collection$_next = cell;
+      ++_this._collection$_length;
+      _this._collection$_modifications = _this._collection$_modifications + 1 & 1073741823;
+      return cell;
+    },
+    _findBucketIndex$2(bucket, element) {
+      var $length, i;
+      if (bucket == null)
+        return -1;
+      $length = bucket.length;
+      for (i = 0; i < $length; ++i)
+        if (J.$eq$(bucket[i]._element, element))
+          return i;
+      return -1;
+    }
+  };
+  A._LinkedHashSetCell.prototype = {};
+  A._LinkedHashSetIterator.prototype = {
+    get$current() {
+      return this.$ti._precomputed1._as(this._collection$_current);
+    },
+    moveNext$0() {
+      var _this = this,
+        cell = _this._collection$_cell,
+        t1 = _this._set;
+      if (_this._collection$_modifications !== t1._collection$_modifications)
+        throw A.wrapException(A.ConcurrentModificationError$(t1));
+      else if (cell == null) {
+        _this.set$_collection$_current(null);
+        return false;
+      } else {
+        _this.set$_collection$_current(_this.$ti._eval$1("1?")._as(cell._element));
+        _this._collection$_cell = cell._collection$_next;
+        return true;
+      }
+    },
+    set$_collection$_current(_current) {
+      this._collection$_current = this.$ti._eval$1("1?")._as(_current);
+    },
+    $isIterator: 1
+  };
   A.IterableBase.prototype = {};
   A.ListMixin.prototype = {
     get$iterator(receiver) {
@@ -6307,6 +6473,17 @@
     },
     $isIterator: 1
   };
+  A.SetMixin.prototype = {
+    map$1$1(_, f, $T) {
+      var t1 = this.$ti;
+      return new A.EfficientLengthMappedIterable(this, t1._bind$1($T)._eval$1("1(2)")._as(f), t1._eval$1("@<1>")._bind$1($T)._eval$1("EfficientLengthMappedIterable<1,2>"));
+    },
+    toString$0(_) {
+      return A.IterableBase_iterableToFullString(this, "{", "}");
+    }
+  };
+  A._SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1};
+  A.__SetBase_Object_SetMixin.prototype = {};
   A.DateTime.prototype = {
     $eq(_, other) {
       if (other == null)
@@ -6851,16 +7028,16 @@
       return this.cancelTokens.putIfAbsent$2(token.id, new A.WorkerMonitor__getTokenRef_closure(token));
     },
     begin$1(request) {
-      var token, tokenRef, t1;
+      var token, tokenRef, t1, _null = null;
       ++this._executing;
       token = request._cancelToken;
       if (token == null)
-        return null;
+        return _null;
       tokenRef = this._getTokenRef$1(token);
       ++tokenRef.refCount;
       t1 = request._cancelToken;
       if (t1 == null || t1.id !== tokenRef.id)
-        A.throwExpression(A.WorkerException$("Cancellation token mismatch", null, null));
+        A.throwExpression(A.WorkerException$("Cancellation token mismatch", _null, _null, _null));
       return request._cancelToken = tokenRef;
     }
   };
@@ -6983,7 +7160,13 @@
   A.ConsoleSquadronLogger.prototype = {};
   A.WorkerException.prototype = {
     toString$0(_) {
-      return "WorkerException: " + this.message + "\n" + this.stackTrace;
+      var info = A._setArrayType([], type$.JSArray_String),
+        t1 = this.message,
+        t2 = this.stackTrace;
+      if (info.length === 0)
+        return "WorkerException: " + t1 + "\n" + t2;
+      else
+        return "WorkerException (" + B.JSArray_methods.join$1(info, ", ") + "): " + t1 + "\n" + t2;
     }
   };
   A.CancelledException.prototype = {};
@@ -7048,7 +7231,7 @@
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(A.Object, null);
-    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.Closure, A.Iterable, A.ListIterator, A.Iterator, A.ExpandIterator, A.EmptyIterator, A.FixedLengthListMixin, A.ConstantMap, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapMixin, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.Rti, A._FunctionParameters, A._TimerImpl, A._AsyncAwaitCompleter, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A.StreamSubscription, A._StreamIterator, A._Zone, A.ListMixin, A._MapBaseValueIterator, A.DateTime, A.StackOverflowError, A._Exception, A.Null, A._StringStackTrace, A.StringBuffer, A.EventStreamProvider, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.CancellationToken, A.WorkerMonitor, A._MessagePort, A.BaseSquadronLogger, A.WorkerException, A.WorkerRequest, A.WorkerResponse]);
+    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.Closure, A.Iterable, A.ListIterator, A.Iterator, A.ExpandIterator, A.EmptyIterator, A.FixedLengthListMixin, A.ConstantMap, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapMixin, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.Rti, A._FunctionParameters, A._TimerImpl, A._AsyncAwaitCompleter, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A.StreamSubscription, A._StreamIterator, A._Zone, A.__SetBase_Object_SetMixin, A._LinkedHashSetCell, A._LinkedHashSetIterator, A.ListMixin, A._MapBaseValueIterator, A.SetMixin, A.DateTime, A.StackOverflowError, A._Exception, A.Null, A._StringStackTrace, A.StringBuffer, A.EventStreamProvider, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.CancellationToken, A.WorkerMonitor, A._MessagePort, A.BaseSquadronLogger, A.WorkerException, A.WorkerRequest, A.WorkerResponse]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, A.NativeByteBuffer, A.NativeTypedData, A.Blob, A.EventTarget, A.DomException, A.Event]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
@@ -7079,6 +7262,8 @@
     _inherit(A._SyncStarIterable, A.IterableBase);
     _inherit(A._AsyncCompleter, A._Completer);
     _inherit(A._RootZone, A._Zone);
+    _inherit(A._SetBase, A.__SetBase_Object_SetMixin);
+    _inherit(A._LinkedHashSet, A._SetBase);
     _inheritMany(A.ArgumentError, [A.RangeError, A.IndexError]);
     _inheritMany(A.EventTarget, [A.WorkerGlobalScope, A.MessagePort]);
     _inherit(A.DedicatedWorkerGlobalScope, A.WorkerGlobalScope);
@@ -7096,6 +7281,7 @@
     _mixin(A._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, A.FixedLengthListMixin);
     _mixin(A._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, A.ListMixin);
     _mixin(A._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin, A.FixedLengthListMixin);
+    _mixin(A.__SetBase_Object_SetMixin, A.SetMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
@@ -7106,8 +7292,8 @@
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2","ListIterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"EmptyIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"double":{"num":[]},"int":{"num":[]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"_CancellationTokenReference":{"CancellationToken":[]},"JsWorkerChannel":{"WorkerChannel":[]}}'));
-  A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"EfficientLengthIterable":1,"NativeTypedArray":1,"IterableBase":1,"MapBase":2}'));
+  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2","ListIterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"EmptyIterator":{"Iterator":["1"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"]},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[]},"NativeTypedArrayOfDouble":{"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedHashSet":{"SetMixin":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"_SetBase":{"SetMixin":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"double":{"num":[]},"int":{"num":[]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MessageEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"File":{"Blob":[]},"MessagePort":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_EventStreamSubscription":{"StreamSubscription":["1"]},"_CancellationTokenReference":{"CancellationToken":[]},"JsWorkerChannel":{"WorkerChannel":[]}}'));
+  A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"EfficientLengthIterable":1,"NativeTypedArray":1,"IterableBase":1,"MapBase":2,"_SetBase":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     Error_: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"
   };
@@ -7128,7 +7314,6 @@
       JSArray_Object: findType("JSArray<Object>"),
       JSArray_String: findType("JSArray<String>"),
       JSArray_dynamic: findType("JSArray<@>"),
-      JSArray_int: findType("JSArray<int>"),
       JSNull: findType("JSNull"),
       JSObject: findType("JSObject"),
       JavaScriptFunction: findType("JavaScriptFunction"),
@@ -7173,6 +7358,7 @@
       nullable_Object: findType("Object?"),
       nullable__CancellationTokenReference: findType("_CancellationTokenReference?"),
       nullable__FutureListener_dynamic_dynamic: findType("_FutureListener<@,@>?"),
+      nullable__LinkedHashSetCell: findType("_LinkedHashSetCell?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
       nullable_void_Function: findType("~()?"),
       nullable_void_Function_MessageEvent: findType("~(MessageEvent)?"),
