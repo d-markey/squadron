@@ -1,3 +1,10 @@
+## 3.2.2
+
+- Document types and release mode (special thanks to [SwissCheese5](https://github.com/SwissCheese5))
+- More error handling at communication points
+- Use lower log levels for internal Squadron log messages
+- Added test coverage
+
 ## 3.2.1
 
 - Document the new logging feature

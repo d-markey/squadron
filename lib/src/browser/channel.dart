@@ -19,7 +19,13 @@ class _MessagePort {
   void _postRequest(WorkerRequest req) {
     final message = req.serialize();
     final transfer = _getTransferables(message).toList();
-    _sendPort!.postMessage(message, transfer);
+    try {
+      _sendPort!.postMessage(message, transfer);
+    } catch (ex) {
+      Squadron.severe('Failed to post message: $ex');
+      Squadron.severe('   message is $message with tranferables = $transfer');
+      rethrow;
+    }
   }
 }
 
@@ -81,14 +87,17 @@ class JsWorkerChannel extends _MessagePort implements WorkerChannel {
   /// This method must be called by the [web.Worker] upon startup.
   @override
   void connect(Object channelInfo) {
-    if (channelInfo is web.MessagePort) {
-      _sendPort!
-          .postMessage(WorkerResponse(channelInfo).serialize(), [channelInfo]);
-    } else {
-      final msg =
-          'Invalid channelInfo ${channelInfo.runtimeType}; expected MessagePort';
-      Squadron.severe(msg);
-      throw WorkerException(msg);
+    try {
+      if (channelInfo is web.MessagePort) {
+        _sendPort!.postMessage(
+            WorkerResponse(channelInfo).serialize(), [channelInfo]);
+      } else {
+        throw WorkerException(
+            'Invalid channelInfo ${channelInfo.runtimeType}; expected MessagePort');
+      }
+    } catch (ex) {
+      Squadron.severe('Failed to post connection response: $ex');
+      rethrow;
     }
   }
 
@@ -97,11 +106,17 @@ class JsWorkerChannel extends _MessagePort implements WorkerChannel {
   @override
   void reply(WorkerResponse response) {
     if (response.hasError) {
-      Squadron.warning('replying with error: ${response.error}');
+      Squadron.fine('replying with error: ${response.error}');
     }
     final message = response.serialize();
     final transfer = _getTransferables(message).toList();
-    _sendPort?.postMessage(message, transfer);
+    try {
+      _sendPort?.postMessage(message, transfer);
+    } catch (ex) {
+      Squadron.severe('Failed to post message: $ex');
+      Squadron.severe('   message is $message with tranferables = $transfer');
+      rethrow;
+    }
   }
 }
 
@@ -123,11 +138,14 @@ class _JsForwardChannel extends JsChannel {
 
   /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
+    final message = e.data;
+    final transfer = _getTransferables(message).toList();
     try {
-      final transfer = _getTransferables(e.data).toList();
-      _remote!.postMessage(e.data, transfer);
-    } catch (e) {
-      print('Message forwarding failed: $e');
+      _remote!.postMessage(message, transfer);
+    } catch (ex) {
+      Squadron.severe('Failed to forward message: $ex');
+      Squadron.severe('   message is $message with tranferables = $transfer');
+      rethrow;
     }
   }
 
@@ -156,25 +174,26 @@ Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
 /// Yields objects contained in JSON object [args] (a Map, a List, or a base type).
 /// Used to identify non-base type objects and provide them to [web.Worker.postMessage].
 /// [web.Worker.postMessage] will clone these objects -- essentially [web.MessagePort]s.
+/// The code makes no effort to ensure these objects really are transferable.
 Iterable<Object> _getTransferables(dynamic args) sync* {
   if (_isObject(args)) {
     if (args is Map) args = args.values;
-    if (args is! List && args is! Iterable) {
+    if (args is! Iterable) {
       yield args as Object;
-    }
-
-    final seen = <Object>{};
-    final toBeInspected = <Object>[];
-    toBeInspected.addAll(_getObjects(args, seen));
-    var i = 0;
-    while (i < toBeInspected.length) {
-      final arg = toBeInspected[i++];
-      if (arg is Map) {
-        toBeInspected.addAll(_getObjects(arg.values, seen));
-      } else if (arg is List) {
-        toBeInspected.addAll(_getObjects(arg, seen));
-      } else {
-        yield arg;
+    } else {
+      final seen = <Object>{};
+      final toBeInspected = <Object>[];
+      toBeInspected.addAll(_getObjects(args, seen));
+      var i = 0;
+      while (i < toBeInspected.length) {
+        final arg = toBeInspected[i++];
+        if (arg is Map) {
+          toBeInspected.addAll(_getObjects(arg.values, seen));
+        } else if (arg is Iterable) {
+          toBeInspected.addAll(_getObjects(arg, seen));
+        } else {
+          yield arg;
+        }
       }
     }
   }
@@ -198,7 +217,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
       WorkerRequest.start(com.port2, _getId(), startArguments).serialize();
   final transfer = _getTransferables(message).toList();
   final worker = web.Worker(entryPoint);
-  Squadron.finest('created Web Worker #${worker.hashCode}');
+  Squadron.config('created Web Worker #${worker.hashCode}');
   worker.onError.listen((event) {
     com.port1.close();
     String msg;
@@ -215,7 +234,15 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
           WorkerException('error in Web Worker #${worker.hashCode}: $msg'));
     }
   });
-  worker.postMessage(message, transfer);
+  try {
+    worker.postMessage(message, transfer);
+  } catch (ex) {
+    com.port1.close();
+    worker.terminate();
+    Squadron.severe('Failed to post connection request: $ex');
+    Squadron.severe('   message is $message with tranferables = $transfer');
+    rethrow;
+  }
   com.port1.onMessage.listen((event) {
     com.port1.close();
     final response = WorkerResponse.deserialize(event.data);
@@ -226,7 +253,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
       completer.completeError(response.exception);
     } else {
       channel._sendPort = response.result;
-      Squadron.finest('connected to Web Worker #${worker.hashCode}');
+      Squadron.config('connected to Web Worker #${worker.hashCode}');
       completer.complete(channel);
     }
   });

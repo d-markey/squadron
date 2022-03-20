@@ -17,12 +17,14 @@ some air.
 * [Getting Started](#started)
 * [Usage](#usage)
 * [Remarks on Isolates / Web Workers](#remarks)
+  * [Channels and types](#channels_and_types)
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
 * [Task Cancellation](#cancellation)
   * [Cancellation Tokens](#tokens)
 * [Monitoring](#monitoring)
 * [Logging](#logging)
+* [Thanks!](#thanks)
 
 ## <a name="features"></a>Features
 
@@ -153,6 +155,97 @@ Native platform (instances will still be copied).
 Web Workers have similar characteristics. Only primitive types and objects implementing
 [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across
 Web Worker boundaries.
+
+### <a name="channels_and_types"></a>Channels and Types
+
+To provide a cross-platform development experience, Squadron encapsulates `Isolates` and `Web Workers` as
+well as the means to communicate between the main app's code and the code they execute. Internally, this is
+achieved via the [Channel] class and your code should never have to deal with channels, except on rare
+occasions such as communicating between threads.
+
+![](channels_and_types.png)
+
+[Channel] enables data exchange between threads and inherits the constraints of the target platforms, in
+particular in terms of types. Dart Native platforms will typically be quite relaxed when communicating
+between threads, even allowing custom Dart objects to come through (probably because the main thread and
+the worker threads share the same Dart runtime).
+
+**But JavaScript will not be so forgiving because JavaScript doesn't know about Dart types.**
+
+To transfer a custom object, it must be serialized on the sender end and deserialized on the receiver end.
+One way of serializing a custom object is to store the object's attributes into a JSON structure. Packages
+such as [json_annotation](https://pub.dev/packages/json_annotation)/[json_serializable](https://pub.dev/packages/json_serializable)
+can even generate the serialization and deserialization code for your custom classes, usually based on
+`Map<String, dynamic>` data structures.
+
+However, when the data to be transfered hits the browser's Web Worker implementation, only basic type information
+(number, boolean, string, array or map) is retained. In particular, generic types sent from one side will not be
+received with the same generic type on the ofther end. For instance, when a sending a `List<String>` or a
+`Map<String, dynamic>` to a service worker, browser platforms will provide the data to the worker service as
+a bare `List` (= `List<dynamic>`) or a bare `Map` (= `Map<dynamic, dynamic>`). When using [json_annotation](https://pub.dev/packages/json_annotation),
+the `anyMap` option must be set to `true` to ensure the code will run on all platforms. This options tells
+the code builders from [json_serializable](https://pub.dev/packages/json_serializable) to handle JSON objects
+as `Map` instead of `Map<String, dynamic>`.
+
+You should keep serialization and deserialization as close to the [Channel] as possible, typically when calling
+the `send` method or when receiving data in the `operations` map.
+
+For example, the approach below is a generic way to transfer custom objects via Squadron:
+
+```dart
+class ServiceResponse {
+   static ServiceResponse deserialize(dynamic result) {
+      // deserialize "result", knowing it was produced by serialize()
+      // or call the code produced by package:json_annotation with anyMap = true
+   }
+
+   dynamic serialize() {
+      // serialize using only base types or simple List/Map
+      // or call the code produced by package:json_annotation with anyMap = true
+   }
+}
+
+class ServiceRequest {
+   static ServiceRequest deserialize(dynamic result) {
+      // deserialize "result", knowing it was produced by serialize()
+      // or call the code produced by package:json_annotation with anyMap = true
+   }
+
+   dynamic serialize() {
+      // serialize using only base types or simple List/Map
+      // or call the code produced by package:json_annotation with anyMap = true
+   }
+}
+
+abstract class ServiceDefinition {
+   FutureOr<ServiceResponse> serviceMethod(ServiceRequest request);
+
+   static const cmdServiceMethod = 1;
+}
+
+class ServiceImplementation implements ServiceDefinition {
+   @override
+   ServiceResponse serviceMethod(ServiceRequest request) {
+      // process the request and produce the response
+   }
+
+   // in the operations map, deserialize argument and serialize result
+
+   @override
+   late final Map<int, CommandHandler> operations = {
+      ServiceDefinition.cmdServiceMethod: (WorkerRequest r) => serviceMethod(ServiceRequest.deserialize(r.args[0])).serialize();
+   };
+}
+
+class ServiceWorker implements ServiceDefinition, WorkerService {
+
+   // in the worker overrides, serialize argument and deserialize result
+
+   @override
+   ServiceResponse serviceMethod(ServiceRequest request) async
+      => ServiceResponse.deserialize(await send(ServiceDefinition.cmdServiceMethod, [ request.serialize() ]));
+}
+```
 
 ## <a name="scaling"></a>Scaling Options
 
@@ -661,3 +754,31 @@ void main() {
 
 Web Workers are not connected to the Dart debugger. As a result, debugging them can be challenging.
 `ConsoleSquadronLogger` will help and display log messages in your browser's JavaScript console.
+
+## <a name="prod"></a>Releasing Your App
+
+Releasing your application for Dart Native platforms should be straightforward.
+
+To release the Browser version, the worker code must first be compiled to JavaScript:
+
+```
+dart compile js -o web/service_worker.dart.js lib/src/browser/service_worker.dart
+```
+
+You may also have to reference the JavaScript file from `index.html`:
+
+```html
+  <!-- Load service_worker.dart.js file -->
+  <script>
+    const scriptTag = document.createElement('script');
+    scriptTag.src = 'service_worker.dart.js';
+    scriptTag.defer = true;
+    scriptTag.type = 'text/javascript';
+    document.body.append(scriptTag);
+  </script>
+```
+
+## <a name="thanks"></a>Thanks!
+
+* [SwissCheese5](https://github.com/SwissCheese5) for his patience and feedback when implementing
+Squadron into his Flutter application.

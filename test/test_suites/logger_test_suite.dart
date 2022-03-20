@@ -153,6 +153,7 @@ void loggerTests() {
     Squadron.info('Squadron ID Test');
     expect(memoryLogger.length, equals(1));
     expect(memoryLogger.contains(Squadron.id), isTrue);
+    expect(memoryLogger.contains('should fail'), isFalse);
     expect(memoryLogger.contains('Squadron ID Test'), isTrue);
   });
 
@@ -181,18 +182,31 @@ void loggerTests() {
   });
 
   test('Iterable of objects', () {
-    final list = [Object(), 1, 'three', Future.value(1234567)];
+    final value = 1234567;
+    final list = [Object(), 1, 'three', Future.value(value)];
     Squadron.info(list);
     expect(memoryLogger.length, equals(4));
     for (var item in list) {
       expect(memoryLogger.contains(item.toString()), isTrue);
     }
-    expect(memoryLogger.contains('1234567'), isFalse);
+    expect(memoryLogger.contains(list.toString()), isFalse);
+    expect(memoryLogger.contains(value.toString()), isFalse);
   });
 
   test('Function', () {
     Squadron.info(() => 'log message from a function');
     expect(memoryLogger.length, equals(1));
     expect(memoryLogger.contains('log message from a function'), isTrue);
+  });
+
+  test('Multiline', () {
+    final message = 'log message\nspanning\nseveral lines';
+    Squadron.info(message);
+    final lines = message.split('\n');
+    expect(memoryLogger.length, equals(lines.length));
+    for (var i = 0; i < lines.length; i++) {
+      expect(memoryLogger.contains(lines[i]), isTrue);
+    }
+    expect(memoryLogger.contains(message), isFalse);
   });
 }

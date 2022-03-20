@@ -76,15 +76,18 @@ class VmWorkerChannel extends _SendPort implements WorkerChannel {
   /// This method must be called by the [Isolate] upon startup.
   @override
   void connect(Object channelInfo) {
-    if (channelInfo is ReceivePort) {
-      _sendPort!.send(WorkerResponse(channelInfo.sendPort).serialize());
-    } else if (channelInfo is SendPort) {
-      _sendPort!.send(WorkerResponse(channelInfo).serialize());
-    } else {
-      final msg =
-          'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort';
-      Squadron.severe(msg);
-      throw WorkerException(msg);
+    try {
+      if (channelInfo is ReceivePort) {
+        _sendPort!.send(WorkerResponse(channelInfo.sendPort).serialize());
+      } else if (channelInfo is SendPort) {
+        _sendPort!.send(WorkerResponse(channelInfo).serialize());
+      } else {
+        throw WorkerException(
+            'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort');
+      }
+    } catch (ex) {
+      Squadron.severe('Failed to post connection response: $ex');
+      rethrow;
     }
   }
 
@@ -93,7 +96,7 @@ class VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   void reply(WorkerResponse response) {
     if (response.hasError) {
-      Squadron.warning('replying with error: ${response.error}');
+      Squadron.fine('replying with error: ${response.error}');
     }
     _sendPort?.send(response.serialize());
   }
@@ -116,7 +119,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
       entryPoint,
       WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
           .serialize());
-  Squadron.finest('created Isolate #${isolate.hashCode}');
+  Squadron.config('created Isolate #${isolate.hashCode}');
   final response = WorkerResponse.deserialize(await receiver.first);
   if (response.hasError) {
     isolate.kill(priority: Isolate.immediate);
@@ -125,7 +128,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
     throw response.exception;
   } else {
     channel._sendPort = response.result;
-    Squadron.finest('connected to Isolate #${isolate.hashCode}');
+    Squadron.config('connected to Isolate #${isolate.hashCode}');
     return channel;
   }
 }

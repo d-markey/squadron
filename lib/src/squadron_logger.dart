@@ -51,23 +51,18 @@ abstract class BaseSquadronLogger implements SquadronLogger {
       }
       final header =
           '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
-      List<String> lines;
+      Iterable<String> lines;
       if (message is Iterable) {
         lines = message
             .map((m) => m?.toString() ?? '')
             .expand((m) => m.toString().split('\n'))
-            .where((m) => m.isNotEmpty)
-            .toList();
+            .where((m) => m.isNotEmpty);
       } else {
-        lines = message
-                ?.toString()
-                .split('\n')
-                .where((m) => m.isNotEmpty)
-                .toList() ??
+        lines = message?.toString().split('\n').where((m) => m.isNotEmpty) ??
             const [];
       }
-      for (var i = 0; i < lines.length; i++) {
-        log('$header ${lines[i]}');
+      for (var line in lines) {
+        log('$header $line');
       }
     }
   }

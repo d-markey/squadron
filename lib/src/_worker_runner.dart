@@ -29,7 +29,7 @@ class WorkerRunner {
 
     Squadron.setId(startRequest.id!);
     Squadron.logLevel = startRequest.logLevel!;
-    Squadron.fine('connecting worker with arguments $message');
+    Squadron.config('received connection request $message');
 
     final client = startRequest.client;
     if (client == null) {
@@ -60,7 +60,7 @@ class WorkerRunner {
   /// [operations] contains a map of command handlers indexed by command ID.
   static Future process(Map<int, CommandHandler> operations, Map message,
       WorkerMonitor monitor) async {
-    Squadron.fine(() => 'processing request $message');
+    Squadron.finest(() => 'processing request $message');
     final request = WorkerRequest.deserialize(message);
 
     if (request.terminate) {

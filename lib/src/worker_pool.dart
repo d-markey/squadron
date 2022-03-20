@@ -221,7 +221,7 @@ class WorkerPool<W extends Worker> {
             stop();
           }
         }).catchError((ex) {
-          Squadron.severe('provisionning workers failed');
+          Squadron.severe('provisionning workers failed with error $ex');
           while (_queue.isNotEmpty) {
             final task = _queue.removeFirst();
             task.cancel('provisionning workers failed');

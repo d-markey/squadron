@@ -10,7 +10,7 @@ void bootstrap(WorkerInitializer initializer, Map? command) async {
 
   final workerPort = ReceivePort();
   final monitor = WorkerMonitor(() {
-    Squadron.warning('terminating Isolate');
+    Squadron.config('terminating Isolate');
     workerPort.close();
     Isolate.current.kill();
   });

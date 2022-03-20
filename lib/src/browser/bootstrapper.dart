@@ -11,7 +11,7 @@ void bootstrap(WorkerInitializer initializer, Map? command) {
 
   final com = MessageChannel();
   final monitor = WorkerMonitor(() {
-    Squadron.warning('terminating Web worker');
+    Squadron.config('terminating Web worker');
     com.port1.close();
     scope.close();
   });
