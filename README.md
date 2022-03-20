@@ -17,7 +17,8 @@ some air.
 * [Getting Started](#started)
 * [Usage](#usage)
 * [Remarks on Isolates / Web Workers](#remarks)
-  * [Channels and types](#channels_and_types)
+  * [Channels, Types, and Browser Platforms](#channels_and_types)
+  * [Note on `package:json_annotation`](#json_annotation)
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
 * [Task Cancellation](#cancellation)
@@ -156,38 +157,32 @@ Web Workers have similar characteristics. Only primitive types and objects imple
 [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across
 Web Worker boundaries.
 
-### <a name="channels_and_types"></a>Channels and Types
+### <a name="channels_and_types"></a>Channels, Types, and Browser Platforms
 
 To provide a cross-platform development experience, Squadron encapsulates `Isolates` and `Web Workers` as
-well as the means to communicate between the main app's code and the code they execute. Internally, this is
-achieved via the [Channel] class and your code should never have to deal with channels, except on rare
-occasions such as communicating between threads.
+well as the means to communicate between the main app's code and the code they execute. This is achieved via
+the `Channel` class.
 
 ![](channels_and_types.png)
 
-[Channel] enables data exchange between threads and inherits the constraints of the target platforms, in
-particular in terms of types. Dart Native platforms will typically be quite relaxed when communicating
-between threads, even allowing custom Dart objects to come through (probably because the main thread and
-the worker threads share the same Dart runtime).
+`Channel` enables data exchange between threads and inherits the constraints of the target platforms, in
+particular the type system. Dart Native platforms will typically be quite relaxed when communicating between
+threads, even allowing custom Dart objects to come through.
 
 **But JavaScript will not be so forgiving because JavaScript doesn't know about Dart types.**
 
 To transfer a custom object, it must be serialized on the sender end and deserialized on the receiver end.
-One way of serializing a custom object is to store the object's attributes into a JSON structure. Packages
-such as [json_annotation](https://pub.dev/packages/json_annotation)/[json_serializable](https://pub.dev/packages/json_serializable)
-can even generate the serialization and deserialization code for your custom classes, usually based on
-`Map<String, dynamic>` data structures.
+There are several ways of serializing a custom object, e.g. JSON structure holding the object's attributes,
+or `String`/binary representation of the object...
 
 However, when the data to be transfered hits the browser's Web Worker implementation, only basic type information
 (number, boolean, string, array or map) is retained. In particular, generic types sent from one side will not be
-received with the same generic type on the ofther end. For instance, when a sending a `List<String>` or a
+received with the same generic type on the other end. For instance, when a sending a `List<String>` or a
 `Map<String, dynamic>` to a service worker, browser platforms will provide the data to the worker service as
-a bare `List` (= `List<dynamic>`) or a bare `Map` (= `Map<dynamic, dynamic>`). When using [json_annotation](https://pub.dev/packages/json_annotation),
-the `anyMap` option must be set to `true` to ensure the code will run on all platforms. This options tells
-the code builders from [json_serializable](https://pub.dev/packages/json_serializable) to handle JSON objects
-as `Map` instead of `Map<String, dynamic>`.
+a bare `List` (= `List<dynamic>`) or a bare `Map` (= `Map<dynamic, dynamic>`). This is an important point to
+ensure your app will run happily on browsers.
 
-You should keep serialization and deserialization as close to the [Channel] as possible, typically when calling
+Serialization and deserialization should be done as close to the `Channel` as possible, typically when calling
 the `send` method or when receiving data in the `operations` map.
 
 For example, the approach below is a generic way to transfer custom objects via Squadron:
@@ -247,6 +242,21 @@ class ServiceWorker implements ServiceDefinition, WorkerService {
 }
 ```
 
+### <a name="json_annotation"></a>Note on `package:json_annotation`
+
+Packages such as [json_annotation](https://pub.dev/packages/json_annotation) / [json_serializable](https://pub.dev/packages/json_serializable)
+can be used to generate the serialization and deserialization code for custom classes. By default, objects will be
+serialized to / deserialized from `Map<String, dynamic>` data structures.
+
+In Browser scenarios, this will lead to errors as the `Map<String, dynamic>` structures lose their strong types
+as they are processed by the browser.
+
+Luckily, [json_annotation](https://pub.dev/packages/json_annotation) provides the `anyMap` option to control code
+generation: by setting `anyMap` to `true`, the code builders from [json_serializable](https://pub.dev/packages/json_serializable)
+will handle JSON objects as `Map` instead of `Map<String, dynamic>`.
+
+**Setting `anyMap` to `true` is mandatory for classes that are transferred to/from Squadron workers.**
+
 ## <a name="scaling"></a>Scaling Options
 
 Squadron pools manage a collection of workers to avoid the cost of creating a new platform worker each time.
@@ -279,8 +289,8 @@ For instance, the fact that `Isolate`s and Web Workers do not share memory means
 a local, in-memory cache at worker level. Each worker would have their own cache, making expiration and update
 propagation difficult to implement.
 
-As a workaround, it is possible to implement a cache worker as a Singleton (no pooling) and to share the worker's
-`Channel` across other workers (`Channel` objects can be sent across platform workers via the `serialize()` method).
+Such a cache can however be implemented as a Singleton, communicating with other workers by sharing its `Channel`
+property (`Channel` objects can be sent across platform workers via the `serialize()` method).
 
 An example is provided in `cache_worker.dart`. To access the cache API seamlessly, an abstract class is first
 defined:
