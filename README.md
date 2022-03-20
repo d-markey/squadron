@@ -29,11 +29,11 @@ some air.
 
 ## <a name="features"></a>Features
 
-`Worker` class: a base worker class managing a platform thread (Isolate or Web Worker) and the communication between
+`Worker`: a base worker class managing a platform thread (Isolate or Web Worker) and the communication between
 clients and  workers.
 
-`WorkerPool<W>` class: a worker pool for `W` workers. The number of workers is configurable as well as the degree of
-concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool may be cancelled.
+`WorkerPool<W>`: a worker pool for `W` workers. The number of workers is configurable as well as the degree of
+concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool can be cancelled.
 
 ## <a name="demo"></a>Flutter Demo
 
@@ -47,7 +47,7 @@ Import squadron from your `pubspec.yaml` file:
 
 ```
 dependencies:
-   squadron: ^3.1.0
+   squadron: ^3.2.2
 ```
 
 ## <a name="usage"></a>Usage
@@ -72,11 +72,11 @@ class SampleService implements WorkerService {
     while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
   }
 
-  // command ids
+  // command IDs
   static const ioCommand = 1;
   static const cpuCommand = 2;
 
-  // map of command ids to implementatons
+  // command IDs --> implementations
   @override
   Map<int, CommandHandler> get operations => {
     ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
@@ -160,14 +160,14 @@ Web Worker boundaries.
 ### <a name="channels_and_types"></a>Channels, Types, and Browser Platforms
 
 To provide a cross-platform development experience, Squadron encapsulates `Isolates` and `Web Workers` as
-well as the means to communicate between the main app's code and the code they execute. This is achieved via
-the `Channel` class.
+well as the means to communicate between the main app's code and the code they execute. This is achieved
+via the `Channel` class.
 
 ![](channels_and_types.png)
 
-`Channel` enables data exchange between threads and inherits the constraints of the target platforms, in
-particular the type system. Dart Native platforms will typically be quite relaxed when communicating between
-threads, even allowing custom Dart objects to come through.
+`Channel` enables data exchange between threads and inherits the constraints of the target platforms,
+in particular the type system. Dart Native platforms will typically be quite relaxed when communicating
+between threads, even allowing custom Dart objects to come through.
 
 **But JavaScript will not be so forgiving because JavaScript doesn't know about Dart types.**
 
@@ -176,8 +176,8 @@ There are several ways of serializing a custom object, e.g. JSON structure holdi
 or `String`/binary representation of the object...
 
 However, when the data to be transfered hits the browser's Web Worker implementation, only basic type information
-(number, boolean, string, array or map) is retained. In particular, generic types sent from one side will not be
-received with the same generic type on the other end. For instance, when a sending a `List<String>` or a
+(number, boolean, string, array or map) is retained. In particular, generic types sent from one side will not
+be received with the same generic type on the other end. For instance, when a sending a `List<String>` or a
 `Map<String, dynamic>` to a service worker, browser platforms will provide the data to the worker service as
 a bare `List` (= `List<dynamic>`) or a bare `Map` (= `Map<dynamic, dynamic>`). This is an important point to
 ensure your app will run happily on browsers.
@@ -249,7 +249,7 @@ can be used to generate the serialization and deserialization code for custom cl
 serialized to / deserialized from `Map<String, dynamic>` data structures.
 
 In Browser scenarios, this will lead to errors as the `Map<String, dynamic>` structures lose their strong types
-as they are processed by the browser.
+when they get processed by the browser.
 
 Luckily, [json_annotation](https://pub.dev/packages/json_annotation) provides the `anyMap` option to control code
 generation: by setting `anyMap` to `true`, the code builders from [json_serializable](https://pub.dev/packages/json_serializable)
@@ -318,8 +318,7 @@ class CacheService implements Cache, WorkerService {
   @override
   bool containsKey(dynamic key) {
     // use get() as it implements the expiration logic
-    final data = get(key);
-    return data != null;
+    return get(key) != null;
   }
 
   @override
@@ -332,7 +331,7 @@ class CacheService implements Cache, WorkerService {
     // return cache stats
   }
 
-  // command ids
+  // command IDs
   static const getOperation = 1;
   static const containsOperation = 2;
   static const setOperation = 3;
@@ -375,6 +374,9 @@ class CacheWorker extends Worker implements Cache {
 }
 ```
 
+Note how `getStats()` implementations require serialization/deserialization of the `CacheStat` object. This is
+necessary to cross platform worker boundaries. See [].
+
 Finally, a cache client is implemented to proxy calls from other workers to the `CacheWorker`. This `CacheClient`
 can be constructed with a `Channel` that will be obtained from the `CacheWorker`. 
 
@@ -406,8 +408,8 @@ class CacheClient implements Cache {
 }
 ```
 
-Note how `getStats()` implementations require serialization/deserialization of the `CacheStat` object. This is
-necessary to cross platform worker boundaries.
+The following service is an example for a computation leveraging the shared cache. Its
+constructor takes a `Cache` parameter.
 
 ```dart
 class OtherService implements WorkerService {
@@ -458,13 +460,14 @@ class OtherWorker extends Worker implements OtherService {
 }
 ```
 
-The platform worker assembles everything. It is essentially the same as above, with some extra initialization code
-to set up a `CacheClient`.
+The platform worker assembles everything. It is essentially the same as above, with some extra initialization
+code to set up a `CacheClient` and provide it to the `CacheService`.
 
-To create a `CacheClient` from within the platform worker, the `CacheWorker`'s `Channel` must be somehow passed to
-the `OtherWorker`. This is done using the `share()` and the `serialize()` methods provided by `Channel`. These
-methods will return an opaque object that can be safely sent across workers and deserialized to recreate a
-`Channel`, thereby bridging the gap between the `OtherService` instances and the `CacheService` Singleton.
+To create a `CacheClient` from within the platform worker, the `CacheWorker`'s `Channel` must be somehow
+passed to the `OtherWorker`. This is done using the `share()` and the `serialize()` methods provided by
+`Channel`. These methods will return an opaque object that can be safely sent across workers and deserialized
+to recreate a `Channel`, thereby bridging the gap between the `OtherService` instances and the `CacheService`
+Singleton.
 
 ```dart
 OtherWorker createOtherWorker([CacheWorker? cache]) =>
