@@ -1,12 +1,7 @@
-import 'squadron.dart';
-import 'worker_exception.dart';
-import '_worker_monitor.dart';
-import 'worker_request.dart';
-import 'worker_response.dart';
-import 'worker_service.dart';
+part of '_bootstrapper_stub.dart';
 
-class WorkerRunner {
-  WorkerRunner._();
+class _WorkerRunner {
+  _WorkerRunner._();
 
   /// Called by the platform worker upon startup, in response to a start [WorkerRequest].
   /// [channelInfo] is an opaque object sent back from the platform worker to the Squadron [Worker]
@@ -58,8 +53,8 @@ class WorkerRunner {
 
   /// Generic [WorkerRequest] handler based on a map of command ids/command methods.
   /// [operations] contains a map of command handlers indexed by command ID.
-  static Future process(Map<int, CommandHandler> operations, Map message,
-      WorkerMonitor monitor) async {
+  static void process(Map<int, CommandHandler> operations, Map message,
+      _WorkerMonitor monitor) async {
     Squadron.finest(() => 'processing request $message');
     final request = WorkerRequest.deserialize(message);
 

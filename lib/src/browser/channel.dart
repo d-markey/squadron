@@ -22,7 +22,19 @@ class _MessagePort {
     try {
       _sendPort!.postMessage(message, transfer);
     } catch (ex) {
-      Squadron.severe('Failed to post message: $ex');
+      Squadron.severe('Failed to post request message: $ex');
+      Squadron.severe('   message is $message with tranferables = $transfer');
+      rethrow;
+    }
+  }
+
+  void _postResponse(WorkerResponse res) {
+    final message = res.serialize();
+    final transfer = _getTransferables(message).toList();
+    try {
+      _sendPort!.postMessage(message, transfer);
+    } catch (ex) {
+      Squadron.severe('Failed to post response message: $ex');
       Squadron.severe('   message is $message with tranferables = $transfer');
       rethrow;
     }
@@ -30,10 +42,12 @@ class _MessagePort {
 }
 
 /// [Channel] implementation for the JavaScript world.
-class JsChannel extends _MessagePort implements Channel {
+class _JsChannel extends _MessagePort implements Channel {
+  _JsChannel._();
+
   /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].
   @override
-  Channel share() => _JsForwardChannel(_sendPort!);
+  Channel share() => _JsForwardChannel._(_sendPort!);
 
   /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].
   @override
@@ -44,10 +58,10 @@ class JsChannel extends _MessagePort implements Channel {
     }
   }
 
-  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
-  /// This method expects a single value from the [web.Worker].
+  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is
+  /// cancelled.
   @override
-  void cancelToken(CancellationToken token) {
+  void notifyCancellation(CancellationToken token) {
     if (token.cancelled) {
       _postRequest(WorkerRequest.cancel(token));
     }
@@ -82,22 +96,18 @@ class JsChannel extends _MessagePort implements Channel {
 }
 
 /// [WorkerChannel] implementation for the JavaScript world.
-class JsWorkerChannel extends _MessagePort implements WorkerChannel {
+class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
+  _JsWorkerChannel._();
+
   /// Sends the [web.MessagePort] to communicate with the [web.Worker].
   /// This method must be called by the [web.Worker] upon startup.
   @override
   void connect(Object channelInfo) {
-    try {
-      if (channelInfo is web.MessagePort) {
-        _sendPort!.postMessage(
-            WorkerResponse(channelInfo).serialize(), [channelInfo]);
-      } else {
-        throw WorkerException(
-            'Invalid channelInfo ${channelInfo.runtimeType}; expected MessagePort');
-      }
-    } catch (ex) {
-      Squadron.severe('Failed to post connection response: $ex');
-      rethrow;
+    if (channelInfo is web.MessagePort) {
+      _postResponse(WorkerResponse(channelInfo));
+    } else {
+      throw WorkerException(
+          'Invalid channelInfo ${channelInfo.runtimeType}; expected MessagePort');
     }
   }
 
@@ -106,25 +116,18 @@ class JsWorkerChannel extends _MessagePort implements WorkerChannel {
   @override
   void reply(WorkerResponse response) {
     if (response.hasError) {
-      Squadron.fine('replying with error: ${response.error}');
+      Squadron.finer('replying with error: ${response.error}');
     }
-    final message = response.serialize();
-    final transfer = _getTransferables(message).toList();
-    try {
-      _sendPort?.postMessage(message, transfer);
-    } catch (ex) {
-      Squadron.severe('Failed to post message: $ex');
-      Squadron.severe('   message is $message with tranferables = $transfer');
-      rethrow;
-    }
+    _postResponse(response);
   }
 }
 
 /// [Channel] used to communicate between [web.Worker]s.
-/// Creates a [web.MessageChannel] to receive commands on [port2] and forwards them to the worker's [web.MessagePort] via [port1].
-class _JsForwardChannel extends JsChannel {
+/// Creates a [web.MessageChannel] to receive commands on [web.MessageChannel.port2] and forwards them
+/// to the worker's [web.MessagePort] via [web.MessageChannel.port1].
+class _JsForwardChannel extends _JsChannel {
   /// [remote] is the worker's [web.MessagePort]
-  _JsForwardChannel(web.MessagePort remote) {
+  _JsForwardChannel._(web.MessagePort remote) : super._() {
     _remote = remote;
     _com.port1.onMessage.listen(_forward);
     _sendPort = _com.port2;
@@ -208,14 +211,11 @@ String _getId() {
 }
 
 /// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-/// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [JsWorkerChannel.connect].
+/// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
-  final channel = JsChannel();
+  final channel = _JsChannel._();
   final completer = Completer<Channel>();
   final com = web.MessageChannel();
-  final message =
-      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();
-  final transfer = _getTransferables(message).toList();
   final worker = web.Worker(entryPoint);
   Squadron.config('created Web Worker #${worker.hashCode}');
   worker.onError.listen((event) {
@@ -234,6 +234,9 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
           WorkerException('error in Web Worker #${worker.hashCode}: $msg'));
     }
   });
+  final message =
+      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();
+  final transfer = _getTransferables(message).toList();
   try {
     worker.postMessage(message, transfer);
   } catch (ex) {
@@ -245,6 +248,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   }
   com.port1.onMessage.listen((event) {
     com.port1.close();
+    Squadron.info('received event $event with data ${event.data}');
     final response = WorkerResponse.deserialize(event.data);
     if (response.hasError) {
       worker.terminate();
@@ -260,10 +264,12 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   return completer.future;
 }
 
-/// Creates a [JsChannel] from a [web.MessagePort].
+/// Creates a [_JsChannel] from a [web.MessagePort].
 Channel? deserializeChannel(dynamic channelInfo) =>
-    (channelInfo == null) ? null : (JsChannel().._sendPort = channelInfo);
+    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);
 
-/// Creates a [JsWorkerChannel] from a [web.MessagePort].
+/// Creates a [_JsWorkerChannel] from a [web.MessagePort].
 WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
-    (channelInfo == null) ? null : (JsWorkerChannel().._sendPort = channelInfo);
+    (channelInfo == null)
+        ? null
+        : (_JsWorkerChannel._().._sendPort = channelInfo);

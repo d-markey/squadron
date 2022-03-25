@@ -1,4 +1,5 @@
 import 'channel.dart' show Channel, WorkerChannel;
+import 'worker_request.dart';
 
 /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
 /// The future must not complete before the worker is ready to serve requests.

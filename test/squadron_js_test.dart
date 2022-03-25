@@ -8,6 +8,7 @@ import 'package:test/test.dart';
 
 import 'classes/memory_logger.dart';
 import 'test_suites/cancellation_test_suite.dart';
+import 'test_suites/local_worker_test_suite.dart';
 import 'test_suites/logger_test_suite.dart';
 import 'test_suites/web_worker_test_suite.dart';
 import 'test_suites/worker_pool_test_suite.dart';
@@ -38,6 +39,10 @@ void main() async {
 
     group("Worker - ", () {
       workerTests();
+    });
+
+    group("Local Worker - ", () {
+      localWorkerTests();
     });
 
     group("Worker pool - ", () {

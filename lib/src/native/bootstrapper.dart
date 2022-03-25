@@ -1,22 +1,24 @@
 import 'dart:isolate';
 
-import '../_worker_runner.dart';
 import '../squadron.dart';
-import '../_worker_monitor.dart';
 import '../worker_service.dart';
+
+import '../_bootstrapper_stub.dart'
+    show buildMessageProcessor, buildConnector, buildMonitor;
 
 void bootstrap(WorkerInitializer initializer, Map? command) async {
   final operations = <int, CommandHandler>{};
 
   final workerPort = ReceivePort();
-  final monitor = WorkerMonitor(() {
+  final monitor = buildMonitor(() {
     Squadron.config('terminating Isolate');
     workerPort.close();
     Isolate.current.kill();
   });
 
-  workerPort
-      .listen((command) => WorkerRunner.process(operations, command, monitor));
+  final process = buildMessageProcessor(operations, monitor);
+  workerPort.listen((message) => process(message));
 
-  await WorkerRunner.connect(command, workerPort, operations, initializer);
+  final connect = buildConnector(workerPort, operations, initializer);
+  await connect(command!);
 }

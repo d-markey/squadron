@@ -13,13 +13,37 @@ class _SendPort {
   /// Otherwise, [SendPort] to return values to the client.
   SendPort? _sendPort;
 
-  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
+  /// [Channel] serialization in Native world returns the [SendPort].
   dynamic serialize() => _sendPort;
+
+  void _postRequest(WorkerRequest req) {
+    final message = req.serialize();
+    try {
+      _sendPort!.send(message);
+    } catch (ex) {
+      Squadron.severe('Failed to post request message: $ex');
+      Squadron.severe('   message is $message');
+      rethrow;
+    }
+  }
+
+  void _postResponse(WorkerResponse res) {
+    final message = res.serialize();
+    try {
+      _sendPort!.send(message);
+    } catch (ex) {
+      Squadron.severe('Failed to post response message: $ex');
+      Squadron.severe('   message is $message');
+      rethrow;
+    }
+  }
 }
 
-/// [Channel] implementation for the native world.
-class VmChannel extends _SendPort implements Channel {
-  /// [Channel] sharing in native world returns the same instance.
+/// [Channel] implementation for the Native world.
+class _VmChannel extends _SendPort implements Channel {
+  _VmChannel._();
+
+  /// [Channel] sharing in Native world returns the same instance.
   @override
   Channel share() => this;
 
@@ -27,7 +51,7 @@ class VmChannel extends _SendPort implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _sendPort?.send(WorkerRequest.stop().serialize());
+      _postRequest(WorkerRequest.stop());
       _sendPort = null;
     }
   }
@@ -35,9 +59,9 @@ class VmChannel extends _SendPort implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
   /// This method expects a single value from the [web.Worker].
   @override
-  void cancelToken(CancellationToken token) {
+  void notifyCancellation(CancellationToken token) {
     if (token.cancelled) {
-      _sendPort!.send(WorkerRequest.cancel(token).serialize());
+      _postRequest(WorkerRequest.cancel(token));
     }
   }
 
@@ -47,8 +71,7 @@ class VmChannel extends _SendPort implements Channel {
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final receiver = ReceivePort();
-    _sendPort!.send(
-        WorkerRequest(receiver.sendPort, command, args, token).serialize());
+    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
     final res = WorkerResponse.deserialize(await receiver.first);
     return res.result as T;
   }
@@ -60,8 +83,7 @@ class VmChannel extends _SendPort implements Channel {
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token}) async* {
     final receiver = ReceivePort();
-    _sendPort!.send(
-        WorkerRequest(receiver.sendPort, command, args, token).serialize());
+    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
     await for (var item in receiver) {
       final res = WorkerResponse.deserialize(item);
       if (res.endOfStream) break;
@@ -71,23 +93,20 @@ class VmChannel extends _SendPort implements Channel {
 }
 
 /// [WorkerChannel] implementation for the native world.
-class VmWorkerChannel extends _SendPort implements WorkerChannel {
+class _VmWorkerChannel extends _SendPort implements WorkerChannel {
+  _VmWorkerChannel._();
+
   /// Sends the [SendPort] to communicate with the [Isolate].
   /// This method must be called by the [Isolate] upon startup.
   @override
   void connect(Object channelInfo) {
-    try {
-      if (channelInfo is ReceivePort) {
-        _sendPort!.send(WorkerResponse(channelInfo.sendPort).serialize());
-      } else if (channelInfo is SendPort) {
-        _sendPort!.send(WorkerResponse(channelInfo).serialize());
-      } else {
-        throw WorkerException(
-            'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort');
-      }
-    } catch (ex) {
-      Squadron.severe('Failed to post connection response: $ex');
-      rethrow;
+    if (channelInfo is ReceivePort) {
+      _postResponse(WorkerResponse(channelInfo.sendPort));
+    } else if (channelInfo is SendPort) {
+      _postResponse(WorkerResponse(channelInfo));
+    } else {
+      throw WorkerException(
+          'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort');
     }
   }
 
@@ -96,9 +115,9 @@ class VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   void reply(WorkerResponse response) {
     if (response.hasError) {
-      Squadron.fine('replying with error: ${response.error}');
+      Squadron.finer('replying with error: ${response.error}');
     }
-    _sendPort?.send(response.serialize());
+    _postResponse(response);
   }
 }
 
@@ -111,9 +130,9 @@ String _getId() {
 }
 
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [VmWorkerChannel.connect].
+/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
-  final channel = VmChannel();
+  final channel = _VmChannel._();
   final receiver = ReceivePort();
   final isolate = await Isolate.spawn(
       entryPoint,
@@ -133,10 +152,12 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   }
 }
 
-/// Creates a [VmChannel] from a [SendPort].
+/// Creates a [_VmChannel] from a [SendPort].
 Channel? deserializeChannel(dynamic channelInfo) =>
-    channelInfo == null ? null : (VmChannel().._sendPort = channelInfo);
+    channelInfo == null ? null : (_VmChannel._().._sendPort = channelInfo);
 
-/// Creates a [VmWorkerChannel] from a [SendPort].
+/// Creates a [_VmWorkerChannel] from a [SendPort].
 WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
-    channelInfo == null ? null : (VmWorkerChannel().._sendPort = channelInfo);
+    channelInfo == null
+        ? null
+        : (_VmWorkerChannel._().._sendPort = channelInfo);

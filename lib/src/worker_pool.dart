@@ -10,11 +10,12 @@ import 'worker_service.dart';
 import 'worker_stat.dart';
 
 import 'worker_task.dart';
-import '_pool_worker.dart';
+
+part '_pool_worker.dart';
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
-class WorkerPool<W extends Worker> {
+class WorkerPool<W extends Worker> implements WorkerService {
   /// Create a worker pool.
   ///
   /// Workers are instantiated using the provided [_workerFactory].
@@ -38,7 +39,7 @@ class WorkerPool<W extends Worker> {
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
 
-  final _workers = <PoolWorker<W>>[];
+  final _workers = <_PoolWorker<W>>[];
 
   final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
 
@@ -72,7 +73,7 @@ class WorkerPool<W extends Worker> {
       final tasks = <Future>[];
       while (_workers.length < count) {
         final poolWorker =
-            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
+            _PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
         _workers.add(poolWorker);
         tasks.add(poolWorker.worker.start());
       }
@@ -90,7 +91,7 @@ class WorkerPool<W extends Worker> {
     return _provisionWorkers(concurrencySettings.min(0));
   }
 
-  int _removeWorker(PoolWorker poolWorker, bool force) {
+  int _removeWorker(_PoolWorker poolWorker, bool force) {
     if (force || _workers.length > concurrencySettings.minWorkers) {
       poolWorker.worker.stop();
       _workers.remove(poolWorker);
@@ -108,7 +109,7 @@ class WorkerPool<W extends Worker> {
   /// not receive any new workload.
   /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
-    List<PoolWorker<W>> targets;
+    List<_PoolWorker<W>> targets;
     bool force;
     if (predicate != null) {
       // kill workers that are idle and satisfy the predicate
@@ -199,40 +200,42 @@ class WorkerPool<W extends Worker> {
       return;
     }
     _timer = Timer(Duration.zero, () {
-      _workers.removeWhere(PoolWorker.isStopped);
+      _workers.removeWhere(_PoolWorker.isStopped);
       _queue.removeWhere((t) => t.isCancelled);
       if (_queue.isNotEmpty) {
-        _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {
-          int maxCapacity;
-          while (_queue.isNotEmpty && (maxCapacity = _getMaxCapacity()) > 0) {
-            if (maxCapacity > 1) {
-              maxCapacity -= 1;
-            }
-            for (var idx = 0;
-                idx < _workers.length && _queue.isNotEmpty;
-                idx++) {
-              final w = _workers[idx];
-              if (w.capacity >= maxCapacity) {
-                w.run(_queue.removeFirst());
+        scheduleMicrotask(() {
+          _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {
+            int maxCapacity;
+            while (_queue.isNotEmpty && (maxCapacity = _getMaxCapacity()) > 0) {
+              if (maxCapacity > 1) {
+                maxCapacity -= 1;
+              }
+              for (var idx = 0;
+                  idx < _workers.length && _queue.isNotEmpty;
+                  idx++) {
+                final w = _workers[idx];
+                if (w.capacity >= maxCapacity) {
+                  w.run(_queue.removeFirst());
+                }
               }
             }
-          }
-          if (_stopped) {
-            stop();
-          }
-        }).catchError((ex) {
-          Squadron.severe('provisionning workers failed with error $ex');
-          while (_queue.isNotEmpty) {
-            final task = _queue.removeFirst();
-            task.cancel('provisionning workers failed');
-          }
+            if (_stopped) {
+              stop();
+            }
+          }).catchError((ex) {
+            Squadron.severe('provisionning workers failed with error $ex');
+            while (_queue.isNotEmpty) {
+              final task = _queue.removeFirst();
+              task.cancel('provisionning workers failed');
+            }
+          });
         });
       }
     });
   }
 
   int _getMaxCapacity() {
-    _workers.sort(PoolWorker.compareCapacityDesc);
+    _workers.sort(_PoolWorker.compareCapacityDesc);
     return _workers.first.capacity;
   }
 
@@ -263,11 +266,12 @@ class WorkerPool<W extends Worker> {
   }
 
   /// Worker statistics.
-  Iterable<WorkerStat> get stats => _workers.map(PoolWorker.getStats);
+  Iterable<WorkerStat> get stats => _workers.map(_PoolWorker.getStats);
 
   /// Full worker statistics.
   Iterable<WorkerStat> get fullStats => _deadWorkerStats.followedBy(stats);
 
-  /// worker pools inheriting from [WorkerService] do not need an [operations] map
-  final Map<int, CommandHandler> operations = const {};
+  /// Worker pools do not need an [operations] map.
+  @override
+  final Map<int, CommandHandler> operations = WorkerService.noOperations;
 }

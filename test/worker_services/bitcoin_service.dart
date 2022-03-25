@@ -17,6 +17,6 @@ class BitcoinService implements WorkerService {
 
   @override
   late final Map<int, CommandHandler> operations = {
-    BitcoinService.rateCommand: (r) => getRate(r.args[0]),
+    rateCommand: (r) => getRate(r.args[0]),
   };
 }

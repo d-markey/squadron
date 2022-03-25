@@ -1,4 +1,5 @@
 export 'squadron_service.dart';
+export 'squadron_local_worker.dart';
 export 'squadron_worker.dart';
 
 export 'src/worker_pool.dart' show WorkerPool;

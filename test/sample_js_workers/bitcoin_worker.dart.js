@@ -6644,49 +6644,360 @@
       _.end = t2;
       _.text = t3;
     },
+    buildConnector(channelInfo, operations, initializer) {
+      return new A.buildConnector_closure(channelInfo, operations, initializer);
+    },
+    buildMessageProcessor(operations, monitor) {
+      return new A.buildMessageProcessor_closure(operations, monitor);
+    },
+    _WorkerRunner_connect(message, channelInfo, operations, initializer) {
+      return A._WorkerRunner_connect$body(message, channelInfo, operations, initializer);
+    },
+    _WorkerRunner_connect$body(message, channelInfo, operations, initializer) {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, $init, service, e, e0, st, t2, value, exception, startRequest, t1, $async$exception;
+      var $async$_WorkerRunner_connect = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1) {
+          $async$currentError = $async$result;
+          $async$goto = $async$handler;
+        }
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              startRequest = A.WorkerRequest$deserialize(message);
+              t1 = startRequest.id;
+              t1.toString;
+              t2 = $.Squadron__id == null;
+              if (t2 && true) {
+                value = B.JSString_methods.trim$0(t1);
+                if (value.length !== 0)
+                  if (t2)
+                    $.Squadron__id = value;
+              }
+              startRequest.logLevel.toString;
+              message.toString$0(0);
+              client = startRequest.client;
+              if (client == null) {
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $async$handler = 4;
+              t1 = operations.get$isNotEmpty(operations);
+              if (t1) {
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("already connected", null, null, null), null));
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              $init = initializer.call$1(startRequest);
+              $async$goto = type$.Future_dynamic._is($init) ? 7 : 9;
+              break;
+            case 7:
+              // then
+              $async$goto = 10;
+              return A._asyncAwait($init, $async$_WorkerRunner_connect);
+            case 10:
+              // returning from await.
+              // goto join
+              $async$goto = 8;
+              break;
+            case 9:
+              // else
+              $async$result = $init;
+            case 8:
+              // join
+              service = $async$result;
+              operations.addAll$1(0, service.get$operations());
+              client._postResponse$1(A.WorkerResponse$(channelInfo));
+              $async$handler = 2;
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 4:
+              // catch
+              $async$handler = 3;
+              $async$exception = $async$currentError;
+              t1 = A.unwrapException($async$exception);
+              if (t1 instanceof A.WorkerException) {
+                e = t1;
+                J.reply$1$z(client, A.WorkerResponse$withError(e, null));
+              } else {
+                e0 = t1;
+                st = A.getTraceFromException($async$exception);
+                J.reply$1$z(client, A.WorkerResponse$withError(e0, J.toString$0$(st)));
+              }
+              // goto after finally
+              $async$goto = 6;
+              break;
+            case 3:
+              // uncaught
+              // goto rethrow
+              $async$goto = 2;
+              break;
+            case 6:
+              // after finally
+            case 1:
+              // return
+              return A._asyncReturn($async$returnValue, $async$completer);
+            case 2:
+              // rethrow
+              return A._asyncRethrow($async$currentError, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$_WorkerRunner_connect, $async$completer);
+    },
+    _WorkerRunner_process(operations, message, monitor) {
+      return A._WorkerRunner_process$body(operations, message, monitor);
+    },
+    _WorkerRunner_process$body(operations, message, monitor) {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, res, e, e0, st, t1, msg, t2, exception, request, $async$exception, $async$temp1;
+      var $async$_WorkerRunner_process = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1) {
+          $async$currentError = $async$result;
+          $async$goto = $async$handler;
+        }
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              request = A.WorkerRequest$deserialize(message);
+              if (request.command === -3) {
+                if (monitor._executing === 0)
+                  monitor._terminate.call$0();
+                else
+                  monitor._terminationRequested = true;
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              if (request.command === -2) {
+                t1 = request._cancelToken;
+                t1.toString;
+                t1 = monitor._getTokenRef$1(t1);
+                if (t1.__bootstrapper_stub$_exception == null)
+                  t1.__bootstrapper_stub$_exception = A.CancelledException$(null);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              if (request.command === -1) {
+                msg = "Unhandled connect request: " + message.toString$0(0);
+                t1 = request.client;
+                if (t1 != null)
+                  t1.reply$1(0, A.WorkerResponse$withError(A.WorkerException$(msg, null, null, null), null));
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              client = request.client;
+              if (client == null) {
+                A.S(request);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              tokenRef = monitor.begin$1(request);
+              $async$handler = 4;
+              if (operations.get$isEmpty(operations)) {
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Worker service is not ready", null, null, null), null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
+                break;
+              }
+              t1 = tokenRef;
+              t1 = t1 == null ? null : t1.get$exception() != null;
+              if (t1 === true) {
+                J.reply$1$z(client, A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
+                break;
+              }
+              op = operations.$index(0, request.command);
+              if (op == null) {
+                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Unknown command: " + A.S(request), null, null, null), null));
+                $async$next = [1];
+                // goto finally
+                $async$goto = 5;
+                break;
+              }
+              result = op.call$1(request);
+              $async$goto = type$.Future_dynamic._is(result) ? 7 : 8;
+              break;
+            case 7:
+              // then
+              $async$goto = 9;
+              return A._asyncAwait(result, $async$_WorkerRunner_process);
+            case 9:
+              // returning from await.
+              result = $async$result;
+            case 8:
+              // join
+              $async$goto = result instanceof A.Stream ? 10 : 12;
+              break;
+            case 10:
+              // then
+              t1 = new A._StreamIterator(A.checkNotNullable(result, "stream", type$.Object), type$._StreamIterator_dynamic);
+              $async$handler = 13;
+            case 16:
+              // for condition
+              $async$temp1 = A;
+              $async$goto = 18;
+              return A._asyncAwait(t1.moveNext$0(), $async$_WorkerRunner_process);
+            case 18:
+              // returning from await.
+              if (!$async$temp1.boolConversionCheck($async$result)) {
+                // goto after for
+                $async$goto = 17;
+                break;
+              }
+              res = t1.get$current();
+              client._postResponse$1(new A.WorkerResponse(false, null, res, null, false, false));
+              t2 = tokenRef;
+              t2 = t2 == null ? null : t2.get$exception() != null;
+              if (t2 === true) {
+                t2 = A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null);
+                t2._error != null;
+                client._postResponse$1(t2);
+              }
+              // goto for condition
+              $async$goto = 16;
+              break;
+            case 17:
+              // after for
+              $async$next.push(15);
+              // goto finally
+              $async$goto = 14;
+              break;
+            case 13:
+              // uncaught
+              $async$next = [4];
+            case 14:
+              // finally
+              $async$handler = 4;
+              $async$goto = 19;
+              return A._asyncAwait(t1.cancel$0(), $async$_WorkerRunner_process);
+            case 19:
+              // returning from await.
+              // goto the next finally handler
+              $async$goto = $async$next.pop();
+              break;
+            case 15:
+              // after finally
+              // goto join
+              $async$goto = 11;
+              break;
+            case 12:
+              // else
+              J.reply$1$z(client, A.WorkerResponse$(result));
+            case 11:
+              // join
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
+              break;
+            case 4:
+              // catch
+              $async$handler = 3;
+              $async$exception = $async$currentError;
+              t1 = A.unwrapException($async$exception);
+              if (t1 instanceof A.WorkerException) {
+                e = t1;
+                J.reply$1$z(client, A.WorkerResponse$withError(e, null));
+              } else {
+                e0 = t1;
+                st = A.getTraceFromException($async$exception);
+                J.reply$1$z(client, A.WorkerResponse$withError(e0, J.toString$0$(st)));
+              }
+              $async$next.push(6);
+              // goto finally
+              $async$goto = 5;
+              break;
+            case 3:
+              // uncaught
+              $async$next = [2];
+            case 5:
+              // finally
+              $async$handler = 2;
+              J.reply$1$z(client, B.WorkerResponse_LpI);
+              t1 = type$.nullable__CancellationTokenReference._as(tokenRef);
+              if (t1 != null)
+                if (--t1.refCount === 0 && t1.get$exception() == null)
+                  monitor.cancelTokens.remove$1(0, t1.id);
+              t1 = --monitor._executing;
+              if (monitor._terminationRequested && t1 === 0)
+                monitor._terminate.call$0();
+              // goto the next finally handler
+              $async$goto = $async$next.pop();
+              break;
+            case 6:
+              // after finally
+            case 1:
+              // return
+              return A._asyncReturn($async$returnValue, $async$completer);
+            case 2:
+              // rethrow
+              return A._asyncRethrow($async$currentError, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$_WorkerRunner_process, $async$completer);
+    },
+    buildConnector_closure: function buildConnector_closure(t0, t1, t2) {
+      this.channelInfo = t0;
+      this.operations = t1;
+      this.initializer = t2;
+    },
+    buildMessageProcessor_closure: function buildMessageProcessor_closure(t0, t1) {
+      this.operations = t0;
+      this.monitor = t1;
+    },
     _CancellationTokenReference: function _CancellationTokenReference(t0, t1) {
       var _ = this;
       _.refCount = 0;
-      _.__worker_monitor$_exception = null;
+      _.__bootstrapper_stub$_exception = null;
       _.id = t0;
       _._cancellation_token$_message = t1;
     },
-    WorkerMonitor: function WorkerMonitor(t0, t1) {
+    _WorkerMonitor: function _WorkerMonitor(t0, t1) {
       var _ = this;
       _._terminate = t0;
       _._terminationRequested = false;
       _._executing = 0;
       _.cancelTokens = t1;
     },
-    WorkerMonitor__getTokenRef_closure: function WorkerMonitor__getTokenRef_closure(t0) {
+    _WorkerMonitor__getTokenRef_closure: function _WorkerMonitor__getTokenRef_closure(t0) {
       this.token = t0;
     },
     bootstrap(initializer, command) {
-      var t4,
+      var t2, t3, t4,
         scope = type$.DedicatedWorkerGlobalScope._as(self),
         t1 = type$.int,
         operations = A.LinkedHashMap_LinkedHashMap$_empty(t1, type$.dynamic_Function_WorkerRequest),
         com = new MessageChannel(),
-        t2 = com.port1,
-        t3 = type$.nullable_void_Function_MessageEvent;
-      t1 = t3._as(new A.bootstrap_closure(operations, new A.WorkerMonitor(new A.bootstrap_closure0(com, scope), A.LinkedHashMap_LinkedHashMap$_empty(t1, type$._CancellationTokenReference))));
+        process = A.buildMessageProcessor(operations, new A._WorkerMonitor(new A.bootstrap_closure(com, scope), A.LinkedHashMap_LinkedHashMap$_empty(t1, type$._CancellationTokenReference)));
+      t1 = com.port1;
+      t2 = type$.nullable_void_Function_MessageEvent;
+      t3 = t2._as(new A.bootstrap_closure0(process));
       type$.nullable_void_Function._as(null);
       t4 = type$.MessageEvent;
-      A._EventStreamSubscription$(t2, "message", t1, false, t4);
-      A._EventStreamSubscription$(scope, "message", t3._as(new A.bootstrap_closure1(com, operations, initializer)), false, t4);
+      A._EventStreamSubscription$(t1, "message", t3, false, t4);
+      A._EventStreamSubscription$(scope, "message", t2._as(new A.bootstrap_closure1(A.buildConnector(com.port2, operations, initializer))), false, t4);
     },
-    bootstrap_closure0: function bootstrap_closure0(t0, t1) {
+    bootstrap_closure: function bootstrap_closure(t0, t1) {
       this.com = t0;
       this.scope = t1;
     },
-    bootstrap_closure: function bootstrap_closure(t0, t1) {
-      this.operations = t0;
-      this.monitor = t1;
+    bootstrap_closure0: function bootstrap_closure0(t0) {
+      this.process = t0;
     },
-    bootstrap_closure1: function bootstrap_closure1(t0, t1, t2) {
-      this.com = t0;
-      this.operations = t1;
-      this.initializer = t2;
+    bootstrap_closure1: function bootstrap_closure1(t0) {
+      this.connect = t0;
     },
     _isObject0(value) {
       return value != null && typeof value != "number" && !A._isBool(value) && typeof value != "string";
@@ -6821,7 +7132,7 @@
     },
     _MessagePort: function _MessagePort() {
     },
-    JsWorkerChannel: function JsWorkerChannel() {
+    _JsWorkerChannel: function _JsWorkerChannel() {
       this._sendPort = null;
     },
     CancellationToken: function CancellationToken(t0, t1) {
@@ -6857,7 +7168,7 @@
       if (t1 == null)
         t1 = null;
       else {
-        t2 = new A.JsWorkerChannel();
+        t2 = new A._JsWorkerChannel();
         t2._sendPort = type$.nullable_MessagePort._as(t1);
         t1 = t2;
       }
@@ -7087,306 +7398,6 @@
         index = B.JSString_methods.indexOf$2(context, text, index + 1);
       }
       return null;
-    },
-    WorkerRunner_connect(message, channelInfo, operations, initializer) {
-      return A.WorkerRunner_connect$body(message, channelInfo, operations, initializer);
-    },
-    WorkerRunner_connect$body(message, channelInfo, operations, initializer) {
-      var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], startRequest, client, $init, service, e, e0, st, t1, t2, value, exception, $async$exception;
-      var $async$WorkerRunner_connect = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1) {
-          $async$currentError = $async$result;
-          $async$goto = $async$handler;
-        }
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              if (message == null) {
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              startRequest = A.WorkerRequest$deserialize(message);
-              t1 = startRequest.id;
-              t1.toString;
-              t2 = $.Squadron__id == null;
-              if (t2 && true) {
-                value = B.JSString_methods.trim$0(t1);
-                if (value.length !== 0)
-                  if (t2)
-                    $.Squadron__id = value;
-              }
-              startRequest.logLevel.toString;
-              message.toString$0(0);
-              client = startRequest.client;
-              if (client == null) {
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              $async$handler = 4;
-              t1 = operations.get$isNotEmpty(operations);
-              if (t1) {
-                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("already connected", null, null, null), null));
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              $init = initializer.call$1(startRequest);
-              $async$goto = type$.Future_dynamic._is($init) ? 7 : 9;
-              break;
-            case 7:
-              // then
-              $async$goto = 10;
-              return A._asyncAwait($init, $async$WorkerRunner_connect);
-            case 10:
-              // returning from await.
-              // goto join
-              $async$goto = 8;
-              break;
-            case 9:
-              // else
-              $async$result = $init;
-            case 8:
-              // join
-              service = $async$result;
-              operations.addAll$1(0, service.get$operations());
-              client.connect$1(channelInfo);
-              $async$handler = 2;
-              // goto after finally
-              $async$goto = 6;
-              break;
-            case 4:
-              // catch
-              $async$handler = 3;
-              $async$exception = $async$currentError;
-              t1 = A.unwrapException($async$exception);
-              if (t1 instanceof A.WorkerException) {
-                e = t1;
-                J.reply$1$z(client, A.WorkerResponse$withError(e, null));
-              } else {
-                e0 = t1;
-                st = A.getTraceFromException($async$exception);
-                J.reply$1$z(client, A.WorkerResponse$withError(e0, J.toString$0$(st)));
-              }
-              // goto after finally
-              $async$goto = 6;
-              break;
-            case 3:
-              // uncaught
-              // goto rethrow
-              $async$goto = 2;
-              break;
-            case 6:
-              // after finally
-            case 1:
-              // return
-              return A._asyncReturn($async$returnValue, $async$completer);
-            case 2:
-              // rethrow
-              return A._asyncRethrow($async$currentError, $async$completer);
-          }
-      });
-      return A._asyncStartSync($async$WorkerRunner_connect, $async$completer);
-    },
-    WorkerRunner_process(operations, message, monitor) {
-      return A.WorkerRunner_process$body(operations, message, monitor);
-    },
-    WorkerRunner_process$body(operations, message, monitor) {
-      var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], client, tokenRef, op, result, res, e, e0, st, t1, msg, t2, exception, request, $async$exception, $async$temp1;
-      var $async$WorkerRunner_process = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1) {
-          $async$currentError = $async$result;
-          $async$goto = $async$handler;
-        }
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              request = A.WorkerRequest$deserialize(message);
-              if (request.command === -3) {
-                if (monitor._executing === 0)
-                  monitor._terminate.call$0();
-                else
-                  monitor._terminationRequested = true;
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              if (request.command === -2) {
-                t1 = request._cancelToken;
-                t1.toString;
-                t1 = monitor._getTokenRef$1(t1);
-                if (t1.__worker_monitor$_exception == null)
-                  t1.__worker_monitor$_exception = A.CancelledException$(null);
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              if (request.command === -1) {
-                msg = "Unhandled connect request: " + message.toString$0(0);
-                t1 = request.client;
-                if (t1 != null)
-                  t1.reply$1(0, A.WorkerResponse$withError(A.WorkerException$(msg, null, null, null), null));
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              client = request.client;
-              if (client == null) {
-                A.S(request);
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              tokenRef = monitor.begin$1(request);
-              $async$handler = 4;
-              if (operations.get$isEmpty(operations)) {
-                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Worker service is not ready", null, null, null), null));
-                $async$next = [1];
-                // goto finally
-                $async$goto = 5;
-                break;
-              }
-              t1 = tokenRef;
-              t1 = t1 == null ? null : t1.get$exception() != null;
-              if (t1 === true) {
-                J.reply$1$z(client, A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null));
-                $async$next = [1];
-                // goto finally
-                $async$goto = 5;
-                break;
-              }
-              op = operations.$index(0, request.command);
-              if (op == null) {
-                J.reply$1$z(client, A.WorkerResponse$withError(A.WorkerException$("Unknown command: " + A.S(request), null, null, null), null));
-                $async$next = [1];
-                // goto finally
-                $async$goto = 5;
-                break;
-              }
-              result = op.call$1(request);
-              $async$goto = type$.Future_dynamic._is(result) ? 7 : 8;
-              break;
-            case 7:
-              // then
-              $async$goto = 9;
-              return A._asyncAwait(result, $async$WorkerRunner_process);
-            case 9:
-              // returning from await.
-              result = $async$result;
-            case 8:
-              // join
-              $async$goto = result instanceof A.Stream ? 10 : 12;
-              break;
-            case 10:
-              // then
-              t1 = new A._StreamIterator(A.checkNotNullable(result, "stream", type$.Object), type$._StreamIterator_dynamic);
-              $async$handler = 13;
-            case 16:
-              // for condition
-              $async$temp1 = A;
-              $async$goto = 18;
-              return A._asyncAwait(t1.moveNext$0(), $async$WorkerRunner_process);
-            case 18:
-              // returning from await.
-              if (!$async$temp1.boolConversionCheck($async$result)) {
-                // goto after for
-                $async$goto = 17;
-                break;
-              }
-              res = t1.get$current();
-              J.reply$1$z(client, new A.WorkerResponse(false, null, res, null, false, false));
-              t2 = tokenRef;
-              t2 = t2 == null ? null : t2.get$exception() != null;
-              if (t2 === true)
-                J.reply$1$z(client, A.WorkerResponse$withError(A.CancelledException$("Cancelled"), null));
-              // goto for condition
-              $async$goto = 16;
-              break;
-            case 17:
-              // after for
-              $async$next.push(15);
-              // goto finally
-              $async$goto = 14;
-              break;
-            case 13:
-              // uncaught
-              $async$next = [4];
-            case 14:
-              // finally
-              $async$handler = 4;
-              $async$goto = 19;
-              return A._asyncAwait(t1.cancel$0(), $async$WorkerRunner_process);
-            case 19:
-              // returning from await.
-              // goto the next finally handler
-              $async$goto = $async$next.pop();
-              break;
-            case 15:
-              // after finally
-              // goto join
-              $async$goto = 11;
-              break;
-            case 12:
-              // else
-              J.reply$1$z(client, A.WorkerResponse$(result));
-            case 11:
-              // join
-              $async$next.push(6);
-              // goto finally
-              $async$goto = 5;
-              break;
-            case 4:
-              // catch
-              $async$handler = 3;
-              $async$exception = $async$currentError;
-              t1 = A.unwrapException($async$exception);
-              if (t1 instanceof A.WorkerException) {
-                e = t1;
-                J.reply$1$z(client, A.WorkerResponse$withError(e, null));
-              } else {
-                e0 = t1;
-                st = A.getTraceFromException($async$exception);
-                J.reply$1$z(client, A.WorkerResponse$withError(e0, J.toString$0$(st)));
-              }
-              $async$next.push(6);
-              // goto finally
-              $async$goto = 5;
-              break;
-            case 3:
-              // uncaught
-              $async$next = [2];
-            case 5:
-              // finally
-              $async$handler = 2;
-              J.reply$1$z(client, B.WorkerResponse_LpI);
-              t1 = type$.nullable__CancellationTokenReference._as(tokenRef);
-              if (t1 != null)
-                if (--t1.refCount === 0 && t1.get$exception() == null)
-                  monitor.cancelTokens.remove$1(0, t1.id);
-              t1 = --monitor._executing;
-              if (monitor._terminationRequested && t1 === 0)
-                monitor._terminate.call$0();
-              // goto the next finally handler
-              $async$goto = $async$next.pop();
-              break;
-            case 6:
-              // after finally
-            case 1:
-              // return
-              return A._asyncReturn($async$returnValue, $async$completer);
-            case 2:
-              // rethrow
-              return A._asyncRethrow($async$currentError, $async$completer);
-          }
-      });
-      return A._asyncStartSync($async$WorkerRunner_process, $async$completer);
     }
   },
   J = {
@@ -8348,7 +8359,7 @@
       t1._asyncComplete$1(null);
       return t1;
     },
-    $signature: 25
+    $signature: 56
   };
   A.SentinelValue.prototype = {};
   A.EfficientLengthIterable.prototype = {};
@@ -9238,19 +9249,19 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 54
+    $signature: 42
   };
   A.initHooks_closure0.prototype = {
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 53
+    $signature: 26
   };
   A.initHooks_closure1.prototype = {
     call$1(tag) {
       return this.prototypeForTag(A._asString(tag));
     },
-    $signature: 42
+    $signature: 37
   };
   A.JSSyntaxRegExp.prototype = {
     toString$0(_) {
@@ -9590,7 +9601,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 15
+    $signature: 5
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -9606,13 +9617,13 @@
     call$0() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 6
   };
   A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 6
   };
   A._TimerImpl.prototype = {
     _TimerImpl$2(milliseconds, callback) {
@@ -9663,13 +9674,13 @@
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new A.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 28
+    $signature: 58
   };
   A._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(A._asInt(errorCode), result);
     },
-    $signature: 52
+    $signature: 24
   };
   A._IterationMarker.prototype = {
     toString$0(_) {
@@ -10037,13 +10048,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 15
+    $signature: 5
   };
   A._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
       this.$this._completeError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
     },
-    $signature: 38
+    $signature: 33
   };
   A._Future__chainForeignFuture_closure1.prototype = {
     call$0() {
@@ -10900,7 +10911,7 @@
     call$1(v) {
       return this.K._is(v);
     },
-    $signature: 9
+    $signature: 10
   };
   A._LinkedHashSet.prototype = {
     get$iterator(_) {
@@ -11157,7 +11168,7 @@
       t1._contents = t2 + ": ";
       t1._contents += A.S(v);
     },
-    $signature: 33
+    $signature: 51
   };
   A.MapMixin.prototype = {
     forEach$1(_, action) {
@@ -11335,7 +11346,7 @@
     call$1(each) {
       return this.$this.$index(0, each);
     },
-    $signature: 26
+    $signature: 54
   };
   A._JsonMapKeyIterable.prototype = {
     get$length(_) {
@@ -11378,7 +11389,7 @@
       }
       return null;
     },
-    $signature: 6
+    $signature: 11
   };
   A.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0() {
@@ -11390,7 +11401,7 @@
       }
       return null;
     },
-    $signature: 6
+    $signature: 11
   };
   A.AsciiCodec.prototype = {
     decode$1(bytes) {
@@ -12063,13 +12074,13 @@
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 24
+    $signature: 21
   };
   A.Uri_parseIPv6Address_error.prototype = {
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv6 address, " + msg, this.host, position));
     },
-    $signature: 21
+    $signature: 57
   };
   A.Uri_parseIPv6Address_parseHex.prototype = {
     call$2(start, end) {
@@ -12409,7 +12420,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 20
+    $signature: 12
   };
   A._createTables_setRange.prototype = {
     call$3(target, range, transition) {
@@ -12421,7 +12432,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 20
+    $signature: 12
   };
   A._SimpleUri.prototype = {
     get$hasAuthority() {
@@ -12832,13 +12843,13 @@
     call$1(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 18
+    $signature: 14
   };
   A._EventStreamSubscription_onData_closure.prototype = {
     call$1(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 18
+    $signature: 14
   };
   A._StructuredClone.prototype = {
     findSlot$1(value) {
@@ -12933,7 +12944,7 @@
     call$2(key, value) {
       this._box_0.copy[key] = this.$this.walk$1(value);
     },
-    $signature: 56
+    $signature: 28
   };
   A._AcceptStructuredClone.prototype = {
     findSlot$1(value) {
@@ -13348,14 +13359,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       this.completer.complete$1(t2);
     },
-    $signature: 17
+    $signature: 15
   };
   A.BrowserClient_send_closure0.prototype = {
     call$1(_) {
       type$.ProgressEvent._as(_);
       this.completer.completeError$2(new A.ClientException("XMLHttpRequest error."), A.StackTrace_current());
     },
-    $signature: 17
+    $signature: 15
   };
   A.ByteStream.prototype = {
     toBytes$0() {
@@ -13386,7 +13397,7 @@
     call$1(key) {
       return A._asString(key).toLowerCase();
     },
-    $signature: 14
+    $signature: 16
   };
   A.MediaType.prototype = {
     toString$0(_) {
@@ -13483,13 +13494,13 @@
       } else
         t1._contents = t3 + value;
     },
-    $signature: 19
+    $signature: 13
   };
   A.MediaType_toString__closure.prototype = {
     call$1(match) {
       return "\\" + A.S(match.$index(0, 0));
     },
-    $signature: 4
+    $signature: 17
   };
   A.expectQuotedString_closure.prototype = {
     call$1(match) {
@@ -13497,7 +13508,7 @@
       t1.toString;
       return t1;
     },
-    $signature: 4
+    $signature: 17
   };
   A.Context.prototype = {
     absolute$1(_, part1) {
@@ -13717,13 +13728,13 @@
     call$1(part) {
       return A._asString(part) !== "";
     },
-    $signature: 13
+    $signature: 7
   };
   A.Context_split_closure.prototype = {
     call$1(part) {
       return A._asString(part).length !== 0;
     },
-    $signature: 13
+    $signature: 7
   };
   A._validateArgList_closure.prototype = {
     call$1(arg) {
@@ -14467,7 +14478,7 @@
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$start().get$line() !== t1.get$end().get$line();
     },
-    $signature: 3
+    $signature: 2
   };
   A.Highlighter$__closure0.prototype = {
     call$1(line) {
@@ -14536,14 +14547,14 @@
     call$1(highlight) {
       return type$._Highlight._as(highlight).span.get$end().get$line() < this.line.number;
     },
-    $signature: 3
+    $signature: 2
   };
   A.Highlighter_highlight_closure.prototype = {
     call$1(highlight) {
       type$._Highlight._as(highlight);
       return true;
     },
-    $signature: 3
+    $signature: 2
   };
   A.Highlighter__writeFileStart_closure.prototype = {
     call$0() {
@@ -14878,14 +14889,26 @@
       return this._context;
     }
   };
+  A.buildConnector_closure.prototype = {
+    call$1(message) {
+      return A._WorkerRunner_connect(message, this.channelInfo, this.operations, this.initializer);
+    },
+    $signature: 48
+  };
+  A.buildMessageProcessor_closure.prototype = {
+    call$1(message) {
+      return A._WorkerRunner_process(this.operations, message, this.monitor);
+    },
+    $signature: 49
+  };
   A._CancellationTokenReference.prototype = {
     get$exception() {
-      return this.__worker_monitor$_exception;
+      return this.__bootstrapper_stub$_exception;
     }
   };
-  A.WorkerMonitor.prototype = {
+  A._WorkerMonitor.prototype = {
     _getTokenRef$1(token) {
-      return this.cancelTokens.putIfAbsent$2(token.id, new A.WorkerMonitor__getTokenRef_closure(token));
+      return this.cancelTokens.putIfAbsent$2(token.id, new A._WorkerMonitor__getTokenRef_closure(token));
     },
     begin$1(request) {
       var token, tokenRef, t1, _null = null;
@@ -14901,56 +14924,44 @@
       return request._cancelToken = tokenRef;
     }
   };
-  A.WorkerMonitor__getTokenRef_closure.prototype = {
+  A._WorkerMonitor__getTokenRef_closure.prototype = {
     call$0() {
       var t1 = this.token;
       return new A._CancellationTokenReference(t1.id, t1._cancellation_token$_message);
     },
-    $signature: 48
+    $signature: 50
   };
-  A.bootstrap_closure0.prototype = {
+  A.bootstrap_closure.prototype = {
     call$0() {
-      this.com.port1.close();
+      var t1 = this.com;
+      t1.port1.close();
+      t1.port2.close();
       this.scope.close();
     },
     $signature: 0
   };
-  A.bootstrap_closure.prototype = {
-    call$1(e) {
-      return A.WorkerRunner_process(this.operations, type$.Map_dynamic_dynamic._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.monitor);
+  A.bootstrap_closure0.prototype = {
+    call$1($event) {
+      return this.process.call$1(type$.Map_dynamic_dynamic._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as($event).data, true)));
     },
-    $signature: 11
+    $signature: 18
   };
   A.bootstrap_closure1.prototype = {
-    call$1(e) {
-      return A.WorkerRunner_connect(type$.nullable_Map_dynamic_dynamic._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)), this.com.port2, this.operations, this.initializer);
+    call$1($event) {
+      return this.connect.call$1(type$.Map_dynamic_dynamic._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as($event).data, true)));
     },
-    $signature: 11
+    $signature: 18
   };
-  A._MessagePort.prototype = {};
-  A.JsWorkerChannel.prototype = {
-    connect$1(channelInfo) {
-      var ex, t1, exception;
+  A._MessagePort.prototype = {
+    _postResponse$1(res) {
+      var ex, exception,
+        message = res.serialize$0(),
+        t1 = A._getTransferables(message),
+        transfer = A.List_List$of(t1, true, t1.$ti._eval$1("Iterable.E"));
       try {
         t1 = this._sendPort;
         t1.toString;
-        B.MessagePort_methods.postMessage$2(t1, A.WorkerResponse$(channelInfo).serialize$0(), A._setArrayType([channelInfo], type$.JSArray_Object));
-      } catch (exception) {
-        ex = A.unwrapException(exception);
-        A.S(ex);
-        throw exception;
-      }
-    },
-    reply$1(_, response) {
-      var message, transfer, ex, t1, exception;
-      response._error != null;
-      message = response.serialize$0();
-      t1 = A._getTransferables(message);
-      transfer = A.List_List$of(t1, true, t1.$ti._eval$1("Iterable.E"));
-      try {
-        t1 = this._sendPort;
-        if (t1 != null)
-          B.MessagePort_methods.postMessage$2(t1, message, transfer);
+        B.MessagePort_methods.postMessage$2(t1, message, transfer);
       } catch (exception) {
         ex = A.unwrapException(exception);
         A.S(ex);
@@ -14958,6 +14969,12 @@
         A.S(transfer);
         throw exception;
       }
+    }
+  };
+  A._JsWorkerChannel.prototype = {
+    reply$1(_, response) {
+      response._error != null;
+      this._postResponse$1(response);
     },
     $isWorkerChannel: 1
   };
@@ -15131,13 +15148,13 @@
     call$1(r) {
       return this.$this.getRate$1(A._asString(J.$index$asx(type$.WorkerRequest._as(r).args, 0)));
     },
-    $signature: 50
+    $signature: 52
   };
   A.main_closure.prototype = {
     call$1(startRequest) {
       return new A.BitcoinService();
     },
-    $signature: 51
+    $signature: 53
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -15173,43 +15190,43 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _instance_2_i = hunkHelpers._instance_2i,
       _static = hunkHelpers.installStaticTearOff;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 10);
-    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 19);
+    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 3);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 3);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 3);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 1);
-    _instance(A._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 49, 0, 0);
-    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 7);
+    _instance(A._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 25, 0, 0);
+    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 8);
     var _;
     _instance_0_u(_ = A._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(_ = A._BufferingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 0);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 0);
     _instance_0_u(A._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 8);
-    _instance_2_u(_, "get$_onError", "_onError$2", 7);
+    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 9);
+    _instance_2_u(_, "get$_onError", "_onError$2", 8);
     _instance_0_u(_, "get$_onDone", "_onDone$0", 0);
-    _static_2(A, "collection___defaultEquals$closure", "_defaultEquals", 12);
-    _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 16);
-    _static_2(A, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 10);
-    _instance_1_i(_ = A._ByteCallbackSink.prototype, "get$add", "add$1", 8);
+    _static_2(A, "collection___defaultEquals$closure", "_defaultEquals", 20);
+    _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 4);
+    _static_2(A, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 19);
+    _instance_1_i(_ = A._ByteCallbackSink.prototype, "get$add", "add$1", 9);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(A, "core__identityHashCode$closure", "identityHashCode", 16);
-    _static_2(A, "core__identical$closure", "identical", 12);
-    _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 14);
-    _instance_2_i(A.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 19);
-    _static_1(A, "channel___isObject$closure", "_isObject0", 9);
+    _static_1(A, "core__identityHashCode$closure", "identityHashCode", 4);
+    _static_2(A, "core__identical$closure", "identical", 20);
+    _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 16);
+    _instance_2_i(A.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 13);
+    _static_1(A, "channel___isObject$closure", "_isObject0", 10);
     _static(A, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return A.max(a, b, type$.num);
-    }], 37, 0);
+    }], 38, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(A.Object, null);
-    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A._ListBase_Object_ListMixin, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.Iterator, A.ExpandIterator, A.EmptyIterator, A.WhereTypeIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.ConstantMap, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapMixin, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A.StreamSubscription, A.StreamTransformerBase, A._StreamController, A._AsyncStreamControllerDispatch, A._BufferingStreamSubscription, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._Zone, A.__SetBase_Object_SetMixin, A._LinkedHashSetCell, A._LinkedHashSetIterator, A.ListMixin, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A.MapView, A.SetMixin, A.Codec, A.ChunkedConversionSink, A._Utf8Decoder, A.DateTime, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.MapEntry, A.Null, A._StringStackTrace, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.EventStreamProvider, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.CanonicalizedMap, A.BaseClient, A.BaseRequest, A.BaseResponse, A.ClientException, A.MediaType, A.Context, A.Style, A.ParsedPath, A.PathException, A.SourceFile, A.SourceLocationMixin, A.SourceSpanMixin, A.Highlighter, A._Highlight, A._Line, A.SourceLocation, A.SourceSpanException, A.CancellationToken, A.WorkerMonitor, A._MessagePort, A.WorkerException, A.WorkerRequest, A.WorkerResponse, A.StringScanner, A.BitcoinService]);
+    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A._ListBase_Object_ListMixin, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.Iterator, A.ExpandIterator, A.EmptyIterator, A.WhereTypeIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.ConstantMap, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapMixin, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A.StreamSubscription, A.StreamTransformerBase, A._StreamController, A._AsyncStreamControllerDispatch, A._BufferingStreamSubscription, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._Zone, A.__SetBase_Object_SetMixin, A._LinkedHashSetCell, A._LinkedHashSetIterator, A.ListMixin, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A.MapView, A.SetMixin, A.Codec, A.ChunkedConversionSink, A._Utf8Decoder, A.DateTime, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.MapEntry, A.Null, A._StringStackTrace, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.EventStreamProvider, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.CanonicalizedMap, A.BaseClient, A.BaseRequest, A.BaseResponse, A.ClientException, A.MediaType, A.Context, A.Style, A.ParsedPath, A.PathException, A.SourceFile, A.SourceLocationMixin, A.SourceSpanMixin, A.Highlighter, A._Highlight, A._Line, A.SourceLocation, A.SourceSpanException, A.CancellationToken, A._WorkerMonitor, A._MessagePort, A.WorkerException, A.WorkerRequest, A.WorkerResponse, A.StringScanner, A.BitcoinService]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, A.NativeByteBuffer, A.NativeTypedData]);
     _inheritMany(J.JavaScriptObject, [J.LegacyJavaScriptObject, A.Blob, A.EventTarget, A.DomException, A.Event]);
     _inheritMany(J.LegacyJavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
@@ -15219,8 +15236,8 @@
     _inherit(A.ListBase, A._ListBase_Object_ListMixin);
     _inherit(A.UnmodifiableListBase, A.ListBase);
     _inherit(A.CodeUnits, A.UnmodifiableListBase);
-    _inheritMany(A.Closure, [A.Closure0Args, A.ConstantStringMap_values_closure, A.Instantiation, A.Closure2Args, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_length_closure, A.Stream_first_closure0, A._RootZone_bindUnaryCallbackGuarded_closure, A._LinkedCustomHashMap_closure, A.MapMixin_entries_closure, A._JsonMap_values_closure, A._createTables_setChars, A._createTables_setRange, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.CanonicalizedMap_values_closure, A.read_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.CaseInsensitiveMap$from_closure, A.MediaType_toString__closure, A.expectQuotedString_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.Highlighter$__closure, A.Highlighter$___closure, A.Highlighter$__closure0, A.Highlighter__collateLines_closure, A.Highlighter__collateLines_closure1, A.Highlighter__collateLines__closure, A.Highlighter_highlight_closure, A.bootstrap_closure, A.bootstrap_closure1, A.BitcoinService_operations_closure, A.main_closure]);
-    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__asyncCompleteWithValue_closure, A._Future__chainFuture_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_length_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._cancelAndValue_closure, A._rootHandleError_closure, A._RootZone_bindCallbackGuarded_closure, A.Utf8Decoder__decoder_closure, A.Utf8Decoder__decoderNonfatal_closure, A.MediaType_MediaType$parse_closure, A.Highlighter_closure, A.Highlighter__writeFileStart_closure, A.Highlighter__writeMultilineHighlights_closure, A.Highlighter__writeMultilineHighlights_closure0, A.Highlighter__writeMultilineHighlights_closure1, A.Highlighter__writeMultilineHighlights_closure2, A.Highlighter__writeMultilineHighlights__closure, A.Highlighter__writeMultilineHighlights__closure0, A.Highlighter__writeHighlightedText_closure, A.Highlighter__writeIndicator_closure, A.Highlighter__writeIndicator_closure0, A.Highlighter__writeIndicator_closure1, A.Highlighter__writeSidebar_closure, A._Highlight_closure, A.WorkerMonitor__getTokenRef_closure, A.bootstrap_closure0]);
+    _inheritMany(A.Closure, [A.Closure0Args, A.ConstantStringMap_values_closure, A.Instantiation, A.Closure2Args, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_length_closure, A.Stream_first_closure0, A._RootZone_bindUnaryCallbackGuarded_closure, A._LinkedCustomHashMap_closure, A.MapMixin_entries_closure, A._JsonMap_values_closure, A._createTables_setChars, A._createTables_setRange, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.CanonicalizedMap_values_closure, A.read_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.CaseInsensitiveMap$from_closure, A.MediaType_toString__closure, A.expectQuotedString_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.Highlighter$__closure, A.Highlighter$___closure, A.Highlighter$__closure0, A.Highlighter__collateLines_closure, A.Highlighter__collateLines_closure1, A.Highlighter__collateLines__closure, A.Highlighter_highlight_closure, A.buildConnector_closure, A.buildMessageProcessor_closure, A.bootstrap_closure0, A.bootstrap_closure1, A.BitcoinService_operations_closure, A.main_closure]);
+    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__asyncCompleteWithValue_closure, A._Future__chainFuture_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_length_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._cancelAndValue_closure, A._rootHandleError_closure, A._RootZone_bindCallbackGuarded_closure, A.Utf8Decoder__decoder_closure, A.Utf8Decoder__decoderNonfatal_closure, A.MediaType_MediaType$parse_closure, A.Highlighter_closure, A.Highlighter__writeFileStart_closure, A.Highlighter__writeMultilineHighlights_closure, A.Highlighter__writeMultilineHighlights_closure0, A.Highlighter__writeMultilineHighlights_closure1, A.Highlighter__writeMultilineHighlights_closure2, A.Highlighter__writeMultilineHighlights__closure, A.Highlighter__writeMultilineHighlights__closure0, A.Highlighter__writeHighlightedText_closure, A.Highlighter__writeIndicator_closure, A.Highlighter__writeIndicator_closure0, A.Highlighter__writeIndicator_closure1, A.Highlighter__writeSidebar_closure, A._Highlight_closure, A._WorkerMonitor__getTokenRef_closure, A.bootstrap_closure]);
     _inheritMany(A.Iterable, [A.EfficientLengthIterable, A.MappedIterable, A.WhereIterable, A.ExpandIterable, A.SkipIterable, A.WhereTypeIterable, A.IterableBase, A._StringAllMatchesIterable]);
     _inheritMany(A.EfficientLengthIterable, [A.ListIterable, A.EmptyIterable, A.LinkedHashMapKeyIterable, A._MapBaseValueIterable]);
     _inheritMany(A.ListIterable, [A.SubListIterable, A.MappedListIterable, A.ReversedListIterable, A._JsonMapKeyIterable]);
@@ -15288,7 +15305,7 @@
     _inherit(A.SourceSpanFormatException, A.SourceSpanException);
     _inherit(A.SourceSpanWithContext, A.SourceSpanBase);
     _inherit(A._CancellationTokenReference, A.CancellationToken);
-    _inherit(A.JsWorkerChannel, A._MessagePort);
+    _inherit(A._JsWorkerChannel, A._MessagePort);
     _inherit(A.CancelledException, A.WorkerException);
     _inherit(A.StringScannerException, A.SourceSpanFormatException);
     _mixin(A.UnmodifiableListBase, A.UnmodifiableListMixin);
@@ -15305,12 +15322,12 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "String(Match)", "Null()", "@()", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "int(@,@)", "~(MessageEvent)", "bool(Object?,Object?)", "bool(String)", "String(String)", "Null(@)", "int(Object?)", "Null(ProgressEvent)", "~(Event)", "~(String,String)", "~(Uint8List,String,int)", "~(String,int?)", "int(int,int)", "Uint8List(@,@)", "~(String,int)", "Future<Null>()", "@(Object?)", "~(@,@)", "Null(@,StackTrace)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "~(Object?,Object?)", "~(List<int>)", "_Future<@>(@)", "MediaType()", "0^(0^,0^)<num>", "Null(Object,StackTrace)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Object(_Line)", "Object(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(MapEntry<Object,List<_Highlight>>)", "SourceSpanWithContext()", "_CancellationTokenReference()", "~(Object[StackTrace?])", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "~(int,@)", "@(@,String)", "@(@)", "Null(~())", "Null(@,@)"],
+    types: ["~()", "~(@)", "bool(_Highlight)", "~(~())", "int(Object?)", "Null(@)", "Null()", "bool(String)", "~(Object,StackTrace)", "~(Object?)", "bool(@)", "@()", "~(Uint8List,String,int)", "~(String,String)", "~(Event)", "Null(ProgressEvent)", "String(String)", "String(Match)", "~(MessageEvent)", "int(@,@)", "bool(Object?,Object?)", "~(String,int)", "int(int,int)", "Uint8List(@,@)", "~(int,@)", "~(Object[StackTrace?])", "@(@,String)", "~(@,@)", "Null(@,@)", "@(@,@)", "Future<String>(Client)", "bool(String,String)", "int(String)", "Null(Object,StackTrace)", "~(List<int>)", "_Future<@>(@)", "MediaType()", "@(String)", "0^(0^,0^)<num>", "String(String?)", "String?()", "int(_Line)", "@(@)", "Object(_Line)", "Object(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(MapEntry<Object,List<_Highlight>>)", "SourceSpanWithContext()", "Future<@>(Map<@,@>)", "~(Map<@,@>)", "_CancellationTokenReference()", "~(Object?,Object?)", "Future<double?>(WorkerRequest)", "BitcoinService(WorkerRequest)", "@(Object?)", "Null(~())", "Future<Null>()", "~(String,int?)", "Null(@,StackTrace)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"LegacyJavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double","FixedLengthListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"_CancellationTokenReference":{"CancellationToken":[]},"JsWorkerChannel":{"WorkerChannel":[]},"WorkerException":{"Exception":[]},"CancelledException":{"Exception":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","_ResourceProgressEvent":"ProgressEvent","HtmlDocument":"Document","ServiceWorkerGlobalScope":"WorkerGlobalScope","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"LegacyJavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"NativeTypedData":[],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"NativeTypedData":[],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double","FixedLengthListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"NativeTypedData":[],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int","FixedLengthListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_StreamController":{"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"_StreamControllerLifecycle":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventDispatch":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_StreamImplEvents":{"_PendingEvents":["1"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"MessageEvent":{"Event":[]},"ProgressEvent":{"Event":[]},"DedicatedWorkerGlobalScope":{"EventTarget":[]},"Document":{"EventTarget":[]},"File":{"Blob":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MessagePort":{"EventTarget":[]},"Node":{"EventTarget":[]},"WorkerGlobalScope":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"_CancellationTokenReference":{"CancellationToken":[]},"_JsWorkerChannel":{"WorkerChannel":[]},"WorkerException":{"Exception":[]},"CancelledException":{"Exception":[]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
   A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     _must_: " must not be greater than the number of characters in the file, ",

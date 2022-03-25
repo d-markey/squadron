@@ -11,6 +11,6 @@ class FailingService implements WorkerService {
 
   @override
   late final Map<int, CommandHandler> operations = {
-    FailingService.noopCommand: (r) => noop(),
+    noopCommand: (r) => noop(),
   };
 }

@@ -10,7 +10,7 @@ import 'worker_stat.dart';
 ///
 /// This base class takes care of creating the [Channel] and firing up the worker.
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
-abstract class Worker {
+abstract class Worker implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint, {String? id, this.args = const []}) {
     this.id = id ?? hashCode.toString();
@@ -84,18 +84,10 @@ abstract class Worker {
   Channel? _channel;
   Future<Channel>? _channelRequest;
 
-  void cancelToken(CancellationToken token) {
-    _channel?.cancelToken(token);
-  }
-
   static void _noop() {}
 
-  SquadronCallback _canceller(CancellationToken? token) {
-    if (token == null) return _noop;
-    return () {
-      cancelToken(token);
-    };
-  }
+  SquadronCallback _canceller(CancellationToken? token) =>
+      (token == null) ? _noop : () => _channel?.notifyCancellation(token);
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
@@ -228,6 +220,7 @@ abstract class Worker {
     }
   }
 
-  /// workers inheriting from [WorkerService] do not need an [operations] map
-  final Map<int, CommandHandler> operations = const {};
+  /// Workers do not need an [operations] map.
+  @override
+  final Map<int, CommandHandler> operations = WorkerService.noOperations;
 }

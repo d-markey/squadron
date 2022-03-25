@@ -55,13 +55,11 @@ class SampleService implements WorkerService {
 
   @override
   late final Map<int, CommandHandler> operations = {
-    SampleService.ioCommand: (r) => io(milliseconds: r.args[0]),
-    SampleService.cpuCommand: (r) => cpu(milliseconds: r.args[0]),
-    SampleService.delayedIdentityCommand: (r) => delayedIdentity(r.args[0]),
-    SampleService.delayedSequenceCommand: (r) =>
-        delayedSequence(r.args[0], r.cancelToken),
-    SampleService.cancellableSequenceCommand: (r) =>
-        cancellableSequence(r.cancelToken!),
-    SampleService.cancellableCpuCommand: (r) => cancellableCpu(r.cancelToken!)
+    ioCommand: (r) => io(milliseconds: r.args[0]),
+    cpuCommand: (r) => cpu(milliseconds: r.args[0]),
+    delayedIdentityCommand: (r) => delayedIdentity(r.args[0]),
+    delayedSequenceCommand: (r) => delayedSequence(r.args[0], r.cancelToken),
+    cancellableSequenceCommand: (r) => cancellableSequence(r.cancelToken!),
+    cancellableCpuCommand: (r) => cancellableCpu(r.cancelToken!)
   };
 }

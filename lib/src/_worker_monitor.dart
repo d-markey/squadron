@@ -1,13 +1,10 @@
-import 'cancellation_token.dart';
-import 'worker_exception.dart';
-import 'worker_request.dart';
-import 'worker_service.dart';
+part of '_bootstrapper_stub.dart';
 
-/// Cancellation token reference. This special cancellation token is managed by the [WorkerMonitor] and is used to
+/// Cancellation token reference. This special cancellation token is managed by the [_WorkerMonitor] and is used to
 /// mirror' cancellation tokens presented to Squadron by callers of a worker service. When a [WorkerRequest] is
-/// handled by the platform worker and that request is associated with a cancellation request, the [WorkerMonitor]
+/// handled by the platform worker and that request is associated with a cancellation request, the [_WorkerMonitor]
 /// will override the request's cancellation token with a [_CancellationTokenReference]. The same cancellation may
-/// be used for several service calls, so the [WorkerMonitor] keeps a map of [_CancellationTokenReference] and a
+/// be used for several service calls, so the [_WorkerMonitor] keeps a map of [_CancellationTokenReference] and a
 /// reference count that is incremented for each [WorkerRequest] having the same cancellation token and decremented
 /// when processing is finished. When the reference count drops to 0 and the cancellation token was not cancelled,
 /// the [_CancellationTokenReference] is removed from the map.
@@ -32,12 +29,12 @@ class _CancellationTokenReference extends CancellationToken {
   }
 }
 
-/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests. Worker
+/// Each platform worker will instantiate a [_WorkerMonitor] responsible for handling cancellation requests. Worker
 /// tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services the chance to
 /// handle cancellation requests gracefully, or without a [CancellationToken] via [WorkerPool.cancel()] or
 /// [WorkerTask.cancel()].
-class WorkerMonitor {
-  WorkerMonitor(this._terminate);
+class _WorkerMonitor {
+  _WorkerMonitor(this._terminate);
 
   final SquadronCallback _terminate;
   bool _terminationRequested = false;

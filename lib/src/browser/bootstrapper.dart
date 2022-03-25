@@ -1,24 +1,26 @@
 import 'dart:html';
 
-import '../_worker_runner.dart';
 import '../squadron.dart';
-import '../_worker_monitor.dart';
 import '../worker_service.dart';
+
+import '../_bootstrapper_stub.dart'
+    show buildMessageProcessor, buildConnector, buildMonitor;
 
 void bootstrap(WorkerInitializer initializer, Map? command) {
   final scope = DedicatedWorkerGlobalScope.instance;
   final operations = <int, CommandHandler>{};
 
   final com = MessageChannel();
-  final monitor = WorkerMonitor(() {
+  final monitor = buildMonitor(() {
     Squadron.config('terminating Web worker');
     com.port1.close();
+    com.port2.close();
     scope.close();
   });
 
-  com.port1.onMessage.listen(
-      (MessageEvent e) => WorkerRunner.process(operations, e.data, monitor));
+  final process = buildMessageProcessor(operations, monitor);
+  com.port1.onMessage.listen((event) => process(event.data));
 
-  scope.onMessage.listen((MessageEvent e) =>
-      WorkerRunner.connect(e.data, com.port2, operations, initializer));
+  final connect = buildConnector(com.port2, operations, initializer);
+  scope.onMessage.listen((event) => connect(event.data));
 }

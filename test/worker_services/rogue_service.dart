@@ -13,7 +13,7 @@ class RogueService implements WorkerService {
 
   @override
   late final Map<int, CommandHandler> operations = {
-    RogueService.workerException: (r) => throwWorkerException(),
-    RogueService.exception: (r) => throwException(),
+    workerException: (r) => throwWorkerException(),
+    exception: (r) => throwException(),
   };
 }

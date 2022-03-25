@@ -25,7 +25,7 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker.
   /// This method expects a single value from the worker.
-  void cancelToken(CancellationToken cancelToken);
+  void notifyCancellation(CancellationToken cancelToken);
 
   /// Creates a [WorkerRequest] and sends it to the worker.
   /// This method expects a single value from the worker.

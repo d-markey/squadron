@@ -14,4 +14,8 @@ abstract class WorkerService {
   /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request
   /// to the [CommandHandler] mathing the value of [WorkerRequest.command].
   Map<int, CommandHandler> get operations;
+
+  /// Empty command handlers map.
+  static final Map<int, CommandHandler> noOperations =
+      Map<int, CommandHandler>.unmodifiable(const {});
 }
