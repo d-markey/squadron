@@ -1,3 +1,8 @@
+## 3.3.0
+
+- Implemented `LocalWorker`, a worker-like class living in the same thread as its owner and available for inter-worker messaging. For instance, in a Flutter app, instantiating a `LocalWorker` in the main thread enables other workers to (indirectly) call Flutter APIs that are otherwise not available in the context of a secondary thread.
+- `LocalWorker` uses the same concepts and approach as `Workers`, such as the `operations` map and the `WorkerService` interface.
+
 ## 3.2.2
 
 - Document types and release mode (special thanks to [SwissCheese5](https://github.com/SwissCheese5))
@@ -8,10 +13,10 @@
 ## 3.2.1
 
 - Document the new logging feature
-- Make sendRequest() async in browser channel (implementation closer to that of native channel)
+- Make `sendRequest()` async in browser `Channel` (implementation closer to that of native `Channel`)
 - Add a timestamp to pool workers to record the time when it was assigned its last task
 - Sort pool workers to distribute tasks to those that have the largest capacity and the oldest timestamp
-- Add command property to WorkerException
+- Add command property to `WorkerException`
 - Reorganized the test folder
 - Recompiled test Web workers
 
@@ -67,8 +72,8 @@
 
 - This version supports workers running in Isolates as well as Web Workers.
 - Platform implementations are now more straightforward thanks to `Worker.connect()` and `Worker.process()`.
-- See examples on how to scaffold Services, Squadron Workers and platform workers.
-- Added tests for Web Workers (run with "dart run build_runner serve -r" and point your browser to http://localhost:8080/index.html).
+- See examples on how to scaffold services, Squadron Workers and platform workers.
+- Added tests for Web Workers (run with `dart run build_runner serve -r` and point your browser to http://localhost:8080/index.html).
 
 ## 1.0.2
 

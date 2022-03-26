@@ -21,6 +21,7 @@ some air.
   * [Note on `package:json_annotation`](#json_annotation)
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
+  * [Local Workers](#local_worker)
 * [Task Cancellation](#cancellation)
   * [Cancellation Tokens](#tokens)
 * [Monitoring](#monitoring)
@@ -52,9 +53,12 @@ dependencies:
 
 ## <a name="usage"></a>Usage
 
-First implement a service with sync or async methods you want to expose from workers. This approach enables reusing
-the code in different scenarios: unit tests, direct call from your app, or wrapped in a native Isolate or in a Web
-Worker.
+**The basic idea behind Squadron is to wrap a set of service methods in a cross-platform Worker, enabling seamless
+access to the service API from both Native and Browser platforms.**
+
+To implement this pattern, the best way to go is to first implement a service with sync or async methods you want to
+expose from workers. This approach enables reusing the code in different scenarios: unit tests, direct call from your
+app, or wrapped in a native `Isolate` or in a Web `Worker`.
 
 The example below implements a `SampleService` with a synchronous `cpu()` method and an asynchronous `io()` method.
 The service inherits from `WorkerService` and must implement the `operations` map. This collection is essentially a
@@ -76,7 +80,7 @@ class SampleService implements WorkerService {
   static const ioCommand = 1;
   static const cpuCommand = 2;
 
-  // command IDs --> implementations
+  // command IDs --> command implementations
   @override
   Map<int, CommandHandler> get operations => {
     ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
@@ -85,7 +89,7 @@ class SampleService implements WorkerService {
 }
 ```
 
-This `SampleService` can easily be used as a contract to implemented the `Worker`. This worker can then be used for
+This `SampleService` can easily be used as a contract to implemented the `Worker`. The worker can then be used for
 Dart Isolates as well as Web Workers.
 
 ```dart
@@ -103,17 +107,20 @@ class SampleWorker extends Worker implements SampleService {
 }
 ```
 
-The platform worker's main program can be implemented using the `run()` function provided by Squadron 3. The first
-argument passed to this function is a `WorkerService` initializer responsible for creating the service to be used by
-the platform worker. This function will be passed the first `WorkerRequest` to set up the service. The second argument
-passed to `run()` is optional for Web applications, but required in native scenarios where it must be set to the data
-passed to the `Isolate`'s main program.
+Squadron 3 simplifies the implementation of platform worker's main program thanks to the `run()` function. This
+function takes two arguments:
+* first, a `WorkerService` initializer responsible for creating the service to be used by the platform worker.
+* second, a `WorkerRequest` that will enable setting up the service; this argument is not used for Browser platform
+but it is required in native scenarios where it must be set to the `Isolate`'s main program parameter.
 
 * native implementation:
 
 ```dart
 SampleWorker createVmSampleWorker() => SampleWorker(_main);
 
+// Isolate entry-point.
+// It must be a top level function or static method accepting a Map agrument.
+// The argument passed to the entry-point must be passed to the run() function.
 void _main(Map command) => run((startRequest) => SampleService(), command);
 ```
 
@@ -122,6 +129,8 @@ void _main(Map command) => run((startRequest) => SampleService(), command);
 ```dart
 SampleWorker createJsSampleWorker() => SampleWorker('sample_worker_js.dart.js');
 
+// Web Worker entry-point.
+// It must be a parameter-less "main()" function.
 void main() => run((startRequest) => SampleService());
 ```
 
@@ -163,7 +172,7 @@ To provide a cross-platform development experience, Squadron encapsulates `Isola
 well as the means to communicate between the main app's code and the code they execute. This is achieved
 via the `Channel` class.
 
-![](channels_and_types.png)
+![](https://raw.githubusercontent.com/d-markey/squadron/main/channels_and_types.png)
 
 `Channel` enables data exchange between threads and inherits the constraints of the target platforms,
 in particular the type system. Dart Native platforms will typically be quite relaxed when communicating
@@ -180,14 +189,21 @@ However, when the data to be transfered hits the browser's Web Worker implementa
 be received with the same generic type on the other end. For instance, when a sending a `List<String>` or a
 `Map<String, dynamic>` to a service worker, browser platforms will provide the data to the worker service as
 a bare `List` (= `List<dynamic>`) or a bare `Map` (= `Map<dynamic, dynamic>`). This is an important point to
-ensure your app will run happily on browsers.
+ensure your app will happily run on browsers.
 
 Serialization and deserialization should be done as close to the `Channel` as possible, typically when calling
 the `send` method or when receiving data in the `operations` map.
 
-For example, the approach below is a generic way to transfer custom objects via Squadron:
+For example, suppose we have the following service definition, processing `ServiceRequest` messages from callers
+and replying with `ServiceResponse` objects:
 
 ```dart
+abstract class ServiceDefinition {
+   FutureOr<ServiceResponse> serviceMethod(ServiceRequest request);
+
+   static const cmdServiceMethod = 1;
+}
+
 class ServiceResponse {
    static ServiceResponse deserialize(dynamic result) {
       // deserialize "result", knowing it was produced by serialize()
@@ -211,13 +227,12 @@ class ServiceRequest {
       // or call the code produced by package:json_annotation with anyMap = true
    }
 }
+```
 
-abstract class ServiceDefinition {
-   FutureOr<ServiceResponse> serviceMethod(ServiceRequest request);
+Then the approach below is a generic way to send/receive the `ServiceRequest`/`ServiceResponse` messages via
+Squadron:
 
-   static const cmdServiceMethod = 1;
-}
-
+```dart
 class ServiceImplementation implements ServiceDefinition {
    @override
    ServiceResponse serviceMethod(ServiceRequest request) {
@@ -228,17 +243,38 @@ class ServiceImplementation implements ServiceDefinition {
 
    @override
    late final Map<int, CommandHandler> operations = {
-      ServiceDefinition.cmdServiceMethod: (WorkerRequest r) => serviceMethod(ServiceRequest.deserialize(r.args[0])).serialize();
+      ServiceDefinition.cmdServiceMethod: (WorkerRequest r) =>
+          serviceMethod(
+            ServiceRequest.deserialize(r.args[0])   // deserialize ServiceRequest
+          ).serialize();                            // serialize ServiceResponse
    };
 }
 
-class ServiceWorker implements ServiceDefinition, WorkerService {
+class ServiceWorker extends Worker implements ServiceDefinition {
 
    // in the worker overrides, serialize argument and deserialize result
 
    @override
-   ServiceResponse serviceMethod(ServiceRequest request) async
-      => ServiceResponse.deserialize(await send(ServiceDefinition.cmdServiceMethod, [ request.serialize() ]));
+   ServiceResponse serviceMethod(ServiceRequest request) async =>
+        ServiceResponse.deserialize(                // deserialize ServiceResponse
+          await send(
+            ServiceDefinition.cmdServiceMethod,
+            [ request.serialize() ]                 // serialize ServiceRequest
+          )
+        );
+}
+
+class ServiceWorkerPool extends WorkerPool<ServiceWorker> implements ServiceDefinition {
+  ServiceWorkerPool(dynamic entryPoint, ConcurrencySettings concurrencySettings)
+      : super(() => ServiceWorker(entryPoint),
+            concurrencySettings: concurrencySettings);
+
+   // nothing to do in the service pool, the service worker and service implementation
+   // take care of all serialization aspects
+
+  @override
+  Future<ServiceResponse> serviceMethod(ServiceRequest request) =>
+      execute((w) => w.serviceMethod(request));
 }
 ```
 
@@ -506,10 +542,10 @@ Architecture Diagram
                               +--> | CacheWorker singleton | <--+
                               |    +-----------------------+    |
                               |                                 |
- +-------------------+        |           +----------------+   (4)
- |  main program     | --(1)--+    +----> | otherWorker #1 |    |
+ +-------------------+        |           +----------------+   [4]
+ |  main program     | --[1]--+    +----> | otherWorker #1 |    |
  |  ---------------- |             |      | -------------- |    |
-(2) OtherWorker pool | --(3)--+    |      | cacheClient #1 | ---|
+[2] OtherWorker pool | --[3]--+    |      | cacheClient #1 | ---|
  +-------------------+        |    |      +----------------+    |
                               +----|                            |
                                    |      +----------------+    |
@@ -522,6 +558,170 @@ Architecture Diagram
 2: the main program creates a pool of OtherWorkers, making sure the CacheWorker Singleton is advertized to OtherWorkers when they are created
 3: the pool creates new OtherWorkers as workload builds up, instantiating cache clients bound to the CacheWorker's Channel
 4: OtherWorkers query the CacheWorker via their local CacheClient to avoid expensive computations that have been done already 
+```
+
+Starting with Squadron 3.3, the design for a shared cache could be based on a `LocalWorker` for the `CacheWorker`.
+However if the cache is often used from workers, it would increase the load on the main thread's event loop and may
+impact the user experience.
+
+### <a name="local_worker"></a>Local Workers
+
+Squadron 3.3 introduces `LocalWorker`, a `Woker`-like class running in the same thread as its owner. The main idea
+behind `LocalWorker` is to enable executing code in the context of the owner thread such as a the main thread in a
+Flutter app, thereby giving access to Flutter APIs. In this scenario, it is important to note that the `LocalWorker`
+will use the event loop of the main app. As a result, if the load on the `LocalWorker` is high enough, it could impact
+the responsiveness of the application.
+
+The implementation of a `LocalWorker` follows the same principles as for a `Worker`. Start by implementing a
+`WorkerService` with the logic you want to expose:
+
+```dart
+// The service interface
+abstract class IdentityService implements WorkerService {
+  FutureOr<String> whoAreYou();
+
+  static const whoAreYouCommand = 1;
+}
+
+// The service implementation
+class IdentityServiceImpl extends IdentityService {
+  @override
+  String whoAreYou() {
+    return Squadron.id;
+  }
+
+  @override
+  late final Map<int, CommandHandler> operations = {
+    IdentityService.whoAreYouCommand: (req) => whoAreYou(),
+  };
+}
+```
+
+To allow other workers to communicate with the `LocalWorker`, a `LocalWorkerClient` must be implemented. The client
+will be passed a `Channel` obtained from the `LocalWorker`, and simply forwards commands to the `LocalWorker`.
+
+```dart
+// The service client: this class will be used in workers that need to call the service implementation
+class IdentityClient extends LocalWorkerClient implements IdentityService {
+  IdentityClient(Channel channel) : super(channel);
+
+  @override
+  Future<String> whoAreYou() =>
+      send(IdentityService.whoAreYouCommand, []);
+}
+```
+
+Next, we have the code for the real `Worker` that will be using the `LocalWorker`. Typically, it is based on a
+`WorkerService`, for instance:
+
+```dart
+abstract class MyWorkerService {
+  FutureOr<String> whoAreYouTalkingTo();
+
+  static const whoAreYouTalkingToCommand = 1;
+}
+
+class MyWorkerServiceImpl implements MyWorkerService, WorkerService {
+  MyWorkerServiceImpl(this._identityClient);
+
+  final IdentityClient _identityClient;
+
+  @override
+  Future<String> whoAreYouTalkingTo() async {
+    // this is where the local worker is called
+    final localWorkerIdentity = await _identityClient.whoAreYou();
+    return 'I am ${Squadron.id}, and I am talking to $localWorkerIdentity.';
+  }
+
+  @override
+  late final Map<int, CommandHandler> operations = {
+    MyWorkerService.whoAreYouTalkingToCommand: (WorkerRequest r) => whoAreYouTalkingTo()
+  };
+}
+
+class MyWorker extends Worker implements MyWorkerService {
+  MyWorker(dynamic entryPoint, {String? id, List args = const []})
+      : super(entryPoint, id: id, args: args);
+
+  @override
+  Future<String> whoAreYouTalkingTo() =>
+      send(MyWorkerService.whoAreYouTalkingToCommand, []);
+}
+```
+
+The code to fire up the workers in browser and VM worlds need to get the `Channel` from the `LocalWorker`,
+so we will pass the local worker to the functions that instantiate `MyWorker`. The channel is obtained by
+calling the `share()` method then passed on to `MyWorker` via the `args` parameter where it must be serialized
+to cross platform thread boundaries. This array will be received by the platform worker thread at startup via
+the `startRequest` argument:
+
+* VM:
+
+```dart
+MyWorker createMyWorker(LocalWorker<IdentityService> identityServer) {
+  return MyWorker(_start, args: [identityServer.channel?.share().serialize()]);
+}
+
+void _start(Map command) => run((startRequest) {
+      // startRequest.args[0] contains the channel shared from the local worker
+      final channel = Channel.deserialize(startRequest.args[0])!;
+      final identityClient = IdentityClient(channel);
+      return MyWorkerServiceImpl(identityClient);
+    }, command);
+```
+
+* Browser:
+
+```dart
+MyWorker createMyWorker(LocalWorker<SizeService> identityServer) {
+  return MyWorker('/my_worker.dart.js', args: [identityServer.channel?.share().serialize()]);
+}
+
+void main() => run((startRequest) {
+      // startRequest.args[0] contains the channel shared from the local worker
+      final channel = Channel.deserialize(startRequest.args[0])!;
+      final identityClient = IdentityClient(channel);
+      return MyWorkerServiceImpl(identityClient);
+    });
+```
+
+And that's it! The final step is to bind everything together, for instance in the main program:
+
+```dart
+void main() {
+  Squadron.setId('main');
+
+  final identityServer = LocalWorker<IdentityService>.create(IdentityServiceImpl());
+
+  print(identityServer.whoAreYou());
+
+  try {
+    final worker = createMyWorker(identityServer);
+    print(await worker.whoAreYouTalkingTo());
+  } finally {
+    identityServer.stop();
+  }
+}
+```
+
+Note: the `LocalWorker` must be stopped to stop the program.
+
+```
+Architecture Diagram
+
+                                  +----------------+
+                             +--> | MyWorker       |
+                             |    | -------------- |
+                             |    | identityClient | --+
+ +------------------+        |    +----------------+   |
+ |  main program    | --[2]--+                        [3]
+ |  --------------- |                                  |
+[1] identityServer  | <--------------------------------+
+ +------------------+ 
+
+1: the main program first creates a LocalWorker<IdentityService>
+2: the main program spawns a MyWorker, providing it with the LocalWorker<IdentityService> it has just created
+4: MyWorker will call into the LocalWorker running in the main thread via its LocalWorkerClient
 ```
 
 ## <a name="cancellation"></a>Task Cancellation
