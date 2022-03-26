@@ -46,9 +46,9 @@ It provides a Flutter App running on native and browser platforms, showcasing Sq
 
 Import squadron from your `pubspec.yaml` file:
 
-```
+```yaml
 dependencies:
-   squadron: ^3.2.2
+   squadron: ^3.3.0
 ```
 
 ## <a name="usage"></a>Usage
@@ -721,7 +721,7 @@ Architecture Diagram
 
 1: the main program first creates a LocalWorker<IdentityService>
 2: the main program spawns a MyWorker, providing it with the LocalWorker<IdentityService> it has just created
-4: MyWorker will call into the LocalWorker running in the main thread via its LocalWorkerClient
+3: MyWorker will call into the LocalWorker running in the main thread via its LocalWorkerClient
 ```
 
 ## <a name="cancellation"></a>Task Cancellation
