@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'cancellation_token.dart';
 import 'channel.dart';
+import 'squadron_exception.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart';
 import 'worker_stat.dart';
@@ -107,35 +108,31 @@ abstract class Worker implements WorkerService {
     }
 
     final canceller = _canceller(token);
-    try {
-      // check token
-      token?.addListener(canceller);
-      token?.start();
-      final ex = token?.exception;
-      if (ex != null) throw ex;
+    SquadronException? error = token?.exception;
+    if (error == null) {
+      try {
+        // check token
+        token?.addListener(canceller);
+        token?.start();
 
-      // send request and return response
-      return await channel.sendRequest<T>(command, args, token: token);
-    } on CancelledException catch (e) {
-      // update stats and rethrow with worker id
-      _totalErrors++;
-      throw (token?.exception ?? e).withWorkerId(id).withCommand(command);
-    } on WorkerException catch (e) {
-      // update stats and rethrow with worker id
-      _totalErrors++;
-      throw e.withWorkerId(id).withCommand(command);
-    } catch (e, st) {
-      // update stats and rethrow as a [WorkerException] with worker id
-      _totalErrors++;
-      throw WorkerException(e.toString(),
-          stackTrace: st.toString(), workerId: id, command: command);
-    } finally {
-      // update stats
-      _workload--;
-      _totalWorkload++;
-      token?.removeListener(canceller);
-      _idle = DateTime.now().microsecondsSinceEpoch;
+        // send request and return response
+        return await channel.sendRequest<T>(command, args, token: token);
+      } on CancelledException catch (e) {
+        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
+      } catch (e, st) {
+        error = SquadronException.from(
+            error: e, stackTrace: st, workerId: id, command: command);
+      } finally {
+        // update stats
+        _workload--;
+        _totalWorkload++;
+        token?.removeListener(canceller);
+        _idle = DateTime.now().microsecondsSinceEpoch;
+      }
     }
+    // an error occured: update stats and throw exception
+    _totalErrors++;
+    throw error;
   }
 
   /// Sends a streaming workload to the worker.
@@ -156,47 +153,45 @@ abstract class Worker implements WorkerService {
     }
 
     final canceller = _canceller(token);
-    try {
-      // check token
-      token?.addListener(canceller);
-      token?.start();
-      var ex = token?.exception;
-      if (ex != null) throw ex;
-
-      // send request and stream response items
-      await for (var res
-          in channel.sendStreamingRequest<T>(command, args, token: token)) {
+    SquadronException? error = token?.exception;
+    if (error == null) {
+      try {
         // check token
-        if (ex != null) throw ex;
-        yield res;
-        ex = token?.exception;
+        token?.addListener(canceller);
+        token?.start();
+
+        // send request and stream response items
+        final result =
+            channel.sendStreamingRequest<T>(command, args, token: token);
+        await for (var res in result) {
+          // check token
+          if (error != null) break;
+          yield res;
+          error = token?.exception;
+        }
+        return;
+      } on CancelledException catch (e) {
+        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
+      } catch (e, st) {
+        error = SquadronException.from(
+            error: e, stackTrace: st, workerId: id, command: command);
+      } finally {
+        // update stats
+        _workload--;
+        _totalWorkload++;
+        token?.removeListener(canceller);
+        _idle = DateTime.now().microsecondsSinceEpoch;
       }
-    } on CancelledException catch (e) {
-      // update stats and rethrow with worker id
-      _totalErrors++;
-      throw (token?.exception ?? e).withWorkerId(id).withCommand(command);
-    } on WorkerException catch (e) {
-      // update stats and rethrow with worker id
-      _totalErrors++;
-      throw e.withWorkerId(id).withCommand(command);
-    } catch (e, st) {
-      // update stats and rethrow as a [WorkerException] with worker id
-      _totalErrors++;
-      throw WorkerException(e.toString(),
-          stackTrace: st.toString(), workerId: id, command: command);
-    } finally {
-      // update stats
-      _workload--;
-      _totalWorkload++;
-      token?.removeListener(canceller);
-      _idle = DateTime.now().microsecondsSinceEpoch;
     }
+    // an error occured: update stats and throw exception
+    _totalErrors++;
+    throw error;
   }
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   Future<Channel> start() async {
     if (_stopped != null) {
-      throw WorkerException('Worker is stopped', workerId: id);
+      throw WorkerException('worker is stopped', workerId: id);
     }
     if (_channel == null) {
       _channelRequest ??= Channel.open(_entryPoint, args);

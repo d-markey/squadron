@@ -14,7 +14,7 @@ final last = first + count - 1;
 
 Future<bool> testPrimesWithoutCache(
     Logger logger, Map<String, String> entryPoints) async {
-  final primeWorkerWithoutCache = PrimeWorker(entryPoints['prime']);
+  final primeWorkerWithoutCache = PrimeWorker();
   await primeWorkerWithoutCache.start();
 
   logger.log('Prime test, range $first-$last - stream (no cache)...');
@@ -52,11 +52,10 @@ Future<bool> testPrimesWithoutCache(
 
 Future<bool> testPrimesWithCache(
     Logger logger, Map<String, String> entryPoints) async {
-  final cacheWorker = CacheWorker(entryPoints['cache']);
+  final cacheWorker = CacheWorker();
   await cacheWorker.start();
 
-  final primeWorkerWithCache =
-      PrimeWorker(entryPoints['prime'], cacheWorker.channel);
+  final primeWorkerWithCache = PrimeWorker(cacheWorker.channel);
   await primeWorkerWithCache.start();
 
   logger.log('Prime test, range $first-$last - stream (cache is empty)...');

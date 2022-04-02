@@ -1,54 +1,45 @@
 import 'cancellation_token.dart';
 import 'channel.dart';
 import 'squadron.dart';
-import 'worker_exception.dart';
+import 'squadron_error.dart';
+import 'worker.dart';
 
-/// Class used to communicate from a [Channel] to the [Worker].
-/// Typically a [WorkerRequest] consists of a command ID and a list of arguments.
-/// The [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method responsible for handling it.
-/// The [WorkerRequest] is effectively sent to the [Worker] by calling the [WorkerRequest.send] or [WorkerRequest.stream] method.
-/// These methods will serialize the [WorkerRequest] as a [Map] to be transfered from the client to the worker and contains:
+/// Class used to communicate from a [Channel] to the [Worker]. Typically a [WorkerRequest] consists of a command ID
+/// and a list of arguments. The [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method
+/// responsible for handling it. The [WorkerRequest] is effectively sent to the [Worker] by calling the
+/// [WorkerRequest.send] or [WorkerRequest.stream] method. These methods will serialize the [WorkerRequest] as a
+/// [Map] to be transfered from the client to the worker and contains:
 /// * the serialized [Channel] to communicate with the [Worker]
 /// * the [command] ID
 /// * the command's arguments [args]
-/// The command's arguments are passed as a list and should only contain primitive values or objects that can be transfered across workers.
-/// For applications running on a VM platform, Dart objects should be safe according to Dart's documentation of [SendPort.send].
-/// The worker is responsible for deserializing the messages it receives using the [WorkerRequest.deserialize] constructor.
-/// [WorkerRequest] also implements two specific requests used for worker startup and termination.
+/// The command's arguments are passed as a list and should only contain primitive values or objects that can be
+/// transfered across workers. For applications running on a VM platform, Dart objects should be safe according to
+/// Dart's documentation of [SendPort.send]. The worker is responsible for deserializing the messages it receives
+/// using the [WorkerRequest.deserialize] constructor. [WorkerRequest] also implements specific requests used
+/// for worker startup, token cancellation, and worker termination.
 class WorkerRequest {
+  static const _noArgs = [];
+
+  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
+      this.logLevel, this._cancelToken)
+      : client = WorkerChannel.deserialize(channelInfo);
+
   /// Creates a new request with the specified [command] ID and optional arguments.
-  WorkerRequest(dynamic channelInfo, this.command,
-      [this.args = const [], this._cancelToken])
-      : client = WorkerChannel.deserialize(channelInfo),
-        id = null,
-        logLevel = null;
+  WorkerRequest(dynamic channelInfo, int command,
+      [List args = _noArgs, CancellationToken? cancelToken])
+      : this._(channelInfo, command, null, args, null, cancelToken);
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo, String id, [this.args = const []])
-      : client = WorkerChannel.deserialize(channelInfo),
-        command = _connectCommand,
-        _cancelToken = null,
-        // ignore: prefer_initializing_formals
-        id = id,
-        logLevel = Squadron.logLevel;
+  WorkerRequest.start(dynamic channelInfo, String id, [List args = _noArgs])
+      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null);
 
   /// Creates a new cancel request.
   WorkerRequest.cancel(CancellationToken cancelToken)
-      : client = null,
-        _cancelToken = cancelToken,
-        command = _cancelCommand,
-        id = null,
-        logLevel = null,
-        args = const [];
+      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
-      : client = null,
-        _cancelToken = null,
-        command = _terminateCommand,
-        id = null,
-        logLevel = null,
-        args = const [];
+      : this._(null, _terminateCommand, null, _noArgs, null, null);
 
   static const _$client = 'a';
   static const _$command = 'b';
@@ -58,13 +49,15 @@ class WorkerRequest {
   static const _$logLevel = 'f';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
-  WorkerRequest.deserialize(Map? message)
-      : client = WorkerChannel.deserialize(message?[_$client]),
-        _cancelToken = CancellationToken.deserialize(message?[_$token]),
-        command = message?[_$command],
-        id = message?[_$id],
-        logLevel = message?[_$logLevel],
-        args = message?[_$args] ?? const [];
+  static WorkerRequest? deserialize(Map? message) => (message == null)
+      ? null
+      : WorkerRequest._(
+          message[_$client],
+          message[_$command],
+          message[_$id],
+          message[_$args] ?? const [],
+          message[_$logLevel],
+          CancellationToken.deserialize(message[_$token]));
 
   /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
@@ -95,13 +88,6 @@ class WorkerRequest {
   CancellationToken? get cancelToken => _cancelToken;
   CancellationToken? _cancelToken;
 
-  void overrideCancelToken(CancellationToken value) {
-    if (_cancelToken == null || _cancelToken!.id != value.id) {
-      throw WorkerException('Cancellation token mismatch');
-    }
-    _cancelToken = value;
-  }
-
   /// The [command]'s ID.
   final int command;
 
@@ -128,4 +114,14 @@ class WorkerRequest {
   static const int _connectCommand = -1;
   static const int _cancelCommand = -2;
   static const int _terminateCommand = -3;
+}
+
+// private implementation internal to Squadron
+extension WorkerRequestExt on WorkerRequest {
+  void overrideCancelToken(CancellationToken token) {
+    if (_cancelToken == null || _cancelToken!.id != token.id) {
+      throw newSquadronError('cancellation token mismatch');
+    }
+    _cancelToken = token;
+  }
 }

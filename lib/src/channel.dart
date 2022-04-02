@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'cancellation_token.dart';
 import '_channel_stub.dart'
-    if (dart.library.js) 'browser/channel.dart'
-    if (dart.library.html) 'browser/channel.dart'
-    if (dart.library.io) 'native/channel.dart';
+    if (dart.library.js) 'browser/_channel.dart'
+    if (dart.library.html) 'browser/_channel.dart'
+    if (dart.library.io) 'native/_channel.dart';
 
+import 'squadron_exception.dart';
+import 'worker_request.dart';
 import 'worker_response.dart';
 
 /// A [Channel] supports communication from a client to a platform worker.
@@ -59,9 +61,17 @@ abstract class WorkerChannel {
   /// This method must be called by the worker upon startup.
   void connect(Object channelInfo);
 
-  /// Sends the [WorkerResponse] to the worker client.
+  /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the worker only.
-  void reply(WorkerResponse data);
+  void reply(dynamic data);
+
+  /// Sends a [WorkerResponse.closeStream] to the worker client.
+  /// This method must be called from the worker only.
+  void closeStream();
+
+  /// Sends a [WorkerResponse] with the specified error to the worker client.
+  /// This method must be called from the worker only.
+  void error(SquadronException error);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static WorkerChannel? deserialize(dynamic channelInfo) =>

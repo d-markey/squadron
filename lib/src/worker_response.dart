@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'worker_exception.dart';
+import 'squadron_exception.dart';
 
 /// Class used to communicate from a [Worker] to clients.
 /// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a
@@ -11,23 +11,12 @@ class WorkerResponse {
   /// [WorkerResponse] with a valid [result].
   WorkerResponse(this._result)
       : _error = null,
-        _stackTrace = null,
-        _cancelled = false,
-        _timeout = false,
         _eos = false;
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  WorkerResponse.withError(dynamic exception, [String? stackTrace])
-      : assert(exception != null),
-        _error = (exception is WorkerException)
-            ? exception.message
-            : exception.toString(),
-        _stackTrace = stackTrace ??
-            ((exception is WorkerException)
-                ? exception.stackTrace
-                : StackTrace.current.toString()),
-        _cancelled = exception is CancelledException,
-        _timeout = exception is TaskTimeoutException,
+  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])
+      : _error = SquadronException.from(
+            error: exception, stackTrace: stackTrace ?? StackTrace.current),
         _result = null,
         _eos = false;
 
@@ -35,9 +24,6 @@ class WorkerResponse {
   const WorkerResponse._endOfStream()
       : _result = null,
         _error = null,
-        _stackTrace = null,
-        _cancelled = false,
-        _timeout = false,
         _eos = true;
 
   /// End of stream response.
@@ -45,70 +31,40 @@ class WorkerResponse {
 
   static const _$result = 'a';
   static const _$error = 'b';
-  static const _$stackTrace = 'c';
-  static const _$eos = 'd';
-  static const _$cancelled = 'e';
-  static const _$timeout = 'f';
+  static const _$eos = 'c';
 
   /// Creates a new [WorkerResponse] from a message sent by the worker.
   WorkerResponse.deserialize(Map message)
       : _result = message[_$result],
-        _error = message[_$error],
-        _stackTrace = message[_$stackTrace],
-        _cancelled = message[_$cancelled] ?? false,
-        _timeout = message[_$timeout] ?? false,
+        _error = SquadronException.deserialize(message[_$error]),
         _eos = message[_$eos] ?? false;
 
   /// [WorkerResponse] serialization.
   Map<String, dynamic> serialize() {
     if (_error != null) {
-      return {
-        _$error: _error,
-        _$stackTrace: _stackTrace,
-        if (_cancelled) _$cancelled: true,
-        if (_timeout) _$timeout: true
-      };
+      return {_$error: _error!.serialize()};
+    } else if (_eos) {
+      return const {_$eos: true};
+    } else if (_result == null) {
+      return const {};
+    } else {
+      return {_$result: _result};
     }
-    if (_eos) return const {_$eos: true};
-    if (_result == null) return const {};
-    return {_$result: _result};
   }
 
   /// Flag indicating the end of the [Stream]ing operation.
   bool get endOfStream => _eos;
   final bool _eos;
 
-  /// The [WorkerResponse] error message, if any.
-  String? get error => _error;
-  final String? _error;
+  /// The [WorkerResponse] exception, if any.
+  SquadronException? get error => _error;
+  final SquadronException? _error;
 
   /// Flag indicating whether an error occured.
   bool get hasError => _error != null;
 
   /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,
-  /// an [exception] is thrown.
-  dynamic get result => hasError ? throw exception : _result;
+  /// an the [error] exception is thrown.
+  dynamic get result => hasError ? throw error! : _result;
   final dynamic _result;
-
-  /// The [WorkerResponse] stackTrace information as [String], if any.
-  String? get stackTrace => _stackTrace;
-  final String? _stackTrace;
-
-  /// Flag indicating whether the error is a CancelledException.
-  final bool _cancelled;
-
-  /// Flag indicating whether the error is a TaskTimeoutException.
-  final bool _timeout;
-
-  /// The [WorkerResponse] stackTrace information as [String], if any.
-  dynamic get exception {
-    if (!hasError) return null;
-    if (_cancelled) {
-      return CancelledException(message: _error!, stackTrace: _stackTrace);
-    } else if (_timeout) {
-      return TaskTimeoutException(message: _error!, stackTrace: _stackTrace);
-    } else {
-      return WorkerException(_error!, stackTrace: _stackTrace);
-    }
-  }
 }

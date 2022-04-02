@@ -1,6 +1,6 @@
 import 'cancellable_token.dart';
 import 'cancellation_token.dart';
-import 'squadron_exception.dart';
+import 'squadron_error.dart';
 import 'worker_exception.dart';
 
 /// Composite token cancellation mode
@@ -30,8 +30,8 @@ class CompositeToken extends CancellableToken {
 
   /// Throws an exception, composite tokens may not be cancelled programmatically.
   @override
-  void cancel() => throw SquadronException(
-      'A $runtimeType cannot be cancelled programmatically.');
+  void cancel([CancelledException? exception]) => throw newSquadronError(
+      'CompositeToken cannot be cancelled programmatically');
 
   final CompositeMode mode;
 
@@ -56,9 +56,9 @@ class CompositeToken extends CancellableToken {
       if ((mode == CompositeMode.any && _signaled >= 1) ||
           (mode == CompositeMode.all && _signaled >= _tokens.length)) {
         if (mode == CompositeMode.all) {
-          setException(CancelledException(message: message ?? 'Cancelled'));
+          super.cancel(CancelledException(message: message ?? 'Cancelled'));
         } else {
-          setException(_tokens.map((e) => e.exception).firstWhere(
+          super.cancel(_tokens.map((e) => e.exception).firstWhere(
               (e) => e != null,
               orElse: () =>
                   CancelledException(message: message ?? 'Cancelled'))!);

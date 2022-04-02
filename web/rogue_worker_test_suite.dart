@@ -12,14 +12,14 @@ Future<bool> testWorkerException(
     Logger logger, Map<String, String> entryPoints) async {
   var success = false;
 
-  final rogueWorker = RogueWorker(entryPoints['rogue']);
+  final rogueWorker = RogueWorker();
   await rogueWorker.start();
 
   try {
-    final result = await rogueWorker.throwWorkerException();
-    throw Exception('Unexpected result $result');
-  } on WorkerException {
-    success = true;
+    await rogueWorker.throwWorkerException();
+    throw Exception('throwWorkerException() completed successfully');
+  } catch (ex) {
+    success = (ex is WorkerException);
   } finally {
     rogueWorker.stop();
   }
@@ -31,14 +31,14 @@ Future<bool> testException(
     Logger logger, Map<String, String> entryPoints) async {
   var success = false;
 
-  final rogueWorker = RogueWorker(entryPoints['rogue']);
+  final rogueWorker = RogueWorker();
   await rogueWorker.start();
 
   try {
-    final result = await rogueWorker.throwException();
-    throw Exception('Unexpected result $result');
-  } on WorkerException {
-    success = true;
+    await rogueWorker.throwException();
+    throw Exception('throwException() completed successfully');
+  } catch (ex) {
+    success = (ex is WorkerException);
   } finally {
     rogueWorker.stop();
   }

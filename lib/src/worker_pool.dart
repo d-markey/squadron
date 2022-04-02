@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'concurrency_settings.dart';
 import 'squadron.dart';
-import 'squadron_exception.dart';
+import 'squadron_error.dart';
 import 'worker.dart';
 import 'perf_counter.dart';
 import 'worker_service.dart';
@@ -38,6 +38,15 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
+
+  /// Maximum workers.
+  int get maxWorkers => concurrencySettings.maxWorkers;
+
+  /// Maximum tasks per worker.
+  int get maxParallel => concurrencySettings.maxParallel;
+
+  /// Maximum running tasks.
+  int get maxConcurrency => concurrencySettings.maxConcurrency;
 
   final _workers = <_PoolWorker<W>>[];
 
@@ -136,8 +145,8 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
     if (_stopped) {
-      throw SquadronException(
-          'The pool cannot accept new requests because it is stopped.');
+      throw newSquadronError(
+          'the pool cannot accept new requests because it is stopped');
     }
     _queue.addLast(task);
     _schedule();
@@ -162,26 +171,17 @@ class WorkerPool<W extends Worker> implements WorkerService {
           {PerfCounter? counter}) =>
       scheduleStream(task, counter: counter).stream;
 
-  void _onTaskStart(WorkerTask task) {
-    _executing[task.hashCode] = task;
-  }
-
-  void _onTaskDone(WorkerTask task) {
-    _executing.remove(task.hashCode);
-    _schedule();
-  }
-
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a [ValueTask]<T>.
   ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.value(_onTaskStart, task, counter, _onTaskDone));
+      _enqueue<T>(WorkerTask.value(task, counter));
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a [StreamTask]<T>.
   StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.stream(_onTaskStart, task, counter, _onTaskDone));
+      _enqueue<T>(WorkerTask.stream(task, counter));
 
   Timer? _timer;
 
@@ -202,25 +202,29 @@ class WorkerPool<W extends Worker> implements WorkerService {
     _timer = Timer(Duration.zero, () {
       _workers.removeWhere(_PoolWorker.isStopped);
       _queue.removeWhere((t) => t.isCancelled);
-      if (_queue.isNotEmpty) {
+      if (_stopped && _queue.isEmpty && _executing.isEmpty) {
+        stop();
+      } else if (_queue.isNotEmpty) {
         scheduleMicrotask(() {
           _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {
             int maxCapacity;
-            while (_queue.isNotEmpty && (maxCapacity = _getMaxCapacity()) > 0) {
-              if (maxCapacity > 1) {
-                maxCapacity -= 1;
-              }
-              for (var idx = 0;
-                  idx < _workers.length && _queue.isNotEmpty;
-                  idx++) {
+            while (_queue.isNotEmpty &&
+                (maxCapacity = _sortAndGetMaxCapacity()) > 0) {
+              maxCapacity -= 1;
+              for (var idx = 0; idx < _workers.length; idx++) {
                 final w = _workers[idx];
-                if (w.capacity >= maxCapacity) {
-                  w.run(_queue.removeFirst());
+                if (_queue.isEmpty ||
+                    w.capacity == 0 ||
+                    w.capacity < maxCapacity) {
+                  break;
                 }
+                final task = _queue.removeFirst();
+                _executing[task.hashCode] = task;
+                w.run(task).whenComplete(() {
+                  _executing.remove(task.hashCode);
+                  _schedule();
+                });
               }
-            }
-            if (_stopped) {
-              stop();
             }
           }).catchError((ex) {
             Squadron.severe('provisionning workers failed with error $ex');
@@ -234,7 +238,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
     });
   }
 
-  int _getMaxCapacity() {
+  int _sortAndGetMaxCapacity() {
     _workers.sort(_PoolWorker.compareCapacityDesc);
     return _workers.first.capacity;
   }

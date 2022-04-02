@@ -10,17 +10,18 @@ import 'sample_worker_vm.dart' as sample_isolate;
 void main() async {
   final sw = Stopwatch()..start();
 
-  void log(String message) {
+  void log([String? message]) {
+    message ??= '';
     print(message.isEmpty ? '' : '[${sw.elapsed}] $message');
   }
 
   final loops = 5;
   final max = 50;
 
-  log('');
+  log();
   log('loops = $loops');
   log('max = $max');
-  log('');
+  log();
 
   Squadron.setId('MAIN');
 
@@ -52,16 +53,10 @@ void main() async {
     final syncElapsed = syncSw.elapsedMicroseconds;
 
     log('sync version completed in ${Duration(microseconds: syncElapsed)}');
-    log('');
+    log();
 
-    final minWorkers = 2;
-    final maxWorkers = 4;
-    final maxParallel = 2;
-
-    final concurrencySettings = ConcurrencySettings(
-        minWorkers: minWorkers,
-        maxWorkers: maxWorkers,
-        maxParallel: maxParallel);
+    final concurrencySettings =
+        ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 2);
 
     // create the pool
     pool = SampleWorkerPool(
@@ -75,11 +70,7 @@ void main() async {
     });
 
     final tasks = <Future>[];
-    for (var i = 0;
-        i <
-            concurrencySettings.maxParallel * concurrencySettings.maxWorkers +
-                1;
-        i++) {
+    for (var i = 0; i < pool.maxConcurrency + 1; i++) {
       tasks.add(pool.whoAreYouTalkingTo().then(print));
     }
     await Future.wait(tasks);
@@ -133,10 +124,10 @@ void main() async {
     log('pool stats:');
     log('  * load = ${pool.workload}, max load = ${pool.maxWorkload}, total load = ${pool.totalWorkload}, total errors = ${pool.totalErrors}');
 
-    log('');
+    log();
   } on WorkerException catch (e) {
     log(e.message);
-    log(e.stackTrace.toString());
+    log(e.stackTrace?.toString());
   } finally {
     pool?.stop();
   }
@@ -145,5 +136,5 @@ void main() async {
   identityServer.stop();
 
   log('Done.');
-  log('');
+  log();
 }

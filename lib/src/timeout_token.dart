@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'cancellable_token.dart';
-import 'squadron_exception.dart';
+import 'squadron_error.dart';
 import 'worker_exception.dart';
 
 /// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after
@@ -12,8 +12,8 @@ class TimeOutToken extends CancellableToken {
 
   /// Throws an exception, time-out tokens may not be cancelled programmatically.
   @override
-  void cancel() => throw SquadronException(
-      'A $runtimeType cannot be cancelled programmatically.');
+  void cancel([CancelledException? exception]) => throw newSquadronError(
+      'TimeOutToken cannot be cancelled programmatically');
 
   /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.
   final Duration duration;
@@ -25,6 +25,9 @@ class TimeOutToken extends CancellableToken {
   @override
   void start() => _timer ??= Timer(
       duration,
-      () => super.setException(
-          TaskTimeoutException(message: message, duration: duration)));
+      () => super
+          .cancel(TaskTimeoutException(message: message, duration: duration)));
+
+  /// Returns `true` if the timeout has started, `false` otherwise.
+  bool get started => _timer != null;
 }

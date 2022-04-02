@@ -1,3 +1,10 @@
+## 3.3.1
+
+- Fixed streaming from `LocalWorker`.
+- Added tests for `LocalWorker`.
+- Improved cancellation handling.
+- Added tests to improve test coverage.
+
 ## 3.3.0
 
 - Implemented `LocalWorker`, a worker-like class living in the same thread as its owner and available for inter-worker messaging. For instance, in a Flutter app, instantiating a `LocalWorker` in the main thread enables other workers to (indirectly) call Flutter APIs that are otherwise not available in the context of a secondary thread.
@@ -5,28 +12,28 @@
 
 ## 3.2.2
 
-- Document types and release mode (special thanks to [SwissCheese5](https://github.com/SwissCheese5))
-- More error handling at communication points
-- Use lower log levels for internal Squadron log messages
-- Added test coverage
+- Document types and release mode (special thanks to [SwissCheese5](https://github.com/SwissCheese5)).
+- More error handling at communication points.
+- Use lower log levels for internal Squadron log messages.
+- Added test coverage.
 
 ## 3.2.1
 
-- Document the new logging feature
-- Make `sendRequest()` async in browser `Channel` (implementation closer to that of native `Channel`)
-- Add a timestamp to pool workers to record the time when it was assigned its last task
-- Sort pool workers to distribute tasks to those that have the largest capacity and the oldest timestamp
-- Add command property to `WorkerException`
-- Reorganized the test folder
-- Recompiled test Web workers
+- Document the new logging feature.
+- Make `sendRequest()` async in browser `Channel` (implementation closer to that of native `Channel`).
+- Add a timestamp to pool workers to record the time when it was assigned its last task.
+- Sort pool workers to distribute tasks to those that have the largest capacity and the oldest timestamp.
+- Add command property to `WorkerException`.
+- Reorganized the test folder.
+- Recompiled test Web workers.
 
 ## 3.2.0
 
-- Added a logging mechanism to facilitate debugging Squadron's internals
-- Reworked connection flow between main program and worker
-- Reworked task scheduling
-- Fixed issue https://github.com/d-markey/squadron/issues/3
-- Added tests for logging and workers failing to initialize
+- Added a logging mechanism to facilitate debugging Squadron's internals.
+- Reworked connection flow between main program and worker.
+- Reworked task scheduling.
+- Fixed issue https://github.com/d-markey/squadron/issues/3.
+- Added tests for logging and workers failing to initialize.
 
 ## 3.1.4
 

@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 import 'prime_service.dart';
+import 'worker_entry_points.dart';
 
 class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
-  PrimeWorkerPool(dynamic entryPoint,
+  PrimeWorkerPool(
       [Channel? cacheChannel,
       ConcurrencySettings concurrencySettings =
           ConcurrencySettings.threeCpuThreads])
-      : super(() => PrimeWorker(entryPoint, cacheChannel),
+      : super(() => PrimeWorker(cacheChannel),
             concurrencySettings: concurrencySettings);
 
   @override
@@ -21,8 +22,8 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 }
 
 class PrimeWorker extends Worker implements PrimeService {
-  PrimeWorker(dynamic entryPoint, [Channel? cacheChannel])
-      : super(entryPoint, args: [cacheChannel?.share().serialize()]);
+  PrimeWorker([Channel? cacheChannel])
+      : super(EntryPoints.prime, args: [cacheChannel?.share().serialize()]);
 
   @override
   Future<bool> isPrime(int n) => send<bool>(PrimeService.isPrimeCommand, [n]);

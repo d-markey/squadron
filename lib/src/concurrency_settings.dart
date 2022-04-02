@@ -17,6 +17,9 @@ class ConcurrencySettings {
   /// Maximum number of tasks that can be posted to a worker.
   final int maxParallel;
 
+  /// Maximum number of running tasks.
+  int get maxConcurrency => maxWorkers * maxParallel;
+
   /// Returns the number of workers necessary to handle [pending] tasks, taking into account [minWorkers] and [maxWorkers].
   int max(int pending) {
     if (pending < minWorkers) return minWorkers;
@@ -53,8 +56,4 @@ class ConcurrencySettings {
   /// 1 tasks per worker, 1 to 7 workers.
   static const sevenCpuThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 7, maxParallel: 1);
-
-  /// 1 task per worker, unbounded number of workers.
-  static const manyCpuThreads =
-      ConcurrencySettings(minWorkers: 0, maxWorkers: 0, maxParallel: 1);
 }

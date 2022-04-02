@@ -1,15 +1,10 @@
-import 'dart:async';
-
 import '_local_worker_stub.dart'
-    if (dart.library.js) 'browser/local_worker.dart'
-    if (dart.library.html) 'browser/local_worker.dart'
-    if (dart.library.io) 'native/local_worker.dart';
+    if (dart.library.js) 'browser/_local_worker.dart'
+    if (dart.library.html) 'browser/_local_worker.dart'
+    if (dart.library.io) 'native/_local_worker.dart';
 
 import 'channel.dart';
-import 'squadron.dart';
-import 'squadron_exception.dart';
 import 'worker_request.dart';
-import 'worker_response.dart';
 import 'worker_service.dart';
 
 /// Base local worker class.
@@ -32,45 +27,6 @@ abstract class LocalWorker<W extends WorkerService> implements WorkerService {
   /// The [WorkerService] associated to this local worker.
   final W service;
 
-  /// Deserializes the [WorkerRequest] from [message] and passes it to the underlying [service] for processing.
-  /// The request handler is located via the [WorkerService.operations] map based on [WorkerRequest.command].
-  /// If processing succeeds, the result is sent back to the client. If an error occurs, it is sent back to
-  /// the client.
-  void _process(dynamic message) {
-    WorkerRequest request;
-    try {
-      request = WorkerRequest.deserialize(message);
-    } catch (ex) {
-      Squadron.config(
-          'Received invalid message ${message.runtimeType}: $message');
-      return;
-    }
-    final client = request.client;
-    if (client == null) {
-      Squadron.config('Client is null');
-      return;
-    }
-    dynamic result;
-    try {
-      final handler = service.operations[request.command];
-      if (handler != null) {
-        result = handler(request);
-      } else {
-        throw SquadronException('Unsupported command ${request.command}');
-      }
-    } catch (ex, st) {
-      client.reply(WorkerResponse.withError(ex, st.toString()));
-      return;
-    }
-    if (result is Future) {
-      result.then((value) => client.reply(WorkerResponse(value))).onError(
-          (ex, st) =>
-              client.reply(WorkerResponse.withError(ex, st.toString())));
-    } else {
-      client.reply(WorkerResponse(result));
-    }
-  }
-
   /// The local worker's [Channel]. This channel can be shared with other workers by calling [Channel.share].
   Channel? get channel;
 
@@ -81,5 +37,3 @@ abstract class LocalWorker<W extends WorkerService> implements WorkerService {
   @override
   final Map<int, CommandHandler> operations = WorkerService.noOperations;
 }
-
-void processMessage(LocalWorker w, dynamic message) => w._process(message);

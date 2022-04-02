@@ -34,6 +34,12 @@ class PerfCounter implements PerfCounterSnapshot {
   int get totalErrors => _totalErrors;
   int _totalErrors;
 
+  /// Returns a snapshot of the [PerfCounter]'s values.
+  PerfCounterSnapshot get snapshot => PerfCounterSnapshot(this);
+}
+
+// private implementation internal to Squadron
+extension PerfCounterExt on PerfCounter {
   /// Updates counter value with the duration indicated by [timeInMicroseconds].
   /// 1. update the maximum elapsed time if required.
   /// 2. add specified time to the total elapsed time.
@@ -49,7 +55,4 @@ class PerfCounter implements PerfCounterSnapshot {
       _totalErrors++;
     }
   }
-
-  /// Returns a snapshot of the [PerfCounter]'s values.
-  PerfCounterSnapshot get value => PerfCounterSnapshot(this);
 }

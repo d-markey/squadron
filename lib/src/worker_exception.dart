@@ -1,43 +1,80 @@
 import 'dart:async';
 
+import 'squadron_exception.dart';
+
 /// Exception to keep track of errors encountered in a worker.
-class WorkerException implements Exception {
+class WorkerException implements SquadronException {
   /// Creates a new [WorkerException] to capture error context.
   WorkerException(this.message,
-      {String? stackTrace, this.workerId, this.command})
-      : stackTrace = stackTrace ?? StackTrace.current.toString();
+      {StackTrace? stackTrace, String? workerId, int? command})
+      : _stackTrace = stackTrace ?? StackTrace.current,
+        _workerId = workerId,
+        _command = command;
 
-  /// Message (or string representation of the exception).
-  final String message;
+  static const _$type = 0;
+  static const _$message = 1;
+  static const _$stackTrace = 2;
+  static const _$workerId = 3;
+  static const _$command = 4;
 
-  /// String representation of the stack trace associated to the original exception.
-  final String? stackTrace;
-
-  /// Worker ID.
-  final String? workerId;
-
-  /// Command.
-  final int? command;
+  static const _$typeMarker = '\$W';
 
   @override
-  String toString() {
-    final info = <String>[];
-    if (workerId != null) info.add('workerId=$workerId');
-    if (command != null) info.add('command=$command');
-    if (info.isEmpty) {
-      return 'WorkerException: $message\n$stackTrace';
-    } else {
-      return 'WorkerException (${info.join(', ')}): $message\n$stackTrace';
-    }
-  }
+  List serialize() =>
+      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];
+
+  static WorkerException? deserialize(List data) =>
+      (data[_$type] == _$typeMarker)
+          ? WorkerException(data[_$message],
+              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),
+              workerId: data[_$workerId],
+              command: data[_$command])
+          : null;
+
+  /// Message.
+  final String message;
+
+  /// Stack trace associated to the original exception.
+  @override
+  StackTrace? get stackTrace => _stackTrace;
+  StackTrace? _stackTrace;
+
+  /// Worker ID.
+  String? get workerId => _workerId;
+  String? _workerId;
+
+  /// Command.
+  int? get command => _command;
+  int? _command;
 }
 
 /// Exception to keep track of task cancellation.
 class CancelledException extends WorkerException {
   CancelledException(
-      {String? message, String? stackTrace, String? workerId, int? command})
+      {String? message, StackTrace? stackTrace, String? workerId, int? command})
       : super(message ?? 'The task has been cancelled',
             stackTrace: stackTrace, workerId: workerId, command: command);
+
+  static const _$type = 0;
+  static const _$message = 1;
+  static const _$stackTrace = 2;
+  static const _$workerId = 3;
+  static const _$command = 4;
+
+  static const _$typeMarker = '\$C';
+
+  @override
+  List serialize() =>
+      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];
+
+  static CancelledException? deserialize(List data) =>
+      (data[_$type] == _$typeMarker)
+          ? CancelledException(
+              message: data[_$message],
+              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),
+              workerId: data[_$workerId],
+              command: data[_$command])
+          : null;
 }
 
 /// Exception to keep track of task timeouts.
@@ -46,7 +83,7 @@ class TaskTimeoutException extends CancelledException
   /// Creates a new [TaskTimeoutException].
   TaskTimeoutException(
       {String? message,
-      String? stackTrace,
+      StackTrace? stackTrace,
       String? workerId,
       int? command,
       this.duration})
@@ -56,50 +93,55 @@ class TaskTimeoutException extends CancelledException
             workerId: workerId,
             command: command);
 
+  static const _$type = 0;
+  static const _$message = 1;
+  static const _$stackTrace = 2;
+  static const _$workerId = 3;
+  static const _$command = 4;
+  static const _$duration = 5;
+
+  static const _$typeMarker = '\$T';
+
+  @override
+  List serialize() => [
+        _$typeMarker,
+        message,
+        _stackTrace?.toString(),
+        _workerId,
+        _command,
+        duration?.inMicroseconds
+      ];
+
   @override
   final Duration? duration;
+
+  static TaskTimeoutException? deserialize(List data) =>
+      (data[_$type] == _$typeMarker)
+          ? TaskTimeoutException(
+              message: data[_$message],
+              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),
+              workerId: data[_$workerId],
+              command: data[_$command],
+              duration: (data[_$duration] == null)
+                  ? null
+                  : Duration(microseconds: data[_$duration]))
+          : null;
 }
 
-extension WorkerExceptionDetails on WorkerException {
+// private implementation internal to Squadron
+extension WorkerExceptionExt on WorkerException {
   WorkerException withWorkerId(String? workerId) {
-    final type = runtimeType;
-    if (type == TaskTimeoutException) {
-      return TaskTimeoutException(
-          message: message,
-          stackTrace: stackTrace,
-          duration: (this as TaskTimeoutException).duration,
-          workerId: workerId,
-          command: command);
-    } else if (type == CancelledException) {
-      return CancelledException(
-          message: message,
-          stackTrace: stackTrace,
-          workerId: workerId,
-          command: command);
-    } else {
-      return WorkerException(message,
-          stackTrace: stackTrace, workerId: workerId, command: command);
-    }
+    _workerId ??= workerId;
+    return this;
   }
 
-  WorkerException withCommand(int command) {
-    final type = runtimeType;
-    if (type == TaskTimeoutException) {
-      return TaskTimeoutException(
-          message: message,
-          stackTrace: stackTrace,
-          duration: (this as TaskTimeoutException).duration,
-          workerId: workerId,
-          command: command);
-    } else if (type == CancelledException) {
-      return CancelledException(
-          message: message,
-          stackTrace: stackTrace,
-          workerId: workerId,
-          command: command);
-    } else {
-      return WorkerException(message,
-          stackTrace: stackTrace, workerId: workerId, command: command);
-    }
+  WorkerException withCommand(int? command) {
+    _command ??= command;
+    return this;
+  }
+
+  WorkerException withStackTrace(StackTrace? stackTrace) {
+    _stackTrace ??= stackTrace;
+    return this;
   }
 }

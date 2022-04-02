@@ -25,14 +25,11 @@ class CancellableToken extends CancellationToken {
   CancelledException? get exception => _exception;
   CancelledException? _exception;
 
-  void setException(CancelledException exception) {
-    _exception ??= exception;
+  /// Cancels the token and notifies listeners.
+  void cancel([CancelledException? exception]) {
+    _exception ??= exception ?? CancelledException(message: message);
     _listeners?.toList().forEach(_safeInvoke);
   }
-
-  /// Cancels the token and notifies listeners.
-  void cancel() =>
-      setException(_exception ?? CancelledException(message: message));
 
   List<SquadronCallback>? _listeners;
 

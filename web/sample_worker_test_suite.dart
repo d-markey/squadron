@@ -13,7 +13,7 @@ final sampleWorkerTests = {
 Future<bool> testSampleWorkerStartStop(
     Logger logger, Map<String, String> entryPoints) async {
   try {
-    final worker = SampleWorker(entryPoints['sample']);
+    final worker = SampleWorker();
     expect(worker.upTime == Duration.zero, 'worker.upTime should be zero');
     expect(worker.idleTime == Duration.zero, 'worker.idleTime should be zero');
     expect(worker.isStopped == false, 'worker.isStopped should be false');

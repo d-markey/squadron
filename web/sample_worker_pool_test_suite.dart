@@ -32,13 +32,11 @@ Future<bool> testSampleWorkerPool(
       'running 2 x $taskCount tasks with a single worker... completed in ${workerSw.elapsed}',
       replaceLastLine: true);
 
-  final pool = SampleWorkerPool(
-      entryPoints['sample'],
-      ConcurrencySettings(
-        minWorkers: 1,
-        maxWorkers: 3,
-        maxParallel: 5,
-      ));
+  final pool = SampleWorkerPool(ConcurrencySettings(
+    minWorkers: 1,
+    maxWorkers: 3,
+    maxParallel: 5,
+  ));
   await pool.start();
 
   expect(pool.stats.where((s) => !s.isStopped).length == 1,

@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 import 'sample_service.dart';
+import 'worker_entry_points.dart';
 
 class SampleWorkerPool extends WorkerPool<SampleWorker>
     implements SampleService {
-  SampleWorkerPool(dynamic entryPoint,
-      [ConcurrencySettings? concurrencySettings])
-      : super(() => SampleWorker(entryPoint),
+  SampleWorkerPool([ConcurrencySettings? concurrencySettings])
+      : super(() => SampleWorker(),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
@@ -24,26 +24,26 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future<int> delayedIdentity(int n) => execute((w) => w.delayedIdentity(n));
 
   @override
-  Stream<int> delayedSequence(int count, [CancellationToken? token]) =>
-      stream((w) => w.delayedSequence(count, token));
+  Stream<int> finiteSequence(int count, [CancellationToken? token]) =>
+      stream((w) => w.finiteSequence(count, token));
 
   @override
-  Stream<int> cancellableSequence(CancellationToken token) =>
-      stream((w) => w.cancellableSequence(token));
+  Stream<int> infiniteSequence(CancellationToken token) =>
+      stream((w) => w.infiniteSequence(token));
 
   @override
-  Future cancellableCpu(CancellationToken token) =>
-      execute((w) => w.cancellableCpu(token));
+  Future infiniteCpu(CancellationToken token) =>
+      execute((w) => w.infiniteCpu(token));
 
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayedIdentity(n));
 
-  StreamTask<int> delayedSequenceTask(int n) =>
-      scheduleStream((w) => w.delayedSequence(n));
+  StreamTask<int> finiteSequenceTask(int n, [CancellationToken? token]) =>
+      scheduleStream((w) => w.finiteSequence(n, token));
 }
 
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(dynamic entryPoint) : super(entryPoint);
+  SampleWorker() : super(EntryPoints.sample);
 
   @override
   Future io({required int milliseconds}) =>
@@ -58,14 +58,14 @@ class SampleWorker extends Worker implements SampleService {
       send(SampleService.delayedIdentityCommand, [n]);
 
   @override
-  Stream<int> delayedSequence(int count, [CancellationToken? token]) =>
-      stream(SampleService.delayedSequenceCommand, [count], token);
+  Stream<int> finiteSequence(int count, [CancellationToken? token]) =>
+      stream(SampleService.finiteSequenceCommand, [count], token);
 
   @override
-  Stream<int> cancellableSequence(CancellationToken token) =>
-      stream(SampleService.cancellableSequenceCommand, [], token);
+  Stream<int> infiniteSequence(CancellationToken token) =>
+      stream(SampleService.infiniteSequenceCommand, [], token);
 
   @override
-  Future cancellableCpu(CancellationToken token) =>
-      send(SampleService.cancellableCpuCommand, [], token);
+  Future infiniteCpu(CancellationToken token) =>
+      send(SampleService.infiniteCpuCommand, [token], token);
 }

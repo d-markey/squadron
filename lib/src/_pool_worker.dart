@@ -24,9 +24,9 @@ class _PoolWorker<W extends Worker> {
     }
   }
 
-  void run(WorkerTask task) {
+  Future run(WorkerTask task) {
     _start();
-    task.run(worker).whenComplete(_finish);
+    return task.run(worker).whenComplete(_finish);
   }
 
   static int compareCapacityDesc(_PoolWorker a, _PoolWorker b) {

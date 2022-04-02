@@ -7,4 +7,3 @@ export 'src/worker_task.dart' show Task, ValueTask, StreamTask;
 export 'src/perf_counter.dart' show PerfCounter;
 export 'src/perf_counter_snapshot.dart' show PerfCounterSnapshot;
 export 'src/concurrency_settings.dart' show ConcurrencySettings;
-export 'src/squadron_exception.dart' show SquadronException;

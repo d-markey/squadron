@@ -1,13 +1,15 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'perf_counter.dart';
 import 'cancellation_token.dart';
+import 'squadron_error.dart';
+import 'squadron_exception.dart';
 import 'worker.dart';
 import 'worker_exception.dart';
+import 'worker_pool.dart';
 import 'worker_service.dart';
 
-/// Base task class
+/// Base worker task class
 abstract class Task<T> {
   /// Flag indicating whether the task is actually being executed.
   bool get isRunning;
@@ -21,13 +23,14 @@ abstract class Task<T> {
   /// Duration between the moment the task was posted, and the moment it was assigned to a [Worker].
   Duration get waitTime;
 
-  /// Duration between the moment the task assigned to a [Worker], and the moment it finished executing.
+  /// Duration between the moment the task was assigned to a [Worker], and the moment it finished executing.
   Duration get runningTime;
 
-  /// Cancels the task. If the task is still pending, cancellation is effective immediately with a [CancelledException].
-  /// For a running [ValueTask], cancellation is ignored and the task's [ValueTask.value] will eventually complete.
-  /// For a running [StreamTask], cancellation will be effective after receiving the next value and the task's [StreamTask.stream] will be closed.
-  /// It should be noted that cancellation of running tasks will not be notified to platform workers. To give running tasks a chance to get notified
+  /// Cancels the task. If the task is still pending, cancellation is effective immediately with a
+  /// [CancelledException]. For a running [ValueTask], cancellation is ignored and the task's [ValueTask.value]
+  /// will eventually complete. For a running [StreamTask], cancellation will be effective after receiving the
+  /// next value and the task's [StreamTask.stream] will be closed. It should be noted that cancellation of
+  /// running tasks will not be notified to platform workers. To give running tasks a chance to get notified
   /// of cancellation, a [CancellationToken] should be passed to the tasks at the time they are created.
   void cancel([String? message]);
 }
@@ -47,24 +50,24 @@ abstract class StreamTask<T> extends Task<T> {
 /// [WorkerTask] registered in the [WorkerPool].
 class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   /// Creates a new [ValueTask].
-  WorkerTask.value(this._onStart, this._computer, this._counter, this._onDone)
+  WorkerTask.value(this._computer, this._counter)
       : assert(_computer != null),
         _completer = Completer<T>(),
         _producer = null,
         _streamer = null {
-    _submitted = _usTimeStamp();
+    _submitted = _timeStamp();
   }
 
   /// Creates a new [StreamTask].
-  WorkerTask.stream(this._onStart, this._producer, this._counter, this._onDone)
+  WorkerTask.stream(this._producer, this._counter)
       : assert(_producer != null),
         _streamer = StreamController<T>(),
         _computer = null,
         _completer = null {
-    _submitted = _usTimeStamp();
+    _submitted = _timeStamp();
   }
 
-  static int _usTimeStamp() => DateTime.now().microsecondsSinceEpoch;
+  static int _timeStamp() => DateTime.now().microsecondsSinceEpoch;
 
   late final int _submitted;
 
@@ -84,14 +87,13 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
 
   @override
   Duration get waitTime => Duration(
-      microseconds: (_executed ?? _cancelled ?? _usTimeStamp()) - _submitted);
+      microseconds: (_executed ?? _cancelled ?? _timeStamp()) - _submitted);
 
   @override
   Duration get runningTime => _executed == null
       ? Duration.zero
       : Duration(
-          microseconds:
-              (_cancelled ?? _finished ?? _usTimeStamp()) - _executed!);
+          microseconds: (_cancelled ?? _finished ?? _timeStamp()) - _executed!);
 
   void _completeWithError(Exception exception) {
     if (!_completer!.isCompleted) {
@@ -117,7 +119,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   @override
   void cancel([String? message]) {
     if (_cancelled == null) {
-      _cancelled = _usTimeStamp();
+      _cancelled = _timeStamp();
       if (_completer != null && _executed == null) {
         _wrapUp(() => _completeWithError(CancelledException(message: message)),
             false);
@@ -129,10 +131,9 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
 
   void _wrapUp(SquadronCallback wrapper, bool success) async {
     if (_finished == null) {
-      _finished = _usTimeStamp();
+      _finished = _timeStamp();
       _counter?.update(_finished! - _executed!, success);
       wrapper();
-      _onDone(this);
     }
   }
 
@@ -142,18 +143,11 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
 
     try {
       if (isCancelled) throw CancelledException();
-      _onStart(this);
       final value = await computer(worker);
       _wrapUp(() => _completeWithResult(value), true);
-    } on WorkerException catch (ex) {
-      log(ex.toString());
-      _wrapUp(() => _completeWithError(ex), false);
     } catch (ex, st) {
-      log(ex.toString());
-      _wrapUp(
-          () => _completeWithError(
-              WorkerException(ex.toString(), stackTrace: st.toString())),
-          false);
+      final wex = SquadronException.from(error: ex, stackTrace: st);
+      _wrapUp(() => _completeWithError(wex), false);
     }
   }
 
@@ -163,37 +157,29 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
 
     try {
       if (isCancelled) throw CancelledException();
-      _onStart(this);
       await for (var value in producer(worker)) {
         streamer.add(value);
         if (isCancelled) throw CancelledException();
       }
       _wrapUp(() => _close(), true);
-    } on WorkerException catch (ex) {
-      _wrapUp(() => _close(ex), false);
     } catch (ex, st) {
-      _wrapUp(
-          () =>
-              _close(WorkerException(ex.toString(), stackTrace: st.toString())),
-          false);
+      final wex = SquadronException.from(error: ex, stackTrace: st);
+      _wrapUp(() => _close(wex), false);
     }
   }
 
   Future run(W worker) {
-    _executed = _usTimeStamp();
+    _executed = _timeStamp();
     if (_computer != null && _completer != null) {
       return _runFuture(worker, _computer!, _completer!);
     } else if (_producer != null && _streamer != null) {
       return _runStream(worker, _producer!, _streamer!);
     } else {
-      return Future.value(
-          WorkerException('The worker task state is invalid; cannot run.'));
+      throw newSquadronError('invalid worker task state');
     }
   }
 
   final PerfCounter? _counter;
-  final void Function(WorkerTask task) _onStart;
-  final void Function(WorkerTask task) _onDone;
 
   final Future<T> Function(W worker)? _computer;
   final Completer<T>? _completer;

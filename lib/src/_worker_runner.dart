@@ -1,137 +1,124 @@
-part of '_bootstrapper_stub.dart';
+import 'dart:isolate';
 
-class _WorkerRunner {
-  _WorkerRunner._();
+import '_worker_monitor.dart';
+import 'squadron.dart';
+import 'squadron_error.dart';
+import 'squadron_exception.dart';
+import 'worker.dart';
+import 'worker_exception.dart';
+import 'worker_request.dart';
+import 'worker_service.dart';
 
-  /// Called by the platform worker upon startup, in response to a start [WorkerRequest].
-  /// [channelInfo] is an opaque object sent back from the platform worker to the Squadron [Worker]
-  /// and used to communicate with the platform worker. Typically, [channelInfo] would be a [SendPort]
-  /// (native) or a [MessagePort] (browser). [operations] is an optional map of command ids to command
-  /// methods which will be initialized with operations exposed by the [service]. If [operations] is
-  /// empty, it should mean that [connect] has not been called.
-  static Future connect(
-      Map? message,
-      Object channelInfo,
-      Map<int, CommandHandler>? operations,
-      WorkerInitializer? initializer) async {
-    if (message == null) {
-      Squadron.severe(
-          'null message; for workers running in an Isolate, this may be due to the run() function not receiving the command parameter.');
-      return;
-    }
+class WorkerRunner {
+  WorkerRunner(this._monitor);
 
+  factory WorkerRunner.use(WorkerService service) {
+    final worker = WorkerRunner(null);
+    worker._operations.addAll(service.operations);
+    return worker;
+  }
+
+  final _operations = <int, CommandHandler>{};
+  final WorkerMonitor? _monitor;
+
+  /// Called by the platform worker upon startup, in response to a start [WorkerRequest]. [channelInfo] is an opaque
+  /// object sent back from the platform worker to the Squadron [Worker] and used to communicate with the platform
+  /// worker. Typically, [channelInfo] would be a [SendPort] (native) or a [MessagePort] (browser). [initializer]
+  /// is called to build the [WorkerService] associated to the worker. The runner's [_operations] map will be
+  /// populated with operations from the service.
+  Future connect(
+      Map? message, Object channelInfo, WorkerInitializer initializer) async {
     final startRequest = WorkerRequest.deserialize(message);
+    final client = startRequest?.client;
 
-    Squadron.setId(startRequest.id!);
-    Squadron.logLevel = startRequest.logLevel!;
-    Squadron.config('received connection request $message');
-
-    final client = startRequest.client;
-    if (client == null) {
-      Squadron.severe('missing client for connection request');
-      return;
+    if (startRequest == null) {
+      throw newSquadronError('connection request expected');
+    } else if (client == null) {
+      throw newSquadronError('missing client for connection request');
     }
+
     try {
-      if (operations?.isNotEmpty ?? false) {
-        Squadron.severe('already connected');
-        client.reply(
-            WorkerResponse.withError(WorkerException('already connected')));
-        return;
+      if (!startRequest.connect) {
+        throw newSquadronError('connection request expected');
+      } else if (_operations.isNotEmpty) {
+        throw newSquadronError('already connected');
       }
-      if (operations != null && initializer != null) {
-        final init = initializer(startRequest);
-        final service = (init is Future) ? await init : init;
-        operations.addAll(service.operations);
+
+      Squadron.setId(startRequest.id!);
+      Squadron.logLevel = startRequest.logLevel!;
+
+      final init = initializer(startRequest);
+      final operations = ((init is Future) ? await init : init).operations;
+      if (operations.keys.where((k) => k <= 0).isNotEmpty) {
+        throw newSquadronError(
+            'invalid command identifier in service operations map; command ids must be > 0');
       }
+      _operations.addAll(operations);
       client.connect(channelInfo);
-    } on WorkerException catch (e) {
-      client.reply(WorkerResponse.withError(e));
     } catch (e, st) {
-      client.reply(WorkerResponse.withError(e, st.toString()));
+      client.error(SquadronException.from(error: e, stackTrace: st));
     }
   }
 
-  /// Generic [WorkerRequest] handler based on a map of command ids/command methods.
-  /// [operations] contains a map of command handlers indexed by command ID.
-  static void process(Map<int, CommandHandler> operations, Map message,
-      _WorkerMonitor monitor) async {
+  /// [WorkerRequest] handler dispatching commands aoocrding to the [_operations] map.
+  void processMessage(Map message) async {
     Squadron.finest(() => 'processing request $message');
     final request = WorkerRequest.deserialize(message);
+    final client = request?.client;
 
-    if (request.terminate) {
-      monitor.terminate();
-      return;
+    if (request == null) {
+      throw newSquadronError('invalid message');
+    } else if (request.terminate) {
+      return _monitor?.terminate();
+    } else if (request.cancel) {
+      return _monitor?.cancel(request.cancelToken!);
+    } else if (client == null) {
+      throw newSquadronError('missing client for request: $request');
     }
 
-    if (request.cancel) {
-      monitor.cancel(request.cancelToken!);
-      return;
-    }
-
-    // start request must be handled beforehand
-    if (request.connect) {
-      final msg = 'Unhandled connect request: $message';
-      Squadron.warning(msg);
-      request.client?.reply(WorkerResponse.withError(WorkerException(msg)));
-      return;
-    }
-
-    // retrieve client from the request (must be set)
-    final client = request.client;
-    if (client == null) {
-      Squadron.severe('missing client for request: $request');
-      return;
-    }
-
-    final tokenRef = monitor.begin(request);
+    final tokenRef = _monitor?.begin(request) ?? WorkerMonitor.noTokenRef;
+    var streaming = false;
     try {
-      // commands are not available yet (maybe connect() wasn't called or awaited)
-      if (operations.isEmpty) {
-        client.reply(WorkerResponse.withError(
-            WorkerException('Worker service is not ready')));
-        return;
-      }
-      if (tokenRef?.cancelled ?? false) {
-        client.reply(
-            WorkerResponse.withError(CancelledException(message: 'Cancelled')));
-        return;
+      if (request.connect) {
+        // connection request must be handled beforehand
+        throw newSquadronError('unexpected connection request: $message');
+      } else if (_operations.isEmpty) {
+        // commands are not available yet (maybe connect() wasn't called or awaited)
+        throw WorkerException('worker service is not ready');
+      } else if (tokenRef.cancelled) {
+        throw tokenRef.exception!;
       }
       // retrieve operation matching the request command
-      final op = operations[request.command];
+      final op = _operations[request.command];
       if (op == null) {
-        // unknown command
-        client.reply(WorkerResponse.withError(
-            WorkerException('Unknown command: $request')));
-        return;
+        throw WorkerException('unknown command: ${request.command}');
       }
       // process
       dynamic result = op(request);
-      if (result is Future) {
-        result = await result;
-      }
-      if (result is Stream) {
+      result = (result is Future) ? await result : result;
+      if (result is Stream && result is! ReceivePort) {
         // stream values to the client
+        streaming = true;
+        CancelledException? ex;
         await for (var res in result) {
-          client.reply(WorkerResponse(res));
-          if (tokenRef?.cancelled ?? false) {
-            client.reply(WorkerResponse.withError(
-                CancelledException(message: 'Cancelled')));
+          if (ex != null) {
+            throw ex;
           }
+          client.reply(res);
+          ex = tokenRef.exception;
         }
       } else {
         // send result to client
-        client.reply(WorkerResponse(result));
+        client.reply(result);
       }
-    } on WorkerException catch (e) {
-      // send worker exception to the client
-      client.reply(WorkerResponse.withError(e));
     } catch (e, st) {
-      // send exception to the client
-      client.reply(WorkerResponse.withError(e, st.toString()));
+      client.error(SquadronException.from(error: e, stackTrace: st));
     } finally {
-      // always send a closeStream response to ensure streaming operations are closed
-      client.reply(WorkerResponse.closeStream);
-      monitor.done(tokenRef);
+      if (streaming) {
+        // ensure a closeStream response is sent to terminate streaming operations
+        client.closeStream();
+      }
+      _monitor?.done(tokenRef);
     }
   }
 }

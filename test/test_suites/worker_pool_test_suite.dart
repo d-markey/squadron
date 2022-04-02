@@ -5,13 +5,12 @@ import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/worker_entry_points.dart';
-
 import '../worker_services/cache_service_worker.dart';
 import '../worker_services/failing_service_worker.dart';
 import '../worker_services/pi_digits_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/rogue_service_worker.dart';
+import '../worker_services/sample_service.dart';
 import '../worker_services/sample_service_worker.dart';
 
 void poolTests() {
@@ -19,7 +18,7 @@ void poolTests() {
       4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('prime worker pool with cache', () async {
-    final cache = CacheWorker(getEntryPoint('cache'));
+    final cache = CacheWorker();
     await cache.start();
 
     final maxWorkers = 4;
@@ -27,8 +26,7 @@ void poolTests() {
     final concurrencySettings =
         ConcurrencySettings(maxWorkers: maxWorkers, maxParallel: maxParallel);
 
-    final pool = PrimeWorkerPool(
-        getEntryPoint('prime'), cache.channel, concurrencySettings);
+    final pool = PrimeWorkerPool(cache.channel, concurrencySettings);
 
     final completedTasks = <int>[];
     int taskId = 0;
@@ -65,7 +63,7 @@ void poolTests() {
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);
 
-    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    final pool = SampleWorkerPool(concurrencySettings);
 
     // start pool will instantiate 100 workers
     await pool.start();
@@ -104,36 +102,28 @@ void poolTests() {
   });
 
   test('failing worker', () async {
-    final pool = FailingWorkerPool(
-        getEntryPoint('failing'), ConcurrencySettings.twoIoThreads);
+    final pool = FailingWorkerPool(ConcurrencySettings.twoIoThreads);
     await pool.start();
-    expect(() async => await pool.noop(), throwsA(isA<WorkerException>()));
+    expect(() => pool.noop(), throwsA(isA<WorkerException>()));
   });
 
   test('exception handling from worker pool', () async {
-    final maxWorkers = 4;
-    final maxParallel = 2;
     final concurrencySettings =
-        ConcurrencySettings(maxWorkers: maxWorkers, maxParallel: maxParallel);
+        ConcurrencySettings(maxWorkers: 4, maxParallel: 2);
 
-    final pool = WorkerPool<RogueWorker>(
-        () => RogueWorker(getEntryPoint('rogue')),
-        concurrencySettings: concurrencySettings);
+    final pool = RogueWorkerPool(concurrencySettings);
     await pool.start();
 
     try {
       await pool.execute((w) => w.throwWorkerException());
       // should never happen
       expect(false, isTrue);
-    } on WorkerException catch (e) {
-      // expected
-      expect(e.message, equals('intended worker exception'));
-      expect(e.stackTrace, contains('throwWorkerException'));
-      expect(e.workerId, isNotNull);
-    } catch (e) {
-      // should never happen
-      expect(e is WorkerException, isTrue);
-      expect(false, isTrue);
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+      final wex = ex as WorkerException;
+      expect(wex.message, equals('intentional worker exception'));
+      expect(wex.stackTrace?.toString(), contains('throwWorkerException'));
+      expect(wex.workerId, isNotNull);
     }
     expect(pool.stats.fold<int>(0, (p, s) => p + s.totalErrors), equals(1));
 
@@ -141,15 +131,12 @@ void poolTests() {
       await pool.execute((w) => w.throwException());
       // should never happen
       expect(false, isTrue);
-    } on WorkerException catch (e) {
-      // expected
-      expect(e.message, contains('intended exception'));
-      expect(e.stackTrace, contains('throwException'));
-      expect(e.workerId, isNotNull);
-    } catch (e) {
-      // should never happen
-      expect(e is WorkerException, isTrue);
-      expect(false, isTrue);
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+      final wex = ex as WorkerException;
+      expect(wex.message, contains('intentional exception'));
+      expect(wex.stackTrace?.toString(), contains('throwException'));
+      expect(wex.workerId, isNotNull);
     }
     expect(pool.stats.fold<int>(0, (p, s) => p + s.totalErrors), equals(2));
 
@@ -160,8 +147,7 @@ void poolTests() {
     final maxWorkers = 8;
     final concurrencySettings = ConcurrencySettings(maxWorkers: maxWorkers);
 
-    final pool =
-        PiDigitsWorkerPool(getEntryPoint('pi_digits'), concurrencySettings);
+    final pool = PiDigitsWorkerPool(concurrencySettings);
 
     final N = 50;
     final digits = <int, int>{};
@@ -190,8 +176,7 @@ void poolTests() {
     final maxWorkers = 8;
     final concurrencySettings = ConcurrencySettings(maxWorkers: maxWorkers);
 
-    final pool =
-        PiDigitsWorkerPool(getEntryPoint('pi_digits'), concurrencySettings);
+    final pool = PiDigitsWorkerPool(concurrencySettings);
 
     final N = 50;
     final batch = 10;
@@ -220,11 +205,34 @@ void poolTests() {
     pool.stop();
   });
 
-  test('stopped pool will not accept new requests', () async {
-    final concurrencySettings =
-        ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 3);
+  test('pi digits worker pool - perf counter', () async {
+    final pool = PiDigitsWorkerPool(ConcurrencySettings.sevenCpuThreads);
 
-    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    final N = 20;
+    final digits = <int, int>{};
+
+    // start N tasks and measure performance
+    final counter = PerfCounter('perf');
+    final tasks = <Future>[];
+    for (var i = 0; i <= N; i++) {
+      tasks.add(pool.getNth(i, counter).then((digit) => digits[i] = digit));
+    }
+
+    await Future.delayed(Duration(milliseconds: 5));
+
+    final progress = counter.snapshot;
+
+    await Future.wait(tasks);
+
+    expect(progress.totalCount, lessThan(counter.totalCount));
+    expect(progress.totalTimeInMicroseconds,
+        lessThan(counter.totalTimeInMicroseconds));
+
+    pool.stop();
+  });
+
+  test('stopped pool will not accept new requests', () async {
+    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final n = await pool.delayedIdentity(-1);
@@ -234,18 +242,16 @@ void poolTests() {
 
     try {
       final n = await pool.delayedIdentity(-1);
+      // should never happen
       throw Exception('received $n although the pool has been stopped');
-    } on SquadronException catch (ex) {
+    } on SquadronError catch (ex) {
       expect(ex.message, contains('cannot accept new requests'));
       expect(ex.message, contains('stopped'));
     }
   });
 
   test('restarted pool will serve new requests', () async {
-    final concurrencySettings =
-        ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 3);
-
-    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    final pool = SampleWorkerPool(ConcurrencySettings.twoIoThreads);
     await pool.start();
 
     var n = await pool.delayedIdentity(-1);
@@ -255,12 +261,14 @@ void poolTests() {
 
     try {
       n = await pool.delayedIdentity(-1);
+      // should never happen
       throw Exception('received $n although the pool has been stopped');
-    } on SquadronException catch (ex) {
+    } on SquadronError catch (ex) {
       expect(ex.message, contains('cannot accept new requests'));
       expect(ex.message, contains('stopped'));
     }
 
+    // restart
     pool.start(); // intentionally not awaited
 
     n = await pool.delayedIdentity(-2);
@@ -271,34 +279,35 @@ void poolTests() {
 
   test('pool termination does not prevent processing of pending tasks',
       () async {
-    final concurrencySettings =
-        ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 3);
-
-    final pool = SampleWorkerPool(getEntryPoint('sample'), concurrencySettings);
+    final pool = SampleWorkerPool(ConcurrencySettings.threeCpuThreads);
     await pool.start();
 
-    final N = 2 *
-        concurrencySettings.maxWorkers *
-        (concurrencySettings.maxParallel + 1);
-    final digits = <int>[];
+    final N = 2 * pool.maxConcurrency + pool.maxWorkers;
 
+    final digits = <int>[];
     final tasks = <Future>[];
     for (var i = 0; i < N; i++) {
       tasks.add(pool.delayedIdentity(i).then((value) {
         digits.add(value);
       }));
     }
-    await Future.delayed(Duration(milliseconds: 10));
+
+    await Future.delayed(SampleService.delay);
     pool.stop();
 
     expect(pool.stopped, isTrue);
     expect(pool.pendingWorkload, isPositive);
-    expect(digits.length, lessThan(N));
+    expect(digits.length, lessThanOrEqualTo(pool.maxConcurrency * 3));
 
     await Future.wait(tasks);
 
     expect(pool.stopped, isTrue);
     expect(pool.pendingWorkload, isZero);
     expect(digits.length, equals(N));
+
+    // give the scheduler a chance to really stop
+    await Future.delayed(Duration.zero);
+
+    expect(pool.size, isZero);
   });
 }

@@ -1,15 +1,14 @@
 import 'dart:html' as web;
 
+import '../_worker_runner.dart';
 import '../channel.dart';
 import '../local_worker.dart';
 import '../worker_service.dart';
 
 class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _JsLocalWorker._(W service) : super(service) {
-    final self = this;
-    _port.port1.onMessage.listen((event) {
-      processMessage(self, event.data);
-    });
+    final runner = WorkerRunner.use(service);
+    _port.port1.onMessage.listen((event) => runner.processMessage(event.data));
   }
 
   final _port = web.MessageChannel();

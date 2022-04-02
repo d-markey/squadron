@@ -4,10 +4,11 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
-import '../classes/worker_entry_points.dart';
+import '../worker_services/worker_entry_points.dart';
 import '../test_suites/web_worker_test_suite.dart';
 import '../test_suites/worker_pool_test_suite.dart';
 import '../test_suites/worker_test_suite.dart';
+import '../test_suites/local_worker_test_suite.dart';
 
 import 'logger.dart';
 
@@ -18,13 +19,16 @@ external get dartPrint;
 external set dartPrint(value);
 
 void main() async {
-  setEntryPoint('cache', '/sample_js_workers/cache_worker.dart.js');
-  setEntryPoint('bitcoin', '/sample_js_workers/bitcoin_worker.dart.js');
-  setEntryPoint('prime', '/sample_js_workers/prime_worker.dart.js');
-  setEntryPoint('pi_digits', '/sample_js_workers/pi_digits_worker.dart.js');
-  setEntryPoint('rogue', '/sample_js_workers/rogue_worker.dart.js');
-  setEntryPoint('sample', '/sample_js_workers/sample_worker.dart.js');
-  setEntryPoint('echo', '/sample_js_workers/echo_worker.dart.js');
+  EntryPoints.bitcoin = '/sample_js_workers/bitcoin_worker.dart.js';
+  EntryPoints.cache = '/sample_js_workers/cache_worker.dart.js';
+  EntryPoints.echo = '/sample_js_workers/echo_worker.dart.js';
+  EntryPoints.local = '/sample_js_workers/local_client_worker.dart.js';
+  EntryPoints.failing = '/sample_js_workers/failing_worker.dart.js';
+  EntryPoints.invalid = '/sample_js_workers/invalid_worker.dart.js';
+  EntryPoints.piDigits = '/sample_js_workers/pi_digits_worker.dart.js';
+  EntryPoints.prime = '/sample_js_workers/prime_worker.dart.js';
+  EntryPoints.rogue = '/sample_js_workers/rogue_worker.dart.js';
+  EntryPoints.sample = '/sample_js_workers/sample_worker.dart.js';
 
   final logger = Logger(querySelector('#output') as DivElement);
 
@@ -68,6 +72,12 @@ void main() async {
       poolTests();
     } catch (e) {
       logger.log('Squadron Worker Pool tests failed with exception: $e');
+    }
+
+    try {
+      localWorkerTests();
+    } catch (e) {
+      logger.log('Squadron Local Worker tests failed with exception: $e');
     }
     runButton.disabled = false;
   });

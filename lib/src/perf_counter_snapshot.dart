@@ -24,12 +24,4 @@ class PerfCounterSnapshot {
 
   /// Total number of errors.
   final int totalErrors;
-
-  @override
-  String toString() {
-    final average = Duration(
-        microseconds:
-            (totalCount < 1) ? 0 : (totalTimeInMicroseconds ~/ totalCount));
-    return '$name: average = $average ($totalCount / $totalErrors errors), max = ${Duration(microseconds: maxTimeInMicroseconds)})';
-  }
 }

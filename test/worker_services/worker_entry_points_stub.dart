@@ -1,1 +1,2 @@
-Map<String, dynamic> get entryPoints => throw Exception('Unsupported platform');
+Map<String, dynamic> get entryPoints =>
+    throw UnsupportedError('Unsupported platform');

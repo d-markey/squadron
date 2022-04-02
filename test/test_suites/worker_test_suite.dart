@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import '../classes/worker_entry_points.dart';
+import '../classes/custom_exception.dart';
 import '../classes/prime_numbers.dart';
+import '../classes/untransferable.dart';
 import '../worker_services/bitcoin_service_worker.dart';
 import '../worker_services/cache_service_worker.dart';
 import '../worker_services/failing_service_worker.dart';
+import '../worker_services/invalid_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
+import '../worker_services/rogue_service.dart';
 import '../worker_services/rogue_service_worker.dart';
 import '../worker_services/sample_service_worker.dart';
 
@@ -17,7 +20,7 @@ void workerTests() {
       4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('start & stop', () async {
-    final dummy = SampleWorker(getEntryPoint('sample'));
+    final dummy = SampleWorker();
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.channel, isNull);
@@ -25,8 +28,9 @@ void workerTests() {
     expect(dummy.idleTime, Duration.zero);
     expect(dummy.isStopped, isFalse);
 
-    await dummy.start();
+    final channel = await dummy.start();
     expect(dummy.channel, isNotNull);
+    expect(channel, equals(dummy.channel));
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.upTime, greaterThan(Duration.zero));
@@ -47,8 +51,29 @@ void workerTests() {
         greaterThan(dummy.upTime.inMicroseconds));
   });
 
+  test('start & stop - cannot restart', () async {
+    final dummy = SampleWorker();
+
+    await dummy.start();
+
+    await Future.delayed(Duration(milliseconds: 5));
+
+    dummy.stop();
+
+    await Future.delayed(Duration(milliseconds: 5));
+
+    try {
+      final channel = await dummy.start();
+      // should never happen
+      expect(channel, isNull);
+      expect(channel, isNotNull);
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+    }
+  });
+
   test('workload - sequential', () async {
-    final dummy = SampleWorker(getEntryPoint('sample'));
+    final dummy = SampleWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -116,7 +141,7 @@ void workerTests() {
   });
 
   test('workload - parallel', () async {
-    final dummy = SampleWorker(getEntryPoint('sample'));
+    final dummy = SampleWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -224,7 +249,7 @@ void workerTests() {
   });
 
   test('cache worker', () async {
-    final cache = CacheWorker(getEntryPoint('cache'));
+    final cache = CacheWorker();
     await cache.start();
 
     expect(await cache.get(1), isNull);
@@ -238,7 +263,7 @@ void workerTests() {
   });
 
   test('prime worker', () async {
-    final primeWorker = PrimeWorker(getEntryPoint('prime'));
+    final primeWorker = PrimeWorker();
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -250,7 +275,7 @@ void workerTests() {
   });
 
   test('prime worker - stream', () async {
-    final primeWorker = PrimeWorker(getEntryPoint('prime'));
+    final primeWorker = PrimeWorker();
     await primeWorker.start();
 
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
@@ -262,7 +287,7 @@ void workerTests() {
   });
 
   test('prime worker with cache', () async {
-    final cache = CacheWorker(getEntryPoint('cache'));
+    final cache = CacheWorker();
     await cache.start();
 
     var shared = cache.channel?.share();
@@ -276,7 +301,7 @@ void workerTests() {
     expect(initialStats.size, isZero);
     expect(initialStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(getEntryPoint('prime'), cache.channel);
+    final primeWorker = PrimeWorker(cache.channel);
     await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
@@ -301,7 +326,7 @@ void workerTests() {
   });
 
   test('prime worker with cache - perf', () async {
-    final cache = CacheWorker(getEntryPoint('cache'));
+    final cache = CacheWorker();
     await cache.start();
 
     var cacheStats = await cache.getStats();
@@ -311,7 +336,7 @@ void workerTests() {
     expect(cacheStats.size, isZero);
     expect(cacheStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(getEntryPoint('prime'), cache.channel);
+    final primeWorker = PrimeWorker(cache.channel);
     await primeWorker.start();
 
     final sw = Stopwatch();
@@ -351,46 +376,65 @@ void workerTests() {
     expect(cache.isStopped, isTrue);
   });
 
-  test('exception handling from worker', () async {
-    final rogue = RogueWorker(getEntryPoint('rogue'));
-
-    try {
-      await rogue.throwWorkerException();
-      // should never happen
-      expect(false, isTrue);
-    } on WorkerException catch (e) {
-      // expected exception
-      expect(e.message, equals('intended worker exception'));
-      expect(e.stackTrace, contains('throwWorkerException'));
-      expect(e.workerId, isNotNull);
-    } catch (e) {
-      // should never happen
-      expect(e is WorkerException, isTrue);
-      expect(false, isTrue);
-    }
-    expect(rogue.stats.totalErrors, equals(1));
+  test('exception handling from worker - Exception & WorkerException',
+      () async {
+    final rogue = RogueWorker();
 
     try {
       await rogue.throwException();
       // should never happen
-      expect(false, isTrue);
-    } on WorkerException catch (e) {
-      // expected exception
-      expect(e.message, contains('intended exception'));
-      expect(e.stackTrace, contains('throwException'));
-      expect(e.workerId, isNotNull);
-    } catch (e) {
+      throw Exception('throwException() completed sucessfully');
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+      final wex = ex as WorkerException;
+      expect(wex.message, contains('intentional exception'));
+      expect(wex.stackTrace?.toString(), contains('throwException'));
+      expect(wex.workerId, isNotNull);
+    }
+    expect(rogue.stats.totalErrors, equals(1));
+
+    try {
+      await rogue.throwWorkerException();
       // should never happen
-      expect(e is WorkerException, isTrue);
-      expect(false, isTrue);
+      throw Exception('throwWorkerException() completed sucessfully');
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+      final wex = ex as WorkerException;
+      expect(wex.message, equals('intentional worker exception'));
+      expect(wex.stackTrace?.toString(), contains('throwWorkerException'));
+      expect(wex.workerId, isNotNull);
     }
     expect(rogue.stats.totalErrors, equals(2));
 
     rogue.stop();
   });
 
+  test('exception handling from worker - CustomException', () async {
+    SquadronException.registerExceptionDeserializer(
+        CustomException.deserialize);
+    final rogue = RogueWorker();
+
+    try {
+      await rogue.throwCustomException();
+      // should never happen
+      expect(false, isTrue);
+    } on CustomException catch (e) {
+      // expected exception
+      expect(e.message, contains('intentional CUSTOM exception'));
+      expect(e.stackTrace?.toString(), contains('throwCustomException'));
+      expect(e.workerId, isNotNull);
+      expect(e.command, equals(RogueService.customExceptionCommand));
+    } catch (e) {
+      // should never happen
+      expect(false, isTrue);
+    }
+    expect(rogue.stats.totalErrors, equals(1));
+
+    rogue.stop();
+  });
+
   test('bitcoin service', () async {
-    final bitcoin = BitcoinWorker(getEntryPoint('bitcoin'));
+    final bitcoin = BitcoinWorker();
 
     try {
       final eur = await bitcoin.getRate('EUR');
@@ -413,11 +457,13 @@ void workerTests() {
 
       final rub = await bitcoin.getRate('RUB');
       expect(rub, isNull);
-    } on WorkerException catch (e) {
-      if (e.message.contains('SocketException') ||
-          e.message.contains('XMLHttpRequest error')) {
-        // on vm:  WorkerException: SocketException: Failed host lookup: 'api.coindesk.com'
-        // on browser:  WorkerException: XMLHttpRequest error.
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+      final wex = ex as WorkerException;
+      if (wex.message.contains('SocketException') ||
+          wex.message.contains('XMLHttpRequest error')) {
+        // on vm: WorkerException: SocketException: Failed host lookup: 'api.coindesk.com'
+        // on browser: WorkerException: XMLHttpRequest error.
         // ignore this test
       } else {
         // otherwise something is broken, rethrow
@@ -429,8 +475,79 @@ void workerTests() {
   });
 
   test('failing worker', () async {
-    final failingWorker = FailingWorker(getEntryPoint('failing'));
-    expect(() async => await failingWorker.start(),
-        throwsA(isA<WorkerException>()));
+    final failingWorker = FailingWorker();
+    expect(() => failingWorker.start(), throwsA(isA<WorkerException>()));
+  });
+
+  test('invalid worker', () async {
+    final invalidWorker = InvalidWorker();
+    expect(() => invalidWorker.start(), throwsA(isA<SquadronError>()));
+  });
+
+  test('failing worker - missing command in Isolate implementation', () async {
+    final failingWorker = FailingWorker.missingCommand();
+    if (failingWorker != null) {
+      expect(() => failingWorker.start(), throwsA(isA<SquadronError>()));
+    }
+  }, testOn: 'vm');
+
+  test('invalid request', () async {
+    final rogue = RogueWorker();
+
+    final transferable = [1];
+    final result = await rogue.forward(transferable);
+    expect(result, equals(transferable));
+
+    try {
+      final untransferable = getUntransferable();
+      final result = await rogue.forward(untransferable);
+      // should never happen
+      expect(result, isNull);
+      expect(result, isNotNull);
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+    } finally {
+      // ensure worker is still alive
+      final status = await rogue.ping();
+      expect(status, isTrue);
+
+      rogue.stop();
+    }
+  });
+
+  test('invalid response', () async {
+    final rogue = RogueWorker();
+
+    try {
+      final result = await rogue.invalidResponse();
+      // should never happen
+      expect(result, isNull);
+      expect(result, isNotNull);
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+    } finally {
+      // ensure worker is still alive
+      final status = await rogue.ping();
+      expect(status, isTrue);
+
+      rogue.stop();
+    }
+  });
+
+  test('missing operation', () async {
+    final rogue = RogueWorker();
+
+    try {
+      await rogue.missingOperation();
+      // should never happen
+      throw Exception('missingOperation() completed successfully');
+    } catch (ex) {
+      expect(ex, isA<WorkerException>());
+    }
+
+    // ensure worker is still alive
+    final status = await rogue.ping();
+    expect(status, isTrue);
+    rogue.stop();
   });
 }

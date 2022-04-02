@@ -1,12 +1,12 @@
 import 'package:squadron/squadron.dart';
 
 import 'failing_service.dart';
+import 'worker_entry_points.dart';
 
 class FailingWorkerPool extends WorkerPool<FailingWorker>
     implements FailingService {
-  FailingWorkerPool(dynamic entryPoint,
-      [ConcurrencySettings? concurrencySettings])
-      : super(() => FailingWorker(entryPoint),
+  FailingWorkerPool([ConcurrencySettings? concurrencySettings])
+      : super(() => FailingWorker(),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
@@ -15,7 +15,14 @@ class FailingWorkerPool extends WorkerPool<FailingWorker>
 }
 
 class FailingWorker extends Worker implements FailingService {
-  FailingWorker(dynamic entryPoint) : super(entryPoint);
+  FailingWorker._(dynamic entryPoint) : super(entryPoint);
+
+  FailingWorker() : this._(EntryPoints.failing);
+
+  static FailingWorker? missingCommand() =>
+      (EntryPoints.failingWithMissingCommand == null)
+          ? null
+          : FailingWorker._(EntryPoints.failingWithMissingCommand);
 
   @override
   Future noop() => send(FailingService.noopCommand);

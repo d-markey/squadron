@@ -4,6 +4,7 @@ import 'dart:isolate';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../squadron.dart';
+import '../squadron_exception.dart';
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
@@ -21,8 +22,7 @@ class _SendPort {
     try {
       _sendPort!.send(message);
     } catch (ex) {
-      Squadron.severe('Failed to post request message: $ex');
-      Squadron.severe('   message is $message');
+      Squadron.severe('failed to post request $message: error $ex');
       rethrow;
     }
   }
@@ -32,8 +32,7 @@ class _SendPort {
     try {
       _sendPort!.send(message);
     } catch (ex) {
-      Squadron.severe('Failed to post response message: $ex');
-      Squadron.severe('   message is $message');
+      Squadron.severe('failed to post response $message: error $ex');
       rethrow;
     }
   }
@@ -81,14 +80,24 @@ class _VmChannel extends _SendPort implements Channel {
   /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? token}) async* {
+      {CancellationToken? token}) {
+    final controller = StreamController<T>();
     final receiver = ReceivePort();
+    receiver.listen((message) {
+      final res = WorkerResponse.deserialize(message);
+      if (res.endOfStream) {
+        controller.close();
+        receiver.close();
+      } else if (res.hasError) {
+        controller.addError(res.error!, res.error!.stackTrace);
+        controller.close();
+        receiver.close();
+      } else {
+        controller.add(res.result);
+      }
+    });
     _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-    await for (var item in receiver) {
-      final res = WorkerResponse.deserialize(item);
-      if (res.endOfStream) break;
-      yield res.result as T;
-    }
+    return controller.stream;
   }
 }
 
@@ -101,23 +110,29 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   void connect(Object channelInfo) {
     if (channelInfo is ReceivePort) {
-      _postResponse(WorkerResponse(channelInfo.sendPort));
-    } else if (channelInfo is SendPort) {
-      _postResponse(WorkerResponse(channelInfo));
+      reply(channelInfo.sendPort);
     } else {
       throw WorkerException(
-          'Invalid channelInfo ${channelInfo.runtimeType}; expected ReceivePort or SendPort');
+          'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');
     }
   }
 
-  /// Sends the [WorkerResponse] to the worker client.
+  /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the [Isolate] only.
   @override
-  void reply(WorkerResponse response) {
-    if (response.hasError) {
-      Squadron.finer('replying with error: ${response.error}');
-    }
-    _postResponse(response);
+  void reply(dynamic data) => _postResponse(WorkerResponse(data));
+
+  /// Sends a [WorkerResponse.closeStream] to the worker client.
+  /// This method must be called from the [Isolate] only.
+  @override
+  void closeStream() => _postResponse(WorkerResponse.closeStream);
+
+  /// Sends the [WorkerException] to the worker client.
+  /// This method must be called from the [Isolate] only.
+  @override
+  void error(SquadronException error) {
+    Squadron.finer('replying with error: $error');
+    _postResponse(WorkerResponse.withError(error));
   }
 }
 
@@ -132,32 +147,67 @@ String _getId() {
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
 /// The future completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
+  final completer = Completer<Channel>();
   final channel = _VmChannel._();
   final receiver = ReceivePort();
-  final isolate = await Isolate.spawn(
-      entryPoint,
-      WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
-          .serialize());
-  Squadron.config('created Isolate #${isolate.hashCode}');
-  final response = WorkerResponse.deserialize(await receiver.first);
-  if (response.hasError) {
-    isolate.kill(priority: Isolate.immediate);
-    Squadron.severe(
-        'connection to Isolate #${isolate.hashCode} failed: ${response.error}');
-    throw response.exception;
-  } else {
-    channel._sendPort = response.result;
-    Squadron.config('connected to Isolate #${isolate.hashCode}');
-    return channel;
-  }
+  Isolate.spawn(
+          entryPoint,
+          WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
+              .serialize(),
+          paused: true)
+      .then((isolate) {
+    final exitPort = ReceivePort();
+    exitPort.listen((message) {
+      channel.close();
+    });
+    isolate.addOnExitListener(exitPort.sendPort);
+    final errorPort = ReceivePort();
+    errorPort.listen((message) {
+      dynamic error = message[0];
+      if (error is String) {
+        error = SquadronException.fromString(error);
+      }
+      if (error is! SquadronException) {
+        error = SquadronException.from(
+            error: message[0] ?? 'unspecified error',
+            stackTrace: SquadronException.loadStackTrace(message[1]));
+      }
+      if (!completer.isCompleted) {
+        completer.completeError(error);
+      } else {
+        Squadron.warning('unhandled error $error');
+      }
+    });
+    isolate.addErrorListener(errorPort.sendPort);
+    isolate.resume(isolate.pauseCapability!);
+    Squadron.config('created Isolate #${isolate.hashCode}');
+    receiver.first.then((message) {
+      final response = WorkerResponse.deserialize(message);
+      if (!completer.isCompleted) {
+        if (response.hasError) {
+          isolate.kill(priority: Isolate.immediate);
+          Squadron.severe(
+              'connection to Isolate #${isolate.hashCode} failed: ${response.error}');
+          completer.completeError(response.error!, response.error!.stackTrace);
+        } else {
+          channel._sendPort = response.result;
+          Squadron.config('connected to Isolate #${isolate.hashCode}');
+          completer.complete(channel);
+        }
+      }
+    });
+  }).catchError((error, stackTrace) {
+    completer.completeError(error, stackTrace);
+  });
+  return completer.future;
 }
 
 /// Creates a [_VmChannel] from a [SendPort].
 Channel? deserializeChannel(dynamic channelInfo) =>
-    channelInfo == null ? null : (_VmChannel._().._sendPort = channelInfo);
+    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);
 
 /// Creates a [_VmWorkerChannel] from a [SendPort].
 WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
-    channelInfo == null
+    (channelInfo == null)
         ? null
         : (_VmWorkerChannel._().._sendPort = channelInfo);
