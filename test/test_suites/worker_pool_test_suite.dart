@@ -208,17 +208,16 @@ void poolTests() {
   test('pi digits worker pool - perf counter', () async {
     final pool = PiDigitsWorkerPool(ConcurrencySettings.sevenCpuThreads);
 
-    final N = 20;
     final digits = <int, int>{};
 
     // start N tasks and measure performance
     final counter = PerfCounter('perf');
     final tasks = <Future>[];
-    for (var i = 0; i <= N; i++) {
+    for (var i = 0; i <= 10 * pool.maxConcurrency; i++) {
       tasks.add(pool.getNth(i, counter).then((digit) => digits[i] = digit));
     }
 
-    await Future.delayed(Duration(milliseconds: 5));
+    await tasks[0];
 
     final progress = counter.snapshot;
 
