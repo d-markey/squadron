@@ -3,6 +3,8 @@
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
 [![Dart Style](https://img.shields.io/badge/style-lints-40c4ff.svg)](https://pub.dev/packages/lints)
 [![Last Commits](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
+[![Code Coverage](https://img.shields.io/badge/code%20coverage-89.3%25-green)](https://github.com/d-markey/squadron/tree/main/coverage/html)
+[![Code Size](https://img.shields.io/badge/code%20size-1098-green)](https://github.com/d-markey/squadron)
 [![License](https://img.shields.io/github/license/d-markey/squadron?logo=open-source-initiative&logoColor=green)](https://github.com/d-markey/squadron/blob/master/LICENSE)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/d-markey/squadron)](https://github.com/d-markey/squadron/stargazers)
 
