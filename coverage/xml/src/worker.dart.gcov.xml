@@ -113,9 +113,9 @@
         <line>
             <code>  /// Current workload.</code>
         </line>
-        <line hits="3">
+        <line hits="2">
             <code>  int get workload =&gt; _workload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _workload = 0;</code>
@@ -139,9 +139,9 @@
         <line>
             <code>  /// Total processed workload.</code>
         </line>
-        <line hits="3">
+        <line hits="2">
             <code>  int get totalWorkload =&gt; _totalWorkload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _totalWorkload = 0;</code>

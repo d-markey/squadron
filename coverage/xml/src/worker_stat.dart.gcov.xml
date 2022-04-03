@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.25" lines-covered="1" lines-valid="4" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>/// Base statistics for worker.</code>
@@ -130,18 +130,6 @@
         </line>
         <line>
             <code>  Duration idleTime;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  String toString() =&gt;</code>
-        </line>
-        <line hits="0">
-            <code>      '$workerType $id: $status, load = $workload (max = $maxWorkload, total = $totalWorkload, errors = $totalErrors), uptime = $upTime, idle = $idleTime';</code>
         </line>
         <line>
             <code>}</code>
