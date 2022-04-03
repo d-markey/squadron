@@ -1,0 +1,3 @@
+# exclude coverage and from language stats
+coverage/** linguist-vendored
+tool/jgenhtml/** linguist-vendored
