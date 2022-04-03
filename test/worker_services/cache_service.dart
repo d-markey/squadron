@@ -128,8 +128,4 @@ class CacheStat {
   final int maxSize;
 
   List serialize() => [hit, miss, expired, size, maxSize];
-
-  @override
-  String toString() =>
-      'hit = $hit, miss = $miss, expired = $expired, size = $size, maxSize = $maxSize';
 }

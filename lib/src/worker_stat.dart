@@ -41,8 +41,4 @@ class WorkerStat {
 
   /// The worker's idle-time.
   Duration idleTime;
-
-  @override
-  String toString() =>
-      '$workerType $id: $status, load = $workload (max = $maxWorkload, total = $totalWorkload, errors = $totalErrors), uptime = $upTime, idle = $idleTime';
 }
