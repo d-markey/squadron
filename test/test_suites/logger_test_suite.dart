@@ -29,6 +29,7 @@ void loggerTests() {
       Squadron.finest('Finest - ${logLevel.value}');
     }
 
+    expect(true, isFalse);
     expect(memoryLogger.length, equals(1));
     expect(memoryLogger.contains('Finest - FINEST'), isTrue);
   });
