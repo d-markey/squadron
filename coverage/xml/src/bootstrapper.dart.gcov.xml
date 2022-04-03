@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'worker_service.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_bootstrapper_stub.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js) 'browser/_bootstrapper.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.html) 'browser/_bootstrapper.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.io) 'native/_bootstrapper.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.</code>
+        </line>
+        <line>
+            <code>/// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument must be</code>
+        </line>
+        <line>
+            <code>/// set to the [Isolate]'s startup parameter.</code>
+        </line>
+        <line hits="1">
+            <code>void run(WorkerInitializer initializer, [Map? command]) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    bootstrap(initializer, command);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'cancellable_token.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after</code>
+        </line>
+        <line>
+            <code>/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a</code>
+        </line>
+        <line>
+            <code>/// platform worker.</code>
+        </line>
+        <line>
+            <code>class TimeOutToken extends CancellableToken {</code>
+        </line>
+        <line hits="2">
+            <code>  TimeOutToken(this.duration, [String? message]) : super(message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Throws an exception, time-out tokens may not be cancelled programmatically.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void cancel([CancelledException? exception]) =&gt; throw newSquadronError(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      'TimeOutToken cannot be cancelled programmatically');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.</code>
+        </line>
+        <line>
+            <code>  final Duration duration;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  Timer? _timer;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be</code>
+        </line>
+        <line>
+            <code>  /// started that will automatically cancel this token if processing takes longer than [duration].</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>  void start() =&gt; _timer ??= Timer(</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      duration,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      () =&gt; super</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>          .cancel(TaskTimeoutException(message: message, duration: duration)));</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Returns `true` if the timeout has started, `false` otherwise.</code>
+        </line>
+        <line hits="2">
+            <code>  bool get started =&gt; _timer != null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

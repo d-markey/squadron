@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.25" lines-covered="1" lines-valid="4" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>/// Base statistics for worker.</code>
+        </line>
+        <line>
+            <code>class WorkerStat {</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerStat(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      this.workerType,</code>
+        </line>
+        <line>
+            <code>      this.id,</code>
+        </line>
+        <line>
+            <code>      this.isStopped,</code>
+        </line>
+        <line>
+            <code>      this.status,</code>
+        </line>
+        <line>
+            <code>      this.workload,</code>
+        </line>
+        <line>
+            <code>      this.maxWorkload,</code>
+        </line>
+        <line>
+            <code>      this.totalWorkload,</code>
+        </line>
+        <line>
+            <code>      this.totalErrors,</code>
+        </line>
+        <line>
+            <code>      this.upTime,</code>
+        </line>
+        <line>
+            <code>      this.idleTime);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The worker's runtime type.</code>
+        </line>
+        <line>
+            <code>  final Type workerType;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The worker ID.</code>
+        </line>
+        <line>
+            <code>  final String id;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Worker running flag.</code>
+        </line>
+        <line>
+            <code>  final bool isStopped;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Worker status.</code>
+        </line>
+        <line>
+            <code>  final String status;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Current workload being processed by the worker.</code>
+        </line>
+        <line>
+            <code>  final int workload;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum concurrent workload processed by the worker.</code>
+        </line>
+        <line>
+            <code>  final int maxWorkload;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total workload processed by the worker.</code>
+        </line>
+        <line>
+            <code>  final int totalWorkload;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total errors raised during processing.</code>
+        </line>
+        <line>
+            <code>  final int totalErrors;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The worker's up-time.</code>
+        </line>
+        <line>
+            <code>  Duration upTime;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The worker's idle-time.</code>
+        </line>
+        <line>
+            <code>  Duration idleTime;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  String toString() =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      '$workerType $id: $status, load = $workload (max = $maxWorkload, total = $totalWorkload, errors = $totalErrors), uptime = $upTime, idle = $idleTime';</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

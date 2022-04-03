@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90654206" lines-covered="97" lines-valid="107" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'cancellation_token.dart';</code>
+        </line>
+        <line>
+            <code>import 'channel.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_service.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_stat.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base worker class.</code>
+        </line>
+        <line>
+            <code>///</code>
+        </line>
+        <line>
+            <code>/// This base class takes care of creating the [Channel] and firing up the worker.</code>
+        </line>
+        <line>
+            <code>/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.</code>
+        </line>
+        <line>
+            <code>abstract class Worker implements WorkerService {</code>
+        </line>
+        <line>
+            <code>  /// Creates a [Worker] with the specified entrypoint.</code>
+        </line>
+        <line hits="2">
+            <code>  Worker(this._entryPoint, {String? id, this.args = const []}) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    this.id = id ?? hashCode.toString();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [Worker]'s entry point.</code>
+        </line>
+        <line>
+            <code>  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.</code>
+        </line>
+        <line>
+            <code>  final dynamic _entryPoint;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [Worker]'s start arguments.</code>
+        </line>
+        <line>
+            <code>  final List args;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [Worker] id.</code>
+        </line>
+        <line hits="1">
+            <code>  late final String id;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Start timestamp (in microseconds since Epoch).</code>
+        </line>
+        <line>
+            <code>  int? _started;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Stopped timestamp (in microseconds since Epoch).</code>
+        </line>
+        <line>
+            <code>  int? _stopped;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Current workload.</code>
+        </line>
+        <line hits="3">
+            <code>  int get workload =&gt; _workload;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _workload = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum acceptable workload.</code>
+        </line>
+        <line hits="3">
+            <code>  int get maxWorkload =&gt; _maxWorkload;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _maxWorkload = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total processed workload.</code>
+        </line>
+        <line hits="3">
+            <code>  int get totalWorkload =&gt; _totalWorkload;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _totalWorkload = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total errors.</code>
+        </line>
+        <line hits="3">
+            <code>  int get totalErrors =&gt; _totalErrors;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _totalErrors = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Up time.</code>
+        </line>
+        <line hits="3">
+            <code>  Duration get upTime =&gt; (_started == null)</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ? Duration.zero</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      : Duration(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          microseconds:</code>
+        </line>
+        <line hits="6">
+            <code>              (_stopped ?? DateTime.now().microsecondsSinceEpoch) - _started!);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Idle time.</code>
+        </line>
+        <line hits="5">
+            <code>  Duration get idleTime =&gt; (_workload &gt; 0 || _idle == null)</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ? Duration.zero</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      : Duration(microseconds: DateTime.now().microsecondsSinceEpoch - _idle!);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int? _idle;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Indicates if the [Worker] has been stopped.</code>
+        </line>
+        <line hits="3">
+            <code>  bool get isStopped =&gt; _stopped != null;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [Worker] status.</code>
+        </line>
+        <line hits="2">
+            <code>  String get status {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (isStopped) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return 'STOPPED';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    } else if (_workload == 0) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return 'IDLE';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="0">
+            <code>      return 'WORKING($_workload)';</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [Worker] statistics.</code>
+        </line>
+        <line hits="7">
+            <code>  WorkerStat get stats =&gt; WorkerStat(runtimeType, id, isStopped, status,</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>      workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [Channel] to communicate with the worker.</code>
+        </line>
+        <line hits="2">
+            <code>  Channel? get channel =&gt; _channel;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  Channel? _channel;</code>
+        </line>
+        <line hits="1">
+            <code>  Future&lt;Channel&gt;? _channelRequest;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  static void _noop() {}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  SquadronCallback _canceller(CancellationToken? token) =&gt;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      (token == null) ? _noop : () =&gt; _channel?.notifyCancellation(token);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a workload to the worker.</code>
+        </line>
+        <line hits="2">
+            <code>  Future&lt;T&gt; send&lt;T&gt;(int command,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      [List args = const [], CancellationToken? token]) async {</code>
+        </line>
+        <line>
+            <code>    // update stats</code>
+        </line>
+        <line hits="3">
+            <code>    _workload++;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (_workload &gt; _maxWorkload) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _maxWorkload = _workload;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // ensure the worker is up and running</code>
+        </line>
+        <line>
+            <code>    Channel channel;</code>
+        </line>
+        <line hits="2">
+            <code>    if (_channel != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      channel = _channel!;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="3">
+            <code>      channel = await start();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>    final canceller = _canceller(token);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    SquadronException? error = token?.exception;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (error == null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        // check token</code>
+        </line>
+        <line hits="0">
+            <code>        token?.addListener(canceller);</code>
+        </line>
+        <line hits="0">
+            <code>        token?.start();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>        // send request and return response</code>
+        </line>
+        <line hits="3">
+            <code>        return await channel.sendRequest&lt;T&gt;(command, args, token: token);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      } on CancelledException catch (e) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);</code>
+        </line>
+        <line hits="1">
+            <code>      } catch (e, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        error = SquadronException.from(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>            error: e, stackTrace: st, workerId: id, command: command);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } finally {</code>
+        </line>
+        <line>
+            <code>        // update stats</code>
+        </line>
+        <line hits="2">
+            <code>        _workload--;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _totalWorkload++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        token?.removeListener(canceller);</code>
+        </line>
+        <line hits="3">
+            <code>        _idle = DateTime.now().microsecondsSinceEpoch;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>    // an error occured: update stats and throw exception</code>
+        </line>
+        <line hits="2">
+            <code>    _totalErrors++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    throw error;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a streaming workload to the worker.</code>
+        </line>
+        <line hits="2">
+            <code>  Stream&lt;T&gt; stream&lt;T&gt;(int command,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      [List args = const [], CancellationToken? token]) async* {</code>
+        </line>
+        <line>
+            <code>    // update stats</code>
+        </line>
+        <line hits="3">
+            <code>    _workload++;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (_workload &gt; _maxWorkload) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _maxWorkload = _workload;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // ensure the worker is up and running</code>
+        </line>
+        <line>
+            <code>    Channel channel;</code>
+        </line>
+        <line hits="2">
+            <code>    if (_channel != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      channel = _channel!;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="3">
+            <code>      channel = await start();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>    final canceller = _canceller(token);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    SquadronException? error = token?.exception;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (error == null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        // check token</code>
+        </line>
+        <line hits="2">
+            <code>        token?.addListener(canceller);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        token?.start();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>        // send request and stream response items</code>
+        </line>
+        <line>
+            <code>        final result =</code>
+        </line>
+        <line hits="2">
+            <code>            channel.sendStreamingRequest&lt;T&gt;(command, args, token: token);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        await for (var res in result) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          // check token</code>
+        </line>
+        <line hits="0">
+            <code>          if (error != null) break;</code>
+        </line>
+        <line hits="2">
+            <code>          yield res;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          error = token?.exception;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line hits="1">
+            <code>        return;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      } on CancelledException catch (e) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      } catch (e, st) {</code>
+        </line>
+        <line hits="0">
+            <code>        error = SquadronException.from(</code>
+        </line>
+        <line hits="0">
+            <code>            error: e, stackTrace: st, workerId: id, command: command);</code>
+        </line>
+        <line>
+            <code>      } finally {</code>
+        </line>
+        <line>
+            <code>        // update stats</code>
+        </line>
+        <line hits="2">
+            <code>        _workload--;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _totalWorkload++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        token?.removeListener(canceller);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _idle = DateTime.now().microsecondsSinceEpoch;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>    // an error occured: update stats and throw exception</code>
+        </line>
+        <line hits="2">
+            <code>    _totalErrors++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    throw error;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code>
+        </line>
+        <line hits="2">
+            <code>  Future&lt;Channel&gt; start() async {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_stopped != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      throw WorkerException('worker is stopped', workerId: id);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="2">
+            <code>    if (_channel == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      _channelRequest ??= Channel.open(_entryPoint, args);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      final channel = await _channelRequest!;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (_channel == null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _started = DateTime.now().microsecondsSinceEpoch;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _idle = _started;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        _channel = channel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="2">
+            <code>    return _channel!;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Stops this worker.</code>
+        </line>
+        <line hits="2">
+            <code>  void stop() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_stopped == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      _stopped = DateTime.now().microsecondsSinceEpoch;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _channelRequest = null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _channel?.close();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _channel = null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Workers do not need an [operations] map.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="1">
+            <code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

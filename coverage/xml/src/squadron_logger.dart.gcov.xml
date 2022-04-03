@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-03" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8541667" lines-covered="41" lines-valid="48" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:developer' as dev show log;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'squadron.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Basic interface for logging</code>
+        </line>
+        <line>
+            <code>abstract class SquadronLogger {</code>
+        </line>
+        <line>
+            <code>  /// Gets the log level</code>
+        </line>
+        <line>
+            <code>  int get logLevel;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sets the log level</code>
+        </line>
+        <line>
+            <code>  set logLevel(int value);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.FINEST] level</code>
+        </line>
+        <line>
+            <code>  void finest(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.FINER] level</code>
+        </line>
+        <line>
+            <code>  void finer(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.FINE] level</code>
+        </line>
+        <line>
+            <code>  void fine(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+        </line>
+        <line>
+            <code>  void config(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.INFO] level</code>
+        </line>
+        <line>
+            <code>  void info(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.WARNING] level</code>
+        </line>
+        <line>
+            <code>  void warning(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.SEVERE] level</code>
+        </line>
+        <line>
+            <code>  void severe(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.SHOUT] level</code>
+        </line>
+        <line>
+            <code>  void shout(dynamic message);</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base class for simple loggers</code>
+        </line>
+        <line>
+            <code>abstract class BaseSquadronLogger implements SquadronLogger {</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  int logLevel = SquadronLogLevel.SEVERE;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Base logging method. Implement this method to display the [message].</code>
+        </line>
+        <line>
+            <code>  /// The method is called if the log level is enabled and is provided with a formatted message such as `[timestamp] [log-level] [Squadron.id] text of the message`</code>
+        </line>
+        <line>
+            <code>  void log(String message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  void _log(int level, dynamic message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (level &gt;= logLevel) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      if (message is Function) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message = message();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>      final header =</code>
+        </line>
+        <line hits="7">
+            <code>          '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      Iterable&lt;String&gt; lines;</code>
+        </line>
+        <line hits="2">
+            <code>      if (message is Iterable) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        lines = message</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>            .map((m) =&gt; m?.toString() ?? '')</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>            .expand((m) =&gt; m.toString().split('\n'))</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>            .where((m) =&gt; m.isNotEmpty);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line hits="6">
+            <code>        lines = message?.toString().split('\n').where((m) =&gt; m.isNotEmpty) ??</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>            const [];</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="3">
+            <code>      for (var line in lines) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        log('$header $line');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void finest(dynamic message) =&gt; _log(SquadronLogLevel.FINEST, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void finer(dynamic message) =&gt; _log(SquadronLogLevel.FINER, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void fine(dynamic message) =&gt; _log(SquadronLogLevel.FINE, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void config(dynamic message) =&gt; _log(SquadronLogLevel.CONFIG, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void info(dynamic message) =&gt; _log(SquadronLogLevel.INFO, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void warning(dynamic message) =&gt; _log(SquadronLogLevel.WARNING, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void severe(dynamic message) =&gt; _log(SquadronLogLevel.SEVERE, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void shout(dynamic message) =&gt; _log(SquadronLogLevel.SHOUT, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class DevSquadronLogger extends BaseSquadronLogger {</code>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Log based on `dart:developer`</code>
+        </line>
+        <line hits="0">
+            <code>  void log(dynamic message) =&gt; dev.log(message?.toString() ?? '');</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class ConsoleSquadronLogger extends BaseSquadronLogger {</code>
+        </line>
+        <line>
+            <code>  /// Log to console</code>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  void log(dynamic message) =&gt; print(message);</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Log level constants, compatible with `package:logging`</code>
+        </line>
+        <line>
+            <code>class SquadronLogLevel {</code>
+        </line>
+        <line hits="0">
+            <code>  SquadronLogLevel._();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Lowest log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const ALL = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Finest log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const FINEST = 300;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Finer log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const FINER = 400;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Fine log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const FINE = 500;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Config log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const CONFIG = 700;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Information log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const INFO = 800;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Warning log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const WARNING = 900;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Severe log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const SEVERE = 1000;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Shout log level</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const SHOUT = 1200;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// No logging</code>
+        </line>
+        <line>
+            <code>  // ignore: constant_identifier_names</code>
+        </line>
+        <line>
+            <code>  static const OFF = 2000;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Gets the log level name</code>
+        </line>
+        <line hits="2">
+            <code>  static String getName(int logLevel) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; FINEST) return 'ALL';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; FINER) return 'FINEST';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; FINE) return 'FINER';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; CONFIG) return 'FINE';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; INFO) return 'CONFIG';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; WARNING) return 'INFO';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; SEVERE) return 'WARNING';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; SHOUT) return 'SEVERE';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (logLevel &lt; OFF) return 'SHOUT';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>    return 'OFF';</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>
