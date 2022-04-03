@@ -1,22 +1,27 @@
 #!/bin/bash
-echo Cleaning ./test/coverage directory...
+declare -i test_status=0
+
+# clean coverage directory
 rm -rf ./test/coverage
 mkdir ./test/coverage
 
-echo Running tests
+# run tests
 dart test --coverage=./test/coverage
 test_status=$?
-echo test status = $test_status
 
-echo Contents of ./test/coverage
-ls -R ./test/coverage
+# generate coverage report if tests succeed
+if [ "$test_status" -eq 0 ]
+then
+    dart pub run coverage:format_coverage --packages=.packages --report-on=lib --lcov -o ./test/coverage/lcov.info -i ./test/coverage
+    rm -rf ./coverage /s /q
+    java -jar ./tool/jgenhtml/jgenhtml-1.5.jar ./test/coverage/lcov.info --output-directory ./coverage
 
-echo Generate lcov.info file
-dart pub run coverage:format_coverage --packages=.packages --report-on=lib --lcov -o ./test/coverage/lcov.info -i ./test/coverage
+    git config --global user.name 'd-markey'
+    git config --global user.email 'd-markey@users.noreply.github.com'
+    git add ./coverage
+    git commit -am "Automated test coverage report"
+    git push
+fi
 
-echo Generate coverage reports...
-rm -rf ./coverage /s /q
-java -jar ./tool/jgenhtml/jgenhtml-1.5.jar ./test/coverage/lcov.info --output-directory ./coverage  
-
-echo Returning with exit code = $test_status
+# return test status
 exit $test_status
