@@ -2,11 +2,11 @@
 [![Pub Package](https://img.shields.io/pub/v/squadron.svg?logo=dart&logoColor=00b9fc)](https://pub.dev/packages/squadron)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
 [![Dart Style](https://img.shields.io/badge/style-lints-40c4ff.svg)](https://pub.dev/packages/lints)
-[![Last Commits](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
+[![Last Commit](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
+[![Code Size](https://img.shields.io/github/languages/code-size/d-markey/squadron?logo=github&logoColor=white)](https://github.com/d-markey/squadron)
 [![Code Coverage](https://img.shields.io/badge/code%20coverage-89.3%25-green)](https://github.com/d-markey/squadron/tree/main/coverage/html)
-[![Code Size](https://img.shields.io/badge/code%20size-1098-green)](https://github.com/d-markey/squadron)
 [![License](https://img.shields.io/github/license/d-markey/squadron?logo=open-source-initiative&logoColor=green)](https://github.com/d-markey/squadron/blob/master/LICENSE)
-[![GitHub Repo Stars](https://img.shields.io/github/stars/d-markey/squadron)](https://github.com/d-markey/squadron/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/d-markey/squadron)](https://github.com/d-markey/squadron/stargazers)
 
 Multithreading and worker pools in Dart to offload CPU-bound or long running tasks and give your mobile and Web apps
 some air.
