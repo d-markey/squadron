@@ -46,6 +46,9 @@ class WorkerException implements SquadronException {
   /// Command.
   int? get command => _command;
   int? _command;
+  
+  @override
+  String toString() => jsonEncode(serialize());
 }
 
 /// Exception to keep track of task cancellation.
