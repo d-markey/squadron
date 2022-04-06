@@ -1,6 +1,10 @@
 ## 3.3.2
 
+- Implemented a `LocalLogger` to have Web workers log messages from the main window (effectively logging via Dart debugger if present).
+- Removed import of `dart:isolate` from `_worker_runner.dart`.
 - Made `coverage` a dev dependency.
+- Added a tool to extract coverage metrics during Github Dart workflow.
+- Updates badges to include coverage metrics and platform info.
 
 ## 3.3.1
 
