@@ -7,40 +7,37 @@ import '_channel_stub.dart'
     if (dart.library.io) 'native/_channel.dart';
 
 import 'squadron_exception.dart';
+import 'worker.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
 
-/// A [Channel] supports communication from a client to a platform worker.
-/// It is used to send a [WorkerRequest] to a platform worker.
+/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a
+/// platform worker.
 abstract class Channel {
-  /// [Channel] serialization.
-  /// Returns an opaque object that can be transfered from the client to the worker.
+  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
 
-  /// [Channel] sharing.
-  /// Returns a [Channel] object that can be provided to enable another worker to call the channel's worker.
+  /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the
+  /// channel's worker.
   Channel share();
 
-  /// Sends a termination [WorkerRequest] to the worker.
-  /// The [Channel] should release any resource related to the worker and should not be used after this method has been called.
+  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should release any resource related to the
+  /// worker and should not be used after this method has been called.
   FutureOr close();
 
-  /// Creates a [WorkerRequest] and sends it to the worker.
-  /// This method expects a single value from the worker.
+  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   void notifyCancellation(CancellationToken cancelToken);
 
-  /// Creates a [WorkerRequest] and sends it to the worker.
-  /// This method expects a single value from the worker.
+  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args, {CancellationToken? token});
 
-  /// Creates a [WorkerRequest] and sends it to the worker.
-  /// This method expects a stream of values from the worker.
+  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token});
 
-  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-  /// The future must not complete before the worker is ready to serve requests.
+  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
+  /// must not complete before the worker is ready to serve requests.
   static Future<Channel> open(dynamic entryPoint, List startArguments) =>
       openChannel(entryPoint, startArguments);
 
@@ -52,28 +49,25 @@ abstract class Channel {
 /// A [WorkerChannel] supports communication from a platform worker to the client that posted the [WorkerRequest].
 /// It is used to send [WorkerResponse] back to the client.
 abstract class WorkerChannel {
-  /// [WorkerChannel] serialization.
-  /// Returns an opaque object that can be transfered from the client to the worker.
+  /// [WorkerChannel] serialization. Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
 
-  /// Connects the [Channel] with the Squadron [Worker].
-  /// [channelInfo] is an opaque object than can be deserialized as a [Channel].
-  /// This method must be called by the worker upon startup.
+  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized
+  /// as a [Channel]. This method must be called by the worker upon startup.
   void connect(Object channelInfo);
 
-  /// Sends a [WorkerResponse] with the specified data to the worker client.
-  /// This method must be called from the worker only.
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// worker only.
   void reply(dynamic data);
 
   /// Checks if [stream] can be streamed back to the worker client.
   bool canStream(Stream stream);
 
-  /// Sends a [WorkerResponse.closeStream] to the worker client.
-  /// This method must be called from the worker only.
+  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the worker only.
   void closeStream();
 
-  /// Sends a [WorkerResponse] with the specified error to the worker client.
-  /// This method must be called from the worker only.
+  /// Sends a [WorkerResponse] with the specified error to the worker client. This method must be called from the
+  /// worker only.
   void error(SquadronException error);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].

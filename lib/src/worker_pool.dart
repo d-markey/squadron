@@ -138,7 +138,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   }
 
   final _queue = Queue<WorkerTask>();
-  final _executing = <int, WorkerTask>{};
+  final _executing = <WorkerTask>{};
 
   /// Gets remaining workload
   int get pendingWorkload => _queue.length;
@@ -219,9 +219,9 @@ class WorkerPool<W extends Worker> implements WorkerService {
                   break;
                 }
                 final task = _queue.removeFirst();
-                _executing[task.hashCode] = task;
+                _executing.add(task);
                 w.run(task).whenComplete(() {
-                  _executing.remove(task.hashCode);
+                  _executing.remove(task);
                   _schedule();
                 });
               }
@@ -247,20 +247,11 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.
   void cancel([Task? task, String? message]) {
     if (task != null) {
-      WorkerTask? workerTask = _executing.remove(task.hashCode);
-      if (workerTask == null) {
-        _queue.removeWhere((t) {
-          if (t == task) {
-            workerTask = t;
-            return true;
-          } else {
-            return false;
-          }
-        });
-      }
-      workerTask?.cancel(message);
+      _executing.remove(task);
+      _queue.removeWhere((t) => t == task);
+      task.cancel(message);
     } else {
-      final cancelled = _executing.values.followedBy(_queue).toList();
+      final cancelled = _executing.followedBy(_queue).toList();
       _executing.clear();
       _queue.clear();
       for (var task in cancelled) {

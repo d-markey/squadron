@@ -10,8 +10,8 @@ import '../worker_request.dart';
 import '../worker_response.dart';
 
 class _SendPort {
-  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner.
-  /// Otherwise, [SendPort] to return values to the client.
+  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
+  /// to return values to the client.
   SendPort? _sendPort;
 
   /// [Channel] serialization in Native world returns the [SendPort].
@@ -55,8 +55,8 @@ class _VmChannel extends _SendPort implements Channel {
     }
   }
 
-  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
-  /// This method expects a single value from the [web.Worker].
+  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is
+  /// cancelled.
   @override
   void notifyCancellation(CancellationToken token) {
     if (token.cancelled) {
@@ -64,8 +64,8 @@ class _VmChannel extends _SendPort implements Channel {
     }
   }
 
-  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]
-  /// this method expects a single value from the [Isolate]
+  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single
+  /// value from the [Isolate]
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
@@ -75,9 +75,8 @@ class _VmChannel extends _SendPort implements Channel {
     return res.result as T;
   }
 
-  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate].
-  /// This method expects a stream of values from the [Isolate].
-  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
+  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of
+  /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token}) {
@@ -105,8 +104,8 @@ class _VmChannel extends _SendPort implements Channel {
 class _VmWorkerChannel extends _SendPort implements WorkerChannel {
   _VmWorkerChannel._();
 
-  /// Sends the [SendPort] to communicate with the [Isolate].
-  /// This method must be called by the [Isolate] upon startup.
+  /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon
+  /// startup.
   @override
   void connect(Object channelInfo) {
     if (channelInfo is ReceivePort) {
@@ -117,8 +116,8 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
     }
   }
 
-  /// Sends a [WorkerResponse] with the specified data to the worker client.
-  /// This method must be called from the [Isolate] only.
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// [Isolate] only.
   @override
   void reply(dynamic data) => _postResponse(WorkerResponse(data));
 
@@ -127,13 +126,11 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   bool canStream(Stream stream) => stream is! ReceivePort;
 
-  /// Sends a [WorkerResponse.closeStream] to the worker client.
-  /// This method must be called from the [Isolate] only.
+  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.
   @override
   void closeStream() => _postResponse(WorkerResponse.closeStream);
 
-  /// Sends the [WorkerException] to the worker client.
-  /// This method must be called from the [Isolate] only.
+  /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.
   @override
   void error(SquadronException error) {
     Squadron.finer('replying with error: $error');
@@ -149,8 +146,8 @@ String _getId() {
   return '${Squadron.id}.$_counter';
 }
 
-/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
+/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
+/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final completer = Completer<Channel>();
   final channel = _VmChannel._();

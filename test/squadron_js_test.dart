@@ -24,7 +24,7 @@ void main() async {
 
     setUp(() {
       Squadron.setId('workerTests');
-      Squadron.logLevel = SquadronLogLevel.ALL;
+      Squadron.logLevel = SquadronLogLevel.all;
       Squadron.logger = memoryLogger;
       memoryLogger.clear();
     });

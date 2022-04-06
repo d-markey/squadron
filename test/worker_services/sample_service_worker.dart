@@ -7,8 +7,9 @@ import 'worker_entry_points.dart';
 
 class SampleWorkerPool extends WorkerPool<SampleWorker>
     implements SampleService {
-  SampleWorkerPool([ConcurrencySettings? concurrencySettings])
-      : super(() => SampleWorker(),
+  SampleWorkerPool(
+      [ConcurrencySettings? concurrencySettings, LocalSquadronLogger? logger])
+      : super(() => SampleWorker(logger),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
@@ -35,6 +36,9 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future infiniteCpu(CancellationToken token) =>
       execute((w) => w.infiniteCpu(token));
 
+  @override
+  Future log() => execute((w) => w.log());
+
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayedIdentity(n));
 
@@ -43,7 +47,8 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
 }
 
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker() : super(EntryPoints.sample);
+  SampleWorker([LocalSquadronLogger? logger])
+      : super(EntryPoints.sample, args: [logger?.connectionInfo]);
 
   @override
   Future io({required int milliseconds}) =>
@@ -68,4 +73,7 @@ class SampleWorker extends Worker implements SampleService {
   @override
   Future infiniteCpu(CancellationToken token) =>
       send(SampleService.infiniteCpuCommand, [token], token);
+
+  @override
+  Future log() => send(SampleService.logCommand);
 }

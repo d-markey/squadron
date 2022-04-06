@@ -20,7 +20,7 @@ void main() {
 
     setUp(() {
       Squadron.setId('workerTests');
-      Squadron.logLevel = SquadronLogLevel.FINE;
+      Squadron.logLevel = SquadronLogLevel.fine;
       Squadron.logger = memoryLogger;
       memoryLogger.clear();
     });

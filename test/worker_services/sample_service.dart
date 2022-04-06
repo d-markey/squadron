@@ -17,10 +17,12 @@ class SampleService implements WorkerService {
   }
 
   Stream<int> finiteSequence(int count) async* {
+    Squadron.finest('begin finiteSequence($count)');
     for (var i = 0; i <= count; i++) {
       await Future.delayed(delay);
       yield i;
     }
+    Squadron.finest('end finiteSequence($count)');
   }
 
   Stream<int> infiniteSequence(CancellationToken token) async* {
@@ -43,6 +45,17 @@ class SampleService implements WorkerService {
     }
   }
 
+  void log() {
+    Squadron.finest('finest test in worker');
+    Squadron.finer('finer test in worker');
+    Squadron.fine('fine test in worker');
+    Squadron.config('config test in worker');
+    Squadron.info('info test in worker');
+    Squadron.warning('warning test in worker');
+    Squadron.severe('severe test in worker');
+    Squadron.shout('shout test in worker');
+  }
+
   static const delay = Duration(milliseconds: 100);
 
   static const ioCommand = 1;
@@ -51,6 +64,7 @@ class SampleService implements WorkerService {
   static const finiteSequenceCommand = 4;
   static const infiniteSequenceCommand = 5;
   static const infiniteCpuCommand = 6;
+  static const logCommand = 7;
 
   @override
   late final Map<int, CommandHandler> operations = {
@@ -59,6 +73,7 @@ class SampleService implements WorkerService {
     delayedIdentityCommand: (r) => delayedIdentity(r.args[0]),
     finiteSequenceCommand: (r) => finiteSequence(r.args[0]),
     infiniteSequenceCommand: (r) => infiniteSequence(r.cancelToken!),
-    infiniteCpuCommand: (r) => infiniteCpu(r.cancelToken!)
+    infiniteCpuCommand: (r) => infiniteCpu(r.cancelToken!),
+    logCommand: (r) => log()
   };
 }

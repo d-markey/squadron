@@ -1,26 +1,27 @@
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import '../classes/memory_logger.dart';
+import '../worker_services/sample_service_worker.dart';
 
 void loggerTests() {
   final memoryLogger = MemoryLogger();
 
   final logLevels = {
-    SquadronLogLevel.FINEST: 'FINEST',
-    SquadronLogLevel.FINER: 'FINER',
-    SquadronLogLevel.FINE: 'FINE',
-    SquadronLogLevel.CONFIG: 'CONFIG',
-    SquadronLogLevel.INFO: 'INFO',
-    SquadronLogLevel.WARNING: 'WARNING',
-    SquadronLogLevel.SEVERE: 'SEVERE',
-    SquadronLogLevel.SHOUT: 'SHOUT',
+    SquadronLogLevel.finest: 'FINEST',
+    SquadronLogLevel.finer: 'FINER',
+    SquadronLogLevel.fine: 'FINE',
+    SquadronLogLevel.config: 'CONFIG',
+    SquadronLogLevel.info: 'INFO',
+    SquadronLogLevel.warning: 'WARNING',
+    SquadronLogLevel.severe: 'SEVERE',
+    SquadronLogLevel.shout: 'SHOUT',
   };
 
   setUp(() {
     memoryLogger.clear();
     Squadron.logger = memoryLogger;
-    Squadron.logLevel = SquadronLogLevel.ALL;
+    Squadron.logLevel = SquadronLogLevel.all;
   });
 
   test('Finest', () {
@@ -132,7 +133,7 @@ void loggerTests() {
   });
 
   test('Off', () {
-    Squadron.logLevel = SquadronLogLevel.OFF;
+    Squadron.logLevel = SquadronLogLevel.off;
     Squadron.finest('Finest');
     Squadron.finer('Finer');
     Squadron.fine('Fine');
@@ -208,5 +209,66 @@ void loggerTests() {
       expect(memoryLogger.contains(lines[i]), isTrue);
     }
     expect(memoryLogger.contains(message), isFalse);
+  });
+
+  test('LocalLogger', () async {
+    final logger = MemoryLogger();
+    logger.logLevel = SquadronLogLevel.all;
+
+    final localLogger = LocalSquadronLogger(logger);
+    localLogger.info('localLogger up and running');
+
+    localLogger.finest('finest test in main');
+    localLogger.finer('finer test in main');
+    localLogger.fine('fine test in main');
+    localLogger.config('config test in main');
+    localLogger.info('info test in main');
+    localLogger.warning('warning test in main');
+    localLogger.severe('severe test in main');
+    localLogger.shout('shout test in main');
+
+    final pool =
+        SampleWorkerPool(ConcurrencySettings.threeCpuThreads, localLogger);
+
+    final tasks = <Future>[];
+    for (var i = 0; i <= 2 * pool.maxConcurrency + 1; i++) {
+      tasks.add(pool.log());
+    }
+    await Future.wait(tasks);
+
+    final fullLog = logger.toString();
+
+    expect(fullLog, contains('localLogger up and running'));
+
+    expect(fullLog, contains('[FINEST] [${Squadron.id}] finest test in main'));
+    expect(fullLog, contains('[FINER] [${Squadron.id}] finer test in main'));
+    expect(fullLog, contains('[FINE] [${Squadron.id}] fine test in main'));
+    expect(fullLog, contains('[CONFIG] [${Squadron.id}] config test in main'));
+    expect(fullLog, contains('[INFO] [${Squadron.id}] info test in main'));
+    expect(
+        fullLog, contains('[WARNING] [${Squadron.id}] warning test in main'));
+    expect(fullLog, contains('[SEVERE] [${Squadron.id}] severe test in main'));
+    expect(fullLog, contains('[SHOUT] [${Squadron.id}] shout test in main'));
+
+    for (var i = 1; i <= pool.maxWorkers; i++) {
+      expect(fullLog,
+          contains('[FINEST] [${Squadron.id}.$i] finest test in worker'));
+      expect(fullLog,
+          contains('[FINER] [${Squadron.id}.$i] finer test in worker'));
+      expect(
+          fullLog, contains('[FINE] [${Squadron.id}.$i] fine test in worker'));
+      expect(fullLog,
+          contains('[CONFIG] [${Squadron.id}.$i] config test in worker'));
+      expect(
+          fullLog, contains('[INFO] [${Squadron.id}.$i] info test in worker'));
+      expect(fullLog,
+          contains('[WARNING] [${Squadron.id}.$i] warning test in worker'));
+      expect(fullLog,
+          contains('[SEVERE] [${Squadron.id}.$i] severe test in worker'));
+      expect(fullLog,
+          contains('[SHOUT] [${Squadron.id}.$i] shout test in worker'));
+    }
+
+    pool.stop();
   });
 }

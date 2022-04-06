@@ -10,8 +10,8 @@ import '../worker_request.dart';
 import '../worker_response.dart';
 
 class _MessagePort {
-  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner.
-  /// Otherwise, [web.MessagePort] to return values to the client.
+  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
+  /// [web.MessagePort] to return values to the client.
   web.MessagePort? _sendPort;
 
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
@@ -66,8 +66,8 @@ class _JsChannel extends _MessagePort implements Channel {
     }
   }
 
-  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
-  /// This method expects a single value from the [web.Worker].
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
+  /// single value from the [web.Worker].
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
@@ -83,9 +83,9 @@ class _JsChannel extends _MessagePort implements Channel {
     }
   }
 
-  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].
-  /// This method expects a stream of values from the [web.Worker].
-  /// The [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream].
+  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
+  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close
+  /// the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token}) {
@@ -115,8 +115,8 @@ class _JsChannel extends _MessagePort implements Channel {
 class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
   _JsWorkerChannel._();
 
-  /// Sends the [web.MessagePort] to communicate with the [web.Worker].
-  /// This method must be called by the [web.Worker] upon startup.
+  /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the
+  /// [web.Worker] upon startup.
   @override
   void connect(Object channelInfo) {
     if (channelInfo is web.MessagePort) {
@@ -127,8 +127,8 @@ class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
     }
   }
 
-  /// Sends a [WorkerResponse] with the specified data to the worker client.
-  /// This method must be called from the [web.Worker] only.
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// [web.Worker] only.
   @override
   void reply(dynamic data) => _postResponse(WorkerResponse(data));
 
@@ -136,13 +136,12 @@ class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
   @override
   bool canStream(Stream stream) => true;
 
-  /// Sends a [WorkerResponse.closeStream] to the worker client.
-  /// This method must be called from the [web.Worker] only.
+  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]
+  /// only.
   @override
   void closeStream() => _postResponse(WorkerResponse.closeStream);
 
-  /// Sends the [WorkerResponse] to the worker client.
-  /// This method must be called from the [web.Worker] only.
+  /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
     Squadron.finer(() => 'replying with error: $error');
@@ -150,9 +149,8 @@ class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
   }
 }
 
-/// [Channel] used to communicate between [web.Worker]s.
-/// Creates a [web.MessageChannel] to receive commands on [web.MessageChannel.port2] and forwards them
-/// to the worker's [web.MessagePort] via [web.MessageChannel.port1].
+/// [Channel] used to communicate between [web.Worker]s. Creates a [web.MessageChannel] to receive commands on
+/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].
 class _JsForwardChannel extends _JsChannel {
   /// [remote] is the worker's [web.MessagePort]
   _JsForwardChannel._(web.MessagePort remote) : super._() {
@@ -207,10 +205,9 @@ Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
   }
 }
 
-/// Yields objects contained in JSON object [args] (a Map, a List, or a base type).
-/// Used to identify non-base type objects and provide them to [web.Worker.postMessage].
-/// [web.Worker.postMessage] will clone these objects -- essentially [web.MessagePort]s.
-/// The code makes no effort to ensure these objects really are transferable.
+/// Yields objects contained in JSON object [args] (a Map, a List, or a base type). Used to identify non-base type
+/// objects and provide them to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects
+/// -- essentially [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.
 Iterable<Object> _getTransferables(dynamic args) sync* {
   if (_isObject(args)) {
     if (args is Map) args = args.values;
@@ -243,8 +240,8 @@ String _getId() {
   return '${Squadron.id}.$_counter';
 }
 
-/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].
-/// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
+/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
+/// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   final completer = Completer<Channel>();
   final channel = _JsChannel._();

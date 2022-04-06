@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as dev show log;
 
 import 'squadron.dart';
@@ -10,41 +11,42 @@ abstract class SquadronLogger {
   /// Sets the log level
   set logLevel(int value);
 
-  /// Logs a message at [SquadronLogLevel.FINEST] level
-  void finest(dynamic message);
+  /// Logs a message at [SquadronLogLevel.finest] level
+  FutureOr finest(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.FINER] level
-  void finer(dynamic message);
+  /// Logs a message at [SquadronLogLevel.finer] level
+  FutureOr finer(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.FINE] level
-  void fine(dynamic message);
+  /// Logs a message at [SquadronLogLevel.fine] level
+  FutureOr fine(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.CONFIG] level
-  void config(dynamic message);
+  /// Logs a message at [SquadronLogLevel.config] level
+  FutureOr config(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.INFO] level
-  void info(dynamic message);
+  /// Logs a message at [SquadronLogLevel.info] level
+  FutureOr info(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.WARNING] level
-  void warning(dynamic message);
+  /// Logs a message at [SquadronLogLevel.warning] level
+  FutureOr warning(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.SEVERE] level
-  void severe(dynamic message);
+  /// Logs a message at [SquadronLogLevel.severe] level
+  FutureOr severe(dynamic message);
 
-  /// Logs a message at [SquadronLogLevel.SHOUT] level
-  void shout(dynamic message);
+  /// Logs a message at [SquadronLogLevel.shout] level
+  FutureOr shout(dynamic message);
 }
 
 /// Base class for simple loggers
 abstract class BaseSquadronLogger implements SquadronLogger {
   @override
-  int logLevel = SquadronLogLevel.SEVERE;
+  int logLevel = Squadron.logLevel;
 
   /// Base logging method. Implement this method to display the [message].
-  /// The method is called if the log level is enabled and is provided with a formatted message such as `[timestamp] [log-level] [Squadron.id] text of the message`
-  void log(String message);
+  /// The method is called if the log level is enabled and is provided with a formatted message such as
+  /// `[timestamp] [log-level] [Squadron.id] text of the message`
+  FutureOr log(String message);
 
-  void _log(int level, dynamic message) {
+  FutureOr _log(int level, dynamic message) {
     if (level >= logLevel) {
       if (message is Function) {
         message = message();
@@ -68,28 +70,28 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   }
 
   @override
-  void finest(dynamic message) => _log(SquadronLogLevel.FINEST, message);
+  FutureOr finest(dynamic message) => _log(SquadronLogLevel.finest, message);
 
   @override
-  void finer(dynamic message) => _log(SquadronLogLevel.FINER, message);
+  FutureOr finer(dynamic message) => _log(SquadronLogLevel.finer, message);
 
   @override
-  void fine(dynamic message) => _log(SquadronLogLevel.FINE, message);
+  FutureOr fine(dynamic message) => _log(SquadronLogLevel.fine, message);
 
   @override
-  void config(dynamic message) => _log(SquadronLogLevel.CONFIG, message);
+  FutureOr config(dynamic message) => _log(SquadronLogLevel.config, message);
 
   @override
-  void info(dynamic message) => _log(SquadronLogLevel.INFO, message);
+  FutureOr info(dynamic message) => _log(SquadronLogLevel.info, message);
 
   @override
-  void warning(dynamic message) => _log(SquadronLogLevel.WARNING, message);
+  FutureOr warning(dynamic message) => _log(SquadronLogLevel.warning, message);
 
   @override
-  void severe(dynamic message) => _log(SquadronLogLevel.SEVERE, message);
+  FutureOr severe(dynamic message) => _log(SquadronLogLevel.severe, message);
 
   @override
-  void shout(dynamic message) => _log(SquadronLogLevel.SHOUT, message);
+  FutureOr shout(dynamic message) => _log(SquadronLogLevel.shout, message);
 }
 
 class DevSquadronLogger extends BaseSquadronLogger {
@@ -110,56 +112,96 @@ class SquadronLogLevel {
   SquadronLogLevel._();
 
   /// Lowest log level
+  @Deprecated('Use SquadronLogLevel.all.')
   // ignore: constant_identifier_names
-  static const ALL = 0;
+  static const ALL = all;
 
   /// Finest log level
+  @Deprecated('Use SquadronLogLevel.finest.')
   // ignore: constant_identifier_names
-  static const FINEST = 300;
+  static const FINEST = finest;
 
   /// Finer log level
+  @Deprecated('Use SquadronLogLevel.finer.')
   // ignore: constant_identifier_names
-  static const FINER = 400;
+  static const FINER = finer;
 
   /// Fine log level
+  @Deprecated('Use SquadronLogLevel.fine.')
   // ignore: constant_identifier_names
-  static const FINE = 500;
+  static const FINE = fine;
 
   /// Config log level
+  @Deprecated('Use SquadronLogLevel.config.')
   // ignore: constant_identifier_names
-  static const CONFIG = 700;
+  static const CONFIG = config;
 
   /// Information log level
+  @Deprecated('Use SquadronLogLevel.info.')
   // ignore: constant_identifier_names
-  static const INFO = 800;
+  static const INFO = info;
 
   /// Warning log level
+  @Deprecated('Use SquadronLogLevel.warning.')
   // ignore: constant_identifier_names
-  static const WARNING = 900;
+  static const WARNING = warning;
 
   /// Severe log level
+  @Deprecated('Use SquadronLogLevel.severe.')
   // ignore: constant_identifier_names
-  static const SEVERE = 1000;
+  static const SEVERE = severe;
 
   /// Shout log level
+  @Deprecated('Use SquadronLogLevel.shout.')
   // ignore: constant_identifier_names
-  static const SHOUT = 1200;
+  static const SHOUT = shout;
 
   /// No logging
+  @Deprecated('Use SquadronLogLevel.off.')
   // ignore: constant_identifier_names
-  static const OFF = 2000;
+  static const OFF = off;
+
+  /// Lowest log level
+  static const all = 0;
+
+  /// Finest log level
+  static const finest = 300;
+
+  /// Finer log level
+  static const finer = 400;
+
+  /// Fine log level
+  static const fine = 500;
+
+  /// Config log level
+  static const config = 700;
+
+  /// Information log level
+  static const info = 800;
+
+  /// Warning log level
+  static const warning = 900;
+
+  /// Severe log level
+  static const severe = 1000;
+
+  /// Shout log level
+  static const shout = 1200;
+
+  /// No logging
+  static const off = 2000;
 
   /// Gets the log level name
   static String getName(int logLevel) {
-    if (logLevel < FINEST) return 'ALL';
-    if (logLevel < FINER) return 'FINEST';
-    if (logLevel < FINE) return 'FINER';
-    if (logLevel < CONFIG) return 'FINE';
-    if (logLevel < INFO) return 'CONFIG';
-    if (logLevel < WARNING) return 'INFO';
-    if (logLevel < SEVERE) return 'WARNING';
-    if (logLevel < SHOUT) return 'SEVERE';
-    if (logLevel < OFF) return 'SHOUT';
+    if (logLevel < finest) return 'ALL';
+    if (logLevel < finer) return 'FINEST';
+    if (logLevel < fine) return 'FINER';
+    if (logLevel < config) return 'FINE';
+    if (logLevel < info) return 'CONFIG';
+    if (logLevel < warning) return 'INFO';
+    if (logLevel < severe) return 'WARNING';
+    if (logLevel < shout) return 'SEVERE';
+    if (logLevel < off) return 'SHOUT';
     return 'OFF';
   }
 }
