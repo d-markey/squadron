@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90625" lines-covered="116" lines-valid="128" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90163934" lines-covered="110" lines-valid="122" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -464,7 +464,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>  final _executing = &lt;int, WorkerTask&gt;{};</code>
+            <code>  final _executing = &lt;WorkerTask&gt;{};</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -744,17 +744,17 @@
             <code>                final task = _queue.removeFirst();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>                _executing[task.hashCode] = task;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>                _executing.add(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>                w.run(task).whenComplete(() {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>                  _executing.remove(task.hashCode);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>                  _executing.remove(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>                  _schedule();</code>
@@ -847,57 +847,24 @@
             <code>    if (task != null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>      WorkerTask? workerTask = _executing.remove(task.hashCode);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>      _executing.remove(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      if (workerTask == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>        _queue.removeWhere((t) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>      _queue.removeWhere((t) =&gt; t == task);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          if (t == task) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            workerTask = t;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            return true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          } else {</code>
-        </line>
-        <line hits="1">
-            <code>            return false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          }</code>
-        </line>
-        <line hits="1">
-            <code>        });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="2">
-            <code>      workerTask?.cancel(message);</code>
+            <code>      task.cancel(message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="6">
-            <code>      final cancelled = _executing.values.followedBy(_queue).toList();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>      final cancelled = _executing.followedBy(_queue).toList();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>      _executing.clear();</code>

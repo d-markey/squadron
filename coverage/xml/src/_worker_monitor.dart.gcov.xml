@@ -203,9 +203,9 @@
             <code>          ? noTokenRef</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>          : _cancelTokens.putIfAbsent(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>              token.id, () =&gt; _CancellationTokenReference(token));</code>

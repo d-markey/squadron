@@ -38,10 +38,10 @@
             <code>class _SendPort {</code>
         </line>
         <line>
-            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner.</code>
+            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]</code>
         </line>
         <line>
-            <code>  /// Otherwise, [SendPort] to return values to the client.</code>
+            <code>  /// to return values to the client.</code>
         </line>
         <line>
             <code>  SendPort? _sendPort;</code>
@@ -188,10 +188,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].</code>
+            <code>  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is</code>
         </line>
         <line>
-            <code>  /// This method expects a single value from the [web.Worker].</code>
+            <code>  /// cancelled.</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -218,10 +218,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]</code>
+            <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single</code>
         </line>
         <line>
-            <code>  /// this method expects a single value from the [Isolate]</code>
+            <code>  /// value from the [Isolate]</code>
         </line>
         <line>
             <code>  @override</code>
@@ -256,13 +256,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate].</code>
+            <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of</code>
         </line>
         <line>
-            <code>  /// This method expects a stream of values from the [Isolate].</code>
-        </line>
-        <line>
-            <code>  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
+            <code>  /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -362,10 +359,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [SendPort] to communicate with the [Isolate].</code>
+            <code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon</code>
         </line>
         <line>
-            <code>  /// This method must be called by the [Isolate] upon startup.</code>
+            <code>  /// startup.</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -401,10 +398,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// This method must be called from the [Isolate] only.</code>
+            <code>  /// [Isolate] only.</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -435,10 +432,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client.</code>
-        </line>
-        <line>
-            <code>  /// This method must be called from the [Isolate] only.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -452,10 +446,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [WorkerException] to the worker client.</code>
-        </line>
-        <line>
-            <code>  /// This method must be called from the [Isolate] only.</code>
+            <code>  /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.</code>
         </line>
         <line hits="1">
             <code>  @override</code>
@@ -509,10 +500,10 @@
             <code/>
         </line>
         <line>
-            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].</code>
+            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
         </line>
         <line>
-            <code>/// The future completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code>
+            <code>/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code>
         </line>
         <line hits="1">
             <code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) async {</code>

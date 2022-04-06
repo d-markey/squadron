@@ -208,9 +208,9 @@
             <code>  void processMessage(Map message) async {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>    Squadron.finest(() =&gt; 'processing request $message');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    final request = WorkerRequest.deserialize(message);</code>

@@ -38,10 +38,10 @@
             <code>class _MessagePort {</code>
         </line>
         <line>
-            <code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner.</code>
+            <code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,</code>
         </line>
         <line>
-            <code>  /// Otherwise, [web.MessagePort] to return values to the client.</code>
+            <code>  /// [web.MessagePort] to return values to the client.</code>
         </line>
         <line>
             <code>  web.MessagePort? _sendPort;</code>
@@ -228,10 +228,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].</code>
+            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
         </line>
         <line>
-            <code>  /// This method expects a single value from the [web.Worker].</code>
+            <code>  /// single value from the [web.Worker].</code>
         </line>
         <line>
             <code>  @override</code>
@@ -288,13 +288,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker].</code>
+            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
         </line>
         <line>
-            <code>  /// This method expects a stream of values from the [web.Worker].</code>
+            <code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code>
         </line>
         <line>
-            <code>  /// The [web.Worker] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
+            <code>  /// the [Stream].</code>
         </line>
         <line>
             <code>  @override</code>
@@ -402,10 +402,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [web.MessagePort] to communicate with the [web.Worker].</code>
+            <code>  /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the</code>
         </line>
         <line>
-            <code>  /// This method must be called by the [web.Worker] upon startup.</code>
+            <code>  /// [web.Worker] upon startup.</code>
         </line>
         <line>
             <code>  @override</code>
@@ -438,10 +438,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// This method must be called from the [web.Worker] only.</code>
+            <code>  /// [web.Worker] only.</code>
         </line>
         <line>
             <code>  @override</code>
@@ -467,10 +467,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]</code>
         </line>
         <line>
-            <code>  /// This method must be called from the [web.Worker] only.</code>
+            <code>  /// only.</code>
         </line>
         <line>
             <code>  @override</code>
@@ -483,10 +483,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [WorkerResponse] to the worker client.</code>
-        </line>
-        <line>
-            <code>  /// This method must be called from the [web.Worker] only.</code>
+            <code>  /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.</code>
         </line>
         <line>
             <code>  @override</code>
@@ -514,13 +511,10 @@
             <code/>
         </line>
         <line>
-            <code>/// [Channel] used to communicate between [web.Worker]s.</code>
+            <code>/// [Channel] used to communicate between [web.Worker]s. Creates a [web.MessageChannel] to receive commands on</code>
         </line>
         <line>
-            <code>/// Creates a [web.MessageChannel] to receive commands on [web.MessageChannel.port2] and forwards them</code>
-        </line>
-        <line>
-            <code>/// to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
+            <code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
         </line>
         <line>
             <code>class _JsForwardChannel extends _JsChannel {</code>
@@ -706,16 +700,13 @@
             <code/>
         </line>
         <line>
-            <code>/// Yields objects contained in JSON object [args] (a Map, a List, or a base type).</code>
+            <code>/// Yields objects contained in JSON object [args] (a Map, a List, or a base type). Used to identify non-base type</code>
         </line>
         <line>
-            <code>/// Used to identify non-base type objects and provide them to [web.Worker.postMessage].</code>
+            <code>/// objects and provide them to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects</code>
         </line>
         <line>
-            <code>/// [web.Worker.postMessage] will clone these objects -- essentially [web.MessagePort]s.</code>
-        </line>
-        <line>
-            <code>/// The code makes no effort to ensure these objects really are transferable.</code>
+            <code>/// -- essentially [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
         </line>
         <line hits="1">
             <code>Iterable&lt;Object&gt; _getTransferables(dynamic args) sync* {</code>
@@ -830,10 +821,10 @@
             <code/>
         </line>
         <line>
-            <code>/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].</code>
+            <code>/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
         </line>
         <line>
-            <code>/// The future completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].</code>
+            <code>/// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].</code>
         </line>
         <line hits="1">
             <code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) {</code>

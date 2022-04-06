@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8541667" lines-covered="41" lines-valid="48" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85714287" lines-covered="42" lines-valid="49" package="/src" testname="lcov.info" version="1.5">
     <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
         <line>
             <code>import 'dart:developer' as dev show log;</code>
         </line>
@@ -38,73 +41,73 @@
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINEST] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.finest] level</code>
         </line>
         <line>
-            <code>  void finest(dynamic message);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINER] level</code>
-        </line>
-        <line>
-            <code>  void finer(dynamic message);</code>
+            <code>  FutureOr finest(dynamic message);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINE] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.finer] level</code>
         </line>
         <line>
-            <code>  void fine(dynamic message);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
-        </line>
-        <line>
-            <code>  void config(dynamic message);</code>
+            <code>  FutureOr finer(dynamic message);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.INFO] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.fine] level</code>
         </line>
         <line>
-            <code>  void info(dynamic message);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Logs a message at [SquadronLogLevel.WARNING] level</code>
-        </line>
-        <line>
-            <code>  void warning(dynamic message);</code>
+            <code>  FutureOr fine(dynamic message);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.SEVERE] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.config] level</code>
         </line>
         <line>
-            <code>  void severe(dynamic message);</code>
+            <code>  FutureOr config(dynamic message);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.SHOUT] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.info] level</code>
         </line>
         <line>
-            <code>  void shout(dynamic message);</code>
+            <code>  FutureOr info(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.warning] level</code>
+        </line>
+        <line>
+            <code>  FutureOr warning(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.severe] level</code>
+        </line>
+        <line>
+            <code>  FutureOr severe(dynamic message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.shout] level</code>
+        </line>
+        <line>
+            <code>  FutureOr shout(dynamic message);</code>
         </line>
         <line>
             <code>}</code>
@@ -121,8 +124,9 @@
         <line>
             <code>  @override</code>
         </line>
-        <line>
-            <code>  int logLevel = SquadronLogLevel.SEVERE;</code>
+        <line hits="1">
+            <code>  int logLevel = Squadron.logLevel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -131,16 +135,19 @@
             <code>  /// Base logging method. Implement this method to display the [message].</code>
         </line>
         <line>
-            <code>  /// The method is called if the log level is enabled and is provided with a formatted message such as `[timestamp] [log-level] [Squadron.id] text of the message`</code>
+            <code>  /// The method is called if the log level is enabled and is provided with a formatted message such as</code>
         </line>
         <line>
-            <code>  void log(String message);</code>
+            <code>  /// `[timestamp] [log-level] [Squadron.id] text of the message`</code>
+        </line>
+        <line>
+            <code>  FutureOr log(String message);</code>
         </line>
         <line>
             <code/>
         </line>
         <line hits="2">
-            <code>  void _log(int level, dynamic message) {</code>
+            <code>  FutureOr _log(int level, dynamic message) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -227,7 +234,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void finest(dynamic message) =&gt; _log(SquadronLogLevel.FINEST, message);</code>
+            <code>  FutureOr finest(dynamic message) =&gt; _log(SquadronLogLevel.finest, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -238,7 +245,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void finer(dynamic message) =&gt; _log(SquadronLogLevel.FINER, message);</code>
+            <code>  FutureOr finer(dynamic message) =&gt; _log(SquadronLogLevel.finer, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -249,7 +256,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void fine(dynamic message) =&gt; _log(SquadronLogLevel.FINE, message);</code>
+            <code>  FutureOr fine(dynamic message) =&gt; _log(SquadronLogLevel.fine, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -260,7 +267,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void config(dynamic message) =&gt; _log(SquadronLogLevel.CONFIG, message);</code>
+            <code>  FutureOr config(dynamic message) =&gt; _log(SquadronLogLevel.config, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -271,7 +278,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void info(dynamic message) =&gt; _log(SquadronLogLevel.INFO, message);</code>
+            <code>  FutureOr info(dynamic message) =&gt; _log(SquadronLogLevel.info, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -282,7 +289,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void warning(dynamic message) =&gt; _log(SquadronLogLevel.WARNING, message);</code>
+            <code>  FutureOr warning(dynamic message) =&gt; _log(SquadronLogLevel.warning, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -293,7 +300,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void severe(dynamic message) =&gt; _log(SquadronLogLevel.SEVERE, message);</code>
+            <code>  FutureOr severe(dynamic message) =&gt; _log(SquadronLogLevel.severe, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -304,7 +311,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void shout(dynamic message) =&gt; _log(SquadronLogLevel.SHOUT, message);</code>
+            <code>  FutureOr shout(dynamic message) =&gt; _log(SquadronLogLevel.shout, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -368,10 +375,13 @@
             <code>  /// Lowest log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.all.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const ALL = 0;</code>
+            <code>  static const ALL = all;</code>
         </line>
         <line>
             <code/>
@@ -380,10 +390,13 @@
             <code>  /// Finest log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.finest.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const FINEST = 300;</code>
+            <code>  static const FINEST = finest;</code>
         </line>
         <line>
             <code/>
@@ -392,10 +405,13 @@
             <code>  /// Finer log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.finer.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const FINER = 400;</code>
+            <code>  static const FINER = finer;</code>
         </line>
         <line>
             <code/>
@@ -404,10 +420,13 @@
             <code>  /// Fine log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.fine.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const FINE = 500;</code>
+            <code>  static const FINE = fine;</code>
         </line>
         <line>
             <code/>
@@ -416,10 +435,13 @@
             <code>  /// Config log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.config.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const CONFIG = 700;</code>
+            <code>  static const CONFIG = config;</code>
         </line>
         <line>
             <code/>
@@ -428,10 +450,13 @@
             <code>  /// Information log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.info.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const INFO = 800;</code>
+            <code>  static const INFO = info;</code>
         </line>
         <line>
             <code/>
@@ -440,10 +465,13 @@
             <code>  /// Warning log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.warning.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const WARNING = 900;</code>
+            <code>  static const WARNING = warning;</code>
         </line>
         <line>
             <code/>
@@ -452,10 +480,13 @@
             <code>  /// Severe log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.severe.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const SEVERE = 1000;</code>
+            <code>  static const SEVERE = severe;</code>
         </line>
         <line>
             <code/>
@@ -464,10 +495,13 @@
             <code>  /// Shout log level</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.shout.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const SHOUT = 1200;</code>
+            <code>  static const SHOUT = shout;</code>
         </line>
         <line>
             <code/>
@@ -476,10 +510,103 @@
             <code>  /// No logging</code>
         </line>
         <line>
+            <code>  @Deprecated('Use SquadronLogLevel.off.')</code>
+        </line>
+        <line>
             <code>  // ignore: constant_identifier_names</code>
         </line>
         <line>
-            <code>  static const OFF = 2000;</code>
+            <code>  static const OFF = off;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Lowest log level</code>
+        </line>
+        <line>
+            <code>  static const all = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Finest log level</code>
+        </line>
+        <line>
+            <code>  static const finest = 300;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Finer log level</code>
+        </line>
+        <line>
+            <code>  static const finer = 400;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Fine log level</code>
+        </line>
+        <line>
+            <code>  static const fine = 500;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Config log level</code>
+        </line>
+        <line>
+            <code>  static const config = 700;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Information log level</code>
+        </line>
+        <line>
+            <code>  static const info = 800;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Warning log level</code>
+        </line>
+        <line>
+            <code>  static const warning = 900;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Severe log level</code>
+        </line>
+        <line>
+            <code>  static const severe = 1000;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Shout log level</code>
+        </line>
+        <line>
+            <code>  static const shout = 1200;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// No logging</code>
+        </line>
+        <line>
+            <code>  static const off = 2000;</code>
         </line>
         <line>
             <code/>
@@ -492,39 +619,39 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; FINEST) return 'ALL';</code>
+            <code>    if (logLevel &lt; finest) return 'ALL';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; FINER) return 'FINEST';</code>
+            <code>    if (logLevel &lt; finer) return 'FINEST';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; FINE) return 'FINER';</code>
+            <code>    if (logLevel &lt; fine) return 'FINER';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; CONFIG) return 'FINE';</code>
+            <code>    if (logLevel &lt; config) return 'FINE';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; INFO) return 'CONFIG';</code>
+            <code>    if (logLevel &lt; info) return 'CONFIG';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; WARNING) return 'INFO';</code>
+            <code>    if (logLevel &lt; warning) return 'INFO';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; SEVERE) return 'WARNING';</code>
+            <code>    if (logLevel &lt; severe) return 'WARNING';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; SHOUT) return 'SEVERE';</code>
+            <code>    if (logLevel &lt; shout) return 'SEVERE';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (logLevel &lt; OFF) return 'SHOUT';</code>
+            <code>    if (logLevel &lt; off) return 'SHOUT';</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">

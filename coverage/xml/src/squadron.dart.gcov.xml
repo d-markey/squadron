@@ -2,16 +2,22 @@
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96" lines-covered="24" lines-valid="25" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>import 'squadron_logger.dart';</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>/// Squadron "Singleton"</code>
+            <code>/// Squadron "Singleton". The main application thread and each worker thread will have their own private</code>
         </line>
         <line>
-            <code>/// The main application thread and each worker thread will have their own private Squadron singleton</code>
+            <code>/// [Squadron] singleton.</code>
         </line>
         <line>
             <code>class Squadron {</code>
@@ -23,14 +29,17 @@
             <code/>
         </line>
         <line hits="2">
-            <code>  static int _logLevel = SquadronLogLevel.OFF;</code>
+            <code>  static int _logLevel = SquadronLogLevel.off;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Gets the log level. Propagates to workers with the value that is/was set at the time the worker it created. Changes to this property do not propagate by default.</code>
+            <code>  /// Gets the log level. Propagates to workers with the value that was set at the time the worker</code>
+        </line>
+        <line>
+            <code>  /// was created. Changes to this property do not propagate to workers after they have started.</code>
         </line>
         <line hits="5">
             <code>  static int get logLevel =&gt; logger?.logLevel ?? _logLevel;</code>
@@ -40,7 +49,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sets the log level</code>
+            <code>  /// Sets the log level. Changes to this property do not propagate to workers after they have started.</code>
         </line>
         <line hits="2">
             <code>  static set logLevel(int value) {</code>
@@ -77,7 +86,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sets the current logger</code>
+            <code>  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].</code>
         </line>
         <line hits="2">
             <code>  static set logger(SquadronLogger? logger) {</code>
@@ -108,10 +117,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Squadron instance id to track identity of threads/workers</code>
+            <code>  /// Squadron instance id to track identity of threads/workers. Returns `&lt;undefined&gt;` if it has not been set</code>
         </line>
         <line>
-            <code>  /// Returns `&lt;undefined&gt;` if it has not been set yet</code>
+            <code>  /// yet.</code>
         </line>
         <line hits="2">
             <code>  static String get id =&gt; _id ?? '&lt;undefined&gt;';</code>
@@ -121,10 +130,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sets the Squadron instance id.</code>
-        </line>
-        <line>
-            <code>  /// Once set, the id cannot be modified.</code>
+            <code>  /// Sets the Squadron instance id. Once set, the id cannot be modified.</code>
         </line>
         <line hits="2">
             <code>  static setId(String? value) {</code>
@@ -159,80 +165,80 @@
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINEST] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.finest] level</code>
         </line>
         <line hits="3">
-            <code>  static void finest(dynamic message) =&gt; logger?.finest(message);</code>
+            <code>  static FutureOr finest(dynamic message) =&gt; logger?.finest(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINER] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.finer] level</code>
         </line>
         <line hits="3">
-            <code>  static void finer(dynamic message) =&gt; logger?.finer(message);</code>
+            <code>  static FutureOr finer(dynamic message) =&gt; logger?.finer(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.FINE] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.fine] level</code>
         </line>
         <line hits="3">
-            <code>  static void fine(dynamic message) =&gt; logger?.fine(message);</code>
+            <code>  static FutureOr fine(dynamic message) =&gt; logger?.fine(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.config] level</code>
         </line>
         <line hits="3">
-            <code>  static void config(dynamic message) =&gt; logger?.config(message);</code>
+            <code>  static FutureOr config(dynamic message) =&gt; logger?.config(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.info] level</code>
         </line>
         <line hits="3">
-            <code>  static void info(dynamic message) =&gt; logger?.info(message);</code>
+            <code>  static FutureOr info(dynamic message) =&gt; logger?.info(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.warning] level</code>
         </line>
         <line hits="3">
-            <code>  static void warning(dynamic message) =&gt; logger?.warning(message);</code>
+            <code>  static FutureOr warning(dynamic message) =&gt; logger?.warning(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.severe] level</code>
         </line>
         <line hits="3">
-            <code>  static void severe(dynamic message) =&gt; logger?.severe(message);</code>
+            <code>  static FutureOr severe(dynamic message) =&gt; logger?.severe(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.CONFIG] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.shout] level</code>
         </line>
         <line hits="3">
-            <code>  static void shout(dynamic message) =&gt; logger?.shout(message);</code>
+            <code>  static FutureOr shout(dynamic message) =&gt; logger?.shout(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>

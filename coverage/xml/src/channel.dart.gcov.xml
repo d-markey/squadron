@@ -29,6 +29,9 @@
             <code>import 'squadron_exception.dart';</code>
         </line>
         <line>
+            <code>import 'worker.dart';</code>
+        </line>
+        <line>
             <code>import 'worker_request.dart';</code>
         </line>
         <line>
@@ -38,19 +41,16 @@
             <code/>
         </line>
         <line>
-            <code>/// A [Channel] supports communication from a client to a platform worker.</code>
+            <code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a</code>
         </line>
         <line>
-            <code>/// It is used to send a [WorkerRequest] to a platform worker.</code>
+            <code>/// platform worker.</code>
         </line>
         <line>
             <code>abstract class Channel {</code>
         </line>
         <line>
-            <code>  /// [Channel] serialization.</code>
-        </line>
-        <line>
-            <code>  /// Returns an opaque object that can be transfered from the client to the worker.</code>
+            <code>  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
         </line>
         <line>
             <code>  dynamic serialize();</code>
@@ -59,10 +59,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// [Channel] sharing.</code>
+            <code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the</code>
         </line>
         <line>
-            <code>  /// Returns a [Channel] object that can be provided to enable another worker to call the channel's worker.</code>
+            <code>  /// channel's worker.</code>
         </line>
         <line>
             <code>  Channel share();</code>
@@ -71,10 +71,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a termination [WorkerRequest] to the worker.</code>
+            <code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should release any resource related to the</code>
         </line>
         <line>
-            <code>  /// The [Channel] should release any resource related to the worker and should not be used after this method has been called.</code>
+            <code>  /// worker and should not be used after this method has been called.</code>
         </line>
         <line>
             <code>  FutureOr close();</code>
@@ -83,10 +83,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [WorkerRequest] and sends it to the worker.</code>
-        </line>
-        <line>
-            <code>  /// This method expects a single value from the worker.</code>
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.</code>
         </line>
         <line>
             <code>  void notifyCancellation(CancellationToken cancelToken);</code>
@@ -95,10 +92,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [WorkerRequest] and sends it to the worker.</code>
-        </line>
-        <line>
-            <code>  /// This method expects a single value from the worker.</code>
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.</code>
         </line>
         <line>
             <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args, {CancellationToken? token});</code>
@@ -107,10 +101,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [WorkerRequest] and sends it to the worker.</code>
-        </line>
-        <line>
-            <code>  /// This method expects a stream of values from the worker.</code>
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.</code>
         </line>
         <line>
             <code>  /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].</code>
@@ -125,10 +116,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments].</code>
+            <code>  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
         </line>
         <line>
-            <code>  /// The future must not complete before the worker is ready to serve requests.</code>
+            <code>  /// must not complete before the worker is ready to serve requests.</code>
         </line>
         <line hits="1">
             <code>  static Future&lt;Channel&gt; open(dynamic entryPoint, List startArguments) =&gt;</code>
@@ -168,10 +159,7 @@
             <code>abstract class WorkerChannel {</code>
         </line>
         <line>
-            <code>  /// [WorkerChannel] serialization.</code>
-        </line>
-        <line>
-            <code>  /// Returns an opaque object that can be transfered from the client to the worker.</code>
+            <code>  /// [WorkerChannel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
         </line>
         <line>
             <code>  dynamic serialize();</code>
@@ -180,13 +168,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Connects the [Channel] with the Squadron [Worker].</code>
+            <code>  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized</code>
         </line>
         <line>
-            <code>  /// [channelInfo] is an opaque object than can be deserialized as a [Channel].</code>
-        </line>
-        <line>
-            <code>  /// This method must be called by the worker upon startup.</code>
+            <code>  /// as a [Channel]. This method must be called by the worker upon startup.</code>
         </line>
         <line>
             <code>  void connect(Object channelInfo);</code>
@@ -195,10 +180,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// This method must be called from the worker only.</code>
+            <code>  /// worker only.</code>
         </line>
         <line>
             <code>  void reply(dynamic data);</code>
@@ -216,10 +201,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client.</code>
-        </line>
-        <line>
-            <code>  /// This method must be called from the worker only.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the worker only.</code>
         </line>
         <line>
             <code>  void closeStream();</code>
@@ -228,10 +210,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified error to the worker client.</code>
+            <code>  /// Sends a [WorkerResponse] with the specified error to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// This method must be called from the worker only.</code>
+            <code>  /// worker only.</code>
         </line>
         <line>
             <code>  void error(SquadronException error);</code>
