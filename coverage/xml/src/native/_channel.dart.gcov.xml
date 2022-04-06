@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-05" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9292929" lines-covered="92" lines-valid="99" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9306931" lines-covered="94" lines-valid="101" package="/src/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -413,6 +413,23 @@
         <line hits="2">
             <code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse(data));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a</code>
+        </line>
+        <line>
+            <code>  /// [ReceivePort].</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  bool canStream(Stream stream) =&gt; stream is! ReceivePort;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
