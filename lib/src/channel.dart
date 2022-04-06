@@ -65,6 +65,9 @@ abstract class WorkerChannel {
   /// This method must be called from the worker only.
   void reply(dynamic data);
 
+  /// Checks if [stream] can be streamed back to the worker client.
+  bool canStream(Stream stream);
+
   /// Sends a [WorkerResponse.closeStream] to the worker client.
   /// This method must be called from the worker only.
   void closeStream();

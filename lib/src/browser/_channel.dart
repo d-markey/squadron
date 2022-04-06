@@ -132,6 +132,10 @@ class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
   @override
   void reply(dynamic data) => _postResponse(WorkerResponse(data));
 
+  /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.
+  @override
+  bool canStream(Stream stream) => true;
+
   /// Sends a [WorkerResponse.closeStream] to the worker client.
   /// This method must be called from the [web.Worker] only.
   @override

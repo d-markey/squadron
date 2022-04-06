@@ -15,6 +15,7 @@ then
     dart pub run coverage:format_coverage --packages=.packages --report-on=lib --lcov -o ./test/coverage/lcov.info -i ./test/coverage
     rm -rf ./coverage /s /q
     java -jar ./tool/jgenhtml/jgenhtml-1.5.jar ./test/coverage/lcov.info --output-directory ./coverage
+    dart run ./tool/xtractcov/main.dart
 
     git config --global user.name 'd-markey'
     git config --global user.email 'd-markey@users.noreply.github.com'

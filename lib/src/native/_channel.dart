@@ -122,6 +122,11 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
   @override
   void reply(dynamic data) => _postResponse(WorkerResponse(data));
 
+  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a
+  /// [ReceivePort].
+  @override
+  bool canStream(Stream stream) => stream is! ReceivePort;
+
   /// Sends a [WorkerResponse.closeStream] to the worker client.
   /// This method must be called from the [Isolate] only.
   @override

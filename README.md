@@ -1,12 +1,18 @@
-[![Dart Workflow](https://github.com/d-markey/squadron/actions/workflows/dart.yml/badge.svg)](https://github.com/d-markey/squadron/actions/workflows/dart.yml)
-[![Pub Package](https://img.shields.io/pub/v/squadron.svg?logo=dart&logoColor=00b9fc)](https://pub.dev/packages/squadron)
+[![Pub Package](https://badgen.net/pub/v/squadron)](https://pub.dev/packages/squadron)
+[![Dart Platforms](https://badgen.net/pub/dart-platform/squadron)](https://pub.dev/packages/squadron)
+[![Flutter Platforms](https://badgen.net/pub/flutter-platform/squadron)](https://pub.dev/packages/squadron)
+
+[![License](https://badgen.net/pub/license/squadron)](https://github.com/d-markey/squadron/blob/master/LICENSE)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
-[![Dart Style](https://img.shields.io/badge/style-lints-40c4ff.svg)](https://pub.dev/packages/lints)
+[![Dart Style](https://img.shields.io/badge/style-lints-40c4ff)](https://pub.dev/packages/lints)
+[![Pub Points](https://badgen.net/pub/points/squadron)](https://pub.dev/packages/squadron/score)
+[![Likes](https://badgen.net/pub/likes/squadron)](https://pub.dev/packages/squadron/score)
+[![Popularity](https://badgen.net/pub/popularity/squadron)](https://pub.dev/packages/squadron/score)
+
 [![Last Commit](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
-[![Code Size](https://img.shields.io/github/languages/code-size/d-markey/squadron?logo=github&logoColor=white)](https://github.com/d-markey/squadron)
-[![Code Coverage](https://img.shields.io/badge/code%20coverage-89.3%25-green)](https://github.com/d-markey/squadron/tree/main/coverage/html)
-[![License](https://img.shields.io/github/license/d-markey/squadron?logo=open-source-initiative&logoColor=green)](https://github.com/d-markey/squadron/blob/master/LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/d-markey/squadron)](https://github.com/d-markey/squadron/stargazers)
+[![Dart Workflow](https://github.com/d-markey/squadron/actions/workflows/dart.yml/badge.svg?logo=dart)](https://github.com/d-markey/squadron/actions/workflows/dart.yml)
+[![Code Lines](https://img.shields.io/badge/dynamic/json?color=blue&label=code%20lines&query=%24.linesValid&url=https%3A%2F%2Fraw.githubusercontent.com%2Fd-markey%2Fsquadron%2Fmain%2Fcoverage.json)](https://github.com/d-markey/squadron/tree/main/coverage/html)
+[![Code Coverage](https://img.shields.io/badge/dynamic/json?color=blue&label=code%20coverage&query=%24.lineRate&suffix=%25&url=https%3A%2F%2Fraw.githubusercontent.com%2Fd-markey%2Fsquadron%2Fmain%2Fcoverage.json)](https://github.com/d-markey/squadron/tree/main/coverage/html)
 
 Multithreading and worker pools in Dart to offload CPU-bound or long running tasks and give your mobile and Web apps
 some air.

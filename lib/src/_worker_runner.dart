@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import '_worker_monitor.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
@@ -96,7 +94,7 @@ class WorkerRunner {
       // process
       dynamic result = op(request);
       result = (result is Future) ? await result : result;
-      if (result is Stream && result is! ReceivePort) {
+      if (result is Stream && client.canStream(result)) {
         // stream values to the client
         streaming = true;
         CancelledException? ex;
