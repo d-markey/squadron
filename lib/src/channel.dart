@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'cancellation_token.dart';
-import '_channel_stub.dart'
+import 'native/_channel.dart'
     if (dart.library.js) 'browser/_channel.dart'
-    if (dart.library.html) 'browser/_channel.dart'
-    if (dart.library.io) 'native/_channel.dart';
+    if (dart.library.html) 'browser/_channel.dart';
 
 import 'squadron_exception.dart';
 import 'worker.dart';

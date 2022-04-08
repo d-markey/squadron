@@ -10,8 +10,8 @@ import '../worker_services/failing_service_worker.dart';
 import '../worker_services/pi_digits_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/rogue_service_worker.dart';
-import '../worker_services/sample_service.dart';
-import '../worker_services/sample_service_worker.dart';
+import '../worker_services/test_service.dart';
+import '../worker_services/test_service_worker.dart';
 
 void poolTests() {
   final timeFactor =
@@ -63,7 +63,7 @@ void poolTests() {
         maxWorkers: maxWorkers,
         maxParallel: maxParallel);
 
-    final pool = SampleWorkerPool(concurrencySettings);
+    final pool = TestWorkerPool(concurrencySettings);
 
     // start pool will instantiate 100 workers
     await pool.start();
@@ -231,16 +231,16 @@ void poolTests() {
   });
 
   test('stopped pool will not accept new requests', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
-    final n = await pool.delayedIdentity(-1);
+    final n = await pool.delayed(-1);
     expect(n, equals(-1));
 
     pool.stop();
 
     try {
-      final n = await pool.delayedIdentity(-1);
+      final n = await pool.delayed(-1);
       // should never happen
       throw Exception('received $n although the pool has been stopped');
     } on SquadronError catch (ex) {
@@ -250,16 +250,16 @@ void poolTests() {
   });
 
   test('restarted pool will serve new requests', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.twoIoThreads);
+    final pool = TestWorkerPool(ConcurrencySettings.twoIoThreads);
     await pool.start();
 
-    var n = await pool.delayedIdentity(-1);
+    var n = await pool.delayed(-1);
     expect(n, equals(-1));
 
     pool.stop();
 
     try {
-      n = await pool.delayedIdentity(-1);
+      n = await pool.delayed(-1);
       // should never happen
       throw Exception('received $n although the pool has been stopped');
     } on SquadronError catch (ex) {
@@ -270,7 +270,7 @@ void poolTests() {
     // restart
     pool.start(); // intentionally not awaited
 
-    n = await pool.delayedIdentity(-2);
+    n = await pool.delayed(-2);
     expect(n, equals(-2));
 
     pool.stop();
@@ -278,7 +278,7 @@ void poolTests() {
 
   test('pool termination does not prevent processing of pending tasks',
       () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.threeCpuThreads);
+    final pool = TestWorkerPool(ConcurrencySettings.threeCpuThreads);
     await pool.start();
 
     final N = 2 * pool.maxConcurrency + pool.maxWorkers;
@@ -286,12 +286,12 @@ void poolTests() {
     final digits = <int>[];
     final tasks = <Future>[];
     for (var i = 0; i < N; i++) {
-      tasks.add(pool.delayedIdentity(i).then((value) {
+      tasks.add(pool.delayed(i).then((value) {
         digits.add(value);
       }));
     }
 
-    await Future.delayed(SampleService.delay);
+    await Future.delayed(TestService.delay);
     pool.stop();
 
     expect(pool.stopped, isTrue);

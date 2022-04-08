@@ -1,7 +1,7 @@
 #!/bin/bash
 declare -i compile_status=0
 
-workers_minified=("bitcoin" "cache" "echo" "failing" "invalid" "local_client" "pi_digits" "prime" "sample")
+workers_minified=("bitcoin" "cache" "echo" "failing" "invalid" "issues" "local_client" "pi_digits" "prime" "test")
 for w in ${workers_minified[@]}
 do
     dart compile js -m -o "./test/sample_js_workers/${w}_worker.dart.js" "./test/sample_js_workers/${w}_worker.dart"

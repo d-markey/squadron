@@ -28,7 +28,7 @@ void main() async {
   EntryPoints.piDigits = '/sample_js_workers/pi_digits_worker.dart.js';
   EntryPoints.prime = '/sample_js_workers/prime_worker.dart.js';
   EntryPoints.rogue = '/sample_js_workers/rogue_worker.dart.js';
-  EntryPoints.sample = '/sample_js_workers/sample_worker.dart.js';
+  EntryPoints.test = '/sample_js_workers/test_worker.dart.js';
 
   final logger = Logger(querySelector('#output') as DivElement);
 

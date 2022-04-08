@@ -1,7 +1,6 @@
-import '_local_worker_stub.dart'
+import 'native/_local_worker.dart'
     if (dart.library.js) 'browser/_local_worker.dart'
-    if (dart.library.html) 'browser/_local_worker.dart'
-    if (dart.library.io) 'native/_local_worker.dart';
+    if (dart.library.html) 'browser/_local_worker.dart';
 
 import 'channel.dart';
 import 'worker_request.dart';

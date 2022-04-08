@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 import 'classes/memory_logger.dart';
 import 'test_suites/cancellation_test_suite.dart';
+import 'test_suites/issues_test_suite.dart';
 import 'test_suites/local_worker_test_suite.dart';
 import 'test_suites/logger_test_suite.dart';
 import 'test_suites/worker_pool_test_suite.dart';
@@ -50,6 +51,10 @@ void main() {
       group("Cancellation -", () {
         cancellationTests();
       });
+    });
+
+    group("GitHub Issues -", () {
+      githubIssuesTests();
     });
   });
 }

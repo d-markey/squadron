@@ -18,7 +18,7 @@ void main() async {
       throw Exception('lines-valid not found');
     }
     if (lineRate == null) {
-      throw Exception('lines-valid not found');
+      throw Exception('line-rate not found');
     }
     await File('./coverage.json').writeAsString(jsonEncode({
       'linesValid': linesValid,

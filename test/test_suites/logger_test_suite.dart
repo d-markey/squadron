@@ -2,7 +2,7 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import '../classes/memory_logger.dart';
-import '../worker_services/sample_service_worker.dart';
+import '../worker_services/test_service_worker.dart';
 
 void loggerTests() {
   final memoryLogger = MemoryLogger();
@@ -228,7 +228,7 @@ void loggerTests() {
     localLogger.shout('shout test in main');
 
     final pool =
-        SampleWorkerPool(ConcurrencySettings.threeCpuThreads, localLogger);
+        TestWorkerPool(ConcurrencySettings.threeCpuThreads, localLogger);
 
     final tasks = <Future>[];
     for (var i = 0; i <= 2 * pool.maxConcurrency + 1; i++) {

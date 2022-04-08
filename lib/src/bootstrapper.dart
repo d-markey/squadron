@@ -1,9 +1,8 @@
 import 'worker_service.dart';
 
-import '_bootstrapper_stub.dart'
+import 'native/_bootstrapper.dart'
     if (dart.library.js) 'browser/_bootstrapper.dart'
-    if (dart.library.html) 'browser/_bootstrapper.dart'
-    if (dart.library.io) 'native/_bootstrapper.dart';
+    if (dart.library.html) 'browser/_bootstrapper.dart';
 
 /// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.
 /// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument must be

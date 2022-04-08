@@ -13,14 +13,14 @@ import '../worker_services/invalid_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/rogue_service.dart';
 import '../worker_services/rogue_service_worker.dart';
-import '../worker_services/sample_service_worker.dart';
+import '../worker_services/test_service_worker.dart';
 
 void workerTests() {
   final timeFactor =
       4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
   test('start & stop', () async {
-    final dummy = SampleWorker();
+    final dummy = TestWorker();
 
     await Future.delayed(Duration(milliseconds: 5));
     expect(dummy.channel, isNull);
@@ -52,7 +52,7 @@ void workerTests() {
   });
 
   test('start & stop - cannot restart', () async {
-    final dummy = SampleWorker();
+    final dummy = TestWorker();
 
     await dummy.start();
 
@@ -73,7 +73,7 @@ void workerTests() {
   });
 
   test('workload - sequential', () async {
-    final dummy = SampleWorker();
+    final dummy = TestWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 
@@ -141,7 +141,7 @@ void workerTests() {
   });
 
   test('workload - parallel', () async {
-    final dummy = SampleWorker();
+    final dummy = TestWorker();
     final completedTasks = <int>[];
     int taskId = 0;
 

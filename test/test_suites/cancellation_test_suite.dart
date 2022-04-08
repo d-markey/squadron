@@ -4,15 +4,27 @@ import 'package:test/test.dart';
 
 import 'package:squadron/squadron.dart';
 
-import '../worker_services/sample_service.dart';
-import '../worker_services/sample_service_worker.dart';
+import '../worker_services/test_service.dart';
+import '../worker_services/test_service_worker.dart';
 
 const concurrencySettings_222 =
     ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 2);
 
 void cancellationTests() {
+  test('CancellationToken cannot be listened to - Worker', () async {
+    final worker = TestWorker();
+
+    final token = CancellableToken();
+    var result = await worker.cannotListen(token);
+    expect(result, isTrue);
+
+    final timeout = TimeOutToken(Duration(seconds: 1));
+    result = await worker.cannotListen(timeout);
+    expect(result, isTrue);
+  });
+
   test('value task cancellation - using pool.cancel()', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final digits = <int>[];
@@ -20,14 +32,14 @@ void cancellationTests() {
 
     final tasks = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.delayedIdentity(i).then((value) {
+      tasks.add(pool.delayed(i).then((value) {
         digits.add(value);
       }).catchError((e) {
         errors += 1;
       }));
     }
 
-    await Future.delayed(SampleService.delay * 1.5);
+    await Future.delayed(TestService.delay * 1.5);
     pool.cancel();
 
     await Future.wait(tasks);
@@ -40,7 +52,7 @@ void cancellationTests() {
   });
 
   test('stream task cancellation - using pool.cancel()', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final results = <int, List<dynamic>>{};
@@ -50,7 +62,7 @@ void cancellationTests() {
       final completer = Completer();
       results[i] = [];
       tasks.add(completer.future);
-      pool.finiteSequence(i + 1).listen((value) {
+      pool.finite(i + 1).listen((value) {
         results[i]!.add(value);
       }, onError: (error) {
         results[i]!.add(error);
@@ -58,7 +70,7 @@ void cancellationTests() {
         completer.complete();
       });
     }
-    await Future.delayed(SampleService.delay * 2.5);
+    await Future.delayed(TestService.delay * 2.5);
     pool.cancel();
 
     await Future.wait(tasks);
@@ -90,7 +102,7 @@ void cancellationTests() {
   });
 
   test('specific value task cancellation - using pool.cancel(task)', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final digits = <int>[];
@@ -113,7 +125,7 @@ void cancellationTests() {
     pool.cancel(tasks[0]);
     expect(tasks[0].isCancelled, isTrue);
 
-    await Future.delayed(SampleService.delay * 1.5);
+    await Future.delayed(TestService.delay * 1.5);
     pool.cancel(tasks[3 * pool.maxConcurrency]);
     expect(tasks[3 * pool.maxConcurrency].isCancelled, isTrue);
 
@@ -132,7 +144,7 @@ void cancellationTests() {
   });
 
   test('specific value task cancellation - using task.cancel()', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final digits = <int>[];
@@ -155,7 +167,7 @@ void cancellationTests() {
     tasks[0].cancel();
     expect(tasks[0].isCancelled, isTrue);
 
-    await Future.delayed(SampleService.delay * 1.5);
+    await Future.delayed(TestService.delay * 1.5);
     tasks[3 * pool.maxConcurrency].cancel();
     expect(tasks[3 * pool.maxConcurrency].isCancelled, isTrue);
 
@@ -174,7 +186,7 @@ void cancellationTests() {
   });
 
   test('specific stream task cancellation - using pool.cancel(task)', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final status = <int, String>{};
@@ -183,7 +195,7 @@ void cancellationTests() {
     final tasks = <StreamTask>[];
     final futures = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      final task = pool.finiteSequenceTask(i + 2);
+      final task = pool.finiteTask(i + 2);
       tasks.add(task);
       final completer = Completer();
       futures.add(completer.future);
@@ -201,11 +213,11 @@ void cancellationTests() {
       });
     }
 
-    await Future.delayed(SampleService.delay * 1.5);
+    await Future.delayed(TestService.delay * 1.5);
     pool.cancel(tasks[0]);
     expect(tasks[0].isCancelled, isTrue);
 
-    await Future.delayed(SampleService.delay * 2.5);
+    await Future.delayed(TestService.delay * 2.5);
     pool.cancel(tasks[2 * pool.maxConcurrency]);
     expect(tasks[2 * pool.maxConcurrency].isCancelled, isTrue);
 
@@ -227,7 +239,7 @@ void cancellationTests() {
   });
 
   test('specific stream task cancellation - using task.cancel()', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final status = <int, String>{};
@@ -236,7 +248,7 @@ void cancellationTests() {
     final tasks = <StreamTask>[];
     final futures = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      final task = pool.finiteSequenceTask(i + 2);
+      final task = pool.finiteTask(i + 2);
       tasks.add(task);
       final completer = Completer();
       futures.add(completer.future);
@@ -254,11 +266,11 @@ void cancellationTests() {
       });
     }
 
-    await Future.delayed(SampleService.delay * 1.5);
+    await Future.delayed(TestService.delay * 1.5);
     tasks[0].cancel();
     expect(tasks[0].isCancelled, isTrue);
 
-    await Future.delayed(SampleService.delay * 2.5);
+    await Future.delayed(TestService.delay * 2.5);
     tasks[2 * pool.maxConcurrency].cancel();
     expect(tasks[2 * pool.maxConcurrency].isCancelled, isTrue);
 
@@ -303,12 +315,12 @@ void cancellationTests() {
   });
 
   test('timeout token - is not programmatically cancellable', () async {
-    final token = TimeOutToken(SampleService.delay * 2);
+    final token = TimeOutToken(TestService.delay * 2);
     expect(() => token.cancel(), throwsA(isA<SquadronError>()));
   });
 
   test('timeout token - gets cancelled after specified duration', () async {
-    final timeoutToken = TimeOutToken(SampleService.delay * 2);
+    final timeoutToken = TimeOutToken(TestService.delay * 2);
     timeoutToken.start();
 
     await Future.delayed(timeoutToken.duration * 0.5);
@@ -319,7 +331,7 @@ void cancellationTests() {
   });
 
   test('timeout token - notifies listeners', () async {
-    final timeoutToken = TimeOutToken(SampleService.delay * 2);
+    final timeoutToken = TimeOutToken(TestService.delay * 2);
     timeoutToken.start();
 
     var notified = false;
@@ -403,8 +415,8 @@ void cancellationTests() {
     expect(notified, isTrue);
   });
 
-  test('finiteSequence() cancelation - using CancellableToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('finite() cancelation - using CancellableToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -413,17 +425,17 @@ void cancellationTests() {
     final N = 20;
 
     final token = CancellableToken();
-    Timer(SampleService.delay * N, token.cancel);
+    Timer(TestService.delay * N, token.cancel);
 
     expect(token.cancelled, isFalse);
 
     try {
-      await for (var n in pool.finiteSequence(50 * N, token)) {
+      await for (var n in pool.finite(50 * N, token)) {
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('finiteSequence() completed successfully');
+      throw Exception('finite() completed successfully');
     } catch (e) {
       expect(e, isA<CancelledException>());
     }
@@ -436,8 +448,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infiniteSequence() cancellation - using CancellableToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('infinite() cancellation - using CancellableToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -446,15 +458,15 @@ void cancellationTests() {
     final N = 20;
 
     var token = CancellableToken();
-    Timer(SampleService.delay * N, token.cancel);
+    Timer(TestService.delay * N, token.cancel);
 
     try {
-      await for (var n in pool.infiniteSequence(token)) {
+      await for (var n in pool.infinite(token)) {
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('infiniteSequence() completed sucessfully');
+      throw Exception('infinite() completed sucessfully');
     } on CancelledException catch (ex) {
       expect(ex, isA<CancelledException>());
     }
@@ -465,8 +477,8 @@ void cancellationTests() {
     expect(digits, equals(Iterable.generate(count)));
   });
 
-  test('finiteSequence() cancellation - using TimeOutToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('finite() cancellation - using TimeOutToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -474,15 +486,15 @@ void cancellationTests() {
 
     final N = 20;
 
-    final token = TimeOutToken(SampleService.delay * N);
+    final token = TimeOutToken(TestService.delay * N);
 
     try {
-      await for (var n in pool.finiteSequence(50 * N, token)) {
+      await for (var n in pool.finite(50 * N, token)) {
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('finiteSequence() completed successfully');
+      throw Exception('finite() completed successfully');
     } catch (ex) {
       expect(ex, isA<TaskTimeoutException>());
     }
@@ -496,8 +508,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infiniteSequence() cancellation - using TimeOutToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('infinite() cancellation - using TimeOutToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -505,15 +517,15 @@ void cancellationTests() {
 
     final N = 20;
 
-    final token = TimeOutToken(SampleService.delay * N);
+    final token = TimeOutToken(TestService.delay * N);
 
     try {
-      await for (var n in pool.infiniteSequence(token)) {
+      await for (var n in pool.infinite(token)) {
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('infiniteSequence() completed successfully');
+      throw Exception('infinite() completed successfully');
     } catch (ex) {
       expect(ex, isA<TaskTimeoutException>());
     }
@@ -526,8 +538,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finiteSequence() cancellation - using CompositeToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('finite() cancellation - using CompositeToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -535,7 +547,7 @@ void cancellationTests() {
 
     final N = 20;
 
-    final timeout1 = TimeOutToken(SampleService.delay * N);
+    final timeout1 = TimeOutToken(TestService.delay * N);
     final token1 = CancellableToken();
     Timer(timeout1.duration * 0.5, token1.cancel);
     final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
@@ -543,13 +555,13 @@ void cancellationTests() {
     expect(timeout1.started, isFalse);
 
     try {
-      await for (var n in pool.finiteSequence(50 * N, composite1)) {
+      await for (var n in pool.finite(50 * N, composite1)) {
         expect(timeout1.started, isTrue);
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('finiteSequence() completed successfully');
+      throw Exception('finite() completed successfully');
     } catch (ex) {
       expect(ex, isA<CancelledException>());
     }
@@ -564,20 +576,20 @@ void cancellationTests() {
     digits.clear();
     count = 0;
 
-    final timeout2 = TimeOutToken(SampleService.delay * N);
+    final timeout2 = TimeOutToken(TestService.delay * N);
     final token2 = CancellableToken();
     final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
 
     expect(timeout2.started, isFalse);
 
     try {
-      await for (var n in pool.finiteSequence(50 * N, composite2)) {
+      await for (var n in pool.finite(50 * N, composite2)) {
         expect(timeout2.started, isTrue);
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('finiteSequence() completed successfully');
+      throw Exception('finite() completed successfully');
     } catch (ex) {
       expect(ex, isA<TaskTimeoutException>());
     }
@@ -593,8 +605,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infiniteSequence() cancellation - using CompositeToken', () async {
-    final pool = SampleWorkerPool(ConcurrencySettings.oneIoThread);
+  test('infinite() cancellation - using CompositeToken', () async {
+    final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
     await pool.start();
 
     final digits = <int>[];
@@ -602,7 +614,7 @@ void cancellationTests() {
 
     final N = 20;
 
-    final timeout1 = TimeOutToken(SampleService.delay * N);
+    final timeout1 = TimeOutToken(TestService.delay * N);
     final token1 = CancellableToken();
     Timer(timeout1.duration * 0.5, token1.cancel);
     final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
@@ -610,13 +622,13 @@ void cancellationTests() {
     expect(timeout1.started, isFalse);
 
     try {
-      await for (var n in pool.infiniteSequence(composite1)) {
+      await for (var n in pool.infinite(composite1)) {
         expect(timeout1.started, isTrue);
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('infiniteSequence() completed successfully');
+      throw Exception('infinite() completed successfully');
     } catch (ex) {
       expect(ex, isA<CancelledException>());
     }
@@ -631,17 +643,17 @@ void cancellationTests() {
     digits.clear();
     count = 0;
 
-    final timeout2 = TimeOutToken(SampleService.delay * N);
+    final timeout2 = TimeOutToken(TestService.delay * N);
     final token2 = CancellableToken();
     final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
 
     try {
-      await for (var n in pool.infiniteSequence(composite2)) {
+      await for (var n in pool.infinite(composite2)) {
         digits.add(n);
         count++;
       }
       // should never happen
-      throw Exception('infiniteSequence() completed successfully');
+      throw Exception('infinite() completed successfully');
     } catch (ex) {
       expect(ex, isA<TaskTimeoutException>());
     }
@@ -654,9 +666,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finiteSequence() cancellation - using a shared CancellableToken',
-      () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+  test('finite() cancellation - using a shared CancellableToken', () async {
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final L = 4;
@@ -668,7 +679,7 @@ void cancellationTests() {
 
     final tasks = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.finiteSequence(L, token).toList().then((list) {
+      tasks.add(pool.finite(L, token).toList().then((list) {
         success++;
         return list;
       }).onError((error, stackTrace) {
@@ -680,7 +691,7 @@ void cancellationTests() {
     expect(success, isZero);
     expect(errors, isZero);
 
-    Future.delayed(SampleService.delay * L * 1.5, token.cancel);
+    Future.delayed(TestService.delay * L * 1.5, token.cancel);
 
     await Future.wait(tasks);
 
@@ -692,20 +703,20 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finiteSequence() cancellation - using a shared TimeOutToken', () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+  test('finite() cancellation - using a shared TimeOutToken', () async {
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final L = 4;
 
-    var timeout = TimeOutToken(SampleService.delay * L * 1.5);
+    var timeout = TimeOutToken(TestService.delay * L * 1.5);
 
     int success = 0;
     int errors = 0;
 
     final tasks = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.finiteSequence(L, timeout).toList().then((list) {
+      tasks.add(pool.finite(L, timeout).toList().then((list) {
         success++;
         return list;
       }).onError((error, stackTrace) {
@@ -727,14 +738,13 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finiteSequence() cancellation - using a shared CompositeToken',
-      () async {
-    final pool = SampleWorkerPool(concurrencySettings_222);
+  test('finite() cancellation - using a shared CompositeToken', () async {
+    final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
     final L = 4;
 
-    final timeout1 = TimeOutToken(SampleService.delay * L * 1.5);
+    final timeout1 = TimeOutToken(TestService.delay * L * 1.5);
     final token1 = CancellableToken();
     final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
 
@@ -744,7 +754,7 @@ void cancellationTests() {
     // launch 2 * pool.maxConcurrency + 1 tasks of length L ==> one task executes in ~ L * delay
     final tasks = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.finiteSequence(L, composite1).toList().then((list) {
+      tasks.add(pool.finite(L, composite1).toList().then((list) {
         success++;
         return list;
       }).onError((error, stackTrace) {
@@ -766,7 +776,7 @@ void cancellationTests() {
     expect(success + errors, equals(tasks.length));
 
     final timeout2 =
-        TimeOutToken(SampleService.delay * 2 * pool.maxConcurrency * L);
+        TimeOutToken(TestService.delay * 2 * pool.maxConcurrency * L);
     final token2 = CancellableToken();
     final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
 
@@ -776,7 +786,7 @@ void cancellationTests() {
     // launch 2 * pool.maxConcurrency + 1 tasks of length L ==> one task executes in ~ L * delay
     tasks.clear();
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.finiteSequence(L, composite2).toList().then((list) {
+      tasks.add(pool.finite(L, composite2).toList().then((list) {
         success++;
         return list;
       }).onError((error, stackTrace) {
@@ -788,7 +798,7 @@ void cancellationTests() {
     expect(success, isZero);
     expect(errors, isZero);
 
-    Timer(SampleService.delay * L * 1.5, token2.cancel);
+    Timer(TestService.delay * L * 1.5, token2.cancel);
 
     // wait for completion
     await Future.wait(tasks);
