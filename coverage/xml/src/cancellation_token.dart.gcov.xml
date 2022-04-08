@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-06" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6363636" lines-covered="7" lines-valid="11" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-08" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'squadron_error.dart';</code>
@@ -131,11 +131,13 @@
         <line>
             <code>  /// designed to be listened to, it always throws a [SquadronError].</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  void addListener(SquadronCallback listener) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>      throw newSquadronError('CancellationToken may not be listened to');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -143,8 +145,9 @@
         <line>
             <code>  /// Unregisters a listener that has been installed with [addListener].</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  void removeListener(SquadronCallback listener) {}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

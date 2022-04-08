@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-04-06</dd>
+                    <dd>2022-04-08</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>97</td><td>107</td><td class="high">90.7%</td>
+                            <th scope="row">Lines</th><td>103</td><td>107</td><td class="high">96.3%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -402,11 +402,11 @@
                 <tr class="noop" title="Line 114" id="line114">
                     <td>114</td><td></td><td></td><td><code>        // check token</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 115" id="line115">
-                    <td>115</td><td></td><td>0</td><td><code>        token?.addListener(canceller);</code></td>
+                <tr class="lineCov" title="Line 115" id="line115">
+                    <td>115</td><td></td><td>2</td><td><code>        token?.addListener(canceller);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>0</td><td><code>        token?.start();</code></td>
+                <tr class="lineCov" title="Line 116" id="line116">
+                    <td>116</td><td></td><td>2</td><td><code>        token?.start();</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
                     <td>117</td><td></td><td></td><td><code></code></td>
@@ -444,8 +444,8 @@
                 <tr class="lineCov" title="Line 128" id="line128">
                     <td>128</td><td></td><td>2</td><td><code>        _totalWorkload++;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>0</td><td><code>        token?.removeListener(canceller);</code></td>
+                <tr class="lineCov" title="Line 129" id="line129">
+                    <td>129</td><td></td><td>2</td><td><code>        token?.removeListener(canceller);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 130" id="line130">
                     <td>130</td><td></td><td>3</td><td><code>        _idle = DateTime.now().microsecondsSinceEpoch;</code></td>
@@ -582,14 +582,14 @@
                 <tr class="lineCov" title="Line 174" id="line174">
                     <td>174</td><td></td><td>5</td><td><code>        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 175" id="line175">
-                    <td>175</td><td></td><td>0</td><td><code>      } catch (e, st) {</code></td>
+                <tr class="lineCov" title="Line 175" id="line175">
+                    <td>175</td><td></td><td>1</td><td><code>      } catch (e, st) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 176" id="line176">
-                    <td>176</td><td></td><td>0</td><td><code>        error = SquadronException.from(</code></td>
+                <tr class="lineCov" title="Line 176" id="line176">
+                    <td>176</td><td></td><td>2</td><td><code>        error = SquadronException.from(</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 177" id="line177">
-                    <td>177</td><td></td><td>0</td><td><code>            error: e, stackTrace: st, workerId: id, command: command);</code></td>
+                <tr class="lineCov" title="Line 177" id="line177">
+                    <td>177</td><td></td><td>1</td><td><code>            error: e, stackTrace: st, workerId: id, command: command);</code></td>
                 </tr>
                 <tr class="noop" title="Line 178" id="line178">
                     <td>178</td><td></td><td></td><td><code>      } finally {</code></td>
