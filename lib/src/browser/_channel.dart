@@ -89,7 +89,7 @@ class _JsChannel extends _MessagePort implements Channel {
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token}) {
-    late final StreamController<T>controller;
+    late final StreamController<T> controller;
     final com = web.MessageChannel();
     bool cancelled = false;
     bool paused = false;
