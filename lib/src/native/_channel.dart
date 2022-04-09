@@ -80,22 +80,77 @@ class _VmChannel extends _SendPort implements Channel {
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {CancellationToken? token}) {
-    final controller = StreamController<T>();
+    late final StreamController<T> controller;
     final receiver = ReceivePort();
-    receiver.listen((message) {
+    bool cancelled = false;
+    bool paused = false;
+
+    void process(dynamic message) {
+      if (cancelled) return;
       final res = WorkerResponse.deserialize(message);
       if (res.endOfStream) {
+        Squadron.info('[process] close');
         controller.close();
-        receiver.close();
+        cancelled = true;
+        // com.port1.close();
       } else if (res.hasError) {
+        Squadron.info('[process] error');
         controller.addError(res.error!, res.error!.stackTrace);
         controller.close();
-        receiver.close();
+        cancelled = true;
+        // com.port1.close();
       } else {
         controller.add(res.result);
       }
-    });
-    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
+    }
+
+    final buffer = <dynamic>[];
+
+    void onListen() {
+      Squadron.info('[onListen] start streaming');
+      receiver.listen((message) {
+        if (cancelled) return;
+        if (paused) {
+          Squadron.info('[onListen] paused');
+          buffer.add(message);
+        } else {
+          process(message);
+        }
+      });
+      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
+    }
+
+    void onCancel() {
+      Squadron.info('[onCancel] cancelling');
+      cancelled = true;
+      receiver.close();
+      controller.close();
+    }
+
+    void onPause() {
+      Squadron.info('[onPause] pausing');
+      paused = true;
+    }
+
+    void onResume() {
+      Squadron.info('[onResume] resuming');
+      if (buffer.isNotEmpty) {
+        Squadron.info('[onResume] processing buffered events');
+        for (var m in buffer) {
+          process(m);
+        }
+        buffer.clear();
+      }
+      paused = false;
+    }
+
+    controller = StreamController(
+      onListen: onListen,
+      onPause: onPause,
+      onResume: onResume,
+      onCancel: onCancel,
+    );
+
     return controller.stream;
   }
 }

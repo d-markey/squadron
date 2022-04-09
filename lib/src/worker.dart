@@ -165,7 +165,7 @@ abstract class Worker implements WorkerService {
             channel.sendStreamingRequest<T>(command, args, token: token);
         await for (var res in result) {
           // check token
-          if (error != null) break;
+          if (error != null) throw error;
           yield res;
           error = token?.exception;
         }
