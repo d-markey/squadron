@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-08" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9306931" lines-covered="94" lines-valid="101" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.892562" lines-covered="108" lines-valid="121" package="/src/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -271,17 +271,28 @@
         <line>
             <code>      {CancellationToken? token}) {</code>
         </line>
-        <line hits="1">
-            <code>    final controller = StreamController&lt;T&gt;();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>    late final StreamController&lt;T&gt; controller;</code>
         </line>
         <line hits="1">
             <code>    final receiver = ReceivePort();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    receiver.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>    bool cancelled = false;</code>
+        </line>
+        <line>
+            <code>    bool paused = false;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    void process(dynamic message) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      if (cancelled) return;</code>
         </line>
         <line hits="1">
             <code>      final res = WorkerResponse.deserialize(message);</code>
@@ -292,15 +303,25 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
+            <code>        Squadron.info('[process] close');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
             <code>        controller.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        cancelled = true;</code>
+        </line>
+        <line>
+            <code>        // com.port1.close();</code>
         </line>
         <line hits="1">
             <code>      } else if (res.hasError) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        Squadron.info('[process] error');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
@@ -311,9 +332,11 @@
             <code>        controller.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        cancelled = true;</code>
+        </line>
+        <line>
+            <code>        // com.port1.close();</code>
         </line>
         <line>
             <code>      } else {</code>
@@ -326,11 +349,167 @@
             <code>      }</code>
         </line>
         <line>
-            <code>    });</code>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    final buffer = &lt;dynamic&gt;[];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    void onListen() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.info('[onListen] start streaming');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      receiver.listen((message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        if (cancelled) return;</code>
+        </line>
+        <line>
+            <code>        if (paused) {</code>
+        </line>
+        <line hits="0">
+            <code>          Squadron.info('[onListen] paused');</code>
+        </line>
+        <line hits="0">
+            <code>          buffer.add(message);</code>
+        </line>
+        <line>
+            <code>        } else {</code>
+        </line>
+        <line hits="1">
+            <code>          process(message);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code>      });</code>
         </line>
         <line hits="3">
-            <code>    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));</code>
+            <code>      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    void onCancel() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.info('[onCancel] cancelling');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      cancelled = true;</code>
+        </line>
+        <line hits="1">
+            <code>      receiver.close();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      controller.close();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    void onPause() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.info('[onPause] pausing');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      paused = true;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    void onResume() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.info('[onResume] resuming');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (buffer.isNotEmpty) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        Squadron.info('[onResume] processing buffered events');</code>
+        </line>
+        <line hits="0">
+            <code>        for (var m in buffer) {</code>
+        </line>
+        <line hits="0">
+            <code>          process(m);</code>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line hits="0">
+            <code>        buffer.clear();</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>      paused = false;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    controller = StreamController(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      onListen: onListen,</code>
+        </line>
+        <line>
+            <code>      onPause: onPause,</code>
+        </line>
+        <line>
+            <code>      onResume: onResume,</code>
+        </line>
+        <line>
+            <code>      onCancel: onCancel,</code>
+        </line>
+        <line>
+            <code>    );</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="1">
             <code>    return controller.stream;</code>
