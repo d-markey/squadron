@@ -33,6 +33,7 @@ class WorkerException implements SquadronException {
           : null;
 
   /// Message.
+  @override
   final String message;
 
   /// Stack trace associated to the original exception.

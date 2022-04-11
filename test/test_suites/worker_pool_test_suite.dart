@@ -17,7 +17,7 @@ void poolTests() {
   final timeFactor =
       4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
-  test('prime worker pool with cache', () async {
+  test('- prime worker pool with cache', () async {
     final cache = CacheWorker();
     await cache.start();
 
@@ -26,7 +26,7 @@ void poolTests() {
     final concurrencySettings =
         ConcurrencySettings(maxWorkers: maxWorkers, maxParallel: maxParallel);
 
-    final pool = PrimeWorkerPool(cache.channel, concurrencySettings);
+    final pool = PrimeWorkerPool(cache, concurrencySettings);
 
     final completedTasks = <int>[];
     int taskId = 0;
@@ -51,7 +51,7 @@ void poolTests() {
     cache.stop();
   });
 
-  test('worker pool monitoring', () async {
+  test('- worker pool monitoring', () async {
     var stopped = 0;
     final maxIdle = Duration(milliseconds: 1000 ~/ timeFactor);
 
@@ -65,7 +65,7 @@ void poolTests() {
 
     final pool = TestWorkerPool(concurrencySettings);
 
-    // start pool will instantiate 100 workers
+    // start pool will instantiate 3 workers
     await pool.start();
 
     expect(pool.size, equals(minWorkers));
@@ -101,18 +101,16 @@ void poolTests() {
     pool.stop();
   });
 
-  test('failing worker', () async {
+  test('- failing worker', () async {
     final pool = FailingWorkerPool(ConcurrencySettings.twoIoThreads);
-    await pool.start();
     expect(() => pool.noop(), throwsA(isA<WorkerException>()));
   });
 
-  test('exception handling from worker pool', () async {
+  test('- exception handling from worker pool', () async {
     final concurrencySettings =
         ConcurrencySettings(maxWorkers: 4, maxParallel: 2);
 
     final pool = RogueWorkerPool(concurrencySettings);
-    await pool.start();
 
     try {
       await pool.execute((w) => w.throwWorkerException());
@@ -143,7 +141,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('pi digits worker pool - futures', () async {
+  test('- pi digits worker pool - futures', () async {
     final maxWorkers = 8;
     final concurrencySettings = ConcurrencySettings(maxWorkers: maxWorkers);
 
@@ -172,7 +170,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('pi digits worker pool - streams', () async {
+  test('- pi digits worker pool - streams', () async {
     final maxWorkers = 8;
     final concurrencySettings = ConcurrencySettings(maxWorkers: maxWorkers);
 
@@ -205,7 +203,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('pi digits worker pool - perf counter', () async {
+  test('- pi digits worker pool - perf counter', () async {
     final pool = PiDigitsWorkerPool(ConcurrencySettings.sevenCpuThreads);
 
     final digits = <int, int>{};
@@ -230,9 +228,8 @@ void poolTests() {
     pool.stop();
   });
 
-  test('stopped pool will not accept new requests', () async {
+  test('- stopped pool will not accept new requests', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final n = await pool.delayed(-1);
     expect(n, equals(-1));
@@ -249,9 +246,8 @@ void poolTests() {
     }
   });
 
-  test('restarted pool will serve new requests', () async {
+  test('- restarted pool will serve new requests', () async {
     final pool = TestWorkerPool(ConcurrencySettings.twoIoThreads);
-    await pool.start();
 
     var n = await pool.delayed(-1);
     expect(n, equals(-1));
@@ -276,10 +272,9 @@ void poolTests() {
     pool.stop();
   });
 
-  test('pool termination does not prevent processing of pending tasks',
+  test('- pool termination does not prevent processing of pending tasks',
       () async {
     final pool = TestWorkerPool(ConcurrencySettings.threeCpuThreads);
-    await pool.start();
 
     final N = 2 * pool.maxConcurrency + pool.maxWorkers;
 

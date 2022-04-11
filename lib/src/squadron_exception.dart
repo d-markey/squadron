@@ -36,6 +36,8 @@ abstract class SquadronException implements Exception {
     return null;
   }
 
+  String get message;
+
   @override
   String toString() => jsonEncode(serialize());
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import '../_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../squadron.dart';
@@ -8,6 +9,7 @@ import '../squadron_exception.dart';
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
+import '../worker_service.dart';
 
 class _SendPort {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
@@ -18,9 +20,10 @@ class _SendPort {
   dynamic serialize() => _sendPort;
 
   void _postRequest(WorkerRequest req) {
+    req.cancelToken?.ensureStarted();
     final message = req.serialize();
     try {
-      _sendPort!.send(message);
+      _sendPort?.send(message);
     } catch (ex) {
       Squadron.severe('failed to post request $message: error $ex');
       rethrow;
@@ -79,79 +82,20 @@ class _VmChannel extends _SendPort implements Channel {
   /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? token}) {
-    late final StreamController<T> controller;
+      {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {
     final receiver = ReceivePort();
-    bool cancelled = false;
-    bool paused = false;
-
-    void process(dynamic message) {
-      if (cancelled) return;
-      final res = WorkerResponse.deserialize(message);
-      if (res.endOfStream) {
-        Squadron.info('[process] close');
-        controller.close();
-        cancelled = true;
-        // com.port1.close();
-      } else if (res.hasError) {
-        Squadron.info('[process] error');
-        controller.addError(res.error!, res.error!.stackTrace);
-        controller.close();
-        cancelled = true;
-        // com.port1.close();
-      } else {
-        controller.add(res.result);
-      }
-    }
-
-    final buffer = <dynamic>[];
-
-    void onListen() {
-      Squadron.info('[onListen] start streaming');
-      receiver.listen((message) {
-        if (cancelled) return;
-        if (paused) {
-          Squadron.info('[onListen] paused');
-          buffer.add(message);
-        } else {
-          process(message);
-        }
-      });
-      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-    }
-
-    void onCancel() {
-      Squadron.info('[onCancel] cancelling');
-      cancelled = true;
-      receiver.close();
-      controller.close();
-    }
-
-    void onPause() {
-      Squadron.info('[onPause] pausing');
-      paused = true;
-    }
-
-    void onResume() {
-      Squadron.info('[onResume] resuming');
-      if (buffer.isNotEmpty) {
-        Squadron.info('[onResume] processing buffered events');
-        for (var m in buffer) {
-          process(m);
-        }
-        buffer.clear();
-      }
-      paused = false;
-    }
-
-    controller = StreamController(
-      onListen: onListen,
-      onPause: onPause,
-      onResume: onResume,
-      onCancel: onCancel,
+    final req = WorkerRequest(receiver.sendPort, command, args, token);
+    final wrapper = StreamWrapper<T>(
+      () => _postRequest(req),
+      receiver,
+      () {
+        receiver.close();
+        onDone();
+      },
+      token,
     );
 
-    return controller.stream;
+    return wrapper.stream;
   }
 }
 
@@ -253,8 +197,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
         }
       }
     });
-  }).catchError((error, stackTrace) {
-    completer.completeError(error, stackTrace);
+  }).catchError((ex, st) {
+    completer.completeError(ex, st);
   });
   return completer.future;
 }

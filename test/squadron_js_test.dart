@@ -19,7 +19,7 @@ import 'worker_services/worker_entry_points.dart';
 void main() async {
   await _checkWebWorkers(EntryPoints.entryPoints.cast<String>());
 
-  group('BROWSER -', () {
+  group('BROWSER', () {
     print('Running browser tests on ${web.window.navigator.appVersion}...');
 
     final memoryLogger = MemoryLogger();
@@ -31,31 +31,31 @@ void main() async {
       memoryLogger.clear();
     });
 
-    group('Logger -', () {
+    group('- Logger', () {
       loggerTests();
     });
 
-    group("Web Worker -", () {
+    group("- Web Worker", () {
       webWorkerTests();
     });
 
-    group("Worker -", () {
+    group("- Worker", () {
       workerTests();
     });
 
-    group("Worker pool -", () {
+    group("- Worker pool", () {
       poolTests();
 
-      group("Cancellation -", () {
+      group("- Cancellation", () {
         cancellationTests();
       });
     });
 
-    group("Local Worker -", () {
+    group("- Local Worker", () {
       localWorkerTests();
     });
 
-    group("GitHub Issues -", () {
+    group("- GitHub Issues", () {
       githubIssuesTests();
     });
   });

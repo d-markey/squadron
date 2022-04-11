@@ -13,6 +13,9 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
   @override
+  Future log() => execute((w) => w.log());
+
+  @override
   Future io({required int milliseconds}) =>
       execute((w) => w.io(milliseconds: milliseconds));
 
@@ -32,15 +35,16 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       stream((w) => w.infinite(token));
 
   @override
-  Future infiniteCpu(CancellationToken token) =>
-      execute((w) => w.infiniteCpu(token));
-
-  @override
-  Future log() => execute((w) => w.log());
+  Future cancellableInfiniteCpu(CancellationToken token) =>
+      execute((w) => w.cancellableInfiniteCpu(token));
 
   @override
   Future<bool> cannotListen(CancellationToken token) =>
       execute((w) => w.cannotListen(token));
+
+  @override
+  Stream<int> infiniteWithErrors(CancellationToken token) =>
+      stream((w) => w.infiniteWithErrors(token));
 
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayed(n));
@@ -52,6 +56,9 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 class TestWorker extends Worker implements TestService {
   TestWorker([LocalSquadronLogger? logger])
       : super(EntryPoints.test, args: [logger?.connectionInfo]);
+
+  @override
+  Future log() => send(TestService.logCommand);
 
   @override
   Future io({required int milliseconds}) =>
@@ -73,13 +80,14 @@ class TestWorker extends Worker implements TestService {
       stream(TestService.infiniteCommand, [token.serialize()], token);
 
   @override
-  Future infiniteCpu(CancellationToken token) =>
-      send(TestService.infiniteCpuCommand, [], token);
-
-  @override
-  Future log() => send(TestService.logCommand);
+  Future cancellableInfiniteCpu(CancellationToken token) =>
+      send(TestService.cancellableInfiniteCpuCommand, [], token);
 
   @override
   Future<bool> cannotListen(CancellationToken token) =>
       send(TestService.cannotListenCommand, [], token);
+
+  @override
+  Stream<int> infiniteWithErrors(CancellationToken token) =>
+      stream(TestService.infiniteWithErrorsCommand, [], token);
 }

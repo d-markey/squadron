@@ -38,13 +38,13 @@ class CompositeToken extends CancellableToken {
   final List<CancellationToken> _tokens;
   int _signaled;
 
-  /// Called just before processing a [WorkerRequest]. The method actually calls the [start] method for all
+  /// Called just before processing a [WorkerRequest]. The method actually calls the [ensureStarted] method for all
   /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these
   /// tokens is a [TimeOutToken].
   @override
-  void start() => _tokens.forEach(_starter);
+  void ensureStarted() => _tokens.forEach(_starter);
 
-  void _starter(CancellationToken token) => token.start();
+  static void _starter(CancellationToken token) => token.ensureStarted();
 
   void _signal() {
     _signaled++;

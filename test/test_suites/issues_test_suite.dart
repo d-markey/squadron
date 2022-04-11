@@ -8,9 +8,10 @@ import '../worker_services/issues_service_worker.dart';
 void githubIssuesTests() {
   setUp(() {});
 
-  group('#8 - Exceptions from Streams must come through onError', () {
-    test('Worker', () async {
+  group('- #8 - Exceptions from Streams must come through onError', () {
+    test('- Worker', () async {
       final worker = IssuesWorker();
+      await worker.start();
 
       final stream = worker.issue_8([0, 1, 2, 3, 4]);
 
@@ -34,7 +35,7 @@ void githubIssuesTests() {
           equals('issue 8 error message'));
     });
 
-    test('Worker Pool', () async {
+    test('- Worker Pool', () async {
       final pool = IssuesWorkerPool();
 
       final stream = pool.issue_8([0, 1, 2, 3, 4]);

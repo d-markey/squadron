@@ -11,7 +11,7 @@ const concurrencySettings_222 =
     ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 2);
 
 void cancellationTests() {
-  test('CancellationToken cannot be listened to - Worker', () async {
+  test('- CancellationToken cannot be listened to - Worker', () async {
     final worker = TestWorker();
 
     final token = CancellableToken();
@@ -23,9 +23,8 @@ void cancellationTests() {
     expect(result, isTrue);
   });
 
-  test('value task cancellation - using pool.cancel()', () async {
+  test('- value task cancellation - using pool.cancel()', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
     final digits = <int>[];
     var errors = 0;
@@ -51,9 +50,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('stream task cancellation - using pool.cancel()', () async {
+  test('- stream task cancellation - using pool.cancel()', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
     final results = <int, List<dynamic>>{};
 
@@ -70,7 +68,7 @@ void cancellationTests() {
         completer.complete();
       });
     }
-    await Future.delayed(TestService.delay * 2.5);
+    await Future.delayed(TestService.delay * 3);
     pool.cancel();
 
     await Future.wait(tasks);
@@ -101,9 +99,9 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('specific value task cancellation - using pool.cancel(task)', () async {
+  test('- specific value task cancellation - using pool.cancel(task)',
+      () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
     final digits = <int>[];
     var errors = 0;
@@ -143,9 +141,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('specific value task cancellation - using task.cancel()', () async {
+  test('- specific value task cancellation - using task.cancel()', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
     final digits = <int>[];
     var errors = 0;
@@ -185,7 +182,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('specific stream task cancellation - using pool.cancel(task)', () async {
+  test('- specific stream task cancellation - using pool.cancel(task)',
+      () async {
     final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
@@ -238,7 +236,7 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('specific stream task cancellation - using task.cancel()', () async {
+  test('- specific stream task cancellation - using task.cancel()', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
     await pool.start();
 
@@ -291,7 +289,7 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('cancellable token - gets cancelled', () async {
+  test('- cancellable token - gets cancelled', () async {
     final token = CancellableToken();
 
     await Future.delayed(Duration(milliseconds: 10));
@@ -302,7 +300,7 @@ void cancellationTests() {
     expect(token.cancelled, isTrue);
   });
 
-  test('cancellable token - notifies listeners', () async {
+  test('- cancellable token - notifies listeners', () async {
     final token = CancellableToken();
 
     var notified = false;
@@ -314,14 +312,14 @@ void cancellationTests() {
     expect(notified, isTrue);
   });
 
-  test('timeout token - is not programmatically cancellable', () async {
+  test('- timeout token - is not programmatically cancellable', () async {
     final token = TimeOutToken(TestService.delay * 2);
     expect(() => token.cancel(), throwsA(isA<SquadronError>()));
   });
 
-  test('timeout token - gets cancelled after specified duration', () async {
+  test('- timeout token - gets cancelled after specified duration', () async {
     final timeoutToken = TimeOutToken(TestService.delay * 2);
-    timeoutToken.start();
+    timeoutToken.ensureStarted();
 
     await Future.delayed(timeoutToken.duration * 0.5);
     expect(timeoutToken.cancelled, isFalse);
@@ -330,9 +328,9 @@ void cancellationTests() {
     expect(timeoutToken.cancelled, isTrue);
   });
 
-  test('timeout token - notifies listeners', () async {
+  test('- timeout token - notifies listeners', () async {
     final timeoutToken = TimeOutToken(TestService.delay * 2);
-    timeoutToken.start();
+    timeoutToken.ensureStarted();
 
     var notified = false;
     timeoutToken.addListener(() => notified = true);
@@ -342,13 +340,13 @@ void cancellationTests() {
     expect(notified, isTrue);
   });
 
-  test('composite token - is not programmatically cancellable', () async {
+  test('- composite token - is not programmatically cancellable', () async {
     final cancellable = CancellableToken();
     final token = CompositeToken([cancellable], CompositeMode.any);
     expect(() => token.cancel(), throwsA(isA<SquadronError>()));
   });
 
-  test('composite token - gets cancelled in CompositeMode.any', () async {
+  test('- composite token - gets cancelled in CompositeMode.any', () async {
     final cancellable1 = CancellableToken();
     final cancellable2 = CancellableToken();
     final token =
@@ -359,7 +357,7 @@ void cancellationTests() {
     expect(token.cancelled, isTrue);
   });
 
-  test('composite token - gets cancelled in CompositeMode.all', () async {
+  test('- composite token - gets cancelled in CompositeMode.all', () async {
     final cancellable1 = CancellableToken();
     final cancellable2 = CancellableToken();
     final token =
@@ -372,12 +370,12 @@ void cancellationTests() {
     expect(token.cancelled, isTrue);
   });
 
-  test('composite token - gets cancelled by timeout token', () async {
+  test('- composite token - gets cancelled by timeout token', () async {
     final timeoutToken = TimeOutToken(Duration(milliseconds: 30));
     final cancellableToken = CancellableToken();
     final token =
         CompositeToken([cancellableToken, timeoutToken], CompositeMode.any);
-    timeoutToken.start();
+    timeoutToken.ensureStarted();
 
     expect(timeoutToken.cancelled, isFalse);
     expect(cancellableToken.cancelled, isFalse);
@@ -396,7 +394,7 @@ void cancellationTests() {
     expect(token.cancelled, isTrue);
   });
 
-  test('composite token - notifies listeners', () async {
+  test('- composite token - notifies listeners', () async {
     final cancellable1 = CancellableToken();
     final cancellable2 = CancellableToken();
     final token =
@@ -415,9 +413,8 @@ void cancellationTests() {
     expect(notified, isTrue);
   });
 
-  test('finite() cancelation - using CancellableToken', () async {
+  test('- finite() cancelation - using CancellableToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
@@ -448,9 +445,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infinite() cancellation - using CancellableToken', () async {
+  test('- infinite() cancellation - using CancellableToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
@@ -477,14 +473,13 @@ void cancellationTests() {
     expect(digits, equals(Iterable.generate(count)));
   });
 
-  test('finite() cancellation - using TimeOutToken', () async {
+  test('- finite() cancellation - using TimeOutToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
 
-    final N = 20;
+    final N = 10;
 
     final token = TimeOutToken(TestService.delay * N);
 
@@ -508,9 +503,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infinite() cancellation - using TimeOutToken', () async {
+  test('- infinite() cancellation - using TimeOutToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
@@ -538,9 +532,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finite() cancellation - using CompositeToken', () async {
+  test('- finite() cancellation - using CompositeToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
@@ -605,9 +598,8 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('infinite() cancellation - using CompositeToken', () async {
+  test('- infinite() cancellation - using CompositeToken', () async {
     final pool = TestWorkerPool(ConcurrencySettings.oneIoThread);
-    await pool.start();
 
     final digits = <int>[];
     int count = 0;
@@ -666,11 +658,10 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finite() cancellation - using a shared CancellableToken', () async {
+  test('- finite() cancellation - using a shared CancellableToken', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
-    final L = 4;
+    final L = 10;
 
     var token = CancellableToken();
 
@@ -682,7 +673,7 @@ void cancellationTests() {
       tasks.add(pool.finite(L, token).toList().then((list) {
         success++;
         return list;
-      }).onError((error, stackTrace) {
+      }).onError((ex, st) {
         errors++;
         return []; /* swallow errors */
       }));
@@ -703,11 +694,10 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finite() cancellation - using a shared TimeOutToken', () async {
+  test('- finite() cancellation - using a shared TimeOutToken', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
-    final L = 4;
+    final L = 10;
 
     var timeout = TimeOutToken(TestService.delay * L * 1.5);
 
@@ -719,7 +709,7 @@ void cancellationTests() {
       tasks.add(pool.finite(L, timeout).toList().then((list) {
         success++;
         return list;
-      }).onError((error, stackTrace) {
+      }).onError((ex, st) {
         errors++;
         return []; /* swallow errors */
       }));
@@ -738,11 +728,10 @@ void cancellationTests() {
     pool.stop();
   });
 
-  test('finite() cancellation - using a shared CompositeToken', () async {
+  test('- finite() cancellation - using a shared CompositeToken', () async {
     final pool = TestWorkerPool(concurrencySettings_222);
-    await pool.start();
 
-    final L = 4;
+    final L = 10;
 
     final timeout1 = TimeOutToken(TestService.delay * L * 1.5);
     final token1 = CancellableToken();
@@ -757,7 +746,7 @@ void cancellationTests() {
       tasks.add(pool.finite(L, composite1).toList().then((list) {
         success++;
         return list;
-      }).onError((error, stackTrace) {
+      }).onError((ex, st) {
         errors++;
         return []; /* swallow errors */
       }));
@@ -789,7 +778,7 @@ void cancellationTests() {
       tasks.add(pool.finite(L, composite2).toList().then((list) {
         success++;
         return list;
-      }).onError((error, stackTrace) {
+      }).onError((ex, st) {
         errors++;
         return []; /* swallow errors */
       }));

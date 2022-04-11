@@ -54,17 +54,24 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
       : assert(_computer != null),
         _completer = Completer<T>(),
         _producer = null,
-        _streamer = null {
+        _streamer = null,
+        _controller = null {
     _submitted = _timeStamp();
   }
 
   /// Creates a new [StreamTask].
   WorkerTask.stream(this._producer, this._counter)
       : assert(_producer != null),
-        _streamer = StreamController<T>(),
+        _streamer = Completer<Stream<T>?>(),
         _computer = null,
         _completer = null {
     _submitted = _timeStamp();
+    _controller = StreamController<T>(
+      onListen: _onListen,
+      onPause: () => _subscription?.pause(),
+      onResume: () => _subscription?.resume(),
+      onCancel: () => _subscription?.cancel(),
+    );
   }
 
   static int _timeStamp() => DateTime.now().microsecondsSinceEpoch;
@@ -108,11 +115,14 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   }
 
   void _close([Exception? exception]) {
-    if (!_streamer!.isClosed) {
+    if (!_controller!.isClosed) {
       if (exception != null) {
-        _streamer!.addError(exception);
+        final st = (exception is SquadronException)
+            ? exception.stackTrace
+            : StackTrace.current;
+        _controller!.addError(exception, st);
       }
-      _streamer!.close();
+      _controller!.close();
     }
   }
 
@@ -123,7 +133,7 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
       if (_completer != null && _executed == null) {
         _wrapUp(() => _completeWithError(CancelledException(message: message)),
             false);
-      } else if (_streamer != null) {
+      } else if (_controller != null) {
         _wrapUp(() => _close(CancelledException(message: message)), false);
       }
     }
@@ -151,29 +161,54 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
     }
   }
 
-  Future _runStream(W worker, Stream<T> Function(W worker) producer,
-      StreamController streamer) async {
-    if (streamer.isClosed) return;
+  void _onError(ex, st) {
+    _controller?.addError(
+        SquadronException.from(error: ex, stackTrace: st), st);
+  }
 
-    try {
-      if (isCancelled) throw CancelledException();
-      await for (var value in producer(worker)) {
-        streamer.add(value);
-        if (isCancelled) throw CancelledException();
-      }
-      _wrapUp(() => _close(), true);
-    } catch (ex, st) {
-      final wex = SquadronException.from(error: ex, stackTrace: st);
-      _wrapUp(() => _close(wex), false);
+  void _onData(T data) {
+    if (isCancelled) {
+      _wrapUp(() => _close(CancelledException()), false);
+    } else {
+      _controller?.add(data);
     }
+  }
+
+  void _onListen() async {
+    if (isCancelled) {
+      _wrapUp(() {
+        _close(CancelledException());
+      }, false);
+      return;
+    }
+    try {
+      final stream = await _streamer?.future;
+      if (stream == null) throw newSquadronError('null stream');
+      _subscription = stream.listen(_onData, onError: _onError, onDone: () {
+        _wrapUp(() => _close(), true);
+      }, cancelOnError: false);
+    } catch (ex, st) {
+      _wrapUp(() {
+        _close(SquadronException.from(error: ex, stackTrace: st));
+      }, false);
+    }
+  }
+
+  Future _runStream(W worker, Stream<T> Function(W worker) producer,
+      Completer<Stream<T>?> streamer, StreamController<T> controller) {
+    if (isCancelled) {
+      throw CancelledException();
+    }
+    streamer.complete(producer(worker));
+    return controller.done;
   }
 
   Future run(W worker) {
     _executed = _timeStamp();
     if (_computer != null && _completer != null) {
       return _runFuture(worker, _computer!, _completer!);
-    } else if (_producer != null && _streamer != null) {
-      return _runStream(worker, _producer!, _streamer!);
+    } else if (_producer != null && _streamer != null && _controller != null) {
+      return _runStream(worker, _producer!, _streamer!, _controller!);
     } else {
       throw newSquadronError('invalid worker task state');
     }
@@ -188,8 +223,10 @@ class WorkerTask<T, W extends Worker> implements ValueTask<T>, StreamTask<T> {
   Future<T> get value => _completer!.future;
 
   final Stream<T> Function(W worker)? _producer;
-  final StreamController<T>? _streamer;
+  final Completer<Stream<T>?>? _streamer;
+  late final StreamController<T>? _controller;
+  StreamSubscription<T>? _subscription;
 
   @override
-  Stream<T> get stream => _streamer!.stream;
+  Stream<T> get stream => _controller!.stream;
 }

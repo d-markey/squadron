@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import '../worker_services/worker_entry_points.dart';
 
 void webWorkerTests() {
-  test('classic Web worker', () async {
+  test('- classic Web worker', () async {
     final worker = browser.Worker(EntryPoints.echo);
     expect(worker, isNotNull);
     final completer = Completer<String>();
@@ -26,7 +26,7 @@ void webWorkerTests() {
     worker.terminate();
   });
 
-  test('missing Web worker', () async {
+  test('- missing Web worker', () async {
     final worker = browser.Worker('not_found.js');
     expect(worker, isNotNull);
     final completer = Completer<String>();

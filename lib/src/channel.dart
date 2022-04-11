@@ -9,6 +9,7 @@ import 'squadron_exception.dart';
 import 'worker.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
+import 'worker_service.dart';
 
 /// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a
 /// platform worker.
@@ -24,6 +25,8 @@ abstract class Channel {
   /// worker and should not be used after this method has been called.
   FutureOr close();
 
+  static void noop() {}
+
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   void notifyCancellation(CancellationToken cancelToken);
 
@@ -33,7 +36,7 @@ abstract class Channel {
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? token});
+      {SquadronCallback onDone = noop, CancellationToken? token});
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '_worker_monitor.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
@@ -64,6 +66,7 @@ class WorkerRunner {
     final request = WorkerRequest.deserialize(message);
     final client = request?.client;
 
+    // TODO: need a message to cancel a stream
     if (request == null) {
       throw newSquadronError('invalid message');
     } else if (request.terminate) {
@@ -96,15 +99,27 @@ class WorkerRunner {
       result = (result is Future) ? await result : result;
       if (result is Stream && client.canStream(result)) {
         // stream values to the client
+        late final StreamSubscription subscription;
+        final done = Completer();
         streaming = true;
-        CancelledException? ex;
-        await for (var res in result) {
-          if (ex != null) {
-            throw ex;
+        subscription = result.listen((data) {
+          final cancelled = tokenRef.exception;
+          if (cancelled != null) {
+            client.error(cancelled);
+            client.closeStream();
+            subscription.cancel();
+          } else {
+            client.reply(data);
           }
-          client.reply(res);
-          ex = tokenRef.exception;
-        }
+        }, onError: (ex, st) {
+          client.error(SquadronException.from(error: ex, stackTrace: st));
+        }, onDone: () {
+          client.closeStream();
+          streaming = false;
+          done.complete();
+        }, cancelOnError: false);
+        // TODO: register subscription so it can be cancelled
+        await done.future;
       } else {
         // send result to client
         client.reply(result);

@@ -9,6 +9,7 @@ class SquadronError extends Error implements SquadronException {
   }
 
   /// Message (or string representation of the exception).
+  @override
   final String message;
 
   static const _$type = 0;

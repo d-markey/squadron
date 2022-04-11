@@ -35,7 +35,7 @@ class CancellationToken {
 
   /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that
   /// need to cancel automatically.
-  void start() {}
+  void ensureStarted() {}
 
   /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not
   /// designed to be listened to, it always throws a [SquadronError].

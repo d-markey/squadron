@@ -24,7 +24,7 @@ void loggerTests() {
     Squadron.logLevel = SquadronLogLevel.all;
   });
 
-  test('Finest', () {
+  test('- Finest', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.finest('Finest - ${logLevel.value}');
@@ -34,7 +34,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Finest - FINEST'), isTrue);
   });
 
-  test('Finer', () {
+  test('- Finer', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.finer('Finer - ${logLevel.value}');
@@ -45,7 +45,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Finer - FINER'), isTrue);
   });
 
-  test('Fine', () {
+  test('- Fine', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.fine('Fine - ${logLevel.value}');
@@ -57,7 +57,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Fine - FINE'), isTrue);
   });
 
-  test('Config', () {
+  test('- Config', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.config('Config - ${logLevel.value}');
@@ -70,7 +70,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Config - CONFIG'), isTrue);
   });
 
-  test('Info', () {
+  test('- Info', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.info('Info - ${logLevel.value}');
@@ -84,7 +84,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Info - INFO'), isTrue);
   });
 
-  test('Warning', () {
+  test('- Warning', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.warning('Warning - ${logLevel.value}');
@@ -99,7 +99,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Warning - WARNING'), isTrue);
   });
 
-  test('Severe', () {
+  test('- Severe', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.severe('Severe - ${logLevel.value}');
@@ -115,7 +115,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Severe - SEVERE'), isTrue);
   });
 
-  test('Shout', () {
+  test('- Shout', () {
     for (var logLevel in logLevels.entries) {
       Squadron.logLevel = logLevel.key;
       Squadron.shout('Shout - ${logLevel.value}');
@@ -132,7 +132,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Shout - SHOUT'), isTrue);
   });
 
-  test('Off', () {
+  test('- Off', () {
     Squadron.logLevel = SquadronLogLevel.off;
     Squadron.finest('Finest');
     Squadron.finer('Finer');
@@ -146,7 +146,7 @@ void loggerTests() {
     expect(memoryLogger.length, equals(0));
   });
 
-  test('Squadron ID', () {
+  test('- Squadron ID', () {
     expect(Squadron.id, equals('workerTests'));
     Squadron.setId('should fail');
     expect(Squadron.id, equals('workerTests'));
@@ -158,7 +158,7 @@ void loggerTests() {
     expect(memoryLogger.contains('Squadron ID Test'), isTrue);
   });
 
-  test('Object', () {
+  test('- Object', () {
     final map = {'test': 'Logging a map'};
     Squadron.info(map);
     expect(memoryLogger.length, equals(1));
@@ -170,7 +170,7 @@ void loggerTests() {
     expect(memoryLogger.contains(obj.toString()), isTrue);
   });
 
-  test('Iterable', () {
+  test('- Iterable', () {
     final list = ['one', 'two', 'three'];
     Squadron.info(list);
     expect(memoryLogger.length, equals(list.length));
@@ -182,7 +182,7 @@ void loggerTests() {
     expect(memoryLogger.contains('\'three\''), isFalse);
   });
 
-  test('Iterable of objects', () {
+  test('- Iterable of objects', () {
     final value = 1234567;
     final list = [Object(), 1, 'three', Future.value(value)];
     Squadron.info(list);
@@ -194,13 +194,13 @@ void loggerTests() {
     expect(memoryLogger.contains(value.toString()), isFalse);
   });
 
-  test('Function', () {
+  test('- Function', () {
     Squadron.info(() => 'log message from a function');
     expect(memoryLogger.length, equals(1));
     expect(memoryLogger.contains('log message from a function'), isTrue);
   });
 
-  test('Multiline', () {
+  test('- Multiline', () {
     final message = 'log message\nspanning\nseveral lines';
     Squadron.info(message);
     final lines = message.split('\n');
@@ -211,7 +211,7 @@ void loggerTests() {
     expect(memoryLogger.contains(message), isFalse);
   });
 
-  test('LocalLogger', () async {
+  test('- LocalLogger', () async {
     final logger = MemoryLogger();
     logger.logLevel = SquadronLogLevel.all;
 

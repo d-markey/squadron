@@ -23,7 +23,7 @@ class TimeOutToken extends CancellableToken {
   /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be
   /// started that will automatically cancel this token if processing takes longer than [duration].
   @override
-  void start() => _timer ??= Timer(
+  void ensureStarted() => _timer ??= Timer(
       duration,
       () => super
           .cancel(TaskTimeoutException(message: message, duration: duration)));

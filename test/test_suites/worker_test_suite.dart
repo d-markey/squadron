@@ -19,7 +19,7 @@ void workerTests() {
   final timeFactor =
       4; // speed up tests; 10 seems to exceed time resolution on some hardware
 
-  test('start & stop', () async {
+  test('- start & stop', () async {
     final dummy = TestWorker();
 
     await Future.delayed(Duration(milliseconds: 5));
@@ -51,7 +51,7 @@ void workerTests() {
         greaterThan(dummy.upTime.inMicroseconds));
   });
 
-  test('start & stop - cannot restart', () async {
+  test('- start & stop - cannot restart', () async {
     final dummy = TestWorker();
 
     await dummy.start();
@@ -72,7 +72,7 @@ void workerTests() {
     }
   });
 
-  test('workload - sequential', () async {
+  test('- workload - sequential', () async {
     final dummy = TestWorker();
     final completedTasks = <int>[];
     int taskId = 0;
@@ -140,7 +140,7 @@ void workerTests() {
     expect(dummy.totalWorkload, equals(3));
   });
 
-  test('workload - parallel', () async {
+  test('- workload - parallel', () async {
     final dummy = TestWorker();
     final completedTasks = <int>[];
     int taskId = 0;
@@ -248,9 +248,8 @@ void workerTests() {
     expect(dummy.totalWorkload, equals(8));
   });
 
-  test('cache worker', () async {
+  test('- cache worker', () async {
     final cache = CacheWorker();
-    await cache.start();
 
     expect(await cache.get(1), isNull);
     expect(await cache.containsKey(1), isFalse);
@@ -262,9 +261,8 @@ void workerTests() {
     expect(cache.isStopped, isTrue);
   });
 
-  test('prime worker', () async {
+  test('- prime worker', () async {
     final primeWorker = PrimeWorker();
-    await primeWorker.start();
 
     for (var i = 1; i < 1000; i++) {
       expect(await primeWorker.isPrime(i), primesTo1000.contains(i));
@@ -274,9 +272,9 @@ void workerTests() {
     expect(primeWorker.isStopped, isTrue);
   });
 
-  test('prime worker - stream', () async {
+  test('- prime worker - stream', () async {
     final primeWorker = PrimeWorker();
-    await primeWorker.start();
+    // await primeWorker.start();
 
     final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
 
@@ -286,12 +284,9 @@ void workerTests() {
     expect(primeWorker.isStopped, isTrue);
   });
 
-  test('prime worker with cache', () async {
+  test('- prime worker with cache', () async {
     final cache = CacheWorker();
     await cache.start();
-
-    var shared = cache.channel?.share();
-    expect(shared, isNotNull);
 
     final initialStats = await cache.getStats();
 
@@ -301,8 +296,7 @@ void workerTests() {
     expect(initialStats.size, isZero);
     expect(initialStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(cache.channel);
-    await primeWorker.start();
+    final primeWorker = PrimeWorker(cache);
 
     for (var i = 1; i < 1000; i++) {
       expect(await primeWorker.isPrime(i), primesTo1000.contains(i));
@@ -325,7 +319,7 @@ void workerTests() {
     expect(cache.isStopped, isTrue);
   });
 
-  test('prime worker with cache - perf', () async {
+  test('- prime worker with cache - perf', () async {
     final cache = CacheWorker();
     await cache.start();
 
@@ -336,8 +330,7 @@ void workerTests() {
     expect(cacheStats.size, isZero);
     expect(cacheStats.maxSize, isZero);
 
-    final primeWorker = PrimeWorker(cache.channel);
-    await primeWorker.start();
+    final primeWorker = PrimeWorker(cache);
 
     final sw = Stopwatch();
     sw.start();
@@ -376,7 +369,7 @@ void workerTests() {
     expect(cache.isStopped, isTrue);
   });
 
-  test('exception handling from worker - Exception & WorkerException',
+  test('- exception handling from worker - Exception & WorkerException',
       () async {
     final rogue = RogueWorker();
 
@@ -409,7 +402,7 @@ void workerTests() {
     rogue.stop();
   });
 
-  test('exception handling from worker - CustomException', () async {
+  test('- exception handling from worker - CustomException', () async {
     SquadronException.registerExceptionDeserializer(
         CustomException.deserialize);
     final rogue = RogueWorker();
@@ -433,7 +426,7 @@ void workerTests() {
     rogue.stop();
   });
 
-  test('bitcoin service', () async {
+  test('- bitcoin service', () async {
     final bitcoin = BitcoinWorker();
 
     try {
@@ -474,24 +467,86 @@ void workerTests() {
     bitcoin.stop();
   });
 
-  test('failing worker', () async {
+  test('- stream with multiple errors - cancelOnError: false', () async {
+    final testWorker = TestWorker();
+
+    final token = CancellableToken('by request');
+
+    final done = Completer();
+    final numbers = <int>[];
+    final errors = <SquadronException>[];
+
+    testWorker.infiniteWithErrors(token).listen(
+          (number) => numbers.add(number),
+          onError: (ex) {
+            errors.add(ex);
+            if (errors.length > 3) {
+              token.cancel();
+            }
+          },
+          onDone: () => done.complete(),
+          cancelOnError: false,
+        );
+
+    await done.future;
+
+    expect(numbers.length, greaterThan(3 * 2));
+    expect(errors.length, greaterThan(3));
+    expect(errors.where((e) => e.message.contains('error #')).length,
+        greaterThan(3));
+    expect(errors.where((e) => e.message == token.message).length,
+        greaterThanOrEqualTo(1));
+  });
+
+  test('- stream with multiple errors - cancelOnError: true', () async {
+    final testWorker = TestWorker();
+
+    final token = CancellableToken('by request');
+
+    final done = Completer();
+    final numbers = <int>[];
+    final errors = <SquadronException>[];
+
+    testWorker.infiniteWithErrors(token).listen(
+          (number) => numbers.add(number),
+          onError: (ex) {
+            errors.add(ex);
+            if (errors.length > 3) {
+              token.cancel();
+            }
+          },
+          onDone: () => done.complete(),
+          cancelOnError: true,
+        );
+
+    await done.future;
+
+    expect(numbers.length, greaterThan(3 * 2));
+    expect(errors.length, equals(1));
+    expect(
+        errors.where((e) => e.message.contains('error #')).length, equals(1));
+    expect(errors.where((e) => e.message == token.message).length, isZero);
+  });
+
+  test('- failing worker', () async {
     final failingWorker = FailingWorker();
     expect(() => failingWorker.start(), throwsA(isA<WorkerException>()));
   });
 
-  test('invalid worker', () async {
+  test('- invalid worker', () async {
     final invalidWorker = InvalidWorker();
     expect(() => invalidWorker.start(), throwsA(isA<SquadronError>()));
   });
 
-  test('failing worker - missing command in Isolate implementation', () async {
+  test('- failing worker - missing command in Isolate implementation',
+      () async {
     final failingWorker = FailingWorker.missingCommand();
     if (failingWorker != null) {
       expect(() => failingWorker.start(), throwsA(isA<SquadronError>()));
     }
   }, testOn: 'vm');
 
-  test('invalid request', () async {
+  test('- invalid request', () async {
     final rogue = RogueWorker();
 
     final transferable = [1];
@@ -515,7 +570,7 @@ void workerTests() {
     }
   });
 
-  test('invalid response', () async {
+  test('- invalid response', () async {
     final rogue = RogueWorker();
 
     try {
@@ -534,7 +589,7 @@ void workerTests() {
     }
   });
 
-  test('missing operation', () async {
+  test('- missing operation', () async {
     final rogue = RogueWorker();
 
     try {

@@ -14,7 +14,7 @@ import 'test_suites/worker_pool_test_suite.dart';
 import 'test_suites/worker_test_suite.dart';
 
 void main() {
-  group('NATIVE -', () {
+  group('NATIVE', () {
     print('Running vm tests on ${Platform.operatingSystemVersion}...');
 
     final memoryLogger = MemoryLogger();
@@ -26,7 +26,7 @@ void main() {
       memoryLogger.clear();
     });
 
-    group('Logger -', () {
+    group('- Logger', () {
       final currentLogger = Squadron.logger;
       final currentLogLevel = Squadron.logLevel;
       try {
@@ -37,23 +37,23 @@ void main() {
       }
     });
 
-    group("Worker -", () {
+    group("- Worker", () {
       workerTests();
     });
 
-    group("Local Worker -", () {
+    group("- Local Worker", () {
       localWorkerTests();
     });
 
-    group("Worker pool -", () {
+    group("- Worker pool", () {
       poolTests();
 
-      group("Cancellation -", () {
+      group("- Cancellation", () {
         cancellationTests();
       });
     });
 
-    group("GitHub Issues -", () {
+    group("- GitHub Issues", () {
       githubIssuesTests();
     });
   });
