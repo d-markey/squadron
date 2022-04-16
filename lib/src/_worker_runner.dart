@@ -105,8 +105,9 @@ class WorkerRunner {
         subscription = result.listen((data) {
           final cancelled = tokenRef.exception;
           if (cancelled != null) {
-            client.error(cancelled);
+            // client.error(cancelled);
             client.closeStream();
+            streaming = false;
             subscription.cancel();
           } else {
             client.reply(data);

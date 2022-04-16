@@ -1,5 +1,6 @@
 @ECHO OFF
 SET __ARGS__=
+set __REBUILD__=0
 SET __COV__=1
 
 :parse
@@ -13,11 +14,25 @@ IF "%~1"=="/nocov" (
 ) ELSE IF "%~1"=="/nc" (
     set __COV__=0
 ) ELSE (
-    set __ARGS__=%__ARGS__% "%~1"
+    IF "%~1"=="/rebuild" (
+        set __REBUILD__=1
+    ) ELSE IF "%~1"=="--rebuild" (
+        set __REBUILD__=1
+    ) ELSE IF "%~1"=="-b" (
+        set __REBUILD__=1
+    ) ELSE IF "%~1"=="/b" (
+        set __REBUILD__=1
+    ) ELSE (
+        set __ARGS__=%__ARGS__% "%~1"
+    )
 )
 SHIFT
 GOTO parse
 :endparse
+
+IF "%__REBUILD__%" == "1" (
+    CALL .\test\compile_workers.bat
+)
 
 rmdir .\test\coverage /s /q
 mkdir .\test\coverage

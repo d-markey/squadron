@@ -28,6 +28,13 @@ class StreamWrapper<T> {
   final _buffer = <WorkerResponse>[];
 
   void _process(WorkerResponse res) {
+    final cancelException = _token?.exception;
+    if (cancelException != null) {
+      _controller.addError(cancelException, cancelException.stackTrace);
+      _buffer.clear();
+      _controller.close();
+      return;
+    }
     if (res.endOfStream) {
       _controller.close();
       return;
@@ -49,12 +56,6 @@ class StreamWrapper<T> {
           _buffer.add(res);
         } else {
           _process(res);
-        }
-        final cancelException = _token?.exception;
-        if (cancelException != null) {
-          _controller.addError(cancelException, cancelException.stackTrace);
-          _buffer.clear();
-          _controller.close();
         }
       },
       cancelOnError: false,
