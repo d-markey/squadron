@@ -69,15 +69,12 @@ class TestService implements WorkerService {
     int paused = 0;
     Completer? resumeSignal;
 
+    print(token.runtimeType);
+
     void onListen() async {
       int i = 0;
       while (true) {
         if (controller.isClosed) {
-          break;
-        }
-        if (token.cancelled) {
-          controller.addError(CancelledException(message: token.message));
-          controller.close();
           break;
         }
         final future = resumeSignal?.future;
@@ -110,6 +107,9 @@ class TestService implements WorkerService {
       onListen: onListen,
       onPause: onPause,
       onResume: onResume,
+      onCancel: () {
+        print('infinite done');
+      }
     );
 
     return controller.stream;

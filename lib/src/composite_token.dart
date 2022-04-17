@@ -63,13 +63,9 @@ class CompositeToken extends CancellableToken {
               orElse: () =>
                   CancelledException(message: message ?? 'Cancelled'))!);
         }
-        _tokens.forEach(_unregister);
-        super.cancel();
       }
     }
   }
 
   void _register(CancellationToken token) => token.addListener(_signal);
-
-  void _unregister(CancellationToken token) => token.removeListener(_signal);
 }
