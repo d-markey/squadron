@@ -1,8 +1,5 @@
-import 'dart:async';
-
-import 'package:squadron/src/worker_service.dart';
-
 import 'cancellation_token.dart';
+import 'worker_service.dart';
 
 /// Cancellation token reference. This special cancellation token is managed by the [WorkerMonitor] and is used to
 /// mirror' cancellation tokens presented to Squadron by callers of a worker service. When a [WorkerRequest] is
@@ -39,32 +36,29 @@ class CancellationTokenReference extends CancellationToken {
 
   void cancel() {
     if (hasRef && !_cancelled) {
-      print('cancelling token $id');
       _cancelled = true;
-      final subs = _subscriptions;
-      if (subs != null) {
-        for (var sub in subs) {
-          print('   cancelling sub $sub');
-          sub();
+      final cancellers = _cancellationCallbacks;
+      if (cancellers != null) {
+        for (var canceller in cancellers) {
+          canceller();
         }
-        subs.clear();
+        cancellers.clear();
       }
     }
   }
 
-  List<SquadronCallback>? _subscriptions;
+  List<SquadronCallback>? _cancellationCallbacks;
 
-  void registerSubscription(SquadronCallback subscription) {
+  void registerStreamCanceller(SquadronCallback canceller) {
     if (_cancelled) {
-      subscription();
+      canceller();
     } else {
-      _subscriptions ??= <SquadronCallback>[];
-      _subscriptions?.add(subscription);
+      _cancellationCallbacks ??= <SquadronCallback>[];
+      _cancellationCallbacks?.add(canceller);
     }
   }
 
-  // void unregisterSubscription(StreamSubscription subscription) {
-  //   subscription.cancel();
-  //   _subscriptions?.remove(subscription);
-  // }
+  void unregisterStreamCanceller(SquadronCallback canceller) {
+    _cancellationCallbacks?.remove(canceller);
+  }
 }

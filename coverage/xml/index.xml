@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90379953" lines-covered="1118" lines-valid="1237" testname="lcov.info" version="1.5">
-    <sources>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="839" lines-valid="916" pathname="/src" prefix="/home/runner/work/squadron/squadron/lib"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="150" lines-valid="179" pathname="/src/browser" prefix="/home/runner/work/squadron/squadron/lib"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="129" lines-valid="142" pathname="/src/native" prefix="/home/runner/work/squadron/squadron/lib"/>
-    </sources>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947767" lines-covered="1182" lines-valid="1321" testname="lcov.info" version="1.5">
+<sources>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="938" lines-valid="1043" pathname="/src" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="131" lines-valid="154" pathname="/src/browser" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="113" lines-valid="124" pathname="/src/native" prefix="/_Projects/github/squadron/lib"/>
+</sources>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
 </coverage>

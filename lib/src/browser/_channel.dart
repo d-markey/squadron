@@ -75,12 +75,17 @@ class _JsChannel extends _MessagePort implements Channel {
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final com = web.MessageChannel();
+    final canceller =
+        (token == null) ? Channel.noop : () => notifyCancellation(token);
     try {
+      token?.addListener(canceller);
       _postRequest(WorkerRequest(com.port2, command, args, token));
-      final event = await com.port1.onMessage.first;
+      final event = await com.port1.onMessage.first
+          .whenComplete(() => token?.removeListener(canceller));
       final res = WorkerResponse.deserialize(event.data);
       return res.result as T;
     } finally {
+      token?.removeListener(canceller);
       com.port2.close();
       com.port1.close();
     }
@@ -93,9 +98,9 @@ class _JsChannel extends _MessagePort implements Channel {
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {
     final com = web.MessageChannel();
-    final req = WorkerRequest(com.port2, command, args, token);
     final wrapper = StreamWrapper<T>(
-      () => _postRequest(req),
+      WorkerRequest(com.port2, command, args, token),
+      _postRequest,
       com.port1.onMessage.map((event) => event.data),
       () {
         com.port1.close();
@@ -122,6 +127,13 @@ class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: MessagePort expected');
     }
+  }
+
+  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the
+  /// [Worker] that the stream has been cancelled on the client-side.
+  @override
+  void connectStream(int streamId) {
+    reply(streamId);
   }
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the

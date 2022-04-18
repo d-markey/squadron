@@ -1,926 +1,790 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.892562" lines-covered="108" lines-valid="121" package="/src/native" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code>import 'dart:isolate';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import '../cancellation_token.dart';</code>
-        </line>
-        <line>
-            <code>import '../channel.dart' show Channel, WorkerChannel;</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron_exception.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_exception.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_request.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_response.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>class _SendPort {</code>
-        </line>
-        <line>
-            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]</code>
-        </line>
-        <line>
-            <code>  /// to return values to the client.</code>
-        </line>
-        <line>
-            <code>  SendPort? _sendPort;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [Channel] serialization in Native world returns the [SendPort].</code>
-        </line>
-        <line hits="2">
-            <code>  dynamic serialize() =&gt; _sendPort;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  void _postRequest(WorkerRequest req) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final message = req.serialize();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
-        <line hits="2">
-            <code>      _sendPort!.send(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="2">
-            <code>      Squadron.severe('failed to post request $message: error $ex');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      rethrow;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  void _postResponse(WorkerResponse res) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final message = res.serialize();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
-        <line hits="2">
-            <code>      _sendPort!.send(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="2">
-            <code>      Squadron.severe('failed to post response $message: error $ex');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      rethrow;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// [Channel] implementation for the Native world.</code>
-        </line>
-        <line>
-            <code>class _VmChannel extends _SendPort implements Channel {</code>
-        </line>
-        <line hits="1">
-            <code>  _VmChannel._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [Channel] sharing in Native world returns the same instance.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  Channel share() =&gt; this;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a termination [WorkerRequest] to the [Isolate] and clears the [SendPort].</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  FutureOr close() {</code>
-        </line>
-        <line hits="1">
-            <code>    if (_sendPort != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      _postRequest(WorkerRequest.stop());</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _sendPort = null;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is</code>
-        </line>
-        <line>
-            <code>  /// cancelled.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  void notifyCancellation(CancellationToken token) {</code>
-        </line>
-        <line hits="1">
-            <code>    if (token.cancelled) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      _postRequest(WorkerRequest.cancel(token));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single</code>
-        </line>
-        <line>
-            <code>  /// value from the [Isolate]</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {CancellationToken? token}) async {</code>
-        </line>
-        <line hits="1">
-            <code>    final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    final res = WorkerResponse.deserialize(await receiver.first);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    return res.result as T;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of</code>
-        </line>
-        <line>
-            <code>  /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
-        </line>
-        <line>
-            <code>      {CancellationToken? token}) {</code>
-        </line>
-        <line>
-            <code>    late final StreamController&lt;T&gt; controller;</code>
-        </line>
-        <line hits="1">
-            <code>    final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    bool cancelled = false;</code>
-        </line>
-        <line>
-            <code>    bool paused = false;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void process(dynamic message) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      if (cancelled) return;</code>
-        </line>
-        <line hits="1">
-            <code>      final res = WorkerResponse.deserialize(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (res.endOfStream) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        Squadron.info('[process] close');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        cancelled = true;</code>
-        </line>
-        <line>
-            <code>        // com.port1.close();</code>
-        </line>
-        <line hits="1">
-            <code>      } else if (res.hasError) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        Squadron.info('[process] error');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>        controller.addError(res.error!, res.error!.stackTrace);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        cancelled = true;</code>
-        </line>
-        <line>
-            <code>        // com.port1.close();</code>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="2">
-            <code>        controller.add(res.result);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    final buffer = &lt;dynamic&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onListen() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.info('[onListen] start streaming');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      receiver.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        if (cancelled) return;</code>
-        </line>
-        <line>
-            <code>        if (paused) {</code>
-        </line>
-        <line hits="0">
-            <code>          Squadron.info('[onListen] paused');</code>
-        </line>
-        <line hits="0">
-            <code>          buffer.add(message);</code>
-        </line>
-        <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="1">
-            <code>          process(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>      });</code>
-        </line>
-        <line hits="3">
-            <code>      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onCancel() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.info('[onCancel] cancelling');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      cancelled = true;</code>
-        </line>
-        <line hits="1">
-            <code>      receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onPause() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.info('[onPause] pausing');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      paused = true;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onResume() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.info('[onResume] resuming');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (buffer.isNotEmpty) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>        Squadron.info('[onResume] processing buffered events');</code>
-        </line>
-        <line hits="0">
-            <code>        for (var m in buffer) {</code>
-        </line>
-        <line hits="0">
-            <code>          process(m);</code>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="0">
-            <code>        buffer.clear();</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>      paused = false;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    controller = StreamController(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      onListen: onListen,</code>
-        </line>
-        <line>
-            <code>      onPause: onPause,</code>
-        </line>
-        <line>
-            <code>      onResume: onResume,</code>
-        </line>
-        <line>
-            <code>      onCancel: onCancel,</code>
-        </line>
-        <line>
-            <code>    );</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    return controller.stream;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// [WorkerChannel] implementation for the native world.</code>
-        </line>
-        <line>
-            <code>class _VmWorkerChannel extends _SendPort implements WorkerChannel {</code>
-        </line>
-        <line hits="1">
-            <code>  _VmWorkerChannel._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon</code>
-        </line>
-        <line>
-            <code>  /// startup.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  void connect(Object channelInfo) {</code>
-        </line>
-        <line hits="1">
-            <code>    if (channelInfo is ReceivePort) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      reply(channelInfo.sendPort);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="0">
-            <code>      throw WorkerException(</code>
-        </line>
-        <line hits="0">
-            <code>          'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
-        </line>
-        <line>
-            <code>  /// [Isolate] only.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse(data));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a</code>
-        </line>
-        <line>
-            <code>  /// [ReceivePort].</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  bool canStream(Stream stream) =&gt; stream is! ReceivePort;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  void error(SquadronException error) {</code>
-        </line>
-        <line hits="2">
-            <code>    Squadron.finer('replying with error: $error');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    _postResponse(WorkerResponse.withError(error));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Stub implementations.</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>int _counter = 0;</code>
-        </line>
-        <line hits="1">
-            <code>String _getId() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  _counter++;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  return '${Squadron.id}.$_counter';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
-        </line>
-        <line>
-            <code>/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code>
-        </line>
-        <line hits="1">
-            <code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) async {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  final completer = Completer&lt;Channel&gt;();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  final channel = _VmChannel._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  Isolate.spawn(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          entryPoint,</code>
-        </line>
-        <line hits="3">
-            <code>          WorkerRequest.start(receiver.sendPort, _getId(), startArguments)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>              .serialize(),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          paused: true)</code>
-        </line>
-        <line hits="2">
-            <code>      .then((isolate) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final exitPort = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    exitPort.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      channel.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    });</code>
-        </line>
-        <line hits="2">
-            <code>    isolate.addOnExitListener(exitPort.sendPort);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final errorPort = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    errorPort.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      dynamic error = message[0];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (error is String) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        error = SquadronException.fromString(error);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>      if (error is! SquadronException) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>        error = SquadronException.from(</code>
-        </line>
-        <line hits="0">
-            <code>            error: message[0] ?? 'unspecified error',</code>
-        </line>
-        <line hits="0">
-            <code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>      if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        completer.completeError(error);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="0">
-            <code>        Squadron.warning('unhandled error $error');</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    });</code>
-        </line>
-        <line hits="2">
-            <code>    isolate.addErrorListener(errorPort.sendPort);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    isolate.resume(isolate.pauseCapability!);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    Squadron.config('created Isolate #${isolate.hashCode}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    receiver.first.then((message) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final response = WorkerResponse.deserialize(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (response.hasError) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          isolate.kill(priority: Isolate.immediate);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          Squadron.severe(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>              'connection to Isolate #${isolate.hashCode} failed: ${response.error}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>          completer.completeError(response.error!, response.error!.stackTrace);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="2">
-            <code>          channel._sendPort = response.result;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          Squadron.config('connected to Isolate #${isolate.hashCode}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          completer.complete(channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    });</code>
-        </line>
-        <line hits="1">
-            <code>  }).catchError((error, stackTrace) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>    completer.completeError(error, stackTrace);</code>
-        </line>
-        <line>
-            <code>  });</code>
-        </line>
-        <line hits="1">
-            <code>  return completer.future;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [_VmChannel] from a [SendPort].</code>
-        </line>
-        <line hits="1">
-            <code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code>
-        </line>
-        <line hits="1">
-            <code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    (channelInfo == null)</code>
-        </line>
-        <line>
-            <code>        ? null</code>
-        </line>
-        <line hits="2">
-            <code>        : (_VmWorkerChannel._().._sendPort = channelInfo);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../../"/>
-    <base href="../../"/>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89320385" lines-covered="92" lines-valid="103" package="/src/native" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:async';</code>
+</line>
+<line>
+<code>import 'dart:isolate';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import '../_stream_wrapper.dart';</code>
+</line>
+<line>
+<code>import '../cancellation_token.dart';</code>
+</line>
+<line>
+<code>import '../channel.dart' show Channel, WorkerChannel;</code>
+</line>
+<line>
+<code>import '../squadron.dart';</code>
+</line>
+<line>
+<code>import '../squadron_exception.dart';</code>
+</line>
+<line>
+<code>import '../worker_exception.dart';</code>
+</line>
+<line>
+<code>import '../worker_request.dart';</code>
+</line>
+<line>
+<code>import '../worker_response.dart';</code>
+</line>
+<line>
+<code>import '../worker_service.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>class _SendPort {</code>
+</line>
+<line>
+<code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]</code>
+</line>
+<line>
+<code>  /// to return values to the client.</code>
+</line>
+<line>
+<code>  SendPort? _sendPort;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [Channel] serialization in Native world returns the [SendPort].</code>
+</line>
+<line hits="2">
+<code>  dynamic serialize() =&gt; _sendPort;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  void _postRequest(WorkerRequest req) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    req.cancelToken?.ensureStarted();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final message = req.serialize();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    try {</code>
+</line>
+<line hits="2">
+<code>      _sendPort?.send(message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line hits="2">
+<code>      Squadron.severe('failed to post request $message: error $ex');</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      rethrow;</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  void _postResponse(WorkerResponse res) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final message = res.serialize();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    try {</code>
+</line>
+<line hits="2">
+<code>      _sendPort!.send(message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line hits="2">
+<code>      Squadron.severe('failed to post response $message: error $ex');</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      rethrow;</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// [Channel] implementation for the Native world.</code>
+</line>
+<line>
+<code>class _VmChannel extends _SendPort implements Channel {</code>
+</line>
+<line hits="1">
+<code>  _VmChannel._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [Channel] sharing in Native world returns the same instance.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  Channel share() =&gt; this;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a termination [WorkerRequest] to the [Isolate] and clears the [SendPort].</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  FutureOr close() {</code>
+</line>
+<line hits="1">
+<code>    if (_sendPort != null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      _postRequest(WorkerRequest.stop());</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _sendPort = null;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is</code>
+</line>
+<line>
+<code>  /// cancelled.</code>
+</line>
+<line hits="0">
+<code>  @override</code>
+</line>
+<line>
+<code>  void notifyCancellation(CancellationToken token) {</code>
+</line>
+<line hits="0">
+<code>    if (token.cancelled) {</code>
+</line>
+<line hits="0">
+<code>      _postRequest(WorkerRequest.cancel(token));</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single</code>
+</line>
+<line>
+<code>  /// value from the [Isolate]</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {CancellationToken? token}) async {</code>
+</line>
+<line hits="1">
+<code>    final receiver = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    final canceller =</code>
+</line>
+<line hits="0">
+<code>        (token == null) ? Channel.noop : () =&gt; notifyCancellation(token);</code>
+</line>
+<line>
+<code>    try {</code>
+</line>
+<line hits="3">
+<code>      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      final message = await receiver.first</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>          .whenComplete(() =&gt; token?.removeListener(canceller));</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      final res = WorkerResponse.deserialize(message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      return res.result as T;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } finally {</code>
+</line>
+<line hits="1">
+<code>      token?.removeListener(canceller);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      receiver.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of</code>
+</line>
+<line>
+<code>  /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
+</line>
+<line>
+<code>      {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {</code>
+</line>
+<line hits="1">
+<code>    final receiver = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      WorkerRequest(receiver.sendPort, command, args, token),</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _postRequest,</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      receiver,</code>
+</line>
+<line hits="1">
+<code>      () {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        receiver.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        onDone();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      },</code>
+</line>
+<line>
+<code>      token,</code>
+</line>
+<line>
+<code>    );</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>    return wrapper.stream;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// [WorkerChannel] implementation for the native world.</code>
+</line>
+<line>
+<code>class _VmWorkerChannel extends _SendPort implements WorkerChannel {</code>
+</line>
+<line hits="1">
+<code>  _VmWorkerChannel._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon</code>
+</line>
+<line>
+<code>  /// startup.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  void connect(Object channelInfo) {</code>
+</line>
+<line hits="1">
+<code>    if (channelInfo is ReceivePort) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      reply(channelInfo.sendPort);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } else {</code>
+</line>
+<line hits="0">
+<code>      throw WorkerException(</code>
+</line>
+<line hits="0">
+<code>          'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the</code>
+</line>
+<line>
+<code>  /// [Worker] that the stream has been cancelled on the client-side.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  void connectStream(int streamId) {</code>
+</line>
+<line hits="1">
+<code>    reply(streamId);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+</line>
+<line>
+<code>  /// [Isolate] only.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse(data));</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a</code>
+</line>
+<line>
+<code>  /// [ReceivePort].</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  bool canStream(Stream stream) =&gt; stream is! ReceivePort;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  void error(SquadronException error) {</code>
+</line>
+<line hits="2">
+<code>    Squadron.finer('replying with error: $error');</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    _postResponse(WorkerResponse.withError(error));</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Stub implementations.</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>int _counter = 0;</code>
+</line>
+<line hits="1">
+<code>String _getId() {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  _counter++;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  return '${Squadron.id}.$_counter';</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
+</line>
+<line>
+<code>/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code>
+</line>
+<line hits="1">
+<code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) async {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  final completer = Completer&lt;Channel&gt;();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  final channel = _VmChannel._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  final receiver = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  Isolate.spawn(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>          entryPoint,</code>
+</line>
+<line hits="3">
+<code>          WorkerRequest.start(receiver.sendPort, _getId(), startArguments)</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>              .serialize(),</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>          paused: true)</code>
+</line>
+<line hits="2">
+<code>      .then((isolate) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final exitPort = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    exitPort.listen((message) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      channel.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    });</code>
+</line>
+<line hits="2">
+<code>    isolate.addOnExitListener(exitPort.sendPort);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final errorPort = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    errorPort.listen((message) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      dynamic error = message[0];</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      if (error is String) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        error = SquadronException.fromString(error);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line hits="1">
+<code>      if (error is! SquadronException) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>        error = SquadronException.from(</code>
+</line>
+<line hits="0">
+<code>            error: message[0] ?? 'unspecified error',</code>
+</line>
+<line hits="0">
+<code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line hits="1">
+<code>      if (!completer.isCompleted) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        completer.completeError(error);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      } else {</code>
+</line>
+<line hits="0">
+<code>        Squadron.warning('unhandled error $error');</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    });</code>
+</line>
+<line hits="2">
+<code>    isolate.addErrorListener(errorPort.sendPort);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    isolate.resume(isolate.pauseCapability!);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>    Squadron.config('created Isolate #${isolate.hashCode}');</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>    receiver.first.then((message) {</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      final response = WorkerResponse.deserialize(message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      if (!completer.isCompleted) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        if (response.hasError) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          isolate.kill(priority: Isolate.immediate);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          Squadron.severe(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>              'connection to Isolate #${isolate.hashCode} failed: ${response.error}');</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>          completer.completeError(response.error!, response.error!.stackTrace);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        } else {</code>
+</line>
+<line hits="2">
+<code>          channel._sendPort = response.result;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>          Squadron.config('connected to Isolate #${isolate.hashCode}');</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          completer.complete(channel);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        }</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    });</code>
+</line>
+<line hits="1">
+<code>  }).catchError((ex, st) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>    completer.completeError(ex, st);</code>
+</line>
+<line>
+<code>  });</code>
+</line>
+<line hits="1">
+<code>  return completer.future;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Creates a [_VmChannel] from a [SendPort].</code>
+</line>
+<line hits="1">
+<code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code>
+</line>
+<line hits="1">
+<code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    (channelInfo == null)</code>
+</line>
+<line>
+<code>        ? null</code>
+</line>
+<line hits="2">
+<code>        : (_VmWorkerChannel._().._sendPort = channelInfo);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../../"/>
+<base href="../../"/>
 </coverage>

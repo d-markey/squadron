@@ -115,7 +115,7 @@ void poolTests() {
     try {
       await pool.execute((w) => w.throwWorkerException());
       // should never happen
-      expect(false, isTrue);
+      throw Exception('throwWorkerException completed successfully');
     } catch (ex) {
       expect(ex, isA<WorkerException>());
       final wex = ex as WorkerException;
@@ -128,7 +128,7 @@ void poolTests() {
     try {
       await pool.execute((w) => w.throwException());
       // should never happen
-      expect(false, isTrue);
+      throw Exception('throwException completed successfully');
     } catch (ex) {
       expect(ex, isA<WorkerException>());
       final wex = ex as WorkerException;

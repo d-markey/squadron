@@ -73,9 +73,18 @@ class _VmChannel extends _SendPort implements Channel {
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final receiver = ReceivePort();
-    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-    final res = WorkerResponse.deserialize(await receiver.first);
-    return res.result as T;
+    final canceller =
+        (token == null) ? Channel.noop : () => notifyCancellation(token);
+    try {
+      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
+      final message = await receiver.first
+          .whenComplete(() => token?.removeListener(canceller));
+      final res = WorkerResponse.deserialize(message);
+      return res.result as T;
+    } finally {
+      token?.removeListener(canceller);
+      receiver.close();
+    }
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of
@@ -84,9 +93,9 @@ class _VmChannel extends _SendPort implements Channel {
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {
     final receiver = ReceivePort();
-    final req = WorkerRequest(receiver.sendPort, command, args, token);
     final wrapper = StreamWrapper<T>(
-      () => _postRequest(req),
+      WorkerRequest(receiver.sendPort, command, args, token),
+      _postRequest,
       receiver,
       () {
         receiver.close();
@@ -113,6 +122,13 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');
     }
+  }
+
+  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the
+  /// [Worker] that the stream has been cancelled on the client-side.
+  @override
+  void connectStream(int streamId) {
+    reply(streamId);
   }
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the

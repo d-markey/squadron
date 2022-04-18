@@ -1,504 +1,500 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.704918" lines-covered="43" lines-valid="61" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code>import 'dart:convert';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import 'squadron_exception.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Exception to keep track of errors encountered in a worker.</code>
-        </line>
-        <line>
-            <code>class WorkerException implements SquadronException {</code>
-        </line>
-        <line>
-            <code>  /// Creates a new [WorkerException] to capture error context.</code>
-        </line>
-        <line hits="2">
-            <code>  WorkerException(this.message,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {StackTrace? stackTrace, String? workerId, int? command})</code>
-        </line>
-        <line hits="2">
-            <code>      : _stackTrace = stackTrace ?? StackTrace.current,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        _workerId = workerId,</code>
-        </line>
-        <line hits="1">
-            <code>        _command = command;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$message = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$stackTrace = 2;</code>
-        </line>
-        <line>
-            <code>  static const _$workerId = 3;</code>
-        </line>
-        <line>
-            <code>  static const _$command = 4;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$typeMarker = '\$W';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  List serialize() =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static WorkerException? deserialize(List data) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      (data[_$type] == _$typeMarker)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          ? WorkerException(data[_$message],</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              workerId: data[_$workerId],</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              command: data[_$command])</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          : null;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Message.</code>
-        </line>
-        <line>
-            <code>  final String message;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Stack trace associated to the original exception.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  StackTrace? _stackTrace;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Worker ID.</code>
-        </line>
-        <line hits="2">
-            <code>  String? get workerId =&gt; _workerId;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  String? _workerId;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Command.</code>
-        </line>
-        <line hits="2">
-            <code>  int? get command =&gt; _command;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  int? _command;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  String toString() =&gt; jsonEncode(serialize());</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Exception to keep track of task cancellation.</code>
-        </line>
-        <line>
-            <code>class CancelledException extends WorkerException {</code>
-        </line>
-        <line hits="2">
-            <code>  CancelledException(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {String? message, StackTrace? stackTrace, String? workerId, int? command})</code>
-        </line>
-        <line hits="1">
-            <code>      : super(message ?? 'The task has been cancelled',</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            stackTrace: stackTrace, workerId: workerId, command: command);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$message = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$stackTrace = 2;</code>
-        </line>
-        <line>
-            <code>  static const _$workerId = 3;</code>
-        </line>
-        <line>
-            <code>  static const _$command = 4;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$typeMarker = '\$C';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>  List serialize() =&gt;</code>
-        </line>
-        <line hits="6">
-            <code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static CancelledException? deserialize(List data) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      (data[_$type] == _$typeMarker)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          ? CancelledException(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              message: data[_$message],</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              workerId: data[_$workerId],</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              command: data[_$command])</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          : null;</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Exception to keep track of task timeouts.</code>
-        </line>
-        <line>
-            <code>class TaskTimeoutException extends CancelledException</code>
-        </line>
-        <line>
-            <code>    implements TimeoutException {</code>
-        </line>
-        <line>
-            <code>  /// Creates a new [TaskTimeoutException].</code>
-        </line>
-        <line hits="2">
-            <code>  TaskTimeoutException(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {String? message,</code>
-        </line>
-        <line>
-            <code>      StackTrace? stackTrace,</code>
-        </line>
-        <line>
-            <code>      String? workerId,</code>
-        </line>
-        <line>
-            <code>      int? command,</code>
-        </line>
-        <line>
-            <code>      this.duration})</code>
-        </line>
-        <line hits="1">
-            <code>      : super(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>            message: message ?? 'The task timed out',</code>
-        </line>
-        <line>
-            <code>            stackTrace: stackTrace,</code>
-        </line>
-        <line>
-            <code>            workerId: workerId,</code>
-        </line>
-        <line hits="1">
-            <code>            command: command);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$message = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$stackTrace = 2;</code>
-        </line>
-        <line>
-            <code>  static const _$workerId = 3;</code>
-        </line>
-        <line>
-            <code>  static const _$command = 4;</code>
-        </line>
-        <line>
-            <code>  static const _$duration = 5;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$typeMarker = '\$T';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  List serialize() =&gt; [</code>
-        </line>
-        <line>
-            <code>        _$typeMarker,</code>
-        </line>
-        <line hits="0">
-            <code>        message,</code>
-        </line>
-        <line hits="0">
-            <code>        _stackTrace?.toString(),</code>
-        </line>
-        <line hits="0">
-            <code>        _workerId,</code>
-        </line>
-        <line hits="0">
-            <code>        _command,</code>
-        </line>
-        <line hits="0">
-            <code>        duration?.inMicroseconds</code>
-        </line>
-        <line hits="0">
-            <code>      ];</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  final Duration? duration;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static TaskTimeoutException? deserialize(List data) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      (data[_$type] == _$typeMarker)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>          ? TaskTimeoutException(</code>
-        </line>
-        <line hits="0">
-            <code>              message: data[_$message],</code>
-        </line>
-        <line hits="0">
-            <code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
-        </line>
-        <line hits="0">
-            <code>              workerId: data[_$workerId],</code>
-        </line>
-        <line hits="0">
-            <code>              command: data[_$command],</code>
-        </line>
-        <line hits="0">
-            <code>              duration: (data[_$duration] == null)</code>
-        </line>
-        <line>
-            <code>                  ? null</code>
-        </line>
-        <line hits="0">
-            <code>                  : Duration(microseconds: data[_$duration]))</code>
-        </line>
-        <line>
-            <code>          : null;</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>// private implementation internal to Squadron</code>
-        </line>
-        <line>
-            <code>extension WorkerExceptionExt on WorkerException {</code>
-        </line>
-        <line hits="2">
-            <code>  WorkerException withWorkerId(String? workerId) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    _workerId ??= workerId;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    return this;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  WorkerException withCommand(int? command) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    _command ??= command;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    return this;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  WorkerException withStackTrace(StackTrace? stackTrace) {</code>
-        </line>
-        <line hits="0">
-            <code>    _stackTrace ??= stackTrace;</code>
-        </line>
-        <line>
-            <code>    return this;</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.59016395" lines-covered="36" lines-valid="61" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:async';</code>
+</line>
+<line>
+<code>import 'dart:convert';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import 'squadron_exception.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Exception to keep track of errors encountered in a worker.</code>
+</line>
+<line>
+<code>class WorkerException implements SquadronException {</code>
+</line>
+<line>
+<code>  /// Creates a new [WorkerException] to capture error context.</code>
+</line>
+<line hits="2">
+<code>  WorkerException(this.message,</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {StackTrace? stackTrace, String? workerId, int? command})</code>
+</line>
+<line hits="2">
+<code>      : _stackTrace = stackTrace ?? StackTrace.current,</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        _workerId = workerId,</code>
+</line>
+<line hits="1">
+<code>        _command = command;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$type = 0;</code>
+</line>
+<line>
+<code>  static const _$message = 1;</code>
+</line>
+<line>
+<code>  static const _$stackTrace = 2;</code>
+</line>
+<line>
+<code>  static const _$workerId = 3;</code>
+</line>
+<line>
+<code>  static const _$command = 4;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$typeMarker = '\$W';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  List serialize() =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="7">
+<code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
+<hit count="7" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static WorkerException? deserialize(List data) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      (data[_$type] == _$typeMarker)</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>          ? WorkerException(data[_$message],</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>              workerId: data[_$workerId],</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>              command: data[_$command])</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>          : null;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Message.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  final String message;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Stack trace associated to the original exception.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  StackTrace? _stackTrace;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Worker ID.</code>
+</line>
+<line hits="2">
+<code>  String? get workerId =&gt; _workerId;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  String? _workerId;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Command.</code>
+</line>
+<line hits="2">
+<code>  int? get command =&gt; _command;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  int? _command;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>  String toString() =&gt; jsonEncode(serialize());</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Exception to keep track of task cancellation.</code>
+</line>
+<line>
+<code>class CancelledException extends WorkerException {</code>
+</line>
+<line hits="2">
+<code>  CancelledException(</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {String? message, StackTrace? stackTrace, String? workerId, int? command})</code>
+</line>
+<line hits="1">
+<code>      : super(message ?? 'The task has been cancelled',</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>            stackTrace: stackTrace, workerId: workerId, command: command);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$type = 0;</code>
+</line>
+<line>
+<code>  static const _$message = 1;</code>
+</line>
+<line>
+<code>  static const _$stackTrace = 2;</code>
+</line>
+<line>
+<code>  static const _$workerId = 3;</code>
+</line>
+<line>
+<code>  static const _$command = 4;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$typeMarker = '\$C';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>  @override</code>
+</line>
+<line hits="0">
+<code>  List serialize() =&gt;</code>
+</line>
+<line hits="0">
+<code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static CancelledException? deserialize(List data) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      (data[_$type] == _$typeMarker)</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>          ? CancelledException(</code>
+</line>
+<line hits="0">
+<code>              message: data[_$message],</code>
+</line>
+<line hits="0">
+<code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
+</line>
+<line hits="0">
+<code>              workerId: data[_$workerId],</code>
+</line>
+<line hits="0">
+<code>              command: data[_$command])</code>
+</line>
+<line>
+<code>          : null;</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Exception to keep track of task timeouts.</code>
+</line>
+<line>
+<code>class TaskTimeoutException extends CancelledException</code>
+</line>
+<line>
+<code>    implements TimeoutException {</code>
+</line>
+<line>
+<code>  /// Creates a new [TaskTimeoutException].</code>
+</line>
+<line hits="2">
+<code>  TaskTimeoutException(</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {String? message,</code>
+</line>
+<line>
+<code>      StackTrace? stackTrace,</code>
+</line>
+<line>
+<code>      String? workerId,</code>
+</line>
+<line>
+<code>      int? command,</code>
+</line>
+<line>
+<code>      this.duration})</code>
+</line>
+<line hits="1">
+<code>      : super(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>            message: message ?? 'The task timed out',</code>
+</line>
+<line>
+<code>            stackTrace: stackTrace,</code>
+</line>
+<line>
+<code>            workerId: workerId,</code>
+</line>
+<line hits="1">
+<code>            command: command);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$type = 0;</code>
+</line>
+<line>
+<code>  static const _$message = 1;</code>
+</line>
+<line>
+<code>  static const _$stackTrace = 2;</code>
+</line>
+<line>
+<code>  static const _$workerId = 3;</code>
+</line>
+<line>
+<code>  static const _$command = 4;</code>
+</line>
+<line>
+<code>  static const _$duration = 5;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$typeMarker = '\$T';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>  @override</code>
+</line>
+<line hits="0">
+<code>  List serialize() =&gt; [</code>
+</line>
+<line>
+<code>        _$typeMarker,</code>
+</line>
+<line hits="0">
+<code>        message,</code>
+</line>
+<line hits="0">
+<code>        _stackTrace?.toString(),</code>
+</line>
+<line hits="0">
+<code>        _workerId,</code>
+</line>
+<line hits="0">
+<code>        _command,</code>
+</line>
+<line hits="0">
+<code>        duration?.inMicroseconds</code>
+</line>
+<line hits="0">
+<code>      ];</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  final Duration? duration;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static TaskTimeoutException? deserialize(List data) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      (data[_$type] == _$typeMarker)</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>          ? TaskTimeoutException(</code>
+</line>
+<line hits="0">
+<code>              message: data[_$message],</code>
+</line>
+<line hits="0">
+<code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code>
+</line>
+<line hits="0">
+<code>              workerId: data[_$workerId],</code>
+</line>
+<line hits="0">
+<code>              command: data[_$command],</code>
+</line>
+<line hits="0">
+<code>              duration: (data[_$duration] == null)</code>
+</line>
+<line>
+<code>                  ? null</code>
+</line>
+<line hits="0">
+<code>                  : Duration(microseconds: data[_$duration]))</code>
+</line>
+<line>
+<code>          : null;</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>// private implementation internal to Squadron</code>
+</line>
+<line>
+<code>extension WorkerExceptionExt on WorkerException {</code>
+</line>
+<line hits="2">
+<code>  WorkerException withWorkerId(String? workerId) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    _workerId ??= workerId;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    return this;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  WorkerException withCommand(int? command) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    _command ??= command;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    return this;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>  WorkerException withStackTrace(StackTrace? stackTrace) {</code>
+</line>
+<line hits="0">
+<code>    _stackTrace ??= stackTrace;</code>
+</line>
+<line>
+<code>    return this;</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

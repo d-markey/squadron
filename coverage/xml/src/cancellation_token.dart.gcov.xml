@@ -1,159 +1,159 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'squadron_error.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_exception.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_request.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_service.dart' show SquadronCallback;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Cancellation token used in platform workers. These tokens are not designed to be cancelled or listened to by</code>
-        </line>
-        <line>
-            <code>/// holders. Instead, worker services receiving a [CancellationToken] should verify the token's [cancelled] status</code>
-        </line>
-        <line>
-            <code>/// and stop processing if the flag is set to [true].</code>
-        </line>
-        <line>
-            <code>class CancellationToken {</code>
-        </line>
-        <line hits="1">
-            <code>  CancellationToken(this.id, [String? message]) : _message = message;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$token = 'a';</code>
-        </line>
-        <line>
-            <code>  static const _$message = 'b';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Deseralization of a [CancellationToken]</code>
-        </line>
-        <line hits="1">
-            <code>  static CancellationToken? deserialize(Map? token) =&gt; (token == null)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      ? null</code>
-        </line>
-        <line hits="3">
-            <code>      : CancellationToken(token[_$token], token[_$message]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// The token's id</code>
-        </line>
-        <line>
-            <code>  final int id;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Flag indicating whether the token was cancelled or not.</code>
-        </line>
-        <line hits="3">
-            <code>  bool get cancelled =&gt; exception != null;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Exception to be thrown upon cancellation</code>
-        </line>
-        <line hits="0">
-            <code>  CancelledException? get exception =&gt; null;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Message associated with the token.</code>
-        </line>
-        <line hits="3">
-            <code>  String? get message =&gt; _message;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  final String? _message;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Seralization of a [CancellationToken]</code>
-        </line>
-        <line hits="5">
-            <code>  Map serialize() =&gt; {_$token: id, _$message: _message};</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that</code>
-        </line>
-        <line>
-            <code>  /// need to cancel automatically.</code>
-        </line>
-        <line hits="2">
-            <code>  void start() {}</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not</code>
-        </line>
-        <line>
-            <code>  /// designed to be listened to, it always throws a [SquadronError].</code>
-        </line>
-        <line hits="1">
-            <code>  void addListener(SquadronCallback listener) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      throw newSquadronError('CancellationToken may not be listened to');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Unregisters a listener that has been installed with [addListener].</code>
-        </line>
-        <line hits="1">
-            <code>  void removeListener(SquadronCallback listener) {}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'squadron_error.dart';</code>
+</line>
+<line>
+<code>import 'worker_exception.dart';</code>
+</line>
+<line>
+<code>import 'worker_request.dart';</code>
+</line>
+<line>
+<code>import 'worker_service.dart' show SquadronCallback;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Cancellation token used in platform workers. These tokens are not designed to be cancelled or listened to by</code>
+</line>
+<line>
+<code>/// holders. Instead, worker services receiving a [CancellationToken] should verify the token's [cancelled] status</code>
+</line>
+<line>
+<code>/// and stop processing if the flag is set to [true].</code>
+</line>
+<line>
+<code>class CancellationToken {</code>
+</line>
+<line hits="1">
+<code>  CancellationToken(this.id, [String? message]) : _message = message;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$token = 'a';</code>
+</line>
+<line>
+<code>  static const _$message = 'b';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Deseralization of a [CancellationToken]</code>
+</line>
+<line hits="1">
+<code>  static CancellationToken? deserialize(Map? token) =&gt; (token == null)</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      ? null</code>
+</line>
+<line hits="3">
+<code>      : CancellationToken(token[_$token], token[_$message]);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// The token's id</code>
+</line>
+<line>
+<code>  final int id;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Flag indicating whether the token was cancelled or not.</code>
+</line>
+<line hits="3">
+<code>  bool get cancelled =&gt; exception != null;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Exception to be thrown upon cancellation</code>
+</line>
+<line hits="0">
+<code>  CancelledException? get exception =&gt; null;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Message associated with the token.</code>
+</line>
+<line hits="3">
+<code>  String? get message =&gt; _message;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  final String? _message;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Seralization of a [CancellationToken]</code>
+</line>
+<line hits="5">
+<code>  Map serialize() =&gt; {_$token: id, _$message: _message};</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that</code>
+</line>
+<line>
+<code>  /// need to cancel automatically.</code>
+</line>
+<line hits="2">
+<code>  void ensureStarted() {}</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not</code>
+</line>
+<line>
+<code>  /// designed to be listened to, it always throws a [SquadronError].</code>
+</line>
+<line hits="1">
+<code>  void addListener(SquadronCallback listener) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      throw newSquadronError('CancellationToken may not be listened to');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Unregisters a listener that has been installed with [addListener].</code>
+</line>
+<line hits="1">
+<code>  void removeListener(SquadronCallback listener) {}</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

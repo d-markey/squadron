@@ -85,9 +85,9 @@ abstract class Worker implements WorkerService {
   Channel? _channel;
   Future<Channel>? _channelRequest;
 
-  SquadronCallback _canceller(CancellationToken? token) => (token == null)
-      ? Channel.noop
-      : () => _channel?.notifyCancellation(token);
+  // SquadronCallback _canceller(CancellationToken? token) => (token == null)
+  //     ? Channel.noop
+  //     : () => _channel?.notifyCancellation(token);
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
@@ -106,12 +106,12 @@ abstract class Worker implements WorkerService {
       channel = await start();
     }
 
-    final canceller = _canceller(token);
+    // final canceller = _canceller(token);
     SquadronException? error = token?.exception;
     if (error == null) {
       try {
         // send request and return response
-        token?.addListener(canceller);
+        // token?.addListener(canceller);
         return await channel.sendRequest<T>(command, args, token: token);
       } on CancelledException catch (e) {
         error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
@@ -122,7 +122,7 @@ abstract class Worker implements WorkerService {
         // update stats
         _workload--;
         _totalWorkload++;
-        token?.removeListener(canceller);
+        // token?.removeListener(canceller);
         _idle = DateTime.now().microsecondsSinceEpoch;
       }
     }
@@ -140,16 +140,13 @@ abstract class Worker implements WorkerService {
       _maxWorkload = _workload;
     }
 
-    final canceller = _canceller(token);
-    token?.addListener(canceller);
-
     bool done = false;
     void onDone() {
       if (!done) {
         done = true;
         _workload--;
         _totalWorkload++;
-        token?.removeListener(canceller);
+        // token?.removeListener(canceller);
         _idle = DateTime.now().microsecondsSinceEpoch;
       }
     }

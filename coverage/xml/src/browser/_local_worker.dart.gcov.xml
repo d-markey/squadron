@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="11" lines-valid="11" package="/src/browser" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:html' as web;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import '../_worker_runner.dart';</code>
-        </line>
-        <line>
-            <code>import '../channel.dart';</code>
-        </line>
-        <line>
-            <code>import '../local_worker.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_service.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>class _JsLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code>
-        </line>
-        <line hits="1">
-            <code>  _JsLocalWorker._(W service) : super(service) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    final runner = WorkerRunner.use(service);</code>
-        </line>
-        <line hits="1">
-            <code>    _port.port1.onMessage.listen((event) =&gt; runner.processMessage(event.data));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final _port = web.MessageChannel();</code>
-        </line>
-        <line hits="1">
-            <code>  late Channel? _channel = Channel.deserialize(_port.port2);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  Channel? get channel =&gt; _channel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  void stop() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _port.port1.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _port.port2.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _channel?.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    _channel = null;</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [LocalWorker] on a browser platform.</code>
-        </line>
-        <line>
-            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(W service) =&gt;</code>
-        </line>
-        <line hits="1">
-            <code>    _JsLocalWorker._(service);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../../"/>
-    <base href="../../"/>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="11" lines-valid="11" package="/src/browser" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:html' as web;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import '../_worker_runner.dart';</code>
+</line>
+<line>
+<code>import '../channel.dart';</code>
+</line>
+<line>
+<code>import '../local_worker.dart';</code>
+</line>
+<line>
+<code>import '../worker_service.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>class _JsLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code>
+</line>
+<line hits="1">
+<code>  _JsLocalWorker._(W service) : super(service) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    final runner = WorkerRunner.use(service);</code>
+</line>
+<line hits="1">
+<code>    _port.port1.onMessage.listen((event) =&gt; runner.processMessage(event.data));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  final _port = web.MessageChannel();</code>
+</line>
+<line hits="1">
+<code>  late Channel? _channel = Channel.deserialize(_port.port2);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  Channel? get channel =&gt; _channel;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  void stop() {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _port.port1.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _port.port2.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _channel?.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    _channel = null;</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Creates a [LocalWorker] on a browser platform.</code>
+</line>
+<line>
+<code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(W service) =&gt;</code>
+</line>
+<line hits="1">
+<code>    _JsLocalWorker._(service);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../../"/>
+<base href="../../"/>
 </coverage>

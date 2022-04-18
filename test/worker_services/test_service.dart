@@ -69,8 +69,6 @@ class TestService implements WorkerService {
     int paused = 0;
     Completer? resumeSignal;
 
-    print(token.runtimeType);
-
     void onListen() async {
       int i = 0;
       while (true) {
@@ -104,13 +102,7 @@ class TestService implements WorkerService {
     }
 
     controller = StreamController(
-      onListen: onListen,
-      onPause: onPause,
-      onResume: onResume,
-      onCancel: () {
-        print('infinite done');
-      }
-    );
+        onListen: onListen, onPause: onPause, onResume: onResume);
 
     return controller.stream;
   }

@@ -1,154 +1,157 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="17" lines-valid="17" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:convert';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import 'squadron_exception.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Squadron Error</code>
-        </line>
-        <line>
-            <code>class SquadronError extends Error implements SquadronException {</code>
-        </line>
-        <line hits="2">
-            <code>  SquadronError._(this.message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _localStackTrace = super.stackTrace;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Message (or string representation of the exception).</code>
-        </line>
-        <line>
-            <code>  final String message;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$message = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$stackTrace = 2;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$typeMarker = '\$';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>  List serialize() =&gt; [_$typeMarker, message, stackTrace?.toString()];</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  late StackTrace? _localStackTrace;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  StackTrace? _remoteStackTrace;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  StackTrace? get stackTrace =&gt; _remoteStackTrace ?? _localStackTrace;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static SquadronError? deserialize(List data) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    SquadronError? error;</code>
-        </line>
-        <line hits="3">
-            <code>    if (data[_$type] == _$typeMarker) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      error = SquadronError._(data[_$message]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      error._remoteStackTrace =</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          SquadronException.loadStackTrace(data[_$stackTrace]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    return error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  String toString() =&gt; jsonEncode(serialize());</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>SquadronError newSquadronError(String message) =&gt; SquadronError._(message);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="17" lines-valid="17" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:convert';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import 'squadron_exception.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Squadron Error</code>
+</line>
+<line>
+<code>class SquadronError extends Error implements SquadronException {</code>
+</line>
+<line hits="2">
+<code>  SquadronError._(this.message) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>    _localStackTrace = super.stackTrace;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Message (or string representation of the exception).</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  final String message;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$type = 0;</code>
+</line>
+<line>
+<code>  static const _$message = 1;</code>
+</line>
+<line>
+<code>  static const _$stackTrace = 2;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$typeMarker = '\$';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>  List serialize() =&gt; [_$typeMarker, message, stackTrace?.toString()];</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  late StackTrace? _localStackTrace;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  StackTrace? _remoteStackTrace;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>  StackTrace? get stackTrace =&gt; _remoteStackTrace ?? _localStackTrace;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static SquadronError? deserialize(List data) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    SquadronError? error;</code>
+</line>
+<line hits="3">
+<code>    if (data[_$type] == _$typeMarker) {</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      error = SquadronError._(data[_$message]);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      error._remoteStackTrace =</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>          SquadronException.loadStackTrace(data[_$stackTrace]);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    return error;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>  String toString() =&gt; jsonEncode(serialize());</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>SquadronError newSquadronError(String message) =&gt; SquadronError._(message);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

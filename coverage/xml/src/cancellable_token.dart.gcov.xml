@@ -1,160 +1,160 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="cancellable_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95238096" lines-covered="20" lines-valid="21" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'cancellation_token.dart';</code>
-        </line>
-        <line>
-            <code>import '_sequence_id.dart';</code>
-        </line>
-        <line>
-            <code>import 'squadron.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_exception.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_service.dart' show SquadronCallback;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>void _safeInvoke(SquadronCallback? callback) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  try {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (callback != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      callback();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  } catch (e) {</code>
-        </line>
-        <line hits="0">
-            <code>    Squadron.warning('notification to listener $callback failed: $e');</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line hits="1">
-            <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Base class for cancellation tokens used by callers of worker services. It implements the logic to register,</code>
-        </line>
-        <line>
-            <code>/// notify and unregister token listeners. This cancellation token can be cancelled programmatically by calling</code>
-        </line>
-        <line>
-            <code>/// [cancel].</code>
-        </line>
-        <line>
-            <code>class CancellableToken extends CancellationToken {</code>
-        </line>
-        <line hits="1">
-            <code>  CancellableToken([String? message])</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      : super(SequenceId.instance.next(), message);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  CancelledException? get exception =&gt; _exception;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  CancelledException? _exception;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Cancels the token and notifies listeners.</code>
-        </line>
-        <line hits="2">
-            <code>  void cancel([CancelledException? exception]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>    _exception ??= exception ?? CancelledException(message: message);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>    _listeners?.toList().forEach(_safeInvoke);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  List&lt;SquadronCallback&gt;? _listeners;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Registers a listener that will be notified when the token is cancelled.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  void addListener(SquadronCallback listener) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>      _listeners = (_listeners ?? &lt;SquadronCallback&gt;[])..add(listener);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  void removeListener(SquadronCallback listener) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      _listeners?.remove(listener);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="cancellable_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95238096" lines-covered="20" lines-valid="21" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'cancellation_token.dart';</code>
+</line>
+<line>
+<code>import '_sequence_id.dart';</code>
+</line>
+<line>
+<code>import 'squadron.dart';</code>
+</line>
+<line>
+<code>import 'worker_exception.dart';</code>
+</line>
+<line>
+<code>import 'worker_service.dart' show SquadronCallback;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>void _safeInvoke(SquadronCallback? callback) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  try {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (callback != null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      callback();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  } catch (e) {</code>
+</line>
+<line hits="0">
+<code>    Squadron.warning('notification to listener $callback failed: $e');</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line hits="1">
+<code>}</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Base class for cancellation tokens used by callers of worker services. It implements the logic to register,</code>
+</line>
+<line>
+<code>/// notify and unregister token listeners. This cancellation token can be cancelled programmatically by calling</code>
+</line>
+<line>
+<code>/// [cancel].</code>
+</line>
+<line>
+<code>class CancellableToken extends CancellationToken {</code>
+</line>
+<line hits="1">
+<code>  CancellableToken([String? message])</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>      : super(SequenceId.instance.next(), message);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  CancelledException? get exception =&gt; _exception;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  CancelledException? _exception;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Cancels the token and notifies listeners.</code>
+</line>
+<line hits="2">
+<code>  void cancel([CancelledException? exception]) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>    _exception ??= exception ?? CancelledException(message: message);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>    _listeners?.toList().forEach(_safeInvoke);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  List&lt;SquadronCallback&gt;? _listeners;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Registers a listener that will be notified when the token is cancelled.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  void addListener(SquadronCallback listener) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>      _listeners = (_listeners ?? &lt;SquadronCallback&gt;[])..add(listener);</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  void removeListener(SquadronCallback listener) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      _listeners?.remove(listener);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

@@ -1,652 +1,652 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="local_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93877554" lines-covered="92" lines-valid="98" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import 'channel.dart';</code>
-        </line>
-        <line>
-            <code>import 'local_worker.dart';</code>
-        </line>
-        <line>
-            <code>import 'local_worker_client.dart';</code>
-        </line>
-        <line>
-            <code>import 'squadron.dart';</code>
-        </line>
-        <line>
-            <code>import 'squadron_logger.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_service.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// A [SquadronLogger] that also implements [WorkerService]. This logger wraps around a [BaseSquadronLogger]</code>
-        </line>
-        <line>
-            <code>/// responsible for actually logging messages. The point of this logger is to use it as a [LocalWorker] via</code>
-        </line>
-        <line>
-            <code>/// [LocalSquadronLogger.worker] so that workers can use a [LocalSquadronLoggerClient].</code>
-        </line>
-        <line>
-            <code>class LocalSquadronLogger implements SquadronLogger, WorkerService {</code>
-        </line>
-        <line hits="1">
-            <code>  LocalSquadronLogger(this.logger);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final BaseSquadronLogger logger;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  late final LocalWorker&lt;LocalSquadronLogger&gt; worker = LocalWorker.create(this);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="7">
-            <code>  List get connectionInfo =&gt; [worker.channel?.share().serialize(), logLevel];</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  int get logLevel =&gt; logger.logLevel;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  set logLevel(int value) =&gt; logger.logLevel = value;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr _log(int level, dynamic message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    dynamic id;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (message is _LogMessage) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      id = message.id;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      message = message.msg;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="2">
-            <code>    id ??= Squadron.id;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    if (message is Function) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      message = message();</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="2">
-            <code>    if (level &gt;= logLevel) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      final header =</code>
-        </line>
-        <line hits="6">
-            <code>          '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [$id]';</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Iterable&lt;String&gt; lines;</code>
-        </line>
-        <line hits="2">
-            <code>      if (message is Iterable) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>        lines = message</code>
-        </line>
-        <line hits="0">
-            <code>            .map((m) =&gt; m?.toString() ?? '')</code>
-        </line>
-        <line hits="1">
-            <code>            .expand((m) =&gt; m.toString().split('\n'))</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            .where((m) =&gt; m.isNotEmpty);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="6">
-            <code>        lines = message?.toString().split('\n').where((m) =&gt; m.isNotEmpty) ??</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>            const [];</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="3">
-            <code>      for (var line in lines) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>        logger.log('$header $line');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr finest(dynamic message) =&gt; _log(SquadronLogLevel.finest, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr finer(dynamic message) =&gt; _log(SquadronLogLevel.finer, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr fine(dynamic message) =&gt; _log(SquadronLogLevel.fine, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr config(dynamic message) =&gt; _log(SquadronLogLevel.config, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr info(dynamic message) =&gt; _log(SquadronLogLevel.info, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr warning(dynamic message) =&gt; _log(SquadronLogLevel.warning, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr severe(dynamic message) =&gt; _log(SquadronLogLevel.severe, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  FutureOr shout(dynamic message) =&gt; _log(SquadronLogLevel.shout, message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  // use log levels as command IDs</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="3">
-            <code>  late final Map&lt;int, CommandHandler&gt; operations = {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.finest: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        finest(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.finer: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        finer(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6">
-            <code>    SquadronLogLevel.fine: (req) =&gt; fine(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.config: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        config(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6">
-            <code>    SquadronLogLevel.info: (req) =&gt; info(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.warning: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        warning(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.severe: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        severe(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    SquadronLogLevel.shout: (req) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>        shout(_LogMessage.deserialize(req.args[0])),</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  };</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// A [SquadronLogger] bound to a [LocalSquadronLogger]. Workers using this logger can have their log messages</code>
-        </line>
-        <line>
-            <code>/// sent to the [LocalSquadronLogger]. Usefull in Web scenarios where Web Workers typically log to the browser's</code>
-        </line>
-        <line>
-            <code>/// JavaScript console (as opposed to the main app which also logs messages via Dart's debugger).</code>
-        </line>
-        <line>
-            <code>class LocalSquadronLoggerClient extends LocalWorkerClient</code>
-        </line>
-        <line>
-            <code>    implements SquadronLogger {</code>
-        </line>
-        <line hits="2">
-            <code>  LocalSquadronLoggerClient._(Channel channel) : super(channel);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static LocalSquadronLoggerClient? connect(dynamic connectionInfo) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (connectionInfo is List) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      final channel = Channel.deserialize(connectionInfo[0]);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      if (channel != null) {</code>
-        </line>
-        <line hits="1">
-            <code>        final loggerClient = LocalSquadronLoggerClient._(channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        loggerClient.logLevel = connectionInfo[1];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        return loggerClient;</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>    return null;</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  int _logLevel = Squadron.logLevel;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  int get logLevel =&gt; _logLevel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  set logLevel(int value) {</code>
-        </line>
-        <line hits="1">
-            <code>    _logLevel = value;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr _log(int logLevel, dynamic message) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    if (logLevel &gt; _logLevel) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      return send(logLevel, [_LogMessage(message).serialize()]);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr finest(dynamic message) =&gt; _log(SquadronLogLevel.finest, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr finer(dynamic message) =&gt; _log(SquadronLogLevel.finer, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr fine(dynamic message) =&gt; _log(SquadronLogLevel.fine, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr config(dynamic message) =&gt; _log(SquadronLogLevel.config, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr info(dynamic message) =&gt; _log(SquadronLogLevel.info, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr warning(dynamic message) =&gt; _log(SquadronLogLevel.warning, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr severe(dynamic message) =&gt; _log(SquadronLogLevel.severe, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  FutureOr shout(dynamic message) =&gt; _log(SquadronLogLevel.shout, message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>class _LogMessage {</code>
-        </line>
-        <line hits="2">
-            <code>  _LogMessage._(this.id, this.msg);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  _LogMessage(dynamic msg) : this._(Squadron.id, msg);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final String id;</code>
-        </line>
-        <line>
-            <code>  final dynamic msg;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$id = '\$';</code>
-        </line>
-        <line>
-            <code>  static const _$msg = '';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  Map serialize() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    dynamic data = msg;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (data is Function) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      data = msg();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="2">
-            <code>    return {_$id: Squadron.id, _$msg: data};</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  static _LogMessage? deserialize(Map message) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      (message[_$id] is String &amp;&amp; message.containsKey(_$msg))</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>          ? _LogMessage._(message[_$id], message[_$msg])</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          : null;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="local_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93877554" lines-covered="92" lines-valid="98" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:async';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import 'channel.dart';</code>
+</line>
+<line>
+<code>import 'local_worker.dart';</code>
+</line>
+<line>
+<code>import 'local_worker_client.dart';</code>
+</line>
+<line>
+<code>import 'squadron.dart';</code>
+</line>
+<line>
+<code>import 'squadron_logger.dart';</code>
+</line>
+<line>
+<code>import 'worker_service.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// A [SquadronLogger] that also implements [WorkerService]. This logger wraps around a [BaseSquadronLogger]</code>
+</line>
+<line>
+<code>/// responsible for actually logging messages. The point of this logger is to use it as a [LocalWorker] via</code>
+</line>
+<line>
+<code>/// [LocalSquadronLogger.worker] so that workers can use a [LocalSquadronLoggerClient].</code>
+</line>
+<line>
+<code>class LocalSquadronLogger implements SquadronLogger, WorkerService {</code>
+</line>
+<line hits="1">
+<code>  LocalSquadronLogger(this.logger);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  final BaseSquadronLogger logger;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>  late final LocalWorker&lt;LocalSquadronLogger&gt; worker = LocalWorker.create(this);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="7">
+<code>  List get connectionInfo =&gt; [worker.channel?.share().serialize(), logLevel];</code>
+<hit count="7" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>  int get logLevel =&gt; logger.logLevel;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>  @override</code>
+</line>
+<line hits="0">
+<code>  set logLevel(int value) =&gt; logger.logLevel = value;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  FutureOr _log(int level, dynamic message) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    dynamic id;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (message is _LogMessage) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      id = message.id;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      message = message.msg;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="2">
+<code>    id ??= Squadron.id;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    if (message is Function) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      message = message();</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="2">
+<code>    if (level &gt;= logLevel) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      final header =</code>
+</line>
+<line hits="6">
+<code>          '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [$id]';</code>
+<hit count="6" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      Iterable&lt;String&gt; lines;</code>
+</line>
+<line hits="2">
+<code>      if (message is Iterable) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>        lines = message</code>
+</line>
+<line hits="0">
+<code>            .map((m) =&gt; m?.toString() ?? '')</code>
+</line>
+<line hits="1">
+<code>            .expand((m) =&gt; m.toString().split('\n'))</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>            .where((m) =&gt; m.isNotEmpty);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      } else {</code>
+</line>
+<line hits="6">
+<code>        lines = message?.toString().split('\n').where((m) =&gt; m.isNotEmpty) ??</code>
+<hit count="6" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>            const [];</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line hits="3">
+<code>      for (var line in lines) {</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>        logger.log('$header $line');</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr finest(dynamic message) =&gt; _log(SquadronLogLevel.finest, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr finer(dynamic message) =&gt; _log(SquadronLogLevel.finer, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr fine(dynamic message) =&gt; _log(SquadronLogLevel.fine, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr config(dynamic message) =&gt; _log(SquadronLogLevel.config, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr info(dynamic message) =&gt; _log(SquadronLogLevel.info, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr warning(dynamic message) =&gt; _log(SquadronLogLevel.warning, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr severe(dynamic message) =&gt; _log(SquadronLogLevel.severe, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  FutureOr shout(dynamic message) =&gt; _log(SquadronLogLevel.shout, message);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  // use log levels as command IDs</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="3">
+<code>  late final Map&lt;int, CommandHandler&gt; operations = {</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.finest: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        finest(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.finer: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        finer(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="6">
+<code>    SquadronLogLevel.fine: (req) =&gt; fine(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="6" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.config: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        config(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="6">
+<code>    SquadronLogLevel.info: (req) =&gt; info(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="6" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.warning: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        warning(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.severe: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        severe(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    SquadronLogLevel.shout: (req) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>        shout(_LogMessage.deserialize(req.args[0])),</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  };</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// A [SquadronLogger] bound to a [LocalSquadronLogger]. Workers using this logger can have their log messages</code>
+</line>
+<line>
+<code>/// sent to the [LocalSquadronLogger]. Usefull in Web scenarios where Web Workers typically log to the browser's</code>
+</line>
+<line>
+<code>/// JavaScript console (as opposed to the main app which also logs messages via Dart's debugger).</code>
+</line>
+<line>
+<code>class LocalSquadronLoggerClient extends LocalWorkerClient</code>
+</line>
+<line>
+<code>    implements SquadronLogger {</code>
+</line>
+<line hits="2">
+<code>  LocalSquadronLoggerClient._(Channel channel) : super(channel);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static LocalSquadronLoggerClient? connect(dynamic connectionInfo) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (connectionInfo is List) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      final channel = Channel.deserialize(connectionInfo[0]);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      if (channel != null) {</code>
+</line>
+<line hits="1">
+<code>        final loggerClient = LocalSquadronLoggerClient._(channel);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>        loggerClient.logLevel = connectionInfo[1];</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        return loggerClient;</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>    return null;</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  int _logLevel = Squadron.logLevel;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  int get logLevel =&gt; _logLevel;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  set logLevel(int value) {</code>
+</line>
+<line hits="1">
+<code>    _logLevel = value;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  FutureOr _log(int logLevel, dynamic message) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    if (logLevel &gt; _logLevel) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>      return send(logLevel, [_LogMessage(message).serialize()]);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr finest(dynamic message) =&gt; _log(SquadronLogLevel.finest, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr finer(dynamic message) =&gt; _log(SquadronLogLevel.finer, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr fine(dynamic message) =&gt; _log(SquadronLogLevel.fine, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr config(dynamic message) =&gt; _log(SquadronLogLevel.config, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr info(dynamic message) =&gt; _log(SquadronLogLevel.info, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr warning(dynamic message) =&gt; _log(SquadronLogLevel.warning, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr severe(dynamic message) =&gt; _log(SquadronLogLevel.severe, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  FutureOr shout(dynamic message) =&gt; _log(SquadronLogLevel.shout, message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>class _LogMessage {</code>
+</line>
+<line hits="2">
+<code>  _LogMessage._(this.id, this.msg);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>  _LogMessage(dynamic msg) : this._(Squadron.id, msg);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  final String id;</code>
+</line>
+<line>
+<code>  final dynamic msg;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  static const _$id = '\$';</code>
+</line>
+<line>
+<code>  static const _$msg = '';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  Map serialize() {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    dynamic data = msg;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (data is Function) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      data = msg();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="2">
+<code>    return {_$id: Squadron.id, _$msg: data};</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  static _LogMessage? deserialize(Map message) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>      (message[_$id] is String &amp;&amp; message.containsKey(_$msg))</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>          ? _LogMessage._(message[_$id], message[_$msg])</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          : null;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

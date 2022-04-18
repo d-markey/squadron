@@ -63,10 +63,9 @@ void workerTests() {
     await Future.delayed(Duration(milliseconds: 5));
 
     try {
-      final channel = await dummy.start();
+      await dummy.start();
       // should never happen
-      expect(channel, isNull);
-      expect(channel, isNotNull);
+      throw Exception('stopped channel restarted successfully');
     } catch (ex) {
       expect(ex, isA<WorkerException>());
     }
@@ -410,16 +409,15 @@ void workerTests() {
     try {
       await rogue.throwCustomException();
       // should never happen
-      expect(false, isTrue);
-    } on CustomException catch (e) {
-      // expected exception
-      expect(e.message, contains('intentional CUSTOM exception'));
-      expect(e.stackTrace?.toString(), contains('throwCustomException'));
-      expect(e.workerId, isNotNull);
-      expect(e.command, equals(RogueService.customExceptionCommand));
+      throw Exception('throwCustomException() completed successfully');
     } catch (e) {
-      // should never happen
-      expect(false, isTrue);
+      // expected exception
+      expect(e, isA<CustomException>());
+      final ex = e as CustomException;
+      expect(ex.message, contains('intentional CUSTOM exception'));
+      expect(ex.stackTrace?.toString(), contains('throwCustomException'));
+      expect(ex.workerId, isNotNull);
+      expect(ex.command, equals(RogueService.customExceptionCommand));
     }
     expect(rogue.stats.totalErrors, equals(1));
 
@@ -500,32 +498,50 @@ void workerTests() {
 
   test('- stream with multiple errors - cancelOnError: true', () async {
     final testWorker = TestWorker();
+    await testWorker.start();
 
     final token = CancellableToken('by request');
 
-    final done = Completer();
     final numbers = <int>[];
-    final errors = <SquadronException>[];
 
-    testWorker.infiniteWithErrors(token).listen(
-          (number) => numbers.add(number),
-          onError: (ex) {
-            errors.add(ex);
-            if (errors.length > 3) {
-              token.cancel();
-            }
-          },
-          onDone: () => done.complete(),
-          cancelOnError: true,
-        );
+    try {
+      await testWorker
+          .infiniteWithErrors(token)
+          .listen(
+            (number) => numbers.add(number),
+            cancelOnError: true,
+          )
+          .asFuture();
+      throw Exception('infiniteWithErrors() completed successfully');
+    } catch (e) {
+      expect(e, isA<WorkerException>());
+      final ex = e as WorkerException;
+      expect(ex.message, contains('error #'));
+    }
 
-    await done.future;
+    expect(numbers, equals([0, 1, 2]));
+  });
 
-    expect(numbers.length, greaterThan(3 * 2));
-    expect(errors.length, equals(1));
-    expect(
-        errors.where((e) => e.message.contains('error #')).length, equals(1));
-    expect(errors.where((e) => e.message == token.message).length, isZero);
+  test('- stream with multiple errors - await for', () async {
+    final testWorker = TestWorker();
+    await testWorker.start();
+
+    final token = CancellableToken('by request');
+
+    final numbers = <int>[];
+
+    try {
+      await for (var number in testWorker.infiniteWithErrors(token)) {
+        numbers.add(number);
+      }
+      throw Exception('infiniteWithErrors() completed successfully');
+    } catch (e) {
+      expect(e, isA<WorkerException>());
+      final ex = e as WorkerException;
+      expect(ex.message, contains('error #'));
+    }
+
+    expect(numbers, equals([0, 1, 2]));
   });
 
   test('- failing worker', () async {
@@ -555,10 +571,10 @@ void workerTests() {
 
     try {
       final untransferable = getUntransferable();
-      final result = await rogue.forward(untransferable);
+      await rogue.forward(untransferable);
       // should never happen
-      expect(result, isNull);
-      expect(result, isNotNull);
+      throw Exception(
+          'forwarding an untransferable object completed successfully');
     } catch (ex) {
       expect(ex, isA<WorkerException>());
     } finally {
@@ -574,10 +590,9 @@ void workerTests() {
     final rogue = RogueWorker();
 
     try {
-      final result = await rogue.invalidResponse();
+      await rogue.invalidResponse();
       // should never happen
-      expect(result, isNull);
-      expect(result, isNotNull);
+      throw Exception('invalidResponse() completed successfully');
     } catch (ex) {
       expect(ex, isA<WorkerException>());
     } finally {

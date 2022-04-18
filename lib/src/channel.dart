@@ -27,7 +27,7 @@ abstract class Channel {
 
   static void noop() {}
 
-  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
+  // /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   void notifyCancellation(CancellationToken cancelToken);
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
@@ -57,6 +57,10 @@ abstract class WorkerChannel {
   /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized
   /// as a [Channel]. This method must be called by the worker upon startup.
   void connect(Object channelInfo);
+
+  /// Connects the [Channel] with a stream managed by the Squadron [Worker]. [streamId] is a unique identifier
+  /// representing the stream in the worker's thread.
+  void connectStream(int streamId);
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// worker only.

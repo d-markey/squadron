@@ -34,7 +34,23 @@ class WorkerMonitor {
     return tokenRef;
   }
 
+  Map<int, SquadronCallback>? _streamCancellers;
+  int _streamId = 0;
+
+  int registerStreamCanceller(SquadronCallback canceller) {
+    final cancellers = (_streamCancellers ??= <int, SquadronCallback>{});
+    final streamId = (++_streamId);
+    cancellers[streamId] = canceller;
+    return streamId;
+  }
+
+  void unregisterStreamCanceller(int streamId) {
+    _streamCancellers?.remove(streamId);
+  }
+
   void cancel(CancellationToken token) => _getTokenRef(token).cancel();
+
+  void cancelStream(int streamId) => _streamCancellers?[streamId]?.call();
 
   void done(CancellationTokenReference tokenRef) {
     if (tokenRef.hasRef) {

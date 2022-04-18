@@ -1,267 +1,252 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9714286" lines-covered="34" lines-valid="35" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'cancellable_token.dart';</code>
-        </line>
-        <line>
-            <code>import 'cancellation_token.dart';</code>
-        </line>
-        <line>
-            <code>import 'squadron_error.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_exception.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Composite token cancellation mode</code>
-        </line>
-        <line hits="1">
-            <code>enum CompositeMode {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  /// the [CompositeToken] is cancelled iif all tokens get cancelled</code>
-        </line>
-        <line>
-            <code>  all,</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// the [CompositeToken] is cancelled as soon as one of the tokens gets cancelled</code>
-        </line>
-        <line>
-            <code>  any</code>
-        </line>
-        <line hits="0">
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after</code>
-        </line>
-        <line>
-            <code>/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a</code>
-        </line>
-        <line>
-            <code>/// platform worker.</code>
-        </line>
-        <line>
-            <code>class CompositeToken extends CancellableToken {</code>
-        </line>
-        <line hits="2">
-            <code>  CompositeToken(Iterable&lt;CancellationToken&gt; tokens, this.mode,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      [String? message])</code>
-        </line>
-        <line hits="3">
-            <code>      : assert(tokens.isNotEmpty),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        _tokens = tokens.toList(),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        _signaled = 0,</code>
-        </line>
-        <line hits="1">
-            <code>        super(message) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    for (var token in _tokens) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (token.cancelled) _signaled++;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _register(token);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Throws an exception, composite tokens may not be cancelled programmatically.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  void cancel([CancelledException? exception]) =&gt; throw newSquadronError(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      'CompositeToken cannot be cancelled programmatically');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final CompositeMode mode;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final List&lt;CancellationToken&gt; _tokens;</code>
-        </line>
-        <line>
-            <code>  int _signaled;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Called just before processing a [WorkerRequest]. The method actually calls the [start] method for all</code>
-        </line>
-        <line>
-            <code>  /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these</code>
-        </line>
-        <line>
-            <code>  /// tokens is a [TimeOutToken].</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>  void start() =&gt; _tokens.forEach(_starter);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  void _starter(CancellationToken token) =&gt; token.start();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  void _signal() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _signaled++;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    _check();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  void _check() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    if (!cancelled) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>      if ((mode == CompositeMode.any &amp;&amp; _signaled &gt;= 1) ||</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>          (mode == CompositeMode.all &amp;&amp; _signaled &gt;= _tokens.length)) {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        if (mode == CompositeMode.all) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>          super.cancel(CancelledException(message: message ?? 'Cancelled'));</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="7">
-            <code>          super.cancel(_tokens.map((e) =&gt; e.exception).firstWhere(</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              (e) =&gt; e != null,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>              orElse: () =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>                  CancelledException(message: message ?? 'Cancelled'))!);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="4">
-            <code>        _tokens.forEach(_unregister);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        super.cancel();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="4">
-            <code>  void _register(CancellationToken token) =&gt; token.addListener(_signal);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="4">
-            <code>  void _unregister(CancellationToken token) =&gt; token.removeListener(_signal);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96875" lines-covered="31" lines-valid="32" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'cancellable_token.dart';</code>
+</line>
+<line>
+<code>import 'cancellation_token.dart';</code>
+</line>
+<line>
+<code>import 'squadron_error.dart';</code>
+</line>
+<line>
+<code>import 'worker_exception.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Composite token cancellation mode</code>
+</line>
+<line hits="1">
+<code>enum CompositeMode {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  /// the [CompositeToken] is cancelled iif all tokens get cancelled</code>
+</line>
+<line>
+<code>  all,</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// the [CompositeToken] is cancelled as soon as one of the tokens gets cancelled</code>
+</line>
+<line>
+<code>  any</code>
+</line>
+<line hits="0">
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after</code>
+</line>
+<line>
+<code>/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a</code>
+</line>
+<line>
+<code>/// platform worker.</code>
+</line>
+<line>
+<code>class CompositeToken extends CancellableToken {</code>
+</line>
+<line hits="2">
+<code>  CompositeToken(Iterable&lt;CancellationToken&gt; tokens, this.mode,</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      [String? message])</code>
+</line>
+<line hits="3">
+<code>      : assert(tokens.isNotEmpty),</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        _tokens = tokens.toList(),</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        _signaled = 0,</code>
+</line>
+<line hits="1">
+<code>        super(message) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>    for (var token in _tokens) {</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      if (token.cancelled) _signaled++;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _register(token);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Throws an exception, composite tokens may not be cancelled programmatically.</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  void cancel([CancelledException? exception]) =&gt; throw newSquadronError(</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      'CompositeToken cannot be cancelled programmatically');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  final CompositeMode mode;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  final List&lt;CancellationToken&gt; _tokens;</code>
+</line>
+<line>
+<code>  int _signaled;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Called just before processing a [WorkerRequest]. The method actually calls the [ensureStarted] method for all</code>
+</line>
+<line>
+<code>  /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these</code>
+</line>
+<line>
+<code>  /// tokens is a [TimeOutToken].</code>
+</line>
+<line hits="1">
+<code>  @override</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>  void ensureStarted() =&gt; _tokens.forEach(_starter);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>  static void _starter(CancellationToken token) =&gt; token.ensureStarted();</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  void _signal() {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>    _signaled++;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    _check();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  void _check() {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    if (!cancelled) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="5">
+<code>      if ((mode == CompositeMode.any &amp;&amp; _signaled &gt;= 1) ||</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="7">
+<code>          (mode == CompositeMode.all &amp;&amp; _signaled &gt;= _tokens.length)) {</code>
+<hit count="7" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>        if (mode == CompositeMode.all) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>          super.cancel(CancelledException(message: message ?? 'Cancelled'));</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        } else {</code>
+</line>
+<line hits="7">
+<code>          super.cancel(_tokens.map((e) =&gt; e.exception).firstWhere(</code>
+<hit count="7" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>              (e) =&gt; e != null,</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>              orElse: () =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>                  CancelledException(message: message ?? 'Cancelled'))!);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        }</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="4">
+<code>  void _register(CancellationToken token) =&gt; token.addListener(_signal);</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>

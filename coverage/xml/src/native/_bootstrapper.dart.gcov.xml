@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="/src/native" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:isolate';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import '../_worker_monitor.dart';</code>
-        </line>
-        <line>
-            <code>import '../_worker_runner.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_service.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>void bootstrap(WorkerInitializer initializer, Map? command) async {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  final workerPort = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  final monitor = WorkerMonitor(() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    Squadron.config('terminating Isolate');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    workerPort.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    Isolate.current.kill();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  });</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  final runner = WorkerRunner(monitor);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  workerPort.listen((message) =&gt; runner.processMessage(message));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  await runner.connect(command, workerPort, initializer);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../../"/>
-    <base href="../../"/>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="/src/native" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:isolate';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import '../_worker_monitor.dart';</code>
+</line>
+<line>
+<code>import '../_worker_runner.dart';</code>
+</line>
+<line>
+<code>import '../squadron.dart';</code>
+</line>
+<line>
+<code>import '../worker_service.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>void bootstrap(WorkerInitializer initializer, Map? command) async {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  final workerPort = ReceivePort();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>  final monitor = WorkerMonitor(() {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    Squadron.config('terminating Isolate');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    workerPort.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    Isolate.current.kill();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  });</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  final runner = WorkerRunner(monitor);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>  workerPort.listen((message) =&gt; runner.processMessage(message));</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="2">
+<code>  await runner.connect(command, workerPort, initializer);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../../"/>
+<base href="../../"/>
 </coverage>

@@ -67,19 +67,19 @@ class WorkerRunner {
     final request = WorkerRequest.deserialize(message);
     final client = request?.client;
 
-    // TODO: need a message to cancel a stream
     if (request == null) {
       throw newSquadronError('invalid message');
     } else if (request.terminate) {
       return _monitor.terminate();
     } else if (request.cancel) {
       return _monitor.cancel(request.cancelToken!);
+    } else if (request.cancelStream) {
+      return _monitor.cancelStream(request.streamId!);
     } else if (client == null) {
       throw newSquadronError('missing client for request: $request');
     }
 
     final tokenRef = _monitor.begin(request);
-    var streaming = false;
     try {
       if (request.connect) {
         // connection request must be handled beforehand
@@ -101,27 +101,30 @@ class WorkerRunner {
       if (result is Stream && client.canStream(result)) {
         // stream values to the client
         late final StreamSubscription subscription;
+        late final int streamId;
         final done = Completer();
-        streaming = true;
-        subscription = result.listen((data) {
-          client.reply(data);
-        }, onError: (ex, st) {
-          client.error(SquadronException.from(error: ex, stackTrace: st));
-        }, onDone: () {
-          print('streaming done');
+
+        void shutdown() {
           client.closeStream();
-          streaming = false;
-          done.complete();
-        }, cancelOnError: false);
-        tokenRef.registerSubscription(() {
-          print('streaming done - callback');
           subscription.cancel();
-          client.closeStream();
-          streaming = false;
           done.complete();
-        });
+        }
+
+        subscription = result.listen(
+          (data) => client.reply(data),
+          onError: (ex, st) =>
+              client.error(SquadronException.from(error: ex, stackTrace: st)),
+          onDone: shutdown,
+          cancelOnError: false,
+        );
+
+        streamId = _monitor.registerStreamCanceller(shutdown);
+        tokenRef.registerStreamCanceller(shutdown);
+        client.connectStream(streamId);
+
         await done.future.whenComplete(() {
-          // tokenRef.unregisterSubscription(subscription);
+          _monitor.unregisterStreamCanceller(streamId);
+          tokenRef.unregisterStreamCanceller(shutdown);
         });
       } else {
         // send result to client
@@ -130,11 +133,6 @@ class WorkerRunner {
     } catch (e, st) {
       client.error(SquadronException.from(error: e, stackTrace: st));
     } finally {
-      if (streaming) {
-        // ensure a closeStream response is sent to terminate streaming operations
-        print('streaming done - finally');
-        client.closeStream();
-      }
       _monitor.done(tokenRef);
     }
   }
