@@ -1,240 +1,240 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="22" lines-valid="22" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'dart:async';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>import 'squadron_exception.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>/// Class used to communicate from a [Worker] to clients.</code>
-</line>
-<line>
-<code>/// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a</code>
-</line>
-<line>
-<code>/// single [WorkerResponse] with the result. [Stream]ing services will return one [WorkerResponse]s for each stream</code>
-</line>
-<line>
-<code>/// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also</code>
-</line>
-<line>
-<code>/// send error messages.</code>
-</line>
-<line>
-<code>class WorkerResponse {</code>
-</line>
-<line>
-<code>  /// [WorkerResponse] with a valid [result].</code>
-</line>
-<line hits="2">
-<code>  WorkerResponse(this._result)</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      : _error = null,</code>
-</line>
-<line>
-<code>        _eos = false;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
-</line>
-<line hits="2">
-<code>  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      : _error = SquadronException.from(</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>            error: exception, stackTrace: stackTrace ?? StackTrace.current),</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>        _result = null,</code>
-</line>
-<line>
-<code>        _eos = false;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
-</line>
-<line hits="1">
-<code>  const WorkerResponse._endOfStream()</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      : _result = null,</code>
-</line>
-<line>
-<code>        _error = null,</code>
-</line>
-<line>
-<code>        _eos = true;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// End of stream response.</code>
-</line>
-<line>
-<code>  static const closeStream = WorkerResponse._endOfStream();</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  static const _$result = 'a';</code>
-</line>
-<line>
-<code>  static const _$error = 'b';</code>
-</line>
-<line>
-<code>  static const _$eos = 'c';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Creates a new [WorkerResponse] from a message sent by the worker.</code>
-</line>
-<line hits="2">
-<code>  WorkerResponse.deserialize(Map message)</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      : _result = message[_$result],</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>        _error = SquadronException.deserialize(message[_$error]),</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>        _eos = message[_$eos] ?? false;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// [WorkerResponse] serialization.</code>
-</line>
-<line hits="2">
-<code>  Map&lt;String, dynamic&gt; serialize() {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    if (_error != null) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>      return {_$error: _error!.serialize()};</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    } else if (_eos) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      return const {_$eos: true};</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    } else if (_result == null) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      return const {};</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line hits="3">
-<code>      return {_$result: _result};</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Flag indicating the end of the [Stream]ing operation.</code>
-</line>
-<line hits="3">
-<code>  bool get endOfStream =&gt; _eos;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  final bool _eos;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// The [WorkerResponse] exception, if any.</code>
-</line>
-<line hits="3">
-<code>  SquadronException? get error =&gt; _error;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  final SquadronException? _error;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Flag indicating whether an error occured.</code>
-</line>
-<line hits="3">
-<code>  bool get hasError =&gt; _error != null;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,</code>
-</line>
-<line>
-<code>  /// an the [error] exception is thrown.</code>
-</line>
-<line hits="5">
-<code>  dynamic get result =&gt; hasError ? throw error! : _result;</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  final dynamic _result;</code>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Class used to communicate from a [Worker] to clients.</code>
+        </line>
+        <line>
+            <code>/// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a</code>
+        </line>
+        <line>
+            <code>/// single [WorkerResponse] with the result. [Stream]ing services will return one [WorkerResponse]s for each stream</code>
+        </line>
+        <line>
+            <code>/// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also</code>
+        </line>
+        <line>
+            <code>/// send error messages.</code>
+        </line>
+        <line>
+            <code>class WorkerResponse {</code>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] with a valid [result].</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse(this._result)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      : _error = null,</code>
+        </line>
+        <line>
+            <code>        _eos = false;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      : _error = SquadronException.from(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            error: exception, stackTrace: stackTrace ?? StackTrace.current),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        _result = null,</code>
+        </line>
+        <line>
+            <code>        _eos = false;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
+        </line>
+        <line hits="1">
+            <code>  const WorkerResponse._endOfStream()</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      : _result = null,</code>
+        </line>
+        <line>
+            <code>        _error = null,</code>
+        </line>
+        <line>
+            <code>        _eos = true;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// End of stream response.</code>
+        </line>
+        <line>
+            <code>  static const closeStream = WorkerResponse._endOfStream();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static const _$result = 'a';</code>
+        </line>
+        <line>
+            <code>  static const _$error = 'b';</code>
+        </line>
+        <line>
+            <code>  static const _$eos = 'c';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a new [WorkerResponse] from a message sent by the worker.</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse.deserialize(Map message)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      : _result = message[_$result],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _error = SquadronException.deserialize(message[_$error]),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _eos = message[_$eos] ?? false;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] serialization.</code>
+        </line>
+        <line hits="2">
+            <code>  Map&lt;String, dynamic&gt; serialize() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_error != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      return {_$error: _error!.serialize()};</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    } else if (_eos) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return const {_$eos: true};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    } else if (_result == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return const {};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="3">
+            <code>      return {_$result: _result};</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
+        </line>
+        <line hits="3">
+            <code>  bool get endOfStream =&gt; _eos;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final bool _eos;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [WorkerResponse] exception, if any.</code>
+        </line>
+        <line hits="3">
+            <code>  SquadronException? get error =&gt; _error;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final SquadronException? _error;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating whether an error occured.</code>
+        </line>
+        <line hits="3">
+            <code>  bool get hasError =&gt; _error != null;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,</code>
+        </line>
+        <line>
+            <code>  /// an the [error] exception is thrown.</code>
+        </line>
+        <line hits="5">
+            <code>  dynamic get result =&gt; hasError ? throw error! : _result;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final dynamic _result;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

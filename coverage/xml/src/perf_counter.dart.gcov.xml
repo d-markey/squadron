@@ -1,197 +1,197 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="perf_counter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9375" lines-covered="15" lines-valid="16" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'perf_counter_snapshot.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>/// Simple performance counter to consolidate statistics about woker tast execution: total number of calls, total</code>
-</line>
-<line>
-<code>/// number of errors, total elapsed time, and max elapsed time.</code>
-</line>
-<line>
-<code>class PerfCounter implements PerfCounterSnapshot {</code>
-</line>
-<line>
-<code>  /// Creates a performance counter.</code>
-</line>
-<line hits="1">
-<code>  PerfCounter(this.name)</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      : _maxTimeInMicroseconds = 0,</code>
-</line>
-<line>
-<code>        _totalTimeInMicroseconds = 0,</code>
-</line>
-<line>
-<code>        _totalCount = 0,</code>
-</line>
-<line>
-<code>        _totalErrors = 0;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// The counter's name or label.</code>
-</line>
-<line>
-<code>  @override</code>
-</line>
-<line>
-<code>  final String name;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum elapsed time for a single call, in microseconds.</code>
-</line>
-<line hits="1">
-<code>  @override</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  int get maxTimeInMicroseconds =&gt; _maxTimeInMicroseconds;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  int _maxTimeInMicroseconds;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Total elapsed time, in microseconds.</code>
-</line>
-<line hits="1">
-<code>  @override</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  int get totalTimeInMicroseconds =&gt; _totalTimeInMicroseconds;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  int _totalTimeInMicroseconds;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Total number of calls.</code>
-</line>
-<line hits="1">
-<code>  @override</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  int get totalCount =&gt; _totalCount;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  int _totalCount;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Total number of errors.</code>
-</line>
-<line hits="1">
-<code>  @override</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  int get totalErrors =&gt; _totalErrors;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  int _totalErrors;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Returns a snapshot of the [PerfCounter]'s values.</code>
-</line>
-<line hits="2">
-<code>  PerfCounterSnapshot get snapshot =&gt; PerfCounterSnapshot(this);</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>}</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>// for internal use</code>
-</line>
-<line>
-<code>extension PerfCounterExt on PerfCounter {</code>
-</line>
-<line>
-<code>  /// Updates counter value with the duration indicated by [timeInMicroseconds].</code>
-</line>
-<line>
-<code>  /// 1. update the maximum elapsed time if required.</code>
-</line>
-<line>
-<code>  /// 2. add specified time to the total elapsed time.</code>
-</line>
-<line>
-<code>  /// 3. depending on [success], increment the total number of calls or errors by 1.</code>
-</line>
-<line hits="1">
-<code>  void update(int timeInMicroseconds, bool success) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    if (timeInMicroseconds &gt; _maxTimeInMicroseconds) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      _maxTimeInMicroseconds = timeInMicroseconds;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="2">
-<code>    _totalTimeInMicroseconds += timeInMicroseconds;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    if (success) {</code>
-</line>
-<line hits="2">
-<code>      _totalCount++;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line hits="0">
-<code>      _totalErrors++;</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line>
-<code>  }</code>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'perf_counter_snapshot.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Simple performance counter to consolidate statistics about woker tast execution: total number of calls, total</code>
+        </line>
+        <line>
+            <code>/// number of errors, total elapsed time, and max elapsed time.</code>
+        </line>
+        <line>
+            <code>class PerfCounter implements PerfCounterSnapshot {</code>
+        </line>
+        <line>
+            <code>  /// Creates a performance counter.</code>
+        </line>
+        <line hits="1">
+            <code>  PerfCounter(this.name)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      : _maxTimeInMicroseconds = 0,</code>
+        </line>
+        <line>
+            <code>        _totalTimeInMicroseconds = 0,</code>
+        </line>
+        <line>
+            <code>        _totalCount = 0,</code>
+        </line>
+        <line>
+            <code>        _totalErrors = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The counter's name or label.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final String name;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum elapsed time for a single call, in microseconds.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  int get maxTimeInMicroseconds =&gt; _maxTimeInMicroseconds;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _maxTimeInMicroseconds;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total elapsed time, in microseconds.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  int get totalTimeInMicroseconds =&gt; _totalTimeInMicroseconds;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _totalTimeInMicroseconds;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total number of calls.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  int get totalCount =&gt; _totalCount;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _totalCount;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total number of errors.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  int get totalErrors =&gt; _totalErrors;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _totalErrors;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Returns a snapshot of the [PerfCounter]'s values.</code>
+        </line>
+        <line hits="2">
+            <code>  PerfCounterSnapshot get snapshot =&gt; PerfCounterSnapshot(this);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>// for internal use</code>
+        </line>
+        <line>
+            <code>extension PerfCounterExt on PerfCounter {</code>
+        </line>
+        <line>
+            <code>  /// Updates counter value with the duration indicated by [timeInMicroseconds].</code>
+        </line>
+        <line>
+            <code>  /// 1. update the maximum elapsed time if required.</code>
+        </line>
+        <line>
+            <code>  /// 2. add specified time to the total elapsed time.</code>
+        </line>
+        <line>
+            <code>  /// 3. depending on [success], increment the total number of calls or errors by 1.</code>
+        </line>
+        <line hits="1">
+            <code>  void update(int timeInMicroseconds, bool success) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (timeInMicroseconds &gt; _maxTimeInMicroseconds) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      _maxTimeInMicroseconds = timeInMicroseconds;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="2">
+            <code>    _totalTimeInMicroseconds += timeInMicroseconds;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (success) {</code>
+        </line>
+        <line hits="2">
+            <code>      _totalCount++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="0">
+            <code>      _totalErrors++;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

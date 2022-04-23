@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'dart:async';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>import 'worker_request.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code>
-</line>
-<line>
-<code>    WorkerRequest startRequest);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>typedef CommandHandler = FutureOr Function(WorkerRequest req);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>typedef SquadronCallback = void Function();</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>/// Base class for a worker service.</code>
-</line>
-<line>
-<code>abstract class WorkerService {</code>
-</line>
-<line>
-<code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request</code>
-</line>
-<line>
-<code>  /// to the [CommandHandler] mathing the value of [WorkerRequest.command].</code>
-</line>
-<line>
-<code>  Map&lt;int, CommandHandler&gt; get operations;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Empty command handlers map.</code>
-</line>
-<line hits="3">
-<code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'worker_request.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code>
+        </line>
+        <line>
+            <code>    WorkerRequest startRequest);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef CommandHandler = FutureOr Function(WorkerRequest req);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef SquadronCallback = void Function();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base class for a worker service.</code>
+        </line>
+        <line>
+            <code>abstract class WorkerService {</code>
+        </line>
+        <line>
+            <code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request</code>
+        </line>
+        <line>
+            <code>  /// to the [CommandHandler] mathing the value of [WorkerRequest.command].</code>
+        </line>
+        <line>
+            <code>  Map&lt;int, CommandHandler&gt; get operations;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Empty command handlers map.</code>
+        </line>
+        <line hits="3">
+            <code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

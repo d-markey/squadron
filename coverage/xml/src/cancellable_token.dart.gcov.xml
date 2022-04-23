@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="cancellable_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="2" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'cancellation_token.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>@Deprecated('Use CancellationToken instead')</code>
-</line>
-<line>
-<code>class CancellableToken extends CancellationToken {</code>
-</line>
-<line hits="0">
-<code>  CancellableToken(int id, [String? message]) : super(message) {</code>
-</line>
-<line hits="0">
-<code>    withId(id);</code>
-</line>
-<line>
-<code>  }</code>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'cancellation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@Deprecated('Use CancellationToken instead')</code>
+        </line>
+        <line>
+            <code>class CancellableToken extends CancellationToken {</code>
+        </line>
+        <line hits="0">
+            <code>  CancellableToken(int id, [String? message]) : super(message) {</code>
+        </line>
+        <line hits="0">
+            <code>    withId(id);</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

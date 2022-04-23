@@ -1,940 +1,940 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90163934" lines-covered="110" lines-valid="122" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'dart:async';</code>
-</line>
-<line>
-<code>import 'dart:collection';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>import 'xplat/_pool_worker.dart';</code>
-</line>
-<line>
-<code>import 'xplat/_worker_stream_task.dart';</code>
-</line>
-<line>
-<code>import 'xplat/_worker_task.dart';</code>
-</line>
-<line>
-<code>import 'xplat/_worker_value_task.dart';</code>
-</line>
-<line>
-<code>import 'concurrency_settings.dart';</code>
-</line>
-<line>
-<code>import 'squadron.dart';</code>
-</line>
-<line>
-<code>import 'squadron_error.dart';</code>
-</line>
-<line>
-<code>import 'worker.dart';</code>
-</line>
-<line>
-<code>import 'perf_counter.dart';</code>
-</line>
-<line>
-<code>import 'worker_service.dart';</code>
-</line>
-<line>
-<code>import 'worker_stat.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>import 'worker_task.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>/// Worker pool responsible for instantiating, starting and stopping workers running in parallel.</code>
-</line>
-<line>
-<code>/// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.</code>
-</line>
-<line>
-<code>class WorkerPool&lt;W extends Worker&gt; implements WorkerService {</code>
-</line>
-<line>
-<code>  /// Create a worker pool.</code>
-</line>
-<line>
-<code>  ///</code>
-</line>
-<line>
-<code>  /// Workers are instantiated using the provided [_workerFactory].</code>
-</line>
-<line>
-<code>  /// The pool will only instantiate workers as needed, depending on [concurrencySettings].</code>
-</line>
-<line>
-<code>  /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control</code>
-</line>
-<line>
-<code>  /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting</code>
-</line>
-<line>
-<code>  /// controls how many tasks can be posted to each individual worker in the pool.</code>
-</line>
-<line hits="1">
-<code>  WorkerPool(this._workerFactory,</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      {ConcurrencySettings? concurrencySettings,</code>
-</line>
-<line>
-<code>      @Deprecated('use concurrencySettings instead') int minWorkers = 0,</code>
-</line>
-<line>
-<code>      @Deprecated('use concurrencySettings instead') int maxWorkers = 0,</code>
-</line>
-<line>
-<code>      @Deprecated('use concurrencySettings instead') int maxParallel = 1})</code>
-</line>
-<line>
-<code>      : concurrencySettings = concurrencySettings ??</code>
-</line>
-<line hits="0">
-<code>            ConcurrencySettings(</code>
-</line>
-<line>
-<code>                minWorkers: minWorkers,</code>
-</line>
-<line>
-<code>                maxWorkers: maxWorkers,</code>
-</line>
-<line>
-<code>                maxParallel: maxParallel);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  final W Function() _workerFactory;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Concurrency settings.</code>
-</line>
-<line>
-<code>  final ConcurrencySettings concurrencySettings;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum workers.</code>
-</line>
-<line hits="4">
-<code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum tasks per worker.</code>
-</line>
-<line hits="0">
-<code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum running tasks.</code>
-</line>
-<line hits="3">
-<code>  int get maxConcurrency =&gt; concurrencySettings.maxConcurrency;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="1">
-<code>  final _workers = &lt;PoolWorker&lt;W&gt;&gt;[];</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="1">
-<code>  final List&lt;WorkerStat&gt; _deadWorkerStats = &lt;WorkerStat&gt;[];</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Number of workers.</code>
-</line>
-<line hits="2">
-<code>  bool get stopped =&gt; _stopped;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  bool _stopped = false;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Number of workers.</code>
-</line>
-<line hits="3">
-<code>  int get size =&gt; _workers.length;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum number of workers.</code>
-</line>
-<line hits="0">
-<code>  int get maxSize =&gt; _maxSize;</code>
-</line>
-<line>
-<code>  int _maxSize = 0;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Current workload.</code>
-</line>
-<line hits="0">
-<code>  int get workload =&gt; stats.fold&lt;int&gt;(0, (p, w) =&gt; p + w.workload);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Maximum workload.</code>
-</line>
-<line hits="0">
-<code>  int get maxWorkload =&gt; fullStats.fold&lt;int&gt;(</code>
-</line>
-<line hits="0">
-<code>      0, (p, s) =&gt; (p &gt;= s.maxWorkload) ? p : s.maxWorkload);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Total workload.</code>
-</line>
-<line hits="0">
-<code>  int get totalWorkload =&gt;</code>
-</line>
-<line hits="0">
-<code>      fullStats.fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Number of errors.</code>
-</line>
-<line hits="0">
-<code>  int get totalErrors =&gt; fullStats.fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
-</line>
-<line>
-<code/>
-</line>
-<line hits="2">
-<code>  Future&lt;void&gt; _provisionWorkers(int count) async {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>    if (_workers.length &lt; count) {</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      final tasks = &lt;Future&gt;[];</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      while (_workers.length &lt; count) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>        final poolWorker =</code>
-</line>
-<line hits="6">
-<code>            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);</code>
-<hit count="6" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>        _workers.add(poolWorker);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>        tasks.add(poolWorker.worker.start());</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      }</code>
-</line>
-<line hits="3">
-<code>      await Future.wait(tasks);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>      if (_workers.length &gt; _maxSize) {</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>        _maxSize = _workers.length;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      }</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Ensure at least [ConcurrencySettings.minWorkers] workers are started</code>
-</line>
-<line>
-<code>  /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).</code>
-</line>
-<line hits="2">
-<code>  Future start() {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    _stopped = false;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>    return _provisionWorkers(concurrencySettings.min(0));</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="2">
-<code>  int _removeWorker(PoolWorker poolWorker, bool force) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="6">
-<code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code>
-<hit count="6" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      poolWorker.worker.stop();</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      _workers.remove(poolWorker);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="5">
-<code>      _deadWorkerStats.add(poolWorker.worker.stats);</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      return 1;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line hits="1">
-<code>      return 0;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Stop idle pool workers matching the [predicate].</code>
-</line>
-<line>
-<code>  /// If [predicate] is null or not provided, all workers will be stopped.</code>
-</line>
-<line>
-<code>  /// Stopping a worker does not interrupt or cancel processing. Workers will</code>
-</line>
-<line>
-<code>  /// complete pending tasks before shutting down. In the meantime, they will</code>
-</line>
-<line>
-<code>  /// not receive any new workload.</code>
-</line>
-<line>
-<code>  /// Returns the number of workers that have been stopped.</code>
-</line>
-<line hits="2">
-<code>  int stop([bool Function(W worker)? predicate]) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    bool force;</code>
-</line>
-<line hits="1">
-<code>    if (predicate != null) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      // kill workers that are idle and satisfy the predicate</code>
-</line>
-<line hits="8">
-<code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code>
-<hit count="8" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      force = false;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line>
-<code>      // kill workers while keeping enough workers alive to process pending tasks</code>
-</line>
-<line hits="6">
-<code>      targets = _workers.skip(_queue.length).toList();</code>
-<hit count="6" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      _stopped = true;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      force = true;</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line>
-<code>    var stopped = 0;</code>
-</line>
-<line hits="3">
-<code>    for (var poolWorker in targets) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      stopped += _removeWorker(poolWorker, force);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="1">
-<code>    return stopped;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="1">
-<code>  final _queue = Queue&lt;WorkerTask&gt;();</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  final _executing = &lt;WorkerTask&gt;{};</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Gets remaining workload</code>
-</line>
-<line hits="4">
-<code>  int get pendingWorkload =&gt; _queue.length;</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="2">
-<code>  WorkerTask&lt;T, W&gt; _enqueue&lt;T&gt;(WorkerTask&lt;T, W&gt; task) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    if (_stopped) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      throw newSquadronError(</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>          'the pool cannot accept new requests because it is stopped');</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="3">
-<code>    _queue.addLast(task);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>    _schedule();</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    return task;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Registers and schedules a [task] that returns a single value.</code>
-</line>
-<line hits="0">
-<code>  @Deprecated('use execute() instead')</code>
-</line>
-<line>
-<code>  Future&lt;T&gt; compute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-</line>
-<line>
-<code>          {PerfCounter? counter}) =&gt;</code>
-</line>
-<line hits="0">
-<code>      execute(task, counter: counter);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Registers and schedules a [task] that returns a single value.</code>
-</line>
-<line>
-<code>  /// Returns a future that completes with the task's value.</code>
-</line>
-<line hits="2">
-<code>  Future&lt;T&gt; execute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>          {PerfCounter? counter}) =&gt;</code>
-</line>
-<line hits="3">
-<code>      scheduleTask(task, counter: counter).value;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Registers and schedules a [task] that returns a stream of values.</code>
-</line>
-<line>
-<code>  /// Returns a stream containing the task's values.</code>
-</line>
-<line hits="2">
-<code>  Stream&lt;T&gt; stream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>          {PerfCounter? counter}) =&gt;</code>
-</line>
-<line hits="3">
-<code>      scheduleStream(task, counter: counter).stream;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Registers and schedules a [task] that returns a single value.</code>
-</line>
-<line>
-<code>  /// Returns a [ValueTask]&lt;T&gt;.</code>
-</line>
-<line hits="2">
-<code>  ValueTask&lt;T&gt; scheduleTask&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>          {PerfCounter? counter}) =&gt;</code>
-</line>
-<line hits="3">
-<code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Registers and schedules a [task] that returns a stream of values.</code>
-</line>
-<line>
-<code>  /// Returns a [StreamTask]&lt;T&gt;.</code>
-</line>
-<line hits="2">
-<code>  StreamTask&lt;T&gt; scheduleStream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>          {PerfCounter? counter}) =&gt;</code>
-</line>
-<line hits="3">
-<code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  Timer? _timer;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// The scheduler.</code>
-</line>
-<line>
-<code>  ///</code>
-</line>
-<line>
-<code>  /// Steps:</code>
-</line>
-<line>
-<code>  /// 1. remove stopped workers.</code>
-</line>
-<line>
-<code>  /// 2. remove cancelled tasks.</code>
-</line>
-<line>
-<code>  /// 3. if the task queue is not empty:</code>
-</line>
-<line>
-<code>  ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).</code>
-</line>
-<line>
-<code>  ///    (b) find max capacity available in the pool</code>
-</line>
-<line>
-<code>  ///    (c) distribute tasks to workers starting with workers with highest [PoolWorker.capacity], as long as [PoolWorker.capacity] &gt; 0.</code>
-</line>
-<line hits="2">
-<code>  void _schedule() {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>    if (_timer?.isActive ?? false) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      // ignore if the last scheduling request has not executed yet</code>
-</line>
-<line hits="1">
-<code>      return;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="4">
-<code>    _timer = Timer(Duration.zero, () {</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      _workers.removeWhere(PoolWorker.isStopped);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="5">
-<code>      _queue.removeWhere((t) =&gt; t.isCancelled);</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="6">
-<code>      if (_stopped &amp;&amp; _queue.isEmpty &amp;&amp; _executing.isEmpty) {</code>
-<hit count="6" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>        stop();</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      } else if (_queue.isNotEmpty) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>        scheduleMicrotask(() {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="8">
-<code>          _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {</code>
-<hit count="8" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>            int maxCapacity;</code>
-</line>
-<line hits="3">
-<code>            while (_queue.isNotEmpty &amp;&amp;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                (maxCapacity = _sortAndGetMaxCapacity()) &gt; 0) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>              maxCapacity -= 1;</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="5">
-<code>              for (var idx = 0; idx &lt; _workers.length; idx++) {</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                final w = _workers[idx];</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                if (_queue.isEmpty ||</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                    w.capacity == 0 ||</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>                    w.capacity &lt; maxCapacity) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>                  break;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>                }</code>
-</line>
-<line hits="3">
-<code>                final task = _queue.removeFirst();</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                _executing.add(task);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>                w.run(task).whenComplete(() {</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>                  _executing.remove(task);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>                  _schedule();</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>                });</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>              }</code>
-</line>
-<line>
-<code>            }</code>
-</line>
-<line hits="3">
-<code>          }).catchError((ex) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>            Squadron.severe('provisionning workers failed with error $ex');</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>            while (_queue.isNotEmpty) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>              final task = _queue.removeFirst();</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>              task.cancel('provisionning workers failed');</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>            }</code>
-</line>
-<line hits="1">
-<code>          });</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>        });</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      }</code>
-</line>
-<line hits="1">
-<code>    });</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="1">
-<code>  int _sortAndGetMaxCapacity() {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>    _workers.sort(PoolWorker.compareCapacityDesc);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="4">
-<code>    return _workers.first.capacity;</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  }</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.</code>
-</line>
-<line>
-<code>  /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.</code>
-</line>
-<line hits="2">
-<code>  void cancel([Task? task, String? message]) {</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    if (task != null) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      _executing.remove(task);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="5">
-<code>      _queue.removeWhere((t) =&gt; t == task);</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>      task.cancel(message);</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line hits="4">
-<code>      final cancelled = _executing.followedBy(_queue).toList();</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      _executing.clear();</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      _queue.clear();</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="3">
-<code>      for (var task in cancelled) {</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="2">
-<code>        task.cancel(message);</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>      }</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line hits="1">
-<code>  }</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Worker statistics.</code>
-</line>
-<line hits="4">
-<code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(PoolWorker.getStats);</code>
-<hit count="4" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Full worker statistics.</code>
-</line>
-<line hits="0">
-<code>  Iterable&lt;WorkerStat&gt; get fullStats =&gt; _deadWorkerStats.followedBy(stats);</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Worker pools do not need an [operations] map.</code>
-</line>
-<line>
-<code>  @override</code>
-</line>
-<line hits="1">
-<code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code>import 'dart:collection';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'xplat/_pool_worker.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_worker_stream_task.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_worker_task.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_worker_value_task.dart';</code>
+        </line>
+        <line>
+            <code>import 'concurrency_settings.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker.dart';</code>
+        </line>
+        <line>
+            <code>import 'perf_counter.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_service.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_stat.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'worker_task.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Worker pool responsible for instantiating, starting and stopping workers running in parallel.</code>
+        </line>
+        <line>
+            <code>/// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.</code>
+        </line>
+        <line>
+            <code>class WorkerPool&lt;W extends Worker&gt; implements WorkerService {</code>
+        </line>
+        <line>
+            <code>  /// Create a worker pool.</code>
+        </line>
+        <line>
+            <code>  ///</code>
+        </line>
+        <line>
+            <code>  /// Workers are instantiated using the provided [_workerFactory].</code>
+        </line>
+        <line>
+            <code>  /// The pool will only instantiate workers as needed, depending on [concurrencySettings].</code>
+        </line>
+        <line>
+            <code>  /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control</code>
+        </line>
+        <line>
+            <code>  /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting</code>
+        </line>
+        <line>
+            <code>  /// controls how many tasks can be posted to each individual worker in the pool.</code>
+        </line>
+        <line hits="1">
+            <code>  WorkerPool(this._workerFactory,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      {ConcurrencySettings? concurrencySettings,</code>
+        </line>
+        <line>
+            <code>      @Deprecated('use concurrencySettings instead') int minWorkers = 0,</code>
+        </line>
+        <line>
+            <code>      @Deprecated('use concurrencySettings instead') int maxWorkers = 0,</code>
+        </line>
+        <line>
+            <code>      @Deprecated('use concurrencySettings instead') int maxParallel = 1})</code>
+        </line>
+        <line>
+            <code>      : concurrencySettings = concurrencySettings ??</code>
+        </line>
+        <line hits="0">
+            <code>            ConcurrencySettings(</code>
+        </line>
+        <line>
+            <code>                minWorkers: minWorkers,</code>
+        </line>
+        <line>
+            <code>                maxWorkers: maxWorkers,</code>
+        </line>
+        <line>
+            <code>                maxParallel: maxParallel);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final W Function() _workerFactory;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Concurrency settings.</code>
+        </line>
+        <line>
+            <code>  final ConcurrencySettings concurrencySettings;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum workers.</code>
+        </line>
+        <line hits="4">
+            <code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum tasks per worker.</code>
+        </line>
+        <line hits="0">
+            <code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum running tasks.</code>
+        </line>
+        <line hits="3">
+            <code>  int get maxConcurrency =&gt; concurrencySettings.maxConcurrency;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final _workers = &lt;PoolWorker&lt;W&gt;&gt;[];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final List&lt;WorkerStat&gt; _deadWorkerStats = &lt;WorkerStat&gt;[];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Number of workers.</code>
+        </line>
+        <line hits="2">
+            <code>  bool get stopped =&gt; _stopped;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  bool _stopped = false;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Number of workers.</code>
+        </line>
+        <line hits="3">
+            <code>  int get size =&gt; _workers.length;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum number of workers.</code>
+        </line>
+        <line hits="0">
+            <code>  int get maxSize =&gt; _maxSize;</code>
+        </line>
+        <line>
+            <code>  int _maxSize = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Current workload.</code>
+        </line>
+        <line hits="0">
+            <code>  int get workload =&gt; stats.fold&lt;int&gt;(0, (p, w) =&gt; p + w.workload);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Maximum workload.</code>
+        </line>
+        <line hits="0">
+            <code>  int get maxWorkload =&gt; fullStats.fold&lt;int&gt;(</code>
+        </line>
+        <line hits="0">
+            <code>      0, (p, s) =&gt; (p &gt;= s.maxWorkload) ? p : s.maxWorkload);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Total workload.</code>
+        </line>
+        <line hits="0">
+            <code>  int get totalWorkload =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      fullStats.fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Number of errors.</code>
+        </line>
+        <line hits="0">
+            <code>  int get totalErrors =&gt; fullStats.fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  Future&lt;void&gt; _provisionWorkers(int count) async {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    if (_workers.length &lt; count) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      final tasks = &lt;Future&gt;[];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      while (_workers.length &lt; count) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        final poolWorker =</code>
+        </line>
+        <line hits="6">
+            <code>            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _workers.add(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>        tasks.add(poolWorker.worker.start());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="3">
+            <code>      await Future.wait(tasks);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      if (_workers.length &gt; _maxSize) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _maxSize = _workers.length;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Ensure at least [ConcurrencySettings.minWorkers] workers are started</code>
+        </line>
+        <line>
+            <code>  /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).</code>
+        </line>
+        <line hits="2">
+            <code>  Future start() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    _stopped = false;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    return _provisionWorkers(concurrencySettings.min(0));</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  int _removeWorker(PoolWorker poolWorker, bool force) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      poolWorker.worker.stop();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _workers.remove(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      _deadWorkerStats.add(poolWorker.worker.stats);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return 1;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="1">
+            <code>      return 0;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Stop idle pool workers matching the [predicate].</code>
+        </line>
+        <line>
+            <code>  /// If [predicate] is null or not provided, all workers will be stopped.</code>
+        </line>
+        <line>
+            <code>  /// Stopping a worker does not interrupt or cancel processing. Workers will</code>
+        </line>
+        <line>
+            <code>  /// complete pending tasks before shutting down. In the meantime, they will</code>
+        </line>
+        <line>
+            <code>  /// not receive any new workload.</code>
+        </line>
+        <line>
+            <code>  /// Returns the number of workers that have been stopped.</code>
+        </line>
+        <line hits="2">
+            <code>  int stop([bool Function(W worker)? predicate]) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    bool force;</code>
+        </line>
+        <line hits="1">
+            <code>    if (predicate != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // kill workers that are idle and satisfy the predicate</code>
+        </line>
+        <line hits="8">
+            <code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      force = false;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line>
+            <code>      // kill workers while keeping enough workers alive to process pending tasks</code>
+        </line>
+        <line hits="6">
+            <code>      targets = _workers.skip(_queue.length).toList();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _stopped = true;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      force = true;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>    var stopped = 0;</code>
+        </line>
+        <line hits="3">
+            <code>    for (var poolWorker in targets) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      stopped += _removeWorker(poolWorker, force);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>    return stopped;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final _queue = Queue&lt;WorkerTask&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  final _executing = &lt;WorkerTask&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Gets remaining workload</code>
+        </line>
+        <line hits="4">
+            <code>  int get pendingWorkload =&gt; _queue.length;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  WorkerTask&lt;T, W&gt; _enqueue&lt;T&gt;(WorkerTask&lt;T, W&gt; task) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_stopped) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      throw newSquadronError(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          'the pool cannot accept new requests because it is stopped');</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="3">
+            <code>    _queue.addLast(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    _schedule();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    return task;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers and schedules a [task] that returns a single value.</code>
+        </line>
+        <line hits="0">
+            <code>  @Deprecated('use execute() instead')</code>
+        </line>
+        <line>
+            <code>  Future&lt;T&gt; compute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
+        </line>
+        <line>
+            <code>          {PerfCounter? counter}) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      execute(task, counter: counter);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers and schedules a [task] that returns a single value.</code>
+        </line>
+        <line>
+            <code>  /// Returns a future that completes with the task's value.</code>
+        </line>
+        <line hits="2">
+            <code>  Future&lt;T&gt; execute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          {PerfCounter? counter}) =&gt;</code>
+        </line>
+        <line hits="3">
+            <code>      scheduleTask(task, counter: counter).value;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers and schedules a [task] that returns a stream of values.</code>
+        </line>
+        <line>
+            <code>  /// Returns a stream containing the task's values.</code>
+        </line>
+        <line hits="2">
+            <code>  Stream&lt;T&gt; stream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          {PerfCounter? counter}) =&gt;</code>
+        </line>
+        <line hits="3">
+            <code>      scheduleStream(task, counter: counter).stream;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers and schedules a [task] that returns a single value.</code>
+        </line>
+        <line>
+            <code>  /// Returns a [ValueTask]&lt;T&gt;.</code>
+        </line>
+        <line hits="2">
+            <code>  ValueTask&lt;T&gt; scheduleTask&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          {PerfCounter? counter}) =&gt;</code>
+        </line>
+        <line hits="3">
+            <code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers and schedules a [task] that returns a stream of values.</code>
+        </line>
+        <line>
+            <code>  /// Returns a [StreamTask]&lt;T&gt;.</code>
+        </line>
+        <line hits="2">
+            <code>  StreamTask&lt;T&gt; scheduleStream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          {PerfCounter? counter}) =&gt;</code>
+        </line>
+        <line hits="3">
+            <code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  Timer? _timer;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The scheduler.</code>
+        </line>
+        <line>
+            <code>  ///</code>
+        </line>
+        <line>
+            <code>  /// Steps:</code>
+        </line>
+        <line>
+            <code>  /// 1. remove stopped workers.</code>
+        </line>
+        <line>
+            <code>  /// 2. remove cancelled tasks.</code>
+        </line>
+        <line>
+            <code>  /// 3. if the task queue is not empty:</code>
+        </line>
+        <line>
+            <code>  ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).</code>
+        </line>
+        <line>
+            <code>  ///    (b) find max capacity available in the pool</code>
+        </line>
+        <line>
+            <code>  ///    (c) distribute tasks to workers starting with workers with highest [PoolWorker.capacity], as long as [PoolWorker.capacity] &gt; 0.</code>
+        </line>
+        <line hits="2">
+            <code>  void _schedule() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (_timer?.isActive ?? false) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // ignore if the last scheduling request has not executed yet</code>
+        </line>
+        <line hits="1">
+            <code>      return;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="4">
+            <code>    _timer = Timer(Duration.zero, () {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _workers.removeWhere(PoolWorker.isStopped);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      _queue.removeWhere((t) =&gt; t.isCancelled);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      if (_stopped &amp;&amp; _queue.isEmpty &amp;&amp; _executing.isEmpty) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        stop();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      } else if (_queue.isNotEmpty) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        scheduleMicrotask(() {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>          _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            int maxCapacity;</code>
+        </line>
+        <line hits="3">
+            <code>            while (_queue.isNotEmpty &amp;&amp;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                (maxCapacity = _sortAndGetMaxCapacity()) &gt; 0) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>              maxCapacity -= 1;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>              for (var idx = 0; idx &lt; _workers.length; idx++) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                final w = _workers[idx];</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                if (_queue.isEmpty ||</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                    w.capacity == 0 ||</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>                    w.capacity &lt; maxCapacity) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>                  break;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>                }</code>
+        </line>
+        <line hits="3">
+            <code>                final task = _queue.removeFirst();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                _executing.add(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>                w.run(task).whenComplete(() {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                  _executing.remove(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>                  _schedule();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>                });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>              }</code>
+        </line>
+        <line>
+            <code>            }</code>
+        </line>
+        <line hits="3">
+            <code>          }).catchError((ex) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>            Squadron.severe('provisionning workers failed with error $ex');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>            while (_queue.isNotEmpty) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>              final task = _queue.removeFirst();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>              task.cancel('provisionning workers failed');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            }</code>
+        </line>
+        <line hits="1">
+            <code>          });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>    });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  int _sortAndGetMaxCapacity() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _workers.sort(PoolWorker.compareCapacityDesc);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    return _workers.first.capacity;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.</code>
+        </line>
+        <line>
+            <code>  /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.</code>
+        </line>
+        <line hits="2">
+            <code>  void cancel([Task? task, String? message]) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (task != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _executing.remove(task);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      _queue.removeWhere((t) =&gt; t == task);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      task.cancel(message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="4">
+            <code>      final cancelled = _executing.followedBy(_queue).toList();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _executing.clear();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _queue.clear();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      for (var task in cancelled) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        task.cancel(message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Worker statistics.</code>
+        </line>
+        <line hits="4">
+            <code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(PoolWorker.getStats);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Full worker statistics.</code>
+        </line>
+        <line hits="0">
+            <code>  Iterable&lt;WorkerStat&gt; get fullStats =&gt; _deadWorkerStats.followedBy(stats);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Worker pools do not need an [operations] map.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="1">
+            <code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

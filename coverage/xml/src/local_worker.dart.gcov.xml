@@ -1,125 +1,125 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="/src" testname="lcov.info" version="1.5">
-<lines>
-<line>
-<code>import 'native/_local_worker.dart'</code>
-</line>
-<line>
-<code>    if (dart.library.js) 'browser/_local_worker.dart'</code>
-</line>
-<line>
-<code>    if (dart.library.html) 'browser/_local_worker.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>import 'channel.dart';</code>
-</line>
-<line>
-<code>import 'worker_request.dart';</code>
-</line>
-<line>
-<code>import 'worker_service.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>/// Base local worker class.</code>
-</line>
-<line>
-<code>///</code>
-</line>
-<line>
-<code>/// Local workers are similar to other Workers except that they run in the context of the current thread.</code>
-</line>
-<line>
-<code>/// They do not create any platform thread (such as Isolate or Web Worker) but they provide a [channel] that</code>
-</line>
-<line>
-<code>/// can be shared with other workers to support communication between threads. One interesting use-case is</code>
-</line>
-<line>
-<code>/// accessing UI components or platform plugins in Flutter, where only code running in the main thread is</code>
-</line>
-<line>
-<code>/// allowed access to such features. Creating a [LocalWorker] in the main application and sharing its</code>
-</line>
-<line>
-<code>/// [channel] with other workers enables providing access to Flutter features.</code>
-</line>
-<line>
-<code>///</code>
-</line>
-<line>
-<code>/// Local workers wrap around a [WorkerService]. Messages sent to the local worker are deserialized as</code>
-</line>
-<line>
-<code>/// [WorkerRequest] and dispatched to a handler defined in the [service]'s [WorkerService.operations] map</code>
-</line>
-<line>
-<code>/// according to the [WorkerRequest.command].</code>
-</line>
-<line>
-<code>abstract class LocalWorker&lt;W extends WorkerService&gt; implements WorkerService {</code>
-</line>
-<line hits="1">
-<code>  LocalWorker(this.service);</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line hits="2">
-<code>  factory LocalWorker.create(W service) =&gt; createLocalWorker&lt;W&gt;(service);</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// The [WorkerService] associated to this local worker.</code>
-</line>
-<line>
-<code>  final W service;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// The local worker's [Channel]. This channel can be shared with other workers by calling [Channel.share].</code>
-</line>
-<line>
-<code>  Channel? get channel;</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Stops the local worker.</code>
-</line>
-<line>
-<code>  void stop();</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  /// Local Workers do not need an [operations] map.</code>
-</line>
-<line>
-<code>  @override</code>
-</line>
-<line hits="1">
-<code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>}</code>
-</line>
-</lines>
-<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-<base href="../"/>
-<base href="../"/>
+    <lines>
+        <line>
+            <code>import 'native/_local_worker.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js) 'browser/_local_worker.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.html) 'browser/_local_worker.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'channel.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_service.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base local worker class.</code>
+        </line>
+        <line>
+            <code>///</code>
+        </line>
+        <line>
+            <code>/// Local workers are similar to other Workers except that they run in the context of the current thread.</code>
+        </line>
+        <line>
+            <code>/// They do not create any platform thread (such as Isolate or Web Worker) but they provide a [channel] that</code>
+        </line>
+        <line>
+            <code>/// can be shared with other workers to support communication between threads. One interesting use-case is</code>
+        </line>
+        <line>
+            <code>/// accessing UI components or platform plugins in Flutter, where only code running in the main thread is</code>
+        </line>
+        <line>
+            <code>/// allowed access to such features. Creating a [LocalWorker] in the main application and sharing its</code>
+        </line>
+        <line>
+            <code>/// [channel] with other workers enables providing access to Flutter features.</code>
+        </line>
+        <line>
+            <code>///</code>
+        </line>
+        <line>
+            <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local worker are deserialized as</code>
+        </line>
+        <line>
+            <code>/// [WorkerRequest] and dispatched to a handler defined in the [service]'s [WorkerService.operations] map</code>
+        </line>
+        <line>
+            <code>/// according to the [WorkerRequest.command].</code>
+        </line>
+        <line>
+            <code>abstract class LocalWorker&lt;W extends WorkerService&gt; implements WorkerService {</code>
+        </line>
+        <line hits="1">
+            <code>  LocalWorker(this.service);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  factory LocalWorker.create(W service) =&gt; createLocalWorker&lt;W&gt;(service);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [WorkerService] associated to this local worker.</code>
+        </line>
+        <line>
+            <code>  final W service;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The local worker's [Channel]. This channel can be shared with other workers by calling [Channel.share].</code>
+        </line>
+        <line>
+            <code>  Channel? get channel;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Stops the local worker.</code>
+        </line>
+        <line>
+            <code>  void stop();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Local Workers do not need an [operations] map.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="1">
+            <code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>
