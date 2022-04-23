@@ -390,8 +390,7 @@ void workerTests() {
     rogue.stop();
   });
 
-  test('- exception handling from worker - TaskTimeOutException',
-      () async {
+  test('- exception handling from worker - TaskTimeOutException', () async {
     final testService = TestWorker();
 
     try {
@@ -407,8 +406,7 @@ void workerTests() {
     testService.stop();
   });
 
-  test('- exception handling from worker - CancelledException',
-      () async {
+  test('- exception handling from worker - CancelledException', () async {
     final testService = TestWorker();
 
     try {

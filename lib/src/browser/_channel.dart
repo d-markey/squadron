@@ -194,17 +194,22 @@ class Transferables {
 
   static final _instance = Transferables._();
 
-  static List<Object> get(Map args) => _instance._get(args, <Object>{}).toList();
+  static List<Object> get(Map args) =>
+      _instance._get(args, <Object>{}).toList();
 
-  bool _isBaseType(dynamic value) => (value == null || value is String || value is num || value is bool);
+  bool _isBaseType(dynamic value) =>
+      (value == null || value is String || value is num || value is bool);
 
-  bool _isListOfBaseType(dynamic value) => (value is List<String> || value is List<num> || value is List<bool>);
+  bool _isListOfBaseType(dynamic value) =>
+      (value is List<String> || value is List<num> || value is List<bool>);
 
   bool _isSafeForTransfer(dynamic value) {
     if (_isBaseType(value)) return true;
     if (_isListOfBaseType(value)) return true;
     if (value is List && value.every(_isSafeForTransfer)) return true;
-    if (value is Map && value.keys.every(_isBaseType) && value.values.every(_isSafeForTransfer)) return true;
+    if (value is Map &&
+        value.keys.every(_isBaseType) &&
+        value.values.every(_isSafeForTransfer)) return true;
     return false;
   }
 
@@ -268,7 +273,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
     }
   });
   final message =
-      WorkerRequest.start(com.port2, Identity.nextId(), startArguments).serialize();
+      WorkerRequest.start(com.port2, Identity.nextId(), startArguments)
+          .serialize();
   try {
     final transfer = Transferables.get(message);
     worker.postMessage(message, transfer);

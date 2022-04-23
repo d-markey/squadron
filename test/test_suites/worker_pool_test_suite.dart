@@ -140,8 +140,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('- exception handling from worker - TaskTimeOutException',
-      () async {
+  test('- exception handling from worker - TaskTimeOutException', () async {
     final pool = TestWorkerPool();
 
     try {
@@ -157,8 +156,7 @@ void poolTests() {
     pool.stop();
   });
 
-  test('- exception handling from worker - CancelledException',
-      () async {
+  test('- exception handling from worker - CancelledException', () async {
     final pool = TestWorkerPool();
 
     try {

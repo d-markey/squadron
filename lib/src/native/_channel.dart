@@ -159,7 +159,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final receiver = ReceivePort();
   Isolate.spawn(
           entryPoint,
-          WorkerRequest.start(receiver.sendPort, Identity.nextId(), startArguments)
+          WorkerRequest.start(
+                  receiver.sendPort, Identity.nextId(), startArguments)
               .serialize(),
           paused: true)
       .then((isolate) {

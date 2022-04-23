@@ -7,7 +7,8 @@ import 'xplat/_sequence_id.dart';
 /// Base cancellation token.
 class CancellationToken {
   CancellationToken([String? message])
-      : _message = message, _id = SequenceId.next();
+      : _message = message,
+        _id = SequenceId.next();
 
   static const _$token = 'a';
   static const _$message = 'b';
