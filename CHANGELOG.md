@@ -1,3 +1,8 @@
+## 3.4.0
+
+- Rewritten streaming implementations (fix for https://github.com/d-markey/squadron/issues/8).
+- Added unit tests.
+
 ## 3.3.2
 
 - Implemented a `LocalLogger` to have Web workers log messages from the main window (effectively logging via Dart debugger if present).
