@@ -21,32 +21,38 @@ class WorkerRequest {
   static const _noArgs = [];
 
   WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
-      this.logLevel, this._cancelToken)
+      this.logLevel, this._cancelToken, this._streamId)
       : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new request with the specified [command] ID and optional arguments.
   WorkerRequest(dynamic channelInfo, int command,
       [List args = _noArgs, CancellationToken? cancelToken])
-      : this._(channelInfo, command, null, args, null, cancelToken);
+      : this._(channelInfo, command, null, args, null, cancelToken, null);
 
   /// Creates a new start request.
   WorkerRequest.start(dynamic channelInfo, String id, [List args = _noArgs])
-      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null);
+      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null,
+            null);
 
-  /// Creates a new cancel request.
+  /// Creates a new cancellation request.
+  WorkerRequest.cancelStream(int streamId)
+      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId);
+
+  /// Creates a new cancellation request.
   WorkerRequest.cancel(CancellationToken cancelToken)
-      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken);
+      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
-      : this._(null, _terminateCommand, null, _noArgs, null, null);
+      : this._(null, _terminateCommand, null, _noArgs, null, null, null);
 
   static const _$client = 'a';
   static const _$command = 'b';
   static const _$args = 'c';
   static const _$token = 'd';
-  static const _$id = 'e';
-  static const _$logLevel = 'f';
+  static const _$streamId = 'e';
+  static const _$id = 'f';
+  static const _$logLevel = 'g';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
   static WorkerRequest? deserialize(Map? message) => (message == null)
@@ -57,7 +63,8 @@ class WorkerRequest {
           message[_$id],
           message[_$args] ?? const [],
           message[_$logLevel],
-          CancellationToken.deserialize(message[_$token]));
+          CancellationToken.deserialize(message[_$token]),
+          message[_$streamId]);
 
   /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
@@ -77,6 +84,7 @@ class WorkerRequest {
         _$command: command,
         if (args.isNotEmpty) _$args: args,
         if (_cancelToken != null) _$token: _cancelToken!.serialize(),
+        if (_streamId != null) _$streamId: _streamId,
       };
     }
   }
@@ -87,6 +95,10 @@ class WorkerRequest {
   /// Cancellation token.
   CancellationToken? get cancelToken => _cancelToken;
   CancellationToken? _cancelToken;
+
+  /// Stream id.
+  int? get streamId => _streamId;
+  int? _streamId;
 
   /// The [command]'s ID.
   final int command;
@@ -105,18 +117,22 @@ class WorkerRequest {
   /// flag for start requests.
   bool get connect => command == _connectCommand;
 
-  /// flag for cancel requests.
+  /// flag for stream cancellation requests.
+  bool get cancelStream => command == _cancelStreamCommand;
+
+  /// flag for cancellation requests.
   bool get cancel => command == _cancelCommand;
 
   /// flag for termination requests.
   bool get terminate => command == _terminateCommand;
 
   static const int _connectCommand = -1;
-  static const int _cancelCommand = -2;
-  static const int _terminateCommand = -3;
+  static const int _cancelStreamCommand = -2;
+  static const int _cancelCommand = -3;
+  static const int _terminateCommand = -4;
 }
 
-// private implementation internal to Squadron
+// for internal use
 extension WorkerRequestExt on WorkerRequest {
   void overrideCancelToken(CancellationToken token) {
     if (_cancelToken == null || _cancelToken!.id != token.id) {

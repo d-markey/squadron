@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import '../xplat/_identity.dart';
+import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../squadron.dart';
@@ -8,8 +10,9 @@ import '../squadron_exception.dart';
 import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
+import '../worker_service.dart';
 
-class _SendPort {
+class _BaseVmChannel {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
   /// to return values to the client.
   SendPort? _sendPort;
@@ -18,9 +21,10 @@ class _SendPort {
   dynamic serialize() => _sendPort;
 
   void _postRequest(WorkerRequest req) {
+    req.cancelToken?.ensureStarted();
     final message = req.serialize();
     try {
-      _sendPort!.send(message);
+      _sendPort?.send(message);
     } catch (ex) {
       Squadron.severe('failed to post request $message: error $ex');
       rethrow;
@@ -39,7 +43,7 @@ class _SendPort {
 }
 
 /// [Channel] implementation for the Native world.
-class _VmChannel extends _SendPort implements Channel {
+class _VmChannel extends _BaseVmChannel implements Channel {
   _VmChannel._();
 
   /// [Channel] sharing in Native world returns the same instance.
@@ -55,108 +59,53 @@ class _VmChannel extends _SendPort implements Channel {
     }
   }
 
-  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is
-  /// cancelled.
-  @override
-  void notifyCancellation(CancellationToken token) {
-    if (token.cancelled) {
-      _postRequest(WorkerRequest.cancel(token));
-    }
-  }
-
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single
   /// value from the [Isolate]
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final receiver = ReceivePort();
-    _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-    final res = WorkerResponse.deserialize(await receiver.first);
-    return res.result as T;
+
+    void _canceller() => _postRequest(WorkerRequest.cancel(token!));
+
+    token?.addListener(_canceller);
+    try {
+      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
+      final message = await receiver.first;
+      token?.removeListener(_canceller);
+      final res = WorkerResponse.deserialize(message);
+      return res.result as T;
+    } catch (ex) {
+      token?.removeListener(_canceller);
+      rethrow;
+    } finally {
+      receiver.close();
+    }
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of
   /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? token}) {
-    late final StreamController<T> controller;
+      {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {
     final receiver = ReceivePort();
-    bool cancelled = false;
-    bool paused = false;
-
-    void process(dynamic message) {
-      if (cancelled) return;
-      final res = WorkerResponse.deserialize(message);
-      if (res.endOfStream) {
-        Squadron.info('[process] close');
-        controller.close();
-        cancelled = true;
-        // com.port1.close();
-      } else if (res.hasError) {
-        Squadron.info('[process] error');
-        controller.addError(res.error!, res.error!.stackTrace);
-        controller.close();
-        cancelled = true;
-        // com.port1.close();
-      } else {
-        controller.add(res.result);
-      }
-    }
-
-    final buffer = <dynamic>[];
-
-    void onListen() {
-      Squadron.info('[onListen] start streaming');
-      receiver.listen((message) {
-        if (cancelled) return;
-        if (paused) {
-          Squadron.info('[onListen] paused');
-          buffer.add(message);
-        } else {
-          process(message);
-        }
-      });
-      _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-    }
-
-    void onCancel() {
-      Squadron.info('[onCancel] cancelling');
-      cancelled = true;
-      receiver.close();
-      controller.close();
-    }
-
-    void onPause() {
-      Squadron.info('[onPause] pausing');
-      paused = true;
-    }
-
-    void onResume() {
-      Squadron.info('[onResume] resuming');
-      if (buffer.isNotEmpty) {
-        Squadron.info('[onResume] processing buffered events');
-        for (var m in buffer) {
-          process(m);
-        }
-        buffer.clear();
-      }
-      paused = false;
-    }
-
-    controller = StreamController(
-      onListen: onListen,
-      onPause: onPause,
-      onResume: onResume,
-      onCancel: onCancel,
+    final wrapper = StreamWrapper<T>(
+      WorkerRequest(receiver.sendPort, command, args, token),
+      postMethod: _postRequest,
+      messages: receiver,
+      onDone: () {
+        receiver.close();
+        onDone();
+      },
+      token: token,
     );
 
-    return controller.stream;
+    return wrapper.stream;
   }
 }
 
 /// [WorkerChannel] implementation for the native world.
-class _VmWorkerChannel extends _SendPort implements WorkerChannel {
+class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   _VmWorkerChannel._();
 
   /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon
@@ -169,6 +118,13 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');
     }
+  }
+
+  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the
+  /// [Worker] that the stream has been cancelled on the client-side.
+  @override
+  void connectStream(int streamId) {
+    reply(streamId);
   }
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
@@ -195,12 +151,6 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
 
 /// Stub implementations.
 
-int _counter = 0;
-String _getId() {
-  _counter++;
-  return '${Squadron.id}.$_counter';
-}
-
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
@@ -209,7 +159,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final receiver = ReceivePort();
   Isolate.spawn(
           entryPoint,
-          WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
+          WorkerRequest.start(
+                  receiver.sendPort, Identity.nextId(), startArguments)
               .serialize(),
           paused: true)
       .then((isolate) {
@@ -253,8 +204,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
         }
       }
     });
-  }).catchError((error, stackTrace) {
-    completer.completeError(error, stackTrace);
+  }).catchError((ex, st) {
+    completer.completeError(ex, st);
   });
   return completer.future;
 }

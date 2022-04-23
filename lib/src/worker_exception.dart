@@ -33,6 +33,7 @@ class WorkerException implements SquadronException {
           : null;
 
   /// Message.
+  @override
   final String message;
 
   /// Stack trace associated to the original exception.
@@ -132,7 +133,7 @@ class TaskTimeoutException extends CancelledException
           : null;
 }
 
-// private implementation internal to Squadron
+// for internal use
 extension WorkerExceptionExt on WorkerException {
   WorkerException withWorkerId(String? workerId) {
     _workerId ??= workerId;

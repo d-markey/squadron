@@ -9,9 +9,12 @@ import 'squadron_exception.dart';
 import 'worker.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
+import 'worker_service.dart';
 
-/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a
-/// platform worker.
+typedef PostMethod = void Function(WorkerRequest req);
+
+/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
+/// a platform worker.
 abstract class Channel {
   /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
@@ -24,8 +27,8 @@ abstract class Channel {
   /// worker and should not be used after this method has been called.
   FutureOr close();
 
-  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
-  void notifyCancellation(CancellationToken cancelToken);
+  /// Static method that does nothing. Useful when a [SquadronCallback] is required but there is nothing to do.
+  static void noop() {}
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args, {CancellationToken? token});
@@ -33,7 +36,7 @@ abstract class Channel {
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {CancellationToken? token});
+      {SquadronCallback onDone = noop, CancellationToken? token});
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.
@@ -54,6 +57,10 @@ abstract class WorkerChannel {
   /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized
   /// as a [Channel]. This method must be called by the worker upon startup.
   void connect(Object channelInfo);
+
+  /// Connects the [Channel] with a stream managed by the Squadron [Worker]. [streamId] is a unique identifier
+  /// representing the stream in the worker's thread.
+  void connectStream(int streamId);
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// worker only.

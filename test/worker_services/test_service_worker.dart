@@ -13,6 +13,9 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
   @override
+  Future log() => execute((w) => w.log());
+
+  @override
   Future io({required int milliseconds}) =>
       execute((w) => w.io(milliseconds: milliseconds));
 
@@ -24,6 +27,12 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
   Future<int> delayed(int n) => execute((w) => w.delayed(n));
 
   @override
+  Future<int> timeOut() => execute((w) => w.timeOut());
+
+  @override
+  Future<int> cancelled() => execute((w) => w.cancelled());
+
+  @override
   Stream<int> finite(int count, [CancellationToken? token]) =>
       stream((w) => w.finite(count, token));
 
@@ -32,26 +41,35 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       stream((w) => w.infinite(token));
 
   @override
-  Future infiniteCpu(CancellationToken token) =>
-      execute((w) => w.infiniteCpu(token));
+  Future cancellableInfiniteCpu(CancellationToken token) =>
+      execute((w) => w.cancellableInfiniteCpu(token));
 
   @override
-  Future log() => execute((w) => w.log());
+  Future<int> getPendingInfiniteWithErrors() => (maxWorkers == 1)
+      ? execute((w) => w.getPendingInfiniteWithErrors())
+      : throw WorkerException(
+          'getPendingInfiniteWithErrors() is not supported for worker pools with maxWorker != 1');
 
   @override
-  Future<bool> cannotListen(CancellationToken token) =>
-      execute((w) => w.cannotListen(token));
+  Stream<int> infiniteWithErrors(CancellationToken token) =>
+      stream((w) => w.infiniteWithErrors(token));
 
   ValueTask<int> delayedIdentityTask(int n) =>
       scheduleTask((w) => w.delayed(n));
 
   StreamTask<int> finiteTask(int n, [CancellationToken? token]) =>
       scheduleStream((w) => w.finite(n, token));
+
+  StreamTask<int> infiniteWithErrorsTask(CancellationToken token) =>
+      scheduleStream((w) => w.infiniteWithErrors(token));
 }
 
 class TestWorker extends Worker implements TestService {
   TestWorker([LocalSquadronLogger? logger])
       : super(EntryPoints.test, args: [logger?.connectionInfo]);
+
+  @override
+  Future log() => send(TestService.logCommand);
 
   @override
   Future io({required int milliseconds}) =>
@@ -65,6 +83,12 @@ class TestWorker extends Worker implements TestService {
   Future<int> delayed(int n) => send(TestService.delayedCommand, [n]);
 
   @override
+  Future<int> timeOut() => send(TestService.timeOutCommand);
+
+  @override
+  Future<int> cancelled() => send(TestService.cancelCommand);
+
+  @override
   Stream<int> finite(int count, [CancellationToken? token]) =>
       stream(TestService.finiteCommand, [count], token);
 
@@ -73,13 +97,14 @@ class TestWorker extends Worker implements TestService {
       stream(TestService.infiniteCommand, [token.serialize()], token);
 
   @override
-  Future infiniteCpu(CancellationToken token) =>
-      send(TestService.infiniteCpuCommand, [], token);
+  Future cancellableInfiniteCpu(CancellationToken token) =>
+      send(TestService.cancellableInfiniteCpuCommand, [], token);
 
   @override
-  Future log() => send(TestService.logCommand);
+  Future<int> getPendingInfiniteWithErrors() =>
+      send(TestService.getPendingInfiniteWithErrorsCommand, []);
 
   @override
-  Future<bool> cannotListen(CancellationToken token) =>
-      send(TestService.cannotListenCommand, [], token);
+  Stream<int> infiniteWithErrors(CancellationToken token) =>
+      stream(TestService.infiniteWithErrorsCommand, [], token);
 }

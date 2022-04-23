@@ -1,23 +1,30 @@
+import 'dart:async';
+
+import '../local_worker.dart';
+import '../channel.dart';
+import '../squadron.dart';
+import '../squadron_error.dart';
+import '../squadron_exception.dart';
+import '../worker.dart';
+import '../worker_exception.dart';
+import '../worker_request.dart';
+import '../worker_service.dart';
+
 import '_worker_monitor.dart';
-import 'squadron.dart';
-import 'squadron_error.dart';
-import 'squadron_exception.dart';
-import 'worker.dart';
-import 'worker_exception.dart';
-import 'worker_request.dart';
-import 'worker_service.dart';
 
 class WorkerRunner {
-  WorkerRunner(this._monitor);
+  /// Constructs a new worker runner monitored by [monitor].
+  WorkerRunner(WorkerMonitor monitor) : _monitor = monitor;
 
-  factory WorkerRunner.use(WorkerService service) {
-    final worker = WorkerRunner(null);
-    worker._operations.addAll(service.operations);
-    return worker;
+  /// Constructs a new worker runner for a [localWorker].
+  factory WorkerRunner.use(LocalWorker localWorker) {
+    final runner = WorkerRunner(WorkerMonitor(Channel.noop));
+    runner._operations.addAll(localWorker.service.operations);
+    return runner;
   }
 
   final _operations = <int, CommandHandler>{};
-  final WorkerMonitor? _monitor;
+  final WorkerMonitor _monitor;
 
   /// Called by the platform worker upon startup, in response to a start [WorkerRequest]. [channelInfo] is an opaque
   /// object sent back from the platform worker to the Squadron [Worker] and used to communicate with the platform
@@ -67,15 +74,20 @@ class WorkerRunner {
     if (request == null) {
       throw newSquadronError('invalid message');
     } else if (request.terminate) {
-      return _monitor?.terminate();
+      // terminate the worker
+      return _monitor.terminate();
     } else if (request.cancel) {
-      return _monitor?.cancel(request.cancelToken!);
+      // cancel a token
+      return _monitor.cancelToken(request.cancelToken!);
+    } else if (request.cancelStream) {
+      // cancel a stream
+      return _monitor.cancelStream(request.streamId!);
     } else if (client == null) {
       throw newSquadronError('missing client for request: $request');
     }
 
-    final tokenRef = _monitor?.begin(request) ?? WorkerMonitor.noTokenRef;
-    var streaming = false;
+    // start monitoring execution
+    final tokenRef = _monitor.begin(request);
     try {
       if (request.connect) {
         // connection request must be handled beforehand
@@ -83,8 +95,6 @@ class WorkerRunner {
       } else if (_operations.isEmpty) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
         throw WorkerException('worker service is not ready');
-      } else if (tokenRef.cancelled) {
-        throw tokenRef.exception!;
       }
       // retrieve operation matching the request command
       final op = _operations[request.command];
@@ -93,30 +103,47 @@ class WorkerRunner {
       }
       // process
       dynamic result = op(request);
-      result = (result is Future) ? await result : result;
+      if (result is Future) {
+        result = await result;
+      }
       if (result is Stream && client.canStream(result)) {
-        // stream values to the client
-        streaming = true;
-        CancelledException? ex;
-        await for (var res in result) {
-          if (ex != null) {
-            throw ex;
-          }
-          client.reply(res);
-          ex = tokenRef.exception;
+        // result is a stream: forward data to the client
+        late final StreamSubscription subscription;
+        final done = Completer();
+
+        // stream canceller
+        void shutdown() {
+          client.closeStream();
+          subscription.cancel();
+          done.complete();
         }
+
+        // register stream canceller callback and connect stream with client
+        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);
+        client.connectStream(streamId);
+
+        // start forwarding messages to the client
+        subscription = result.listen(
+          (data) => client.reply(data),
+          onError: (ex, st) =>
+              client.error(SquadronException.from(error: ex, stackTrace: st)),
+          onDone: shutdown,
+          cancelOnError: false,
+        );
+
+        await done.future.whenComplete(() {
+          // unregister stream canceller callback
+          _monitor.unregisterStreamCanceller(tokenRef, streamId);
+        });
       } else {
-        // send result to client
+        // result is a value: send to the client
         client.reply(result);
       }
     } catch (e, st) {
       client.error(SquadronException.from(error: e, stackTrace: st));
     } finally {
-      if (streaming) {
-        // ensure a closeStream response is sent to terminate streaming operations
-        client.closeStream();
-      }
-      _monitor?.done(tokenRef);
+      // stop monitoring execution
+      _monitor.done(tokenRef);
     }
   }
 }

@@ -22,7 +22,7 @@ void main() async {
     }
     await File('./coverage.json').writeAsString(jsonEncode({
       'linesValid': linesValid,
-      'lineRate': (lineRate * 1000).toInt() / 10
+      'lineRate': (lineRate * 1000).round() / 10
     }));
     exit(0);
   } catch (ex) {

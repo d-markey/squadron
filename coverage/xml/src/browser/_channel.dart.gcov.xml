@@ -1,1233 +1,1060 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82738096" lines-covered="139" lines-valid="168" package="/src/browser" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code>import 'dart:html' as web;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import '../cancellation_token.dart';</code>
-        </line>
-        <line>
-            <code>import '../channel.dart' show Channel, WorkerChannel;</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron_exception.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_exception.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_request.dart';</code>
-        </line>
-        <line>
-            <code>import '../worker_response.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>class _MessagePort {</code>
-        </line>
-        <line>
-            <code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,</code>
-        </line>
-        <line>
-            <code>  /// [web.MessagePort] to return values to the client.</code>
-        </line>
-        <line>
-            <code>  web.MessagePort? _sendPort;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].</code>
-        </line>
-        <line hits="1">
-            <code>  dynamic serialize() =&gt; _sendPort;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  void _postRequest(WorkerRequest req) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final message = req.serialize();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    try {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final transfer = _getTransferables(message).toList();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _sendPort!.postMessage(message, transfer);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="1">
-            <code>      Squadron.severe('failed to post request $message: error $ex');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      rethrow;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  void _postResponse(WorkerResponse res) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final message = res.serialize();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>    try {</code>
-        </line>
-        <line hits="1">
-            <code>      final transfer = _getTransferables(message).toList();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _sendPort!.postMessage(message, transfer);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="0">
-            <code>      Squadron.severe('failed to post response $message: error $ex');</code>
-        </line>
-        <line hits="0">
-            <code>      rethrow;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// [Channel] implementation for the JavaScript world.</code>
-        </line>
-        <line>
-            <code>class _JsChannel extends _MessagePort implements Channel {</code>
-        </line>
-        <line hits="1">
-            <code>  _JsChannel._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  Channel share() =&gt; _JsForwardChannel._(_sendPort!);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  FutureOr close() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (_sendPort != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _postRequest(WorkerRequest.stop());</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _sendPort = null;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is</code>
-        </line>
-        <line>
-            <code>  /// cancelled.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  void notifyCancellation(CancellationToken token) {</code>
-        </line>
-        <line>
-            <code>    if (token.cancelled) {</code>
-        </line>
-        <line hits="1">
-            <code>      _postRequest(WorkerRequest.cancel(token));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
-        </line>
-        <line>
-            <code>  /// single value from the [web.Worker].</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {CancellationToken? token}) async {</code>
-        </line>
-        <line hits="1">
-            <code>    final com = web.MessageChannel();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
-        <line hits="1">
-            <code>      _postRequest(WorkerRequest(com.port2, command, args, token));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final event = await com.port1.onMessage.first;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final res = WorkerResponse.deserialize(event.data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return res.result as T;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } finally {</code>
-        </line>
-        <line hits="1">
-            <code>      com.port2.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      com.port1.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
-        </line>
-        <line>
-            <code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code>
-        </line>
-        <line>
-            <code>  /// the [Stream].</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {CancellationToken? token}) {</code>
-        </line>
-        <line hits="1">
-            <code>    late final StreamController&lt;T&gt; controller;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    final com = web.MessageChannel();</code>
-        </line>
-        <line hits="1">
-            <code>    bool cancelled = false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    bool paused = false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void process(web.MessageEvent event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (cancelled) return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final res = WorkerResponse.deserialize(event.data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      if (res.endOfStream) {</code>
-        </line>
-        <line>
-            <code>        Squadron.info('[process] close');</code>
-        </line>
-        <line hits="1">
-            <code>        controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        cancelled = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        // com.port1.close();</code>
-        </line>
-        <line hits="1">
-            <code>      } else if (res.hasError) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        Squadron.info('[process] error');</code>
-        </line>
-        <line hits="1">
-            <code>        controller.addError(res.error!, res.error!.stackTrace);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        cancelled = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        // com.port1.close();</code>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="1">
-            <code>        controller.add(res.result);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    final buffer = &lt;web.MessageEvent&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onListen() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Squadron.info('[onListen] start streaming');</code>
-        </line>
-        <line hits="1">
-            <code>      com.port1.onMessage.listen((event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (cancelled) return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (paused) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          Squadron.info('[onListen] paused');</code>
-        </line>
-        <line hits="1">
-            <code>          buffer.add(event);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="1">
-            <code>          process(event);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="1">
-            <code>      });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _postRequest(WorkerRequest(com.port2, command, args, token));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onCancel() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Squadron.info('[onCancel] cancelling');</code>
-        </line>
-        <line hits="1">
-            <code>      cancelled = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      com.port1.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      controller.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onPause() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Squadron.info('[onPause] pausing');</code>
-        </line>
-        <line hits="1">
-            <code>      paused = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    void onResume() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Squadron.info('[onResume] resuming');</code>
-        </line>
-        <line hits="1">
-            <code>      if (buffer.isNotEmpty) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        Squadron.info('[onResume] processing buffered events');</code>
-        </line>
-        <line hits="0">
-            <code>        for (var e in buffer) {</code>
-        </line>
-        <line hits="0">
-            <code>          process(e);</code>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>        buffer.clear();</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>      paused = false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    controller = StreamController(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      onListen: onListen,</code>
-        </line>
-        <line>
-            <code>      onPause: onPause,</code>
-        </line>
-        <line>
-            <code>      onResume: onResume,</code>
-        </line>
-        <line>
-            <code>      onCancel: onCancel,</code>
-        </line>
-        <line>
-            <code>    );</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>    return controller.stream;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// [WorkerChannel] implementation for the JavaScript world.</code>
-        </line>
-        <line>
-            <code>class _JsWorkerChannel extends _MessagePort implements WorkerChannel {</code>
-        </line>
-        <line hits="1">
-            <code>  _JsWorkerChannel._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the</code>
-        </line>
-        <line>
-            <code>  /// [web.Worker] upon startup.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  void connect(Object channelInfo) {</code>
-        </line>
-        <line>
-            <code>    if (channelInfo is web.MessagePort) {</code>
-        </line>
-        <line>
-            <code>      reply(channelInfo);</code>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line>
-            <code>      throw WorkerException(</code>
-        </line>
-        <line>
-            <code>          'invalid channelInfo ${channelInfo.runtimeType}: MessagePort expected');</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
-        </line>
-        <line>
-            <code>  /// [web.Worker] only.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse(data));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  bool canStream(Stream stream) =&gt; true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]</code>
-        </line>
-        <line>
-            <code>  /// only.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="1">
-            <code>  void error(SquadronException error) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    Squadron.finer(() =&gt; 'replying with error: $error');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _postResponse(WorkerResponse.withError(error));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// [Channel] used to communicate between [web.Worker]s. Creates a [web.MessageChannel] to receive commands on</code>
-        </line>
-        <line>
-            <code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
-        </line>
-        <line>
-            <code>class _JsForwardChannel extends _JsChannel {</code>
-        </line>
-        <line>
-            <code>  /// [remote] is the worker's [web.MessagePort]</code>
-        </line>
-        <line hits="1">
-            <code>  _JsForwardChannel._(web.MessagePort remote) : super._() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _remote = remote;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _com.port1.onMessage.listen(_forward);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _sendPort = _com.port2;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [web.MessagePort] to the worker.</code>
-        </line>
-        <line>
-            <code>  web.MessagePort? _remote;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// [web.MessageChannel] used for forwarding messages.</code>
-        </line>
-        <line>
-            <code>  final _com = web.MessageChannel();</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Forwards [web.MessageEvent.data] to the worker.</code>
-        </line>
-        <line hits="1">
-            <code>  void _forward(web.MessageEvent e) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final message = e.data;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>    try {</code>
-        </line>
-        <line hits="1">
-            <code>      final transfer = _getTransferables(message).toList();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _remote!.postMessage(message, transfer);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="0">
-            <code>      Squadron.severe('failed to forward $message: error $ex');</code>
-        </line>
-        <line hits="0">
-            <code>      rethrow;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Closes this [Channel], effectively stopping message forwarding.</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  void close() {</code>
-        </line>
-        <line hits="0">
-            <code>    _remote = null;</code>
-        </line>
-        <line hits="0">
-            <code>    _com.port1.close();</code>
-        </line>
-        <line hits="0">
-            <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Checks if [value] is a base type value or an object.</code>
-        </line>
-        <line hits="1">
-            <code>bool _isObject(dynamic value) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    value != null &amp;&amp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    value is! num &amp;&amp;</code>
-        </line>
-        <line>
-            <code>    value is! bool &amp;&amp;</code>
-        </line>
-        <line>
-            <code>    value is! String &amp;&amp;</code>
-        </line>
-        <line hits="1">
-            <code>    value is! List&lt;num&gt; &amp;&amp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    value is! List&lt;bool&gt; &amp;&amp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    value is! List&lt;String&gt;;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Excludes base type values from [list].</code>
-        </line>
-        <line hits="1">
-            <code>Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  for (var o in list.where(_isObject)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (!seen.contains(o)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      seen.add(o);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      yield o as Object;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line hits="1">
-            <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Yields objects contained in JSON object [args] (a Map, a List, or a base type). Used to identify non-base type</code>
-        </line>
-        <line>
-            <code>/// objects and provide them to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects</code>
-        </line>
-        <line>
-            <code>/// -- essentially [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
-        </line>
-        <line hits="1">
-            <code>Iterable&lt;Object&gt; _getTransferables(dynamic args) sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  if (_isObject(args)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (args is Map) args = args.values;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (args is! Iterable) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      yield args as Object;</code>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="1">
-            <code>      final seen = &lt;Object&gt;{};</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final toBeInspected = &lt;Object&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      toBeInspected.addAll(_getObjects(args, seen));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      var i = 0;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      while (i &lt; toBeInspected.length) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        final arg = toBeInspected[i++];</code>
-        </line>
-        <line hits="1">
-            <code>        if (arg is Map) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          toBeInspected.addAll(_getObjects(arg.values, seen));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        } else if (arg is Iterable) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          toBeInspected.addAll(_getObjects(arg, seen));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="1">
-            <code>          yield arg;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line hits="1">
-            <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Stub implementations</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>int _counter = 0;</code>
-        </line>
-        <line>
-            <code>String _getId() {</code>
-        </line>
-        <line hits="1">
-            <code>  _counter++;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  return '${Squadron.id}.$_counter';</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
-        </line>
-        <line>
-            <code>/// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].</code>
-        </line>
-        <line hits="1">
-            <code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  final completer = Completer&lt;Channel&gt;();</code>
-        </line>
-        <line>
-            <code>  final channel = _JsChannel._();</code>
-        </line>
-        <line>
-            <code>  final com = web.MessageChannel();</code>
-        </line>
-        <line hits="1">
-            <code>  final worker = web.Worker(entryPoint);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  Squadron.config('created Web Worker #${worker.hashCode}');</code>
-        </line>
-        <line hits="1">
-            <code>  worker.onError.listen((event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    String msg;</code>
-        </line>
-        <line hits="0">
-            <code>    if (event is web.ErrorEvent) {</code>
-        </line>
-        <line>
-            <code>      final error = event;</code>
-        </line>
-        <line>
-            <code>      msg =</code>
-        </line>
-        <line hits="0">
-            <code>          '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="0">
-            <code>      msg = '$entryPoint: ${event.type} / $event';</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="0">
-            <code>    Squadron.severe('error in Web Worker #${worker.hashCode}: $msg');</code>
-        </line>
-        <line hits="0">
-            <code>    if (!completer.isCompleted) {</code>
-        </line>
-        <line hits="0">
-            <code>      completer.completeError(</code>
-        </line>
-        <line>
-            <code>          WorkerException('error in Web Worker #${worker.hashCode}: $msg'));</code>
-        </line>
-        <line hits="0">
-            <code>      worker.terminate();</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="0">
-            <code>  });</code>
-        </line>
-        <line>
-            <code>  final message =</code>
-        </line>
-        <line hits="1">
-            <code>      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>  try {</code>
-        </line>
-        <line hits="1">
-            <code>    final transfer = _getTransferables(message).toList();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    worker.postMessage(message, transfer);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  } catch (ex) {</code>
-        </line>
-        <line hits="0">
-            <code>    com.port1.close();</code>
-        </line>
-        <line hits="0">
-            <code>    worker.terminate();</code>
-        </line>
-        <line hits="0">
-            <code>    Squadron.severe('failed to post connection request $message: error $ex');</code>
-        </line>
-        <line hits="0">
-            <code>    rethrow;</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line hits="1">
-            <code>  com.port1.onMessage.listen((event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    com.port1.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final response = WorkerResponse.deserialize(event.data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    SquadronException? error = response.error;</code>
-        </line>
-        <line hits="1">
-            <code>    if (error == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      try {</code>
-        </line>
-        <line hits="1">
-            <code>        channel._sendPort = response.result;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        Squadron.config('connected to Web Worker #${worker.hashCode}');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        completer.complete(channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      } catch (ex, st) {</code>
-        </line>
-        <line hits="0">
-            <code>        error = SquadronException.from(error: ex, stackTrace: st);</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    if (error != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      worker.terminate();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Squadron.severe(</code>
-        </line>
-        <line>
-            <code>          'connection to Web Worker #${worker.hashCode} failed: ${response.error}');</code>
-        </line>
-        <line hits="1">
-            <code>      completer.completeError(error, error.stackTrace);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  return completer.future;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [_JsChannel] from a [web.MessagePort].</code>
-        </line>
-        <line>
-            <code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
-        </line>
-        <line hits="1">
-            <code>    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [_JsWorkerChannel] from a [web.MessagePort].</code>
-        </line>
-        <line hits="1">
-            <code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    (channelInfo == null)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        ? null</code>
-        </line>
-        <line hits="1">
-            <code>        : (_JsWorkerChannel._().._sendPort = channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../../"/>
-    <base href="../../"/>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.822695" lines-covered="116" lines-valid="141" package="/src/browser" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:async';</code>
+</line>
+<line>
+<code>import 'dart:html' as web;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import 'package:squadron/src/squadron_error.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import '../xplat/_identity.dart';</code>
+</line>
+<line>
+<code>import '../xplat/_stream_wrapper.dart';</code>
+</line>
+<line>
+<code>import '../cancellation_token.dart';</code>
+</line>
+<line>
+<code>import '../channel.dart' show Channel, WorkerChannel;</code>
+</line>
+<line>
+<code>import '../squadron.dart';</code>
+</line>
+<line>
+<code>import '../squadron_exception.dart';</code>
+</line>
+<line>
+<code>import '../worker_exception.dart';</code>
+</line>
+<line>
+<code>import '../worker_request.dart';</code>
+</line>
+<line>
+<code>import '../worker_response.dart';</code>
+</line>
+<line>
+<code>import '../worker_service.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>class _BaseJsChannel {</code>
+</line>
+<line>
+<code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,</code>
+</line>
+<line>
+<code>  /// [web.MessagePort] to return values to the client.</code>
+</line>
+<line>
+<code>  web.MessagePort? _sendPort;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].</code>
+</line>
+<line hits="1">
+<code>  dynamic serialize() =&gt; _sendPort;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  void _postRequest(WorkerRequest req) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    req.cancelToken?.ensureStarted();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final message = req.serialize();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    try {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      final transfer = Transferables.get(message);</code>
+</line>
+<line hits="1">
+<code>      _sendPort?.postMessage(message, transfer);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line hits="1">
+<code>      Squadron.severe('failed to post request $message: error $ex');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      rethrow;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  void _postResponse(WorkerResponse res) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final message = res.serialize();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>    try {</code>
+</line>
+<line>
+<code>      final transfer = Transferables.get(message);</code>
+</line>
+<line hits="1">
+<code>      _sendPort!.postMessage(message, transfer);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line hits="0">
+<code>      Squadron.severe('failed to post response $message: error $ex');</code>
+</line>
+<line hits="0">
+<code>      rethrow;</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// [Channel] implementation for the JavaScript world.</code>
+</line>
+<line>
+<code>class _JsChannel extends _BaseJsChannel implements Channel {</code>
+</line>
+<line hits="1">
+<code>  _JsChannel._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  Channel share() =&gt; _JsForwardChannel._(_sendPort!);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  FutureOr close() {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_sendPort != null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _postRequest(WorkerRequest.stop());</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _sendPort = null;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
+</line>
+<line>
+<code>  /// single value from the [web.Worker].</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {CancellationToken? token}) async {</code>
+</line>
+<line hits="1">
+<code>    final com = web.MessageChannel();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>    void _canceller() =&gt; _postRequest(WorkerRequest.cancel(token!));</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>    token?.addListener(_canceller);</code>
+</line>
+<line>
+<code>    try {</code>
+</line>
+<line hits="1">
+<code>      _postRequest(WorkerRequest(com.port2, command, args, token));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      final event = await com.port1.onMessage.first</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          .whenComplete(() =&gt; token?.removeListener(_canceller));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      final res = WorkerResponse.deserialize(event.data);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      return res.result as T;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } finally {</code>
+</line>
+<line>
+<code>      token?.removeListener(_canceller);</code>
+</line>
+<line hits="1">
+<code>      com.port2.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      com.port1.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
+</line>
+<line>
+<code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code>
+</line>
+<line>
+<code>  /// the [Stream].</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {</code>
+</line>
+<line hits="1">
+<code>    final com = web.MessageChannel();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      WorkerRequest(com.port2, command, args, token),</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      postMethod: _postRequest,</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      messages: com.port1.onMessage.map((event) =&gt; event.data),</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      onDone: () {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        com.port1.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        onDone();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      },</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      token: token,</code>
+</line>
+<line>
+<code>    );</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>    return wrapper.stream;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// [WorkerChannel] implementation for the JavaScript world.</code>
+</line>
+<line>
+<code>class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {</code>
+</line>
+<line hits="1">
+<code>  _JsWorkerChannel._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the</code>
+</line>
+<line>
+<code>  /// [web.Worker] upon startup.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  void connect(Object channelInfo) {</code>
+</line>
+<line>
+<code>    if (channelInfo is web.MessagePort) {</code>
+</line>
+<line>
+<code>      reply(channelInfo);</code>
+</line>
+<line>
+<code>    } else {</code>
+</line>
+<line>
+<code>      throw WorkerException(</code>
+</line>
+<line>
+<code>          'invalid channelInfo ${channelInfo.runtimeType}: MessagePort expected');</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the</code>
+</line>
+<line>
+<code>  /// [Worker] that the stream has been cancelled on the client-side.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  void connectStream(int streamId) {</code>
+</line>
+<line hits="1">
+<code>    reply(streamId);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+</line>
+<line>
+<code>  /// [web.Worker] only.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse(data));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line>
+<code>  bool canStream(Stream stream) =&gt; true;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]</code>
+</line>
+<line>
+<code>  /// only.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="1">
+<code>  void error(SquadronException error) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    Squadron.finer(() =&gt; 'replying with error: $error');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _postResponse(WorkerResponse.withError(error));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// [Channel] used to communicate between [web.Worker]s. Creates a [web.MessageChannel] to receive commands on</code>
+</line>
+<line>
+<code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
+</line>
+<line>
+<code>class _JsForwardChannel extends _JsChannel {</code>
+</line>
+<line>
+<code>  /// [remote] is the worker's [web.MessagePort]</code>
+</line>
+<line hits="1">
+<code>  _JsForwardChannel._(web.MessagePort remote) : super._() {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _remote = remote;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _com.port1.onMessage.listen(_forward);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    _sendPort = _com.port2;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [web.MessagePort] to the worker.</code>
+</line>
+<line>
+<code>  web.MessagePort? _remote;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// [web.MessageChannel] used for forwarding messages.</code>
+</line>
+<line>
+<code>  final _com = web.MessageChannel();</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Forwards [web.MessageEvent.data] to the worker.</code>
+</line>
+<line hits="1">
+<code>  void _forward(web.MessageEvent e) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final message = e.data;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>    try {</code>
+</line>
+<line hits="1">
+<code>      final transfer = Transferables.get(message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      _remote!.postMessage(message, transfer);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line hits="0">
+<code>      Squadron.severe('failed to forward $message: error $ex');</code>
+</line>
+<line hits="0">
+<code>      rethrow;</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Closes this [Channel], effectively stopping message forwarding.</code>
+</line>
+<line>
+<code>  @override</code>
+</line>
+<line hits="0">
+<code>  void close() {</code>
+</line>
+<line hits="0">
+<code>    _remote = null;</code>
+</line>
+<line hits="0">
+<code>    _com.port1.close();</code>
+</line>
+<line hits="0">
+<code>  }</code>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>class Transferables {</code>
+</line>
+<line hits="1">
+<code>  Transferables._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static final _instance = Transferables._();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static List&lt;Object&gt; get(Map args) =&gt; _instance._get(args, &lt;Object&gt;{}).toList();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isBaseType(dynamic value) =&gt; (value == null || value is String || value is num || value is bool);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isListOfBaseType(dynamic value) =&gt; (value is List&lt;String&gt; || value is List&lt;num&gt; || value is List&lt;bool&gt;);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isSafeForTransfer(dynamic value) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isBaseType(value)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isListOfBaseType(value)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (value is List &amp;&amp; value.every(_isSafeForTransfer)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (value is Map &amp;&amp; value.keys.every(_isBaseType) &amp;&amp; value.values.every(_isSafeForTransfer)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    return false;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Excludes base type values from [list].</code>
+</line>
+<line hits="1">
+<code>  Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    for (var o in list.where((o) =&gt; !_isSafeForTransfer(o))) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      if (!seen.contains(o)) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        seen.add(o);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        yield o as Object;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them to</code>
+</line>
+<line>
+<code>  /// [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects -- essentially</code>
+</line>
+<line>
+<code>  /// [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
+</line>
+<line hits="1">
+<code>  Iterable&lt;Object&gt; _get(Map message, Set&lt;Object&gt; seen) sync* {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isSafeForTransfer(message)) return;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (!message.keys.every(_isBaseType)) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      throw newSquadronError('Keys must be strings, numbers or booleans.');</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    final toBeInspected = &lt;Object&gt;[];</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    toBeInspected.addAll(_getObjects(message.values, seen));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    while (toBeInspected.isNotEmpty) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      final arg = toBeInspected.removeLast();</code>
+</line>
+<line hits="1">
+<code>      if (arg is Map) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>        toBeInspected.addAll(_get(arg, seen));</code>
+</line>
+<line hits="1">
+<code>      } else if (arg is Iterable) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        toBeInspected.addAll(_getObjects(arg, seen));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      } else {</code>
+</line>
+<line hits="1">
+<code>        yield arg;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Stub implementations</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
+</line>
+<line>
+<code>/// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].</code>
+</line>
+<line hits="1">
+<code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  final completer = Completer&lt;Channel&gt;();</code>
+</line>
+<line>
+<code>  final channel = _JsChannel._();</code>
+</line>
+<line>
+<code>  final com = web.MessageChannel();</code>
+</line>
+<line hits="1">
+<code>  final worker = web.Worker(entryPoint);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  Squadron.config('created Web Worker #${worker.hashCode}');</code>
+</line>
+<line hits="1">
+<code>  worker.onError.listen((event) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    String msg;</code>
+</line>
+<line hits="1">
+<code>    if (event is web.ErrorEvent) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      final error = event;</code>
+</line>
+<line>
+<code>      msg =</code>
+</line>
+<line hits="1">
+<code>          '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } else {</code>
+</line>
+<line hits="0">
+<code>      msg = '$entryPoint: ${event.type} / $event';</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    Squadron.severe('error in Web Worker #${worker.hashCode}: $msg');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (!completer.isCompleted) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      completer.completeError(</code>
+</line>
+<line>
+<code>          WorkerException('error in Web Worker #${worker.hashCode}: $msg'));</code>
+</line>
+<line hits="0">
+<code>      worker.terminate();</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  });</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  final message =</code>
+</line>
+<line hits="1">
+<code>      WorkerRequest.start(com.port2, Identity.nextId(), startArguments).serialize();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>  try {</code>
+</line>
+<line>
+<code>    final transfer = Transferables.get(message);</code>
+</line>
+<line hits="1">
+<code>    worker.postMessage(message, transfer);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  } catch (ex) {</code>
+</line>
+<line hits="0">
+<code>    com.port1.close();</code>
+</line>
+<line hits="0">
+<code>    worker.terminate();</code>
+</line>
+<line hits="0">
+<code>    Squadron.severe('failed to post connection request $message: error $ex');</code>
+</line>
+<line hits="0">
+<code>    rethrow;</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line hits="1">
+<code>  com.port1.onMessage.listen((event) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    com.port1.close();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    final response = WorkerResponse.deserialize(event.data);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    SquadronException? error = response.error;</code>
+</line>
+<line hits="1">
+<code>    if (error == null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      try {</code>
+</line>
+<line hits="1">
+<code>        channel._sendPort = response.result;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        Squadron.config('connected to Web Worker #${worker.hashCode}');</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        completer.complete(channel);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      } catch (ex, st) {</code>
+</line>
+<line hits="0">
+<code>        error = SquadronException.from(error: ex, stackTrace: st);</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    if (error != null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      worker.terminate();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      Squadron.severe(</code>
+</line>
+<line>
+<code>          'connection to Web Worker #${worker.hashCode} failed: ${response.error}');</code>
+</line>
+<line hits="1">
+<code>      completer.completeError(error, error.stackTrace);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  });</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  return completer.future;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>}</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Creates a [_JsChannel] from a [web.MessagePort].</code>
+</line>
+<line>
+<code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
+</line>
+<line hits="1">
+<code>    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Creates a [_JsWorkerChannel] from a [web.MessagePort].</code>
+</line>
+<line hits="1">
+<code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    (channelInfo == null)</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>        ? null</code>
+</line>
+<line hits="1">
+<code>        : (_JsWorkerChannel._().._sendPort = channelInfo);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../../"/>
+<base href="../../"/>
 </coverage>

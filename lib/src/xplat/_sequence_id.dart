@@ -8,9 +8,13 @@
 class SequenceId {
   SequenceId._();
 
-  static final instance = SequenceId._();
+  static final _instance = SequenceId._();
 
   int _id = 0;
 
-  int next() => ++_id;
+  /// Provides the next ID.
+  static int next() {
+    final id = ++_instance._id;
+    return id;
+  }
 }

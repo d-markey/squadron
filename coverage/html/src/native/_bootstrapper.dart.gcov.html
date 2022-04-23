@@ -1,139 +1,137 @@
 <!DOCTYPE html SYSTEM "about:legacy-compat">
 <html>
-    <head>
-        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info _bootstrapper.dart</title>
-    </head>
-    <body class="noscript nolegend">
-        <h1>LCOV - code coverage report</h1>
-        <div class="header">
-            <div class="row">
-                <dl class="pageView">
-                    <dt>Current view</dt>
-                    <dd>
-                        <a href="../../index.html">top level</a> - <a href="index.html">/src/native</a> - _bootstrapper.dart
-                    </dd>
-                    <dt>Test</dt>
-                    <dd>lcov.info</dd>
-                    <dt>Date</dt>
-                    <dd>2022-04-09</dd>
-                    <dt class="legend">Legend</dt>
-                    <dd class="legend">
-                        <dl class="legend">
-                            <dt>Lines</dt>
-                            <dd class="lineCov">hit</dd>
-                            <dd class="lineNoCov">not hit</dd>
-                            <dt>Branches</dt>
-                            <dd class="taken"> taken</dd>
-                            <dd class="noTaken"> not taken</dd>
-                            <dd class="lineNoCov"># not executed</dd>
-                        </dl>
-                    </dd>
-                </dl>
-                <table class="stats">
-                    <thead>
-                        <tr>
-                            <td></td><th scope="col">Hit</th><th scope="col">Total</th><th scope="col">Coverage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">Lines</th><td>9</td><td>9</td><td class="high">100.0%</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Branches</th><td>0</td><td>0</td><td class="high">-</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <table class="coverage" title="Each row represents a line of source code">
-            <caption>Each row represents a line of source code</caption>
-            <thead>
-                <tr>
-                    <th>Line</th><th>Branch</th><th>Hits</th><th>Source code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'dart:isolate';</code></td>
-                </tr>
-                <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../_worker_monitor.dart';</code></td>
-                </tr>
-                <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '../_worker_runner.dart';</code></td>
-                </tr>
-                <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import '../squadron.dart';</code></td>
-                </tr>
-                <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '../worker_service.dart';</code></td>
-                </tr>
-                <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>1</td><td><code>void bootstrap(WorkerInitializer initializer, Map? command) async {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>1</td><td><code>  final workerPort = ReceivePort();</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>2</td><td><code>  final monitor = WorkerMonitor(() {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>1</td><td><code>    Squadron.config('terminating Isolate');</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>1</td><td><code>    workerPort.close();</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>2</td><td><code>    Isolate.current.kill();</code></td>
-                </tr>
-                <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  });</code></td>
-                </tr>
-                <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>1</td><td><code>  final runner = WorkerRunner(monitor);</code></td>
-                </tr>
-                <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>3</td><td><code>  workerPort.listen((message) =&gt; runner.processMessage(message));</code></td>
-                </tr>
-                <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>2</td><td><code>  await runner.connect(command, workerPort, initializer);</code></td>
-                </tr>
-                <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>}</code></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="footer">
-            <p>
-                Generated by: <a href="http://code.google.com/p/jgenhtml/">JGENHTML version 1.5</a>
-            </p>
-        </div>
-        <div class="controls">
-            <fieldset>
-                <legend>Choose Features</legend><label for="nofunc">Function coverage</label><input id="nofunc" type="checkbox" checked><label for="nobranch">Branch coverage</label><input id="nobranch" type="checkbox" checked><label for="nolegend">Legend</label><input id="nolegend" type="checkbox">
-            </fieldset>
-        </div>
-    </body>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../../jgenhtml.js"></script>
+<title>LCOV - lcov.info _bootstrapper.dart</title>
+</head>
+<body class="noscript nolegend">
+<h1>LCOV - code coverage report</h1>
+<div class="header">
+<div class="row">
+<dl class="pageView">
+<dt>Current view</dt>
+<dd>
+<a href="../../index.html">top level</a> - <a href="index.html">/src/native</a> - _bootstrapper.dart</dd>
+<dt>Test</dt>
+<dd>lcov.info</dd>
+<dt>Date</dt>
+<dd>2022-04-23</dd>
+<dt class="legend">Legend</dt>
+<dd class="legend">
+<dl class="legend">
+<dt>Lines</dt>
+<dd class="lineCov">hit</dd>
+<dd class="lineNoCov">not hit</dd>
+<dt>Branches</dt>
+<dd class="taken"> taken</dd>
+<dd class="noTaken"> not taken</dd>
+<dd class="lineNoCov"># not executed</dd>
+</dl>
+</dd>
+</dl>
+<table class="stats">
+<thead>
+<tr>
+<td></td><th scope="col">Hit</th><th scope="col">Total</th><th scope="col">Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">Lines</th><td>9</td><td>9</td><td class="high">100.0%</td>
+</tr>
+<tr>
+<th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
+</tr>
+<tr>
+<th scope="row">Branches</th><td>0</td><td>0</td><td class="high">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<table class="coverage" title="Each row represents a line of source code">
+<caption>Each row represents a line of source code</caption>
+<thead>
+<tr>
+<th>Line</th><th>Branch</th><th>Hits</th><th>Source code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="noop" title="Line 1" id="line1">
+<td>1</td><td></td><td></td><td><code>import 'dart:isolate';</code></td>
+</tr>
+<tr class="noop" title="Line 2" id="line2">
+<td>2</td><td></td><td></td><td><code></code></td>
+</tr>
+<tr class="noop" title="Line 3" id="line3">
+<td>3</td><td></td><td></td><td><code>import '../xplat/_worker_monitor.dart';</code></td>
+</tr>
+<tr class="noop" title="Line 4" id="line4">
+<td>4</td><td></td><td></td><td><code>import '../xplat/_worker_runner.dart';</code></td>
+</tr>
+<tr class="noop" title="Line 5" id="line5">
+<td>5</td><td></td><td></td><td><code>import '../squadron.dart';</code></td>
+</tr>
+<tr class="noop" title="Line 6" id="line6">
+<td>6</td><td></td><td></td><td><code>import '../worker_service.dart';</code></td>
+</tr>
+<tr class="noop" title="Line 7" id="line7">
+<td>7</td><td></td><td></td><td><code></code></td>
+</tr>
+<tr class="lineCov" title="Line 8" id="line8">
+<td>8</td><td></td><td>1</td><td><code>void bootstrap(WorkerInitializer initializer, Map? command) async {</code></td>
+</tr>
+<tr class="lineCov" title="Line 9" id="line9">
+<td>9</td><td></td><td>1</td><td><code>  final workerPort = ReceivePort();</code></td>
+</tr>
+<tr class="lineCov" title="Line 10" id="line10">
+<td>10</td><td></td><td>2</td><td><code>  final monitor = WorkerMonitor(() {</code></td>
+</tr>
+<tr class="lineCov" title="Line 11" id="line11">
+<td>11</td><td></td><td>1</td><td><code>    Squadron.config('terminating Isolate');</code></td>
+</tr>
+<tr class="lineCov" title="Line 12" id="line12">
+<td>12</td><td></td><td>1</td><td><code>    workerPort.close();</code></td>
+</tr>
+<tr class="lineCov" title="Line 13" id="line13">
+<td>13</td><td></td><td>2</td><td><code>    Isolate.current.kill();</code></td>
+</tr>
+<tr class="noop" title="Line 14" id="line14">
+<td>14</td><td></td><td></td><td><code>  });</code></td>
+</tr>
+<tr class="noop" title="Line 15" id="line15">
+<td>15</td><td></td><td></td><td><code></code></td>
+</tr>
+<tr class="lineCov" title="Line 16" id="line16">
+<td>16</td><td></td><td>1</td><td><code>  final runner = WorkerRunner(monitor);</code></td>
+</tr>
+<tr class="noop" title="Line 17" id="line17">
+<td>17</td><td></td><td></td><td><code></code></td>
+</tr>
+<tr class="lineCov" title="Line 18" id="line18">
+<td>18</td><td></td><td>3</td><td><code>  workerPort.listen((message) =&gt; runner.processMessage(message));</code></td>
+</tr>
+<tr class="noop" title="Line 19" id="line19">
+<td>19</td><td></td><td></td><td><code></code></td>
+</tr>
+<tr class="lineCov" title="Line 20" id="line20">
+<td>20</td><td></td><td>2</td><td><code>  await runner.connect(command, workerPort, initializer);</code></td>
+</tr>
+<tr class="noop" title="Line 21" id="line21">
+<td>21</td><td></td><td></td><td><code>}</code></td>
+</tr>
+</tbody>
+</table>
+<div class="footer">
+<p>Generated by: <a href="http://code.google.com/p/jgenhtml/">JGENHTML version 1.5</a>
+</p>
+</div>
+<div class="controls">
+<fieldset>
+<legend>Choose Features</legend><label for="nofunc">Function coverage</label><input id="nofunc" type="checkbox" checked><label for="nobranch">Branch coverage</label><input id="nobranch" type="checkbox" checked><label for="nolegend">Legend</label><input id="nolegend" type="checkbox">
+</fieldset>
+</div>
+</body>
 </html>

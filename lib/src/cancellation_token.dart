@@ -1,30 +1,36 @@
-import 'squadron_error.dart';
 import 'worker_exception.dart';
 import 'worker_request.dart';
 import 'worker_service.dart' show SquadronCallback;
+import 'xplat/_helpers.dart';
+import 'xplat/_sequence_id.dart';
 
-/// Cancellation token used in platform workers. These tokens are not designed to be cancelled or listened to by
-/// holders. Instead, worker services receiving a [CancellationToken] should verify the token's [cancelled] status
-/// and stop processing if the flag is set to [true].
+/// Base cancellation token.
 class CancellationToken {
-  CancellationToken(this.id, [String? message]) : _message = message;
+  CancellationToken([String? message])
+      : _message = message,
+        _id = SequenceId.next();
 
   static const _$token = 'a';
   static const _$message = 'b';
 
   /// Deseralization of a [CancellationToken]
-  static CancellationToken? deserialize(Map? token) => (token == null)
-      ? null
-      : CancellationToken(token[_$token], token[_$message]);
+  static CancellationToken? deserialize(Map? token) {
+    if (token == null) return null;
+    final tok = CancellationToken(token[_$message]);
+    tok._id = token[_$token];
+    return tok;
+  }
 
   /// The token's id
-  final int id;
+  int get id => _id;
+  int _id;
 
   /// Flag indicating whether the token was cancelled or not.
   bool get cancelled => exception != null;
 
   /// Exception to be thrown upon cancellation
-  CancelledException? get exception => null;
+  CancelledException? get exception => _exception;
+  CancelledException? _exception;
 
   /// Message associated with the token.
   String? get message => _message;
@@ -33,15 +39,37 @@ class CancellationToken {
   /// Seralization of a [CancellationToken]
   Map serialize() => {_$token: id, _$message: _message};
 
-  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that
-  /// need to cancel automatically.
-  void start() {}
+  /// Cancels the token and notifies listeners.
+  void cancel([CancelledException? exception]) {
+    _exception ??= (exception ?? CancelledException(message: message));
+    for (var listener in _listeners ?? const []) {
+      safeInvoke(listener);
+    }
+  }
 
-  /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not
-  /// designed to be listened to, it always throws a [SquadronError].
-  void addListener(SquadronCallback listener) =>
-      throw newSquadronError('CancellationToken may not be listened to');
+  List<SquadronCallback>? _listeners;
+
+  /// Registers a [listener] that will be notified when the token is cancelled. If the token is already cancelled,
+  /// the [listener] will be called immediately.
+  void addListener(SquadronCallback listener) {
+    if (cancelled) {
+      safeInvoke(listener);
+    } else {
+      _listeners ??= <SquadronCallback>[];
+      _listeners!.add(listener);
+    }
+  }
 
   /// Unregisters a listener that has been installed with [addListener].
-  void removeListener(SquadronCallback listener) {}
+  void removeListener(SquadronCallback listener) =>
+      _listeners?.remove(listener);
+
+  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that
+  /// need to cancel automatically.
+  void ensureStarted() {}
+}
+
+// for internal use
+extension TokenIdExt on CancellationToken {
+  void withId(int id) => _id = id;
 }

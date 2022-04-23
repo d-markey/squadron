@@ -9,8 +9,8 @@ String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 void localWorkerTests() {
   setUp(() {});
 
-  group('Identity -', () {
-    test('Direct use', () async {
+  group('- Identity', () {
+    test('- Direct use', () async {
       final localService = LocalServiceImpl(idGetter);
       var id = localService.getId();
       expect(id, equals(idGetter()));
@@ -25,7 +25,7 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker use', () async {
+    test('- Worker use', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -44,14 +44,13 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker Pool use', () async {
+    test('- Worker Pool use', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
       try {
         final localClientWorkerPool = LocalClientWorkerPool(localWorker,
             ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 3));
-        localClientWorkerPool.start();
 
         final tasks = <Future<String>>[];
 
@@ -85,8 +84,8 @@ void localWorkerTests() {
     });
   });
 
-  group('Exception -', () {
-    test('Direct use', () async {
+  group('- Exception', () {
+    test('- Direct use', () async {
       final localService = LocalServiceImpl(idGetter);
       try {
         final res = localService.throwException();
@@ -108,7 +107,7 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker use', () async {
+    test('- Worker use', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -122,7 +121,7 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker Pool use', () async {
+    test('- Worker Pool use', () async {
       String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 
       final identity = LocalServiceImpl(idGetter);
@@ -131,7 +130,6 @@ void localWorkerTests() {
       try {
         final identityWorkerPool = LocalClientWorkerPool(localIdentity,
             ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 3));
-        identityWorkerPool.start();
 
         final tasks = <Future<bool>>[];
 
@@ -154,8 +152,8 @@ void localWorkerTests() {
     });
   });
 
-  group('Stream -', () {
-    test('Direct use', () async {
+  group('- Stream', () {
+    test('- Direct use', () async {
       final localService = LocalServiceImpl(idGetter);
       var res1 = await localService.sequence(19).toList();
       expect(res1, equals(Iterable.generate(19)));
@@ -170,7 +168,7 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker use', () async {
+    test('- Worker use', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -185,7 +183,7 @@ void localWorkerTests() {
       }
     });
 
-    test('Worker Pool use', () async {
+    test('- Worker Pool use', () async {
       String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 
       final identity = LocalServiceImpl(idGetter);
@@ -194,15 +192,10 @@ void localWorkerTests() {
       try {
         final identityWorkerPool = LocalClientWorkerPool(localIdentity,
             ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 3));
-        identityWorkerPool.start();
 
         final tasks = <Future<List<dynamic>>>[];
 
-        for (var i = 0;
-            i <
-                identityWorkerPool.concurrencySettings.maxParallel *
-                    identityWorkerPool.concurrencySettings.maxWorkers;
-            i++) {
+        for (var i = 0; i < identityWorkerPool.maxConcurrency; i++) {
           tasks.add(identityWorkerPool.checkSequence(i).toList());
         }
 

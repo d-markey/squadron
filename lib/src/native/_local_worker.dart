@@ -1,13 +1,13 @@
 import 'dart:isolate';
 
-import '../_worker_runner.dart';
+import '../xplat/_worker_runner.dart';
 import '../channel.dart';
 import '../local_worker.dart';
 import '../worker_service.dart';
 
 class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _VmLocalWorker._(W service) : super(service) {
-    final runner = WorkerRunner.use(service);
+    final runner = WorkerRunner.use(this);
     _port.listen((message) => runner.processMessage(message));
   }
 

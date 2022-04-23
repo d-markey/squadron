@@ -1,302 +1,342 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-09" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8108108" lines-covered="30" lines-valid="37" package="/src" testname="lcov.info" version="1.5">
-    <lines>
-        <line>
-            <code>import 'dart:convert';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import 'squadron_error.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker_exception.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>typedef WorkerExceptionDeserializer = WorkerException? Function(List data);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Base abstract class for exceptions in Squadron.</code>
-        </line>
-        <line>
-            <code>abstract class SquadronException implements Exception {</code>
-        </line>
-        <line>
-            <code>  /// This factory returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it</code>
-        </line>
-        <line>
-            <code>  /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].</code>
-        </line>
-        <line hits="2">
-            <code>  factory SquadronException.from(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      {required Object error,</code>
-        </line>
-        <line>
-            <code>      StackTrace? stackTrace,</code>
-        </line>
-        <line>
-            <code>      String? workerId,</code>
-        </line>
-        <line>
-            <code>      int? command}) {</code>
-        </line>
-        <line hits="2">
-            <code>    if (error is SquadronError) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      return error;</code>
-        </line>
-        <line hits="1">
-            <code>    } else if (error is WorkerException) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      return error.withCommand(command).withWorkerId(workerId);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="3">
-            <code>      return WorkerException(error.toString(),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          stackTrace: stackTrace, workerId: workerId, command: command);</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static SquadronException? fromString(String message) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
-        <line hits="1">
-            <code>      final data = jsonDecode(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (data is List) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        return deserialize(data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line>
-            <code>      // not a String representing a SquadronException</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>    return null;</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  String toString() =&gt; jsonEncode(serialize());</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// The exception's [StackTrace].</code>
-        </line>
-        <line>
-            <code>  StackTrace? get stackTrace;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.</code>
-        </line>
-        <line>
-            <code>  List serialize();</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  static final _customDeserializers = &lt;WorkerExceptionDeserializer&gt;[];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Registers the deserializer for a custom [WorkerException].</code>
-        </line>
-        <line hits="1">
-            <code>  static void registerExceptionDeserializer(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      WorkerExceptionDeserializer deserializer) {</code>
-        </line>
-        <line hits="3">
-            <code>    _customDeserializers.add(deserializer);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.</code>
-        </line>
-        <line hits="1">
-            <code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Deserializes a [List] that was produced by [serialize].</code>
-        </line>
-        <line hits="2">
-            <code>  static SquadronException? deserialize(List? data) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (data == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return null;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>    SquadronException? error;</code>
-        </line>
-        <line hits="0">
-            <code>    try {</code>
-        </line>
-        <line hits="2">
-            <code>      error = SquadronError.deserialize(data) ??</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          WorkerException.deserialize(data) ??</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          CancelledException.deserialize(data) ??</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          TaskTimeoutException.deserialize(data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (error == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>        for (var i = 0; i &lt; _customDeserializers.length; i++) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          final deserializer = _customDeserializers[i];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          error = deserializer(data);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          if (error != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            break;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          }</code>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="0">
-            <code>      error ??= newSquadronError(</code>
-        </line>
-        <line hits="0">
-            <code>          'failed to deserialize exception information: $data');</code>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line>
-            <code>      error =</code>
-        </line>
-        <line hits="0">
-            <code>          newSquadronError('failed to deserialize exception information: $ex');</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    return error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-    </lines>
-    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.77272725" lines-covered="34" lines-valid="44" package="/src" testname="lcov.info" version="1.5">
+<lines>
+<line>
+<code>import 'dart:async';</code>
+</line>
+<line>
+<code>import 'dart:convert';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import 'squadron_error.dart';</code>
+</line>
+<line>
+<code>import 'worker_exception.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>typedef WorkerExceptionDeserializer = WorkerException? Function(List data);</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>/// Base abstract class for exceptions in Squadron.</code>
+</line>
+<line>
+<code>abstract class SquadronException implements Exception {</code>
+</line>
+<line>
+<code>  /// This factory returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it</code>
+</line>
+<line>
+<code>  /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].</code>
+</line>
+<line hits="2">
+<code>  factory SquadronException.from(</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      {required Object error,</code>
+</line>
+<line>
+<code>      StackTrace? stackTrace,</code>
+</line>
+<line>
+<code>      String? workerId,</code>
+</line>
+<line>
+<code>      int? command}) {</code>
+</line>
+<line hits="2">
+<code>    if (error is SquadronError) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      return error;</code>
+</line>
+<line hits="1">
+<code>    } else if (error is WorkerException) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      return error</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>          .withCommand(command)</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>          .withWorkerId(workerId)</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>          .withCommand(command);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    } else if (error is TimeoutException) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      return TaskTimeoutException(</code>
+</line>
+<line hits="0">
+<code>          message: error.message ?? 'Task timeout',</code>
+</line>
+<line hits="0">
+<code>          duration: error.duration,</code>
+</line>
+<line>
+<code>          workerId: workerId,</code>
+</line>
+<line>
+<code>          command: command);</code>
+</line>
+<line>
+<code>    } else {</code>
+</line>
+<line hits="3">
+<code>      return WorkerException(error.toString(),</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>          stackTrace: stackTrace, workerId: workerId, command: command);</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  static SquadronException? fromString(String message) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    try {</code>
+</line>
+<line hits="1">
+<code>      final data = jsonDecode(message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      if (data is List) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        return deserialize(data);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line>
+<code>      // not a String representing a SquadronException</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>    return null;</code>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  String get message;</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="0">
+<code>  @override</code>
+</line>
+<line hits="0">
+<code>  String toString() =&gt; jsonEncode(serialize());</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// The exception's [StackTrace].</code>
+</line>
+<line>
+<code>  StackTrace? get stackTrace;</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.</code>
+</line>
+<line>
+<code>  List serialize();</code>
+</line>
+<line>
+<code/>
+</line>
+<line hits="3">
+<code>  static final _customDeserializers = &lt;WorkerExceptionDeserializer&gt;[];</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Registers the deserializer for a custom [WorkerException].</code>
+</line>
+<line hits="1">
+<code>  static void registerExceptionDeserializer(</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      WorkerExceptionDeserializer deserializer) {</code>
+</line>
+<line hits="3">
+<code>    _customDeserializers.add(deserializer);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  }</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.</code>
+</line>
+<line hits="1">
+<code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Deserializes a [List] that was produced by [serialize].</code>
+</line>
+<line hits="2">
+<code>  static SquadronException? deserialize(List? data) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (data == null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      return null;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line>
+<code>    SquadronException? error;</code>
+</line>
+<line hits="0">
+<code>    try {</code>
+</line>
+<line hits="2">
+<code>      error = SquadronError.deserialize(data) ??</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          WorkerException.deserialize(data) ??</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          CancelledException.deserialize(data) ??</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          TaskTimeoutException.deserialize(data);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      if (error == null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>        for (var i = 0; i &lt; _customDeserializers.length; i++) {</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>          final deserializer = _customDeserializers[i];</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>          error = deserializer(data);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>          if (error != null) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>            break;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>          }</code>
+</line>
+<line>
+<code>        }</code>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line hits="0">
+<code>      error ??= newSquadronError(</code>
+</line>
+<line hits="0">
+<code>          'failed to deserialize exception information: $data');</code>
+</line>
+<line>
+<code>    } catch (ex) {</code>
+</line>
+<line>
+<code>      error =</code>
+</line>
+<line hits="0">
+<code>          newSquadronError('failed to deserialize exception information: $ex');</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    return error;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
+</line>
+</lines>
+<config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+<base href="../"/>
+<base href="../"/>
 </coverage>
