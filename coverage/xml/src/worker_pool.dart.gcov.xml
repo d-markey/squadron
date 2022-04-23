@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90163934" lines-covered="110" lines-valid="122" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90163934" lines-covered="110" lines-valid="122" package="/src" testname="lcov.info" version="1.5">
 <lines>
 <line>
 <code>import 'dart:async';</code>
@@ -9,6 +9,18 @@
 </line>
 <line>
 <code/>
+</line>
+<line>
+<code>import 'xplat/_pool_worker.dart';</code>
+</line>
+<line>
+<code>import 'xplat/_worker_stream_task.dart';</code>
+</line>
+<line>
+<code>import 'xplat/_worker_task.dart';</code>
+</line>
+<line>
+<code>import 'xplat/_worker_value_task.dart';</code>
 </line>
 <line>
 <code>import 'concurrency_settings.dart';</code>
@@ -36,12 +48,6 @@
 </line>
 <line>
 <code>import 'worker_task.dart';</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>part '_pool_worker.dart';</code>
 </line>
 <line>
 <code/>
@@ -128,9 +134,9 @@
 <line>
 <code>  /// Maximum workers.</code>
 </line>
-<line hits="3">
+<line hits="4">
 <code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
+<hit count="4" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
@@ -155,7 +161,7 @@
 <code/>
 </line>
 <line hits="1">
-<code>  final _workers = &lt;_PoolWorker&lt;W&gt;&gt;[];</code>
+<code>  final _workers = &lt;PoolWorker&lt;W&gt;&gt;[];</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
@@ -265,7 +271,7 @@
 <code>        final poolWorker =</code>
 </line>
 <line hits="6">
-<code>            _PoolWorker(_workerFactory(), concurrencySettings.maxParallel);</code>
+<code>            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);</code>
 <hit count="6" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="3">
@@ -330,7 +336,7 @@
 <code/>
 </line>
 <line hits="2">
-<code>  int _removeWorker(_PoolWorker poolWorker, bool force) {</code>
+<code>  int _removeWorker(PoolWorker poolWorker, bool force) {</code>
 <hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="6">
@@ -393,7 +399,7 @@
 <hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>    List&lt;_PoolWorker&lt;W&gt;&gt; targets;</code>
+<code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
@@ -589,7 +595,7 @@
 <code>          {PerfCounter? counter}) =&gt;</code>
 </line>
 <line hits="3">
-<code>      _enqueue&lt;T&gt;(WorkerTask.value(task, counter));</code>
+<code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code>
 <hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line>
@@ -609,7 +615,7 @@
 <code>          {PerfCounter? counter}) =&gt;</code>
 </line>
 <line hits="3">
-<code>      _enqueue&lt;T&gt;(WorkerTask.stream(task, counter));</code>
+<code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code>
 <hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line>
@@ -671,7 +677,7 @@
 <hit count="4" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="3">
-<code>      _workers.removeWhere(_PoolWorker.isStopped);</code>
+<code>      _workers.removeWhere(PoolWorker.isStopped);</code>
 <hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="5">
@@ -820,7 +826,7 @@
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="3">
-<code>    _workers.sort(_PoolWorker.compareCapacityDesc);</code>
+<code>    _workers.sort(PoolWorker.compareCapacityDesc);</code>
 <hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="4">
@@ -899,7 +905,7 @@
 <code>  /// Worker statistics.</code>
 </line>
 <line hits="4">
-<code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(_PoolWorker.getStats);</code>
+<code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(PoolWorker.getStats);</code>
 <hit count="4" name="&lt;unnamed&gt;"/>
 </line>
 <line>

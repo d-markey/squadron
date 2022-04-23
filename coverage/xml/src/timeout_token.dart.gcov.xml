@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="13" lines-valid="13" package="/src" testname="lcov.info" version="1.5">
 <lines>
 <line>
 <code>import 'dart:async';</code>
@@ -8,7 +8,7 @@
 <code/>
 </line>
 <line>
-<code>import 'cancellable_token.dart';</code>
+<code>import 'cancellation_token.dart';</code>
 </line>
 <line>
 <code>import 'squadron_error.dart';</code>
@@ -29,11 +29,15 @@
 <code>/// platform worker.</code>
 </line>
 <line>
-<code>class TimeOutToken extends CancellableToken {</code>
+<code>class TimeOutToken extends CancellationToken {</code>
 </line>
-<line hits="2">
-<code>  TimeOutToken(this.duration, [String? message]) : super(message);</code>
-<hit count="2" name="&lt;unnamed&gt;"/>
+<line hits="1">
+<code>  TimeOutToken(this.duration, [String message = 'The token timed out'])</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      : super(message);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
@@ -81,21 +85,29 @@
 <code>  @override</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
+<line hits="5">
+<code>  void ensureStarted() =&gt; _timer ??= Timer(duration, () {</code>
+<hit count="5" name="&lt;unnamed&gt;"/>
+</line>
 <line hits="3">
-<code>  void ensureStarted() =&gt; _timer ??= Timer(</code>
+<code>        super.cancel(TaskTimeoutException(</code>
 <hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="2">
-<code>      duration,</code>
+<code>            message: message,</code>
 <hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="2">
-<code>      () =&gt; super</code>
+<code>            stackTrace: StackTrace.current,</code>
 <hit count="2" name="&lt;unnamed&gt;"/>
 </line>
-<line hits="5">
-<code>          .cancel(TaskTimeoutException(message: message, duration: duration)));</code>
-<hit count="5" name="&lt;unnamed&gt;"/>
+<line hits="2">
+<code>            duration: duration));</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>      });</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>

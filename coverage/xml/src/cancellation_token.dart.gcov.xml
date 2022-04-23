@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9655172" lines-covered="28" lines-valid="29" package="/src" testname="lcov.info" version="1.5">
 <lines>
-<line>
-<code>import 'squadron_error.dart';</code>
-</line>
 <line>
 <code>import 'worker_exception.dart';</code>
 </line>
@@ -14,23 +11,27 @@
 <code>import 'worker_service.dart' show SquadronCallback;</code>
 </line>
 <line>
+<code>import 'xplat/_helpers.dart';</code>
+</line>
+<line>
+<code>import 'xplat/_sequence_id.dart';</code>
+</line>
+<line>
 <code/>
 </line>
 <line>
-<code>/// Cancellation token used in platform workers. These tokens are not designed to be cancelled or listened to by</code>
-</line>
-<line>
-<code>/// holders. Instead, worker services receiving a [CancellationToken] should verify the token's [cancelled] status</code>
-</line>
-<line>
-<code>/// and stop processing if the flag is set to [true].</code>
+<code>/// Base cancellation token.</code>
 </line>
 <line>
 <code>class CancellationToken {</code>
 </line>
 <line hits="1">
-<code>  CancellationToken(this.id, [String? message]) : _message = message;</code>
+<code>  CancellationToken([String? message])</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      : _message = message, _id = SequenceId.next();</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
@@ -47,16 +48,28 @@
 <line>
 <code>  /// Deseralization of a [CancellationToken]</code>
 </line>
+<line hits="2">
+<code>  static CancellationToken? deserialize(Map? token) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
 <line hits="1">
-<code>  static CancellationToken? deserialize(Map? token) =&gt; (token == null)</code>
+<code>    if (token == null) return null;</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
-<line>
-<code>      ? null</code>
+<line hits="2">
+<code>    final tok = CancellationToken(token[_$message]);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
 </line>
-<line hits="3">
-<code>      : CancellationToken(token[_$token], token[_$message]);</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
+<line hits="2">
+<code>    tok._id = token[_$token];</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>    return tok;</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
@@ -64,8 +77,12 @@
 <line>
 <code>  /// The token's id</code>
 </line>
+<line hits="3">
+<code>  int get id =&gt; _id;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
 <line>
-<code>  final int id;</code>
+<code>  int _id;</code>
 </line>
 <line>
 <code/>
@@ -73,9 +90,9 @@
 <line>
 <code>  /// Flag indicating whether the token was cancelled or not.</code>
 </line>
-<line hits="3">
+<line hits="2">
 <code>  bool get cancelled =&gt; exception != null;</code>
-<hit count="3" name="&lt;unnamed&gt;"/>
+<hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
@@ -83,8 +100,12 @@
 <line>
 <code>  /// Exception to be thrown upon cancellation</code>
 </line>
-<line hits="0">
-<code>  CancelledException? get exception =&gt; null;</code>
+<line hits="3">
+<code>  CancelledException? get exception =&gt; _exception;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>  CancelledException? _exception;</code>
 </line>
 <line>
 <code/>
@@ -113,6 +134,95 @@
 <code/>
 </line>
 <line>
+<code>  /// Cancels the token and notifies listeners.</code>
+</line>
+<line hits="2">
+<code>  void cancel([CancelledException? exception]) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>    _exception ??= (exception ?? CancelledException(message: message));</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="4">
+<code>    for (var listener in _listeners ?? const []) {</code>
+<hit count="4" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      safeInvoke(listener);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  List&lt;SquadronCallback&gt;? _listeners;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Registers a [listener] that will be notified when the token is cancelled. If the token is already cancelled,</code>
+</line>
+<line>
+<code>  /// the [listener] will be called immediately.</code>
+</line>
+<line hits="2">
+<code>  void addListener(SquadronCallback listener) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>    if (cancelled) {</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="2">
+<code>      safeInvoke(listener);</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    } else {</code>
+</line>
+<line hits="3">
+<code>      _listeners ??= &lt;SquadronCallback&gt;[];</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      _listeners!.add(listener);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Unregisters a listener that has been installed with [addListener].</code>
+</line>
+<line hits="2">
+<code>  void removeListener(SquadronCallback listener) =&gt;</code>
+<hit count="2" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="3">
+<code>      _listeners?.remove(listener);</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
 <code>  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that</code>
 </line>
 <line>
@@ -123,31 +233,20 @@
 <hit count="2" name="&lt;unnamed&gt;"/>
 </line>
 <line>
-<code/>
-</line>
-<line>
-<code>  /// Registers a listener that will be notified when the token is cancelled. Because a [CancellationToken] is not</code>
-</line>
-<line>
-<code>  /// designed to be listened to, it always throws a [SquadronError].</code>
-</line>
-<line hits="1">
-<code>  void addListener(SquadronCallback listener) =&gt;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      throw newSquadronError('CancellationToken may not be listened to');</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<code>}</code>
 </line>
 <line>
 <code/>
 </line>
 <line>
-<code>  /// Unregisters a listener that has been installed with [addListener].</code>
+<code>// for internal use</code>
 </line>
-<line hits="1">
-<code>  void removeListener(SquadronCallback listener) {}</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line>
+<code>extension TokenIdExt on CancellationToken {</code>
+</line>
+<line hits="3">
+<code>  void withId(int id) =&gt; _id = id;</code>
+<hit count="3" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code>}</code>

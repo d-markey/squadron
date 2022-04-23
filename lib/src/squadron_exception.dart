@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'squadron_error.dart';
@@ -17,7 +18,16 @@ abstract class SquadronException implements Exception {
     if (error is SquadronError) {
       return error;
     } else if (error is WorkerException) {
-      return error.withCommand(command).withWorkerId(workerId);
+      return error
+          .withCommand(command)
+          .withWorkerId(workerId)
+          .withCommand(command);
+    } else if (error is TimeoutException) {
+      return TaskTimeoutException(
+          message: error.message ?? 'Task timeout',
+          duration: error.duration,
+          workerId: workerId,
+          command: command);
     } else {
       return WorkerException(error.toString(),
           stackTrace: stackTrace, workerId: workerId, command: command);

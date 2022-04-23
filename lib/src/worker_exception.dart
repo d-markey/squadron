@@ -133,7 +133,7 @@ class TaskTimeoutException extends CancelledException
           : null;
 }
 
-// private implementation internal to Squadron
+// for internal use
 extension WorkerExceptionExt on WorkerException {
   WorkerException withWorkerId(String? workerId) {
     _workerId ??= workerId;

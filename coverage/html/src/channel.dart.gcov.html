@@ -17,7 +17,7 @@
 <dt>Test</dt>
 <dd>lcov.info</dd>
 <dt>Date</dt>
-<dd>2022-04-19</dd>
+<dd>2022-04-23</dd>
 <dt class="legend">Legend</dt>
 <dd class="legend">
 <dl class="legend">
@@ -99,58 +99,58 @@
 <td>13</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 14" id="line14">
-<td>14</td><td></td><td></td><td><code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a</code></td>
+<td>14</td><td></td><td></td><td><code>typedef PostMethod = void Function(WorkerRequest req);</code></td>
 </tr>
 <tr class="noop" title="Line 15" id="line15">
-<td>15</td><td></td><td></td><td><code>/// platform worker.</code></td>
+<td>15</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 16" id="line16">
-<td>16</td><td></td><td></td><td><code>abstract class Channel {</code></td>
+<td>16</td><td></td><td></td><td><code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to</code></td>
 </tr>
 <tr class="noop" title="Line 17" id="line17">
-<td>17</td><td></td><td></td><td><code>  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code></td>
+<td>17</td><td></td><td></td><td><code>/// a platform worker.</code></td>
 </tr>
 <tr class="noop" title="Line 18" id="line18">
-<td>18</td><td></td><td></td><td><code>  dynamic serialize();</code></td>
+<td>18</td><td></td><td></td><td><code>abstract class Channel {</code></td>
 </tr>
 <tr class="noop" title="Line 19" id="line19">
-<td>19</td><td></td><td></td><td><code></code></td>
+<td>19</td><td></td><td></td><td><code>  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code></td>
 </tr>
 <tr class="noop" title="Line 20" id="line20">
-<td>20</td><td></td><td></td><td><code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the</code></td>
+<td>20</td><td></td><td></td><td><code>  dynamic serialize();</code></td>
 </tr>
 <tr class="noop" title="Line 21" id="line21">
-<td>21</td><td></td><td></td><td><code>  /// channel's worker.</code></td>
+<td>21</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 22" id="line22">
-<td>22</td><td></td><td></td><td><code>  Channel share();</code></td>
+<td>22</td><td></td><td></td><td><code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the</code></td>
 </tr>
 <tr class="noop" title="Line 23" id="line23">
-<td>23</td><td></td><td></td><td><code></code></td>
+<td>23</td><td></td><td></td><td><code>  /// channel's worker.</code></td>
 </tr>
 <tr class="noop" title="Line 24" id="line24">
-<td>24</td><td></td><td></td><td><code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should release any resource related to the</code></td>
+<td>24</td><td></td><td></td><td><code>  Channel share();</code></td>
 </tr>
 <tr class="noop" title="Line 25" id="line25">
-<td>25</td><td></td><td></td><td><code>  /// worker and should not be used after this method has been called.</code></td>
+<td>25</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 26" id="line26">
-<td>26</td><td></td><td></td><td><code>  FutureOr close();</code></td>
+<td>26</td><td></td><td></td><td><code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should release any resource related to the</code></td>
 </tr>
 <tr class="noop" title="Line 27" id="line27">
-<td>27</td><td></td><td></td><td><code></code></td>
+<td>27</td><td></td><td></td><td><code>  /// worker and should not be used after this method has been called.</code></td>
 </tr>
-<tr class="lineCov" title="Line 28" id="line28">
-<td>28</td><td></td><td>2</td><td><code>  static void noop() {}</code></td>
+<tr class="noop" title="Line 28" id="line28">
+<td>28</td><td></td><td></td><td><code>  FutureOr close();</code></td>
 </tr>
 <tr class="noop" title="Line 29" id="line29">
 <td>29</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 30" id="line30">
-<td>30</td><td></td><td></td><td><code>  // /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.</code></td>
+<td>30</td><td></td><td></td><td><code>  /// Static method that does nothing. Useful when a [SquadronCallback] is required but there is nothing to do.</code></td>
 </tr>
-<tr class="noop" title="Line 31" id="line31">
-<td>31</td><td></td><td></td><td><code>  void notifyCancellation(CancellationToken cancelToken);</code></td>
+<tr class="lineCov" title="Line 31" id="line31">
+<td>31</td><td></td><td>2</td><td><code>  static void noop() {}</code></td>
 </tr>
 <tr class="noop" title="Line 32" id="line32">
 <td>32</td><td></td><td></td><td><code></code></td>

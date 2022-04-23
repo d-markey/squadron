@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import '../_stream_wrapper.dart';
+import '../xplat/_identity.dart';
+import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../squadron.dart';
@@ -11,7 +12,7 @@ import '../worker_request.dart';
 import '../worker_response.dart';
 import '../worker_service.dart';
 
-class _SendPort {
+class _BaseVmChannel {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
   /// to return values to the client.
   SendPort? _sendPort;
@@ -42,7 +43,7 @@ class _SendPort {
 }
 
 /// [Channel] implementation for the Native world.
-class _VmChannel extends _SendPort implements Channel {
+class _VmChannel extends _BaseVmChannel implements Channel {
   _VmChannel._();
 
   /// [Channel] sharing in Native world returns the same instance.
@@ -58,31 +59,26 @@ class _VmChannel extends _SendPort implements Channel {
     }
   }
 
-  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is
-  /// cancelled.
-  @override
-  void notifyCancellation(CancellationToken token) {
-    if (token.cancelled) {
-      _postRequest(WorkerRequest.cancel(token));
-    }
-  }
-
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single
   /// value from the [Isolate]
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final receiver = ReceivePort();
-    final canceller =
-        (token == null) ? Channel.noop : () => notifyCancellation(token);
+
+    void _canceller() => _postRequest(WorkerRequest.cancel(token!));
+
+    token?.addListener(_canceller);
     try {
       _postRequest(WorkerRequest(receiver.sendPort, command, args, token));
-      final message = await receiver.first
-          .whenComplete(() => token?.removeListener(canceller));
+      final message = await receiver.first;
+      token?.removeListener(_canceller);
       final res = WorkerResponse.deserialize(message);
       return res.result as T;
+    } catch (ex) {
+      token?.removeListener(_canceller);
+      rethrow;
     } finally {
-      token?.removeListener(canceller);
       receiver.close();
     }
   }
@@ -95,13 +91,13 @@ class _VmChannel extends _SendPort implements Channel {
     final receiver = ReceivePort();
     final wrapper = StreamWrapper<T>(
       WorkerRequest(receiver.sendPort, command, args, token),
-      _postRequest,
-      receiver,
-      () {
+      postMethod: _postRequest,
+      messages: receiver,
+      onDone: () {
         receiver.close();
         onDone();
       },
-      token,
+      token: token,
     );
 
     return wrapper.stream;
@@ -109,7 +105,7 @@ class _VmChannel extends _SendPort implements Channel {
 }
 
 /// [WorkerChannel] implementation for the native world.
-class _VmWorkerChannel extends _SendPort implements WorkerChannel {
+class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   _VmWorkerChannel._();
 
   /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon
@@ -155,12 +151,6 @@ class _VmWorkerChannel extends _SendPort implements WorkerChannel {
 
 /// Stub implementations.
 
-int _counter = 0;
-String _getId() {
-  _counter++;
-  return '${Squadron.id}.$_counter';
-}
-
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
@@ -169,7 +159,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final receiver = ReceivePort();
   Isolate.spawn(
           entryPoint,
-          WorkerRequest.start(receiver.sendPort, _getId(), startArguments)
+          WorkerRequest.start(receiver.sendPort, Identity.nextId(), startArguments)
               .serialize(),
           paused: true)
       .then((isolate) {

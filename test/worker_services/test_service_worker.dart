@@ -27,6 +27,12 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
   Future<int> delayed(int n) => execute((w) => w.delayed(n));
 
   @override
+  Future<int> timeOut() => execute((w) => w.timeOut());
+
+  @override
+  Future<int> cancelled() => execute((w) => w.cancelled());
+
+  @override
   Stream<int> finite(int count, [CancellationToken? token]) =>
       stream((w) => w.finite(count, token));
 
@@ -39,8 +45,10 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       execute((w) => w.cancellableInfiniteCpu(token));
 
   @override
-  Future<bool> cannotListen(CancellationToken token) =>
-      execute((w) => w.cannotListen(token));
+  Future<int> getPendingInfiniteWithErrors() => (maxWorkers == 1)
+      ? execute((w) => w.getPendingInfiniteWithErrors())
+      : throw WorkerException(
+          'getPendingInfiniteWithErrors() is not supported for worker pools with maxWorker != 1');
 
   @override
   Stream<int> infiniteWithErrors(CancellationToken token) =>
@@ -51,6 +59,9 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 
   StreamTask<int> finiteTask(int n, [CancellationToken? token]) =>
       scheduleStream((w) => w.finite(n, token));
+
+  StreamTask<int> infiniteWithErrorsTask(CancellationToken token) =>
+      scheduleStream((w) => w.infiniteWithErrors(token));
 }
 
 class TestWorker extends Worker implements TestService {
@@ -72,6 +83,12 @@ class TestWorker extends Worker implements TestService {
   Future<int> delayed(int n) => send(TestService.delayedCommand, [n]);
 
   @override
+  Future<int> timeOut() => send(TestService.timeOutCommand);
+
+  @override
+  Future<int> cancelled() => send(TestService.cancelCommand);
+
+  @override
   Stream<int> finite(int count, [CancellationToken? token]) =>
       stream(TestService.finiteCommand, [count], token);
 
@@ -84,8 +101,8 @@ class TestWorker extends Worker implements TestService {
       send(TestService.cancellableInfiniteCpuCommand, [], token);
 
   @override
-  Future<bool> cannotListen(CancellationToken token) =>
-      send(TestService.cannotListenCommand, [], token);
+  Future<int> getPendingInfiniteWithErrors() =>
+      send(TestService.getPendingInfiniteWithErrorsCommand, []);
 
   @override
   Stream<int> infiniteWithErrors(CancellationToken token) =>

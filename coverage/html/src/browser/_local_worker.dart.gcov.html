@@ -17,7 +17,7 @@
 <dt>Test</dt>
 <dd>lcov.info</dd>
 <dt>Date</dt>
-<dd>2022-04-19</dd>
+<dd>2022-04-23</dd>
 <dt class="legend">Legend</dt>
 <dd class="legend">
 <dl class="legend">
@@ -66,7 +66,7 @@
 <td>2</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 3" id="line3">
-<td>3</td><td></td><td></td><td><code>import '../_worker_runner.dart';</code></td>
+<td>3</td><td></td><td></td><td><code>import '../xplat/_worker_runner.dart';</code></td>
 </tr>
 <tr class="noop" title="Line 4" id="line4">
 <td>4</td><td></td><td></td><td><code>import '../channel.dart';</code></td>
@@ -87,7 +87,7 @@
 <td>9</td><td></td><td>1</td><td><code>  _JsLocalWorker._(W service) : super(service) {</code></td>
 </tr>
 <tr class="noop" title="Line 10" id="line10">
-<td>10</td><td></td><td></td><td><code>    final runner = WorkerRunner.use(service);</code></td>
+<td>10</td><td></td><td></td><td><code>    final runner = WorkerRunner.use(this);</code></td>
 </tr>
 <tr class="lineCov" title="Line 11" id="line11">
 <td>11</td><td></td><td>1</td><td><code>    _port.port1.onMessage.listen((event) =&gt; runner.processMessage(event.data));</code></td>

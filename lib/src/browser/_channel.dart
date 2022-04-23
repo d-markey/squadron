@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:html' as web;
 
-import '../_stream_wrapper.dart';
+import 'package:squadron/src/squadron_error.dart';
+
+import '../xplat/_identity.dart';
+import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
 import '../squadron.dart';
@@ -11,7 +14,7 @@ import '../worker_request.dart';
 import '../worker_response.dart';
 import '../worker_service.dart';
 
-class _MessagePort {
+class _BaseJsChannel {
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
   /// [web.MessagePort] to return values to the client.
   web.MessagePort? _sendPort;
@@ -23,7 +26,7 @@ class _MessagePort {
     req.cancelToken?.ensureStarted();
     final message = req.serialize();
     try {
-      final transfer = _getTransferables(message).toList();
+      final transfer = Transferables.get(message);
       _sendPort?.postMessage(message, transfer);
     } catch (ex) {
       Squadron.severe('failed to post request $message: error $ex');
@@ -34,7 +37,7 @@ class _MessagePort {
   void _postResponse(WorkerResponse res) {
     final message = res.serialize();
     try {
-      final transfer = _getTransferables(message).toList();
+      final transfer = Transferables.get(message);
       _sendPort!.postMessage(message, transfer);
     } catch (ex) {
       Squadron.severe('failed to post response $message: error $ex');
@@ -44,7 +47,7 @@ class _MessagePort {
 }
 
 /// [Channel] implementation for the JavaScript world.
-class _JsChannel extends _MessagePort implements Channel {
+class _JsChannel extends _BaseJsChannel implements Channel {
   _JsChannel._();
 
   /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].
@@ -60,32 +63,24 @@ class _JsChannel extends _MessagePort implements Channel {
     }
   }
 
-  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is
-  /// cancelled.
-  @override
-  void notifyCancellation(CancellationToken token) {
-    if (token.cancelled) {
-      _postRequest(WorkerRequest.cancel(token));
-    }
-  }
-
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
   /// single value from the [web.Worker].
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token}) async {
     final com = web.MessageChannel();
-    final canceller =
-        (token == null) ? Channel.noop : () => notifyCancellation(token);
+
+    void _canceller() => _postRequest(WorkerRequest.cancel(token!));
+
+    token?.addListener(_canceller);
     try {
-      token?.addListener(canceller);
       _postRequest(WorkerRequest(com.port2, command, args, token));
       final event = await com.port1.onMessage.first
-          .whenComplete(() => token?.removeListener(canceller));
+          .whenComplete(() => token?.removeListener(_canceller));
       final res = WorkerResponse.deserialize(event.data);
       return res.result as T;
     } finally {
-      token?.removeListener(canceller);
+      token?.removeListener(_canceller);
       com.port2.close();
       com.port1.close();
     }
@@ -100,13 +95,13 @@ class _JsChannel extends _MessagePort implements Channel {
     final com = web.MessageChannel();
     final wrapper = StreamWrapper<T>(
       WorkerRequest(com.port2, command, args, token),
-      _postRequest,
-      com.port1.onMessage.map((event) => event.data),
-      () {
+      postMethod: _postRequest,
+      messages: com.port1.onMessage.map((event) => event.data),
+      onDone: () {
         com.port1.close();
         onDone();
       },
-      token,
+      token: token,
     );
 
     return wrapper.stream;
@@ -114,7 +109,7 @@ class _JsChannel extends _MessagePort implements Channel {
 }
 
 /// [WorkerChannel] implementation for the JavaScript world.
-class _JsWorkerChannel extends _MessagePort implements WorkerChannel {
+class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   _JsWorkerChannel._();
 
   /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the
@@ -178,7 +173,7 @@ class _JsForwardChannel extends _JsChannel {
   void _forward(web.MessageEvent e) {
     final message = e.data;
     try {
-      final transfer = _getTransferables(message).toList();
+      final transfer = Transferables.get(message);
       _remote!.postMessage(message, transfer);
     } catch (ex) {
       Squadron.severe('failed to forward $message: error $ex');
@@ -194,60 +189,59 @@ class _JsForwardChannel extends _JsChannel {
   }
 }
 
-/// Checks if [value] is a base type value or an object.
-bool _isObject(dynamic value) =>
-    value != null &&
-    value is! num &&
-    value is! bool &&
-    value is! String &&
-    value is! List<num> &&
-    value is! List<bool> &&
-    value is! List<String>;
+class Transferables {
+  Transferables._();
 
-/// Excludes base type values from [list].
-Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
-  for (var o in list.where(_isObject)) {
-    if (!seen.contains(o)) {
-      seen.add(o);
-      yield o as Object;
+  static final _instance = Transferables._();
+
+  static List<Object> get(Map args) => _instance._get(args, <Object>{}).toList();
+
+  bool _isBaseType(dynamic value) => (value == null || value is String || value is num || value is bool);
+
+  bool _isListOfBaseType(dynamic value) => (value is List<String> || value is List<num> || value is List<bool>);
+
+  bool _isSafeForTransfer(dynamic value) {
+    if (_isBaseType(value)) return true;
+    if (_isListOfBaseType(value)) return true;
+    if (value is List && value.every(_isSafeForTransfer)) return true;
+    if (value is Map && value.keys.every(_isBaseType) && value.values.every(_isSafeForTransfer)) return true;
+    return false;
+  }
+
+  /// Excludes base type values from [list].
+  Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
+    for (var o in list.where((o) => !_isSafeForTransfer(o))) {
+      if (!seen.contains(o)) {
+        seen.add(o);
+        yield o as Object;
+      }
     }
   }
-}
 
-/// Yields objects contained in JSON object [args] (a Map, a List, or a base type). Used to identify non-base type
-/// objects and provide them to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects
-/// -- essentially [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.
-Iterable<Object> _getTransferables(dynamic args) sync* {
-  if (_isObject(args)) {
-    if (args is Map) args = args.values;
-    if (args is! Iterable) {
-      yield args as Object;
-    } else {
-      final seen = <Object>{};
-      final toBeInspected = <Object>[];
-      toBeInspected.addAll(_getObjects(args, seen));
-      var i = 0;
-      while (i < toBeInspected.length) {
-        final arg = toBeInspected[i++];
-        if (arg is Map) {
-          toBeInspected.addAll(_getObjects(arg.values, seen));
-        } else if (arg is Iterable) {
-          toBeInspected.addAll(_getObjects(arg, seen));
-        } else {
-          yield arg;
-        }
+  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them to
+  /// [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects -- essentially
+  /// [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.
+  Iterable<Object> _get(Map message, Set<Object> seen) sync* {
+    if (_isSafeForTransfer(message)) return;
+    if (!message.keys.every(_isBaseType)) {
+      throw newSquadronError('Keys must be strings, numbers or booleans.');
+    }
+    final toBeInspected = <Object>[];
+    toBeInspected.addAll(_getObjects(message.values, seen));
+    while (toBeInspected.isNotEmpty) {
+      final arg = toBeInspected.removeLast();
+      if (arg is Map) {
+        toBeInspected.addAll(_get(arg, seen));
+      } else if (arg is Iterable) {
+        toBeInspected.addAll(_getObjects(arg, seen));
+      } else {
+        yield arg;
       }
     }
   }
 }
 
 /// Stub implementations
-
-int _counter = 0;
-String _getId() {
-  _counter++;
-  return '${Squadron.id}.$_counter';
-}
 
 /// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
@@ -274,9 +268,9 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
     }
   });
   final message =
-      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();
+      WorkerRequest.start(com.port2, Identity.nextId(), startArguments).serialize();
   try {
-    final transfer = _getTransferables(message).toList();
+    final transfer = Transferables.get(message);
     worker.postMessage(message, transfer);
   } catch (ex) {
     com.port1.close();

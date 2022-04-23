@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.83916086" lines-covered="120" lines-valid="143" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.822695" lines-covered="116" lines-valid="141" package="/src/browser" testname="lcov.info" version="1.5">
 <lines>
 <line>
 <code>import 'dart:async';</code>
@@ -11,7 +11,16 @@
 <code/>
 </line>
 <line>
-<code>import '../_stream_wrapper.dart';</code>
+<code>import 'package:squadron/src/squadron_error.dart';</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>import '../xplat/_identity.dart';</code>
+</line>
+<line>
+<code>import '../xplat/_stream_wrapper.dart';</code>
 </line>
 <line>
 <code>import '../cancellation_token.dart';</code>
@@ -41,7 +50,7 @@
 <code/>
 </line>
 <line>
-<code>class _MessagePort {</code>
+<code>class _BaseJsChannel {</code>
 </line>
 <line>
 <code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,</code>
@@ -81,9 +90,8 @@
 <code>    try {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
-<line hits="1">
-<code>      final transfer = _getTransferables(message).toList();</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line>
+<code>      final transfer = Transferables.get(message);</code>
 </line>
 <line hits="1">
 <code>      _sendPort?.postMessage(message, transfer);</code>
@@ -121,9 +129,8 @@
 <line hits="0">
 <code>    try {</code>
 </line>
-<line hits="1">
-<code>      final transfer = _getTransferables(message).toList();</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line>
+<code>      final transfer = Transferables.get(message);</code>
 </line>
 <line hits="1">
 <code>      _sendPort!.postMessage(message, transfer);</code>
@@ -155,7 +162,7 @@
 <code>/// [Channel] implementation for the JavaScript world.</code>
 </line>
 <line>
-<code>class _JsChannel extends _MessagePort implements Channel {</code>
+<code>class _JsChannel extends _BaseJsChannel implements Channel {</code>
 </line>
 <line hits="1">
 <code>  _JsChannel._();</code>
@@ -210,33 +217,6 @@
 <code/>
 </line>
 <line>
-<code>  /// If the [token] is cancelled, sends a [WorkerRequest.cancel] message to signal the worker that the token is</code>
-</line>
-<line>
-<code>  /// cancelled.</code>
-</line>
-<line>
-<code>  @override</code>
-</line>
-<line>
-<code>  void notifyCancellation(CancellationToken token) {</code>
-</line>
-<line>
-<code>    if (token.cancelled) {</code>
-</line>
-<line hits="0">
-<code>      _postRequest(WorkerRequest.cancel(token));</code>
-</line>
-<line>
-<code>    }</code>
-</line>
-<line>
-<code>  }</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
 <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
 </line>
 <line>
@@ -257,18 +237,19 @@
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
-<code>    final canceller =</code>
+<code/>
 </line>
-<line hits="1">
-<code>        (token == null) ? Channel.noop : () =&gt; notifyCancellation(token);</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line hits="0">
+<code>    void _canceller() =&gt; _postRequest(WorkerRequest.cancel(token!));</code>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>    token?.addListener(_canceller);</code>
 </line>
 <line>
 <code>    try {</code>
-</line>
-<line hits="1">
-<code>      token?.addListener(canceller);</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
 <code>      _postRequest(WorkerRequest(com.port2, command, args, token));</code>
@@ -279,7 +260,7 @@
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>          .whenComplete(() =&gt; token?.removeListener(canceller));</code>
+<code>          .whenComplete(() =&gt; token?.removeListener(_canceller));</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
@@ -293,9 +274,8 @@
 <line>
 <code>    } finally {</code>
 </line>
-<line hits="1">
-<code>      token?.removeListener(canceller);</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line>
+<code>      token?.removeListener(_canceller);</code>
 </line>
 <line hits="1">
 <code>      com.port2.close();</code>
@@ -347,15 +327,15 @@
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>      _postRequest,</code>
+<code>      postMethod: _postRequest,</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>      com.port1.onMessage.map((event) =&gt; event.data),</code>
+<code>      messages: com.port1.onMessage.map((event) =&gt; event.data),</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>      () {</code>
+<code>      onDone: () {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
@@ -371,7 +351,7 @@
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
-<code>      token,</code>
+<code>      token: token,</code>
 </line>
 <line>
 <code>    );</code>
@@ -397,7 +377,7 @@
 <code>/// [WorkerChannel] implementation for the JavaScript world.</code>
 </line>
 <line>
-<code>class _JsWorkerChannel extends _MessagePort implements WorkerChannel {</code>
+<code>class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {</code>
 </line>
 <line hits="1">
 <code>  _JsWorkerChannel._();</code>
@@ -604,7 +584,7 @@
 <code>    try {</code>
 </line>
 <line hits="1">
-<code>      final transfer = _getTransferables(message).toList();</code>
+<code>      final transfer = Transferables.get(message);</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
@@ -655,155 +635,96 @@
 <code/>
 </line>
 <line>
-<code>/// Checks if [value] is a base type value or an object.</code>
+<code>class Transferables {</code>
 </line>
 <line hits="1">
-<code>bool _isObject(dynamic value) =&gt;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    value != null &amp;&amp;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>    value is! num &amp;&amp;</code>
-</line>
-<line>
-<code>    value is! bool &amp;&amp;</code>
-</line>
-<line>
-<code>    value is! String &amp;&amp;</code>
-</line>
-<line hits="1">
-<code>    value is! List&lt;num&gt; &amp;&amp;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    value is! List&lt;bool&gt; &amp;&amp;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    value is! List&lt;String&gt;;</code>
+<code>  Transferables._();</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
 </line>
-<line>
-<code>/// Excludes base type values from [list].</code>
-</line>
 <line hits="1">
-<code>Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>  for (var o in list.where(_isObject)) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>    if (!seen.contains(o)) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      seen.add(o);</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      yield o as Object;</code>
+<code>  static final _instance = Transferables._();</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
-<code>    }</code>
+<code/>
+</line>
+<line hits="1">
+<code>  static List&lt;Object&gt; get(Map args) =&gt; _instance._get(args, &lt;Object&gt;{}).toList();</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isBaseType(dynamic value) =&gt; (value == null || value is String || value is num || value is bool);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isListOfBaseType(dynamic value) =&gt; (value is List&lt;String&gt; || value is List&lt;num&gt; || value is List&lt;bool&gt;);</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line hits="1">
+<code>  bool _isSafeForTransfer(dynamic value) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isBaseType(value)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isListOfBaseType(value)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (value is List &amp;&amp; value.every(_isSafeForTransfer)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (value is Map &amp;&amp; value.keys.every(_isBaseType) &amp;&amp; value.values.every(_isSafeForTransfer)) return true;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    return false;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
 <code>  }</code>
-</line>
-<line hits="1">
-<code>}</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line>
 <code/>
 </line>
 <line>
-<code>/// Yields objects contained in JSON object [args] (a Map, a List, or a base type). Used to identify non-base type</code>
-</line>
-<line>
-<code>/// objects and provide them to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects</code>
-</line>
-<line>
-<code>/// -- essentially [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
+<code>  /// Excludes base type values from [list].</code>
 </line>
 <line hits="1">
-<code>Iterable&lt;Object&gt; _getTransferables(dynamic args) sync* {</code>
+<code>  Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>  if (_isObject(args)) {</code>
+<code>    for (var o in list.where((o) =&gt; !_isSafeForTransfer(o))) {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>    if (args is Map) args = args.values;</code>
+<code>      if (!seen.contains(o)) {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>    if (args is! Iterable) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="0">
-<code>      yield args as Object;</code>
-</line>
-<line>
-<code>    } else {</code>
-</line>
-<line hits="1">
-<code>      final seen = &lt;Object&gt;{};</code>
+<code>        seen.add(o);</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="1">
-<code>      final toBeInspected = &lt;Object&gt;[];</code>
+<code>        yield o as Object;</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      toBeInspected.addAll(_getObjects(args, seen));</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      var i = 0;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>      while (i &lt; toBeInspected.length) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>        final arg = toBeInspected[i++];</code>
-</line>
-<line hits="1">
-<code>        if (arg is Map) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>          toBeInspected.addAll(_getObjects(arg.values, seen));</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>        } else if (arg is Iterable) {</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line hits="1">
-<code>          toBeInspected.addAll(_getObjects(arg, seen));</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>        } else {</code>
-</line>
-<line hits="1">
-<code>          yield arg;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>        }</code>
 </line>
 <line>
 <code>      }</code>
@@ -811,37 +732,95 @@
 <line>
 <code>    }</code>
 </line>
-<line>
+<line hits="1">
 <code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code/>
+</line>
+<line>
+<code>  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them to</code>
+</line>
+<line>
+<code>  /// [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects -- essentially</code>
+</line>
+<line>
+<code>  /// [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
 </line>
 <line hits="1">
-<code>}</code>
+<code>  Iterable&lt;Object&gt; _get(Map message, Set&lt;Object&gt; seen) sync* {</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (_isSafeForTransfer(message)) return;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    if (!message.keys.every(_isBaseType)) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      throw newSquadronError('Keys must be strings, numbers or booleans.');</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>    final toBeInspected = &lt;Object&gt;[];</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    toBeInspected.addAll(_getObjects(message.values, seen));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>    while (toBeInspected.isNotEmpty) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>      final arg = toBeInspected.removeLast();</code>
+</line>
+<line hits="1">
+<code>      if (arg is Map) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="0">
+<code>        toBeInspected.addAll(_get(arg, seen));</code>
+</line>
+<line hits="1">
+<code>      } else if (arg is Iterable) {</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line hits="1">
+<code>        toBeInspected.addAll(_getObjects(arg, seen));</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      } else {</code>
+</line>
+<line hits="1">
+<code>        yield arg;</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>      }</code>
+</line>
+<line>
+<code>    }</code>
+</line>
+<line hits="1">
+<code>  }</code>
+<hit count="1" name="&lt;unnamed&gt;"/>
+</line>
+<line>
+<code>}</code>
 </line>
 <line>
 <code/>
 </line>
 <line>
 <code>/// Stub implementations</code>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>int _counter = 0;</code>
-</line>
-<line>
-<code>String _getId() {</code>
-</line>
-<line hits="1">
-<code>  _counter++;</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code>  return '${Squadron.id}.$_counter';</code>
-</line>
-<line>
-<code>}</code>
 </line>
 <line>
 <code/>
@@ -930,15 +909,14 @@
 <code>  final message =</code>
 </line>
 <line hits="1">
-<code>      WorkerRequest.start(com.port2, _getId(), startArguments).serialize();</code>
+<code>      WorkerRequest.start(com.port2, Identity.nextId(), startArguments).serialize();</code>
 <hit count="1" name="&lt;unnamed&gt;"/>
 </line>
 <line hits="0">
 <code>  try {</code>
 </line>
-<line hits="1">
-<code>    final transfer = _getTransferables(message).toList();</code>
-<hit count="1" name="&lt;unnamed&gt;"/>
+<line>
+<code>    final transfer = Transferables.get(message);</code>
 </line>
 <line hits="1">
 <code>    worker.postMessage(message, transfer);</code>

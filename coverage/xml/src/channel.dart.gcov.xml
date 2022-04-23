@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="/src" testname="lcov.info" version="1.5">
 <lines>
 <line>
 <code>import 'dart:async';</code>
@@ -41,10 +41,16 @@
 <code/>
 </line>
 <line>
-<code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a</code>
+<code>typedef PostMethod = void Function(WorkerRequest req);</code>
 </line>
 <line>
-<code>/// platform worker.</code>
+<code/>
+</line>
+<line>
+<code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to</code>
+</line>
+<line>
+<code>/// a platform worker.</code>
 </line>
 <line>
 <code>abstract class Channel {</code>
@@ -82,18 +88,12 @@
 <line>
 <code/>
 </line>
+<line>
+<code>  /// Static method that does nothing. Useful when a [SquadronCallback] is required but there is nothing to do.</code>
+</line>
 <line hits="2">
 <code>  static void noop() {}</code>
 <hit count="2" name="&lt;unnamed&gt;"/>
-</line>
-<line>
-<code/>
-</line>
-<line>
-<code>  // /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.</code>
-</line>
-<line>
-<code>  void notifyCancellation(CancellationToken cancelToken);</code>
 </line>
 <line>
 <code/>

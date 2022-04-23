@@ -1,22 +1,26 @@
 import 'dart:async';
 
+import '../local_worker.dart';
+import '../channel.dart';
+import '../squadron.dart';
+import '../squadron_error.dart';
+import '../squadron_exception.dart';
+import '../worker.dart';
+import '../worker_exception.dart';
+import '../worker_request.dart';
+import '../worker_service.dart';
+
 import '_worker_monitor.dart';
-import 'channel.dart';
-import 'squadron.dart';
-import 'squadron_error.dart';
-import 'squadron_exception.dart';
-import 'worker.dart';
-import 'worker_exception.dart';
-import 'worker_request.dart';
-import 'worker_service.dart';
 
 class WorkerRunner {
-  WorkerRunner(this._monitor);
+  /// Constructs a new worker runner monitored by [monitor].
+  WorkerRunner(WorkerMonitor monitor) : _monitor = monitor;
 
-  factory WorkerRunner.use(WorkerService service) {
-    final worker = WorkerRunner(WorkerMonitor(Channel.noop));
-    worker._operations.addAll(service.operations);
-    return worker;
+  /// Constructs a new worker runner for a [localWorker].
+  factory WorkerRunner.use(LocalWorker localWorker) {
+    final runner = WorkerRunner(WorkerMonitor(Channel.noop));
+    runner._operations.addAll(localWorker.service.operations);
+    return runner;
   }
 
   final _operations = <int, CommandHandler>{};
@@ -70,15 +74,19 @@ class WorkerRunner {
     if (request == null) {
       throw newSquadronError('invalid message');
     } else if (request.terminate) {
+      // terminate the worker
       return _monitor.terminate();
     } else if (request.cancel) {
-      return _monitor.cancel(request.cancelToken!);
+      // cancel a token
+      return _monitor.cancelToken(request.cancelToken!);
     } else if (request.cancelStream) {
+      // cancel a stream
       return _monitor.cancelStream(request.streamId!);
     } else if (client == null) {
       throw newSquadronError('missing client for request: $request');
     }
 
+    // start monitoring execution
     final tokenRef = _monitor.begin(request);
     try {
       if (request.connect) {
@@ -99,17 +107,22 @@ class WorkerRunner {
         result = await result;
       }
       if (result is Stream && client.canStream(result)) {
-        // stream values to the client
+        // result is a stream: forward data to the client
         late final StreamSubscription subscription;
-        late final int streamId;
         final done = Completer();
 
+        // stream canceller
         void shutdown() {
           client.closeStream();
           subscription.cancel();
           done.complete();
         }
 
+        // register stream canceller callback and connect stream with client
+        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);
+        client.connectStream(streamId);
+
+        // start forwarding messages to the client
         subscription = result.listen(
           (data) => client.reply(data),
           onError: (ex, st) =>
@@ -118,21 +131,18 @@ class WorkerRunner {
           cancelOnError: false,
         );
 
-        streamId = _monitor.registerStreamCanceller(shutdown);
-        tokenRef.registerStreamCanceller(shutdown);
-        client.connectStream(streamId);
-
         await done.future.whenComplete(() {
-          _monitor.unregisterStreamCanceller(streamId);
-          tokenRef.unregisterStreamCanceller(shutdown);
+          // unregister stream canceller callback
+          _monitor.unregisterStreamCanceller(tokenRef, streamId);
         });
       } else {
-        // send result to client
+        // result is a value: send to the client
         client.reply(result);
       }
     } catch (e, st) {
       client.error(SquadronException.from(error: e, stackTrace: st));
     } finally {
+      // stop monitoring execution
       _monitor.done(tokenRef);
     }
   }

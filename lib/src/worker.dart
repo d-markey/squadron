@@ -85,10 +85,6 @@ abstract class Worker implements WorkerService {
   Channel? _channel;
   Future<Channel>? _channelRequest;
 
-  // SquadronCallback _canceller(CancellationToken? token) => (token == null)
-  //     ? Channel.noop
-  //     : () => _channel?.notifyCancellation(token);
-
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
       [List args = const [], CancellationToken? token]) async {
@@ -106,12 +102,10 @@ abstract class Worker implements WorkerService {
       channel = await start();
     }
 
-    // final canceller = _canceller(token);
     SquadronException? error = token?.exception;
     if (error == null) {
       try {
         // send request and return response
-        // token?.addListener(canceller);
         return await channel.sendRequest<T>(command, args, token: token);
       } on CancelledException catch (e) {
         error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
@@ -122,7 +116,6 @@ abstract class Worker implements WorkerService {
         // update stats
         _workload--;
         _totalWorkload++;
-        // token?.removeListener(canceller);
         _idle = DateTime.now().microsecondsSinceEpoch;
       }
     }
@@ -146,12 +139,10 @@ abstract class Worker implements WorkerService {
         done = true;
         _workload--;
         _totalWorkload++;
-        // token?.removeListener(canceller);
         _idle = DateTime.now().microsecondsSinceEpoch;
       }
     }
 
-    // worker must be up and running
     if (_channel == null) {
       // worker has not started yet: start it and forward the stream via a StreamController
       late final StreamController<T> controller;

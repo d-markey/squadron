@@ -132,7 +132,7 @@ class WorkerRequest {
   static const int _terminateCommand = -4;
 }
 
-// private implementation internal to Squadron
+// for internal use
 extension WorkerRequestExt on WorkerRequest {
   void overrideCancelToken(CancellationToken token) {
     if (_cancelToken == null || _cancelToken!.id != token.id) {

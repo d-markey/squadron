@@ -17,7 +17,7 @@
 <dt>Test</dt>
 <dd>lcov.info</dd>
 <dt>Date</dt>
-<dd>2022-04-19</dd>
+<dd>2022-04-23</dd>
 <dt class="legend">Legend</dt>
 <dd class="legend">
 <dl class="legend">
@@ -39,7 +39,7 @@
 </thead>
 <tbody>
 <tr>
-<th scope="row">Lines</th><td>36</td><td>61</td><td class="low">59.0%</td>
+<th scope="row">Lines</th><td>56</td><td>61</td><td class="high">91.8%</td>
 </tr>
 <tr>
 <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -269,14 +269,14 @@
 <tr class="noop" title="Line 70" id="line70">
 <td>70</td><td></td><td></td><td><code></code></td>
 </tr>
-<tr class="lineNoCov" title="Line 71" id="line71">
-<td>71</td><td></td><td>0</td><td><code>  @override</code></td>
+<tr class="lineCov" title="Line 71" id="line71">
+<td>71</td><td></td><td>1</td><td><code>  @override</code></td>
 </tr>
 <tr class="lineNoCov" title="Line 72" id="line72">
 <td>72</td><td></td><td>0</td><td><code>  List serialize() =&gt;</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 73" id="line73">
-<td>73</td><td></td><td>0</td><td><code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code></td>
+<tr class="lineCov" title="Line 73" id="line73">
+<td>73</td><td></td><td>6</td><td><code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code></td>
 </tr>
 <tr class="noop" title="Line 74" id="line74">
 <td>74</td><td></td><td></td><td><code></code></td>
@@ -287,20 +287,20 @@
 <tr class="lineCov" title="Line 76" id="line76">
 <td>76</td><td></td><td>3</td><td><code>      (data[_$type] == _$typeMarker)</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 77" id="line77">
-<td>77</td><td></td><td>0</td><td><code>          ? CancelledException(</code></td>
+<tr class="lineCov" title="Line 77" id="line77">
+<td>77</td><td></td><td>2</td><td><code>          ? CancelledException(</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 78" id="line78">
-<td>78</td><td></td><td>0</td><td><code>              message: data[_$message],</code></td>
+<tr class="lineCov" title="Line 78" id="line78">
+<td>78</td><td></td><td>2</td><td><code>              message: data[_$message],</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 79" id="line79">
-<td>79</td><td></td><td>0</td><td><code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code></td>
+<tr class="lineCov" title="Line 79" id="line79">
+<td>79</td><td></td><td>3</td><td><code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 80" id="line80">
-<td>80</td><td></td><td>0</td><td><code>              workerId: data[_$workerId],</code></td>
+<tr class="lineCov" title="Line 80" id="line80">
+<td>80</td><td></td><td>2</td><td><code>              workerId: data[_$workerId],</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 81" id="line81">
-<td>81</td><td></td><td>0</td><td><code>              command: data[_$command])</code></td>
+<tr class="lineCov" title="Line 81" id="line81">
+<td>81</td><td></td><td>2</td><td><code>              command: data[_$command])</code></td>
 </tr>
 <tr class="noop" title="Line 82" id="line82">
 <td>82</td><td></td><td></td><td><code>          : null;</code></td>
@@ -386,29 +386,29 @@
 <tr class="noop" title="Line 109" id="line109">
 <td>109</td><td></td><td></td><td><code></code></td>
 </tr>
-<tr class="lineNoCov" title="Line 110" id="line110">
-<td>110</td><td></td><td>0</td><td><code>  @override</code></td>
+<tr class="lineCov" title="Line 110" id="line110">
+<td>110</td><td></td><td>1</td><td><code>  @override</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 111" id="line111">
-<td>111</td><td></td><td>0</td><td><code>  List serialize() =&gt; [</code></td>
+<tr class="lineCov" title="Line 111" id="line111">
+<td>111</td><td></td><td>1</td><td><code>  List serialize() =&gt; [</code></td>
 </tr>
 <tr class="noop" title="Line 112" id="line112">
 <td>112</td><td></td><td></td><td><code>        _$typeMarker,</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 113" id="line113">
-<td>113</td><td></td><td>0</td><td><code>        message,</code></td>
+<tr class="lineCov" title="Line 113" id="line113">
+<td>113</td><td></td><td>1</td><td><code>        message,</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 114" id="line114">
-<td>114</td><td></td><td>0</td><td><code>        _stackTrace?.toString(),</code></td>
+<tr class="lineCov" title="Line 114" id="line114">
+<td>114</td><td></td><td>2</td><td><code>        _stackTrace?.toString(),</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 115" id="line115">
-<td>115</td><td></td><td>0</td><td><code>        _workerId,</code></td>
+<tr class="lineCov" title="Line 115" id="line115">
+<td>115</td><td></td><td>1</td><td><code>        _workerId,</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 116" id="line116">
-<td>116</td><td></td><td>0</td><td><code>        _command,</code></td>
+<tr class="lineCov" title="Line 116" id="line116">
+<td>116</td><td></td><td>1</td><td><code>        _command,</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 117" id="line117">
-<td>117</td><td></td><td>0</td><td><code>        duration?.inMicroseconds</code></td>
+<tr class="lineCov" title="Line 117" id="line117">
+<td>117</td><td></td><td>1</td><td><code>        duration?.inMicroseconds</code></td>
 </tr>
 <tr class="lineNoCov" title="Line 118" id="line118">
 <td>118</td><td></td><td>0</td><td><code>      ];</code></td>
@@ -431,23 +431,23 @@
 <tr class="lineCov" title="Line 124" id="line124">
 <td>124</td><td></td><td>3</td><td><code>      (data[_$type] == _$typeMarker)</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 125" id="line125">
-<td>125</td><td></td><td>0</td><td><code>          ? TaskTimeoutException(</code></td>
+<tr class="lineCov" title="Line 125" id="line125">
+<td>125</td><td></td><td>2</td><td><code>          ? TaskTimeoutException(</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 126" id="line126">
-<td>126</td><td></td><td>0</td><td><code>              message: data[_$message],</code></td>
+<tr class="lineCov" title="Line 126" id="line126">
+<td>126</td><td></td><td>2</td><td><code>              message: data[_$message],</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 127" id="line127">
-<td>127</td><td></td><td>0</td><td><code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code></td>
+<tr class="lineCov" title="Line 127" id="line127">
+<td>127</td><td></td><td>3</td><td><code>              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 128" id="line128">
-<td>128</td><td></td><td>0</td><td><code>              workerId: data[_$workerId],</code></td>
+<tr class="lineCov" title="Line 128" id="line128">
+<td>128</td><td></td><td>2</td><td><code>              workerId: data[_$workerId],</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 129" id="line129">
-<td>129</td><td></td><td>0</td><td><code>              command: data[_$command],</code></td>
+<tr class="lineCov" title="Line 129" id="line129">
+<td>129</td><td></td><td>2</td><td><code>              command: data[_$command],</code></td>
 </tr>
-<tr class="lineNoCov" title="Line 130" id="line130">
-<td>130</td><td></td><td>0</td><td><code>              duration: (data[_$duration] == null)</code></td>
+<tr class="lineCov" title="Line 130" id="line130">
+<td>130</td><td></td><td>2</td><td><code>              duration: (data[_$duration] == null)</code></td>
 </tr>
 <tr class="noop" title="Line 131" id="line131">
 <td>131</td><td></td><td></td><td><code>                  ? null</code></td>
@@ -465,7 +465,7 @@
 <td>135</td><td></td><td></td><td><code></code></td>
 </tr>
 <tr class="noop" title="Line 136" id="line136">
-<td>136</td><td></td><td></td><td><code>// private implementation internal to Squadron</code></td>
+<td>136</td><td></td><td></td><td><code>// for internal use</code></td>
 </tr>
 <tr class="noop" title="Line 137" id="line137">
 <td>137</td><td></td><td></td><td><code>extension WorkerExceptionExt on WorkerException {</code></td>

@@ -11,8 +11,10 @@ import 'worker_request.dart';
 import 'worker_response.dart';
 import 'worker_service.dart';
 
-/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to a
-/// platform worker.
+typedef PostMethod = void Function(WorkerRequest req);
+
+/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
+/// a platform worker.
 abstract class Channel {
   /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
@@ -25,10 +27,8 @@ abstract class Channel {
   /// worker and should not be used after this method has been called.
   FutureOr close();
 
+  /// Static method that does nothing. Useful when a [SquadronCallback] is required but there is nothing to do.
   static void noop() {}
-
-  // /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
-  void notifyCancellation(CancellationToken cancelToken);
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args, {CancellationToken? token});

@@ -1,7 +1,7 @@
 import 'dart:isolate';
 
-import '../_worker_monitor.dart';
-import '../_worker_runner.dart';
+import '../xplat/_worker_monitor.dart';
+import '../xplat/_worker_runner.dart';
 import '../squadron.dart';
 import '../worker_service.dart';
 

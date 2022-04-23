@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'xplat/_pool_worker.dart';
+import 'xplat/_worker_stream_task.dart';
+import 'xplat/_worker_task.dart';
+import 'xplat/_worker_value_task.dart';
 import 'concurrency_settings.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
@@ -10,8 +14,6 @@ import 'worker_service.dart';
 import 'worker_stat.dart';
 
 import 'worker_task.dart';
-
-part '_pool_worker.dart';
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
@@ -48,7 +50,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Maximum running tasks.
   int get maxConcurrency => concurrencySettings.maxConcurrency;
 
-  final _workers = <_PoolWorker<W>>[];
+  final _workers = <PoolWorker<W>>[];
 
   final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
 
@@ -82,7 +84,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       final tasks = <Future>[];
       while (_workers.length < count) {
         final poolWorker =
-            _PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
+            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
         _workers.add(poolWorker);
         tasks.add(poolWorker.worker.start());
       }
@@ -100,7 +102,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
     return _provisionWorkers(concurrencySettings.min(0));
   }
 
-  int _removeWorker(_PoolWorker poolWorker, bool force) {
+  int _removeWorker(PoolWorker poolWorker, bool force) {
     if (force || _workers.length > concurrencySettings.minWorkers) {
       poolWorker.worker.stop();
       _workers.remove(poolWorker);
@@ -118,7 +120,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// not receive any new workload.
   /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
-    List<_PoolWorker<W>> targets;
+    List<PoolWorker<W>> targets;
     bool force;
     if (predicate != null) {
       // kill workers that are idle and satisfy the predicate
@@ -175,13 +177,13 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Returns a [ValueTask]<T>.
   ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.value(task, counter));
+      _enqueue<T>(WorkerValueTask<T, W>(task, counter)) as ValueTask<T>;
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a [StreamTask]<T>.
   StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      _enqueue<T>(WorkerTask.stream(task, counter));
+      _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
   Timer? _timer;
 
@@ -200,7 +202,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       return;
     }
     _timer = Timer(Duration.zero, () {
-      _workers.removeWhere(_PoolWorker.isStopped);
+      _workers.removeWhere(PoolWorker.isStopped);
       _queue.removeWhere((t) => t.isCancelled);
       if (_stopped && _queue.isEmpty && _executing.isEmpty) {
         stop();
@@ -239,7 +241,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   }
 
   int _sortAndGetMaxCapacity() {
-    _workers.sort(_PoolWorker.compareCapacityDesc);
+    _workers.sort(PoolWorker.compareCapacityDesc);
     return _workers.first.capacity;
   }
 
@@ -261,7 +263,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   }
 
   /// Worker statistics.
-  Iterable<WorkerStat> get stats => _workers.map(_PoolWorker.getStats);
+  Iterable<WorkerStat> get stats => _workers.map(PoolWorker.getStats);
 
   /// Full worker statistics.
   Iterable<WorkerStat> get fullStats => _deadWorkerStats.followedBy(stats);

@@ -1,4 +1,3 @@
-import 'cancellable_token.dart';
 import 'cancellation_token.dart';
 import 'squadron_error.dart';
 import 'worker_exception.dart';
@@ -12,20 +11,27 @@ enum CompositeMode {
   any
 }
 
-/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after
-/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a
-/// platform worker.
-class CompositeToken extends CancellableToken {
+/// Composite cancellation token. The token is cancelled automatically depending on [mode]: with [CompositeMode.any],
+/// the composite token is cancelled as soon as when one of the tokens is cancelled. With [CompositeMode.any], the
+/// composite token is cancelled when all tokens are cancelled.
+class CompositeToken extends CancellationToken {
   CompositeToken(Iterable<CancellationToken> tokens, this.mode,
-      [String? message])
+      [String message = 'The token was cancelled'])
       : assert(tokens.isNotEmpty),
         _tokens = tokens.toList(),
         _signaled = 0,
         super(message) {
     for (var token in _tokens) {
-      if (token.cancelled) _signaled++;
-      _register(token);
+      if (token.cancelled) {
+        _signaled++;
+      } else {
+        token.addListener(() {
+          _signaled++;
+          _check();
+        });
+      }
     }
+    _check();
   }
 
   /// Throws an exception, composite tokens may not be cancelled programmatically.
@@ -38,34 +44,24 @@ class CompositeToken extends CancellableToken {
   final List<CancellationToken> _tokens;
   int _signaled;
 
-  /// Called just before processing a [WorkerRequest]. The method actually calls the [ensureStarted] method for all
-  /// tokens registered with this [CompositeToken]. The [onTimeout] callback is mandatory if one of these
-  /// tokens is a [TimeOutToken].
+  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method for all tokens
+  /// registered with this [CompositeToken].
   @override
-  void ensureStarted() => _tokens.forEach(_starter);
-
-  static void _starter(CancellationToken token) => token.ensureStarted();
-
-  void _signal() {
-    _signaled++;
-    _check();
+  void ensureStarted() {
+    for (var token in _tokens) {
+      token.ensureStarted();
+    }
   }
 
   void _check() {
     if (!cancelled) {
-      if ((mode == CompositeMode.any && _signaled >= 1) ||
-          (mode == CompositeMode.all && _signaled >= _tokens.length)) {
-        if (mode == CompositeMode.all) {
-          super.cancel(CancelledException(message: message ?? 'Cancelled'));
-        } else {
-          super.cancel(_tokens.map((e) => e.exception).firstWhere(
-              (e) => e != null,
-              orElse: () =>
-                  CancelledException(message: message ?? 'Cancelled'))!);
-        }
+      if (mode == CompositeMode.any && _signaled >= 1) {
+        final exception =
+            _tokens.map((t) => t.exception).firstWhere((e) => e != null);
+        super.cancel(exception);
+      } else if (mode == CompositeMode.all && _signaled >= _tokens.length) {
+        super.cancel();
       }
     }
   }
-
-  void _register(CancellationToken token) => token.addListener(_signal);
 }

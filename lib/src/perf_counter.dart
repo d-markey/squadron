@@ -38,7 +38,7 @@ class PerfCounter implements PerfCounterSnapshot {
   PerfCounterSnapshot get snapshot => PerfCounterSnapshot(this);
 }
 
-// private implementation internal to Squadron
+// for internal use
 extension PerfCounterExt on PerfCounter {
   /// Updates counter value with the duration indicated by [timeInMicroseconds].
   /// 1. update the maximum elapsed time if required.

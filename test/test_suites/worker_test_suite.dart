@@ -13,6 +13,7 @@ import '../worker_services/invalid_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/rogue_service.dart';
 import '../worker_services/rogue_service_worker.dart';
+import '../worker_services/test_service.dart';
 import '../worker_services/test_service_worker.dart';
 
 void workerTests() {
@@ -271,18 +272,6 @@ void workerTests() {
     expect(primeWorker.isStopped, isTrue);
   });
 
-  test('- prime worker - stream', () async {
-    final primeWorker = PrimeWorker();
-    // await primeWorker.start();
-
-    final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
-
-    expect(computedPrimes, equals(primesTo1000));
-
-    primeWorker.stop();
-    expect(primeWorker.isStopped, isTrue);
-  });
-
   test('- prime worker with cache', () async {
     final cache = CacheWorker();
     await cache.start();
@@ -401,6 +390,40 @@ void workerTests() {
     rogue.stop();
   });
 
+  test('- exception handling from worker - TaskTimeOutException',
+      () async {
+    final testService = TestWorker();
+
+    try {
+      await testService.timeOut();
+      // should never happen
+      throw Exception('timeOut() completed sucessfully');
+    } catch (ex) {
+      expect(ex, isA<TaskTimeoutException>());
+      final wex = ex as TaskTimeoutException;
+      expect(wex.message, contains('intentional timeout exception'));
+    }
+
+    testService.stop();
+  });
+
+  test('- exception handling from worker - CancelledException',
+      () async {
+    final testService = TestWorker();
+
+    try {
+      await testService.cancelled();
+      // should never happen
+      throw Exception('cancel() completed sucessfully');
+    } catch (ex) {
+      expect(ex, isA<CancelledException>());
+      final wex = ex as CancelledException;
+      expect(wex.message, contains('intentional cancelled exception'));
+    }
+
+    testService.stop();
+  });
+
   test('- exception handling from worker - CustomException', () async {
     SquadronException.registerExceptionDeserializer(
         CustomException.deserialize);
@@ -465,83 +488,229 @@ void workerTests() {
     bitcoin.stop();
   });
 
-  test('- stream with multiple errors - cancelOnError: false', () async {
-    final testWorker = TestWorker();
+  group('- Streaming', () {
+    test('- prime worker', () async {
+      final primeWorker = PrimeWorker();
+      // await primeWorker.start();
 
-    final token = CancellableToken('by request');
+      final computedPrimes = await primeWorker.getPrimes(1, 1000).toList();
 
-    final done = Completer();
-    final numbers = <int>[];
-    final errors = <SquadronException>[];
+      expect(computedPrimes, equals(primesTo1000));
 
-    testWorker.infiniteWithErrors(token).listen(
-          (number) => numbers.add(number),
-          onError: (ex) {
-            errors.add(ex);
-            if (errors.length > 3) {
-              token.cancel();
-            }
-          },
-          onDone: () => done.complete(),
-          cancelOnError: false,
-        );
+      primeWorker.stop();
+      expect(primeWorker.isStopped, isTrue);
+    });
 
-    await done.future;
+    test('- with multiple errors - cancelOnError: false', () async {
+      final testWorker = TestWorker();
 
-    expect(numbers.length, greaterThan(3 * 2));
-    expect(errors.length, greaterThan(3));
-    expect(errors.where((e) => e.message.contains('error #')).length,
-        greaterThan(3));
-    expect(errors.where((e) => e.message == token.message).length,
-        greaterThanOrEqualTo(1));
-  });
+      final token = CancellationToken('by request');
 
-  test('- stream with multiple errors - cancelOnError: true', () async {
-    final testWorker = TestWorker();
-    await testWorker.start();
+      final done = Completer();
+      final numbers = <int>[];
+      final errors = <SquadronException>[];
 
-    final token = CancellableToken('by request');
-
-    final numbers = <int>[];
-
-    try {
-      await testWorker
-          .infiniteWithErrors(token)
-          .listen(
+      testWorker.infiniteWithErrors(token).listen(
             (number) => numbers.add(number),
-            cancelOnError: true,
-          )
-          .asFuture();
-      throw Exception('infiniteWithErrors() completed successfully');
-    } catch (e) {
-      expect(e, isA<WorkerException>());
-      final ex = e as WorkerException;
-      expect(ex.message, contains('error #'));
-    }
+            onError: (ex) {
+              errors.add(ex);
+              if (errors.length > 3) {
+                token.cancel();
+              }
+            },
+            onDone: () => done.complete(),
+            cancelOnError: false,
+          );
 
-    expect(numbers, equals([0, 1, 2]));
-  });
+      await done.future;
 
-  test('- stream with multiple errors - await for', () async {
-    final testWorker = TestWorker();
-    await testWorker.start();
+      expect(numbers.length, greaterThan(3 * 2));
+      expect(errors.length, greaterThan(3));
+      expect(errors.where((e) => e.message.contains('error #')).length,
+          greaterThan(3));
+      expect(errors.where((e) => e.message == token.message).length,
+          greaterThanOrEqualTo(1));
+    });
 
-    final token = CancellableToken('by request');
+    test('- with multiple errors - cancelOnError: true', () async {
+      final testWorker = TestWorker();
 
-    final numbers = <int>[];
+      final token = CancellationToken('by request');
 
-    try {
-      await for (var number in testWorker.infiniteWithErrors(token)) {
-        numbers.add(number);
+      final numbers = <int>[];
+
+      try {
+        final future = testWorker
+            .infiniteWithErrors(token)
+            .listen(
+              (number) => numbers.add(number),
+              cancelOnError: true,
+            )
+            .asFuture();
+        await Future.delayed(Duration.zero);
+        final pending = await testWorker.getPendingInfiniteWithErrors();
+        expect(pending, equals(1));
+        await future;
+        throw Exception('infiniteWithErrors() completed successfully');
+      } catch (e) {
+        expect(e, isA<WorkerException>());
+        final ex = e as WorkerException;
+        expect(ex.message, contains('error #'));
       }
-      throw Exception('infiniteWithErrors() completed successfully');
-    } catch (e) {
-      expect(e, isA<WorkerException>());
-      final ex = e as WorkerException;
-      expect(ex.message, contains('error #'));
-    }
 
-    expect(numbers, equals([0, 1, 2]));
+      expect(numbers, equals([0, 1, 2]));
+
+      final pending = await testWorker.getPendingInfiniteWithErrors();
+      expect(pending, equals(0));
+    });
+
+    test('- with multiple errors - await for', () async {
+      final testWorker = TestWorker();
+
+      final token = CancellationToken('by request');
+
+      final numbers = <int>[];
+
+      try {
+        await for (var number in testWorker.infiniteWithErrors(token)) {
+          final pending = await testWorker.getPendingInfiniteWithErrors();
+          expect(pending, equals(1));
+          numbers.add(number);
+        }
+        throw Exception('infiniteWithErrors() completed successfully');
+      } catch (e) {
+        expect(e, isA<WorkerException>());
+        final ex = e as WorkerException;
+        expect(ex.message, contains('error #'));
+      }
+
+      expect(numbers, equals([0, 1, 2]));
+
+      final pending = await testWorker.getPendingInfiniteWithErrors();
+      expect(pending, equals(0));
+    });
+
+    test('- with multiple errors - throwing in await for', () async {
+      final testWorker = TestWorker();
+
+      final token = CancellationToken('by request');
+
+      final numbers = <int>[];
+
+      try {
+        await for (var number in testWorker.infiniteWithErrors(token)) {
+          final pending = await testWorker.getPendingInfiniteWithErrors();
+          expect(pending, equals(1));
+          if (numbers.isEmpty) {
+            numbers.add(number);
+          } else {
+            throw WorkerException('Client-side exception');
+          }
+        }
+        throw Exception('infiniteWithErrors() completed successfully');
+      } catch (e) {
+        expect(e, isA<WorkerException>());
+        final ex = e as WorkerException;
+        expect(ex.message, equals('Client-side exception'));
+      }
+
+      expect(numbers, equals([0]));
+
+      final pending = await testWorker.getPendingInfiniteWithErrors();
+      expect(pending, equals(0));
+    });
+
+    test('- with multiple errors - pause/resume', () async {
+      final testWorker = TestWorker();
+
+      final numbers = <int>[];
+      final errors = <SquadronException>[];
+
+      final token = CancellationToken('by request');
+      final stream = testWorker.infiniteWithErrors(token);
+      final sub = stream.listen(
+        (number) => numbers.add(number),
+        onError: (ex) => errors.add(ex),
+        cancelOnError: false,
+      );
+
+      int countNumbers = 0;
+      int countErrors = 0;
+      int paused = 0;
+
+      void pause() {
+        sub.pause();
+        if (paused == 0) {
+          expect(numbers.length, greaterThan(countNumbers));
+          expect(errors.length, greaterThan(countErrors));
+          countNumbers = numbers.length;
+          countErrors = errors.length;
+        } else {
+          expect(numbers.length, equals(countNumbers));
+          expect(errors.length, equals(countErrors));
+        }
+        paused++;
+      }
+
+      void resume() {
+        expect(numbers.length, equals(countNumbers));
+        expect(errors.length, equals(countErrors));
+        sub.resume();
+        if (paused > 0) {
+          paused--;
+        }
+      }
+
+      // this call should have no effect
+      sub.resume();
+
+      // pause immediately
+      sub.pause();
+      expect(numbers, isEmpty);
+      expect(errors, isEmpty);
+      await Future.delayed(TestService.delay * 3);
+      expect(numbers, isEmpty);
+      expect(errors, isEmpty);
+      // resume
+      sub.resume();
+
+      await Future.delayed(TestService.delay * 3);
+      pause();
+      pause();
+      await Future.delayed(TestService.delay * 3);
+      resume();
+      await Future.delayed(TestService.delay * 3);
+      resume();
+      await Future.delayed(TestService.delay * 3);
+
+      sub.cancel();
+
+      expect(numbers.length, greaterThan(countNumbers));
+      expect(errors.length, greaterThan(countErrors));
+      expect(errors.where((e) => e.message.contains('by request')), isEmpty);
+    });
+
+    test('- with multiple errors - immediate cancellation', () async {
+      final testWorker = TestWorker();
+
+      final token = CancellationToken('by request');
+
+      final numbers = <int>[];
+      final errors = <SquadronException>[];
+
+      final sub = testWorker.infiniteWithErrors(token).listen(
+            (number) => numbers.add(number),
+            onError: (ex) => errors.add(ex),
+            cancelOnError: false,
+          );
+
+      sub.cancel();
+
+      await Future.delayed(TestService.delay * 3);
+
+      expect(numbers, isEmpty);
+      expect(errors, isEmpty);
+    });
   });
 
   test('- failing worker', () async {

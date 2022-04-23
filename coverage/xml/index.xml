@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-19" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947767" lines-covered="1182" lines-valid="1321" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91495603" lines-covered="1248" lines-valid="1364" testname="lcov.info" version="1.5">
 <sources>
-<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="938" lines-valid="1043" pathname="/src" prefix="/_Projects/github/squadron/lib"/>
-<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="131" lines-valid="154" pathname="/src/browser" prefix="/_Projects/github/squadron/lib"/>
-<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="113" lines-valid="124" pathname="/src/native" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="664" lines-valid="715" pathname="/src" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="127" lines-valid="152" pathname="/src/browser" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="349" lines-valid="378" pathname="/src/xplat" prefix="/_Projects/github/squadron/lib"/>
+<source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="108" lines-valid="119" pathname="/src/native" prefix="/_Projects/github/squadron/lib"/>
 </sources>
 <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
 </coverage>
