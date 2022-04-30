@@ -3,10 +3,10 @@
 import 'dart:async';
 import 'dart:html' as web;
 
-import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-import 'classes/memory_logger.dart';
+import 'package:squadron/squadron.dart';
+
 import 'test_suites/cancellation_test_suite.dart';
 import 'test_suites/issues_test_suite.dart';
 import 'test_suites/local_worker_test_suite.dart';
@@ -17,47 +17,24 @@ import 'test_suites/worker_test_suite.dart';
 import 'worker_services/worker_entry_points.dart';
 
 void main() async {
+  EntryPoints.init();
   await _checkWebWorkers(EntryPoints.entryPoints.cast<String>());
 
   group('BROWSER', () {
     print('Running browser tests on ${web.window.navigator.appVersion}...');
 
-    final memoryLogger = MemoryLogger();
-
     setUp(() {
       Squadron.setId('workerTests');
       Squadron.logLevel = SquadronLogLevel.all;
-      Squadron.logger = memoryLogger;
-      memoryLogger.clear();
     });
 
-    group('- Logger', () {
-      loggerTests();
-    });
-
-    group("- Web Worker", () {
-      webWorkerTests();
-    });
-
-    group("- Worker", () {
-      workerTests();
-    });
-
-    group("- Worker pool", () {
-      poolTests();
-
-      group("- Cancellation", () {
-        cancellationTests();
-      });
-    });
-
-    group("- Local Worker", () {
-      localWorkerTests();
-    });
-
-    group("- GitHub Issues", () {
-      githubIssuesTests();
-    });
+    group('- Logging', loggerTests);
+    group("- WebWorker", webWorkerTests);
+    group("- Worker", workerTests);
+    group("- WorkerPool", poolTests);
+    group("- Cancellation", cancellationTests);
+    group("- LocalWorker", localWorkerTests);
+    group("- GitHub Issues", githubIssuesTests);
   });
 }
 

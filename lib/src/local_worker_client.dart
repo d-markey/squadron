@@ -15,12 +15,16 @@ class LocalWorkerClient implements WorkerService {
   final Channel channel;
 
   /// Sends a command to the [LocalWorker].
-  Future<T> send<T>(int command, List args) =>
-      channel.sendRequest<T>(command, args);
+  Future<T> send<T>(int command, List args,
+          {bool inspectRequest = true, bool inspectResponse = true}) =>
+      channel.sendRequest<T>(command, args,
+          inspectRequest: inspectRequest, inspectResponse: inspectResponse);
 
   /// Sends a streaming command to the [LocalWorker].
-  Stream<T> stream<T>(int command, List args) =>
-      channel.sendStreamingRequest<T>(command, args);
+  Stream<T> stream<T>(int command, List args,
+          {bool inspectRequest = true, bool inspectResponse = true}) =>
+      channel.sendStreamingRequest<T>(command, args,
+          inspectRequest: inspectRequest, inspectResponse: inspectResponse);
 
   /// Local worker clients do not need an [operations] map.
   @override

@@ -49,11 +49,11 @@ abstract class WorkerTask<T, W extends Worker> implements Task<T> {
       : Duration(
           microseconds: (_cancelled ?? _finished ?? timeStamp()) - _executed!);
 
-  void wrapUp(SquadronCallback wrapper, bool success) async {
+  void wrapUp(SquadronCallback callback, bool success) async {
     if (_finished == null) {
       _finished = timeStamp();
       _counter?.update(_finished! - _executed!, success);
-      wrapper();
+      callback();
     }
   }
 

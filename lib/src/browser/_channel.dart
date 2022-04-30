@@ -3,7 +3,6 @@ import 'dart:html' as web;
 
 import 'package:squadron/src/squadron_error.dart';
 
-import '../xplat/_identity.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
@@ -22,23 +21,34 @@ class _BaseJsChannel {
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   dynamic serialize() => _sendPort;
 
-  void _postRequest(WorkerRequest req) {
+  void _postRequest(WorkerRequest req, bool inspectRequest) {
     req.cancelToken?.ensureStarted();
     final message = req.serialize();
     try {
-      final transfer = Transferables.get(message);
-      _sendPort?.postMessage(message, transfer);
+      final transfer = <Object>[];
+      if (inspectRequest) {
+        transfer.addAll(Transferables.get(message));
+      } else {
+        if (req.client != null) {
+          transfer.add(req.client!.serialize());
+        }
+      }
+      _sendPort!.postMessage(message, transfer);
     } catch (ex) {
       Squadron.severe('failed to post request $message: error $ex');
       rethrow;
     }
   }
 
-  void _postResponse(WorkerResponse res) {
+  void _postResponse(WorkerResponse res, bool inspectResponse) {
     final message = res.serialize();
     try {
-      final transfer = Transferables.get(message);
-      _sendPort!.postMessage(message, transfer);
+      if (inspectResponse) {
+        final transfer = Transferables.get(message).toList();
+        _sendPort!.postMessage(message, transfer);
+      } else {
+        _sendPort!.postMessage(message);
+      }
     } catch (ex) {
       Squadron.severe('failed to post response $message: error $ex');
       rethrow;
@@ -58,7 +68,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _postRequest(WorkerRequest.stop());
+      _postRequest(WorkerRequest.stop(), false);
       _sendPort = null;
     }
   }
@@ -67,14 +77,18 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   /// single value from the [web.Worker].
   @override
   Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? token}) async {
+      {CancellationToken? token,
+      bool inspectRequest = true,
+      bool inspectResponse = true}) async {
     final com = web.MessageChannel();
 
-    void _canceller() => _postRequest(WorkerRequest.cancel(token!));
+    void _canceller() => _postRequest(WorkerRequest.cancel(token!), false);
 
     token?.addListener(_canceller);
     try {
-      _postRequest(WorkerRequest(com.port2, command, args, token));
+      _postRequest(
+          WorkerRequest(com.port2, command, args, token, inspectResponse),
+          inspectRequest);
       final event = await com.port1.onMessage.first
           .whenComplete(() => token?.removeListener(_canceller));
       final res = WorkerResponse.deserialize(event.data);
@@ -91,18 +105,18 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   /// the [Stream].
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {SquadronCallback onDone = Channel.noop, CancellationToken? token}) {
+      {SquadronCallback onDone = Channel.noop,
+      CancellationToken? token,
+      bool inspectRequest = true,
+      bool inspectResponse = true}) {
     final com = web.MessageChannel();
     final wrapper = StreamWrapper<T>(
-      WorkerRequest(com.port2, command, args, token),
-      postMethod: _postRequest,
-      messages: com.port1.onMessage.map((event) => event.data),
-      onDone: () {
-        com.port1.close();
-        onDone();
-      },
-      token: token,
-    );
+        WorkerRequest(com.port2, command, args, token, inspectResponse),
+        postMethod: _postRequest,
+        messages: com.port1.onMessage.map((event) => event.data), onDone: () {
+      com.port1.close();
+      onDone();
+    }, token: token, inspectRequest: inspectRequest);
 
     return wrapper.stream;
   }
@@ -117,7 +131,7 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   @override
   void connect(Object channelInfo) {
     if (channelInfo is web.MessagePort) {
-      reply(channelInfo);
+      reply(channelInfo, true);
     } else {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: MessagePort expected');
@@ -128,13 +142,14 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// [Worker] that the stream has been cancelled on the client-side.
   @override
   void connectStream(int streamId) {
-    reply(streamId);
+    reply(streamId, false);
   }
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// [web.Worker] only.
   @override
-  void reply(dynamic data) => _postResponse(WorkerResponse(data));
+  void reply(dynamic data, bool inspectResponse) =>
+      _postResponse(WorkerResponse(data), inspectResponse);
 
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.
   @override
@@ -143,13 +158,13 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]
   /// only.
   @override
-  void closeStream() => _postResponse(WorkerResponse.closeStream);
+  void closeStream() => _postResponse(WorkerResponse.closeStream, false);
 
   /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
     Squadron.finer(() => 'replying with error: $error');
-    _postResponse(WorkerResponse.withError(error));
+    _postResponse(WorkerResponse.withError(error), false);
   }
 }
 
@@ -173,7 +188,7 @@ class _JsForwardChannel extends _JsChannel {
   void _forward(web.MessageEvent e) {
     final message = e.data;
     try {
-      final transfer = Transferables.get(message);
+      final transfer = Transferables.get(message).toList();
       _remote!.postMessage(message, transfer);
     } catch (ex) {
       Squadron.severe('failed to forward $message: error $ex');
@@ -194,8 +209,7 @@ class Transferables {
 
   static final _instance = Transferables._();
 
-  static List<Object> get(Map args) =>
-      _instance._get(args, <Object>{}).toList();
+  static Iterable<Object> get(Map args) => _instance._get(args, <Object>{});
 
   bool _isBaseType(dynamic value) =>
       (value == null || value is String || value is num || value is bool);
@@ -256,6 +270,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
   Squadron.config('created Web Worker #${worker.hashCode}');
+
   worker.onError.listen((event) {
     String msg;
     if (event is web.ErrorEvent) {
@@ -272,18 +287,7 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
       worker.terminate();
     }
   });
-  final message =
-      WorkerRequest.start(com.port2, Identity.nextId(), startArguments)
-          .serialize();
-  try {
-    final transfer = Transferables.get(message);
-    worker.postMessage(message, transfer);
-  } catch (ex) {
-    com.port1.close();
-    worker.terminate();
-    Squadron.severe('failed to post connection request $message: error $ex');
-    rethrow;
-  }
+
   com.port1.onMessage.listen((event) {
     com.port1.close();
     final response = WorkerResponse.deserialize(event.data);
@@ -304,6 +308,18 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
       completer.completeError(error, error.stackTrace);
     }
   });
+
+  final req = WorkerRequest.start(com.port2, startArguments);
+  final message = req.serialize();
+  try {
+    final transfer = Transferables.get(message).toList();
+    worker.postMessage(message, transfer);
+  } catch (ex) {
+    com.port1.close();
+    worker.terminate();
+    Squadron.severe('failed to post connection request $message: error $ex');
+    rethrow;
+  }
   return completer.future;
 }
 

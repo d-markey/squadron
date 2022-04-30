@@ -1,4 +1,4 @@
-const primesTo1000 = <int>[
+const primesTo1000 = <int>{
   2,
   3,
   5,
@@ -167,9 +167,9 @@ const primesTo1000 = <int>[
   983,
   991,
   997
-];
+};
 
-const largePrimes = <int>[
+const largePrimes = <int>{
   1000000007,
   1000000009,
   1000001789,
@@ -178,4 +178,4 @@ const largePrimes = <int>[
   99999199999,
   999999000001,
   67280421310721,
-];
+};

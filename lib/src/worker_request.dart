@@ -3,6 +3,7 @@ import 'channel.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
 import 'worker.dart';
+import 'xplat/_identity.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker]. Typically a [WorkerRequest] consists of a command ID
 /// and a list of arguments. The [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method
@@ -21,30 +22,36 @@ class WorkerRequest {
   static const _noArgs = [];
 
   WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
-      this.logLevel, this._cancelToken, this._streamId)
+      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)
       : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new request with the specified [command] ID and optional arguments.
   WorkerRequest(dynamic channelInfo, int command,
-      [List args = _noArgs, CancellationToken? cancelToken])
-      : this._(channelInfo, command, null, args, null, cancelToken, null);
+      [List args = _noArgs,
+      CancellationToken? cancelToken,
+      bool inspectResponse = true])
+      : this._(channelInfo, command, null, args, null, cancelToken, null,
+            inspectResponse);
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo, String id, [List args = _noArgs])
-      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null,
-            null);
+  WorkerRequest.start(dynamic channelInfo,
+      [List args = _noArgs, bool inspectResponse = true])
+      : this._(channelInfo, _connectCommand, Identity.nextId(), args,
+            Squadron.logLevel, null, null, inspectResponse);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancelStream(int streamId)
-      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId);
+      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId,
+            false);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancel(CancellationToken cancelToken)
-      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null);
+      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null,
+            false);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
-      : this._(null, _terminateCommand, null, _noArgs, null, null, null);
+      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);
 
   static const _$client = 'a';
   static const _$command = 'b';
@@ -53,6 +60,7 @@ class WorkerRequest {
   static const _$streamId = 'e';
   static const _$id = 'f';
   static const _$logLevel = 'g';
+  static const _$inspectResponse = 'h';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
   static WorkerRequest? deserialize(Map? message) => (message == null)
@@ -64,7 +72,9 @@ class WorkerRequest {
           message[_$args] ?? const [],
           message[_$logLevel],
           CancellationToken.deserialize(message[_$token]),
-          message[_$streamId]);
+          message[_$streamId],
+          message[_$inspectResponse] ?? true,
+        );
 
   /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
@@ -77,6 +87,7 @@ class WorkerRequest {
         _$id: id,
         _$logLevel: logLevel,
         if (args.isNotEmpty) _$args: args,
+        if (!inspectResponse) _$inspectResponse: inspectResponse
       };
     } else {
       return {
@@ -84,7 +95,8 @@ class WorkerRequest {
         _$command: command,
         if (args.isNotEmpty) _$args: args,
         if (_cancelToken != null) _$token: _cancelToken!.serialize(),
-        if (_streamId != null) _$streamId: _streamId,
+        if (streamId != null) _$streamId: streamId,
+        if (!inspectResponse) _$inspectResponse: inspectResponse
       };
     }
   }
@@ -97,8 +109,7 @@ class WorkerRequest {
   CancellationToken? _cancelToken;
 
   /// Stream id.
-  int? get streamId => _streamId;
-  int? _streamId;
+  final int? streamId;
 
   /// The [command]'s ID.
   final int command;
@@ -113,6 +124,10 @@ class WorkerRequest {
   /// The current Squadron log level.
   /// This is set automaticallt and only used for connection commands.
   final int? logLevel;
+
+  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In
+  /// Web workers, ownership of these objects must be transfered across threads.
+  final bool inspectResponse;
 
   /// flag for start requests.
   bool get connect => command == _connectCommand;

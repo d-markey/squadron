@@ -15,11 +15,13 @@ class StreamWrapper<T> {
       {required PostMethod postMethod,
       required Stream messages,
       required SquadronCallback onDone,
-      CancellationToken? token})
+      CancellationToken? token,
+      required bool inspectRequest})
       : _streamRequest = streamRequest,
         _postMethod = postMethod,
         _messages = messages,
-        _token = token {
+        _token = token,
+        _inspectRequest = inspectRequest {
     _controller = StreamController<T>(
       onListen: _onListen,
       onPause: _onPause,
@@ -40,11 +42,12 @@ class StreamWrapper<T> {
   final WorkerRequest _streamRequest;
   final PostMethod _postMethod;
   final CancellationToken? _token;
+  final bool _inspectRequest;
 
   late final StreamController<T> _controller;
   int _paused = 0;
 
-  void _canceller() => _postMethod(WorkerRequest.cancel(_token!));
+  void _canceller() => _postMethod(WorkerRequest.cancel(_token!), false);
 
   void _process(WorkerResponse res) {
     final error = res.error;
@@ -97,13 +100,13 @@ class StreamWrapper<T> {
       cancelOnError: false,
     );
     // initiate streaming operations now!
-    _postMethod(_streamRequest);
+    _postMethod(_streamRequest, _inspectRequest);
   }
 
   Future _onCancel() async {
     final streamId = await _streamId.future;
     // notify the worker that the streaming operation has been cancelled
-    _postMethod(WorkerRequest.cancelStream(streamId));
+    _postMethod(WorkerRequest.cancelStream(streamId), false);
     _buffer.clear();
     _controller.close();
   }

@@ -9,42 +9,43 @@ import 'squadron_exception.dart';
 /// send error messages.
 class WorkerResponse {
   /// [WorkerResponse] with a valid [result].
-  WorkerResponse(this._result)
-      : _error = null,
-        _eos = false;
+  WorkerResponse(dynamic result)
+      : _result = result,
+        error = null,
+        endOfStream = false;
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
   WorkerResponse.withError(Object exception, [StackTrace? stackTrace])
-      : _error = SquadronException.from(
+      : error = SquadronException.from(
             error: exception, stackTrace: stackTrace ?? StackTrace.current),
         _result = null,
-        _eos = false;
+        endOfStream = false;
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
   const WorkerResponse._endOfStream()
       : _result = null,
-        _error = null,
-        _eos = true;
+        error = null,
+        endOfStream = true;
 
   /// End of stream response.
   static const closeStream = WorkerResponse._endOfStream();
 
   static const _$result = 'a';
   static const _$error = 'b';
-  static const _$eos = 'c';
+  static const _$endOfStream = 'c';
 
   /// Creates a new [WorkerResponse] from a message sent by the worker.
   WorkerResponse.deserialize(Map message)
       : _result = message[_$result],
-        _error = SquadronException.deserialize(message[_$error]),
-        _eos = message[_$eos] ?? false;
+        error = SquadronException.deserialize(message[_$error]),
+        endOfStream = message[_$endOfStream] ?? false;
 
   /// [WorkerResponse] serialization.
   Map<String, dynamic> serialize() {
-    if (_error != null) {
-      return {_$error: _error!.serialize()};
-    } else if (_eos) {
-      return const {_$eos: true};
+    if (error != null) {
+      return {_$error: error!.serialize()};
+    } else if (endOfStream) {
+      return const {_$endOfStream: true};
     } else if (_result == null) {
       return const {};
     } else {
@@ -53,15 +54,13 @@ class WorkerResponse {
   }
 
   /// Flag indicating the end of the [Stream]ing operation.
-  bool get endOfStream => _eos;
-  final bool _eos;
+  final bool endOfStream;
 
   /// The [WorkerResponse] exception, if any.
-  SquadronException? get error => _error;
-  final SquadronException? _error;
+  final SquadronException? error;
 
   /// Flag indicating whether an error occured.
-  bool get hasError => _error != null;
+  bool get hasError => error != null;
 
   /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,
   /// an the [error] exception is thrown.

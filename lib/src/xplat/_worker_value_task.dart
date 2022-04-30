@@ -20,19 +20,12 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
   Future<T> get value => _completer.future;
 
   void _completeWithError(SquadronException exception) {
-    wrapUp(() {
-      if (!_completer.isCompleted) {
-        _completer.completeError(exception, exception.stackTrace);
-      }
-    }, false);
+    wrapUp(
+        () => _completer.completeError(exception, exception.stackTrace), false);
   }
 
   void _completeWithResult(dynamic data) {
-    wrapUp(() {
-      if (!_completer.isCompleted) {
-        _completer.complete(data);
-      }
-    }, true);
+    wrapUp(() => _completer.complete(data), true);
   }
 
   @override

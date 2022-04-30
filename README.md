@@ -55,7 +55,7 @@ Import squadron from your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-   squadron: ^3.3.0
+   squadron: ^4.0.0
 ```
 
 ## <a name="usage"></a>Usage
@@ -179,7 +179,7 @@ To provide a cross-platform development experience, Squadron encapsulates `Isola
 well as the means to communicate between the main app's code and the code they execute. This is achieved
 via the `Channel` class.
 
-![](https://raw.githubusercontent.com/d-markey/squadron/main/channels_and_types.png)
+![Diagram about type flow through Squadron Channels](https://raw.githubusercontent.com/d-markey/squadron/main/channels_and_types.png)
 
 `Channel` enables data exchange between threads and inherits the constraints of the target platforms,
 in particular the type system. Dart Native platforms will typically be quite relaxed when communicating
@@ -1002,3 +1002,5 @@ You may also have to reference the JavaScript file from `index.html`:
 
 * [SwissCheese5](https://github.com/SwissCheese5) for his patience and feedback when implementing
 Squadron into his Flutter application.
+* [martin-robert-fink](https://github.com/martin-robert-fink) for the feedback on Squadron's
+`Stream` implementation -- this has resulted in huge progress and a major improvement!

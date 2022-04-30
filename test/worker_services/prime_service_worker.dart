@@ -15,11 +15,12 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
             concurrencySettings: concurrencySettings);
 
   @override
-  Future<bool> isPrime(int n) => execute((w) => w.isPrime(n));
+  Future<bool> isPrime(int n, [PerfCounter? counter]) =>
+      execute((w) => w.isPrime(n), counter: counter);
 
   @override
-  Stream<int> getPrimes(int min, int max) =>
-      stream((w) => w.getPrimes(min, max));
+  Stream<int> getPrimes(int min, int max, [PerfCounter? counter]) =>
+      stream((w) => w.getPrimes(min, max), counter: counter);
 }
 
 class PrimeWorker extends Worker implements PrimeService {

@@ -5,17 +5,18 @@ import 'package:squadron/squadron_service.dart';
 
 import 'cache_service.dart';
 
+class Test {
+  Future<int> get(int i) async => i;
+}
+
 class PrimeService implements WorkerService {
   PrimeService([this._cache]);
 
   final Cache? _cache;
 
   Future<bool> isPrime(int n) async {
-    bool? res;
-    if (_cache != null) {
-      res = await _cache!.get(n);
-      if (res == true) return true;
-    }
+    bool? res = await _cache?.get(n);
+    if (res == true) return true;
     res = _isPrime(n);
     _cache?.set(n, res);
     return res;

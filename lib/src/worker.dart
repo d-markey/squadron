@@ -83,11 +83,14 @@ abstract class Worker implements WorkerService {
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
-  Future<Channel>? _channelRequest;
+  Future<Channel>? _openChannel;
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
-      [List args = const [], CancellationToken? token]) async {
+      [List args = const [],
+      CancellationToken? token,
+      bool inspectRequest = true,
+      bool inspectResponse = true]) async {
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -106,7 +109,10 @@ abstract class Worker implements WorkerService {
     if (error == null) {
       try {
         // send request and return response
-        return await channel.sendRequest<T>(command, args, token: token);
+        return await channel.sendRequest<T>(command, args,
+            token: token,
+            inspectRequest: inspectRequest,
+            inspectResponse: inspectResponse);
       } on CancelledException catch (e) {
         error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
       } catch (e, st) {
@@ -126,7 +132,10 @@ abstract class Worker implements WorkerService {
 
   /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command,
-      [List args = const [], CancellationToken? token]) {
+      [List args = const [],
+      CancellationToken? token,
+      bool inspectRequest = true,
+      bool inspectResponse = true]) {
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -150,8 +159,13 @@ abstract class Worker implements WorkerService {
         try {
           final channel = await start();
           await controller.addStream(channel.sendStreamingRequest<T>(
-              command, args,
-              onDone: onDone, token: token));
+            command,
+            args,
+            onDone: onDone,
+            token: token,
+            inspectRequest: inspectRequest,
+            inspectResponse: inspectResponse,
+          ));
         } catch (ex, st) {
           controller.addError(
               SquadronException.from(error: ex, stackTrace: st), st);
@@ -163,8 +177,14 @@ abstract class Worker implements WorkerService {
       return controller.stream;
     } else {
       // worker has started: return the stream directly
-      return channel!
-          .sendStreamingRequest<T>(command, args, onDone: onDone, token: token);
+      return channel!.sendStreamingRequest<T>(
+        command,
+        args,
+        onDone: onDone,
+        token: token,
+        inspectRequest: inspectRequest,
+        inspectResponse: inspectResponse,
+      );
     }
   }
 
@@ -174,8 +194,8 @@ abstract class Worker implements WorkerService {
       throw WorkerException('worker is stopped', workerId: id);
     }
     if (_channel == null) {
-      _channelRequest ??= Channel.open(_entryPoint, args);
-      final channel = await _channelRequest!;
+      _openChannel ??= Channel.open(_entryPoint, args);
+      final channel = await _openChannel!;
       if (_channel == null) {
         _started = DateTime.now().microsecondsSinceEpoch;
         _idle = _started;
@@ -189,7 +209,7 @@ abstract class Worker implements WorkerService {
   void stop() {
     if (_stopped == null) {
       _stopped = DateTime.now().microsecondsSinceEpoch;
-      _channelRequest = null;
+      _openChannel = null;
       _channel?.close();
       _channel = null;
     }

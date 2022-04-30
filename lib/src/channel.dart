@@ -11,7 +11,7 @@ import 'worker_request.dart';
 import 'worker_response.dart';
 import 'worker_service.dart';
 
-typedef PostMethod = void Function(WorkerRequest req);
+typedef PostMethod = void Function(WorkerRequest req, bool inspectRequest);
 
 /// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
 /// a platform worker.
@@ -31,12 +31,16 @@ abstract class Channel {
   static void noop() {}
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
-  Future<T> sendRequest<T>(int command, List args, {CancellationToken? token});
+  Future<T> sendRequest<T>(int command, List args,
+      {CancellationToken? token, bool inspectRequest, bool inspectResponse});
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {SquadronCallback onDone = noop, CancellationToken? token});
+      {SquadronCallback onDone = noop,
+      CancellationToken? token,
+      bool inspectRequest,
+      bool inspectResponse});
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.
@@ -64,7 +68,7 @@ abstract class WorkerChannel {
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// worker only.
-  void reply(dynamic data);
+  void reply(dynamic data, bool inspectResponse);
 
   /// Checks if [stream] can be streamed back to the worker client.
   bool canStream(Stream stream);

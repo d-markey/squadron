@@ -12,3 +12,13 @@ void start(Map command) => run((startRequest) {
       }
       return TestService();
     }, command);
+
+void startWithException(Map command) => run((startRequest) {
+      throw Exception('Intentional failure');
+    }, command);
+
+void startWithMissingCommand(Map command) =>
+    run((startRequest) => TestService() /* intentionally missing command */);
+
+void startWithInvalidCommand(Map command) =>
+    run((startRequest) => TestService(invalid: true), command);

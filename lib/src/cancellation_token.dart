@@ -6,23 +6,22 @@ import 'xplat/_sequence_id.dart';
 
 /// Base cancellation token.
 class CancellationToken {
-  CancellationToken([String? message])
-      : _message = message,
-        _id = SequenceId.next();
+  CancellationToken._(this.message, this._id);
 
-  static const _$token = 'a';
+  CancellationToken([String? message])
+      : this._(message, SequenceId.next());
+
+  static const _$id = 'a';
   static const _$message = 'b';
 
   /// Deseralization of a [CancellationToken]
   static CancellationToken? deserialize(Map? token) {
     if (token == null) return null;
-    final tok = CancellationToken(token[_$message]);
-    tok._id = token[_$token];
-    return tok;
+    return CancellationToken._(token[_$message], token[_$id]);
   }
 
   /// The token's id
-  int get id => _id;
+  int get id => _id; 
   int _id;
 
   /// Flag indicating whether the token was cancelled or not.
@@ -33,11 +32,10 @@ class CancellationToken {
   CancelledException? _exception;
 
   /// Message associated with the token.
-  String? get message => _message;
-  final String? _message;
+  final String? message;
 
   /// Seralization of a [CancellationToken]
-  Map serialize() => {_$token: id, _$message: _message};
+  Map serialize() => {_$id: _id, if (message != null) _$message: message};
 
   /// Cancels the token and notifies listeners.
   void cancel([CancelledException? exception]) {

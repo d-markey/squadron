@@ -102,6 +102,7 @@ class WorkerRunner {
         throw WorkerException('unknown command: ${request.command}');
       }
       // process
+      final inspectResponse = request.inspectResponse;
       dynamic result = op(request);
       if (result is Future) {
         result = await result;
@@ -124,7 +125,7 @@ class WorkerRunner {
 
         // start forwarding messages to the client
         subscription = result.listen(
-          (data) => client.reply(data),
+          (data) => client.reply(data, inspectResponse),
           onError: (ex, st) =>
               client.error(SquadronException.from(error: ex, stackTrace: st)),
           onDone: shutdown,
@@ -137,7 +138,7 @@ class WorkerRunner {
         });
       } else {
         // result is a value: send to the client
-        client.reply(result);
+        client.reply(result, inspectResponse);
       }
     } catch (e, st) {
       client.error(SquadronException.from(error: e, stackTrace: st));

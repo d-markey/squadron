@@ -6,6 +6,10 @@ import 'package:test/test.dart';
 import '../worker_services/worker_entry_points.dart';
 
 void webWorkerTests() {
+  setUp(() {
+    // Squadron.logger = ConsoleSquadronLogger();
+  });
+
   test('- classic Web worker', () async {
     final worker = browser.Worker(EntryPoints.echo);
     expect(worker, isNotNull);

@@ -61,7 +61,7 @@ class WorkerMonitor {
   }
 
   /// Cancels a [token] via the corresponding [CancellationTokenReference].
-  void cancelToken(CancellationToken token) => _getTokenRef(token).cancel();
+  void cancelToken(CancellationToken token) => _getTokenRef(token).notifyCancellation();
 
   /// Cancels a stream via the corresponding [streamId].
   void cancelStream(int streamId) => _streamCancellers?[streamId]?.call();

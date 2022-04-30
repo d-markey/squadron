@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'worker_exception.dart';
 import 'xplat/_pool_worker.dart';
 import 'xplat/_worker_stream_task.dart';
 import 'xplat/_worker_task.dart';
@@ -25,21 +26,16 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control
   /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting
   /// controls how many tasks can be posted to each individual worker in the pool.
-  WorkerPool(this._workerFactory,
-      {ConcurrencySettings? concurrencySettings,
-      @Deprecated('use concurrencySettings instead') int minWorkers = 0,
-      @Deprecated('use concurrencySettings instead') int maxWorkers = 0,
-      @Deprecated('use concurrencySettings instead') int maxParallel = 1})
-      : concurrencySettings = concurrencySettings ??
-            ConcurrencySettings(
-                minWorkers: minWorkers,
-                maxWorkers: maxWorkers,
-                maxParallel: maxParallel);
+  WorkerPool(this._workerFactory, {ConcurrencySettings? concurrencySettings})
+      : concurrencySettings = concurrencySettings ?? ConcurrencySettings();
 
   final W Function() _workerFactory;
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
+
+  /// Minimum workers.
+  int get minWorkers => concurrencySettings.minWorkers;
 
   /// Maximum workers.
   int get maxWorkers => concurrencySettings.maxWorkers;
@@ -54,7 +50,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
 
-  /// Number of workers.
+  /// Whether this pool is scheduled for stopping.
   bool get stopped => _stopped;
   bool _stopped = false;
 
@@ -79,18 +75,58 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Number of errors.
   int get totalErrors => fullStats.fold<int>(0, (p, s) => p + s.totalErrors);
 
-  Future<void> _provisionWorkers(int count) async {
-    if (_workers.length < count) {
+  Future<void> _provisionWorkers(int workload) async {
+    if (workload < minWorkers) {
+      // at least minWorkers
+      workload = minWorkers;
+    } else if (maxWorkers > 0 && workload > maxWorkers) {
+      // at most maxWorkers if > 0
+      workload = maxWorkers;
+    }
+    // adjust by _workers.length
+    workload -= _workers.length;
+
+    if (workload > 0) {
+      final maxWorkload = concurrencySettings.maxParallel;
       final tasks = <Future>[];
-      while (_workers.length < count) {
-        final poolWorker =
-            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);
-        _workers.add(poolWorker);
-        tasks.add(poolWorker.worker.start());
+      final errors = [];
+      for (var i = 0; i < workload; i++) {
+        try {
+          final poolWorker = PoolWorker(_workerFactory(), maxWorkload);
+          _workers.add(poolWorker);
+          tasks.add(
+            poolWorker.worker
+                .start()
+                .then((_) => true)
+                .onError((error, stackTrace) {
+              // start failed: remove from list
+              _workers.remove(poolWorker);
+              errors.add(error);
+              return false;
+            }),
+          );
+        } catch (ex) {
+          errors.add(ex);
+        }
       }
+
       await Future.wait(tasks);
+
       if (_workers.length > _maxSize) {
         _maxSize = _workers.length;
+      }
+      if (errors.isNotEmpty) {
+        if (errors.length >= tasks.length) {
+          // all tasks failed: throw
+          throw errors.firstWhere((e) => e is SquadronError,
+                  orElse: () => null) ??
+              errors.firstWhere((e) => e is WorkerException,
+                  orElse: () => null) ??
+              errors.first;
+        } else {
+          // some tasks failed: warn
+          Squadron.warning(() => 'Error while provisionning workers: $errors');
+        }
       }
     }
   }
@@ -99,10 +135,11 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
   Future start() {
     _stopped = false;
-    return _provisionWorkers(concurrencySettings.min(0));
+    return _provisionWorkers(_queue.isEmpty ? 1 : _queue.length);
   }
 
   int _removeWorker(PoolWorker poolWorker, bool force) {
+    if (_scheduling) return 0;
     if (force || _workers.length > concurrencySettings.minWorkers) {
       poolWorker.worker.stop();
       _workers.remove(poolWorker);
@@ -121,16 +158,14 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Returns the number of workers that have been stopped.
   int stop([bool Function(W worker)? predicate]) {
     List<PoolWorker<W>> targets;
-    bool force;
-    if (predicate != null) {
-      // kill workers that are idle and satisfy the predicate
-      targets = _workers.where((w) => w.isIdle && predicate(w.worker)).toList();
-      force = false;
-    } else {
+    bool force = (predicate == null);
+    if (force) {
       // kill workers while keeping enough workers alive to process pending tasks
       targets = _workers.skip(_queue.length).toList();
       _stopped = true;
-      force = true;
+    } else {
+      // kill workers that are idle and satisfy the predicate
+      targets = _workers.where((w) => w.isIdle && predicate(w.worker)).toList();
     }
     var stopped = 0;
     for (var poolWorker in targets) {
@@ -154,12 +189,6 @@ class WorkerPool<W extends Worker> implements WorkerService {
     _schedule();
     return task;
   }
-
-  /// Registers and schedules a [task] that returns a single value.
-  @Deprecated('use execute() instead')
-  Future<T> compute<T>(Future<T> Function(W worker) task,
-          {PerfCounter? counter}) =>
-      execute(task, counter: counter);
 
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a future that completes with the task's value.
@@ -186,6 +215,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
   Timer? _timer;
+  bool _scheduling = false;
 
   /// The scheduler.
   ///
@@ -208,7 +238,8 @@ class WorkerPool<W extends Worker> implements WorkerService {
         stop();
       } else if (_queue.isNotEmpty) {
         scheduleMicrotask(() {
-          _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {
+          _scheduling = true;
+          _provisionWorkers(_queue.length).then((_) {
             int maxCapacity;
             while (_queue.isNotEmpty &&
                 (maxCapacity = _sortAndGetMaxCapacity()) > 0) {
@@ -228,12 +259,14 @@ class WorkerPool<W extends Worker> implements WorkerService {
                 });
               }
             }
+            _scheduling = false;
           }).catchError((ex) {
             Squadron.severe('provisionning workers failed with error $ex');
             while (_queue.isNotEmpty) {
               final task = _queue.removeFirst();
               task.cancel('provisionning workers failed');
             }
+            _scheduling = false;
           });
         });
       }

@@ -20,19 +20,6 @@ class ConcurrencySettings {
   /// Maximum number of running tasks.
   int get maxConcurrency => maxWorkers * maxParallel;
 
-  /// Returns the number of workers necessary to handle [pending] tasks, taking into account [minWorkers] and [maxWorkers].
-  int max(int pending) {
-    if (pending < minWorkers) return minWorkers;
-    if (pending < maxWorkers || maxWorkers == 0) return pending;
-    return maxWorkers;
-  }
-
-  /// Returns the number of workers necessary to have at least [minLive] live workers, taking into account [minWorkers] and [maxWorkers].
-  int min(int minLive) {
-    if (minLive < minWorkers) return minWorkers;
-    return max(minLive);
-  }
-
   /// 50 tasks per worker with at most 1 worker.
   static const oneIoThread =
       ConcurrencySettings(minWorkers: 0, maxWorkers: 1, maxParallel: 50);
@@ -48,6 +35,10 @@ class ConcurrencySettings {
   /// 50 tasks per worker, 1 to 8 workers.
   static const eightIoThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 8, maxParallel: 50);
+
+  /// 1 task per worker, 1 workers.
+  static const oneCpuThread =
+      ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
   /// 1 task per worker, 1 to 3 workers.
   static const threeCpuThreads =

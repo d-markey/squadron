@@ -1,3 +1,9 @@
+## 4.0.0
+
+- Breaking changes : deprecated stuff have been removed.
+- Added option to skip message inspection for Web channels. By default, Squadron inspects each piece of data exchanged via `_JsChannel`s to identify objects whose ownership must be transfered to the receiving end (the `transfer` argument in [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage)). However most of the time, the request / response objects are usually made of base types + `List` + `Map` which can cross thread boundaries "as-is", making the inspection step mostly useless. By setting `inspectRequest` and/or `inspectResponse` to `false` when calling `Worker.execute()` and `Worker.stream()`, the inspection step is skipped and benchmarks show an improvement ~5-10% in terms of throughput for Web workers.
+- Reworked unit tests.
+
 ## 3.4.0
 
 - Rewritten streaming implementations (fix for https://github.com/d-markey/squadron/issues/8).

@@ -61,8 +61,12 @@ class CancellationTokenReference extends CancellationToken {
 
   @override
   void cancel([CancelledException? exception]) {
+    throw WorkerException('CancellationToken cannot be cancelled by worker');
+  }
+
+  void notifyCancellation() {
     if (_hasRef) {
-      super.cancel(exception);
+      super.cancel();
     }
   }
 

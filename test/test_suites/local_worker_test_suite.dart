@@ -7,10 +7,12 @@ import '../worker_services/local_workers/local_service.dart';
 String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 
 void localWorkerTests() {
-  setUp(() {});
+  setUp(() {
+    // Squadron.logger = ConsoleSquadronLogger();
+  });
 
   group('- Identity', () {
-    test('- Direct use', () async {
+    test('- LocalWorker', () async {
       final localService = LocalServiceImpl(idGetter);
       var id = localService.getId();
       expect(id, equals(idGetter()));
@@ -25,7 +27,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker use', () async {
+    test('- Worker', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -44,7 +46,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker Pool use', () async {
+    test('- WorkerPool', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -85,7 +87,7 @@ void localWorkerTests() {
   });
 
   group('- Exception', () {
-    test('- Direct use', () async {
+    test('- LocalWorker', () async {
       final localService = LocalServiceImpl(idGetter);
       try {
         final res = localService.throwException();
@@ -107,7 +109,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker use', () async {
+    test('- Worker', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -121,7 +123,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker Pool use', () async {
+    test('- WorkerPool', () async {
       String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 
       final identity = LocalServiceImpl(idGetter);
@@ -153,7 +155,7 @@ void localWorkerTests() {
   });
 
   group('- Stream', () {
-    test('- Direct use', () async {
+    test('- LocalWorker', () async {
       final localService = LocalServiceImpl(idGetter);
       var res1 = await localService.sequence(19).toList();
       expect(res1, equals(Iterable.generate(19)));
@@ -168,7 +170,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker use', () async {
+    test('- Worker', () async {
       final localService = LocalServiceImpl(idGetter);
       final localWorker = LocalWorker.create(localService);
 
@@ -183,7 +185,7 @@ void localWorkerTests() {
       }
     });
 
-    test('- Worker Pool use', () async {
+    test('- WorkerPool', () async {
       String idGetter() => 'LocalWorker running as "${Squadron.id}"';
 
       final identity = LocalServiceImpl(idGetter);

@@ -6,7 +6,9 @@ import 'package:test/test.dart';
 import '../worker_services/issues_service_worker.dart';
 
 void githubIssuesTests() {
-  setUp(() {});
+  setUp(() {
+    // Squadron.logger = ConsoleSquadronLogger();
+  });
 
   group('- #8 - Exceptions from Streams must come through onError', () {
     test('- Worker', () async {
@@ -33,10 +35,13 @@ void githubIssuesTests() {
       expect(errors[0], isA<WorkerException>());
       expect((errors[0] as WorkerException).message,
           equals('issue 8 error message'));
+
+      worker.stop();
     });
 
     test('- Worker Pool', () async {
       final pool = IssuesWorkerPool();
+      await pool.start();
 
       final stream = pool.issue_8([0, 1, 2, 3, 4]);
 
@@ -58,6 +63,8 @@ void githubIssuesTests() {
       expect(errors[0], isA<WorkerException>());
       expect((errors[0] as WorkerException).message,
           equals('issue 8 error message'));
+
+      pool.stop();
     });
   });
 }

@@ -112,56 +112,6 @@ class SquadronLogLevel {
   SquadronLogLevel._();
 
   /// Lowest log level
-  @Deprecated('Use SquadronLogLevel.all.')
-  // ignore: constant_identifier_names
-  static const ALL = all;
-
-  /// Finest log level
-  @Deprecated('Use SquadronLogLevel.finest.')
-  // ignore: constant_identifier_names
-  static const FINEST = finest;
-
-  /// Finer log level
-  @Deprecated('Use SquadronLogLevel.finer.')
-  // ignore: constant_identifier_names
-  static const FINER = finer;
-
-  /// Fine log level
-  @Deprecated('Use SquadronLogLevel.fine.')
-  // ignore: constant_identifier_names
-  static const FINE = fine;
-
-  /// Config log level
-  @Deprecated('Use SquadronLogLevel.config.')
-  // ignore: constant_identifier_names
-  static const CONFIG = config;
-
-  /// Information log level
-  @Deprecated('Use SquadronLogLevel.info.')
-  // ignore: constant_identifier_names
-  static const INFO = info;
-
-  /// Warning log level
-  @Deprecated('Use SquadronLogLevel.warning.')
-  // ignore: constant_identifier_names
-  static const WARNING = warning;
-
-  /// Severe log level
-  @Deprecated('Use SquadronLogLevel.severe.')
-  // ignore: constant_identifier_names
-  static const SEVERE = severe;
-
-  /// Shout log level
-  @Deprecated('Use SquadronLogLevel.shout.')
-  // ignore: constant_identifier_names
-  static const SHOUT = shout;
-
-  /// No logging
-  @Deprecated('Use SquadronLogLevel.off.')
-  // ignore: constant_identifier_names
-  static const OFF = off;
-
-  /// Lowest log level
   static const all = 0;
 
   /// Finest log level

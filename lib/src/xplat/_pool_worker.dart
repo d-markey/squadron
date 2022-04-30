@@ -22,22 +22,16 @@ class PoolWorker<W extends Worker> {
   /// Whether this [PoolWorker] is stopped or doing nothing.
   bool get isIdle => worker.isStopped || _capacity == _maxWorkload;
 
-  void _start() {
-    _lastStart = DateTime.now().millisecondsSinceEpoch;
-    _capacity--;
-  }
-
-  void _finish() {
-    _capacity++;
-    if (_capacity == _maxWorkload) {
-      _lastStart = null;
-    }
-  }
-
   /// Run the specified [task] in the [worker].
   Future run(WorkerTask task) {
-    _start();
-    return task.run(worker).whenComplete(_finish);
+    _lastStart = DateTime.now().millisecondsSinceEpoch;
+    _capacity--;
+    return task.run(worker).whenComplete(() {
+      _capacity++;
+      if (_capacity == _maxWorkload) {
+        _lastStart = null;
+      }
+    });
   }
 
   /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).
