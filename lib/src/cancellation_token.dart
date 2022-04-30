@@ -8,8 +8,7 @@ import 'xplat/_sequence_id.dart';
 class CancellationToken {
   CancellationToken._(this.message, this._id);
 
-  CancellationToken([String? message])
-      : this._(message, SequenceId.next());
+  CancellationToken([String? message]) : this._(message, SequenceId.next());
 
   static const _$id = 'a';
   static const _$message = 'b';
@@ -21,7 +20,7 @@ class CancellationToken {
   }
 
   /// The token's id
-  int get id => _id; 
+  int get id => _id;
   int _id;
 
   /// Flag indicating whether the token was cancelled or not.
