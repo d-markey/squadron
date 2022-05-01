@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89705884" lines-covered="61" lines-valid="68" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89855075" lines-covered="62" lines-valid="69" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -349,6 +349,10 @@
         <line>
             <code>      // process</code>
         </line>
+        <line hits="1">
+            <code>      final inspectResponse = request.inspectResponse;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="2">
             <code>      dynamic result = op(request);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
@@ -430,7 +434,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>          (data) =&gt; client.reply(data),</code>
+            <code>          (data) =&gt; client.reply(data, inspectResponse),</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -475,7 +479,7 @@
             <code>        // result is a value: send to the client</code>
         </line>
         <line hits="1">
-            <code>        client.reply(result);</code>
+            <code>        client.reply(result, inspectResponse);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>

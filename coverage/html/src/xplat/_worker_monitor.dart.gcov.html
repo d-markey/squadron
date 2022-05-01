@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-04-23</dd>
+                    <dd>2022-05-01</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>35</td><td>35</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>36</td><td>36</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -250,88 +250,91 @@
                     <td>63</td><td></td><td></td><td><code>  /// Cancels a [token] via the corresponding [CancellationTokenReference].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>3</td><td><code>  void cancelToken(CancellationToken token) =&gt; _getTokenRef(token).cancel();</code></td>
+                    <td>64</td><td></td><td>1</td><td><code>  void cancelToken(CancellationToken token) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 65" id="line65">
-                    <td>65</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>2</td><td><code>      _getTokenRef(token).notifyCancellation();</code></td>
                 </tr>
                 <tr class="noop" title="Line 66" id="line66">
-                    <td>66</td><td></td><td></td><td><code>  /// Cancels a stream via the corresponding [streamId].</code></td>
+                    <td>66</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>5</td><td><code>  void cancelStream(int streamId) =&gt; _streamCancellers?[streamId]?.call();</code></td>
+                <tr class="noop" title="Line 67" id="line67">
+                    <td>67</td><td></td><td></td><td><code>  /// Cancels a stream via the corresponding [streamId].</code></td>
                 </tr>
-                <tr class="noop" title="Line 68" id="line68">
-                    <td>68</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 68" id="line68">
+                    <td>68</td><td></td><td>5</td><td><code>  void cancelStream(int streamId) =&gt; _streamCancellers?[streamId]?.call();</code></td>
                 </tr>
                 <tr class="noop" title="Line 69" id="line69">
-                    <td>69</td><td></td><td></td><td><code>  /// Stops monitoring execution and releases the [tokenRef].</code></td>
+                    <td>69</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>1</td><td><code>  void done(CancellationTokenReference tokenRef) {</code></td>
+                <tr class="noop" title="Line 70" id="line70">
+                    <td>70</td><td></td><td></td><td><code>  /// Stops monitoring execution and releases the [tokenRef].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>2</td><td><code>    tokenRef.release();</code></td>
+                    <td>71</td><td></td><td>1</td><td><code>  void done(CancellationTokenReference tokenRef) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>3</td><td><code>    if (tokenRef.refCount == 0 &amp;&amp; !tokenRef.cancelled) {</code></td>
+                    <td>72</td><td></td><td>2</td><td><code>    tokenRef.release();</code></td>
                 </tr>
-                <tr class="noop" title="Line 73" id="line73">
-                    <td>73</td><td></td><td></td><td><code>      // track only cancelled tokens</code></td>
+                <tr class="lineCov" title="Line 73" id="line73">
+                    <td>73</td><td></td><td>3</td><td><code>    if (tokenRef.refCount == 0 &amp;&amp; !tokenRef.cancelled) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>3</td><td><code>      _cancelTokens.remove(tokenRef.id);</code></td>
+                <tr class="noop" title="Line 74" id="line74">
+                    <td>74</td><td></td><td></td><td><code>      // track only cancelled tokens</code></td>
                 </tr>
-                <tr class="noop" title="Line 75" id="line75">
-                    <td>75</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 75" id="line75">
+                    <td>75</td><td></td><td>3</td><td><code>      _cancelTokens.remove(tokenRef.id);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>2</td><td><code>    _executing--;</code></td>
+                <tr class="noop" title="Line 76" id="line76">
+                    <td>76</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>3</td><td><code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code></td>
+                    <td>77</td><td></td><td>2</td><td><code>    _executing--;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>2</td><td><code>      _terminate();</code></td>
+                    <td>78</td><td></td><td>3</td><td><code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 79" id="line79">
-                    <td>79</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 79" id="line79">
+                    <td>79</td><td></td><td>2</td><td><code>      _terminate();</code></td>
                 </tr>
                 <tr class="noop" title="Line 80" id="line80">
-                    <td>80</td><td></td><td></td><td><code>  }</code></td>
+                    <td>80</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 81" id="line81">
-                    <td>81</td><td></td><td></td><td><code></code></td>
+                    <td>81</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 82" id="line82">
-                    <td>82</td><td></td><td></td><td><code>  /// Terminates the worker monitored by this instance if there is no pending execution. Otherwise, marks</code></td>
+                    <td>82</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 83" id="line83">
-                    <td>83</td><td></td><td></td><td><code>  /// the worker as terminating and termination will be effective when all pending executions are completed.</code></td>
+                    <td>83</td><td></td><td></td><td><code>  /// Terminates the worker monitored by this instance if there is no pending execution. Otherwise, marks</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>1</td><td><code>  void terminate() {</code></td>
+                <tr class="noop" title="Line 84" id="line84">
+                    <td>84</td><td></td><td></td><td><code>  /// the worker as terminating and termination will be effective when all pending executions are completed.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 85" id="line85">
-                    <td>85</td><td></td><td>2</td><td><code>    if (_executing == 0) {</code></td>
+                    <td>85</td><td></td><td>1</td><td><code>  void terminate() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>2</td><td><code>      _terminate();</code></td>
+                    <td>86</td><td></td><td>2</td><td><code>    if (_executing == 0) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 87" id="line87">
-                    <td>87</td><td></td><td></td><td><code>    } else {</code></td>
+                <tr class="lineCov" title="Line 87" id="line87">
+                    <td>87</td><td></td><td>2</td><td><code>      _terminate();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>2</td><td><code>      _terminationRequested = true;</code></td>
+                <tr class="noop" title="Line 88" id="line88">
+                    <td>88</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 89" id="line89">
-                    <td>89</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 89" id="line89">
+                    <td>89</td><td></td><td>1</td><td><code>      _terminationRequested = true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 90" id="line90">
-                    <td>90</td><td></td><td></td><td><code>  }</code></td>
+                    <td>90</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 91" id="line91">
-                    <td>91</td><td></td><td></td><td><code>}</code></td>
+                    <td>91</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 92" id="line92">
+                    <td>92</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
