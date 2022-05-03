@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8958333" lines-covered="86" lines-valid="96" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9569892" lines-covered="89" lines-valid="93" package="/src/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -38,6 +38,9 @@
             <code>import '../worker_service.dart';</code>
         </line>
         <line>
+            <code>import '../xplat/_value_wrapper.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
@@ -51,6 +54,19 @@
         </line>
         <line>
             <code>  SendPort? _sendPort;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The ID of the worker attached to this [Channel].</code>
+        </line>
+        <line hits="2">
+            <code>  String get workerId =&gt; _workerId ?? '';</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  String? _workerId;</code>
         </line>
         <line>
             <code/>
@@ -203,12 +219,12 @@
         <line>
             <code>  /// value from the [Isolate]</code>
         </line>
-        <line>
-            <code>  @override</code>
-        </line>
         <line hits="1">
-            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
         </line>
         <line>
             <code>      {CancellationToken? token,</code>
@@ -217,75 +233,39 @@
             <code>      bool inspectRequest = true,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true}) async {</code>
+            <code>      bool inspectResponse = true}) {</code>
         </line>
         <line hits="1">
             <code>    final receiver = ReceivePort();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>    void _canceller() =&gt; _postRequest(WorkerRequest.cancel(token!), false);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>    token?.addListener(_canceller);</code>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
         <line hits="1">
-            <code>      _postRequest(</code>
+            <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          WorkerRequest(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>              receiver.sendPort, command, args, token, inspectResponse),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          inspectRequest);</code>
         </line>
         <line hits="2">
-            <code>      final message = await receiver.first;</code>
+            <code>      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>      token?.removeListener(_canceller);</code>
-        </line>
         <line hits="1">
-            <code>      final res = WorkerResponse.deserialize(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return res.result as T;</code>
+            <code>      postMethod: _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line hits="0">
-            <code>      token?.removeListener(_canceller);</code>
+            <code>      messages: receiver,</code>
         </line>
         <line>
-            <code>      rethrow;</code>
+            <code>      token: token,</code>
         </line>
         <line>
-            <code>    } finally {</code>
-        </line>
-        <line hits="1">
-            <code>      receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>      inspectRequest: inspectRequest,</code>
         </line>
         <line>
-            <code>    }</code>
+            <code>    );</code>
+        </line>
+        <line hits="4">
+            <code>    return wrapper.compute().whenComplete(() =&gt; receiver.close());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -327,27 +307,39 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),</code>
+            <code>      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        postMethod: _postRequest,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        messages: receiver, onDone: () {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      onDone();</code>
+            <code>      postMethod: _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    }, token: token, inspectRequest: inspectRequest);</code>
+            <code>      messages: receiver,</code>
+        </line>
+        <line hits="1">
+            <code>      onDone: () {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        receiver.close();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        onDone();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      },</code>
+        </line>
+        <line>
+            <code>      token: token,</code>
+        </line>
+        <line>
+            <code>      inspectRequest: inspectRequest,</code>
+        </line>
+        <line>
+            <code>    );</code>
         </line>
         <line>
             <code/>
@@ -460,6 +452,17 @@
         <line>
             <code/>
         </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line>
             <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a</code>
         </line>
@@ -484,9 +487,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream, false);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -502,7 +505,7 @@
             <code>  void error(SquadronException error) {</code>
         </line>
         <line hits="2">
-            <code>    Squadron.finer('replying with error: $error');</code>
+            <code>    Squadron.debug('replying with error: $error');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -550,15 +553,23 @@
             <code/>
         </line>
         <line hits="2">
+            <code>  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  final workerId = startRequest.id;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
             <code>  final isolate = await Isolate.spawn(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    entryPoint,</code>
         </line>
-        <line hits="3">
-            <code>    WorkerRequest.start(receiver.sendPort, startArguments).serialize(),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>    startRequest.serialize(),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    paused: true,</code>
@@ -566,9 +577,9 @@
         <line>
             <code>  );</code>
         </line>
-        <line hits="3">
-            <code>  Squadron.config('created Isolate #${isolate.hashCode}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  Squadron.config('created Isolate #$workerId');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -579,6 +590,10 @@
         </line>
         <line hits="2">
             <code>  exitPort.listen((message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    Squadron.config('Isolate #$workerId terminated.');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -603,50 +618,31 @@
             <code>  errorPort.listen((message) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    dynamic error = message[0];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (error is String) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      error = SquadronException.fromString(error);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    if (error is! SquadronException) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    final error = SquadronException.fromString(message[0]) ??</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>      error = SquadronException.from(</code>
+            <code>        WorkerException(message[0],</code>
         </line>
         <line hits="0">
-            <code>          error: message[0] ?? 'unspecified error',</code>
+            <code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
         </line>
-        <line hits="0">
-            <code>          stackTrace: SquadronException.loadStackTrace(message[1]));</code>
+        <line hits="1">
+            <code>    Squadron.warning(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    }</code>
+        <line hits="2">
+            <code>        'Unhandled error from Isolate #$workerId: ${error.message}.');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      completer.completeError(error);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="0">
-            <code>      Squadron.warning('unhandled error $error');</code>
+        <line hits="2">
+            <code>      completer.completeError(error, error.stackTrace);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -661,21 +657,30 @@
         <line>
             <code/>
         </line>
-        <line hits="3">
-            <code>  receiver.first.then((message) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  receiver.listen((message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    final response = WorkerResponse.deserialize(message);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (response == null) return;</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="1">
             <code>    if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      if (response.hasError) {</code>
+            <code>      final error = response.error;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      if (error != null) {</code>
         </line>
         <line hits="1">
             <code>        isolate.kill(priority: Isolate.immediate);</code>
@@ -685,13 +690,13 @@
             <code>        Squadron.severe(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>            'connection to Isolate #${isolate.hashCode} failed: ${response.error}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>            'connection to Isolate #$workerId failed: ${response.error}');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>        completer.completeError(response.error!, response.error!.stackTrace);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        completer.completeError(error, error.stackTrace);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -700,9 +705,13 @@
             <code>        channel._sendPort = response.result;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>        Squadron.config('connected to Isolate #${isolate.hashCode}');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>        channel._workerId = workerId;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        Squadron.config('connected to Isolate #$workerId');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>        completer.complete(channel);</code>

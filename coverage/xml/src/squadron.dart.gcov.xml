@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96" lines-covered="24" lines-valid="25" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94871795" lines-covered="37" lines-valid="39" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'channel.dart';</code>
         </line>
         <line>
             <code>import 'squadron_logger.dart';</code>
@@ -36,28 +39,28 @@
             <code/>
         </line>
         <line>
-            <code>  /// Gets the log level. Propagates to workers with the value that was set at the time the worker</code>
+            <code>  /// Gets the [logLevel]. Propagates to workers with the value that was set at the time the worker</code>
         </line>
         <line>
             <code>  /// was created. Changes to this property do not propagate to workers after they have started.</code>
         </line>
-        <line hits="5">
-            <code>  static int get logLevel =&gt; logger?.logLevel ?? _logLevel;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>  static int get logLevel =&gt; _logger?.logLevel ?? _logLevel;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sets the log level. Changes to this property do not propagate to workers after they have started.</code>
+            <code>  /// Sets the [logLevel]. Changes to this property do not propagate to workers after they have started.</code>
         </line>
         <line hits="2">
             <code>  static set logLevel(int value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>    logger?.logLevel = value;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    _logger?.logLevel = value;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    _logLevel = value;</code>
@@ -69,18 +72,71 @@
         <line>
             <code/>
         </line>
-        <line>
-            <code>  static SquadronLogger? _logger;</code>
+        <line hits="3">
+            <code>  static final List&lt;int&gt; _logLevels = [];</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Gets the current logger, if set.</code>
+            <code>  /// Remembers the current [logLevel], then setting it to [value] if not null. See [popLogLevel].</code>
         </line>
         <line hits="2">
-            <code>  static SquadronLogger? get logger =&gt; _logger;</code>
+            <code>  static void pushLogLevel([int? value]) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    _logLevels.add(Squadron.logLevel);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (value != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      Squadron.logLevel = value;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Restores the [logLevel] to the value it had before the last call to [pushLogLevel]. If [pushLogLevel]</code>
+        </line>
+        <line>
+            <code>  /// was never called, this method has no effect.</code>
+        </line>
+        <line hits="1">
+            <code>  static void popLogLevel() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (_logLevels.isNotEmpty) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      Squadron.logLevel = _logLevels.removeAt(0);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static SquadronLogger? _logger;</code>
         </line>
         <line>
             <code/>
@@ -89,7 +145,7 @@
             <code>  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].</code>
         </line>
         <line hits="2">
-            <code>  static set logger(SquadronLogger? logger) {</code>
+            <code>  static void setLogger(SquadronLogger? logger) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -106,6 +162,15 @@
         <line hits="1">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating whether Squadron runs in debug mode. When running in debug mode.</code>
+        </line>
+        <line>
+            <code>  static bool debugMode = false;</code>
         </line>
         <line>
             <code/>
@@ -130,14 +195,14 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sets the Squadron instance id. Once set, the id cannot be modified.</code>
+            <code>  /// Sets the Squadron instance id. Once set, the `id` cannot be modified.</code>
         </line>
         <line hits="2">
-            <code>  static setId(String? value) {</code>
+            <code>  static setId(String value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    if (_id == null &amp;&amp; value != null) {</code>
+            <code>    if (_id == null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -165,10 +230,61 @@
             <code/>
         </line>
         <line>
+            <code>  /// `WorkerChannel` to communicate with the parent. In the main thread, this will be `null`.</code>
+        </line>
+        <line hits="0">
+            <code>  static WorkerChannel? get parentChannel =&gt; _parentChannel;</code>
+        </line>
+        <line>
+            <code>  static WorkerChannel? _parentChannel;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sets the `WorkerChannel` to communicate with the parent. Once set, the `parentChannel` cannot be modified.</code>
+        </line>
+        <line>
+            <code>  /// When setting the parent channel, this method also installs a logger to forward log messages to the parent.</code>
+        </line>
+        <line hits="1">
+            <code>  static setParent(WorkerChannel parentChannel) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (_parentChannel == null) {</code>
+        </line>
+        <line>
+            <code>      _parentChannel ??= parentChannel;</code>
+        </line>
+        <line hits="1">
+            <code>      _logger = ParentSquadronLogger(parentChannel);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.debug] level</code>
+        </line>
+        <line hits="3">
+            <code>  static FutureOr debug(dynamic message) =&gt; _logger?.debug(message);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// Logs a message at [SquadronLogLevel.finest] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr finest(dynamic message) =&gt; logger?.finest(message);</code>
+            <code>  static FutureOr finest(dynamic message) =&gt; _logger?.finest(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -178,7 +294,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.finer] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr finer(dynamic message) =&gt; logger?.finer(message);</code>
+            <code>  static FutureOr finer(dynamic message) =&gt; _logger?.finer(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -188,7 +304,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.fine] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr fine(dynamic message) =&gt; logger?.fine(message);</code>
+            <code>  static FutureOr fine(dynamic message) =&gt; _logger?.fine(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -198,7 +314,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.config] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr config(dynamic message) =&gt; logger?.config(message);</code>
+            <code>  static FutureOr config(dynamic message) =&gt; _logger?.config(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -208,7 +324,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.info] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr info(dynamic message) =&gt; logger?.info(message);</code>
+            <code>  static FutureOr info(dynamic message) =&gt; _logger?.info(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -218,7 +334,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.warning] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr warning(dynamic message) =&gt; logger?.warning(message);</code>
+            <code>  static FutureOr warning(dynamic message) =&gt; _logger?.warning(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -228,7 +344,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.severe] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr severe(dynamic message) =&gt; logger?.severe(message);</code>
+            <code>  static FutureOr severe(dynamic message) =&gt; _logger?.severe(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -238,11 +354,31 @@
             <code>  /// Logs a message at [SquadronLogLevel.shout] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr shout(dynamic message) =&gt; logger?.shout(message);</code>
+            <code>  static FutureOr shout(dynamic message) =&gt; _logger?.shout(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>// for internal use</code>
+        </line>
+        <line hits="2">
+            <code>SquadronLogger? getSquadronLogger() =&gt; Squadron._logger;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Logs a message</code>
+        </line>
+        <line hits="2">
+            <code>FutureOr squadronLog(String message) =&gt; Squadron._logger?.log(message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

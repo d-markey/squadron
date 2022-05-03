@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9811321" lines-covered="52" lines-valid="53" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9047619" lines-covered="57" lines-valid="63" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'cancellation_token.dart';</code>
@@ -70,12 +70,37 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>  WorkerRequest._(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)</code>
+            <code>      dynamic channelInfo,</code>
+        </line>
+        <line>
+            <code>      this.command,</code>
+        </line>
+        <line hits="1">
+            <code>      this.id,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      this.args,</code>
+        </line>
+        <line>
+            <code>      this.logLevel,</code>
+        </line>
+        <line>
+            <code>      this._cancelToken,</code>
+        </line>
+        <line>
+            <code>      this.streamId,</code>
+        </line>
+        <line>
+            <code>      this.inspectResponse,</code>
+        </line>
+        <line>
+            <code>      this._timestamp)</code>
         </line>
         <line hits="1">
             <code>      : client = WorkerChannel.deserialize(channelInfo);</code>
@@ -105,7 +130,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>            inspectResponse);</code>
+            <code>            inspectResponse, null);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -126,7 +151,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>            Squadron.logLevel, null, null, inspectResponse);</code>
+            <code>            Squadron.logLevel, null, null, inspectResponse, null);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -144,7 +169,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>            false);</code>
+            <code>            false, null);</code>
         </line>
         <line>
             <code/>
@@ -161,7 +186,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>            false);</code>
+            <code>            false, null);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -175,8 +200,11 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);</code>
+            <code>      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            null);</code>
         </line>
         <line>
             <code/>
@@ -206,56 +234,88 @@
             <code>  static const _$inspectResponse = 'h';</code>
         </line>
         <line>
+            <code>  static const _$timestamp = 'i';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
             <code>  /// Creates a new [WorkerRequest] from a message received by the worker.</code>
         </line>
-        <line hits="2">
-            <code>  static WorkerRequest? deserialize(Map? message) =&gt; (message == null)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>  static WorkerRequest? deserialize(Map? message) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      ? null</code>
+            <code>    final req = (message == null)</code>
+        </line>
+        <line>
+            <code>        ? null</code>
         </line>
         <line hits="1">
-            <code>      : WorkerRequest._(</code>
+            <code>        : WorkerRequest._(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$client],</code>
+            <code>            message[_$client],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$command],</code>
+            <code>            message[_$command],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$id],</code>
+            <code>            message[_$id],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$args] ?? const [],</code>
+            <code>            message[_$args] ?? const [],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$logLevel],</code>
+            <code>            message[_$logLevel],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>          CancellationToken.deserialize(message[_$token]),</code>
+            <code>            CancellationToken.deserialize(message[_$token]),</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$streamId],</code>
+            <code>            message[_$streamId],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$inspectResponse] ?? true,</code>
+            <code>            message[_$inspectResponse] ?? true,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            message[_$timestamp],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        );</code>
+            <code>          );</code>
+        </line>
+        <line hits="1">
+            <code>    final ts = req?.timestamp;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (ts != null) {</code>
+        </line>
+        <line hits="0">
+            <code>      Squadron.debug(</code>
+        </line>
+        <line hits="0">
+            <code>          'request received in ${DateTime.now().microsecondsSinceEpoch - ts} µs');</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>    return req;</code>
+        </line>
+        <line>
+            <code>  }</code>
         </line>
         <line>
             <code/>
@@ -271,9 +331,22 @@
             <code>    if (terminate) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>      return {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="1">
-            <code>      return const {_$command: _terminateCommand};</code>
+            <code>        _$command: _terminateCommand,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        if (Squadron.debugMode)</code>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
+        </line>
+        <line>
+            <code>      };</code>
         </line>
         <line hits="2">
             <code>    } else if (connect) {</code>
@@ -304,8 +377,14 @@
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse</code>
+            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        if (Squadron.debugMode)</code>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
         </line>
         <line>
             <code>      };</code>
@@ -338,8 +417,14 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse</code>
+            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse,</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        if (Squadron.debugMode)</code>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
         </line>
         <line>
             <code>      };</code>
@@ -440,6 +525,12 @@
             <code/>
         </line>
         <line>
+            <code>  final int? _timestamp;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// flag for start requests.</code>
         </line>
         <line hits="3">
@@ -523,6 +614,13 @@
         </line>
         <line>
             <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="3">
+            <code>  int? get timestamp =&gt; _timestamp;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

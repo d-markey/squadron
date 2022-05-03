@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -54,6 +54,15 @@
         </line>
         <line>
             <code>abstract class Channel {</code>
+        </line>
+        <line>
+            <code>  /// The ID of the worker attached to this [Channel].</code>
+        </line>
+        <line>
+            <code>  String get workerId;</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line>
             <code>  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
@@ -218,6 +227,18 @@
         </line>
         <line>
             <code>  void reply(dynamic data, bool inspectResponse);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a [WorkerResponse.log] with the specified data to the worker client. This method must be called from the</code>
+        </line>
+        <line>
+            <code>  /// worker only.</code>
+        </line>
+        <line>
+            <code>  void log(String message);</code>
         </line>
         <line>
             <code/>

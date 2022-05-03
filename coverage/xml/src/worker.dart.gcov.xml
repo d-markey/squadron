@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9583333" lines-covered="92" lines-valid="96" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9677419" lines-covered="90" lines-valid="93" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -47,16 +47,8 @@
             <code>  /// Creates a [Worker] with the specified entrypoint.</code>
         </line>
         <line hits="2">
-            <code>  Worker(this._entryPoint, {String? id, this.args = const []}) {</code>
+            <code>  Worker(this._entryPoint, {this.args = const []});</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>    this.id = id ?? hashCode.toString();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -78,16 +70,6 @@
         </line>
         <line>
             <code>  final List args;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// The [Worker] id.</code>
-        </line>
-        <line hits="1">
-            <code>  late final String id;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -261,7 +243,7 @@
             <code>  /// [Worker] statistics.</code>
         </line>
         <line hits="7">
-            <code>  WorkerStat get stats =&gt; WorkerStat(runtimeType, id, isStopped, status,</code>
+            <code>  WorkerStat get stats =&gt; WorkerStat(runtimeType, workerId, isStopped, status,</code>
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="7">
@@ -284,6 +266,16 @@
         <line hits="1">
             <code>  Future&lt;Channel&gt;? _openChannel;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Worker ID</code>
+        </line>
+        <line hits="4">
+            <code>  String get workerId =&gt; _channel?.workerId ?? '&lt;no channel&gt;';</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -331,8 +323,9 @@
         <line>
             <code>    // ensure the worker is up and running</code>
         </line>
-        <line>
-            <code>    Channel channel;</code>
+        <line hits="1">
+            <code>    late Channel channel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    if (_channel != null) {</code>
@@ -387,21 +380,20 @@
             <code>      } on CancelledException catch (e) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>        error =</code>
+        </line>
         <line hits="4">
-            <code>        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);</code>
+            <code>            (token?.exception ?? e).withWorkerId(workerId).withCommand(command);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      } catch (e, st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>        error = SquadronException.from(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>            error: e, stackTrace: st, workerId: id, command: command);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>        error = SquadronException.from(e, st, workerId, command);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } finally {</code>
@@ -575,10 +567,7 @@
             <code>        } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>          controller.addError(</code>
-        </line>
-        <line hits="0">
-            <code>              SquadronException.from(error: ex, stackTrace: st), st);</code>
+            <code>          controller.addError(SquadronException.from(ex, st), st);</code>
         </line>
         <line>
             <code>        } finally {</code>
@@ -655,7 +644,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>      throw WorkerException('worker is stopped', workerId: id);</code>
+            <code>      throw WorkerException('worker is stopped', workerId: workerId);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -677,6 +666,10 @@
             <code>      if (_channel == null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="1">
+            <code>        _channel = channel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="3">
             <code>        _started = DateTime.now().microsecondsSinceEpoch;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
@@ -684,10 +677,6 @@
         <line hits="2">
             <code>        _idle = _started;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        _channel = channel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.77272725" lines-covered="34" lines-valid="44" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8181818" lines-covered="36" lines-valid="44" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -32,26 +32,17 @@
             <code>abstract class SquadronException implements Exception {</code>
         </line>
         <line>
-            <code>  /// This factory returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it</code>
+            <code>  /// This method returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it</code>
         </line>
         <line>
             <code>  /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].</code>
         </line>
         <line hits="2">
-            <code>  factory SquadronException.from(</code>
+            <code>  static SquadronException from(Object error,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      {required Object error,</code>
-        </line>
-        <line>
-            <code>      StackTrace? stackTrace,</code>
-        </line>
-        <line>
-            <code>      String? workerId,</code>
-        </line>
-        <line>
-            <code>      int? command}) {</code>
+            <code>      [StackTrace? stackTrace, String? workerId, int? command]) {</code>
         </line>
         <line hits="2">
             <code>    if (error is SquadronError) {</code>
@@ -165,11 +156,13 @@
         <line>
             <code/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="3">
             <code>  String toString() =&gt; jsonEncode(serialize());</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -258,7 +251,7 @@
             <code>    try {</code>
         </line>
         <line hits="2">
-            <code>      error = SquadronError.deserialize(data) ??</code>
+            <code>      error = deserializeSquadronError(data) ??</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">

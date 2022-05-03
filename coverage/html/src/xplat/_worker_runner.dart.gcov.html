@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-05-01</dd>
+                    <dd>2022-05-03</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>62</td><td>69</td><td class="med">89.9%</td>
+                            <th scope="row">Lines</th><td>65</td><td>73</td><td class="med">89.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -217,298 +217,334 @@
                     <td>52</td><td></td><td>2</td><td><code>      Squadron.setId(startRequest.id!);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>2</td><td><code>      Squadron.logLevel = startRequest.logLevel!;</code></td>
+                    <td>53</td><td></td><td>1</td><td><code>      Squadron.setParent(client);</code></td>
                 </tr>
-                <tr class="noop" title="Line 54" id="line54">
-                    <td>54</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 54" id="line54">
+                    <td>54</td><td></td><td>2</td><td><code>      Squadron.logLevel = startRequest.logLevel!;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>1</td><td><code>      final init = initializer(startRequest);</code></td>
+                    <td>55</td><td></td><td>1</td><td><code>      Squadron.debugMode = (startRequest.timestamp != null);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>2</td><td><code>      final operations = ((init is Future) ? await init : init).operations;</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>5</td><td><code>      if (operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code></td>
+                    <td>57</td><td></td><td>1</td><td><code>      Squadron.config('Squadron setup complete');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>        throw newSquadronError(</code></td>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
-                    <td>59</td><td></td><td></td><td><code>            'invalid command identifier in service operations map; command ids must be &gt; 0');</code></td>
+                    <td>59</td><td></td><td></td><td><code>      WorkerService service;</code></td>
                 </tr>
-                <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 60" id="line60">
+                    <td>60</td><td></td><td>1</td><td><code>      var init = initializer(startRequest);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>2</td><td><code>      _operations.addAll(operations);</code></td>
+                    <td>61</td><td></td><td>1</td><td><code>      if (init is Future) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>1</td><td><code>      client.connect(channelInfo);</code></td>
+                <tr class="lineNoCov" title="Line 62" id="line62">
+                    <td>62</td><td></td><td>0</td><td><code>        service = await init;</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
-                    <td>63</td><td></td><td></td><td><code>    } catch (e, st) {</code></td>
+                    <td>63</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>2</td><td><code>      client.error(SquadronException.from(error: e, stackTrace: st));</code></td>
+                <tr class="noop" title="Line 64" id="line64">
+                    <td>64</td><td></td><td></td><td><code>        service = init;</code></td>
                 </tr>
                 <tr class="noop" title="Line 65" id="line65">
-                    <td>65</td><td></td><td></td><td><code>    }</code></td>
+                    <td>65</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="noop" title="Line 66" id="line66">
-                    <td>66</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>1</td><td><code>      Squadron.config('Service ready');</code></td>
                 </tr>
-                <tr class="noop" title="Line 67" id="line67">
-                    <td>67</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 67" id="line67">
+                    <td>67</td><td></td><td>1</td><td><code>      final operations = service.operations;</code></td>
                 </tr>
-                <tr class="noop" title="Line 68" id="line68">
-                    <td>68</td><td></td><td></td><td><code>  /// [WorkerRequest] handler dispatching commands aoocrding to the [_operations] map.</code></td>
+                <tr class="lineCov" title="Line 68" id="line68">
+                    <td>68</td><td></td><td>5</td><td><code>      if (operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>2</td><td><code>  void processMessage(Map message) async {</code></td>
+                    <td>69</td><td></td><td>1</td><td><code>        throw newSquadronError(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>4</td><td><code>    Squadron.finest(() =&gt; 'processing request $message');</code></td>
+                <tr class="noop" title="Line 70" id="line70">
+                    <td>70</td><td></td><td></td><td><code>            'invalid command identifier in service operations map; command ids must be &gt; 0');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>1</td><td><code>    final request = WorkerRequest.deserialize(message);</code></td>
+                <tr class="noop" title="Line 71" id="line71">
+                    <td>71</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>1</td><td><code>    final client = request?.client;</code></td>
+                    <td>72</td><td></td><td>2</td><td><code>      _operations.addAll(operations);</code></td>
                 </tr>
-                <tr class="noop" title="Line 73" id="line73">
-                    <td>73</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 73" id="line73">
+                    <td>73</td><td></td><td>1</td><td><code>      client.connect(channelInfo);</code></td>
                 </tr>
                 <tr class="noop" title="Line 74" id="line74">
-                    <td>74</td><td></td><td></td><td><code>    if (request == null) {</code></td>
+                    <td>74</td><td></td><td></td><td><code>    } catch (ex, st) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>0</td><td><code>      throw newSquadronError('invalid message');</code></td>
+                <tr class="lineCov" title="Line 75" id="line75">
+                    <td>75</td><td></td><td>2</td><td><code>      client.error(SquadronException.from(ex, st));</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>1</td><td><code>    } else if (request.terminate) {</code></td>
+                <tr class="noop" title="Line 76" id="line76">
+                    <td>76</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 77" id="line77">
-                    <td>77</td><td></td><td></td><td><code>      // terminate the worker</code></td>
+                    <td>77</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>2</td><td><code>      return _monitor.terminate();</code></td>
+                <tr class="noop" title="Line 78" id="line78">
+                    <td>78</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 79" id="line79">
-                    <td>79</td><td></td><td>1</td><td><code>    } else if (request.cancel) {</code></td>
+                <tr class="noop" title="Line 79" id="line79">
+                    <td>79</td><td></td><td></td><td><code>  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.</code></td>
                 </tr>
-                <tr class="noop" title="Line 80" id="line80">
-                    <td>80</td><td></td><td></td><td><code>      // cancel a token</code></td>
+                <tr class="lineCov" title="Line 80" id="line80">
+                    <td>80</td><td></td><td>2</td><td><code>  void processMessage(Map message) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 81" id="line81">
-                    <td>81</td><td></td><td>3</td><td><code>      return _monitor.cancelToken(request.cancelToken!);</code></td>
+                    <td>81</td><td></td><td>2</td><td><code>    final request = WorkerRequest.deserialize(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 82" id="line82">
-                    <td>82</td><td></td><td>1</td><td><code>    } else if (request.cancelStream) {</code></td>
+                    <td>82</td><td></td><td>1</td><td><code>    final client = request?.client;</code></td>
                 </tr>
                 <tr class="noop" title="Line 83" id="line83">
-                    <td>83</td><td></td><td></td><td><code>      // cancel a stream</code></td>
+                    <td>83</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>4</td><td><code>      return _monitor.cancelStream(request.streamId!);</code></td>
+                <tr class="noop" title="Line 84" id="line84">
+                    <td>84</td><td></td><td></td><td><code>    if (request == null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 85" id="line85">
-                    <td>85</td><td></td><td></td><td><code>    } else if (client == null) {</code></td>
+                <tr class="lineNoCov" title="Line 85" id="line85">
+                    <td>85</td><td></td><td>0</td><td><code>      throw newSquadronError('invalid message');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>0</td><td><code>      throw newSquadronError('missing client for request: $request');</code></td>
+                <tr class="lineCov" title="Line 86" id="line86">
+                    <td>86</td><td></td><td>1</td><td><code>    } else if (request.terminate) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
-                    <td>87</td><td></td><td></td><td><code>    }</code></td>
+                    <td>87</td><td></td><td></td><td><code>      // terminate the worker</code></td>
                 </tr>
-                <tr class="noop" title="Line 88" id="line88">
-                    <td>88</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 88" id="line88">
+                    <td>88</td><td></td><td>2</td><td><code>      return _monitor.terminate();</code></td>
                 </tr>
-                <tr class="noop" title="Line 89" id="line89">
-                    <td>89</td><td></td><td></td><td><code>    // start monitoring execution</code></td>
+                <tr class="lineCov" title="Line 89" id="line89">
+                    <td>89</td><td></td><td>1</td><td><code>    } else if (request.cancel) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>2</td><td><code>    final tokenRef = _monitor.begin(request);</code></td>
+                <tr class="noop" title="Line 90" id="line90">
+                    <td>90</td><td></td><td></td><td><code>      // cancel a token</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 91" id="line91">
-                    <td>91</td><td></td><td>1</td><td><code>    try {</code></td>
+                    <td>91</td><td></td><td>3</td><td><code>      return _monitor.cancelToken(request.cancelToken!);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 92" id="line92">
-                    <td>92</td><td></td><td>1</td><td><code>      if (request.connect) {</code></td>
+                    <td>92</td><td></td><td>1</td><td><code>    } else if (request.cancelStream) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 93" id="line93">
-                    <td>93</td><td></td><td></td><td><code>        // connection request must be handled beforehand</code></td>
+                    <td>93</td><td></td><td></td><td><code>      // cancel a stream</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 94" id="line94">
-                    <td>94</td><td></td><td>0</td><td><code>        throw newSquadronError('unexpected connection request: $message');</code></td>
+                <tr class="lineCov" title="Line 94" id="line94">
+                    <td>94</td><td></td><td>4</td><td><code>      return _monitor.cancelStream(request.streamId!);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 95" id="line95">
-                    <td>95</td><td></td><td>3</td><td><code>      } else if (_operations.isEmpty) {</code></td>
+                <tr class="noop" title="Line 95" id="line95">
+                    <td>95</td><td></td><td></td><td><code>    } else if (client == null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 96" id="line96">
-                    <td>96</td><td></td><td></td><td><code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code></td>
+                <tr class="lineNoCov" title="Line 96" id="line96">
+                    <td>96</td><td></td><td>0</td><td><code>      throw newSquadronError('missing client for request: $request');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>0</td><td><code>        throw WorkerException('worker service is not ready');</code></td>
+                <tr class="noop" title="Line 97" id="line97">
+                    <td>97</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 98" id="line98">
-                    <td>98</td><td></td><td></td><td><code>      }</code></td>
+                    <td>98</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 99" id="line99">
-                    <td>99</td><td></td><td></td><td><code>      // retrieve operation matching the request command</code></td>
+                    <td>99</td><td></td><td></td><td><code>    // start monitoring execution</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>4</td><td><code>      final op = _operations[request.command];</code></td>
+                    <td>100</td><td></td><td>2</td><td><code>    final tokenRef = _monitor.begin(request);</code></td>
                 </tr>
-                <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code>      if (op == null) {</code></td>
+                <tr class="lineCov" title="Line 101" id="line101">
+                    <td>101</td><td></td><td>1</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>3</td><td><code>        throw WorkerException('unknown command: ${request.command}');</code></td>
+                    <td>102</td><td></td><td>1</td><td><code>      if (request.connect) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 103" id="line103">
-                    <td>103</td><td></td><td></td><td><code>      }</code></td>
+                    <td>103</td><td></td><td></td><td><code>        // connection request must be handled beforehand</code></td>
                 </tr>
-                <tr class="noop" title="Line 104" id="line104">
-                    <td>104</td><td></td><td></td><td><code>      // process</code></td>
+                <tr class="lineNoCov" title="Line 104" id="line104">
+                    <td>104</td><td></td><td>0</td><td><code>        throw newSquadronError('unexpected connection request: $message');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 105" id="line105">
-                    <td>105</td><td></td><td>1</td><td><code>      final inspectResponse = request.inspectResponse;</code></td>
+                    <td>105</td><td></td><td>3</td><td><code>      } else if (_operations.isEmpty) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>2</td><td><code>      dynamic result = op(request);</code></td>
+                <tr class="noop" title="Line 106" id="line106">
+                    <td>106</td><td></td><td></td><td><code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>2</td><td><code>      if (result is Future) {</code></td>
+                <tr class="lineNoCov" title="Line 107" id="line107">
+                    <td>107</td><td></td><td>0</td><td><code>        throw WorkerException('worker service is not ready');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 108" id="line108">
-                    <td>108</td><td></td><td>1</td><td><code>        result = await result;</code></td>
+                <tr class="noop" title="Line 108" id="line108">
+                    <td>108</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 109" id="line109">
-                    <td>109</td><td></td><td></td><td><code>      }</code></td>
+                    <td>109</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>3</td><td><code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code></td>
+                <tr class="noop" title="Line 110" id="line110">
+                    <td>110</td><td></td><td></td><td><code>      // retrieve operation matching the request command</code></td>
                 </tr>
-                <tr class="noop" title="Line 111" id="line111">
-                    <td>111</td><td></td><td></td><td><code>        // result is a stream: forward data to the client</code></td>
+                <tr class="lineCov" title="Line 111" id="line111">
+                    <td>111</td><td></td><td>4</td><td><code>      final op = _operations[request.command];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>1</td><td><code>        late final StreamSubscription subscription;</code></td>
+                <tr class="noop" title="Line 112" id="line112">
+                    <td>112</td><td></td><td></td><td><code>      if (op == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 113" id="line113">
-                    <td>113</td><td></td><td>1</td><td><code>        final done = Completer();</code></td>
+                    <td>113</td><td></td><td>3</td><td><code>        throw WorkerException('unknown command: ${request.command}');</code></td>
                 </tr>
                 <tr class="noop" title="Line 114" id="line114">
-                    <td>114</td><td></td><td></td><td><code></code></td>
+                    <td>114</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 115" id="line115">
-                    <td>115</td><td></td><td></td><td><code>        // stream canceller</code></td>
+                    <td>115</td><td></td><td></td><td><code>      // process</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>2</td><td><code>        void shutdown() {</code></td>
+                    <td>116</td><td></td><td>2</td><td><code>      dynamic result = op(request);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 117" id="line117">
-                    <td>117</td><td></td><td>2</td><td><code>          client.closeStream();</code></td>
+                    <td>117</td><td></td><td>2</td><td><code>      if (result is Future) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>2</td><td><code>          subscription.cancel();</code></td>
+                    <td>118</td><td></td><td>1</td><td><code>        result = await result;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>2</td><td><code>          done.complete();</code></td>
+                <tr class="noop" title="Line 119" id="line119">
+                    <td>119</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 120" id="line120">
-                    <td>120</td><td></td><td>1</td><td><code>        }</code></td>
+                <tr class="noop" title="Line 120" id="line120">
+                    <td>120</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 121" id="line121">
-                    <td>121</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 121" id="line121">
+                    <td>121</td><td></td><td>1</td><td><code>      final inspectResponse = request.inspectResponse;</code></td>
                 </tr>
-                <tr class="noop" title="Line 122" id="line122">
-                    <td>122</td><td></td><td></td><td><code>        // register stream canceller callback and connect stream with client</code></td>
+                <tr class="lineCov" title="Line 122" id="line122">
+                    <td>122</td><td></td><td>3</td><td><code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 123" id="line123">
-                    <td>123</td><td></td><td>2</td><td><code>        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);</code></td>
+                <tr class="noop" title="Line 123" id="line123">
+                    <td>123</td><td></td><td></td><td><code>        // result is a stream: forward data to the client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>1</td><td><code>        client.connectStream(streamId);</code></td>
+                    <td>124</td><td></td><td>1</td><td><code>        late final StreamSubscription subscription;</code></td>
                 </tr>
-                <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 125" id="line125">
+                    <td>125</td><td></td><td>1</td><td><code>        final done = Completer();</code></td>
                 </tr>
                 <tr class="noop" title="Line 126" id="line126">
-                    <td>126</td><td></td><td></td><td><code>        // start forwarding messages to the client</code></td>
+                    <td>126</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>2</td><td><code>        subscription = result.listen(</code></td>
+                <tr class="noop" title="Line 127" id="line127">
+                    <td>127</td><td></td><td></td><td><code>        // stream canceller</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>3</td><td><code>          (data) =&gt; client.reply(data, inspectResponse),</code></td>
+                    <td>128</td><td></td><td>2</td><td><code>        void shutdown() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>1</td><td><code>          onError: (ex, st) =&gt;</code></td>
+                    <td>129</td><td></td><td>2</td><td><code>          client.closeStream();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 130" id="line130">
-                    <td>130</td><td></td><td>3</td><td><code>              client.error(SquadronException.from(error: ex, stackTrace: st)),</code></td>
+                    <td>130</td><td></td><td>2</td><td><code>          subscription.cancel();</code></td>
                 </tr>
-                <tr class="noop" title="Line 131" id="line131">
-                    <td>131</td><td></td><td></td><td><code>          onDone: shutdown,</code></td>
+                <tr class="lineCov" title="Line 131" id="line131">
+                    <td>131</td><td></td><td>2</td><td><code>          done.complete();</code></td>
                 </tr>
-                <tr class="noop" title="Line 132" id="line132">
-                    <td>132</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
+                <tr class="lineCov" title="Line 132" id="line132">
+                    <td>132</td><td></td><td>1</td><td><code>        }</code></td>
                 </tr>
                 <tr class="noop" title="Line 133" id="line133">
-                    <td>133</td><td></td><td></td><td><code>        );</code></td>
+                    <td>133</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
-                    <td>134</td><td></td><td></td><td><code></code></td>
+                    <td>134</td><td></td><td></td><td><code>        // register stream canceller callback and connect stream with client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 135" id="line135">
-                    <td>135</td><td></td><td>5</td><td><code>        await done.future.whenComplete(() {</code></td>
+                    <td>135</td><td></td><td>2</td><td><code>        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);</code></td>
                 </tr>
-                <tr class="noop" title="Line 136" id="line136">
-                    <td>136</td><td></td><td></td><td><code>          // unregister stream canceller callback</code></td>
+                <tr class="lineCov" title="Line 136" id="line136">
+                    <td>136</td><td></td><td>1</td><td><code>        client.connectStream(streamId);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>3</td><td><code>          _monitor.unregisterStreamCanceller(tokenRef, streamId);</code></td>
+                <tr class="noop" title="Line 137" id="line137">
+                    <td>137</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>1</td><td><code>        });</code></td>
+                <tr class="noop" title="Line 138" id="line138">
+                    <td>138</td><td></td><td></td><td><code>        // start forwarding messages to the client</code></td>
                 </tr>
-                <tr class="noop" title="Line 139" id="line139">
-                    <td>139</td><td></td><td></td><td><code>      } else {</code></td>
+                <tr class="lineCov" title="Line 139" id="line139">
+                    <td>139</td><td></td><td>2</td><td><code>        subscription = result.listen(</code></td>
                 </tr>
-                <tr class="noop" title="Line 140" id="line140">
-                    <td>140</td><td></td><td></td><td><code>        // result is a value: send to the client</code></td>
+                <tr class="lineCov" title="Line 140" id="line140">
+                    <td>140</td><td></td><td>3</td><td><code>          (data) =&gt; client.reply(data, inspectResponse),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>1</td><td><code>        client.reply(result, inspectResponse);</code></td>
+                    <td>141</td><td></td><td>4</td><td><code>          onError: (ex, st) =&gt; client.error(SquadronException.from(ex, st)),</code></td>
                 </tr>
                 <tr class="noop" title="Line 142" id="line142">
-                    <td>142</td><td></td><td></td><td><code>      }</code></td>
+                    <td>142</td><td></td><td></td><td><code>          onDone: shutdown,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 143" id="line143">
-                    <td>143</td><td></td><td>1</td><td><code>    } catch (e, st) {</code></td>
+                <tr class="noop" title="Line 143" id="line143">
+                    <td>143</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>3</td><td><code>      client.error(SquadronException.from(error: e, stackTrace: st));</code></td>
+                <tr class="noop" title="Line 144" id="line144">
+                    <td>144</td><td></td><td></td><td><code>        );</code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code>    } finally {</code></td>
+                    <td>145</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code>      // stop monitoring execution</code></td>
+                <tr class="lineCov" title="Line 146" id="line146">
+                    <td>146</td><td></td><td>5</td><td><code>        await done.future.whenComplete(() {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>2</td><td><code>      _monitor.done(tokenRef);</code></td>
+                <tr class="noop" title="Line 147" id="line147">
+                    <td>147</td><td></td><td></td><td><code>          // unregister stream canceller callback</code></td>
                 </tr>
-                <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 148" id="line148">
+                    <td>148</td><td></td><td>3</td><td><code>          _monitor.unregisterStreamCanceller(tokenRef, streamId);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>149</td><td></td><td>1</td><td><code>        });</code></td>
                 </tr>
                 <tr class="noop" title="Line 150" id="line150">
-                    <td>150</td><td></td><td></td><td><code>}</code></td>
+                    <td>150</td><td></td><td></td><td><code>      } else {</code></td>
+                </tr>
+                <tr class="noop" title="Line 151" id="line151">
+                    <td>151</td><td></td><td></td><td><code>        // result is a value: send to the client</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 152" id="line152">
+                    <td>152</td><td></td><td>1</td><td><code>        client.reply(result, inspectResponse);</code></td>
+                </tr>
+                <tr class="noop" title="Line 153" id="line153">
+                    <td>153</td><td></td><td></td><td><code>      }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 154" id="line154">
+                    <td>154</td><td></td><td>1</td><td><code>    } catch (e, st) {</code></td>
+                </tr>
+                <tr class="noop" title="Line 155" id="line155">
+                    <td>155</td><td></td><td></td><td><code>      // error: send to client</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 156" id="line156">
+                    <td>156</td><td></td><td>3</td><td><code>      client.error(SquadronException.from(e, st));</code></td>
+                </tr>
+                <tr class="noop" title="Line 157" id="line157">
+                    <td>157</td><td></td><td></td><td><code>    } finally {</code></td>
+                </tr>
+                <tr class="noop" title="Line 158" id="line158">
+                    <td>158</td><td></td><td></td><td><code>      // stop monitoring execution</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 159" id="line159">
+                    <td>159</td><td></td><td>2</td><td><code>      _monitor.done(tokenRef);</code></td>
+                </tr>
+                <tr class="noop" title="Line 160" id="line160">
+                    <td>160</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 161" id="line161">
+                    <td>161</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 162" id="line162">
+                    <td>162</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

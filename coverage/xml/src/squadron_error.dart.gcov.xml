@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="17" lines-valid="17" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:convert';</code>
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'squadron.dart';</code>
         </line>
         <line>
             <code>import 'squadron_exception.dart';</code>
@@ -17,15 +20,34 @@
             <code>/// Squadron Error</code>
         </line>
         <line>
-            <code>class SquadronError extends Error implements SquadronException {</code>
+            <code>class SquadronError implements SquadronException {</code>
         </line>
         <line hits="2">
-            <code>  SquadronError._(this.message) {</code>
+            <code>  SquadronError._(this.message, [this._stackTrace]) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>    if (_stackTrace == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      try {</code>
+        </line>
         <line hits="3">
-            <code>    _localStackTrace = super.stackTrace;</code>
+            <code>        _stackTrace = StackTrace.current;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } catch (_) {</code>
+        </line>
+        <line>
+            <code>        // ignore...</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -68,19 +90,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>  List serialize() =&gt; [_$typeMarker, message, stackTrace?.toString()];</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  late StackTrace? _localStackTrace;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  StackTrace? _remoteStackTrace;</code>
+        <line hits="5">
+            <code>  List serialize() =&gt; [_$typeMarker, message, _stackTrace?.toString()];</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -89,45 +101,12 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>  StackTrace? get stackTrace =&gt; _remoteStackTrace ?? _localStackTrace;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static SquadronError? deserialize(List data) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    SquadronError? error;</code>
-        </line>
-        <line hits="3">
-            <code>    if (data[_$type] == _$typeMarker) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      error = SquadronError._(data[_$message]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="2">
-            <code>      error._remoteStackTrace =</code>
+            <code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>          SquadronException.loadStackTrace(data[_$stackTrace]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    return error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
+            <code>  StackTrace? _stackTrace;</code>
         </line>
         <line>
             <code/>
@@ -146,9 +125,53 @@
         <line>
             <code/>
         </line>
+        <line hits="2">
+            <code>SquadronError newSquadronError(String message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  Squadron.severe('creating new SquadronError: $message');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  return SquadronError._(message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>SquadronError? deserializeSquadronError(List data) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  SquadronError? error;</code>
+        </line>
         <line hits="3">
-            <code>SquadronError newSquadronError(String message) =&gt; SquadronError._(message);</code>
+            <code>  if (data[SquadronError._$type] == SquadronError._$typeMarker) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    error = SquadronError._(data[SquadronError._$message],</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        SquadronException.loadStackTrace(data[SquadronError._$stackTrace]));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line hits="1">
+            <code>  return error;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-05-01</dd>
+                    <dd>2022-05-03</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>33</td><td>40</td><td class="med">82.5%</td>
+                            <th scope="row">Lines</th><td>32</td><td>39</td><td class="med">82.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -247,43 +247,40 @@
                     <td>62</td><td></td><td>3</td><td><code>    _cancelled ??= timeStamp();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 63" id="line63">
-                    <td>63</td><td></td><td>2</td><td><code>    _cancelledException ??=</code></td>
+                    <td>63</td><td></td><td>3</td><td><code>    _cancelledException ??= CancelledException(message: message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>3</td><td><code>        CancelledException(message: message, stackTrace: StackTrace.current);</code></td>
+                    <td>64</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 65" id="line65">
+                    <td>65</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 66" id="line66">
-                    <td>66</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>2</td><td><code>  Future run(W worker) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>2</td><td><code>  Future run(W worker) async {</code></td>
+                    <td>67</td><td></td><td>3</td><td><code>    _executed ??= timeStamp();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>3</td><td><code>    _executed ??= timeStamp();</code></td>
+                    <td>68</td><td></td><td>1</td><td><code>    if (isCancelled) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>1</td><td><code>    if (isCancelled) {</code></td>
+                <tr class="lineNoCov" title="Line 69" id="line69">
+                    <td>69</td><td></td><td>0</td><td><code>      throw cancelledException!;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>0</td><td><code>      throw cancelledException!;</code></td>
+                <tr class="noop" title="Line 70" id="line70">
+                    <td>70</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 71" id="line71">
-                    <td>71</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 71" id="line71">
+                    <td>71</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 72" id="line72">
+                    <td>72</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 73" id="line73">
-                    <td>73</td><td></td><td></td><td><code></code></td>
+                    <td>73</td><td></td><td></td><td><code>  final PerfCounter? _counter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 74" id="line74">
-                    <td>74</td><td></td><td></td><td><code>  final PerfCounter? _counter;</code></td>
-                </tr>
-                <tr class="noop" title="Line 75" id="line75">
-                    <td>75</td><td></td><td></td><td><code>}</code></td>
+                    <td>74</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

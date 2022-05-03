@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85714287" lines-covered="42" lines-valid="49" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8727273" lines-covered="48" lines-valid="55" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'channel.dart';</code>
         </line>
         <line>
             <code>import 'squadron.dart';</code>
@@ -36,6 +39,30 @@
         </line>
         <line>
             <code>  set logLevel(int value);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Base logging method. Implement this method to display the [message].</code>
+        </line>
+        <line>
+            <code>  /// The method is called if the log level is enabled and is provided with a formatted message such as</code>
+        </line>
+        <line>
+            <code>  /// `[timestamp] [log-level] [Squadron.id] text of the message`</code>
+        </line>
+        <line>
+            <code>  FutureOr log(String message);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Logs a message at [SquadronLogLevel.debug] level</code>
+        </line>
+        <line>
+            <code>  FutureOr debug(dynamic message);</code>
         </line>
         <line>
             <code/>
@@ -131,28 +158,17 @@
         <line>
             <code/>
         </line>
-        <line>
-            <code>  /// Base logging method. Implement this method to display the [message].</code>
-        </line>
-        <line>
-            <code>  /// The method is called if the log level is enabled and is provided with a formatted message such as</code>
-        </line>
-        <line>
-            <code>  /// `[timestamp] [log-level] [Squadron.id] text of the message`</code>
-        </line>
-        <line>
-            <code>  FutureOr log(String message);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="2">
             <code>  FutureOr _log(int level, dynamic message) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>    if (level &gt;= logLevel) {</code>
+            <code>    if (level &gt;= logLevel ||</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        (level == SquadronLogLevel.debug &amp;&amp; Squadron.debugMode)) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      if (message is Function) {</code>
@@ -225,6 +241,17 @@
         <line hits="1">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  FutureOr debug(dynamic message) =&gt; _log(SquadronLogLevel.debug, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -321,6 +348,9 @@
             <code/>
         </line>
         <line>
+            <code>/// Simple logger based on `dart:dev` `log` function</code>
+        </line>
+        <line>
             <code>class DevSquadronLogger extends BaseSquadronLogger {</code>
         </line>
         <line hits="0">
@@ -342,6 +372,9 @@
             <code/>
         </line>
         <line>
+            <code>/// Simple console logger (`print` function)</code>
+        </line>
+        <line>
             <code>class ConsoleSquadronLogger extends BaseSquadronLogger {</code>
         </line>
         <line>
@@ -352,6 +385,42 @@
         </line>
         <line hits="0">
             <code>  void log(dynamic message) =&gt; print(message);</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Logger for workers, forwarding log messages to parent</code>
+        </line>
+        <line>
+            <code>class ParentSquadronLogger extends BaseSquadronLogger {</code>
+        </line>
+        <line hits="1">
+            <code>  ParentSquadronLogger(this._parent);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final WorkerChannel _parent;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Log to parent</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>  void log(dynamic message) =&gt; _parent.log(message?.toString() ?? '');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
@@ -376,6 +445,15 @@
         </line>
         <line>
             <code>  static const all = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Debug log level</code>
+        </line>
+        <line>
+            <code>  static const debug = 1;</code>
         </line>
         <line>
             <code/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="13" lines-valid="13" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -89,21 +89,12 @@
             <code>  void ensureStarted() =&gt; _timer ??= Timer(duration, () {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>        super.cancel(TaskTimeoutException(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        super</code>
         </line>
-        <line hits="2">
-            <code>            message: message,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>            stackTrace: StackTrace.current,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>            duration: duration));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>            .cancel(TaskTimeoutException(message: message, duration: duration));</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      });</code>

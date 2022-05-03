@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.83116883" lines-covered="128" lines-valid="154" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.83439493" lines-covered="131" lines-valid="157" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -44,6 +44,9 @@
             <code>import '../worker_service.dart';</code>
         </line>
         <line>
+            <code>import '../xplat/_value_wrapper.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
@@ -57,6 +60,19 @@
         </line>
         <line>
             <code>  web.MessagePort? _sendPort;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The ID of the worker attached to this [Channel].</code>
+        </line>
+        <line hits="1">
+            <code>  String get workerId =&gt; _workerId ?? '';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  String? _workerId;</code>
         </line>
         <line>
             <code/>
@@ -272,70 +288,51 @@
             <code>      bool inspectRequest = true,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true}) async {</code>
+            <code>      bool inspectResponse = true}) {</code>
         </line>
-        <line hits="1">
+        <line>
             <code>    final com = web.MessageChannel();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>    void _canceller() =&gt; _postRequest(WorkerRequest.cancel(token!), false);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>    token?.addListener(_canceller);</code>
-        </line>
-        <line>
-            <code>    try {</code>
         </line>
         <line hits="1">
-            <code>      _postRequest(</code>
+            <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
+            <code>      WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      postMethod: _postRequest,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      messages: com.port1.onMessage.map((event) =&gt; event.data),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          inspectRequest);</code>
-        </line>
-        <line hits="1">
-            <code>      final event = await com.port1.onMessage.first</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          .whenComplete(() =&gt; token?.removeListener(_canceller));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final res = WorkerResponse.deserialize(event.data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return res.result as T;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>      token: token,</code>
         </line>
         <line>
-            <code>    } finally {</code>
+            <code>      inspectRequest: inspectRequest,</code>
         </line>
         <line>
-            <code>      token?.removeListener(_canceller);</code>
+            <code>    );</code>
         </line>
         <line hits="1">
-            <code>      com.port2.close();</code>
+            <code>    return wrapper.compute().whenComplete(() {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      com.port1.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    }</code>
+        <line hits="1">
+            <code>      com.port2.close();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -381,28 +378,41 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
+            <code>      WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        postMethod: _postRequest,</code>
+            <code>      postMethod: _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        messages: com.port1.onMessage.map((event) =&gt; event.data), onDone: () {</code>
+            <code>      messages: com.port1.onMessage.map((event) =&gt; event.data),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      com.port1.close();</code>
+            <code>      onDone: () {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      onDone();</code>
+            <code>        com.port1.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    }, token: token, inspectRequest: inspectRequest);</code>
+            <code>        onDone();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      },</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      token: token,</code>
+        </line>
+        <line>
+            <code>      inspectRequest: inspectRequest,</code>
+        </line>
+        <line>
+            <code>    );</code>
         </line>
         <line>
             <code/>
@@ -512,6 +522,15 @@
             <code/>
         </line>
         <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.</code>
         </line>
         <line>
@@ -550,7 +569,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    Squadron.finer(() =&gt; 'replying with error: $error');</code>
+            <code>    Squadron.debug(() =&gt; 'replying with error: $error');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -915,150 +934,194 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  Squadron.config('created Web Worker #${worker.hashCode}');</code>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final startRequest = WorkerRequest.start(com.port2, startArguments);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final workerId = startRequest.id;</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  worker.onError.listen((event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>    String msg;</code>
-        </line>
-        <line hits="1">
-            <code>    if (event is web.ErrorEvent) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      final error = event;</code>
-        </line>
-        <line>
-            <code>      msg =</code>
-        </line>
-        <line hits="1">
-            <code>          '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="0">
-            <code>      msg = '$entryPoint: ${event.type} / $event';</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    Squadron.severe('error in Web Worker #${worker.hashCode}: $msg');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      completer.completeError(</code>
-        </line>
-        <line>
-            <code>          WorkerException('error in Web Worker #${worker.hashCode}: $msg'));</code>
-        </line>
-        <line hits="0">
-            <code>      worker.terminate();</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>  Squadron.config('created Web Worker #$workerId');</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  com.port1.onMessage.listen((event) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>  worker.onError.listen(</code>
         </line>
         <line hits="1">
-            <code>    com.port1.close();</code>
+            <code>    (event) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    final response = WorkerResponse.deserialize(event.data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>      String msg;</code>
         </line>
         <line hits="1">
-            <code>    SquadronException? error = response.error;</code>
+            <code>      if (event is web.ErrorEvent) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>        final error = event;</code>
+        </line>
+        <line>
+            <code>        msg =</code>
+        </line>
         <line hits="1">
-            <code>    if (error == null) {</code>
+            <code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } else {</code>
         </line>
         <line hits="0">
-            <code>      try {</code>
-        </line>
-        <line hits="1">
-            <code>        channel._sendPort = response.result;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        Squadron.config('connected to Web Worker #${worker.hashCode}');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        completer.complete(channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      } catch (ex, st) {</code>
-        </line>
-        <line hits="0">
-            <code>        error = SquadronException.from(error: ex, stackTrace: st);</code>
+            <code>        msg = '$entryPoint: ${event.type} / $event';</code>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line>
-            <code>    }</code>
-        </line>
         <line hits="1">
-            <code>    if (error != null) {</code>
+            <code>      Squadron.severe('error in Web Worker #$workerId: $msg');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      worker.terminate();</code>
+            <code>      if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      Squadron.severe(</code>
+            <code>        StackTrace? stackTrace;</code>
+        </line>
+        <line>
+            <code>        try {</code>
+        </line>
+        <line hits="0">
+            <code>          stackTrace = StackTrace.current;</code>
+        </line>
+        <line>
+            <code>        } catch (_) {</code>
+        </line>
+        <line>
+            <code>          // ignore...</code>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line hits="0">
+            <code>        completer.completeError(</code>
+        </line>
+        <line hits="0">
+            <code>            WorkerException('error in Web Worker #$workerId: $msg',</code>
+        </line>
+        <line>
+            <code>                stackTrace: stackTrace),</code>
+        </line>
+        <line>
+            <code>            stackTrace);</code>
+        </line>
+        <line hits="0">
+            <code>        worker.terminate();</code>
+        </line>
+        <line>
+            <code>      }</code>
         </line>
         <line hits="1">
-            <code>          'connection to Web Worker #${worker.hashCode} failed: ${response.error}');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      completer.completeError(error, error.stackTrace);</code>
+            <code>    },</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    }</code>
+            <code>  );</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="1">
-            <code>  });</code>
+            <code>  com.port1.onMessage.listen(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    (event) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      final response = WorkerResponse.deserialize(event.data);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (response == null) return;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line hits="1">
-            <code>  final req = WorkerRequest.start(com.port2, startArguments);</code>
+            <code>      if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>  final message = req.serialize();</code>
+            <code>        final error = response.error;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (error != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          worker.terminate();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          Squadron.severe(</code>
+        </line>
+        <line hits="1">
+            <code>              'connection to Web Worker #$workerId failed: ${response.error}');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          completer.completeError(error, error.stackTrace);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        } else {</code>
+        </line>
+        <line hits="1">
+            <code>          channel._sendPort = response.result;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          channel._workerId = startRequest.id;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          Squadron.config('connected to Web Worker #$workerId');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          completer.complete(channel);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>    },</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  );</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final message = startRequest.serialize();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -1071,11 +1134,14 @@
             <code>    worker.postMessage(message, transfer);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>  } catch (ex) {</code>
+        <line hits="0">
+            <code>  } catch (ex, st) {</code>
         </line>
         <line hits="0">
             <code>    com.port1.close();</code>
+        </line>
+        <line hits="0">
+            <code>    com.port2.close();</code>
         </line>
         <line hits="0">
             <code>    worker.terminate();</code>
@@ -1084,7 +1150,7 @@
             <code>    Squadron.severe('failed to post connection request $message: error $ex');</code>
         </line>
         <line hits="0">
-            <code>    rethrow;</code>
+            <code>    completer.completeError(SquadronException.from(ex, st), st);</code>
         </line>
         <line>
             <code>  }</code>

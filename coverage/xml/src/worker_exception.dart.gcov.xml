@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91803277" lines-covered="56" lines-valid="61" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9166667" lines-covered="55" lines-valid="60" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code>import 'dart:convert';</code>
         </line>
         <line>
             <code/>
@@ -20,7 +17,7 @@
             <code>/// Exception to keep track of errors encountered in a worker.</code>
         </line>
         <line>
-            <code>class WorkerException implements SquadronException {</code>
+            <code>class WorkerException extends SquadronException {</code>
         </line>
         <line>
             <code>  /// Creates a new [WorkerException] to capture error context.</code>
@@ -32,15 +29,40 @@
         <line>
             <code>      {StackTrace? stackTrace, String? workerId, int? command})</code>
         </line>
-        <line hits="2">
-            <code>      : _stackTrace = stackTrace ?? StackTrace.current,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>      : _stackTrace = stackTrace,</code>
         </line>
         <line>
             <code>        _workerId = workerId,</code>
         </line>
+        <line>
+            <code>        _command = command {</code>
+        </line>
+        <line hits="2">
+            <code>    if (_stackTrace == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      try {</code>
+        </line>
+        <line hits="3">
+            <code>        _stackTrace = StackTrace.current;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } catch (_) {</code>
+        </line>
+        <line>
+            <code>        // ignore...</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
         <line hits="1">
-            <code>        _command = command;</code>
+            <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -166,17 +188,6 @@
         </line>
         <line>
             <code>  int? _command;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  String toString() =&gt; jsonEncode(serialize());</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
