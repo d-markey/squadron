@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90163934" lines-covered="110" lines-valid="122" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91333336" lines-covered="137" lines-valid="150" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'worker_exception.dart';</code>
         </line>
         <line>
             <code>import 'xplat/_pool_worker.dart';</code>
@@ -83,35 +86,11 @@
             <code>  /// controls how many tasks can be posted to each individual worker in the pool.</code>
         </line>
         <line hits="1">
-            <code>  WorkerPool(this._workerFactory,</code>
+            <code>  WorkerPool(this._workerFactory, {ConcurrencySettings? concurrencySettings})</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>      {ConcurrencySettings? concurrencySettings,</code>
-        </line>
-        <line>
-            <code>      @Deprecated('use concurrencySettings instead') int minWorkers = 0,</code>
-        </line>
-        <line>
-            <code>      @Deprecated('use concurrencySettings instead') int maxWorkers = 0,</code>
-        </line>
-        <line>
-            <code>      @Deprecated('use concurrencySettings instead') int maxParallel = 1})</code>
-        </line>
-        <line>
-            <code>      : concurrencySettings = concurrencySettings ??</code>
-        </line>
         <line hits="0">
-            <code>            ConcurrencySettings(</code>
-        </line>
-        <line>
-            <code>                minWorkers: minWorkers,</code>
-        </line>
-        <line>
-            <code>                maxWorkers: maxWorkers,</code>
-        </line>
-        <line>
-            <code>                maxParallel: maxParallel);</code>
+            <code>      : concurrencySettings = concurrencySettings ?? ConcurrencySettings();</code>
         </line>
         <line>
             <code/>
@@ -132,6 +111,16 @@
             <code/>
         </line>
         <line>
+            <code>  /// Minimum workers.</code>
+        </line>
+        <line hits="3">
+            <code>  int get minWorkers =&gt; concurrencySettings.minWorkers;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// Maximum workers.</code>
         </line>
         <line hits="4">
@@ -144,8 +133,9 @@
         <line>
             <code>  /// Maximum tasks per worker.</code>
         </line>
-        <line hits="0">
+        <line hits="4">
             <code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -175,7 +165,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Number of workers.</code>
+            <code>  /// Whether this pool is scheduled for stopping.</code>
         </line>
         <line hits="2">
             <code>  bool get stopped =&gt; _stopped;</code>
@@ -252,42 +242,138 @@
             <code/>
         </line>
         <line hits="2">
-            <code>  Future&lt;void&gt; _provisionWorkers(int count) async {</code>
+            <code>  Future&lt;void&gt; _provisionWorkers(int workload) async {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="3">
+            <code>    if (workload &lt; minWorkers) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // at least minWorkers</code>
+        </line>
+        <line hits="1">
+            <code>      workload = minWorkers;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="4">
-            <code>    if (_workers.length &lt; count) {</code>
+            <code>    } else if (maxWorkers &gt; 0 &amp;&amp; workload &gt; maxWorkers) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // at most maxWorkers if &gt; 0</code>
+        </line>
+        <line hits="1">
+            <code>      workload = maxWorkers;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>    // adjust by _workers.length</code>
+        </line>
+        <line hits="3">
+            <code>    workload -= _workers.length;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>    if (workload &gt; 0) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      final maxWorkload = concurrencySettings.maxParallel;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      final tasks = &lt;Future&gt;[];</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="1">
+            <code>      final errors = [];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      for (var i = 0; i &lt; workload; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        try {</code>
+        </line>
+        <line hits="4">
+            <code>          final poolWorker = PoolWorker(_workerFactory(), maxWorkload);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="3">
-            <code>      while (_workers.length &lt; count) {</code>
+            <code>          _workers.add(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          tasks.add(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            poolWorker.worker</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>                .start()</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                .then((_) =&gt; true)</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>                .onError((error, stackTrace) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        final poolWorker =</code>
-        </line>
-        <line hits="6">
-            <code>            PoolWorker(_workerFactory(), concurrencySettings.maxParallel);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <code>              // start failed: remove from list</code>
         </line>
         <line hits="3">
-            <code>        _workers.add(poolWorker);</code>
+            <code>              _workers.remove(poolWorker);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>        tasks.add(poolWorker.worker.start());</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>              errors.add(error);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>              return false;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>            }),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          );</code>
+        </line>
+        <line>
+            <code>        } catch (ex) {</code>
+        </line>
+        <line hits="0">
+            <code>          errors.add(ex);</code>
+        </line>
+        <line>
+            <code>        }</code>
         </line>
         <line>
             <code>      }</code>
         </line>
+        <line>
+            <code/>
+        </line>
         <line hits="3">
             <code>      await Future.wait(tasks);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="4">
             <code>      if (_workers.length &gt; _maxSize) {</code>
@@ -296,6 +382,51 @@
         <line hits="3">
             <code>        _maxSize = _workers.length;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>      if (errors.isNotEmpty) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>        if (errors.length &gt;= tasks.length) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          // all tasks failed: throw</code>
+        </line>
+        <line hits="4">
+            <code>          throw errors.firstWhere((e) =&gt; e is SquadronError,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>                  orElse: () =&gt; null) ??</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>              errors.firstWhere((e) =&gt; e is WorkerException,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>                  orElse: () =&gt; null) ??</code>
+        </line>
+        <line hits="0">
+            <code>              errors.first;</code>
+        </line>
+        <line>
+            <code>        } else {</code>
+        </line>
+        <line>
+            <code>          // some tasks failed: warn</code>
+        </line>
+        <line hits="1">
+            <code>          Squadron.warning(() =&gt; 'Error while provisionning workers: $errors');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        }</code>
         </line>
         <line>
             <code>      }</code>
@@ -325,7 +456,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>    return _provisionWorkers(concurrencySettings.min(0));</code>
+            <code>    return _provisionWorkers(_queue.isEmpty ? 1 : _queue.length);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -337,6 +468,10 @@
         </line>
         <line hits="2">
             <code>  int _removeWorker(PoolWorker poolWorker, bool force) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_scheduling) return 0;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6">
@@ -402,26 +537,13 @@
             <code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    bool force;</code>
-        </line>
         <line hits="1">
-            <code>    if (predicate != null) {</code>
+            <code>    bool force = (predicate == null);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>      // kill workers that are idle and satisfy the predicate</code>
-        </line>
-        <line hits="8">
-            <code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1">
-            <code>      force = false;</code>
+            <code>    if (force) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
         </line>
         <line>
             <code>      // kill workers while keeping enough workers alive to process pending tasks</code>
@@ -435,7 +557,14 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      force = true;</code>
+            <code>    } else {</code>
+        </line>
+        <line>
+            <code>      // kill workers that are idle and satisfy the predicate</code>
+        </line>
+        <line hits="8">
+            <code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -526,24 +655,6 @@
         <line>
             <code>  /// Registers and schedules a [task] that returns a single value.</code>
         </line>
-        <line hits="0">
-            <code>  @Deprecated('use execute() instead')</code>
-        </line>
-        <line>
-            <code>  Future&lt;T&gt; compute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-        </line>
-        <line>
-            <code>          {PerfCounter? counter}) =&gt;</code>
-        </line>
-        <line hits="0">
-            <code>      execute(task, counter: counter);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Registers and schedules a [task] that returns a single value.</code>
-        </line>
         <line>
             <code>  /// Returns a future that completes with the task's value.</code>
         </line>
@@ -625,6 +736,9 @@
             <code>  Timer? _timer;</code>
         </line>
         <line>
+            <code>  bool _scheduling = false;</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
@@ -700,9 +814,13 @@
             <code>        scheduleMicrotask(() {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
-            <code>          _provisionWorkers(concurrencySettings.max(_queue.length)).then((_) {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>          _scheduling = true;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>          _provisionWorkers(_queue.length).then((_) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>            int maxCapacity;</code>
@@ -776,6 +894,10 @@
         <line>
             <code>            }</code>
         </line>
+        <line hits="2">
+            <code>            _scheduling = false;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="3">
             <code>          }).catchError((ex) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
@@ -798,6 +920,10 @@
         </line>
         <line>
             <code>            }</code>
+        </line>
+        <line hits="2">
+            <code>            _scheduling = false;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>          });</code>

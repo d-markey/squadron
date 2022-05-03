@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-04-23" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9791667" lines-covered="47" lines-valid="48" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-01" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9811321" lines-covered="52" lines-valid="53" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'cancellation_token.dart';</code>
@@ -15,6 +15,9 @@
         </line>
         <line>
             <code>import 'worker.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_identity.dart';</code>
         </line>
         <line>
             <code/>
@@ -67,12 +70,12 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      this.logLevel, this._cancelToken, this._streamId)</code>
+            <code>      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)</code>
         </line>
         <line hits="1">
             <code>      : client = WorkerChannel.deserialize(channelInfo);</code>
@@ -89,11 +92,21 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      [List args = _noArgs, CancellationToken? cancelToken])</code>
+            <code>      [List args = _noArgs,</code>
         </line>
-        <line hits="2">
-            <code>      : this._(channelInfo, command, null, args, null, cancelToken, null);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>      CancellationToken? cancelToken,</code>
+        </line>
+        <line>
+            <code>      bool inspectResponse = true])</code>
+        </line>
+        <line hits="1">
+            <code>      : this._(channelInfo, command, null, args, null, cancelToken, null,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>            inspectResponse);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -102,15 +115,19 @@
             <code>  /// Creates a new start request.</code>
         </line>
         <line hits="2">
-            <code>  WorkerRequest.start(dynamic channelInfo, String id, [List args = _noArgs])</code>
+            <code>  WorkerRequest.start(dynamic channelInfo,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>            null);</code>
+            <code>      [List args = _noArgs, bool inspectResponse = true])</code>
+        </line>
+        <line hits="2">
+            <code>      : this._(channelInfo, _connectCommand, Identity.nextId(), args,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            Squadron.logLevel, null, null, inspectResponse);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -123,8 +140,11 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId);</code>
+            <code>      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            false);</code>
         </line>
         <line>
             <code/>
@@ -137,8 +157,12 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null);</code>
+            <code>      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>            false);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -151,7 +175,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      : this._(null, _terminateCommand, null, _noArgs, null, null, null);</code>
+            <code>      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -177,6 +201,9 @@
         </line>
         <line>
             <code>  static const _$logLevel = 'g';</code>
+        </line>
+        <line>
+            <code>  static const _$inspectResponse = 'h';</code>
         </line>
         <line>
             <code/>
@@ -220,8 +247,15 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          message[_$streamId]);</code>
+            <code>          message[_$streamId],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          message[_$inspectResponse] ?? true,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        );</code>
         </line>
         <line>
             <code/>
@@ -269,6 +303,10 @@
             <code>        if (args.isNotEmpty) _$args: args,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line>
             <code>      };</code>
         </line>
@@ -296,7 +334,11 @@
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>        if (_streamId != null) _$streamId: _streamId,</code>
+            <code>        if (streamId != null) _$streamId: streamId,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>        if (!inspectResponse) _$inspectResponse: inspectResponse</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -337,12 +379,8 @@
         <line>
             <code>  /// Stream id.</code>
         </line>
-        <line hits="2">
-            <code>  int? get streamId =&gt; _streamId;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>  int? _streamId;</code>
+            <code>  final int? streamId;</code>
         </line>
         <line>
             <code/>
@@ -385,6 +423,18 @@
         </line>
         <line>
             <code>  final int? logLevel;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In</code>
+        </line>
+        <line>
+            <code>  /// Web workers, ownership of these objects must be transfered across threads.</code>
+        </line>
+        <line>
+            <code>  final bool inspectResponse;</code>
         </line>
         <line>
             <code/>
