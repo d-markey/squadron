@@ -46,7 +46,7 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
       final value = await _computer(worker);
       _completeWithResult(value);
     } catch (ex, st) {
-      _completeWithError(SquadronException.from(error: ex, stackTrace: st));
+      _completeWithError(SquadronException.from(ex, st));
     }
   }
 }

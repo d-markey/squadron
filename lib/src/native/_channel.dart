@@ -10,11 +10,16 @@ import '../worker_exception.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
 import '../worker_service.dart';
+import '../xplat/_value_wrapper.dart';
 
 class _BaseVmChannel {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
   /// to return values to the client.
   SendPort? _sendPort;
+
+  /// The ID of the worker attached to this [Channel].
+  String get workerId => _workerId ?? '';
+  String? _workerId;
 
   /// [Channel] serialization in Native world returns the [SendPort].
   dynamic serialize() => _sendPort;
@@ -64,27 +69,16 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token,
       bool inspectRequest = true,
-      bool inspectResponse = true}) async {
+      bool inspectResponse = true}) {
     final receiver = ReceivePort();
-
-    void _canceller() => _postRequest(WorkerRequest.cancel(token!), false);
-
-    token?.addListener(_canceller);
-    try {
-      _postRequest(
-          WorkerRequest(
-              receiver.sendPort, command, args, token, inspectResponse),
-          inspectRequest);
-      final message = await receiver.first;
-      token?.removeListener(_canceller);
-      final res = WorkerResponse.deserialize(message);
-      return res.result as T;
-    } catch (ex) {
-      token?.removeListener(_canceller);
-      rethrow;
-    } finally {
-      receiver.close();
-    }
+    final wrapper = ValueWrapper<T>(
+      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
+      postMethod: _postRequest,
+      messages: receiver,
+      token: token,
+      inspectRequest: inspectRequest,
+    );
+    return wrapper.compute().whenComplete(() => receiver.close());
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of
@@ -97,12 +91,16 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       bool inspectResponse = true}) {
     final receiver = ReceivePort();
     final wrapper = StreamWrapper<T>(
-        WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
-        postMethod: _postRequest,
-        messages: receiver, onDone: () {
-      receiver.close();
-      onDone();
-    }, token: token, inspectRequest: inspectRequest);
+      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
+      postMethod: _postRequest,
+      messages: receiver,
+      onDone: () {
+        receiver.close();
+        onDone();
+      },
+      token: token,
+      inspectRequest: inspectRequest,
+    );
 
     return wrapper.stream;
   }
@@ -137,6 +135,9 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   void reply(dynamic data, bool inspectResponse) =>
       _postResponse(WorkerResponse(data), inspectResponse);
 
+  @override
+  void log(String message) => _postResponse(WorkerResponse.log(message), false);
+
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a
   /// [ReceivePort].
   @override
@@ -149,7 +150,7 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.
   @override
   void error(SquadronException error) {
-    Squadron.finer('replying with error: $error');
+    Squadron.debug('replying with error: $error');
     _postResponse(WorkerResponse.withError(error), false);
   }
 }
@@ -163,49 +164,50 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final channel = _VmChannel._();
   final receiver = ReceivePort();
 
+  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);
+  final workerId = startRequest.id;
   final isolate = await Isolate.spawn(
     entryPoint,
-    WorkerRequest.start(receiver.sendPort, startArguments).serialize(),
+    startRequest.serialize(),
     paused: true,
   );
-  Squadron.config('created Isolate #${isolate.hashCode}');
+  Squadron.config('created Isolate #$workerId');
 
   final exitPort = ReceivePort();
   exitPort.listen((message) {
+    Squadron.config('Isolate #$workerId terminated.');
     channel.close();
   });
   isolate.addOnExitListener(exitPort.sendPort);
 
   final errorPort = ReceivePort();
   errorPort.listen((message) {
-    dynamic error = message[0];
-    if (error is String) {
-      error = SquadronException.fromString(error);
-    }
-    if (error is! SquadronException) {
-      error = SquadronException.from(
-          error: message[0] ?? 'unspecified error',
-          stackTrace: SquadronException.loadStackTrace(message[1]));
-    }
+    final error = SquadronException.fromString(message[0]) ??
+        WorkerException(message[0],
+            stackTrace: SquadronException.loadStackTrace(message[1]));
+    Squadron.warning(
+        'Unhandled error from Isolate #$workerId: ${error.message}.');
     if (!completer.isCompleted) {
-      completer.completeError(error);
-    } else {
-      Squadron.warning('unhandled error $error');
+      completer.completeError(error, error.stackTrace);
     }
   });
   isolate.addErrorListener(errorPort.sendPort);
 
-  receiver.first.then((message) {
+  receiver.listen((message) {
     final response = WorkerResponse.deserialize(message);
+    if (response == null) return;
+
     if (!completer.isCompleted) {
-      if (response.hasError) {
+      final error = response.error;
+      if (error != null) {
         isolate.kill(priority: Isolate.immediate);
         Squadron.severe(
-            'connection to Isolate #${isolate.hashCode} failed: ${response.error}');
-        completer.completeError(response.error!, response.error!.stackTrace);
+            'connection to Isolate #$workerId failed: ${response.error}');
+        completer.completeError(error, error.stackTrace);
       } else {
         channel._sendPort = response.result;
-        Squadron.config('connected to Isolate #${isolate.hashCode}');
+        channel._workerId = workerId;
+        Squadron.config('connected to Isolate #$workerId');
         completer.complete(channel);
       }
     }

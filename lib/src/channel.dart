@@ -16,6 +16,9 @@ typedef PostMethod = void Function(WorkerRequest req, bool inspectRequest);
 /// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
 /// a platform worker.
 abstract class Channel {
+  /// The ID of the worker attached to this [Channel].
+  String get workerId;
+
   /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.
   dynamic serialize();
 
@@ -69,6 +72,10 @@ abstract class WorkerChannel {
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// worker only.
   void reply(dynamic data, bool inspectResponse);
+
+  /// Sends a [WorkerResponse.log] with the specified data to the worker client. This method must be called from the
+  /// worker only.
+  void log(String message);
 
   /// Checks if [stream] can be streamed back to the worker client.
   bool canStream(Stream stream);

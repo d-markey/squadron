@@ -11,9 +11,8 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
-  TestWorkerPool(
-      [ConcurrencySettings? concurrencySettings, LocalSquadronLogger? logger])
-      : this._(() => TestWorker(logger),
+  TestWorkerPool([ConcurrencySettings? concurrencySettings])
+      : this._(() => TestWorker(),
             concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
   TestWorkerPool.failedInit([ConcurrencySettings? concurrencySettings])
@@ -105,18 +104,17 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 }
 
 class TestWorker extends Worker implements TestService {
-  TestWorker._(dynamic entryPoint, LocalSquadronLogger? logger)
-      : super(entryPoint, args: [logger?.connectionInfo]);
+  TestWorker._(dynamic entryPoint) : super(entryPoint);
 
-  TestWorker([LocalSquadronLogger? logger]) : this._(EntryPoints.test, logger);
+  TestWorker() : this._(EntryPoints.test);
 
-  TestWorker.failedInit() : this._(EntryPoints.failedInit, null);
+  TestWorker.failedInit() : this._(EntryPoints.failedInit);
 
-  TestWorker.invalidCommand() : this._(EntryPoints.invalidCommand, null);
+  TestWorker.invalidCommand() : this._(EntryPoints.invalidCommand);
 
   static TestWorker? missingStartRequest() {
     if (EntryPoints.missingStartRequest == null) return null;
-    return TestWorker._(EntryPoints.missingStartRequest, null);
+    return TestWorker._(EntryPoints.missingStartRequest);
   }
 
   @override

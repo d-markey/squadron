@@ -76,8 +76,8 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
 }
 
 class LocalClientWorker extends Worker implements LocalClientService {
-  LocalClientWorker({String? id, List args = const []})
-      : super(EntryPoints.local, id: id, args: args);
+  LocalClientWorker({List args = const []})
+      : super(EntryPoints.local, args: args);
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand, []);

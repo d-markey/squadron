@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as dev show log;
 
+import 'channel.dart';
 import 'squadron.dart';
 
 /// Basic interface for logging
@@ -10,6 +11,14 @@ abstract class SquadronLogger {
 
   /// Sets the log level
   set logLevel(int value);
+
+  /// Base logging method. Implement this method to display the [message].
+  /// The method is called if the log level is enabled and is provided with a formatted message such as
+  /// `[timestamp] [log-level] [Squadron.id] text of the message`
+  FutureOr log(String message);
+
+  /// Logs a message at [SquadronLogLevel.debug] level
+  FutureOr debug(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.finest] level
   FutureOr finest(dynamic message);
@@ -41,13 +50,9 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   @override
   int logLevel = Squadron.logLevel;
 
-  /// Base logging method. Implement this method to display the [message].
-  /// The method is called if the log level is enabled and is provided with a formatted message such as
-  /// `[timestamp] [log-level] [Squadron.id] text of the message`
-  FutureOr log(String message);
-
   FutureOr _log(int level, dynamic message) {
-    if (level >= logLevel) {
+    if (level >= logLevel ||
+        (level == SquadronLogLevel.debug && Squadron.debugMode)) {
       if (message is Function) {
         message = message();
       }
@@ -68,6 +73,9 @@ abstract class BaseSquadronLogger implements SquadronLogger {
       }
     }
   }
+
+  @override
+  FutureOr debug(dynamic message) => _log(SquadronLogLevel.debug, message);
 
   @override
   FutureOr finest(dynamic message) => _log(SquadronLogLevel.finest, message);
@@ -94,6 +102,7 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   FutureOr shout(dynamic message) => _log(SquadronLogLevel.shout, message);
 }
 
+/// Simple logger based on `dart:dev` `log` function
 class DevSquadronLogger extends BaseSquadronLogger {
   @override
 
@@ -101,10 +110,22 @@ class DevSquadronLogger extends BaseSquadronLogger {
   void log(dynamic message) => dev.log(message?.toString() ?? '');
 }
 
+/// Simple console logger (`print` function)
 class ConsoleSquadronLogger extends BaseSquadronLogger {
   /// Log to console
   @override
   void log(dynamic message) => print(message);
+}
+
+/// Logger for workers, forwarding log messages to parent
+class ParentSquadronLogger extends BaseSquadronLogger {
+  ParentSquadronLogger(this._parent);
+
+  final WorkerChannel _parent;
+
+  /// Log to parent
+  @override
+  void log(dynamic message) => _parent.log(message?.toString() ?? '');
 }
 
 /// Log level constants, compatible with `package:logging`
@@ -113,6 +134,9 @@ class SquadronLogLevel {
 
   /// Lowest log level
   static const all = 0;
+
+  /// Debug log level
+  static const debug = 1;
 
   /// Finest log level
   static const finest = 300;

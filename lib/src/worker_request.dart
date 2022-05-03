@@ -21,8 +21,16 @@ import 'xplat/_identity.dart';
 class WorkerRequest {
   static const _noArgs = [];
 
-  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
-      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)
+  WorkerRequest._(
+      dynamic channelInfo,
+      this.command,
+      this.id,
+      this.args,
+      this.logLevel,
+      this._cancelToken,
+      this.streamId,
+      this.inspectResponse,
+      this._timestamp)
       : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new request with the specified [command] ID and optional arguments.
@@ -31,27 +39,28 @@ class WorkerRequest {
       CancellationToken? cancelToken,
       bool inspectResponse = true])
       : this._(channelInfo, command, null, args, null, cancelToken, null,
-            inspectResponse);
+            inspectResponse, null);
 
   /// Creates a new start request.
   WorkerRequest.start(dynamic channelInfo,
       [List args = _noArgs, bool inspectResponse = true])
       : this._(channelInfo, _connectCommand, Identity.nextId(), args,
-            Squadron.logLevel, null, null, inspectResponse);
+            Squadron.logLevel, null, null, inspectResponse, null);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancelStream(int streamId)
       : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId,
-            false);
+            false, null);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancel(CancellationToken cancelToken)
       : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null,
-            false);
+            false, null);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
-      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);
+      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false,
+            null);
 
   static const _$client = 'a';
   static const _$command = 'b';
@@ -61,25 +70,39 @@ class WorkerRequest {
   static const _$id = 'f';
   static const _$logLevel = 'g';
   static const _$inspectResponse = 'h';
+  static const _$timestamp = 'i';
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
-  static WorkerRequest? deserialize(Map? message) => (message == null)
-      ? null
-      : WorkerRequest._(
-          message[_$client],
-          message[_$command],
-          message[_$id],
-          message[_$args] ?? const [],
-          message[_$logLevel],
-          CancellationToken.deserialize(message[_$token]),
-          message[_$streamId],
-          message[_$inspectResponse] ?? true,
-        );
+  static WorkerRequest? deserialize(Map? message) {
+    final req = (message == null)
+        ? null
+        : WorkerRequest._(
+            message[_$client],
+            message[_$command],
+            message[_$id],
+            message[_$args] ?? const [],
+            message[_$logLevel],
+            CancellationToken.deserialize(message[_$token]),
+            message[_$streamId],
+            message[_$inspectResponse] ?? true,
+            message[_$timestamp],
+          );
+    final ts = req?.timestamp;
+    if (ts != null) {
+      Squadron.debug(
+          'request received in ${DateTime.now().microsecondsSinceEpoch - ts} µs');
+    }
+    return req;
+  }
 
   /// [WorkerRequest] serialization.
   Map<String, dynamic> serialize() {
     if (terminate) {
-      return const {_$command: _terminateCommand};
+      return {
+        _$command: _terminateCommand,
+        if (Squadron.debugMode)
+          _$timestamp: DateTime.now().microsecondsSinceEpoch,
+      };
     } else if (connect) {
       return {
         _$client: client?.serialize(),
@@ -87,7 +110,9 @@ class WorkerRequest {
         _$id: id,
         _$logLevel: logLevel,
         if (args.isNotEmpty) _$args: args,
-        if (!inspectResponse) _$inspectResponse: inspectResponse
+        if (!inspectResponse) _$inspectResponse: inspectResponse,
+        if (Squadron.debugMode)
+          _$timestamp: DateTime.now().microsecondsSinceEpoch,
       };
     } else {
       return {
@@ -96,7 +121,9 @@ class WorkerRequest {
         if (args.isNotEmpty) _$args: args,
         if (_cancelToken != null) _$token: _cancelToken!.serialize(),
         if (streamId != null) _$streamId: streamId,
-        if (!inspectResponse) _$inspectResponse: inspectResponse
+        if (!inspectResponse) _$inspectResponse: inspectResponse,
+        if (Squadron.debugMode)
+          _$timestamp: DateTime.now().microsecondsSinceEpoch,
       };
     }
   }
@@ -129,6 +156,8 @@ class WorkerRequest {
   /// Web workers, ownership of these objects must be transfered across threads.
   final bool inspectResponse;
 
+  final int? _timestamp;
+
   /// flag for start requests.
   bool get connect => command == _connectCommand;
 
@@ -155,4 +184,6 @@ extension WorkerRequestExt on WorkerRequest {
     }
     _cancelToken = token;
   }
+
+  int? get timestamp => _timestamp;
 }

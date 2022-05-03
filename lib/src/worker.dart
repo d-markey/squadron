@@ -13,9 +13,7 @@ import 'worker_stat.dart';
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
 abstract class Worker implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
-  Worker(this._entryPoint, {String? id, this.args = const []}) {
-    this.id = id ?? hashCode.toString();
-  }
+  Worker(this._entryPoint, {this.args = const []});
 
   /// The [Worker]'s entry point.
   /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
@@ -23,9 +21,6 @@ abstract class Worker implements WorkerService {
 
   /// The [Worker]'s start arguments.
   final List args;
-
-  /// The [Worker] id.
-  late final String id;
 
   /// Start timestamp (in microseconds since Epoch).
   int? _started;
@@ -77,13 +72,16 @@ abstract class Worker implements WorkerService {
   }
 
   /// [Worker] statistics.
-  WorkerStat get stats => WorkerStat(runtimeType, id, isStopped, status,
+  WorkerStat get stats => WorkerStat(runtimeType, workerId, isStopped, status,
       workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);
 
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
   Future<Channel>? _openChannel;
+
+  /// Worker ID
+  String get workerId => _channel?.workerId ?? '<no channel>';
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
@@ -98,7 +96,7 @@ abstract class Worker implements WorkerService {
     }
 
     // ensure the worker is up and running
-    Channel channel;
+    late Channel channel;
     if (_channel != null) {
       channel = _channel!;
     } else {
@@ -114,10 +112,10 @@ abstract class Worker implements WorkerService {
             inspectRequest: inspectRequest,
             inspectResponse: inspectResponse);
       } on CancelledException catch (e) {
-        error = (token?.exception ?? e).withWorkerId(id).withCommand(command);
+        error =
+            (token?.exception ?? e).withWorkerId(workerId).withCommand(command);
       } catch (e, st) {
-        error = SquadronException.from(
-            error: e, stackTrace: st, workerId: id, command: command);
+        error = SquadronException.from(e, st, workerId, command);
       } finally {
         // update stats
         _workload--;
@@ -167,8 +165,7 @@ abstract class Worker implements WorkerService {
             inspectResponse: inspectResponse,
           ));
         } catch (ex, st) {
-          controller.addError(
-              SquadronException.from(error: ex, stackTrace: st), st);
+          controller.addError(SquadronException.from(ex, st), st);
         } finally {
           controller.close();
           onDone();
@@ -191,15 +188,15 @@ abstract class Worker implements WorkerService {
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   Future<Channel> start() async {
     if (_stopped != null) {
-      throw WorkerException('worker is stopped', workerId: id);
+      throw WorkerException('worker is stopped', workerId: workerId);
     }
     if (_channel == null) {
       _openChannel ??= Channel.open(_entryPoint, args);
       final channel = await _openChannel!;
       if (_channel == null) {
+        _channel = channel;
         _started = DateTime.now().microsecondsSinceEpoch;
         _idle = _started;
-        _channel = channel;
       }
     }
     return _channel!;

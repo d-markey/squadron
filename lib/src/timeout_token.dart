@@ -25,10 +25,8 @@ class TimeOutToken extends CancellationToken {
   /// started that will automatically cancel this token if processing takes longer than [duration].
   @override
   void ensureStarted() => _timer ??= Timer(duration, () {
-        super.cancel(TaskTimeoutException(
-            message: message,
-            stackTrace: StackTrace.current,
-            duration: duration));
+        super
+            .cancel(TaskTimeoutException(message: message, duration: duration));
       });
 
   /// Returns `true` if the timeout has started, `false` otherwise.

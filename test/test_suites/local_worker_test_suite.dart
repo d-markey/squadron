@@ -90,17 +90,19 @@ void localWorkerTests() {
     test('- LocalWorker', () async {
       final localService = LocalServiceImpl(idGetter);
       try {
-        final res = localService.throwException();
-        expect(res, isNull);
+        localService.throwException();
+        // should never happen
+        throw Exception('throwException() completed successfully');
       } catch (ex) {
         expect(ex.toString(), contains('Intentional exception'));
       }
 
       final localWorker = LocalWorker.create(localService);
       try {
-        final res = await localWorker.channel
+        await localWorker.channel
             ?.sendRequest(LocalService.throwExceptionCommand, []);
-        expect(res, isNull);
+        // should never happen
+        throw Exception('throwException() completed successfully');
       } catch (ex) {
         expect(ex, isA<WorkerException>());
         final wex = ex as WorkerException;

@@ -21,7 +21,7 @@ void main() {
 
     setUp(() {
       Squadron.setId('workerTests');
-      Squadron.logLevel = SquadronLogLevel.all;
+      Squadron.logLevel = SquadronLogLevel.off;
     });
 
     group('- Logging', loggerTests);

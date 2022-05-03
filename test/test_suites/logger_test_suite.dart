@@ -1,15 +1,15 @@
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/squadron.dart';
 import 'package:test/test.dart';
 
 import '../classes/memory_logger.dart';
-import '../worker_services/test_service_worker.dart';
 
 void loggerTests() {
   dynamic initialLogger;
-  int initialLevel = 0;
   final memoryLogger = MemoryLogger();
 
   final logLevels = {
+    SquadronLogLevel.debug: 'DEBUG',
     SquadronLogLevel.finest: 'FINEST',
     SquadronLogLevel.finer: 'FINER',
     SquadronLogLevel.fine: 'FINE',
@@ -21,26 +21,37 @@ void loggerTests() {
   };
 
   setUp(() {
-    initialLogger = Squadron.logger;
-    initialLevel = Squadron.logLevel;
+    initialLogger = getSquadronLogger();
+    Squadron.pushLogLevel();
     memoryLogger.clear();
-    Squadron.logger = memoryLogger;
-    Squadron.logLevel = SquadronLogLevel.all;
+    Squadron.pushLogLevel(SquadronLogLevel.all);
+    Squadron.setLogger(memoryLogger);
   });
 
   tearDown(() {
-    Squadron.logger = initialLogger;
-    Squadron.logLevel = initialLevel;
+    Squadron.setLogger(initialLogger);
+    Squadron.popLogLevel();
   });
 
   group('- Log levels', () {
+    test('- Debug', () {
+      for (var logLevel in logLevels.entries) {
+        Squadron.logLevel = logLevel.key;
+        Squadron.debug('Debug - ${logLevel.value}');
+      }
+
+      expect(memoryLogger.length, equals(1));
+      expect(memoryLogger.contains('Debug - DEBUG'), isTrue);
+    });
+
     test('- Finest', () {
       for (var logLevel in logLevels.entries) {
         Squadron.logLevel = logLevel.key;
         Squadron.finest('Finest - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(1));
+      expect(memoryLogger.length, equals(2));
+      expect(memoryLogger.contains('Finest - DEBUG'), isTrue);
       expect(memoryLogger.contains('Finest - FINEST'), isTrue);
     });
 
@@ -50,7 +61,8 @@ void loggerTests() {
         Squadron.finer('Finer - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(2));
+      expect(memoryLogger.length, equals(3));
+      expect(memoryLogger.contains('Finer - DEBUG'), isTrue);
       expect(memoryLogger.contains('Finer - FINEST'), isTrue);
       expect(memoryLogger.contains('Finer - FINER'), isTrue);
     });
@@ -61,7 +73,8 @@ void loggerTests() {
         Squadron.fine('Fine - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(3));
+      expect(memoryLogger.length, equals(4));
+      expect(memoryLogger.contains('Fine - DEBUG'), isTrue);
       expect(memoryLogger.contains('Fine - FINEST'), isTrue);
       expect(memoryLogger.contains('Fine - FINER'), isTrue);
       expect(memoryLogger.contains('Fine - FINE'), isTrue);
@@ -73,7 +86,8 @@ void loggerTests() {
         Squadron.config('Config - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(4));
+      expect(memoryLogger.length, equals(5));
+      expect(memoryLogger.contains('Config - DEBUG'), isTrue);
       expect(memoryLogger.contains('Config - FINEST'), isTrue);
       expect(memoryLogger.contains('Config - FINER'), isTrue);
       expect(memoryLogger.contains('Config - FINE'), isTrue);
@@ -86,7 +100,8 @@ void loggerTests() {
         Squadron.info('Info - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(5));
+      expect(memoryLogger.length, equals(6));
+      expect(memoryLogger.contains('Info - DEBUG'), isTrue);
       expect(memoryLogger.contains('Info - FINEST'), isTrue);
       expect(memoryLogger.contains('Info - FINER'), isTrue);
       expect(memoryLogger.contains('Info - FINE'), isTrue);
@@ -100,7 +115,8 @@ void loggerTests() {
         Squadron.warning('Warning - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(6));
+      expect(memoryLogger.length, equals(7));
+      expect(memoryLogger.contains('Warning - DEBUG'), isTrue);
       expect(memoryLogger.contains('Warning - FINEST'), isTrue);
       expect(memoryLogger.contains('Warning - FINER'), isTrue);
       expect(memoryLogger.contains('Warning - FINE'), isTrue);
@@ -115,7 +131,8 @@ void loggerTests() {
         Squadron.severe('Severe - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(7));
+      expect(memoryLogger.length, equals(8));
+      expect(memoryLogger.contains('Severe - DEBUG'), isTrue);
       expect(memoryLogger.contains('Severe - FINEST'), isTrue);
       expect(memoryLogger.contains('Severe - FINER'), isTrue);
       expect(memoryLogger.contains('Severe - FINE'), isTrue);
@@ -131,7 +148,8 @@ void loggerTests() {
         Squadron.shout('Shout - ${logLevel.value}');
       }
 
-      expect(memoryLogger.length, equals(8));
+      expect(memoryLogger.length, equals(9));
+      expect(memoryLogger.contains('Shout - DEBUG'), isTrue);
       expect(memoryLogger.contains('Shout - FINEST'), isTrue);
       expect(memoryLogger.contains('Shout - FINER'), isTrue);
       expect(memoryLogger.contains('Shout - FINE'), isTrue);
@@ -144,6 +162,7 @@ void loggerTests() {
 
     test('- Off', () {
       Squadron.logLevel = SquadronLogLevel.off;
+      Squadron.finest('Debug');
       Squadron.finest('Finest');
       Squadron.finer('Finer');
       Squadron.fine('Fine');
@@ -222,66 +241,5 @@ void loggerTests() {
     expect(memoryLogger.contains(Squadron.id), isTrue);
     expect(memoryLogger.contains('should fail'), isFalse);
     expect(memoryLogger.contains('Squadron ID Test'), isTrue);
-  });
-
-  test('- LocalLogger', () async {
-    final logger = MemoryLogger();
-    logger.logLevel = SquadronLogLevel.all;
-
-    final localLogger = LocalSquadronLogger(logger);
-    localLogger.info('localLogger up and running');
-
-    localLogger.finest('finest test in main');
-    localLogger.finer('finer test in main');
-    localLogger.fine('fine test in main');
-    localLogger.config('config test in main');
-    localLogger.info('info test in main');
-    localLogger.warning('warning test in main');
-    localLogger.severe('severe test in main');
-    localLogger.shout('shout test in main');
-
-    final pool =
-        TestWorkerPool(ConcurrencySettings.threeCpuThreads, localLogger);
-
-    final tasks = <Future>[];
-    for (var i = 0; i <= 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.log());
-    }
-    await Future.wait(tasks);
-
-    final fullLog = logger.toString();
-
-    expect(fullLog, contains('localLogger up and running'));
-
-    expect(fullLog, contains('[FINEST] [${Squadron.id}] finest test in main'));
-    expect(fullLog, contains('[FINER] [${Squadron.id}] finer test in main'));
-    expect(fullLog, contains('[FINE] [${Squadron.id}] fine test in main'));
-    expect(fullLog, contains('[CONFIG] [${Squadron.id}] config test in main'));
-    expect(fullLog, contains('[INFO] [${Squadron.id}] info test in main'));
-    expect(
-        fullLog, contains('[WARNING] [${Squadron.id}] warning test in main'));
-    expect(fullLog, contains('[SEVERE] [${Squadron.id}] severe test in main'));
-    expect(fullLog, contains('[SHOUT] [${Squadron.id}] shout test in main'));
-
-    for (var i = 1; i <= pool.maxWorkers; i++) {
-      expect(fullLog,
-          contains('[FINEST] [${Squadron.id}.$i] finest test in worker'));
-      expect(fullLog,
-          contains('[FINER] [${Squadron.id}.$i] finer test in worker'));
-      expect(
-          fullLog, contains('[FINE] [${Squadron.id}.$i] fine test in worker'));
-      expect(fullLog,
-          contains('[CONFIG] [${Squadron.id}.$i] config test in worker'));
-      expect(
-          fullLog, contains('[INFO] [${Squadron.id}.$i] info test in worker'));
-      expect(fullLog,
-          contains('[WARNING] [${Squadron.id}.$i] warning test in worker'));
-      expect(fullLog,
-          contains('[SEVERE] [${Squadron.id}.$i] severe test in worker'));
-      expect(fullLog,
-          contains('[SHOUT] [${Squadron.id}.$i] shout test in worker'));
-    }
-
-    pool.stop();
   });
 }

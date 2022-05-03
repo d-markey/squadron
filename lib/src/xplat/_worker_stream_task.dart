@@ -77,7 +77,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   void _onError(ex, st) {
-    _controller.addError(SquadronException.from(error: ex, stackTrace: st), st);
+    _controller.addError(SquadronException.from(ex, st), st);
   }
 
   void _onData(T data) {
@@ -111,7 +111,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
         }
       }
     } catch (ex, st) {
-      _done(SquadronException.from(error: ex, stackTrace: st));
+      _done(SquadronException.from(ex, st));
     }
   }
 

@@ -1,16 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'squadron_exception.dart';
 
 /// Exception to keep track of errors encountered in a worker.
-class WorkerException implements SquadronException {
+class WorkerException extends SquadronException {
   /// Creates a new [WorkerException] to capture error context.
   WorkerException(this.message,
       {StackTrace? stackTrace, String? workerId, int? command})
-      : _stackTrace = stackTrace ?? StackTrace.current,
+      : _stackTrace = stackTrace,
         _workerId = workerId,
-        _command = command;
+        _command = command {
+    if (_stackTrace == null) {
+      try {
+        _stackTrace = StackTrace.current;
+      } catch (_) {
+        // ignore...
+      }
+    }
+  }
 
   static const _$type = 0;
   static const _$message = 1;
@@ -48,9 +55,6 @@ class WorkerException implements SquadronException {
   /// Command.
   int? get command => _command;
   int? _command;
-
-  @override
-  String toString() => jsonEncode(serialize());
 }
 
 /// Exception to keep track of task cancellation.

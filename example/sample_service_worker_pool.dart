@@ -29,8 +29,8 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
 }
 
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  SampleWorker(dynamic entryPoint, {List args = const []})
+      : super(entryPoint, args: args);
 
   @override
   Future io({required int milliseconds}) =>

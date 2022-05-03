@@ -60,8 +60,7 @@ abstract class WorkerTask<T, W extends Worker> implements Task<T> {
   @override
   void cancel([String? message]) {
     _cancelled ??= timeStamp();
-    _cancelledException ??=
-        CancelledException(message: message, stackTrace: StackTrace.current);
+    _cancelledException ??= CancelledException(message: message);
   }
 
   Future run(W worker) async {

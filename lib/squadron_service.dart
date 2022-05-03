@@ -1,7 +1,5 @@
-export 'src/squadron.dart';
+export 'src/squadron.dart' show Squadron;
 export 'src/squadron_logger.dart';
-export 'src/local_logger.dart'
-    show LocalSquadronLogger, LocalSquadronLoggerClient;
 export 'src/bootstrapper.dart' show run;
 export 'src/channel.dart' show WorkerChannel;
 export 'src/cancellation_token.dart' show CancellationToken;

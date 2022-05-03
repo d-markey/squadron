@@ -50,24 +50,34 @@ class WorkerRunner {
       }
 
       Squadron.setId(startRequest.id!);
+      Squadron.setParent(client);
       Squadron.logLevel = startRequest.logLevel!;
+      Squadron.debugMode = (startRequest.timestamp != null);
 
-      final init = initializer(startRequest);
-      final operations = ((init is Future) ? await init : init).operations;
+      Squadron.config('Squadron setup complete');
+
+      WorkerService service;
+      var init = initializer(startRequest);
+      if (init is Future) {
+        service = await init;
+      } else {
+        service = init;
+      }
+      Squadron.config('Service ready');
+      final operations = service.operations;
       if (operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw newSquadronError(
             'invalid command identifier in service operations map; command ids must be > 0');
       }
       _operations.addAll(operations);
       client.connect(channelInfo);
-    } catch (e, st) {
-      client.error(SquadronException.from(error: e, stackTrace: st));
+    } catch (ex, st) {
+      client.error(SquadronException.from(ex, st));
     }
   }
 
-  /// [WorkerRequest] handler dispatching commands aoocrding to the [_operations] map.
+  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.
   void processMessage(Map message) async {
-    Squadron.finest(() => 'processing request $message');
     final request = WorkerRequest.deserialize(message);
     final client = request?.client;
 
@@ -96,17 +106,19 @@ class WorkerRunner {
         // commands are not available yet (maybe connect() wasn't called or awaited)
         throw WorkerException('worker service is not ready');
       }
+
       // retrieve operation matching the request command
       final op = _operations[request.command];
       if (op == null) {
         throw WorkerException('unknown command: ${request.command}');
       }
       // process
-      final inspectResponse = request.inspectResponse;
       dynamic result = op(request);
       if (result is Future) {
         result = await result;
       }
+
+      final inspectResponse = request.inspectResponse;
       if (result is Stream && client.canStream(result)) {
         // result is a stream: forward data to the client
         late final StreamSubscription subscription;
@@ -126,8 +138,7 @@ class WorkerRunner {
         // start forwarding messages to the client
         subscription = result.listen(
           (data) => client.reply(data, inspectResponse),
-          onError: (ex, st) =>
-              client.error(SquadronException.from(error: ex, stackTrace: st)),
+          onError: (ex, st) => client.error(SquadronException.from(ex, st)),
           onDone: shutdown,
           cancelOnError: false,
         );
@@ -141,7 +152,8 @@ class WorkerRunner {
         client.reply(result, inspectResponse);
       }
     } catch (e, st) {
-      client.error(SquadronException.from(error: e, stackTrace: st));
+      // error: send to client
+      client.error(SquadronException.from(e, st));
     } finally {
       // stop monitoring execution
       _monitor.done(tokenRef);

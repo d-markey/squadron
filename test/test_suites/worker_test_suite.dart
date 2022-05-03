@@ -265,6 +265,7 @@ void workerTests() {
     });
 
     test('- invalid command ID', () async {
+      Squadron.logLevel = SquadronLogLevel.all;
       final worker = TestWorker.invalidCommand();
       try {
         await worker.start();

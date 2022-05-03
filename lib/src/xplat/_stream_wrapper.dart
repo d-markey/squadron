@@ -2,6 +2,7 @@ import 'dart:async';
 
 import '../cancellation_token.dart';
 import '../channel.dart';
+import '../squadron.dart';
 import '../worker_request.dart';
 import '../worker_response.dart';
 import '../worker_service.dart';
@@ -80,6 +81,8 @@ class StreamWrapper<T> {
           return;
         }
         final res = WorkerResponse.deserialize(message);
+        if (res == null) return;
+
         if (res.endOfStream) {
           _controller.close();
           return;
@@ -88,6 +91,11 @@ class StreamWrapper<T> {
           // The first message received from the worker contains the stream ID. If the stream is cancelled on the
           // client side, the stream from the worker context should also be cancelled by sending a
           // WorkerRequest.cancelStream with this stream id.
+          final startTs = _streamRequest.timestamp;
+          final endTs = res.timestamp;
+          if (startTs != null && endTs != null) {
+            Squadron.debug('Stream connected in ${endTs - startTs} µs');
+          }
           _streamId.complete(res.result);
           return;
         }

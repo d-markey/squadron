@@ -8,13 +8,10 @@ typedef WorkerExceptionDeserializer = WorkerException? Function(List data);
 
 /// Base abstract class for exceptions in Squadron.
 abstract class SquadronException implements Exception {
-  /// This factory returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it
+  /// This method returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it
   /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].
-  factory SquadronException.from(
-      {required Object error,
-      StackTrace? stackTrace,
-      String? workerId,
-      int? command}) {
+  static SquadronException from(Object error,
+      [StackTrace? stackTrace, String? workerId, int? command]) {
     if (error is SquadronError) {
       return error;
     } else if (error is WorkerException) {
@@ -76,7 +73,7 @@ abstract class SquadronException implements Exception {
     }
     SquadronException? error;
     try {
-      error = SquadronError.deserialize(data) ??
+      error = deserializeSquadronError(data) ??
           WorkerException.deserialize(data) ??
           CancelledException.deserialize(data) ??
           TaskTimeoutException.deserialize(data);
