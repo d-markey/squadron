@@ -52,9 +52,7 @@ class WorkerRunner {
       Squadron.setId(startRequest.id!);
       Squadron.setParent(client);
       Squadron.logLevel = startRequest.logLevel!;
-      Squadron.debugMode = (startRequest.timestamp != null);
-
-      Squadron.config('Squadron setup complete');
+      Squadron.debugMode = (startRequest.travelTime != null);
 
       WorkerService service;
       var init = initializer(startRequest);
@@ -63,7 +61,6 @@ class WorkerRunner {
       } else {
         service = init;
       }
-      Squadron.config('Service ready');
       final operations = service.operations;
       if (operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw newSquadronError(

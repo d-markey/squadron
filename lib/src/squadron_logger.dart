@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer' as dev show log;
 
 import 'channel.dart';
@@ -15,34 +14,34 @@ abstract class SquadronLogger {
   /// Base logging method. Implement this method to display the [message].
   /// The method is called if the log level is enabled and is provided with a formatted message such as
   /// `[timestamp] [log-level] [Squadron.id] text of the message`
-  FutureOr log(String message);
+  void log(String message);
 
   /// Logs a message at [SquadronLogLevel.debug] level
-  FutureOr debug(dynamic message);
+  void debug(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.finest] level
-  FutureOr finest(dynamic message);
+  void finest(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.finer] level
-  FutureOr finer(dynamic message);
+  void finer(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.fine] level
-  FutureOr fine(dynamic message);
+  void fine(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.config] level
-  FutureOr config(dynamic message);
+  void config(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.info] level
-  FutureOr info(dynamic message);
+  void info(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.warning] level
-  FutureOr warning(dynamic message);
+  void warning(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.severe] level
-  FutureOr severe(dynamic message);
+  void severe(dynamic message);
 
   /// Logs a message at [SquadronLogLevel.shout] level
-  FutureOr shout(dynamic message);
+  void shout(dynamic message);
 }
 
 /// Base class for simple loggers
@@ -50,7 +49,7 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   @override
   int logLevel = Squadron.logLevel;
 
-  FutureOr _log(int level, dynamic message) {
+  void _log(int level, dynamic message) {
     if (level >= logLevel ||
         (level == SquadronLogLevel.debug && Squadron.debugMode)) {
       if (message is Function) {
@@ -75,31 +74,31 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   }
 
   @override
-  FutureOr debug(dynamic message) => _log(SquadronLogLevel.debug, message);
+  void debug(dynamic message) => _log(SquadronLogLevel.debug, message);
 
   @override
-  FutureOr finest(dynamic message) => _log(SquadronLogLevel.finest, message);
+  void finest(dynamic message) => _log(SquadronLogLevel.finest, message);
 
   @override
-  FutureOr finer(dynamic message) => _log(SquadronLogLevel.finer, message);
+  void finer(dynamic message) => _log(SquadronLogLevel.finer, message);
 
   @override
-  FutureOr fine(dynamic message) => _log(SquadronLogLevel.fine, message);
+  void fine(dynamic message) => _log(SquadronLogLevel.fine, message);
 
   @override
-  FutureOr config(dynamic message) => _log(SquadronLogLevel.config, message);
+  void config(dynamic message) => _log(SquadronLogLevel.config, message);
 
   @override
-  FutureOr info(dynamic message) => _log(SquadronLogLevel.info, message);
+  void info(dynamic message) => _log(SquadronLogLevel.info, message);
 
   @override
-  FutureOr warning(dynamic message) => _log(SquadronLogLevel.warning, message);
+  void warning(dynamic message) => _log(SquadronLogLevel.warning, message);
 
   @override
-  FutureOr severe(dynamic message) => _log(SquadronLogLevel.severe, message);
+  void severe(dynamic message) => _log(SquadronLogLevel.severe, message);
 
   @override
-  FutureOr shout(dynamic message) => _log(SquadronLogLevel.shout, message);
+  void shout(dynamic message) => _log(SquadronLogLevel.shout, message);
 }
 
 /// Simple logger based on `dart:dev` `log` function
@@ -167,7 +166,8 @@ class SquadronLogLevel {
 
   /// Gets the log level name
   static String getName(int logLevel) {
-    if (logLevel < finest) return 'ALL';
+    if (logLevel < debug) return 'ALL';
+    if (logLevel < finest) return 'DEBUG';
     if (logLevel < finer) return 'FINEST';
     if (logLevel < fine) return 'FINER';
     if (logLevel < config) return 'FINE';

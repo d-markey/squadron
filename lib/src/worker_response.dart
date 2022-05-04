@@ -9,22 +9,21 @@ import 'squadron_exception.dart';
 /// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also
 /// send error messages.
 class WorkerResponse {
-  WorkerResponse._(
-      this._result, this.error, this.endOfStream, this._log, this.timestamp);
+  WorkerResponse._(this._result, this.error, this.endOfStream, this._log);
 
   /// [WorkerResponse] with a valid [result].
-  WorkerResponse(dynamic result) : this._(result, null, false, null, null);
+  WorkerResponse(dynamic result) : this._(result, null, false, null);
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
   WorkerResponse.withError(Object exception, [StackTrace? stackTrace])
-      : this._(null, SquadronException.from(exception, stackTrace), false, null,
-            null);
+      : this._(
+            null, SquadronException.from(exception, stackTrace), false, null);
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  WorkerResponse.log(String message) : this._(null, null, false, message, null);
+  WorkerResponse.log(String message) : this._(null, null, false, message);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
-  WorkerResponse._endOfStream() : this._(null, null, true, null, null);
+  WorkerResponse._endOfStream() : this._(null, null, true, null);
 
   /// End of stream response.
   static final closeStream = WorkerResponse._endOfStream();
@@ -41,20 +40,16 @@ class WorkerResponse {
         message[_$result],
         SquadronException.deserialize(message[_$error]),
         message[_$endOfStream] ?? false,
-        message[_$log],
-        message[_$timestamp]);
-    final log = res._log;
-    if (log == null) {
-      final ts = res.timestamp;
-      if (ts != null) {
-        Squadron.debug(
-            'response received in ${DateTime.now().microsecondsSinceEpoch - ts} µs');
-      }
-      return res;
-    } else {
-      squadronLog(log);
+        message[_$log]);
+    final ts = message[_$timestamp];
+    if (ts != null) {
+      res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
+    }
+    if (res._log != null) {
+      squadronLog(res._log!);
       return null;
     }
+    return res;
   }
 
   /// [WorkerResponse] serialization.
@@ -100,7 +95,11 @@ class WorkerResponse {
   /// Flag indicating whether an error occured.
   bool get hasError => error != null;
 
-  final int? timestamp;
+  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time
+  /// (in microseconds) it took between the moment the message was serialized and the moment it was
+  /// deserialized.
+  int? get travelTime => _travelTime;
+  int? _travelTime;
 
   final String? _log;
 

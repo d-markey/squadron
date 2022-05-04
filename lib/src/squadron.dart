@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'channel.dart';
 import 'squadron_logger.dart';
 
@@ -79,36 +77,38 @@ class Squadron {
     }
   }
 
-  /// Logs a message at [SquadronLogLevel.debug] level
-  static FutureOr debug(dynamic message) => _logger?.debug(message);
+  /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be
+  /// displayed regardless of [Squadron.logLevel]. If `false`, [Squadron.logLevel] must be set to
+  /// [SquadronLogLevel.all].
+  static void debug(dynamic message) => _logger?.debug(message);
 
   /// Logs a message at [SquadronLogLevel.finest] level
-  static FutureOr finest(dynamic message) => _logger?.finest(message);
+  static void finest(dynamic message) => _logger?.finest(message);
 
   /// Logs a message at [SquadronLogLevel.finer] level
-  static FutureOr finer(dynamic message) => _logger?.finer(message);
+  static void finer(dynamic message) => _logger?.finer(message);
 
   /// Logs a message at [SquadronLogLevel.fine] level
-  static FutureOr fine(dynamic message) => _logger?.fine(message);
+  static void fine(dynamic message) => _logger?.fine(message);
 
   /// Logs a message at [SquadronLogLevel.config] level
-  static FutureOr config(dynamic message) => _logger?.config(message);
+  static void config(dynamic message) => _logger?.config(message);
 
   /// Logs a message at [SquadronLogLevel.info] level
-  static FutureOr info(dynamic message) => _logger?.info(message);
+  static void info(dynamic message) => _logger?.info(message);
 
   /// Logs a message at [SquadronLogLevel.warning] level
-  static FutureOr warning(dynamic message) => _logger?.warning(message);
+  static void warning(dynamic message) => _logger?.warning(message);
 
   /// Logs a message at [SquadronLogLevel.severe] level
-  static FutureOr severe(dynamic message) => _logger?.severe(message);
+  static void severe(dynamic message) => _logger?.severe(message);
 
   /// Logs a message at [SquadronLogLevel.shout] level
-  static FutureOr shout(dynamic message) => _logger?.shout(message);
+  static void shout(dynamic message) => _logger?.shout(message);
 }
 
 // for internal use
 SquadronLogger? getSquadronLogger() => Squadron._logger;
 
 /// Logs a message
-FutureOr squadronLog(String message) => Squadron._logger?.log(message);
+void squadronLog(String message) => Squadron._logger?.log(message);

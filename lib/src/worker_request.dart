@@ -21,16 +21,8 @@ import 'xplat/_identity.dart';
 class WorkerRequest {
   static const _noArgs = [];
 
-  WorkerRequest._(
-      dynamic channelInfo,
-      this.command,
-      this.id,
-      this.args,
-      this.logLevel,
-      this._cancelToken,
-      this.streamId,
-      this.inspectResponse,
-      this._timestamp)
+  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
+      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)
       : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new request with the specified [command] ID and optional arguments.
@@ -39,28 +31,27 @@ class WorkerRequest {
       CancellationToken? cancelToken,
       bool inspectResponse = true])
       : this._(channelInfo, command, null, args, null, cancelToken, null,
-            inspectResponse, null);
+            inspectResponse);
 
   /// Creates a new start request.
   WorkerRequest.start(dynamic channelInfo,
       [List args = _noArgs, bool inspectResponse = true])
       : this._(channelInfo, _connectCommand, Identity.nextId(), args,
-            Squadron.logLevel, null, null, inspectResponse, null);
+            Squadron.logLevel, null, null, inspectResponse);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancelStream(int streamId)
       : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId,
-            false, null);
+            false);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancel(CancellationToken cancelToken)
       : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null,
-            false, null);
+            false);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
-      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false,
-            null);
+      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);
 
   static const _$client = 'a';
   static const _$command = 'b';
@@ -74,23 +65,20 @@ class WorkerRequest {
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
   static WorkerRequest? deserialize(Map? message) {
-    final req = (message == null)
-        ? null
-        : WorkerRequest._(
-            message[_$client],
-            message[_$command],
-            message[_$id],
-            message[_$args] ?? const [],
-            message[_$logLevel],
-            CancellationToken.deserialize(message[_$token]),
-            message[_$streamId],
-            message[_$inspectResponse] ?? true,
-            message[_$timestamp],
-          );
-    final ts = req?.timestamp;
+    if (message == null) return null;
+    final req = WorkerRequest._(
+      message[_$client],
+      message[_$command],
+      message[_$id],
+      message[_$args] ?? const [],
+      message[_$logLevel],
+      CancellationToken.deserialize(message[_$token]),
+      message[_$streamId],
+      message[_$inspectResponse] ?? true,
+    );
+    final ts = message[_$timestamp];
     if (ts != null) {
-      Squadron.debug(
-          'request received in ${DateTime.now().microsecondsSinceEpoch - ts} µs');
+      req._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
     }
     return req;
   }
@@ -156,7 +144,11 @@ class WorkerRequest {
   /// Web workers, ownership of these objects must be transfered across threads.
   final bool inspectResponse;
 
-  final int? _timestamp;
+  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time
+  /// (in microseconds) it took between the moment the message was serialized and the moment it was
+  /// deserialized.
+  int? get travelTime => _travelTime;
+  int? _travelTime;
 
   /// flag for start requests.
   bool get connect => command == _connectCommand;
@@ -184,6 +176,4 @@ extension WorkerRequestExt on WorkerRequest {
     }
     _cancelToken = token;
   }
-
-  int? get timestamp => _timestamp;
 }

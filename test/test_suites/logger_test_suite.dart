@@ -26,15 +26,17 @@ void loggerTests() {
     memoryLogger.clear();
     Squadron.pushLogLevel(SquadronLogLevel.all);
     Squadron.setLogger(memoryLogger);
+    Squadron.debugMode = false;
   });
 
   tearDown(() {
     Squadron.setLogger(initialLogger);
     Squadron.popLogLevel();
+    Squadron.debugMode = false;
   });
 
   group('- Log levels', () {
-    test('- Debug', () {
+    test('- Debug - debugMode = false', () {
       for (var logLevel in logLevels.entries) {
         Squadron.logLevel = logLevel.key;
         Squadron.debug('Debug - ${logLevel.value}');
@@ -42,6 +44,16 @@ void loggerTests() {
 
       expect(memoryLogger.length, equals(1));
       expect(memoryLogger.contains('Debug - DEBUG'), isTrue);
+    });
+
+    test('- Debug - debugMode = true', () {
+      Squadron.debugMode = true;
+      for (var logLevel in logLevels.entries) {
+        Squadron.logLevel = logLevel.key;
+        Squadron.debug('Debug - ${logLevel.value}');
+      }
+
+      expect(memoryLogger.length, equals(logLevels.length));
     });
 
     test('- Finest', () {
