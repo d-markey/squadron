@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94871795" lines-covered="37" lines-valid="39" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-04" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94871795" lines-covered="37" lines-valid="39" package="/src" testname="lcov.info" version="1.5">
     <lines>
-        <line>
-            <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line>
             <code>import 'channel.dart';</code>
         </line>
@@ -271,10 +265,16 @@
             <code/>
         </line>
         <line>
-            <code>  /// Logs a message at [SquadronLogLevel.debug] level</code>
+            <code>  /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be</code>
+        </line>
+        <line>
+            <code>  /// displayed regardless of [Squadron.logLevel]. If `false`, [Squadron.logLevel] must be set to</code>
+        </line>
+        <line>
+            <code>  /// [SquadronLogLevel.all].</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr debug(dynamic message) =&gt; _logger?.debug(message);</code>
+            <code>  static void debug(dynamic message) =&gt; _logger?.debug(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -284,7 +284,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.finest] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr finest(dynamic message) =&gt; _logger?.finest(message);</code>
+            <code>  static void finest(dynamic message) =&gt; _logger?.finest(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -294,7 +294,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.finer] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr finer(dynamic message) =&gt; _logger?.finer(message);</code>
+            <code>  static void finer(dynamic message) =&gt; _logger?.finer(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -304,7 +304,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.fine] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr fine(dynamic message) =&gt; _logger?.fine(message);</code>
+            <code>  static void fine(dynamic message) =&gt; _logger?.fine(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -314,7 +314,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.config] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr config(dynamic message) =&gt; _logger?.config(message);</code>
+            <code>  static void config(dynamic message) =&gt; _logger?.config(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -324,7 +324,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.info] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr info(dynamic message) =&gt; _logger?.info(message);</code>
+            <code>  static void info(dynamic message) =&gt; _logger?.info(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -334,7 +334,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.warning] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr warning(dynamic message) =&gt; _logger?.warning(message);</code>
+            <code>  static void warning(dynamic message) =&gt; _logger?.warning(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -344,7 +344,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.severe] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr severe(dynamic message) =&gt; _logger?.severe(message);</code>
+            <code>  static void severe(dynamic message) =&gt; _logger?.severe(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -354,7 +354,7 @@
             <code>  /// Logs a message at [SquadronLogLevel.shout] level</code>
         </line>
         <line hits="3">
-            <code>  static FutureOr shout(dynamic message) =&gt; _logger?.shout(message);</code>
+            <code>  static void shout(dynamic message) =&gt; _logger?.shout(message);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -377,7 +377,7 @@
             <code>/// Logs a message</code>
         </line>
         <line hits="2">
-            <code>FutureOr squadronLog(String message) =&gt; Squadron._logger?.log(message);</code>
+            <code>void squadronLog(String message) =&gt; Squadron._logger?.log(message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
     </lines>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85106385" lines-covered="40" lines-valid="47" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-04" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82" lines-covered="41" lines-valid="50" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -35,12 +35,8 @@
             <code>class WorkerResponse {</code>
         </line>
         <line hits="2">
-            <code>  WorkerResponse._(</code>
+            <code>  WorkerResponse._(this._result, this.error, this.endOfStream, this._log);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      this._result, this.error, this.endOfStream, this._log, this.timestamp);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -49,7 +45,7 @@
             <code>  /// [WorkerResponse] with a valid [result].</code>
         </line>
         <line hits="3">
-            <code>  WorkerResponse(dynamic result) : this._(result, null, false, null, null);</code>
+            <code>  WorkerResponse(dynamic result) : this._(result, null, false, null);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -62,12 +58,13 @@
             <code>  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      : this._(null, SquadronException.from(exception, stackTrace), false, null,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>      : this._(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>            null);</code>
+        <line hits="2">
+            <code>            null, SquadronException.from(exception, stackTrace), false, null);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -76,7 +73,7 @@
             <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
         </line>
         <line hits="2">
-            <code>  WorkerResponse.log(String message) : this._(null, null, false, message, null);</code>
+            <code>  WorkerResponse.log(String message) : this._(null, null, false, message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -86,7 +83,7 @@
             <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
         </line>
         <line hits="3">
-            <code>  WorkerResponse._endOfStream() : this._(null, null, true, null, null);</code>
+            <code>  WorkerResponse._endOfStream() : this._(null, null, true, null);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -144,48 +141,30 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        message[_$log],</code>
+            <code>        message[_$log]);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        message[_$timestamp]);</code>
+            <code>    final ts = message[_$timestamp];</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    final log = res._log;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (log == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      final ts = res.timestamp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (ts != null) {</code>
+            <code>    if (ts != null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>        Squadron.debug(</code>
-        </line>
-        <line hits="0">
-            <code>            'response received in ${DateTime.now().microsecondsSinceEpoch - ts} µs');</code>
+            <code>      res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);</code>
         </line>
         <line>
-            <code>      }</code>
+            <code>    }</code>
         </line>
-        <line hits="1">
-            <code>      return res;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    if (res._log != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="1">
-            <code>      squadronLog(log);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      squadronLog(res._log!);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      return null;</code>
@@ -193,6 +172,10 @@
         </line>
         <line>
             <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>    return res;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -220,8 +203,9 @@
             <code>        _$error: error!.serialize(),</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
@@ -241,7 +225,7 @@
             <code>        _$log: _log,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="0">
             <code>        if (Squadron.debugMode)</code>
         </line>
         <line hits="0">
@@ -262,8 +246,9 @@
             <code>        _$endOfStream: true,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
@@ -279,7 +264,7 @@
             <code>      return {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="0">
             <code>        if (Squadron.debugMode)</code>
         </line>
         <line hits="0">
@@ -299,8 +284,9 @@
             <code>        _$result: _result,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch</code>
@@ -347,7 +333,19 @@
             <code/>
         </line>
         <line>
-            <code>  final int? timestamp;</code>
+            <code>  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time</code>
+        </line>
+        <line>
+            <code>  /// (in microseconds) it took between the moment the message was serialized and the moment it was</code>
+        </line>
+        <line>
+            <code>  /// deserialized.</code>
+        </line>
+        <line hits="0">
+            <code>  int? get travelTime =&gt; _travelTime;</code>
+        </line>
+        <line>
+            <code>  int? _travelTime;</code>
         </line>
         <line>
             <code/>

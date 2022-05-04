@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9714286" lines-covered="68" lines-valid="70" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-04" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9848485" lines-covered="65" lines-valid="66" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -12,9 +12,6 @@
         </line>
         <line>
             <code>import '../channel.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
         </line>
         <line>
             <code>import '../worker_request.dart';</code>
@@ -312,31 +309,13 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          // The first message received from the worker contains the stream ID. If the stream is cancelled on the</code>
+            <code>          // The first message received from the worker contains the stream ID. If the stream is cancelled on</code>
         </line>
         <line>
-            <code>          // client side, the stream from the worker context should also be cancelled by sending a</code>
+            <code>          // the client side, the stream from the worker context should also be cancelled by sending a</code>
         </line>
         <line>
             <code>          // WorkerRequest.cancelStream with this stream id.</code>
-        </line>
-        <line hits="3">
-            <code>          final startTs = _streamRequest.timestamp;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          final endTs = res.timestamp;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          if (startTs != null &amp;&amp; endTs != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>            Squadron.debug('Stream connected in ${endTs - startTs} µs');</code>
-        </line>
-        <line>
-            <code>          }</code>
         </line>
         <line hits="4">
             <code>          _streamId.complete(res.result);</code>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-03" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89041096" lines-covered="65" lines-valid="73" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-04" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8873239" lines-covered="63" lines-valid="71" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -178,14 +178,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      Squadron.debugMode = (startRequest.timestamp != null);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.config('Squadron setup complete');</code>
+            <code>      Squadron.debugMode = (startRequest.travelTime != null);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -213,10 +206,6 @@
         </line>
         <line>
             <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>      Squadron.config('Service ready');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      final operations = service.operations;</code>
