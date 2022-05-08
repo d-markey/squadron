@@ -101,8 +101,8 @@ Dart Isolates as well as Web Workers.
 
 ```dart
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  SampleWorker(dynamic entryPoint, {List args = const []})
+      : super(entryPoint, args: args);
 
   @override
   Future io({required int milliseconds}) =>
@@ -172,6 +172,13 @@ Native platform (instances will still be copied).
 Web Workers have similar characteristics. Only primitive types and objects implementing
 [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across
 Web Worker boundaries.
+
+Communication between threads does not come for free, and some experiments have found that using `jsonEncode()`
+may actually be more efficient when sending large data sets (e.g. a `List` containing  many `Map`s) even
+with the overhead of calling `jsonDecode()` on the receiving end. This is especially true on Web platforms
+because Dart's implementation of [postMessage](https://api.dart.dev/stable/dart-html/MessagePort/postMessage.html)
+involves converting Dart objects to native JavaScript objects. These objects will then be cloned by the
+browser.
 
 ### <a name="channels_and_types"></a>Channels, Types, and Browser Platforms
 
@@ -395,8 +402,8 @@ The `CacheWorker` is easy:
 
 ```dart
 class CacheWorker extends Worker implements Cache {
-  CacheWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  CacheWorker(dynamic entryPoint, {List args = const []})
+      : super(entryPoint, args: args);
 
   @override
   Future<dynamic> get(dynamic key) => send(CacheService.getOperation, [key]);
@@ -490,8 +497,8 @@ The `OtherWorker` implementation is straightforward:
 
 ```dart
 class OtherWorker extends Worker implements OtherService {
-  OtherWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  OtherWorker(dynamic entryPoint, {List args = const []})
+      : super(entryPoint, args: args);
 
   @override
   Future<int> compute(int n) => send<int>(OtherService.computeCommand, [n]);
@@ -647,8 +654,8 @@ class MyWorkerServiceImpl implements MyWorkerService, WorkerService {
 }
 
 class MyWorker extends Worker implements MyWorkerService {
-  MyWorker(dynamic entryPoint, {String? id, List args = const []})
-      : super(entryPoint, id: id, args: args);
+  MyWorker(dynamic entryPoint, {, List args = const []})
+      : super(entryPoint, args: args);
 
   @override
   Future<String> whoAreYouTalkingTo() =>
@@ -921,7 +928,7 @@ is possible to cancel pending tasks before stopping the worker pool.
 
 The pool will not accept new tasks unless it is restarted with `pool.start()`. 
 
-## <a name="logging"></a>Logging
+## <a name="logging"></a>Logging & Debug Mode
 
 Squadron provides a minimal logging infrastructure to facilitate logging and debugging. The interface to log
 messages is similar to that of the [logging](https://pub.dev/packages/logging) package, including compatible
@@ -937,43 +944,28 @@ For instance:
 ```dart
 // this is your main app entry point
 void main() {
-  Squadron.logLevel = SquadronLogLevel.WARNING;
+  Squadron.logLevel = SquadronLogLevel.warning;
   Squadron.logger = DevSquadronLogger();
   // ... and then the rest of your code
 }
 ```
 
-When your app fires up a worker, the log level will be passed on to the platform worker automatically. However,
-Squadron does not automatically selects a logger and it has to be initialized manually. The logger should be
-installed as early as possible in the worker's lifetime, for instance before calling the `run()` function, or
-in the service initialization function.
+When your app fires up a worker, the log level will be passed on to the platform worker automatically. Squadron
+4.x also automatically supports logging in workers and there is no need to initialize a logger in worker code.
+Log messages from workers will be sent to the main thread (depending on the worker's log level) which facilitates
+logging form workers in Web apps. Please note that logging impacts performance as messages must be transferred
+from the worker thread to the main thread.
 
-Here are some examples:
+Additionally, Squadron 4.x provides a `debug` log level which is even finer than the `finest` log level. Used
+in combination with `Squadron.debugMode = true`, this log level allows for displaying log messages even though
+the current log level is above `debug`.
 
-* in native workers, use a `DevSquadronLogger`:
-
-```dart
-SampleWorker createVmSampleWorker() => SampleWorker(_main);
-
-void _main(Map command) {
-  Squadron.logger = DevSquadronLogger();
-  run((startRequest) => SampleService(), command);
-}
-```
-
-* in Web workers, use a `ConsoleSquadronLogger`:
-
-```dart
-SampleWorker createJsSampleWorker() => SampleWorker('sample_worker_js.dart.js');
-
-void main() {
-  Squadron.logger = ConsoleSquadronLogger();
-  run((startRequest) => SampleService());
-}
-```
-
-Web Workers are not connected to the Dart debugger. As a result, debugging them can be challenging.
-`ConsoleSquadronLogger` will help and display log messages in your browser's JavaScript console.
+Also, when `Squadron.debugMode` is set to `true`, the `travelTime` property of `WorkerRequest` and `WorkerResponse`
+will contain the time elapsed between the moment the message was serialized (on the emitting end) and deserialized
+(on the receiving end). This duration is expressed in microseconds and includes the time it took to transfer the
+message from one thread to another, as well as the delay due to the receiving thread's event loop (the message may
+have to wait before it is picked up by the event loop) and the delay to deliver the message when using a pool of
+workers (the message may have to wait for a worker to become available).
 
 ## <a name="prod"></a>Releasing Your App
 
@@ -982,20 +974,15 @@ Releasing your application for Dart Native platforms should be straightforward.
 To release the Browser version, the worker code must first be compiled to JavaScript:
 
 ```
-dart compile js -o web/service_worker.dart.js lib/src/browser/service_worker.dart
+dart compile js -o lib/src/browser/service_worker.dart web/service_worker.dart.js
 ```
 
-You may also have to reference the JavaScript file from `index.html`:
+Flutter's Web runtime includes a service worker called `flutter_service_worker.js`: make sure you use
+a different name for your workers to avoid any conflict! After compiling your worker scripts, you can
+build your app using:
 
-```html
-  <!-- Load service_worker.dart.js file -->
-  <script>
-    const scriptTag = document.createElement('script');
-    scriptTag.src = 'service_worker.dart.js';
-    scriptTag.defer = true;
-    scriptTag.type = 'text/javascript';
-    document.body.append(scriptTag);
-  </script>
+```
+flutter build web
 ```
 
 ## <a name="thanks"></a>Thanks!
