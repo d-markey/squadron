@@ -32,7 +32,7 @@ some air.
 * [Task Cancellation](#cancellation)
   * [Cancellation Tokens](#tokens)
 * [Monitoring](#monitoring)
-* [Logging](#logging)
+* [Logging & Debug Mode](#logging)
 * [Thanks!](#thanks)
 
 ## <a name="features"></a>Features
