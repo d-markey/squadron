@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9677419" lines-covered="90" lines-valid="93" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9705882" lines-covered="99" lines-valid="102" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -242,13 +242,49 @@
         <line>
             <code>  /// [Worker] statistics.</code>
         </line>
-        <line hits="7">
-            <code>  WorkerStat get stats =&gt; WorkerStat(runtimeType, workerId, isStopped, status,</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>  WorkerStat get stats =&gt; createWorkerStat(</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
-            <code>      workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>      runtimeType,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      workerId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      isStopped,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      status,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      workload,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      maxWorkload,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      totalWorkload,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      totalErrors,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      upTime,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      idleTime);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -288,16 +324,16 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      [List args = const [],</code>
+            <code>      {List args = const [],</code>
         </line>
         <line>
             <code>      CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectRequest = true,</code>
+            <code>      bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true]) async {</code>
+            <code>      bool inspectResponse = false}) async {</code>
         </line>
         <line>
             <code>    // update stats</code>
@@ -445,16 +481,16 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      [List args = const [],</code>
+            <code>      {List args = const [],</code>
         </line>
         <line>
             <code>      CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectRequest = true,</code>
+            <code>      bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true]) {</code>
+            <code>      bool inspectResponse = false}) {</code>
         </line>
         <line>
             <code>    // update stats</code>

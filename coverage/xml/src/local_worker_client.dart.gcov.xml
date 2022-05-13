@@ -2,6 +2,9 @@
 <?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="local_worker_client.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
+            <code>import 'cancellation_token.dart';</code>
+        </line>
+        <line>
             <code>import 'channel.dart';</code>
         </line>
         <line>
@@ -54,18 +57,33 @@
             <code>  /// Sends a command to the [LocalWorker].</code>
         </line>
         <line hits="1">
-            <code>  Future&lt;T&gt; send&lt;T&gt;(int command, List args,</code>
+            <code>  Future&lt;T&gt; send&lt;T&gt;(int command,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          {bool inspectRequest = true, bool inspectResponse = true}) =&gt;</code>
+            <code>          {List args = const [],</code>
+        </line>
+        <line>
+            <code>          CancellationToken? token,</code>
+        </line>
+        <line>
+            <code>          bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
         <line hits="2">
             <code>      channel.sendRequest&lt;T&gt;(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          inspectRequest: inspectRequest, inspectResponse: inspectResponse);</code>
+            <code>          token: token,</code>
+        </line>
+        <line>
+            <code>          inspectRequest: inspectRequest,</code>
+        </line>
+        <line>
+            <code>          inspectResponse: inspectResponse);</code>
         </line>
         <line>
             <code/>
@@ -74,18 +92,36 @@
             <code>  /// Sends a streaming command to the [LocalWorker].</code>
         </line>
         <line hits="1">
-            <code>  Stream&lt;T&gt; stream&lt;T&gt;(int command, List args,</code>
+            <code>  Stream&lt;T&gt; stream&lt;T&gt;(int command,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          {bool inspectRequest = true, bool inspectResponse = true}) =&gt;</code>
+            <code>          {List args = const [],</code>
+        </line>
+        <line>
+            <code>          CancellationToken? token,</code>
+        </line>
+        <line>
+            <code>          bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
         <line hits="2">
             <code>      channel.sendStreamingRequest&lt;T&gt;(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          inspectRequest: inspectRequest, inspectResponse: inspectResponse);</code>
+            <code>          onDone: Channel.noop,</code>
+        </line>
+        <line>
+            <code>          token: token,</code>
+        </line>
+        <line>
+            <code>          inspectRequest: inspectRequest,</code>
+        </line>
+        <line>
+            <code>          inspectResponse: inspectResponse);</code>
         </line>
         <line>
             <code/>
