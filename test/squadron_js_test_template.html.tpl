@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Squadron Worker Tests - {{testName}}</title>
+    <title>Squadron Web Worker Tests - {{testName}}</title>
     {{testScript}}
     <link rel="x-web-worker" href="sample_js_workers/echo_worker.dart.js">
 
