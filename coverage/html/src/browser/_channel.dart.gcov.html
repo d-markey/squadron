@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>130</td><td>157</td><td class="med">82.8%</td>
+                            <th scope="row">Lines</th><td>128</td><td>156</td><td class="med">82.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -162,8 +162,8 @@
                 <tr class="lineCov" title="Line 34" id="line34">
                     <td>34</td><td></td><td>1</td><td><code>      if (inspectRequest) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>1</td><td><code>        transfer.addAll(Transferables.get(message));</code></td>
+                <tr class="lineNoCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>0</td><td><code>        transfer.addAll(Transferables.get(message));</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
                     <td>36</td><td></td><td></td><td><code>      } else {</code></td>
@@ -171,8 +171,8 @@
                 <tr class="lineCov" title="Line 37" id="line37">
                     <td>37</td><td></td><td>1</td><td><code>        if (req.client != null) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>0</td><td><code>          transfer.add(req.client!.serialize());</code></td>
+                <tr class="lineCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>1</td><td><code>          transfer.add(req.client!.serialize());</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
                     <td>39</td><td></td><td></td><td><code>        }</code></td>
@@ -216,8 +216,8 @@
                 <tr class="noop" title="Line 52" id="line52">
                     <td>52</td><td></td><td></td><td><code>        final transfer = Transferables.get(message).toList();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>1</td><td><code>        _sendPort!.postMessage(message, transfer);</code></td>
+                <tr class="lineNoCov" title="Line 53" id="line53">
+                    <td>53</td><td></td><td>0</td><td><code>        _sendPort!.postMessage(message, transfer);</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
                     <td>54</td><td></td><td></td><td><code>      } else {</code></td>
@@ -316,10 +316,10 @@
                     <td>85</td><td></td><td></td><td><code>      {CancellationToken? token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 86" id="line86">
-                    <td>86</td><td></td><td></td><td><code>      bool inspectRequest = true,</code></td>
+                    <td>86</td><td></td><td></td><td><code>      bool inspectRequest = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
-                    <td>87</td><td></td><td></td><td><code>      bool inspectResponse = true}) {</code></td>
+                    <td>87</td><td></td><td></td><td><code>      bool inspectResponse = false}) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 88" id="line88">
                     <td>88</td><td></td><td></td><td><code>    final com = web.MessageChannel();</code></td>
@@ -385,10 +385,10 @@
                     <td>108</td><td></td><td></td><td><code>      CancellationToken? token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 109" id="line109">
-                    <td>109</td><td></td><td></td><td><code>      bool inspectRequest = true,</code></td>
+                    <td>109</td><td></td><td></td><td><code>      bool inspectRequest = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 110" id="line110">
-                    <td>110</td><td></td><td></td><td><code>      bool inspectResponse = true}) {</code></td>
+                    <td>110</td><td></td><td></td><td><code>      bool inspectResponse = false}) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 111" id="line111">
                     <td>111</td><td></td><td>1</td><td><code>    final com = web.MessageChannel();</code></td>
@@ -741,8 +741,8 @@
                 <tr class="lineCov" title="Line 227" id="line227">
                     <td>227</td><td></td><td>1</td><td><code>    if (_isBaseType(value)) return true;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 228" id="line228">
-                    <td>228</td><td></td><td>1</td><td><code>    if (_isListOfBaseType(value)) return true;</code></td>
+                <tr class="lineNoCov" title="Line 228" id="line228">
+                    <td>228</td><td></td><td>0</td><td><code>    if (_isListOfBaseType(value)) return true;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 229" id="line229">
                     <td>229</td><td></td><td>1</td><td><code>    if (value is List &amp;&amp; value.every(_isSafeForTransfer)) return true;</code></td>
@@ -940,190 +940,172 @@
                     <td>293</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 294" id="line294">
-                    <td>294</td><td></td><td>1</td><td><code>      Squadron.severe('error in Web Worker #$workerId: $msg');</code></td>
+                    <td>294</td><td></td><td>1</td><td><code>      final error = WorkerException(msg);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 295" id="line295">
-                    <td>295</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
+                <tr class="noop" title="Line 295" id="line295">
+                    <td>295</td><td></td><td></td><td><code>      Squadron.warning(</code></td>
                 </tr>
-                <tr class="noop" title="Line 296" id="line296">
-                    <td>296</td><td></td><td></td><td><code>        StackTrace? stackTrace;</code></td>
+                <tr class="lineNoCov" title="Line 296" id="line296">
+                    <td>296</td><td></td><td>0</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
                 </tr>
-                <tr class="noop" title="Line 297" id="line297">
-                    <td>297</td><td></td><td></td><td><code>        try {</code></td>
+                <tr class="lineCov" title="Line 297" id="line297">
+                    <td>297</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 298" id="line298">
-                    <td>298</td><td></td><td>0</td><td><code>          stackTrace = StackTrace.current;</code></td>
+                    <td>298</td><td></td><td>0</td><td><code>        completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 299" id="line299">
-                    <td>299</td><td></td><td></td><td><code>        } catch (_) {</code></td>
+                    <td>299</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="noop" title="Line 300" id="line300">
-                    <td>300</td><td></td><td></td><td><code>          // ignore...</code></td>
+                <tr class="lineCov" title="Line 300" id="line300">
+                    <td>300</td><td></td><td>1</td><td><code>    },</code></td>
                 </tr>
                 <tr class="noop" title="Line 301" id="line301">
-                    <td>301</td><td></td><td></td><td><code>        }</code></td>
+                    <td>301</td><td></td><td></td><td><code>  );</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 302" id="line302">
-                    <td>302</td><td></td><td>0</td><td><code>        completer.completeError(</code></td>
+                <tr class="noop" title="Line 302" id="line302">
+                    <td>302</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 303" id="line303">
-                    <td>303</td><td></td><td>0</td><td><code>            WorkerException('error in Web Worker #$workerId: $msg',</code></td>
+                <tr class="lineCov" title="Line 303" id="line303">
+                    <td>303</td><td></td><td>1</td><td><code>  com.port1.onMessage.listen(</code></td>
                 </tr>
-                <tr class="noop" title="Line 304" id="line304">
-                    <td>304</td><td></td><td></td><td><code>                stackTrace: stackTrace),</code></td>
+                <tr class="lineCov" title="Line 304" id="line304">
+                    <td>304</td><td></td><td>1</td><td><code>    (event) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 305" id="line305">
-                    <td>305</td><td></td><td></td><td><code>            stackTrace);</code></td>
+                <tr class="lineCov" title="Line 305" id="line305">
+                    <td>305</td><td></td><td>1</td><td><code>      final response = WorkerResponse.deserialize(event.data);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 306" id="line306">
-                    <td>306</td><td></td><td>0</td><td><code>        worker.terminate();</code></td>
+                <tr class="lineCov" title="Line 306" id="line306">
+                    <td>306</td><td></td><td>1</td><td><code>      if (response == null) return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 307" id="line307">
-                    <td>307</td><td></td><td></td><td><code>      }</code></td>
+                    <td>307</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 308" id="line308">
-                    <td>308</td><td></td><td>1</td><td><code>    },</code></td>
+                    <td>308</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 309" id="line309">
-                    <td>309</td><td></td><td></td><td><code>  );</code></td>
+                <tr class="lineCov" title="Line 309" id="line309">
+                    <td>309</td><td></td><td>1</td><td><code>        final error = response.error;</code></td>
                 </tr>
-                <tr class="noop" title="Line 310" id="line310">
-                    <td>310</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 310" id="line310">
+                    <td>310</td><td></td><td>1</td><td><code>        if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 311" id="line311">
-                    <td>311</td><td></td><td>1</td><td><code>  com.port1.onMessage.listen(</code></td>
+                    <td>311</td><td></td><td>1</td><td><code>          worker.terminate();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 312" id="line312">
-                    <td>312</td><td></td><td>1</td><td><code>    (event) {</code></td>
+                <tr class="noop" title="Line 312" id="line312">
+                    <td>312</td><td></td><td></td><td><code>          Squadron.severe(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 313" id="line313">
-                    <td>313</td><td></td><td>1</td><td><code>      final response = WorkerResponse.deserialize(event.data);</code></td>
+                    <td>313</td><td></td><td>1</td><td><code>              'connection to Web Worker #$workerId failed: ${response.error}');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 314" id="line314">
-                    <td>314</td><td></td><td>1</td><td><code>      if (response == null) return;</code></td>
+                    <td>314</td><td></td><td>1</td><td><code>          completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 315" id="line315">
-                    <td>315</td><td></td><td></td><td><code></code></td>
+                    <td>315</td><td></td><td></td><td><code>        } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 316" id="line316">
-                    <td>316</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
+                    <td>316</td><td></td><td>1</td><td><code>          channel._sendPort = response.result;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 317" id="line317">
-                    <td>317</td><td></td><td>1</td><td><code>        final error = response.error;</code></td>
+                    <td>317</td><td></td><td>1</td><td><code>          channel._workerId = startRequest.id;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 318" id="line318">
-                    <td>318</td><td></td><td>1</td><td><code>        if (error != null) {</code></td>
+                <tr class="lineNoCov" title="Line 318" id="line318">
+                    <td>318</td><td></td><td>0</td><td><code>          Squadron.config('connected to Web Worker #$workerId');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 319" id="line319">
-                    <td>319</td><td></td><td>1</td><td><code>          worker.terminate();</code></td>
+                    <td>319</td><td></td><td>1</td><td><code>          completer.complete(channel);</code></td>
                 </tr>
                 <tr class="noop" title="Line 320" id="line320">
-                    <td>320</td><td></td><td></td><td><code>          Squadron.severe(</code></td>
+                    <td>320</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 321" id="line321">
-                    <td>321</td><td></td><td>1</td><td><code>              'connection to Web Worker #$workerId failed: ${response.error}');</code></td>
+                <tr class="noop" title="Line 321" id="line321">
+                    <td>321</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 322" id="line322">
-                    <td>322</td><td></td><td>1</td><td><code>          completer.completeError(error, error.stackTrace);</code></td>
+                <tr class="lineNoCov" title="Line 322" id="line322">
+                    <td>322</td><td></td><td>0</td><td><code>        Squadron.config('unexpected response: ${response.serialize()}');</code></td>
                 </tr>
                 <tr class="noop" title="Line 323" id="line323">
-                    <td>323</td><td></td><td></td><td><code>        } else {</code></td>
+                    <td>323</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 324" id="line324">
-                    <td>324</td><td></td><td>1</td><td><code>          channel._sendPort = response.result;</code></td>
+                    <td>324</td><td></td><td>1</td><td><code>    },</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 325" id="line325">
-                    <td>325</td><td></td><td>1</td><td><code>          channel._workerId = startRequest.id;</code></td>
+                <tr class="noop" title="Line 325" id="line325">
+                    <td>325</td><td></td><td></td><td><code>  );</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 326" id="line326">
-                    <td>326</td><td></td><td>0</td><td><code>          Squadron.config('connected to Web Worker #$workerId');</code></td>
+                <tr class="noop" title="Line 326" id="line326">
+                    <td>326</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 327" id="line327">
-                    <td>327</td><td></td><td>1</td><td><code>          completer.complete(channel);</code></td>
+                    <td>327</td><td></td><td>1</td><td><code>  final message = startRequest.serialize();</code></td>
                 </tr>
-                <tr class="noop" title="Line 328" id="line328">
-                    <td>328</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineNoCov" title="Line 328" id="line328">
+                    <td>328</td><td></td><td>0</td><td><code>  try {</code></td>
                 </tr>
                 <tr class="noop" title="Line 329" id="line329">
-                    <td>329</td><td></td><td></td><td><code>      }</code></td>
+                    <td>329</td><td></td><td></td><td><code>    final transfer = Transferables.get(message).toList();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 330" id="line330">
-                    <td>330</td><td></td><td>1</td><td><code>    },</code></td>
+                    <td>330</td><td></td><td>1</td><td><code>    worker.postMessage(message, transfer);</code></td>
                 </tr>
-                <tr class="noop" title="Line 331" id="line331">
-                    <td>331</td><td></td><td></td><td><code>  );</code></td>
+                <tr class="lineNoCov" title="Line 331" id="line331">
+                    <td>331</td><td></td><td>0</td><td><code>  } catch (ex, st) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 332" id="line332">
-                    <td>332</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 332" id="line332">
+                    <td>332</td><td></td><td>0</td><td><code>    com.port1.close();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 333" id="line333">
-                    <td>333</td><td></td><td>1</td><td><code>  final message = startRequest.serialize();</code></td>
+                <tr class="lineNoCov" title="Line 333" id="line333">
+                    <td>333</td><td></td><td>0</td><td><code>    com.port2.close();</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 334" id="line334">
-                    <td>334</td><td></td><td>0</td><td><code>  try {</code></td>
+                    <td>334</td><td></td><td>0</td><td><code>    worker.terminate();</code></td>
                 </tr>
-                <tr class="noop" title="Line 335" id="line335">
-                    <td>335</td><td></td><td></td><td><code>    final transfer = Transferables.get(message).toList();</code></td>
+                <tr class="lineNoCov" title="Line 335" id="line335">
+                    <td>335</td><td></td><td>0</td><td><code>    Squadron.severe('failed to post connection request $message: error $ex');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 336" id="line336">
-                    <td>336</td><td></td><td>1</td><td><code>    worker.postMessage(message, transfer);</code></td>
+                <tr class="lineNoCov" title="Line 336" id="line336">
+                    <td>336</td><td></td><td>0</td><td><code>    completer.completeError(SquadronException.from(ex, st), st);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 337" id="line337">
-                    <td>337</td><td></td><td>0</td><td><code>  } catch (ex, st) {</code></td>
+                <tr class="noop" title="Line 337" id="line337">
+                    <td>337</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 338" id="line338">
-                    <td>338</td><td></td><td>0</td><td><code>    com.port1.close();</code></td>
+                <tr class="lineCov" title="Line 338" id="line338">
+                    <td>338</td><td></td><td>1</td><td><code>  return completer.future;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 339" id="line339">
-                    <td>339</td><td></td><td>0</td><td><code>    com.port2.close();</code></td>
+                <tr class="lineCov" title="Line 339" id="line339">
+                    <td>339</td><td></td><td>1</td><td><code>}</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 340" id="line340">
-                    <td>340</td><td></td><td>0</td><td><code>    worker.terminate();</code></td>
+                <tr class="noop" title="Line 340" id="line340">
+                    <td>340</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 341" id="line341">
-                    <td>341</td><td></td><td>0</td><td><code>    Squadron.severe('failed to post connection request $message: error $ex');</code></td>
+                <tr class="noop" title="Line 341" id="line341">
+                    <td>341</td><td></td><td></td><td><code>/// Creates a [_JsChannel] from a [web.MessagePort].</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 342" id="line342">
-                    <td>342</td><td></td><td>0</td><td><code>    completer.completeError(SquadronException.from(ex, st), st);</code></td>
+                <tr class="noop" title="Line 342" id="line342">
+                    <td>342</td><td></td><td></td><td><code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 343" id="line343">
-                    <td>343</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 343" id="line343">
+                    <td>343</td><td></td><td>1</td><td><code>    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 344" id="line344">
-                    <td>344</td><td></td><td>1</td><td><code>  return completer.future;</code></td>
+                <tr class="noop" title="Line 344" id="line344">
+                    <td>344</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 345" id="line345">
-                    <td>345</td><td></td><td>1</td><td><code>}</code></td>
+                <tr class="noop" title="Line 345" id="line345">
+                    <td>345</td><td></td><td></td><td><code>/// Creates a [_JsWorkerChannel] from a [web.MessagePort].</code></td>
                 </tr>
-                <tr class="noop" title="Line 346" id="line346">
-                    <td>346</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 346" id="line346">
+                    <td>346</td><td></td><td>1</td><td><code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 347" id="line347">
-                    <td>347</td><td></td><td></td><td><code>/// Creates a [_JsChannel] from a [web.MessagePort].</code></td>
+                <tr class="lineCov" title="Line 347" id="line347">
+                    <td>347</td><td></td><td>1</td><td><code>    (channelInfo == null)</code></td>
                 </tr>
                 <tr class="noop" title="Line 348" id="line348">
-                    <td>348</td><td></td><td></td><td><code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code></td>
+                    <td>348</td><td></td><td></td><td><code>        ? null</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 349" id="line349">
-                    <td>349</td><td></td><td>1</td><td><code>    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);</code></td>
-                </tr>
-                <tr class="noop" title="Line 350" id="line350">
-                    <td>350</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="noop" title="Line 351" id="line351">
-                    <td>351</td><td></td><td></td><td><code>/// Creates a [_JsWorkerChannel] from a [web.MessagePort].</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 352" id="line352">
-                    <td>352</td><td></td><td>1</td><td><code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 353" id="line353">
-                    <td>353</td><td></td><td>1</td><td><code>    (channelInfo == null)</code></td>
-                </tr>
-                <tr class="noop" title="Line 354" id="line354">
-                    <td>354</td><td></td><td></td><td><code>        ? null</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 355" id="line355">
-                    <td>355</td><td></td><td>1</td><td><code>        : (_JsWorkerChannel._().._sendPort = channelInfo);</code></td>
+                    <td>349</td><td></td><td>1</td><td><code>        : (_JsWorkerChannel._().._sendPort = channelInfo);</code></td>
                 </tr>
             </tbody>
         </table>

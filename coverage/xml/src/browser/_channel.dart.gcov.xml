@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82802546" lines-covered="130" lines-valid="157" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82051283" lines-covered="128" lines-valid="156" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -111,9 +111,8 @@
             <code>      if (inspectRequest) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>        transfer.addAll(Transferables.get(message));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -122,8 +121,9 @@
             <code>        if (req.client != null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>          transfer.add(req.client!.serialize());</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        }</code>
@@ -174,9 +174,8 @@
         <line>
             <code>        final transfer = Transferables.get(message).toList();</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>        _sendPort!.postMessage(message, transfer);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -285,10 +284,10 @@
             <code>      {CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectRequest = true,</code>
+            <code>      bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true}) {</code>
+            <code>      bool inspectResponse = false}) {</code>
         </line>
         <line>
             <code>    final com = web.MessageChannel();</code>
@@ -364,10 +363,10 @@
             <code>      CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectRequest = true,</code>
+            <code>      bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = true}) {</code>
+            <code>      bool inspectResponse = false}) {</code>
         </line>
         <line hits="1">
             <code>    final com = web.MessageChannel();</code>
@@ -757,9 +756,8 @@
             <code>    if (_isBaseType(value)) return true;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>    if (_isListOfBaseType(value)) return true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    if (value is List &amp;&amp; value.every(_isSafeForTransfer)) return true;</code>
@@ -986,45 +984,21 @@
             <code>      }</code>
         </line>
         <line hits="1">
-            <code>      Squadron.severe('error in Web Worker #$workerId: $msg');</code>
+            <code>      final error = WorkerException(msg);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      Squadron.warning(</code>
+        </line>
+        <line hits="0">
+            <code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code>
         </line>
         <line hits="1">
             <code>      if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        StackTrace? stackTrace;</code>
-        </line>
-        <line>
-            <code>        try {</code>
-        </line>
         <line hits="0">
-            <code>          stackTrace = StackTrace.current;</code>
-        </line>
-        <line>
-            <code>        } catch (_) {</code>
-        </line>
-        <line>
-            <code>          // ignore...</code>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="0">
-            <code>        completer.completeError(</code>
-        </line>
-        <line hits="0">
-            <code>            WorkerException('error in Web Worker #$workerId: $msg',</code>
-        </line>
-        <line>
-            <code>                stackTrace: stackTrace),</code>
-        </line>
-        <line>
-            <code>            stackTrace);</code>
-        </line>
-        <line hits="0">
-            <code>        worker.terminate();</code>
+            <code>        completer.completeError(error, error.stackTrace);</code>
         </line>
         <line>
             <code>      }</code>
@@ -1105,6 +1079,12 @@
         </line>
         <line>
             <code>        }</code>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line hits="0">
+            <code>        Squadron.config('unexpected response: ${response.serialize()}');</code>
         </line>
         <line>
             <code>      }</code>

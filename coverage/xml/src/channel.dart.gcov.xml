@@ -114,7 +114,13 @@
             <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
         </line>
         <line>
-            <code>      {CancellationToken? token, bool inspectRequest, bool inspectResponse});</code>
+            <code>      {CancellationToken? token,</code>
+        </line>
+        <line>
+            <code>      bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>      bool inspectResponse = false});</code>
         </line>
         <line>
             <code/>
@@ -129,16 +135,16 @@
             <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
         </line>
         <line>
-            <code>      {SquadronCallback onDone = noop,</code>
+            <code>      {SquadronCallback onDone = Channel.noop,</code>
         </line>
         <line>
             <code>      CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectRequest,</code>
+            <code>      bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>      bool inspectResponse});</code>
+            <code>      bool inspectResponse = false});</code>
         </line>
         <line>
             <code/>

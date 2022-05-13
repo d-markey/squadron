@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91333336" lines-covered="137" lines-valid="150" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9066667" lines-covered="136" lines-valid="150" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
         </line>
         <line>
             <code>import 'worker_exception.dart';</code>
@@ -307,40 +310,35 @@
             <code>          final poolWorker = PoolWorker(_workerFactory(), maxWorkload);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>          _workers.add(poolWorker);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="2">
             <code>          tasks.add(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>            poolWorker.worker</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>            poolWorker.worker.start().then((_) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>              // start succeeded: register worker</code>
+        </line>
+        <line hits="3">
+            <code>              _workers.add(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>                .start()</code>
+            <code>              return true;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>                .then((_) =&gt; true)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>                .onError((error, stackTrace) {</code>
+            <code>            }).onError&lt;Object&gt;((ex, st) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>              // start failed: remove from list</code>
+            <code>              // start failed</code>
         </line>
         <line hits="3">
-            <code>              _workers.remove(poolWorker);</code>
+            <code>              errors.add(SquadronException.from(ex, st));</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>              errors.add(error);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>              return false;</code>
@@ -353,11 +351,11 @@
         <line>
             <code>          );</code>
         </line>
-        <line>
-            <code>        } catch (ex) {</code>
+        <line hits="0">
+            <code>        } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>          errors.add(ex);</code>
+            <code>          errors.add(SquadronException.from(ex, st));</code>
         </line>
         <line>
             <code>        }</code>
@@ -479,6 +477,10 @@
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
+            <code>      final workerId = poolWorker.worker.workerId;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
             <code>      poolWorker.worker.stop();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
@@ -486,9 +488,9 @@
             <code>      _workers.remove(poolWorker);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>      _deadWorkerStats.add(poolWorker.worker.stats);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      return 1;</code>
