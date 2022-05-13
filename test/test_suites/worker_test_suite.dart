@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import '../classes/custom_exception.dart';
 import '../classes/prime_numbers.dart';
-import '../classes/untransferable.dart';
+import '../classes/platform.dart';
 import '../worker_services/cache_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/test_service.dart';

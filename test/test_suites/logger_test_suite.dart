@@ -22,7 +22,6 @@ void loggerTests() {
 
   setUp(() {
     initialLogger = getSquadronLogger();
-    Squadron.pushLogLevel();
     memoryLogger.clear();
     Squadron.pushLogLevel(SquadronLogLevel.all);
     Squadron.setLogger(memoryLogger);
@@ -245,13 +244,14 @@ void loggerTests() {
 
   test('- Squadron ID', () {
     expect(Squadron.id, equals('workerTests'));
-    Squadron.setId('should fail');
+    Squadron.setId('should have no effect');
     expect(Squadron.id, equals('workerTests'));
 
     Squadron.info('Squadron ID Test');
     expect(memoryLogger.length, equals(1));
-    expect(memoryLogger.contains(Squadron.id), isTrue);
-    expect(memoryLogger.contains('should fail'), isFalse);
+    expect(memoryLogger.contains('should have no effect'), isFalse);
+    expect(memoryLogger.contains('[workerTests]'), isTrue);
+    expect(memoryLogger.contains('[INFO]'), isTrue);
     expect(memoryLogger.contains('Squadron ID Test'), isTrue);
   });
 }

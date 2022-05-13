@@ -37,7 +37,7 @@ void localWorkerTests() {
         final check = await localClientWorker.checkIds();
 
         final localWorkerId = idGetter().replaceAll('.', '\\.');
-        final squadronId = Squadron.id.replaceAll('.', '\\.');
+        final squadronId = Squadron.id?.replaceAll('.', '\\.');
         final regExp =
             RegExp('Worker running as "$squadronId\\.\\d+", $localWorkerId');
         expect(check, matches(regExp));
@@ -68,7 +68,7 @@ void localWorkerTests() {
 
         final workerIds = <String>{};
         final localWorkerId = idGetter().replaceAll('.', '\\.');
-        final squadronId = Squadron.id.replaceAll('.', '\\.');
+        final squadronId = Squadron.id?.replaceAll('.', '\\.');
         final regExp =
             RegExp('Worker running as "($squadronId\\.\\d+)", $localWorkerId');
         for (var result in results) {

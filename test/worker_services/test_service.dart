@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:squadron/squadron_service.dart';
 
 import '../classes/custom_exception.dart';
-import '../classes/untransferable.dart';
+import '../classes/platform.dart';
 
 class TestService implements WorkerService {
   TestService({bool invalid = false})

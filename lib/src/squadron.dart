@@ -1,114 +1,170 @@
 import 'channel.dart';
 import 'squadron_logger.dart';
 
-/// Squadron "Singleton". The main application thread and each worker thread will have their own private
+/// Squadron singleton. The main application thread and each worker thread will have their own private
 /// [Squadron] singleton.
 class Squadron {
   Squadron._();
 
-  static int _logLevel = SquadronLogLevel.off;
+  static Squadron? _instance;
+
+  static Squadron _getOrInitialize() {
+    var sq = _instance;
+    if (sq == null) {
+      _instance = sq = Squadron._();
+      sq._debugMode = __debugMode;
+    }
+    return sq;
+  }
+
+  /// Whether the Squadron singleton is initialized or not. This property will be `true` if any of these
+  /// has been called: [pushLogLevel], [setLogger], [setId], [setParent], or if [logLevel] has been set.
+  /// The Squadron singleton may be reset by calling [shutdown].
+  static bool get isInitialized => _instance != null;
+
+  /// Resets the Squadron singleton. [isInitialized] will return `false` after this call, and a new
+  /// Squadron singleton may be reinitialized.
+  static void shutdown() {
+    __debugMode = false;
+    _instance = null;
+  }
+
+  int _logLevel = SquadronLogLevel.off;
 
   /// Gets the [logLevel]. Propagates to workers with the value that was set at the time the worker
   /// was created. Changes to this property do not propagate to workers after they have started.
-  static int get logLevel => _logger?.logLevel ?? _logLevel;
+  static int get logLevel =>
+      _instance?._logger?.logLevel ??
+      _instance?._logLevel ??
+      SquadronLogLevel.off;
 
   /// Sets the [logLevel]. Changes to this property do not propagate to workers after they have started.
   static set logLevel(int value) {
-    _logger?.logLevel = value;
-    _logLevel = value;
+    final sq = _getOrInitialize();
+    sq._logger?.logLevel = value;
+    sq._logLevel = value;
   }
 
-  static final List<int> _logLevels = [];
+  final List<int> _logLevels = [];
 
   /// Remembers the current [logLevel], then setting it to [value] if not null. See [popLogLevel].
   static void pushLogLevel([int? value]) {
-    _logLevels.add(Squadron.logLevel);
+    final sq = _getOrInitialize();
+    sq._logLevels.add(Squadron.logLevel);
     if (value != null) {
       Squadron.logLevel = value;
     }
   }
 
   /// Restores the [logLevel] to the value it had before the last call to [pushLogLevel]. If [pushLogLevel]
-  /// was never called, this method has no effect.
-  static void popLogLevel() {
-    if (_logLevels.isNotEmpty) {
-      Squadron.logLevel = _logLevels.removeAt(0);
-    }
+  /// was never called, this method has no effect and return `null`. Otherwise, it returns the value of
+  /// [logLevel] after it has been restored.
+  static int? popLogLevel() {
+    final sq = _instance;
+    if (sq == null || sq._logLevels.isEmpty) return null;
+    Squadron.logLevel = sq._logLevels.removeAt(0);
+    return Squadron.logLevel;
   }
 
-  static SquadronLogger? _logger;
+  SquadronLogger? _logger;
 
   /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].
   static void setLogger(SquadronLogger? logger) {
+    final sq = _getOrInitialize();
     final level = logLevel;
-    _logger = logger;
-    _logger?.logLevel = level;
+    sq._logger = logger;
+    sq._logger?.logLevel = level;
   }
 
-  /// Flag indicating whether Squadron runs in debug mode. When running in debug mode.
-  static bool debugMode = false;
+  /// Flag indicating whether Squadron runs in debug mode. When running in debug mode, messages logged at
+  /// [SquadronLogLevel.debug] level will be logged regardless of the current [logLevel].
+  static bool get debugMode =>
+      (_instance == null) ? __debugMode : _instance!._debugMode;
+  static set debugMode(bool value) {
+    if (_instance == null) {
+      __debugMode = value;
+    } else {
+      _instance!._debugMode = value;
+    }
+  }
 
-  static String? _id;
+  static bool __debugMode = false;
+  bool _debugMode = false;
 
-  /// Squadron instance id to track identity of threads/workers. Returns `<undefined>` if it has not been set
-  /// yet.
-  static String get id => _id ?? '<undefined>';
+  String? _id;
 
-  /// Sets the Squadron instance id. Once set, the `id` cannot be modified.
-  static setId(String value) {
-    if (_id == null) {
+  /// Squadron instance id to track identity of threads/workers. Returns an empty String if the Squadron singleton
+  /// has not been initialized yet, or if its `id` has not been set yet.
+  static String? get id => _instance?._id;
+
+  /// Sets the Squadron instance `id`. Once set, the [id] cannot be modified. The only way to assign a new `id`
+  /// is to first call [shutdown], then initialize a new Squadron instance.
+  static void setId(String value) {
+    final sq = _getOrInitialize();
+    if (sq._id == null) {
       value = value.trim();
       if (value.isNotEmpty) {
-        _id ??= value;
+        sq._id ??= value;
       }
     }
   }
 
   /// `WorkerChannel` to communicate with the parent. In the main thread, this will be `null`.
-  static WorkerChannel? get parentChannel => _parentChannel;
-  static WorkerChannel? _parentChannel;
+  static WorkerChannel? get parentChannel => _instance?._parentChannel;
+  WorkerChannel? _parentChannel;
 
   /// Sets the `WorkerChannel` to communicate with the parent. Once set, the `parentChannel` cannot be modified.
   /// When setting the parent channel, this method also installs a logger to forward log messages to the parent.
-  static setParent(WorkerChannel parentChannel) {
-    if (_parentChannel == null) {
-      _parentChannel ??= parentChannel;
-      _logger = ParentSquadronLogger(parentChannel);
+  static void setParent(WorkerChannel parentChannel) {
+    final sq = _getOrInitialize();
+    if (sq._parentChannel == null) {
+      sq._parentChannel ??= parentChannel;
+      sq._logger = ParentSquadronLogger(parentChannel);
     }
   }
 
   /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be
-  /// displayed regardless of [Squadron.logLevel]. If `false`, [Squadron.logLevel] must be set to
-  /// [SquadronLogLevel.all].
-  static void debug(dynamic message) => _logger?.debug(message);
+  /// displayed regardless of [Squadron.logLevel]. If `false`, the message will be logged if [Squadron.logLevel]
+  /// is set to [SquadronLogLevel.all].
+  static void debug(dynamic message) {
+    final logger = _instance?._logger;
+    if (logger != null) {
+      logger.debug(message);
+    } else if (debugMode) {
+      if (message is Function) {
+        message = message();
+      }
+      print('[DEBUG] $message');
+    }
+  }
 
   /// Logs a message at [SquadronLogLevel.finest] level
-  static void finest(dynamic message) => _logger?.finest(message);
+  static void finest(dynamic message) => _instance?._logger?.finest(message);
 
   /// Logs a message at [SquadronLogLevel.finer] level
-  static void finer(dynamic message) => _logger?.finer(message);
+  static void finer(dynamic message) => _instance?._logger?.finer(message);
 
   /// Logs a message at [SquadronLogLevel.fine] level
-  static void fine(dynamic message) => _logger?.fine(message);
+  static void fine(dynamic message) => _instance?._logger?.fine(message);
 
   /// Logs a message at [SquadronLogLevel.config] level
-  static void config(dynamic message) => _logger?.config(message);
+  static void config(dynamic message) => _instance?._logger?.config(message);
 
   /// Logs a message at [SquadronLogLevel.info] level
-  static void info(dynamic message) => _logger?.info(message);
+  static void info(dynamic message) => _instance?._logger?.info(message);
 
   /// Logs a message at [SquadronLogLevel.warning] level
-  static void warning(dynamic message) => _logger?.warning(message);
+  static void warning(dynamic message) => _instance?._logger?.warning(message);
 
   /// Logs a message at [SquadronLogLevel.severe] level
-  static void severe(dynamic message) => _logger?.severe(message);
+  static void severe(dynamic message) => _instance?._logger?.severe(message);
 
   /// Logs a message at [SquadronLogLevel.shout] level
-  static void shout(dynamic message) => _logger?.shout(message);
+  static void shout(dynamic message) => _instance?._logger?.shout(message);
 }
 
 // for internal use
-SquadronLogger? getSquadronLogger() => Squadron._logger;
+SquadronLogger? getSquadronLogger() => Squadron._instance?._logger;
 
 /// Logs a message
-void squadronLog(String message) => Squadron._logger?.log(message);
+void squadronLog(String message) => Squadron._instance?._logger?.log(message);

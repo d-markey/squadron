@@ -17,7 +17,7 @@ abstract class IdentityService implements WorkerService {
 // The service implementation
 class IdentityServiceImpl extends IdentityService {
   @override
-  String whoAreYou() => Squadron.id;
+  String whoAreYou() => Squadron.id ?? '<undefined>';
 }
 
 // The service client: this class will be used in workers that need to call the service implementation
