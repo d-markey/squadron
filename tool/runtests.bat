@@ -38,7 +38,7 @@ rmdir .\test\coverage /s /q
 mkdir .\test\coverage
 CALL dart run test --coverage=.\test\coverage %__ARGS__%
 IF "%__COV__%" == "1" (
-    CALL dart pub global run coverage:format_coverage --packages=.packages --report-on=lib --lcov -o .\test\coverage\lcov.info -i .\test\coverage
+    CALL dart run coverage:format_coverage --packages=.packages --report-on=lib --lcov -o .\test\coverage\lcov.info -i .\test\coverage
     rmdir .\coverage /s /q
     java -jar .\tool\jgenhtml\jgenhtml-1.5.jar .\test\coverage\lcov.info --output-directory .\coverage  
     CALL dart run .\tool\xtractcov\main.dart
