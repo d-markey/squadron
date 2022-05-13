@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--
+	Copyright (C) 2012  Rick Brown
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+	<head>
+		<title>JGenHtml - Code Coverage Report</title>
+	</head>
+	<body>
+		<h1>JGenHtml - Code Coverage Report</h1>
+		<hr/>
+			<h2>Viewing the report</h2>
+			JGenHtml produces two versions of the same report:
+			<ol>
+				<li><a href="xml/index.xml">XML + XSLT</a></li>
+				<li><a href="html/index.html">HTML</a></li>
+			</ol>
+
+			<h2>Why are there two versions and when to use which?</h2>
+			<p>Ideally there would be only one version, the XML + XSLT version. The main advantages of this format over HTML are:</p>
+			<ul>
+				<li>The XML pages are smaller than the corresponding HTML versions.</li>
+				<li>XML is both human and machine readable.</li>
+			</ul>
+			<p>The problem with client side XSLT is that support for it on the "file:" protocol is problematic in many browsers.</p>
+			<p>You can use either version anywhere, but the HTML version would be best on the "file:" protocol while the XML version would be best over http.</p>
+			<p>Note: to support client side XSLT on the "file:" protocol the Google Chrome browser needs to be started with the command line flag <code>--allow-file-access-from-files</code></p>
+		<hr>
+	</body>
+</html>

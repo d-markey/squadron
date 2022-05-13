@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-05-13" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82" lines-covered="41" lines-valid="50" package="/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'squadron.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Class used to communicate from a [Worker] to clients.</code>
+        </line>
+        <line>
+            <code>/// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a</code>
+        </line>
+        <line>
+            <code>/// single [WorkerResponse] with the result. [Stream]ing services will return one [WorkerResponse]s for each stream</code>
+        </line>
+        <line>
+            <code>/// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also</code>
+        </line>
+        <line>
+            <code>/// send error messages.</code>
+        </line>
+        <line>
+            <code>class WorkerResponse {</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse._(this._result, this.error, this.endOfStream, this._log);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] with a valid [result].</code>
+        </line>
+        <line hits="3">
+            <code>  WorkerResponse(dynamic result) : this._(result, null, false, null);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      : this._(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            null, SquadronException.from(exception, stackTrace), false, null);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerResponse.log(String message) : this._(null, null, false, message);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
+        </line>
+        <line hits="3">
+            <code>  WorkerResponse._endOfStream() : this._(null, null, true, null);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// End of stream response.</code>
+        </line>
+        <line hits="4">
+            <code>  static final closeStream = WorkerResponse._endOfStream();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static const _$result = 'a';</code>
+        </line>
+        <line>
+            <code>  static const _$error = 'b';</code>
+        </line>
+        <line>
+            <code>  static const _$endOfStream = 'c';</code>
+        </line>
+        <line>
+            <code>  static const _$timestamp = 'd';</code>
+        </line>
+        <line>
+            <code>  static const _$log = 'e';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a new [WorkerResponse] from a message sent by the worker.</code>
+        </line>
+        <line hits="2">
+            <code>  static WorkerResponse? deserialize(Map message) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    final res = WorkerResponse._(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message[_$result],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        SquadronException.deserialize(message[_$error]),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message[_$endOfStream] ?? false,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message[_$log]);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    final ts = message[_$timestamp];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (ts != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="2">
+            <code>    if (res._log != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      squadronLog(res._log!);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>    return res;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerResponse] serialization.</code>
+        </line>
+        <line hits="2">
+            <code>  Map&lt;String, dynamic&gt; serialize() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (error != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      return {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>        _$error: error!.serialize(),</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
+        </line>
+        <line>
+            <code>      };</code>
+        </line>
+        <line hits="2">
+            <code>    } else if (_log != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _$log: _log,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        if (Squadron.debugMode)</code>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
+        </line>
+        <line>
+            <code>      };</code>
+        </line>
+        <line hits="2">
+            <code>    } else if (endOfStream) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      return {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        _$endOfStream: true,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
+        </line>
+        <line>
+            <code>      };</code>
+        </line>
+        <line hits="2">
+            <code>    } else if (_result == null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        if (Squadron.debugMode)</code>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch,</code>
+        </line>
+        <line>
+            <code>      };</code>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="2">
+            <code>      return {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _$result: _result,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (Squadron.debugMode)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>          _$timestamp: DateTime.now().microsecondsSinceEpoch</code>
+        </line>
+        <line>
+            <code>      };</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
+        </line>
+        <line>
+            <code>  final bool endOfStream;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The [WorkerResponse] exception, if any.</code>
+        </line>
+        <line>
+            <code>  final SquadronException? error;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Flag indicating whether an error occured.</code>
+        </line>
+        <line hits="3">
+            <code>  bool get hasError =&gt; error != null;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time</code>
+        </line>
+        <line>
+            <code>  /// (in microseconds) it took between the moment the message was serialized and the moment it was</code>
+        </line>
+        <line>
+            <code>  /// deserialized.</code>
+        </line>
+        <line hits="0">
+            <code>  int? get travelTime =&gt; _travelTime;</code>
+        </line>
+        <line>
+            <code>  int? _travelTime;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final String? _log;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,</code>
+        </line>
+        <line>
+            <code>  /// an the [error] exception is thrown.</code>
+        </line>
+        <line hits="4">
+            <code>  dynamic get result =&gt; hasError ? throw error! : _result;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final dynamic _result;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>
