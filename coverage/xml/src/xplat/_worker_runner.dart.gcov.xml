@@ -177,9 +177,9 @@
             <code>      Squadron.logLevel = startRequest.logLevel!;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      Squadron.debugMode = (startRequest.travelTime != null);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>128</td><td>156</td><td class="med">82.1%</td>
+                            <th scope="row">Lines</th><td>133</td><td>160</td><td class="med">83.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -531,8 +531,8 @@
                 <tr class="noop" title="Line 157" id="line157">
                     <td>157</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
+                <tr class="lineNoCov" title="Line 158" id="line158">
+                    <td>158</td><td></td><td>0</td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
                 </tr>
                 <tr class="noop" title="Line 159" id="line159">
                     <td>159</td><td></td><td></td><td><code></code></td>
@@ -903,8 +903,8 @@
                 <tr class="noop" title="Line 281" id="line281">
                     <td>281</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 282" id="line282">
-                    <td>282</td><td></td><td></td><td><code>  Squadron.config('created Web Worker #$workerId');</code></td>
+                <tr class="lineCov" title="Line 282" id="line282">
+                    <td>282</td><td></td><td>1</td><td><code>  Squadron.config('created Web Worker #$workerId');</code></td>
                 </tr>
                 <tr class="noop" title="Line 283" id="line283">
                     <td>283</td><td></td><td></td><td><code></code></td>
@@ -942,11 +942,11 @@
                 <tr class="lineCov" title="Line 294" id="line294">
                     <td>294</td><td></td><td>1</td><td><code>      final error = WorkerException(msg);</code></td>
                 </tr>
-                <tr class="noop" title="Line 295" id="line295">
-                    <td>295</td><td></td><td></td><td><code>      Squadron.warning(</code></td>
+                <tr class="lineCov" title="Line 295" id="line295">
+                    <td>295</td><td></td><td>1</td><td><code>      Squadron.warning(</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 296" id="line296">
-                    <td>296</td><td></td><td>0</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
+                <tr class="lineCov" title="Line 296" id="line296">
+                    <td>296</td><td></td><td>1</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 297" id="line297">
                     <td>297</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
@@ -993,8 +993,8 @@
                 <tr class="lineCov" title="Line 311" id="line311">
                     <td>311</td><td></td><td>1</td><td><code>          worker.terminate();</code></td>
                 </tr>
-                <tr class="noop" title="Line 312" id="line312">
-                    <td>312</td><td></td><td></td><td><code>          Squadron.severe(</code></td>
+                <tr class="lineCov" title="Line 312" id="line312">
+                    <td>312</td><td></td><td>1</td><td><code>          Squadron.severe(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 313" id="line313">
                     <td>313</td><td></td><td>1</td><td><code>              'connection to Web Worker #$workerId failed: ${response.error}');</code></td>
@@ -1011,8 +1011,8 @@
                 <tr class="lineCov" title="Line 317" id="line317">
                     <td>317</td><td></td><td>1</td><td><code>          channel._workerId = startRequest.id;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 318" id="line318">
-                    <td>318</td><td></td><td>0</td><td><code>          Squadron.config('connected to Web Worker #$workerId');</code></td>
+                <tr class="lineCov" title="Line 318" id="line318">
+                    <td>318</td><td></td><td>1</td><td><code>          Squadron.config('connected to Web Worker #$workerId');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 319" id="line319">
                     <td>319</td><td></td><td>1</td><td><code>          completer.complete(channel);</code></td>

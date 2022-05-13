@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>49</td><td>56</td><td class="med">87.5%</td>
+                            <th scope="row">Lines</th><td>51</td><td>57</td><td class="med">89.5%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -220,7 +220,7 @@
                     <td>53</td><td></td><td>3</td><td><code>    if (level &gt;= logLevel ||</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>2</td><td><code>        (level == SquadronLogLevel.debug &amp;&amp; Squadron.debugMode)) {</code></td>
+                    <td>54</td><td></td><td>3</td><td><code>        (level == SquadronLogLevel.debug &amp;&amp; Squadron.debugMode)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
                     <td>55</td><td></td><td>2</td><td><code>      if (message is Function) {</code></td>
@@ -271,7 +271,7 @@
                     <td>70</td><td></td><td>3</td><td><code>      for (var line in lines) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>2</td><td><code>        log('$header $line');</code></td>
+                    <td>71</td><td></td><td>3</td><td><code>        log('$header $line');</code></td>
                 </tr>
                 <tr class="noop" title="Line 72" id="line72">
                     <td>72</td><td></td><td></td><td><code>      }</code></td>
@@ -396,8 +396,8 @@
                 <tr class="noop" title="Line 112" id="line112">
                     <td>112</td><td></td><td></td><td><code>/// Simple console logger (`print` function)</code></td>
                 </tr>
-                <tr class="noop" title="Line 113" id="line113">
-                    <td>113</td><td></td><td></td><td><code>class ConsoleSquadronLogger extends BaseSquadronLogger {</code></td>
+                <tr class="lineCov" title="Line 113" id="line113">
+                    <td>113</td><td></td><td>1</td><td><code>class ConsoleSquadronLogger extends BaseSquadronLogger {</code></td>
                 </tr>
                 <tr class="noop" title="Line 114" id="line114">
                     <td>114</td><td></td><td></td><td><code>  /// Log to console</code></td>
@@ -405,8 +405,8 @@
                 <tr class="lineNoCov" title="Line 115" id="line115">
                     <td>115</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>0</td><td><code>  void log(dynamic message) =&gt; print(message);</code></td>
+                <tr class="lineCov" title="Line 116" id="line116">
+                    <td>116</td><td></td><td>1</td><td><code>  void log(dynamic message) =&gt; print(message);</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
                     <td>117</td><td></td><td></td><td><code>}</code></td>
@@ -421,7 +421,7 @@
                     <td>120</td><td></td><td></td><td><code>class ParentSquadronLogger extends BaseSquadronLogger {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>1</td><td><code>  ParentSquadronLogger(this._parent);</code></td>
+                    <td>121</td><td></td><td>2</td><td><code>  ParentSquadronLogger(this._parent);</code></td>
                 </tr>
                 <tr class="noop" title="Line 122" id="line122">
                     <td>122</td><td></td><td></td><td><code></code></td>

@@ -129,9 +129,9 @@
             <code>SquadronError newSquadronError(String message) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  Squadron.severe('creating new SquadronError: $message');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>  return SquadronError._(message);</code>
