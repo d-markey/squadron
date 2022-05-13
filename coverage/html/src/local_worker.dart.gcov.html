@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>3</td><td>3</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>3</td><td>4</td><td class="med">75.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -145,7 +145,7 @@
                     <td>28</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>  /// The local worker's [Channel]. This channel can be shared with other workers by calling [Channel.share].</code></td>
+                    <td>29</td><td></td><td></td><td><code>  /// The local worker's [Channel].</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
                     <td>30</td><td></td><td></td><td><code>  Channel? get channel;</code></td>
@@ -154,25 +154,37 @@
                     <td>31</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  /// Stops the local worker.</code></td>
+                    <td>32</td><td></td><td></td><td><code>  /// A [Channel] to communicate with this local worker. This channel should be provided to clients so they can</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  void stop();</code></td>
+                    <td>33</td><td></td><td></td><td><code>  /// invoke services from the local worker.</code></td>
                 </tr>
-                <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>0</td><td><code>  Channel? get sharedChannel =&gt; channel?.share();</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  /// Local Workers do not need an [operations] map.</code></td>
+                    <td>35</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>  @override</code></td>
+                    <td>36</td><td></td><td></td><td><code>  /// Stops the local worker.</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>1</td><td><code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code></td>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code>  void stop();</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>}</code></td>
+                    <td>38</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code>  /// Local Workers do not need an [operations] map.</code></td>
+                </tr>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code>  @override</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 41" id="line41">
+                    <td>41</td><td></td><td>1</td><td><code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code></td>
+                </tr>
+                <tr class="noop" title="Line 42" id="line42">
+                    <td>42</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
