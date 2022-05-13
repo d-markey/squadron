@@ -162,7 +162,7 @@
             <code>      if (Squadron.debugMode &amp;&amp; res._log == null) {</code>
         </line>
         <line hits="0">
-            <code>        Squadron.debug('response received in ${res._travelTime} �s');</code>
+            <code>        Squadron.debug('response received in ${res._travelTime} µs');</code>
         </line>
         <line>
             <code>      }</code>
