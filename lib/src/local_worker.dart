@@ -26,8 +26,12 @@ abstract class LocalWorker<W extends WorkerService> implements WorkerService {
   /// The [WorkerService] associated to this local worker.
   final W service;
 
-  /// The local worker's [Channel]. This channel can be shared with other workers by calling [Channel.share].
+  /// The local worker's [Channel].
   Channel? get channel;
+
+  /// A [Channel] to communicate with this local worker. This channel should be provided to clients so they can
+  /// invoke services from the local worker.
+  Channel? get sharedChannel => channel?.share();
 
   /// Stops the local worker.
   void stop();

@@ -26,18 +26,15 @@ class WorkerRequest {
       : client = WorkerChannel.deserialize(channelInfo);
 
   /// Creates a new request with the specified [command] ID and optional arguments.
-  WorkerRequest(dynamic channelInfo, int command,
-      [List args = _noArgs,
-      CancellationToken? cancelToken,
-      bool inspectResponse = true])
-      : this._(channelInfo, command, null, args, null, cancelToken, null,
+  WorkerRequest(dynamic channelInfo, int command, List args,
+      CancellationToken? token, bool inspectResponse)
+      : this._(channelInfo, command, null, args, null, token, null,
             inspectResponse);
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo,
-      [List args = _noArgs, bool inspectResponse = true])
+  WorkerRequest.start(dynamic channelInfo, List args)
       : this._(channelInfo, _connectCommand, Identity.nextId(), args,
-            Squadron.logLevel, null, null, inspectResponse);
+            Squadron.logLevel, null, null, true);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancelStream(int streamId)
@@ -45,9 +42,8 @@ class WorkerRequest {
             false);
 
   /// Creates a new cancellation request.
-  WorkerRequest.cancel(CancellationToken cancelToken)
-      : this._(null, _cancelCommand, null, _noArgs, null, cancelToken, null,
-            false);
+  WorkerRequest.cancel(CancellationToken token)
+      : this._(null, _cancelCommand, null, _noArgs, null, token, null, false);
 
   /// Creates a new termination request.
   WorkerRequest.stop()
