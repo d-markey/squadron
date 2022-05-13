@@ -46,7 +46,7 @@ class WorkerResponse {
     if (ts != null) {
       res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
       if (Squadron.debugMode && res._log == null) {
-        Squadron.debug('response received in ${res._travelTime} �s');
+        Squadron.debug('response received in ${res._travelTime} µs');
       }
     }
     if (res._log != null) {
