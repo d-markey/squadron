@@ -83,8 +83,8 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true}) {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) {
     final com = web.MessageChannel();
     final wrapper = ValueWrapper<T>(
       WorkerRequest(com.port2, command, args, token, inspectResponse),
@@ -106,8 +106,8 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop,
       CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true}) {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) {
     final com = web.MessageChannel();
     final wrapper = StreamWrapper<T>(
       WorkerRequest(com.port2, command, args, token, inspectResponse),
@@ -291,19 +291,11 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
       } else {
         msg = '$entryPoint: ${event.type} / $event';
       }
-      Squadron.severe('error in Web Worker #$workerId: $msg');
+      final error = WorkerException(msg);
+      Squadron.warning(
+          'Unhandled error from Web worker #$workerId: ${error.message}.');
       if (!completer.isCompleted) {
-        StackTrace? stackTrace;
-        try {
-          stackTrace = StackTrace.current;
-        } catch (_) {
-          // ignore...
-        }
-        completer.completeError(
-            WorkerException('error in Web Worker #$workerId: $msg',
-                stackTrace: stackTrace),
-            stackTrace);
-        worker.terminate();
+        completer.completeError(error, error.stackTrace);
       }
     },
   );
@@ -326,6 +318,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
           Squadron.config('connected to Web Worker #$workerId');
           completer.complete(channel);
         }
+      } else {
+        Squadron.config('unexpected response: ${response.serialize()}');
       }
     },
   );

@@ -35,15 +35,17 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? token, bool inspectRequest, bool inspectResponse});
+      {CancellationToken? token,
+      bool inspectRequest = false,
+      bool inspectResponse = false});
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {SquadronCallback onDone = noop,
+      {SquadronCallback onDone = Channel.noop,
       CancellationToken? token,
-      bool inspectRequest,
-      bool inspectResponse});
+      bool inspectRequest = false,
+      bool inspectResponse = false});
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.

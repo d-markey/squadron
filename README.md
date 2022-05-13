@@ -186,7 +186,7 @@ To provide a cross-platform development experience, Squadron encapsulates `Isola
 well as the means to communicate between the main app's code and the code they execute. This is achieved
 via the `Channel` class.
 
-![Diagram about type flow through Squadron Channels](https://raw.githubusercontent.com/d-markey/squadron/main/channels_and_types.png)
+![Diagram about type flow through Squadron Channels](https://raw.githubusercontent.com/d-markey/squadron/main/doc/channels_and_types.png)
 
 `Channel` enables data exchange between threads and inherits the constraints of the target platforms,
 in particular the type system. Dart Native platforms will typically be quite relaxed when communicating
@@ -819,21 +819,20 @@ It is also possible to schedule and cancel individual tasks, eg.:
 
 ### <a name="tokens"></a>Cancellation Tokens
 
-To notify workers of the cancellation, Squadron 3 provides the generic `CancellationToken` class implementing the
-base functionality for cancellation tokens. To ensure workers are notified of a token's cancellation, the token must
-be provided to the worker. Cancellation notifications are posted to workers regardless of the `maxParallel` concurrency
-settings. It is the responsibility of the worker service (your code) to verify the token status and abort processing
-when requested. To ensure the cancellation can be processed, you code must therefore be asynchronous. If the service
-is essentially CPU-bound, this can be achieved by awaiting a simple `Future(() {})`.
+To notify workers of a cancellation, Squadron 3 provides the `CancellationToken` class implementing the base functionality
+for cancellation tokens. To ensure workers are notified of a token's cancellation, the token must be provided to the
+worker. Cancellation notifications are posted to workers regardless of the `maxParallel` concurrency settings. It is the
+responsibility of the worker service (your code) to verify the token status and abort processing when requested. To ensure
+the cancellation can be processed, you code must therefore be asynchronous. If the service is essentially CPU-bound, this
+can be achieved by awaiting a simple `Future(() {})`.
 
 When a token is cancelled, all tasks associated with the token will be cancelled. A `CancelledException` will be
 thrown and the code that started the worker task will receive it.
 
 Squadron provides 3 kinds of cancellation tokens:
-* `CancellableToken`: a cancellation token that can be triggered programmatically by calling
-`CancellableToken.cancel()`.
+* `CancellationToken`: a cancellation token that can be triggered programmatically by calling `CancellationToken.cancel()`.
 * `TimeOutToken`: a cancellation token that will be cancelled automatically after a given duration. Timeout countdown
-starts then the task is effectively posted to a worker.
+starts when the task is effectively posted to a worker.
 * `CompositeToken`: a cancellation token monitoring several other tokens. A `CompositeToken` will be cancelled
 automatically upon cancellation of one of the tokens (`CompositeMode.any`) or all of them (`CompositeMode.all`).
 
@@ -874,7 +873,7 @@ class SampleService implements WorkerService {
 
 ```dart
   // create a token
-  final token = CancellableToken();
+  final token = CancellationToken();
   // trigger cancellation after 500 ms
   // in real world, token.cancel() would be called in reaction to an event such as a user action for instance
   // this is similar to a timeout token except that countdown starts immediately

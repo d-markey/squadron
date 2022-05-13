@@ -9,17 +9,18 @@ class CacheWorker extends Worker implements Cache {
   CacheWorker() : super(EntryPoints.cache);
 
   @override
-  Future<dynamic> get(dynamic key) => send(CacheService.getOperation, [key]);
+  Future<dynamic> get(dynamic key) =>
+      send(CacheService.getOperation, args: [key]);
 
   @override
   Future<bool> containsKey(dynamic key) =>
-      send<bool>(CacheService.containsOperation, [key]);
+      send<bool>(CacheService.containsOperation, args: [key]);
 
   @override
   Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
-    return send(
-        CacheService.setOperation, [key, value, timeToLive?.inMicroseconds]);
+    return send(CacheService.setOperation,
+        args: [key, value, timeToLive?.inMicroseconds]);
   }
 
   @override

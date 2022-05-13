@@ -1,10 +1,13 @@
 ## 4.0.0
 
-- Breaking changes : all deprecated artefacts have been removed.
-- Support logging accross workers: the `LocalSquadronLogger` has been deleted.
-- Removed the optional `id` parameter that was passed to `Worker` constructors.
-- Added option to skip message inspection for Web channels. By default, Squadron inspects each piece of data exchanged via `_JsChannel`s to identify objects whose ownership must be transfered to the receiving end (the `transfer` argument in [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage)). However most of the time, the request / response objects are usually made of `List`, `Map`, and base types, all of which can cross thread boundaries "as-is". By setting `inspectRequest` and/or `inspectResponse` to `false` when calling `Worker.execute()` and `Worker.stream()`, the inspection step is skipped and basic testing found an improvement around ~5-10% (depending on payload size) in terms of throughput for Web workers.
-- Reworked unit tests.
+- **Breaking changes**: all deprecated artefacts have been removed.
+- **Breaking change**: `LocalSquadronLogger` has been deleted.
+- **Breaking change**: the `args` and `token` arguments of methods `send()` and `stream()` are now named argument.
+- **Breaking change**: removed the optional `id` parameter that was passed to `Worker` constructors.
+- **Breaking change**: disabled message inspection for Web channels. In previous versions, Squadron would inspect each piece of data exchanged via `_JsChannel`s to identify objects whose ownership must be transfered to the receiving end (the `transfer` argument in [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage)). However most of the time, the request / response objects are usually made of `List`, `Map`, and base types, all of which can cross thread boundaries "as-is". This behavior is now controlled by optional parameters `inspectRequest` and `inspectResponse` of methods `Worker.execute()` and `Worker.stream()`, defaulting to `false` thus disabling message inspection. Passing `true` will activate message inspection for request and/or response and will be necessary when the message contains an object whose ownership must be transfered to the receiving end, typicaly a [`MessagePort`](https://api.dart.dev/stable/dart-html/MessagePort-class.html). Basic testing found message transfer time improvement around ~5-10% for large payloads, e.g. a `List` containing many `Map` items (note that in Web scenarios, JSON serialization could prove a more efficient alternative). It should have little to no effect on smaller messages.
+- Fixed issue with workers on native platforms: ensure all `ReceivePorts` are closed upon `Isolate` termination.
+- Support logging accross workers (which made `LocalSquadronLogger` obsolete).
+- Reworked examples & unit tests.
 
 ## 3.4.0
 

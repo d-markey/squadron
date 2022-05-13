@@ -34,6 +34,7 @@ class SampleServiceImpl implements SampleService, WorkerService {
   Future<String> whoAreYouTalkingTo() async {
     // this is where the local worker is called
     final localWorkerIdentity = await _identityClient.whoAreYou();
+    Squadron.fine('talking to $localWorkerIdentity');
     return 'I am ${Squadron.id}, and I am talking to $localWorkerIdentity.';
   }
 

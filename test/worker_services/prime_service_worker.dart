@@ -28,9 +28,10 @@ class PrimeWorker extends Worker implements PrimeService {
       : super(EntryPoints.prime, args: [cache?.channel!.share().serialize()]);
 
   @override
-  Future<bool> isPrime(int n) => send<bool>(PrimeService.isPrimeCommand, [n]);
+  Future<bool> isPrime(int n) =>
+      send<bool>(PrimeService.isPrimeCommand, args: [n]);
 
   @override
   Stream<int> getPrimes(int min, int max) =>
-      stream<int>(PrimeService.getPrimesCommand, [min, max]);
+      stream<int>(PrimeService.getPrimesCommand, args: [min, max]);
 }

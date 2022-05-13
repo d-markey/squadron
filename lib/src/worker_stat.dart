@@ -1,8 +1,8 @@
 /// Base statistics for worker.
 class WorkerStat {
-  WorkerStat(
+  WorkerStat._(
       this.workerType,
-      this.id,
+      this._id,
       this.isStopped,
       this.status,
       this.workload,
@@ -16,7 +16,8 @@ class WorkerStat {
   final Type workerType;
 
   /// The worker ID.
-  final String id;
+  String get id => _id;
+  String _id;
 
   /// Worker running flag.
   final bool isStopped;
@@ -41,4 +42,26 @@ class WorkerStat {
 
   /// The worker's idle-time.
   Duration idleTime;
+}
+
+// for internal use
+WorkerStat createWorkerStat(
+        Type workerType,
+        String id,
+        bool isStopped,
+        String status,
+        int workload,
+        int maxWorkload,
+        int totalWorkload,
+        int totalErrors,
+        Duration upTime,
+        Duration idleTime) =>
+    WorkerStat._(workerType, id, isStopped, status, workload, maxWorkload,
+        totalWorkload, totalErrors, upTime, idleTime);
+
+extension WorkerStatExt on WorkerStat {
+  WorkerStat withWorkerId(String workerId) {
+    _id = workerId;
+    return this;
+  }
 }

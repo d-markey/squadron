@@ -34,13 +34,13 @@ class SampleWorker extends Worker implements SampleService {
 
   @override
   Future io({required int milliseconds}) =>
-      send(SampleService.ioCommand, [milliseconds]);
+      send(SampleService.ioCommand, args: [milliseconds]);
 
   @override
   Future cpu({required int milliseconds}) =>
-      send(SampleService.cpuCommand, [milliseconds]);
+      send(SampleService.cpuCommand, args: [milliseconds]);
 
   @override
   Future<String> whoAreYouTalkingTo() =>
-      send(SampleService.whoAreYouTalkingToCommand, []);
+      send(SampleService.whoAreYouTalkingToCommand);
 }

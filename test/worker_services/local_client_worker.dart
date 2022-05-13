@@ -80,13 +80,13 @@ class LocalClientWorker extends Worker implements LocalClientService {
       : super(EntryPoints.local, args: args);
 
   @override
-  Future<String> checkIds() => send(LocalClientService.checkIdsCommand, []);
+  Future<String> checkIds() => send(LocalClientService.checkIdsCommand);
 
   @override
   Future<bool> checkException() =>
-      send(LocalClientService.checkExceptionCommand, []);
+      send(LocalClientService.checkExceptionCommand);
 
   @override
   Stream<dynamic> checkSequence(int count) =>
-      stream(LocalClientService.checkSequenceCommand, [count]);
+      stream(LocalClientService.checkSequenceCommand, args: [count]);
 }

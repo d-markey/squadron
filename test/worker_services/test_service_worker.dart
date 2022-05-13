@@ -121,13 +121,13 @@ class TestWorker extends Worker implements TestService {
   Future log() => send(TestService.logCommand);
 
   @override
-  Future io({required int ms}) => send(TestService.ioCommand, [ms]);
+  Future io({required int ms}) => send(TestService.ioCommand, args: [ms]);
 
   @override
-  Future cpu({required int ms}) => send(TestService.cpuCommand, [ms]);
+  Future cpu({required int ms}) => send(TestService.cpuCommand, args: [ms]);
 
   @override
-  Future<int> delayed(int n) => send(TestService.delayedCommand, [n]);
+  Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n]);
 
   @override
   Future<int> throwException() => send(TestService.throwExceptionCommand);
@@ -150,7 +150,7 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<dynamic> forward(dynamic data) =>
-      send(TestService.forwardCommand, [data]);
+      send(TestService.forwardCommand, args: [data]);
 
   @override
   Future missing() => send(TestService.missingCommand);
@@ -163,15 +163,15 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Stream<int> finite(int count, [CancellationToken? token]) =>
-      stream(TestService.finiteCommand, [count], token);
+      stream(TestService.finiteCommand, args: [count], token: token);
 
   @override
   Stream<int> infinite([CancellationToken? token]) =>
-      stream(TestService.infiniteCommand, [], token);
+      stream(TestService.infiniteCommand, token: token);
 
   @override
   Future cancellableInfiniteCpu(CancellationToken token) =>
-      send(TestService.cancellableInfiniteCpuCommand, [], token);
+      send(TestService.cancellableInfiniteCpuCommand, token: token);
 
   @override
   Future<int> getPendingInfiniteWithErrors() =>
@@ -179,5 +179,5 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Stream<int> infiniteWithErrors([CancellationToken? token]) =>
-      stream(TestService.infiniteWithErrorsCommand, [], token);
+      stream(TestService.infiniteWithErrorsCommand, token: token);
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'squadron.dart';
+import 'worker.dart';
 import 'squadron_exception.dart';
 
 /// Class used to communicate from a [Worker] to clients.
@@ -44,6 +45,9 @@ class WorkerResponse {
     final ts = message[_$timestamp];
     if (ts != null) {
       res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
+      if (Squadron.debugMode && res._log == null) {
+        Squadron.debug('response received in ${res._travelTime} �s');
+      }
     }
     if (res._log != null) {
       squadronLog(res._log!);

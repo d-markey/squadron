@@ -48,9 +48,9 @@ void poolTests() {
     var stopped = 0;
 
     final pool = TestWorkerPool(ConcurrencySettings(
-      minWorkers: 3,
-      maxWorkers: 11,
-      maxParallel: 2,
+      minWorkers: 2,
+      maxWorkers: 5,
+      maxParallel: 3,
     ));
 
     // start pool will instantiate minWorkers workers
@@ -61,20 +61,20 @@ void poolTests() {
 
     final tasks = <Future>[];
     for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.io(ms: TestService.delay.inMilliseconds * 3));
+      tasks.add(pool.io(ms: TestService.delay.inMilliseconds * 4));
     }
 
     // let the pool kick off some tasks
-    await Future.delayed(maxIdle);
-
-    // install the worker monitor
-    final timer = Timer.periodic(maxIdle, (timer) {
-      stopped += pool.stop((w) => w.idleTime > maxIdle);
-    });
+    await Future.delayed(maxIdle * 3);
 
     // the pool should be running at full speed
     expect(pool.size, equals(pool.maxWorkers));
     expect(stopped, isZero);
+
+    // install the worker monitor
+    final timer = Timer.periodic(maxIdle * 0.5, (timer) {
+      stopped += pool.stop((w) => w.idleTime > maxIdle);
+    });
 
     // let tasks continue their work for a short while
     await Future.delayed(maxIdle * 2);
@@ -86,7 +86,7 @@ void poolTests() {
     await Future.wait(tasks);
 
     // go idle
-    await Future.delayed(maxIdle * 2);
+    await Future.delayed(maxIdle * 3);
 
     // the extra workers should have been stopped
     expect(stopped, isPositive);

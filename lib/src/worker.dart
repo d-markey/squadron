@@ -72,8 +72,17 @@ abstract class Worker implements WorkerService {
   }
 
   /// [Worker] statistics.
-  WorkerStat get stats => WorkerStat(runtimeType, workerId, isStopped, status,
-      workload, maxWorkload, totalWorkload, totalErrors, upTime, idleTime);
+  WorkerStat get stats => createWorkerStat(
+      runtimeType,
+      workerId,
+      isStopped,
+      status,
+      workload,
+      maxWorkload,
+      totalWorkload,
+      totalErrors,
+      upTime,
+      idleTime);
 
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
@@ -85,10 +94,10 @@ abstract class Worker implements WorkerService {
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
-      [List args = const [],
+      {List args = const [],
       CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true]) async {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) async {
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -130,10 +139,10 @@ abstract class Worker implements WorkerService {
 
   /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command,
-      [List args = const [],
+      {List args = const [],
       CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true]) {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) {
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {

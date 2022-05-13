@@ -21,7 +21,7 @@ void cancellationTests() {
       await pool.start();
 
       final digits = <int>[];
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <Future>[];
       for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
@@ -86,7 +86,7 @@ void cancellationTests() {
       await pool.start();
 
       final digits = <int>[];
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <Future>[];
       for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
@@ -114,7 +114,7 @@ void cancellationTests() {
       await pool.start();
 
       final digits = <int>[];
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <ValueTask>[];
       final futures = <Future>[];
@@ -163,7 +163,7 @@ void cancellationTests() {
       await pool.start();
 
       final digits = <int>[];
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <ValueTask>[];
       final futures = <Future>[];
@@ -342,7 +342,7 @@ void cancellationTests() {
       await pool.start();
 
       final status = <int, String>{};
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <StreamTask>[];
       final started = <Future>[];
@@ -400,7 +400,7 @@ void cancellationTests() {
 
       final status = <int, String>{};
       final firstTaskStarted = Completer();
-      var errors = 0;
+      int errors = 0;
 
       final tasks = <StreamTask>[];
       final futures = <Future>[];
@@ -454,40 +454,40 @@ void cancellationTests() {
 
   group('- CancellationToken', () {
     test('- gets cancelled', () async {
-      final token = CancellationToken();
+      final cancellation = CancellationToken();
 
       await Future.delayed(Duration(milliseconds: 5));
-      expect(token.cancelled, isFalse);
+      expect(cancellation.cancelled, isFalse);
 
-      token.cancel();
+      cancellation.cancel();
 
-      expect(token.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
     });
 
     test('- notifies listeners', () async {
-      final token = CancellationToken();
+      final cancellation = CancellationToken();
 
-      var notified = false;
-      token.addListener(() => notified = true);
+      bool notified = false;
+      cancellation.addListener(() => notified = true);
 
-      token.cancel();
+      cancellation.cancel();
 
-      expect(token.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
       expect(notified, isTrue);
     });
 
     test('- notifies listeners when already cancelled', () async {
-      final token = CancellationToken();
+      final cancellation = CancellationToken();
 
-      var notified = false;
+      bool notified = false;
       void listener() => notified = true;
 
-      token.cancel();
-      expect(token.cancelled, isTrue);
+      cancellation.cancel();
+      expect(cancellation.cancelled, isTrue);
       expect(notified, isFalse);
 
-      token.addListener(listener);
-      expect(token.cancelled, isTrue);
+      cancellation.addListener(listener);
+      expect(cancellation.cancelled, isTrue);
       expect(notified, isTrue);
     });
 
@@ -499,13 +499,13 @@ void cancellationTests() {
 
       final N = 20;
 
-      final token = CancellationToken();
-      Timer(TestService.delay * N, token.cancel);
+      final cancellation = CancellationToken();
+      Timer(TestService.delay * N, cancellation.cancel);
 
-      expect(token.cancelled, isFalse);
+      expect(cancellation.cancelled, isFalse);
 
       try {
-        await for (var n in worker.finite(50 * N, token)) {
+        await for (final n in worker.finite(50 * N, cancellation)) {
           digits.add(n);
           count++;
         }
@@ -515,7 +515,7 @@ void cancellationTests() {
         expect(e, isA<CancelledException>());
       }
 
-      expect(token.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -531,11 +531,11 @@ void cancellationTests() {
 
       final N = 20;
 
-      var token = CancellationToken();
-      Timer(TestService.delay * N, token.cancel);
+      final cancellation = CancellationToken();
+      Timer(TestService.delay * N, cancellation.cancel);
 
       try {
-        await for (var n in worker.infinite(token)) {
+        await for (final n in worker.infinite(cancellation)) {
           digits.add(n);
           count++;
         }
@@ -545,7 +545,7 @@ void cancellationTests() {
         expect(ex, isA<CancelledException>());
       }
 
-      expect(token.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -557,15 +557,15 @@ void cancellationTests() {
 
       final L = 20;
 
-      var token = CancellationToken();
-      Future.delayed(TestService.delay * L * 1.5, token.cancel);
+      final cancellation = CancellationToken();
+      Future.delayed(TestService.delay * L * 1.5, cancellation.cancel);
 
       int success = 0;
       int errors = 0;
 
       final tasks = <Future>[];
       for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-        tasks.add(pool.finite(L, token).toList().then((list) {
+        tasks.add(pool.finite(L, cancellation).toList().then((list) {
           success++;
           return list;
         }).onError((ex, st) {
@@ -584,7 +584,7 @@ void cancellationTests() {
       await Future.wait(tasks);
 
       expect(pool.pendingWorkload, isZero);
-      expect(token.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
       expect(success, equals(pool.maxConcurrency));
       expect(success + errors, equals(tasks.length));
 
@@ -595,65 +595,65 @@ void cancellationTests() {
 
   group('- TimeOutToken', () {
     test('- is not programmatically cancellable', () async {
-      final token = TimeOutToken(TestService.shortDelay);
-      expect(() => token.cancel(), throwsA(isA<SquadronError>()));
-      expect(token.cancelled, isFalse);
+      final timeout = TimeOutToken(TestService.shortDelay);
+      expect(() => timeout.cancel(), throwsA(isA<SquadronError>()));
+      expect(timeout.cancelled, isFalse);
     });
 
     test('- gets cancelled after specified duration', () async {
-      final timeoutToken = TimeOutToken(TestService.shortDelay);
-      timeoutToken.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay);
+      timeout.ensureStarted();
 
-      await Future.delayed(timeoutToken.duration * 0.6);
-      expect(timeoutToken.cancelled, isFalse);
+      await Future.delayed(timeout.duration * 0.6);
+      expect(timeout.cancelled, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
-      expect(timeoutToken.cancelled, isTrue);
+      await Future.delayed(timeout.duration * 0.6);
+      expect(timeout.cancelled, isTrue);
     });
 
     test('- notifies listeners', () async {
-      final timeoutToken = TimeOutToken(TestService.shortDelay);
-      timeoutToken.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay);
+      timeout.ensureStarted();
 
-      var notified = false;
+      bool notified = false;
       void listener() => notified = true;
 
-      timeoutToken.addListener(listener);
+      timeout.addListener(listener);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isFalse);
+      expect(timeout.cancelled, isFalse);
       expect(notified, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
       expect(notified, isTrue);
     });
 
     test('- notifies listeners when already cancelled', () async {
-      final timeoutToken = TimeOutToken(TestService.shortDelay);
-      timeoutToken.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay);
+      timeout.ensureStarted();
 
-      var notified = false;
+      bool notified = false;
       void listener() => notified = true;
 
-      expect(timeoutToken.cancelled, isFalse);
+      expect(timeout.cancelled, isFalse);
       expect(notified, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isFalse);
+      expect(timeout.cancelled, isFalse);
       expect(notified, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
       expect(notified, isFalse);
 
-      timeoutToken.addListener(listener);
+      timeout.addListener(listener);
 
-      expect(timeoutToken.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
       expect(notified, isTrue);
     });
 
@@ -665,10 +665,10 @@ void cancellationTests() {
 
       final N = 10;
 
-      final token = TimeOutToken(TestService.delay * N);
+      final timeout = TimeOutToken(TestService.delay * N);
 
       try {
-        await for (var n in worker.finite(50 * N, token)) {
+        await for (final n in worker.finite(50 * N, timeout)) {
           digits.add(n);
           count++;
         }
@@ -678,7 +678,7 @@ void cancellationTests() {
         expect(ex, isA<TaskTimeoutException>());
       }
 
-      expect(token.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -694,10 +694,10 @@ void cancellationTests() {
 
       final N = 20;
 
-      final token = TimeOutToken(TestService.delay * N);
+      final timeout = TimeOutToken(TestService.delay * N);
 
       try {
-        await for (var n in worker.infinite(token)) {
+        await for (final n in worker.infinite(timeout)) {
           digits.add(n);
           count++;
         }
@@ -720,7 +720,7 @@ void cancellationTests() {
 
       final L = 10;
 
-      var timeout = TimeOutToken(TestService.delay * L * 1.75);
+      final timeout = TimeOutToken(TestService.delay * L * 1.75);
 
       int success = 0;
       int errors = 0;
@@ -752,100 +752,100 @@ void cancellationTests() {
 
   group('- CompositeToken', () {
     test('- is not programmatically cancellable', () async {
-      final cancellable = CancellationToken();
-      final token = CompositeToken([cancellable], CompositeMode.any);
-      expect(() => token.cancel(), throwsA(isA<SquadronError>()));
+      final cancellation = CancellationToken();
+      final composite = CompositeToken([cancellation], CompositeMode.any);
+      expect(() => composite.cancel(), throwsA(isA<SquadronError>()));
     });
 
     test('- gets cancelled in CompositeMode.any', () async {
-      final cancellable1 = CancellationToken();
-      final cancellable2 = CancellationToken();
-      final token =
-          CompositeToken([cancellable1, cancellable2], CompositeMode.any);
+      final cancellation1 = CancellationToken();
+      final cancellation2 = CancellationToken();
+      final composite =
+          CompositeToken([cancellation1, cancellation2], CompositeMode.any);
 
-      expect(token.cancelled, isFalse);
-      cancellable1.cancel();
-      expect(token.cancelled, isTrue);
+      expect(composite.cancelled, isFalse);
+      cancellation1.cancel();
+      expect(composite.cancelled, isTrue);
     });
 
     test('- gets cancelled in CompositeMode.all', () async {
-      final cancellable1 = CancellationToken();
-      final cancellable2 = CancellationToken();
-      final token =
-          CompositeToken([cancellable1, cancellable2], CompositeMode.all);
+      final cancellation1 = CancellationToken();
+      final cancellation2 = CancellationToken();
+      final composite =
+          CompositeToken([cancellation1, cancellation2], CompositeMode.all);
 
-      expect(token.cancelled, isFalse);
-      cancellable1.cancel();
-      expect(token.cancelled, isFalse);
-      cancellable2.cancel();
-      expect(token.cancelled, isTrue);
+      expect(composite.cancelled, isFalse);
+      cancellation1.cancel();
+      expect(composite.cancelled, isFalse);
+      cancellation2.cancel();
+      expect(composite.cancelled, isTrue);
     });
 
     test('- gets cancelled by TimeOutToken', () async {
-      final timeoutToken = TimeOutToken(TestService.shortDelay);
-      final cancellableToken = CancellationToken();
-      final token =
-          CompositeToken([cancellableToken, timeoutToken], CompositeMode.any);
-      token.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay);
+      final cancellation = CancellationToken();
+      final composite =
+          CompositeToken([cancellation, timeout], CompositeMode.any);
+      composite.ensureStarted();
 
-      expect(timeoutToken.cancelled, isFalse);
-      expect(cancellableToken.cancelled, isFalse);
-      expect(token.cancelled, isFalse);
+      expect(timeout.cancelled, isFalse);
+      expect(cancellation.cancelled, isFalse);
+      expect(composite.cancelled, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isFalse);
-      expect(cancellableToken.cancelled, isFalse);
-      expect(token.cancelled, isFalse);
+      expect(timeout.cancelled, isFalse);
+      expect(cancellation.cancelled, isFalse);
+      expect(composite.cancelled, isFalse);
 
-      await Future.delayed(timeoutToken.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.6);
 
-      expect(timeoutToken.cancelled, isTrue);
-      expect(cancellableToken.cancelled, isFalse);
-      expect(token.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
+      expect(cancellation.cancelled, isFalse);
+      expect(composite.cancelled, isTrue);
     });
 
     test('- notifies listeners', () async {
-      final cancellable1 = CancellationToken();
-      final cancellable2 = CancellationToken();
-      final token =
-          CompositeToken([cancellable1, cancellable2], CompositeMode.all);
+      final cancellation1 = CancellationToken();
+      final cancellation2 = CancellationToken();
+      final composite =
+          CompositeToken([cancellation1, cancellation2], CompositeMode.all);
 
-      var notified = false;
-      token.addListener(() => notified = true);
+      bool notified = false;
+      composite.addListener(() => notified = true);
 
-      expect(token.cancelled, isFalse);
+      expect(composite.cancelled, isFalse);
       expect(notified, isFalse);
 
-      cancellable1.cancel();
-      expect(token.cancelled, isFalse);
+      cancellation1.cancel();
+      expect(composite.cancelled, isFalse);
       expect(notified, isFalse);
 
-      cancellable2.cancel();
-      expect(token.cancelled, isTrue);
+      cancellation2.cancel();
+      expect(composite.cancelled, isTrue);
       expect(notified, isTrue);
     });
 
     test('- notifies listeners when already cancelled', () async {
-      final token = CancellationToken('token #1');
-      final timeoutToken = TimeOutToken(TestService.shortDelay, 'token #2');
-      timeoutToken.ensureStarted();
+      final cancellation = CancellationToken('token #1');
+      final timeout = TimeOutToken(TestService.shortDelay, 'token #2');
+      timeout.ensureStarted();
 
       int notified = 0;
       void listener() => notified++;
 
-      token.cancel();
+      cancellation.cancel();
 
-      expect(token.cancelled, isTrue);
-      expect(timeoutToken.cancelled, isFalse);
+      expect(cancellation.cancelled, isTrue);
+      expect(timeout.cancelled, isFalse);
 
-      await Future.delayed(timeoutToken.duration);
+      await Future.delayed(timeout.duration);
 
-      expect(token.cancelled, isTrue);
-      expect(timeoutToken.cancelled, isTrue);
+      expect(cancellation.cancelled, isTrue);
+      expect(timeout.cancelled, isTrue);
 
       final composite =
-          CompositeToken([token, timeoutToken], CompositeMode.all);
+          CompositeToken([cancellation, timeout], CompositeMode.all);
 
       expect(composite.cancelled, isTrue);
       expect(notified, isZero);
@@ -863,14 +863,15 @@ void cancellationTests() {
       final N = 20;
 
       final timeout1 = TimeOutToken(TestService.delay * N);
-      final token1 = CancellationToken();
-      Timer(timeout1.duration * 0.5, token1.cancel);
-      final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
+      final cancellation1 = CancellationToken();
+      Timer(timeout1.duration * 0.5, cancellation1.cancel);
+      final composite1 =
+          CompositeToken([timeout1, cancellation1], CompositeMode.any);
 
       expect(timeout1.started, isFalse);
 
       try {
-        await for (var n in worker.finite(50 * N, composite1)) {
+        await for (final n in worker.finite(50 * N, composite1)) {
           expect(timeout1.started, isTrue);
           digits.add(n);
           count++;
@@ -883,7 +884,7 @@ void cancellationTests() {
 
       expect(composite1.cancelled, isTrue);
       expect(timeout1.cancelled, isFalse);
-      expect(token1.cancelled, isTrue);
+      expect(cancellation1.cancelled, isTrue);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -892,13 +893,14 @@ void cancellationTests() {
       count = 0;
 
       final timeout2 = TimeOutToken(TestService.delay * N);
-      final token2 = CancellationToken();
-      final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
+      final cancellation2 = CancellationToken();
+      final composite2 =
+          CompositeToken([timeout2, cancellation2], CompositeMode.any);
 
       expect(timeout2.started, isFalse);
 
       try {
-        await for (var n in worker.finite(50 * N, composite2)) {
+        await for (final n in worker.finite(50 * N, composite2)) {
           expect(timeout2.started, isTrue);
           digits.add(n);
           count++;
@@ -911,7 +913,7 @@ void cancellationTests() {
 
       expect(composite2.cancelled, isTrue);
       expect(timeout2.cancelled, isTrue);
-      expect(token2.cancelled, isFalse);
+      expect(cancellation2.cancelled, isFalse);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -928,14 +930,15 @@ void cancellationTests() {
       final N = 20;
 
       final timeout1 = TimeOutToken(TestService.delay * N);
-      final token1 = CancellationToken();
-      Timer(timeout1.duration * 0.5, token1.cancel);
-      final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
+      final cancellation1 = CancellationToken();
+      Timer(timeout1.duration * 0.5, cancellation1.cancel);
+      final composite1 =
+          CompositeToken([timeout1, cancellation1], CompositeMode.any);
 
       expect(timeout1.started, isFalse);
 
       try {
-        await for (var n in worker.infinite(composite1)) {
+        await for (final n in worker.infinite(composite1)) {
           expect(timeout1.started, isTrue);
           digits.add(n);
           count++;
@@ -948,7 +951,7 @@ void cancellationTests() {
 
       expect(composite1.cancelled, isTrue);
       expect(timeout1.cancelled, isFalse);
-      expect(token1.cancelled, isTrue);
+      expect(cancellation1.cancelled, isTrue);
       expect(count, isPositive);
       expect(count, lessThanOrEqualTo(N));
       expect(digits, equals(Iterable.generate(count)));
@@ -957,11 +960,12 @@ void cancellationTests() {
       count = 0;
 
       final timeout2 = TimeOutToken(TestService.delay * N);
-      final token2 = CancellationToken();
-      final composite2 = CompositeToken([timeout2, token2], CompositeMode.any);
+      final cancellation2 = CancellationToken();
+      final composite2 =
+          CompositeToken([timeout2, cancellation2], CompositeMode.any);
 
       try {
-        await for (var n in worker.infinite(composite2)) {
+        await for (final n in worker.infinite(composite2)) {
           digits.add(n);
           count++;
         }
@@ -985,8 +989,9 @@ void cancellationTests() {
       final L = 20;
 
       final timeout1 = TimeOutToken(TestService.delay * L * 1.5);
-      final token1 = CancellationToken();
-      final composite1 = CompositeToken([timeout1, token1], CompositeMode.any);
+      final cancellation1 = CancellationToken();
+      final composite1 =
+          CompositeToken([timeout1, cancellation1], CompositeMode.any);
 
       int success = 0;
       int errors = 0;
@@ -1011,7 +1016,7 @@ void cancellationTests() {
 
       // timeout set to 1.5 * L * delay ==> only pool.maxConcurrency task should have completed
       expect(timeout1.cancelled, isTrue);
-      expect(token1.cancelled, isFalse);
+      expect(cancellation1.cancelled, isFalse);
       expect(success, equals(pool.maxConcurrency));
       expect(success + errors, equals(tasks.length));
 

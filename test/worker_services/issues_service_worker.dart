@@ -20,5 +20,5 @@ class IssuesWorker extends Worker implements IssuesService {
 
   @override
   Stream<dynamic> issue_8(List<dynamic> words) =>
-      stream(IssuesService.cmdIssue_8, [words]);
+      stream(IssuesService.cmdIssue_8, args: [words]);
 }

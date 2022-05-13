@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'squadron_exception.dart';
 import 'worker_exception.dart';
 import 'xplat/_pool_worker.dart';
 import 'xplat/_worker_stream_task.dart';
@@ -93,20 +94,19 @@ class WorkerPool<W extends Worker> implements WorkerService {
       for (var i = 0; i < workload; i++) {
         try {
           final poolWorker = PoolWorker(_workerFactory(), maxWorkload);
-          _workers.add(poolWorker);
           tasks.add(
-            poolWorker.worker
-                .start()
-                .then((_) => true)
-                .onError((error, stackTrace) {
-              // start failed: remove from list
-              _workers.remove(poolWorker);
-              errors.add(error);
+            poolWorker.worker.start().then((_) {
+              // start succeeded: register worker
+              _workers.add(poolWorker);
+              return true;
+            }).onError<Object>((ex, st) {
+              // start failed
+              errors.add(SquadronException.from(ex, st));
               return false;
             }),
           );
-        } catch (ex) {
-          errors.add(ex);
+        } catch (ex, st) {
+          errors.add(SquadronException.from(ex, st));
         }
       }
 
@@ -141,9 +141,10 @@ class WorkerPool<W extends Worker> implements WorkerService {
   int _removeWorker(PoolWorker poolWorker, bool force) {
     if (_scheduling) return 0;
     if (force || _workers.length > concurrencySettings.minWorkers) {
+      final workerId = poolWorker.worker.workerId;
       poolWorker.worker.stop();
       _workers.remove(poolWorker);
-      _deadWorkerStats.add(poolWorker.worker.stats);
+      _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));
       return 1;
     } else {
       return 0;

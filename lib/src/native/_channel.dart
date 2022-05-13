@@ -68,8 +68,8 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   @override
   Future<T> sendRequest<T>(int command, List args,
       {CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true}) {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) {
     final receiver = ReceivePort();
     final wrapper = ValueWrapper<T>(
       WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
@@ -87,8 +87,8 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop,
       CancellationToken? token,
-      bool inspectRequest = true,
-      bool inspectResponse = true}) {
+      bool inspectRequest = false,
+      bool inspectResponse = false}) {
     final receiver = ReceivePort();
     final wrapper = StreamWrapper<T>(
       WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
@@ -169,18 +169,23 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
   final isolate = await Isolate.spawn(
     entryPoint,
     startRequest.serialize(),
+    errorsAreFatal: false,
     paused: true,
   );
   Squadron.config('created Isolate #$workerId');
 
   final exitPort = ReceivePort();
+  final errorPort = ReceivePort();
+
   exitPort.listen((message) {
     Squadron.config('Isolate #$workerId terminated.');
     channel.close();
+    receiver.close();
+    exitPort.close();
+    errorPort.close();
   });
   isolate.addOnExitListener(exitPort.sendPort);
 
-  final errorPort = ReceivePort();
   errorPort.listen((message) {
     final error = SquadronException.fromString(message[0]) ??
         WorkerException(message[0],
@@ -210,6 +215,8 @@ Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
         Squadron.config('connected to Isolate #$workerId');
         completer.complete(channel);
       }
+    } else {
+      Squadron.config('unexpected response: ${response.serialize()}');
     }
   });
 
