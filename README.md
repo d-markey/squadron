@@ -973,7 +973,7 @@ Releasing your application for Dart Native platforms should be straightforward.
 To release the Browser version, the worker code must first be compiled to JavaScript:
 
 ```
-dart compile js -o lib/src/browser/service_worker.dart web/service_worker.dart.js
+dart compile js lib/src/browser/service_worker.dart -o web/service_worker.dart.js
 ```
 
 Flutter's Web runtime includes a service worker called `flutter_service_worker.js`: make sure you use
