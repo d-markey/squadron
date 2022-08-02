@@ -1,3 +1,7 @@
+## 4.1.0
+
+- Now with annotations to support code generation. To be used with package `squadron-builder`.
+
 ## 4.0.0
 
 - **Breaking changes**: all deprecated artefacts have been removed.

@@ -1,0 +1,3 @@
+class SquadronMethod {
+  const SquadronMethod();
+}
