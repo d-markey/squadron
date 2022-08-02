@@ -798,7 +798,7 @@ void cancellationTests() {
       expect(cancellation.cancelled, isFalse);
       expect(composite.cancelled, isFalse);
 
-      await Future.delayed(timeout.duration * 0.6);
+      await Future.delayed(timeout.duration * 0.9);
 
       expect(timeout.cancelled, isTrue);
       expect(cancellation.cancelled, isFalse);

@@ -138,7 +138,7 @@ class TestService implements WorkerService {
 
   final bool _invalid;
 
-  static const shortDelay = Duration(milliseconds: 5);
+  static const shortDelay = Duration(milliseconds: 10);
   static const delay = Duration(milliseconds: 50);
 
   static const invalidCommand1 = -1; // command IDs must be > 0
