@@ -1,7 +1,7 @@
 class SquadronService {
-  const SquadronService({this.web = true, this.vm = true, this.pool = true});
+  const SquadronService({this.pool = true, this.web = true, this.vm = true});
 
+  final bool pool;
   final bool web;
   final bool vm;
-  final bool pool;
 }
