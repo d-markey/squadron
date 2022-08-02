@@ -1,3 +1,7 @@
+## 4.2.0
+
+- Add `baseUrl` parameter to `SquadronService` annotation.
+
 ## 4.1.0
 
 - Now with annotations to support code generation. To be used with package `squadron-builder`.
