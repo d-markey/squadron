@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-08-02</dd>
+                    <dd>2022-08-03</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>99</td><td>102</td><td class="high">97.1%</td>
+                            <th scope="row">Lines</th><td>99</td><td>104</td><td class="high">95.2%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -544,202 +544,205 @@
                     <td>161</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>2</td><td><code>    if (_channel == null) {</code></td>
+                    <td>162</td><td></td><td>2</td><td><code>    final channel = _channel;</code></td>
                 </tr>
-                <tr class="noop" title="Line 163" id="line163">
-                    <td>163</td><td></td><td></td><td><code>      // worker has not started yet: start it and forward the stream via a StreamController</code></td>
+                <tr class="lineCov" title="Line 163" id="line163">
+                    <td>163</td><td></td><td>1</td><td><code>    if (channel == null) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 164" id="line164">
-                    <td>164</td><td></td><td>1</td><td><code>      late final StreamController&lt;T&gt; controller;</code></td>
+                <tr class="noop" title="Line 164" id="line164">
+                    <td>164</td><td></td><td></td><td><code>      // worker has not started yet: start it and forward the stream via a StreamController</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 165" id="line165">
-                    <td>165</td><td></td><td>3</td><td><code>      controller = StreamController&lt;T&gt;(onListen: () async {</code></td>
+                    <td>165</td><td></td><td>1</td><td><code>      late final StreamController&lt;T&gt; controller;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>1</td><td><code>        try {</code></td>
+                    <td>166</td><td></td><td>3</td><td><code>      controller = StreamController&lt;T&gt;(onListen: () async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 167" id="line167">
-                    <td>167</td><td></td><td>3</td><td><code>          final channel = await start();</code></td>
+                    <td>167</td><td></td><td>1</td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>4</td><td><code>          await controller.addStream(channel.sendStreamingRequest&lt;T&gt;(</code></td>
+                    <td>168</td><td></td><td>3</td><td><code>          final channel = await start();</code></td>
                 </tr>
-                <tr class="noop" title="Line 169" id="line169">
-                    <td>169</td><td></td><td></td><td><code>            command,</code></td>
+                <tr class="lineCov" title="Line 169" id="line169">
+                    <td>169</td><td></td><td>4</td><td><code>          await controller.addStream(channel.sendStreamingRequest&lt;T&gt;(</code></td>
                 </tr>
                 <tr class="noop" title="Line 170" id="line170">
-                    <td>170</td><td></td><td></td><td><code>            args,</code></td>
+                    <td>170</td><td></td><td></td><td><code>            command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 171" id="line171">
-                    <td>171</td><td></td><td></td><td><code>            onDone: onDone,</code></td>
+                    <td>171</td><td></td><td></td><td><code>            args,</code></td>
                 </tr>
                 <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code>            token: token,</code></td>
+                    <td>172</td><td></td><td></td><td><code>            onDone: onDone,</code></td>
                 </tr>
                 <tr class="noop" title="Line 173" id="line173">
-                    <td>173</td><td></td><td></td><td><code>            inspectRequest: inspectRequest,</code></td>
+                    <td>173</td><td></td><td></td><td><code>            token: token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 174" id="line174">
-                    <td>174</td><td></td><td></td><td><code>            inspectResponse: inspectResponse,</code></td>
+                    <td>174</td><td></td><td></td><td><code>            inspectRequest: inspectRequest,</code></td>
                 </tr>
                 <tr class="noop" title="Line 175" id="line175">
-                    <td>175</td><td></td><td></td><td><code>          ));</code></td>
+                    <td>175</td><td></td><td></td><td><code>            inspectResponse: inspectResponse,</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 176" id="line176">
-                    <td>176</td><td></td><td>0</td><td><code>        } catch (ex, st) {</code></td>
+                <tr class="noop" title="Line 176" id="line176">
+                    <td>176</td><td></td><td></td><td><code>          ));</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 177" id="line177">
-                    <td>177</td><td></td><td>0</td><td><code>          controller.addError(SquadronException.from(ex, st), st);</code></td>
+                    <td>177</td><td></td><td>0</td><td><code>        } catch (ex, st) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 178" id="line178">
-                    <td>178</td><td></td><td></td><td><code>        } finally {</code></td>
+                <tr class="lineNoCov" title="Line 178" id="line178">
+                    <td>178</td><td></td><td>0</td><td><code>          controller.addError(SquadronException.from(ex, st), st);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 179" id="line179">
-                    <td>179</td><td></td><td>2</td><td><code>          controller.close();</code></td>
+                <tr class="noop" title="Line 179" id="line179">
+                    <td>179</td><td></td><td></td><td><code>        } finally {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 180" id="line180">
-                    <td>180</td><td></td><td>2</td><td><code>          onDone();</code></td>
+                    <td>180</td><td></td><td>2</td><td><code>          controller.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 181" id="line181">
-                    <td>181</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineCov" title="Line 181" id="line181">
+                    <td>181</td><td></td><td>2</td><td><code>          onDone();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 182" id="line182">
-                    <td>182</td><td></td><td>1</td><td><code>      });</code></td>
+                <tr class="noop" title="Line 182" id="line182">
+                    <td>182</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 183" id="line183">
-                    <td>183</td><td></td><td>2</td><td><code>      return controller.stream;</code></td>
+                    <td>183</td><td></td><td>1</td><td><code>      });</code></td>
                 </tr>
-                <tr class="noop" title="Line 184" id="line184">
-                    <td>184</td><td></td><td></td><td><code>    } else {</code></td>
+                <tr class="lineCov" title="Line 184" id="line184">
+                    <td>184</td><td></td><td>2</td><td><code>      return controller.stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 185" id="line185">
-                    <td>185</td><td></td><td></td><td><code>      // worker has started: return the stream directly</code></td>
+                    <td>185</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 186" id="line186">
-                    <td>186</td><td></td><td>3</td><td><code>      return channel!.sendStreamingRequest&lt;T&gt;(</code></td>
+                <tr class="noop" title="Line 186" id="line186">
+                    <td>186</td><td></td><td></td><td><code>      // worker has started: return the stream directly</code></td>
                 </tr>
-                <tr class="noop" title="Line 187" id="line187">
-                    <td>187</td><td></td><td></td><td><code>        command,</code></td>
+                <tr class="lineCov" title="Line 187" id="line187">
+                    <td>187</td><td></td><td>2</td><td><code>      return channel.sendStreamingRequest&lt;T&gt;(</code></td>
                 </tr>
                 <tr class="noop" title="Line 188" id="line188">
-                    <td>188</td><td></td><td></td><td><code>        args,</code></td>
+                    <td>188</td><td></td><td></td><td><code>        command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 189" id="line189">
-                    <td>189</td><td></td><td></td><td><code>        onDone: onDone,</code></td>
+                    <td>189</td><td></td><td></td><td><code>        args,</code></td>
                 </tr>
                 <tr class="noop" title="Line 190" id="line190">
-                    <td>190</td><td></td><td></td><td><code>        token: token,</code></td>
+                    <td>190</td><td></td><td></td><td><code>        onDone: onDone,</code></td>
                 </tr>
                 <tr class="noop" title="Line 191" id="line191">
-                    <td>191</td><td></td><td></td><td><code>        inspectRequest: inspectRequest,</code></td>
+                    <td>191</td><td></td><td></td><td><code>        token: token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 192" id="line192">
-                    <td>192</td><td></td><td></td><td><code>        inspectResponse: inspectResponse,</code></td>
+                    <td>192</td><td></td><td></td><td><code>        inspectRequest: inspectRequest,</code></td>
                 </tr>
                 <tr class="noop" title="Line 193" id="line193">
-                    <td>193</td><td></td><td></td><td><code>      );</code></td>
+                    <td>193</td><td></td><td></td><td><code>        inspectResponse: inspectResponse,</code></td>
                 </tr>
                 <tr class="noop" title="Line 194" id="line194">
-                    <td>194</td><td></td><td></td><td><code>    }</code></td>
+                    <td>194</td><td></td><td></td><td><code>      );</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 195" id="line195">
-                    <td>195</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 195" id="line195">
+                    <td>195</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 196" id="line196">
-                    <td>196</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 196" id="line196">
+                    <td>196</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 197" id="line197">
-                    <td>197</td><td></td><td></td><td><code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code></td>
+                    <td>197</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 198" id="line198">
-                    <td>198</td><td></td><td>2</td><td><code>  Future&lt;Channel&gt; start() async {</code></td>
+                <tr class="noop" title="Line 198" id="line198">
+                    <td>198</td><td></td><td></td><td><code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 199" id="line199">
-                    <td>199</td><td></td><td>2</td><td><code>    if (_stopped != null) {</code></td>
+                    <td>199</td><td></td><td>2</td><td><code>  Future&lt;Channel&gt; start() async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 200" id="line200">
-                    <td>200</td><td></td><td>3</td><td><code>      throw WorkerException('worker is stopped', workerId: workerId);</code></td>
+                    <td>200</td><td></td><td>2</td><td><code>    if (_stopped != null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 201" id="line201">
-                    <td>201</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 201" id="line201">
+                    <td>201</td><td></td><td>3</td><td><code>      throw WorkerException('worker is stopped', workerId: workerId);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 202" id="line202">
-                    <td>202</td><td></td><td>2</td><td><code>    if (_channel == null) {</code></td>
+                <tr class="noop" title="Line 202" id="line202">
+                    <td>202</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 203" id="line203">
-                    <td>203</td><td></td><td>5</td><td><code>      _openChannel ??= Channel.open(_entryPoint, args);</code></td>
+                    <td>203</td><td></td><td>2</td><td><code>    if (_channel == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 204" id="line204">
-                    <td>204</td><td></td><td>3</td><td><code>      final channel = await _openChannel!;</code></td>
+                    <td>204</td><td></td><td>5</td><td><code>      _openChannel ??= Channel.open(_entryPoint, args);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 205" id="line205">
-                    <td>205</td><td></td><td>1</td><td><code>      if (_channel == null) {</code></td>
+                    <td>205</td><td></td><td>3</td><td><code>      final channel = await _openChannel!;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 206" id="line206">
-                    <td>206</td><td></td><td>1</td><td><code>        _channel = channel;</code></td>
+                    <td>206</td><td></td><td>1</td><td><code>      if (_channel == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 207" id="line207">
-                    <td>207</td><td></td><td>3</td><td><code>        _started = DateTime.now().microsecondsSinceEpoch;</code></td>
+                    <td>207</td><td></td><td>1</td><td><code>        _channel = channel;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 208" id="line208">
-                    <td>208</td><td></td><td>2</td><td><code>        _idle = _started;</code></td>
+                    <td>208</td><td></td><td>3</td><td><code>        _started = DateTime.now().microsecondsSinceEpoch;</code></td>
                 </tr>
-                <tr class="noop" title="Line 209" id="line209">
-                    <td>209</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 209" id="line209">
+                    <td>209</td><td></td><td>2</td><td><code>        _idle = _started;</code></td>
                 </tr>
                 <tr class="noop" title="Line 210" id="line210">
-                    <td>210</td><td></td><td></td><td><code>    }</code></td>
+                    <td>210</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 211" id="line211">
-                    <td>211</td><td></td><td>2</td><td><code>    return _channel!;</code></td>
+                <tr class="noop" title="Line 211" id="line211">
+                    <td>211</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 212" id="line212">
-                    <td>212</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>212</td><td></td><td>2</td><td><code>    return _channel!;</code></td>
                 </tr>
-                <tr class="noop" title="Line 213" id="line213">
-                    <td>213</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 213" id="line213">
+                    <td>213</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 214" id="line214">
-                    <td>214</td><td></td><td></td><td><code>  /// Stops this worker.</code></td>
+                    <td>214</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 215" id="line215">
-                    <td>215</td><td></td><td>2</td><td><code>  void stop() {</code></td>
+                <tr class="noop" title="Line 215" id="line215">
+                    <td>215</td><td></td><td></td><td><code>  /// Stops this worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 216" id="line216">
-                    <td>216</td><td></td><td>2</td><td><code>    if (_stopped == null) {</code></td>
+                    <td>216</td><td></td><td>2</td><td><code>  void stop() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 217" id="line217">
-                    <td>217</td><td></td><td>4</td><td><code>      _stopped = DateTime.now().microsecondsSinceEpoch;</code></td>
+                    <td>217</td><td></td><td>2</td><td><code>    if (_stopped == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 218" id="line218">
-                    <td>218</td><td></td><td>2</td><td><code>      _openChannel = null;</code></td>
+                    <td>218</td><td></td><td>4</td><td><code>      _stopped = DateTime.now().microsecondsSinceEpoch;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 219" id="line219">
-                    <td>219</td><td></td><td>3</td><td><code>      _channel?.close();</code></td>
+                    <td>219</td><td></td><td>2</td><td><code>      _openChannel = null;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 220" id="line220">
-                    <td>220</td><td></td><td>2</td><td><code>      _channel = null;</code></td>
+                    <td>220</td><td></td><td>3</td><td><code>      _channel?.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 221" id="line221">
-                    <td>221</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 221" id="line221">
+                    <td>221</td><td></td><td>2</td><td><code>      _channel = null;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 222" id="line222">
-                    <td>222</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 222" id="line222">
+                    <td>222</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 223" id="line223">
-                    <td>223</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 223" id="line223">
+                    <td>223</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 224" id="line224">
-                    <td>224</td><td></td><td></td><td><code>  /// Workers do not need an [operations] map.</code></td>
+                    <td>224</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 225" id="line225">
-                    <td>225</td><td></td><td></td><td><code>  @override</code></td>
+                    <td>225</td><td></td><td></td><td><code>  /// Workers do not need an [operations] map.</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 226" id="line226">
-                    <td>226</td><td></td><td>1</td><td><code>  final Map&lt;int, CommandHandler&gt; operations = WorkerService.noOperations;</code></td>
+                <tr class="lineNoCov" title="Line 226" id="line226">
+                    <td>226</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 227" id="line227">
-                    <td>227</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 227" id="line227">
+                    <td>227</td><td></td><td>0</td><td><code>  Map&lt;int, CommandHandler&gt; get operations =&gt; WorkerService.noOperations;</code></td>
+                </tr>
+                <tr class="noop" title="Line 228" id="line228">
+                    <td>228</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
