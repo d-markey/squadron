@@ -159,7 +159,8 @@ abstract class Worker implements WorkerService {
       }
     }
 
-    if (_channel == null) {
+    final channel = _channel;
+    if (channel == null) {
       // worker has not started yet: start it and forward the stream via a StreamController
       late final StreamController<T> controller;
       controller = StreamController<T>(onListen: () async {
@@ -183,7 +184,7 @@ abstract class Worker implements WorkerService {
       return controller.stream;
     } else {
       // worker has started: return the stream directly
-      return channel!.sendStreamingRequest<T>(
+      return channel.sendStreamingRequest<T>(
         command,
         args,
         onDone: onDone,
@@ -223,5 +224,5 @@ abstract class Worker implements WorkerService {
 
   /// Workers do not need an [operations] map.
   @override
-  final Map<int, CommandHandler> operations = WorkerService.noOperations;
+  Map<int, CommandHandler> get operations => WorkerService.noOperations;
 }

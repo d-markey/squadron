@@ -1,13 +1,13 @@
-[![Pub Package](https://badgen.net/pub/v/squadron)](https://pub.dev/packages/squadron)
+[![Pub Package](https://img.shields.io/pub/v/squadron)](https://pub.dev/packages/squadron)
 [![Dart Platforms](https://badgen.net/pub/dart-platform/squadron)](https://pub.dev/packages/squadron)
 [![Flutter Platforms](https://badgen.net/pub/flutter-platform/squadron)](https://pub.dev/packages/squadron)
 
-[![License](https://badgen.net/pub/license/squadron)](https://github.com/d-markey/squadron/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/d-markey/squadron)](https://github.com/d-markey/squadron/blob/master/LICENSE)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
 [![Dart Style](https://img.shields.io/badge/style-lints-40c4ff)](https://pub.dev/packages/lints)
-[![Pub Points](https://badgen.net/pub/points/squadron)](https://pub.dev/packages/squadron/score)
-[![Likes](https://badgen.net/pub/likes/squadron)](https://pub.dev/packages/squadron/score)
-[![Popularity](https://badgen.net/pub/popularity/squadron)](https://pub.dev/packages/squadron/score)
+[![Pub Points](https://img.shields.io/pub/points/squadron)](https://pub.dev/packages/squadron/score)
+[![Likes](https://img.shields.io/pub/likes/squadron)](https://pub.dev/packages/squadron/score)
+[![Popularity](https://img.shields.io/pub/popularity/squadron)](https://pub.dev/packages/squadron/score)
 
 [![Last Commit](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
 [![Dart Workflow](https://github.com/d-markey/squadron/actions/workflows/dart.yml/badge.svg?logo=dart)](https://github.com/d-markey/squadron/actions/workflows/dart.yml)

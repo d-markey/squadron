@@ -304,5 +304,5 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   /// Worker pools do not need an [operations] map.
   @override
-  final Map<int, CommandHandler> operations = WorkerService.noOperations;
+  Map<int, CommandHandler> get operations => WorkerService.noOperations;
 }
