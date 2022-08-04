@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-08-03</dd>
+                    <dd>2022-08-04</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>24</td><td>29</td><td class="med">82.8%</td>
+                            <th scope="row">Lines</th><td>25</td><td>33</td><td class="med">75.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -145,121 +145,145 @@
                     <td>28</td><td></td><td></td><td><code>        if (cancelException != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>0</td><td><code>          _completer.completeError(cancelException, cancelException.stackTrace);</code></td>
+                    <td>29</td><td></td><td>0</td><td><code>          if (!_completer.isCompleted) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineNoCov" title="Line 30" id="line30">
+                    <td>30</td><td></td><td>0</td><td><code>            _completer.completeError(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>2</td><td><code>        final res = WorkerResponse.deserialize(message);</code></td>
+                <tr class="lineNoCov" title="Line 31" id="line31">
+                    <td>31</td><td></td><td>0</td><td><code>                cancelException, cancelException.stackTrace);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>1</td><td><code>        if (res == null) return;</code></td>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>          }</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code></code></td>
+                    <td>33</td><td></td><td></td><td><code>        } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>2</td><td><code>        final error = res.error;</code></td>
+                    <td>34</td><td></td><td>2</td><td><code>          final res = WorkerResponse.deserialize(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>1</td><td><code>        if (error != null) {</code></td>
+                    <td>35</td><td></td><td>1</td><td><code>          if (res == null) return;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>4</td><td><code>          _completer.completeError(error, error.stackTrace);</code></td>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>        } else {</code></td>
+                <tr class="lineCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>3</td><td><code>          if (!_completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>4</td><td><code>          _completer.complete(res.result);</code></td>
+                    <td>38</td><td></td><td>2</td><td><code>            final error = res.error;</code></td>
                 </tr>
-                <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineCov" title="Line 39" id="line39">
+                    <td>39</td><td></td><td>1</td><td><code>            if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>1</td><td><code>      },</code></td>
+                    <td>40</td><td></td><td>4</td><td><code>              _completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>1</td><td><code>      onError: (e, st) {</code></td>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>            } else {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>0</td><td><code>        final error = SquadronException.from(e, st);</code></td>
+                <tr class="lineCov" title="Line 42" id="line42">
+                    <td>42</td><td></td><td>4</td><td><code>              _completer.complete(res.result);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>0</td><td><code>        _completer.completeError(error, error.stackTrace);</code></td>
+                <tr class="noop" title="Line 43" id="line43">
+                    <td>43</td><td></td><td></td><td><code>            }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>0</td><td><code>      },</code></td>
+                <tr class="noop" title="Line 44" id="line44">
+                    <td>44</td><td></td><td></td><td><code>          }</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>      cancelOnError: false,</code></td>
+                    <td>45</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
-                <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code>    );</code></td>
+                <tr class="lineCov" title="Line 46" id="line46">
+                    <td>46</td><td></td><td>1</td><td><code>      },</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>47</td><td></td><td>1</td><td><code>      onError: (e, st) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 48" id="line48">
+                    <td>48</td><td></td><td>0</td><td><code>        if (!_completer.isCompleted) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 49" id="line49">
-                    <td>49</td><td></td><td></td><td><code>  final WorkerRequest _request;</code></td>
+                <tr class="lineNoCov" title="Line 49" id="line49">
+                    <td>49</td><td></td><td>0</td><td><code>          final error = SquadronException.from(e, st);</code></td>
                 </tr>
-                <tr class="noop" title="Line 50" id="line50">
-                    <td>50</td><td></td><td></td><td><code>  final PostMethod _postMethod;</code></td>
+                <tr class="lineNoCov" title="Line 50" id="line50">
+                    <td>50</td><td></td><td>0</td><td><code>          _completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code>  final CancellationToken? _token;</code></td>
+                    <td>51</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
-                <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>  final bool _inspectRequest;</code></td>
+                <tr class="lineNoCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>0</td><td><code>      },</code></td>
                 </tr>
                 <tr class="noop" title="Line 53" id="line53">
-                    <td>53</td><td></td><td></td><td><code></code></td>
+                    <td>53</td><td></td><td></td><td><code>      cancelOnError: false,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>1</td><td><code>  late final Completer&lt;T&gt; _completer;</code></td>
+                <tr class="noop" title="Line 54" id="line54">
+                    <td>54</td><td></td><td></td><td><code>    );</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>1</td><td><code>  late final StreamSubscription _sub;</code></td>
+                    <td>55</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
                     <td>56</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>0</td><td><code>  void _canceller() =&gt; _postMethod(WorkerRequest.cancel(_token!), false);</code></td>
+                <tr class="noop" title="Line 57" id="line57">
+                    <td>57</td><td></td><td></td><td><code>  final WorkerRequest _request;</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code></code></td>
+                    <td>58</td><td></td><td></td><td><code>  final PostMethod _postMethod;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>2</td><td><code>  Future&lt;T&gt; compute() {</code></td>
+                <tr class="noop" title="Line 59" id="line59">
+                    <td>59</td><td></td><td></td><td><code>  final CancellationToken? _token;</code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>    // initiate operation now!</code></td>
+                    <td>60</td><td></td><td></td><td><code>  final bool _inspectRequest;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>5</td><td><code>    _postMethod(_request, _inspectRequest);</code></td>
+                <tr class="noop" title="Line 61" id="line61">
+                    <td>61</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>5</td><td><code>    return _completer.future.whenComplete(() {</code></td>
+                    <td>62</td><td></td><td>1</td><td><code>  late final Completer&lt;T&gt; _completer;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 63" id="line63">
-                    <td>63</td><td></td><td>3</td><td><code>      _sub.cancel();</code></td>
+                    <td>63</td><td></td><td>1</td><td><code>  late final StreamSubscription _sub;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>1</td><td><code>      _token?.removeListener(_canceller);</code></td>
+                <tr class="noop" title="Line 64" id="line64">
+                    <td>64</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>1</td><td><code>    });</code></td>
+                <tr class="lineNoCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>0</td><td><code>  void _canceller() =&gt; _postMethod(WorkerRequest.cancel(_token!), false);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 66" id="line66">
+                    <td>66</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 67" id="line67">
-                    <td>67</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 67" id="line67">
+                    <td>67</td><td></td><td>2</td><td><code>  Future&lt;T&gt; compute() {</code></td>
+                </tr>
+                <tr class="noop" title="Line 68" id="line68">
+                    <td>68</td><td></td><td></td><td><code>    // initiate operation now!</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 69" id="line69">
+                    <td>69</td><td></td><td>5</td><td><code>    _postMethod(_request, _inspectRequest);</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>5</td><td><code>    return _completer.future.whenComplete(() {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 71" id="line71">
+                    <td>71</td><td></td><td>1</td><td><code>      _token?.removeListener(_canceller);</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 72" id="line72">
+                    <td>72</td><td></td><td>3</td><td><code>      _sub.cancel();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 73" id="line73">
+                    <td>73</td><td></td><td>1</td><td><code>    });</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 74" id="line74">
+                    <td>74</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 75" id="line75">
+                    <td>75</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

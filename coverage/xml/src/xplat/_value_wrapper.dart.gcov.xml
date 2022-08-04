@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-03" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82758623" lines-covered="24" lines-valid="29" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-04" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75757575" lines-covered="25" lines-valid="33" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -92,40 +92,59 @@
             <code>        if (cancelException != null) {</code>
         </line>
         <line hits="0">
-            <code>          _completer.completeError(cancelException, cancelException.stackTrace);</code>
+            <code>          if (!_completer.isCompleted) {</code>
+        </line>
+        <line hits="0">
+            <code>            _completer.completeError(</code>
+        </line>
+        <line hits="0">
+            <code>                cancelException, cancelException.stackTrace);</code>
         </line>
         <line>
-            <code>        }</code>
+            <code>          }</code>
+        </line>
+        <line>
+            <code>        } else {</code>
         </line>
         <line hits="2">
-            <code>        final res = WorkerResponse.deserialize(message);</code>
+            <code>          final res = WorkerResponse.deserialize(message);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        if (res == null) return;</code>
+            <code>          if (res == null) return;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
+        <line hits="3">
+            <code>          if (!_completer.isCompleted) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="2">
-            <code>        final error = res.error;</code>
+            <code>            final error = res.error;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        if (error != null) {</code>
+            <code>            if (error != null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>          _completer.completeError(error, error.stackTrace);</code>
+            <code>              _completer.completeError(error, error.stackTrace);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        } else {</code>
+            <code>            } else {</code>
         </line>
         <line hits="4">
-            <code>          _completer.complete(res.result);</code>
+            <code>              _completer.complete(res.result);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            }</code>
+        </line>
+        <line>
+            <code>          }</code>
         </line>
         <line>
             <code>        }</code>
@@ -139,10 +158,16 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>        final error = SquadronException.from(e, st);</code>
+            <code>        if (!_completer.isCompleted) {</code>
         </line>
         <line hits="0">
-            <code>        _completer.completeError(error, error.stackTrace);</code>
+            <code>          final error = SquadronException.from(e, st);</code>
+        </line>
+        <line hits="0">
+            <code>          _completer.completeError(error, error.stackTrace);</code>
+        </line>
+        <line>
+            <code>        }</code>
         </line>
         <line hits="0">
             <code>      },</code>
@@ -207,13 +232,13 @@
             <code>    return _completer.future.whenComplete(() {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      _sub.cancel();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1">
             <code>      _token?.removeListener(_canceller);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _sub.cancel();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    });</code>
