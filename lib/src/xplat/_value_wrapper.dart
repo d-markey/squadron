@@ -26,21 +26,29 @@ class ValueWrapper<T> {
       (message) {
         final cancelException = _token?.exception;
         if (cancelException != null) {
-          _completer.completeError(cancelException, cancelException.stackTrace);
-        }
-        final res = WorkerResponse.deserialize(message);
-        if (res == null) return;
-
-        final error = res.error;
-        if (error != null) {
-          _completer.completeError(error, error.stackTrace);
+          if (!_completer.isCompleted) {
+            _completer.completeError(
+                cancelException, cancelException.stackTrace);
+          }
         } else {
-          _completer.complete(res.result);
+          final res = WorkerResponse.deserialize(message);
+          if (res == null) return;
+
+          if (!_completer.isCompleted) {
+            final error = res.error;
+            if (error != null) {
+              _completer.completeError(error, error.stackTrace);
+            } else {
+              _completer.complete(res.result);
+            }
+          }
         }
       },
       onError: (e, st) {
-        final error = SquadronException.from(e, st);
-        _completer.completeError(error, error.stackTrace);
+        if (!_completer.isCompleted) {
+          final error = SquadronException.from(e, st);
+          _completer.completeError(error, error.stackTrace);
+        }
       },
       cancelOnError: false,
     );
@@ -60,8 +68,8 @@ class ValueWrapper<T> {
     // initiate operation now!
     _postMethod(_request, _inspectRequest);
     return _completer.future.whenComplete(() {
-      _sub.cancel();
       _token?.removeListener(_canceller);
+      _sub.cancel();
     });
   }
 }
