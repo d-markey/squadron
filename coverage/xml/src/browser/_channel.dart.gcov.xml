@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-10" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.83125" lines-covered="133" lines-valid="160" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-10" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7875" lines-covered="126" lines-valid="160" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -961,9 +961,8 @@
         <line>
             <code>      String msg;</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      if (event is web.ErrorEvent) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        final error = event;</code>
@@ -971,9 +970,8 @@
         <line>
             <code>        msg =</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -984,21 +982,17 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      final error = WorkerException(msg);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      Squadron.warning(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        completer.completeError(error, error.stackTrace);</code>
@@ -1006,9 +1000,8 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>    },</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  );</code>
