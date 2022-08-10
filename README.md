@@ -50,6 +50,8 @@ A demo is available from [GitHub: squadron_sample](https://github.com/d-markey/s
 
 It provides a Flutter App running on native and browser platforms, showcasing Squadron integration with [Flutter](https://flutter.dev/).
 
+Another demo including code generation is available at https://github.com/d-markey/flutter_mandel_squadron.
+
 ## <a name="started"></a>Getting Started
 
 Import squadron from your `pubspec.yaml` file:
