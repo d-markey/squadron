@@ -1,3 +1,7 @@
+## 4.3.0
+
+- ValueWrapper: check future hasn't already completed before calling `complete()` or `completeError()`.
+
 ## 4.2.0
 
 - Add `baseUrl` parameter to `SquadronService` annotation.
