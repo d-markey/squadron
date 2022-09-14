@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-08-22</dd>
+                    <dd>2022-09-14</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>26</td><td>26</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>25</td><td>28</td><td class="med">89.3%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -97,10 +97,10 @@
                     <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>  static const _$id = 'a';</code></td>
+                    <td>13</td><td></td><td></td><td><code>  static const _$id = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  static const _$message = 'b';</code></td>
+                    <td>14</td><td></td><td></td><td><code>  static const _$message = 1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code></code></td>
@@ -109,7 +109,7 @@
                     <td>16</td><td></td><td></td><td><code>  /// Deseralization of a [CancellationToken]</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>2</td><td><code>  static CancellationToken? deserialize(Map? token) {</code></td>
+                    <td>17</td><td></td><td>2</td><td><code>  static CancellationToken? deserialize(List? token) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
                     <td>18</td><td></td><td>1</td><td><code>    if (token == null) return null;</code></td>
@@ -169,7 +169,7 @@
                     <td>36</td><td></td><td></td><td><code>  /// Seralization of a [CancellationToken]</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>8</td><td><code>  Map serialize() =&gt; {_$id: _id, if (message != null) _$message: message};</code></td>
+                    <td>37</td><td></td><td>5</td><td><code>  List serialize() =&gt; [_id, message];</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
                     <td>38</td><td></td><td></td><td><code></code></td>
@@ -223,58 +223,85 @@
                     <td>54</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>3</td><td><code>      _listeners ??= &lt;SquadronCallback&gt;[];</code></td>
+                    <td>55</td><td></td><td>4</td><td><code>      (_listeners ??= &lt;SquadronCallback&gt;[]).add(listener);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>3</td><td><code>      _listeners!.add(listener);</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
-                    <td>59</td><td></td><td></td><td><code></code></td>
+                    <td>59</td><td></td><td></td><td><code>  /// Unregisters a listener that has been installed with [addListener].</code></td>
                 </tr>
-                <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>  /// Unregisters a listener that has been installed with [addListener].</code></td>
+                <tr class="lineCov" title="Line 60" id="line60">
+                    <td>60</td><td></td><td>2</td><td><code>  void removeListener(SquadronCallback listener) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>2</td><td><code>  void removeListener(SquadronCallback listener) =&gt;</code></td>
+                    <td>61</td><td></td><td>3</td><td><code>      _listeners?.remove(listener);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>3</td><td><code>      _listeners?.remove(listener);</code></td>
+                <tr class="noop" title="Line 62" id="line62">
+                    <td>62</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
-                    <td>63</td><td></td><td></td><td><code></code></td>
+                    <td>63</td><td></td><td></td><td><code>  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that</code></td>
                 </tr>
                 <tr class="noop" title="Line 64" id="line64">
-                    <td>64</td><td></td><td></td><td><code>  /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that</code></td>
+                    <td>64</td><td></td><td></td><td><code>  /// need to cancel automatically.</code></td>
                 </tr>
-                <tr class="noop" title="Line 65" id="line65">
-                    <td>65</td><td></td><td></td><td><code>  /// need to cancel automatically.</code></td>
+                <tr class="lineCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>2</td><td><code>  void ensureStarted() {}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>2</td><td><code>  void ensureStarted() {}</code></td>
+                <tr class="noop" title="Line 66" id="line66">
+                    <td>66</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 67" id="line67">
-                    <td>67</td><td></td><td></td><td><code>}</code></td>
+                    <td>67</td><td></td><td></td><td><code>  /// Await this method in Worker code to give cancellation requests a chance</code></td>
                 </tr>
                 <tr class="noop" title="Line 68" id="line68">
-                    <td>68</td><td></td><td></td><td><code></code></td>
+                    <td>68</td><td></td><td></td><td><code>  /// to come through.</code></td>
                 </tr>
-                <tr class="noop" title="Line 69" id="line69">
-                    <td>69</td><td></td><td></td><td><code>// for internal use</code></td>
+                <tr class="lineNoCov" title="Line 69" id="line69">
+                    <td>69</td><td></td><td>0</td><td><code>  Future&lt;bool&gt; isCancelled({bool throwIfCancelled = false}) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 70" id="line70">
-                    <td>70</td><td></td><td></td><td><code>extension TokenIdExt on CancellationToken {</code></td>
+                <tr class="lineNoCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>0</td><td><code>      Future.delayed(Duration.zero, () {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>3</td><td><code>  void withId(int id) =&gt; _id = id;</code></td>
+                <tr class="noop" title="Line 71" id="line71">
+                    <td>71</td><td></td><td></td><td><code>        // throw if the token has been cancelled</code></td>
                 </tr>
-                <tr class="noop" title="Line 72" id="line72">
-                    <td>72</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 72" id="line72">
+                    <td>72</td><td></td><td>0</td><td><code>        final ex = exception;</code></td>
+                </tr>
+                <tr class="noop" title="Line 73" id="line73">
+                    <td>73</td><td></td><td></td><td><code>        if (ex == null) return false;</code></td>
+                </tr>
+                <tr class="noop" title="Line 74" id="line74">
+                    <td>74</td><td></td><td></td><td><code>        return throwIfCancelled ? throw ex : true;</code></td>
+                </tr>
+                <tr class="noop" title="Line 75" id="line75">
+                    <td>75</td><td></td><td></td><td><code>      });</code></td>
+                </tr>
+                <tr class="noop" title="Line 76" id="line76">
+                    <td>76</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+                <tr class="noop" title="Line 77" id="line77">
+                    <td>77</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 78" id="line78">
+                    <td>78</td><td></td><td></td><td><code>// for internal use</code></td>
+                </tr>
+                <tr class="noop" title="Line 79" id="line79">
+                    <td>79</td><td></td><td></td><td><code>extension TokenIdExt on CancellationToken {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 80" id="line80">
+                    <td>80</td><td></td><td>3</td><td><code>  void withId(int id) =&gt; _id = id;</code></td>
+                </tr>
+                <tr class="noop" title="Line 81" id="line81">
+                    <td>81</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

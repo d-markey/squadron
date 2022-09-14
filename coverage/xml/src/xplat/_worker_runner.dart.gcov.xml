@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-22" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8873239" lines-covered="63" lines-valid="71" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-09-14" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8857143" lines-covered="62" lines-valid="70" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -195,7 +195,7 @@
             <code>      if (init is Future) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line>
             <code>        service = await init;</code>
         </line>
         <line>
@@ -383,9 +383,8 @@
             <code>      if (result is Future) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>        result = await result;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -482,9 +481,9 @@
         <line>
             <code/>
         </line>
-        <line hits="5">
+        <line hits="4">
             <code>        await done.future.whenComplete(() {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          // unregister stream canceller callback</code>

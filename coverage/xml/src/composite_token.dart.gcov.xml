@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-22" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9677419" lines-covered="30" lines-valid="31" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-09-14" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9354839" lines-covered="29" lines-valid="31" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'cancellation_token.dart';</code>
@@ -16,9 +16,8 @@
         <line>
             <code>/// Composite token cancellation mode</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>enum CompositeMode {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  /// the [CompositeToken] is cancelled iif all tokens get cancelled</code>

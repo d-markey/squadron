@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-22" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="26" lines-valid="26" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-09-14" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89285713" lines-covered="25" lines-valid="28" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'worker_exception.dart';</code>
@@ -40,10 +40,10 @@
             <code/>
         </line>
         <line>
-            <code>  static const _$id = 'a';</code>
+            <code>  static const _$id = 0;</code>
         </line>
         <line>
-            <code>  static const _$message = 'b';</code>
+            <code>  static const _$message = 1;</code>
         </line>
         <line>
             <code/>
@@ -52,7 +52,7 @@
             <code>  /// Deseralization of a [CancellationToken]</code>
         </line>
         <line hits="2">
-            <code>  static CancellationToken? deserialize(Map? token) {</code>
+            <code>  static CancellationToken? deserialize(List? token) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -118,9 +118,9 @@
         <line>
             <code>  /// Seralization of a [CancellationToken]</code>
         </line>
-        <line hits="8">
-            <code>  Map serialize() =&gt; {_$id: _id, if (message != null) _$message: message};</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>  List serialize() =&gt; [_id, message];</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -182,13 +182,9 @@
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="3">
-            <code>      _listeners ??= &lt;SquadronCallback&gt;[];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      _listeners!.add(listener);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>      (_listeners ??= &lt;SquadronCallback&gt;[]).add(listener);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -223,6 +219,36 @@
         <line hits="2">
             <code>  void ensureStarted() {}</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Await this method in Worker code to give cancellation requests a chance</code>
+        </line>
+        <line>
+            <code>  /// to come through.</code>
+        </line>
+        <line hits="0">
+            <code>  Future&lt;bool&gt; isCancelled({bool throwIfCancelled = false}) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      Future.delayed(Duration.zero, () {</code>
+        </line>
+        <line>
+            <code>        // throw if the token has been cancelled</code>
+        </line>
+        <line hits="0">
+            <code>        final ex = exception;</code>
+        </line>
+        <line>
+            <code>        if (ex == null) return false;</code>
+        </line>
+        <line>
+            <code>        return throwIfCancelled ? throw ex : true;</code>
+        </line>
+        <line>
+            <code>      });</code>
         </line>
         <line>
             <code>}</code>

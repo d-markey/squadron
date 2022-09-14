@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-08-22" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="36" lines-valid="36" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-09-14" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../cancellation_token.dart';</code>
@@ -149,17 +149,13 @@
         <line>
             <code>      CancellationTokenReference tokenRef, SquadronCallback canceller) {</code>
         </line>
-        <line hits="3">
-            <code>    final cancellers = (_streamCancellers ??= &lt;int, SquadronCallback&gt;{});</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="2">
             <code>    final streamId = (++_streamId);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    cancellers[streamId] = canceller;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>    (_streamCancellers ??= &lt;int, SquadronCallback&gt;{})[streamId] = canceller;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    tokenRef.addListener(canceller);</code>
