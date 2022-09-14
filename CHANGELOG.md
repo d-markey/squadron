@@ -1,6 +1,10 @@
+## 4.3.1
+
+- `CancellationToken`: provide `Future<bool> isCancelled({bool throwIfCancelled = false})` to make it easier to check cancellation token status in worker services.
+
 ## 4.3.0
 
-- ValueWrapper: check future hasn't already completed before calling `complete()` or `completeError()`.
+- `ValueWrapper`: check future hasn't already completed before calling `complete()` or `completeError()`.
 
 ## 4.2.0
 

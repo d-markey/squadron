@@ -43,9 +43,8 @@ class WorkerMonitor {
   /// Assigns a stream ID to the stream canceller callback and registers the callback.
   int registerStreamCanceller(
       CancellationTokenReference tokenRef, SquadronCallback canceller) {
-    final cancellers = (_streamCancellers ??= <int, SquadronCallback>{});
     final streamId = (++_streamId);
-    cancellers[streamId] = canceller;
+    (_streamCancellers ??= <int, SquadronCallback>{})[streamId] = canceller;
     tokenRef.addListener(canceller);
     return streamId;
   }

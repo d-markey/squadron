@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:html' as web;
 
-import 'package:squadron/src/squadron_error.dart';
-
+import '../squadron_error.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;

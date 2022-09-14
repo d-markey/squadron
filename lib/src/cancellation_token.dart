@@ -10,11 +10,11 @@ class CancellationToken {
 
   CancellationToken([String? message]) : this._(message, SequenceId.next());
 
-  static const _$id = 'a';
-  static const _$message = 'b';
+  static const _$id = 0;
+  static const _$message = 1;
 
   /// Deseralization of a [CancellationToken]
-  static CancellationToken? deserialize(Map? token) {
+  static CancellationToken? deserialize(List? token) {
     if (token == null) return null;
     return CancellationToken._(token[_$message], token[_$id]);
   }
@@ -34,7 +34,7 @@ class CancellationToken {
   final String? message;
 
   /// Seralization of a [CancellationToken]
-  Map serialize() => {_$id: _id, if (message != null) _$message: message};
+  List serialize() => [_id, message];
 
   /// Cancels the token and notifies listeners.
   void cancel([CancelledException? exception]) {
@@ -52,8 +52,7 @@ class CancellationToken {
     if (cancelled) {
       safeInvoke(listener);
     } else {
-      _listeners ??= <SquadronCallback>[];
-      _listeners!.add(listener);
+      (_listeners ??= <SquadronCallback>[]).add(listener);
     }
   }
 
@@ -64,6 +63,16 @@ class CancellationToken {
   /// Called just before processing a [WorkerRequest], but should only be implemented by cancellation tokens that
   /// need to cancel automatically.
   void ensureStarted() {}
+
+  /// Await this method in Worker code to give cancellation requests a chance
+  /// to come through.
+  Future<bool> isCancelled({bool throwIfCancelled = false}) =>
+      Future.delayed(Duration.zero, () {
+        // throw if the token has been cancelled
+        final ex = exception;
+        if (ex == null) return false;
+        return throwIfCancelled ? throw ex : true;
+      });
 }
 
 // for internal use

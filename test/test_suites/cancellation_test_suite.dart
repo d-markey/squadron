@@ -293,11 +293,9 @@ void cancellationTests() {
         final completer = Completer();
         tasks.add(completer.future);
         pool.finite(i + 1).listen((value) {
-          final res = (results[i] ??= []);
-          res.add(value);
+          (results[i] ??= []).add(value);
         }, onError: (error) {
-          final res = (results[i] ??= []);
-          res.add(error);
+          (results[i] ??= []).add(error);
         }, onDone: () {
           completer.complete();
         });
