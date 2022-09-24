@@ -10,9 +10,12 @@ import 'squadron_exception.dart';
 /// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also
 /// send error messages.
 class WorkerResponse {
-  WorkerResponse._(this._result, this.error, this.endOfStream, this._log);
+  WorkerResponse._(dynamic result, this.error, this.endOfStream, this._log)
+      : _result =
+            (result is Iterable && result is! List) ? result.toList() : result;
 
-  /// [WorkerResponse] with a valid [result].
+  /// [WorkerResponse] with a valid [result]. If [result] is an `Iterable` but not a `List`, it will be converted
+  /// to a `List` by calling `toList()`.
   WorkerResponse(dynamic result) : this._(result, null, false, null);
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].

@@ -1,3 +1,8 @@
+## 4.3.2
+
+- `WorkerResponse`: if `result` is an `Iterable` but not a `List`, call `toList()` to get results before
+serializing the response back to the caller.
+
 ## 4.3.1
 
 - `CancellationToken`: provide `Future<bool> isCancelled({bool throwIfCancelled = false})` to make it easier to check cancellation token status in worker services.
