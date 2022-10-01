@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../jgenhtml.js"></script>
-        <title>LCOV - lcov.info worker_service.dart</title>
+        <title>LCOV - lcov.info squadron_serializer.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,7 +13,7 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../index.html">top level</a> - <a href="index.html">/src</a> - worker_service.dart
+                        <a href="../index.html">top level</a> - <a href="index.html">/src</a> - squadron_serializer.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>2</td><td>2</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>0</td><td>1</td><td class="low">0.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,67 +61,43 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'dart:async';</code></td>
+                    <td>1</td><td></td><td></td><td><code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code></code></td>
+                    <td>2</td><td></td><td></td><td><code>abstract class SquadronSerializer&lt;T, S&gt; {</code></td>
                 </tr>
-                <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import 'worker_request.dart';</code></td>
+                <tr class="lineNoCov" title="Line 3" id="line3">
+                    <td>3</td><td></td><td>0</td><td><code>  const SquadronSerializer();</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
                     <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code></td>
+                    <td>5</td><td></td><td></td><td><code>  /// Serialize [data] of type [T] to something of type [S], eg. a `String` or some</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>    WorkerRequest startRequest);</code></td>
+                    <td>6</td><td></td><td></td><td><code>  /// binary representation.</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code></code></td>
+                    <td>7</td><td></td><td></td><td><code>  S marshall(T data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>typedef CommandHandler = FutureOr Function(WorkerRequest req);</code></td>
+                    <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code></code></td>
+                    <td>9</td><td></td><td></td><td><code>  /// Deserialize a representation of type [S] back to the original data of type</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>typedef SquadronCallback = void Function();</code></td>
+                    <td>10</td><td></td><td></td><td><code>  /// [T]. `unmarshall(marshall(data))` must produce an instance of [T] that is</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                    <td>11</td><td></td><td></td><td><code>  /// equivalent to the original instance [data].</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>/// Base class for a worker service.</code></td>
+                    <td>12</td><td></td><td></td><td><code>  T unmarshall(S data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>abstract class WorkerService {</code></td>
-                </tr>
-                <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request</code></td>
-                </tr>
-                <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  /// to the [CommandHandler] mathing the value of [WorkerRequest.command].</code></td>
-                </tr>
-                <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
-                </tr>
-                <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
-                </tr>
-                <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>}</code></td>
+                    <td>13</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
