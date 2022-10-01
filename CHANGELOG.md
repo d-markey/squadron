@@ -2,6 +2,7 @@
 
 - `WorkerResponse`: if `result` is an `Iterable` but not a `List`, call `toList()` to get results before
 serializing the response back to the caller.
+- `SerializeWith`: annotation used to indicate how to marshal data to/from a service running in a Worker. See also `SquadronSerializer` class.
 
 ## 4.3.1
 

@@ -10,3 +10,4 @@ export 'src/squadron_exception.dart' show SquadronException;
 export 'src/worker_exception.dart'
     show WorkerException, CancelledException, TaskTimeoutException;
 export 'src/worker_service.dart' show CommandHandler, WorkerService;
+export 'src/squadron_serializer.dart';
