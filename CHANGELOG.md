@@ -1,3 +1,8 @@
+## 4.3.3
+
+- Rename `SquadronSerializer` to `SquadronMarshaller`.
+- Update dev dependencies.
+
 ## 4.3.2
 
 - `WorkerResponse`: if `result` is an `Iterable` but not a `List`, call `toList()` to get results before
