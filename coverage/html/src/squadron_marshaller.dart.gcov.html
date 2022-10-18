@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../jgenhtml.js"></script>
-        <title>LCOV - lcov.info squadron_serializer.dart</title>
+        <title>LCOV - lcov.info squadron_marshaller.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,12 +13,12 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../index.html">top level</a> - <a href="index.html">/src</a> - squadron_serializer.dart
+                        <a href="../index.html">top level</a> - <a href="index.html">/src</a> - squadron_marshaller.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2022-10-01</dd>
+                    <dd>2022-10-18</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>0</td><td>1</td><td class="low">0.0%</td>
+                            <th scope="row">Lines</th><td>0</td><td>4</td><td class="low">0.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -64,19 +64,19 @@
                     <td>1</td><td></td><td></td><td><code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code>abstract class SquadronSerializer&lt;T, S&gt; {</code></td>
+                    <td>2</td><td></td><td></td><td><code>abstract class SquadronMarshaller&lt;T, S&gt; {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 3" id="line3">
-                    <td>3</td><td></td><td>0</td><td><code>  const SquadronSerializer();</code></td>
+                    <td>3</td><td></td><td>0</td><td><code>  const SquadronMarshaller();</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
                     <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>  /// Serialize [data] of type [T] to something of type [S], eg. a `String` or some</code></td>
+                    <td>5</td><td></td><td></td><td><code>  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>  /// binary representation.</code></td>
+                    <td>6</td><td></td><td></td><td><code>  /// representation.</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
                     <td>7</td><td></td><td></td><td><code>  S marshall(T data);</code></td>
@@ -91,13 +91,46 @@
                     <td>10</td><td></td><td></td><td><code>  /// [T]. `unmarshall(marshall(data))` must produce an instance of [T] that is</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>  /// equivalent to the original instance [data].</code></td>
+                    <td>11</td><td></td><td></td><td><code>  /// equivalent to original instance [data].</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
                     <td>12</td><td></td><td></td><td><code>  T unmarshall(S data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code>/// Identity marshaller.</code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>class IdentityMarshaller&lt;T&gt; implements SquadronMarshaller&lt;T, T&gt; {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 17" id="line17">
+                    <td>17</td><td></td><td>0</td><td><code>  const IdentityMarshaller();</code></td>
+                </tr>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 19" id="line19">
+                    <td>19</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  T marshall(T data) =&gt; data;</code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code>  T unmarshall(T data) =&gt; data;</code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
