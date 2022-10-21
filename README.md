@@ -23,7 +23,7 @@ some air.
 * [Flutter Demo](#demo)
 * [Getting Started](#started)
 * [Usage](#usage)
-  * Code generation with squadron_builder
+  * [Code generation with squadron_builder](#codegen)
 * [Remarks on Isolates / Web Workers](#remarks)
   * [Channels, Types, and Browser Platforms](#channels_and_types)
   * [Note on `package:json_annotation`](#json_annotation)
@@ -156,7 +156,7 @@ Using a `WorkerPool`, you are now able to distribute your workloads:
     var ioResult = await pool.execute((w) => w.io(milliseconds: n));
 ```
 
-### Code generation with squadron_builder
+### <a name="codegen"></a>Code generation with squadron_builder
 
 Using Squadron annotations together with package `squadron_builder`, the code for
 workers and worker pool can be generated automatically.
