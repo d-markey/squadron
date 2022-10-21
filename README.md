@@ -159,7 +159,7 @@ Using a `WorkerPool`, you are now able to distribute your workloads:
 ### <a name="codegen"></a>Code generation with squadron_builder
 
 Using Squadron annotations together with package `squadron_builder`, the code for
-workers and worker pool can be generated automatically.
+workers and worker pools can be generated automatically.
 
 ```dart
 part 'sample_service.worker.g.dart';
