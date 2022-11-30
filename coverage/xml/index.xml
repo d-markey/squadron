@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-10-21" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90302616" lines-covered="1313" lines-valid="1454" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2022-11-30" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90302616" lines-covered="1313" lines-valid="1454" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="687" lines-valid="756" pathname="/src" prefix="/home/runner/work/squadron/squadron/lib"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="144" lines-valid="171" pathname="/src/browser" prefix="/home/runner/work/squadron/squadron/lib"/>
