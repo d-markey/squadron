@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>133</td><td>160</td><td class="med">83.1%</td>
+                            <th scope="row">Lines</th><td>126</td><td>160</td><td class="med">78.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -915,8 +915,8 @@
                 <tr class="noop" title="Line 285" id="line285">
                     <td>285</td><td></td><td></td><td><code>      String msg;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 286" id="line286">
-                    <td>286</td><td></td><td>1</td><td><code>      if (event is web.ErrorEvent) {</code></td>
+                <tr class="lineNoCov" title="Line 286" id="line286">
+                    <td>286</td><td></td><td>0</td><td><code>      if (event is web.ErrorEvent) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 287" id="line287">
                     <td>287</td><td></td><td></td><td><code>        final error = event;</code></td>
@@ -924,8 +924,8 @@
                 <tr class="noop" title="Line 288" id="line288">
                     <td>288</td><td></td><td></td><td><code>        msg =</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 289" id="line289">
-                    <td>289</td><td></td><td>1</td><td><code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code></td>
+                <tr class="lineNoCov" title="Line 289" id="line289">
+                    <td>289</td><td></td><td>0</td><td><code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code></td>
                 </tr>
                 <tr class="noop" title="Line 290" id="line290">
                     <td>290</td><td></td><td></td><td><code>      } else {</code></td>
@@ -936,17 +936,17 @@
                 <tr class="noop" title="Line 292" id="line292">
                     <td>292</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 293" id="line293">
-                    <td>293</td><td></td><td>1</td><td><code>      final error = WorkerException(msg);</code></td>
+                <tr class="lineNoCov" title="Line 293" id="line293">
+                    <td>293</td><td></td><td>0</td><td><code>      final error = WorkerException(msg);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 294" id="line294">
-                    <td>294</td><td></td><td>1</td><td><code>      Squadron.warning(</code></td>
+                <tr class="lineNoCov" title="Line 294" id="line294">
+                    <td>294</td><td></td><td>0</td><td><code>      Squadron.warning(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 295" id="line295">
-                    <td>295</td><td></td><td>1</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
+                <tr class="lineNoCov" title="Line 295" id="line295">
+                    <td>295</td><td></td><td>0</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 296" id="line296">
-                    <td>296</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
+                <tr class="lineNoCov" title="Line 296" id="line296">
+                    <td>296</td><td></td><td>0</td><td><code>      if (!completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 297" id="line297">
                     <td>297</td><td></td><td>0</td><td><code>        completer.completeError(error, error.stackTrace);</code></td>
@@ -954,8 +954,8 @@
                 <tr class="noop" title="Line 298" id="line298">
                     <td>298</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 299" id="line299">
-                    <td>299</td><td></td><td>1</td><td><code>    },</code></td>
+                <tr class="lineNoCov" title="Line 299" id="line299">
+                    <td>299</td><td></td><td>0</td><td><code>    },</code></td>
                 </tr>
                 <tr class="noop" title="Line 300" id="line300">
                     <td>300</td><td></td><td></td><td><code>  );</code></td>
