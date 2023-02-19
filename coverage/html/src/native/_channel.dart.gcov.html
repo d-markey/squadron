@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-01-01</dd>
+                    <dd>2023-02-19</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>92</td><td>97</td><td class="high">94.8%</td>
+                            <th scope="row">Lines</th><td>88</td><td>96</td><td class="high">91.7%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -120,8 +120,8 @@
                 <tr class="noop" title="Line 20" id="line20">
                     <td>20</td><td></td><td></td><td><code>  /// The ID of the worker attached to this [Channel].</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>2</td><td><code>  String get workerId =&gt; _workerId ?? '';</code></td>
+                <tr class="lineNoCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>0</td><td><code>  String get workerId =&gt; _workerId ?? '';</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
                     <td>22</td><td></td><td></td><td><code>  String? _workerId;</code></td>
@@ -471,11 +471,11 @@
                 <tr class="noop" title="Line 137" id="line137">
                     <td>137</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="lineNoCov" title="Line 138" id="line138">
+                    <td>138</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>2</td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
+                <tr class="lineNoCov" title="Line 139" id="line139">
+                    <td>139</td><td></td><td>0</td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
                 </tr>
                 <tr class="noop" title="Line 140" id="line140">
                     <td>140</td><td></td><td></td><td><code></code></td>
@@ -544,226 +544,229 @@
                     <td>161</td><td></td><td></td><td><code>/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>1</td><td><code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) async {</code></td>
+                    <td>162</td><td></td><td>1</td><td><code>Future&lt;Channel&gt; openChannel(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 163" id="line163">
-                    <td>163</td><td></td><td>1</td><td><code>  final completer = Completer&lt;Channel&gt;();</code></td>
+                <tr class="noop" title="Line 163" id="line163">
+                    <td>163</td><td></td><td></td><td><code>    dynamic entryPoint, String workerId, List startArguments) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 164" id="line164">
-                    <td>164</td><td></td><td>1</td><td><code>  final channel = _VmChannel._();</code></td>
+                    <td>164</td><td></td><td>1</td><td><code>  final completer = Completer&lt;Channel&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 165" id="line165">
-                    <td>165</td><td></td><td>1</td><td><code>  final receiver = ReceivePort();</code></td>
+                    <td>165</td><td></td><td>1</td><td><code>  final channel = _VmChannel._();</code></td>
                 </tr>
-                <tr class="noop" title="Line 166" id="line166">
-                    <td>166</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 166" id="line166">
+                    <td>166</td><td></td><td>1</td><td><code>  final receiver = ReceivePort();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 167" id="line167">
-                    <td>167</td><td></td><td>2</td><td><code>  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);</code></td>
+                <tr class="noop" title="Line 167" id="line167">
+                    <td>167</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>1</td><td><code>  final workerId = startRequest.id;</code></td>
+                <tr class="noop" title="Line 168" id="line168">
+                    <td>168</td><td></td><td></td><td><code>  final startRequest =</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 169" id="line169">
-                    <td>169</td><td></td><td>1</td><td><code>  final isolate = await Isolate.spawn(</code></td>
+                    <td>169</td><td></td><td>2</td><td><code>      WorkerRequest.start(receiver.sendPort, workerId, startArguments);</code></td>
                 </tr>
-                <tr class="noop" title="Line 170" id="line170">
-                    <td>170</td><td></td><td></td><td><code>    entryPoint,</code></td>
+                <tr class="lineCov" title="Line 170" id="line170">
+                    <td>170</td><td></td><td>1</td><td><code>  final isolate = await Isolate.spawn(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 171" id="line171">
-                    <td>171</td><td></td><td>1</td><td><code>    startRequest.serialize(),</code></td>
+                <tr class="noop" title="Line 171" id="line171">
+                    <td>171</td><td></td><td></td><td><code>    entryPoint,</code></td>
                 </tr>
-                <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code>    errorsAreFatal: false,</code></td>
+                <tr class="lineCov" title="Line 172" id="line172">
+                    <td>172</td><td></td><td>1</td><td><code>    startRequest.serialize(),</code></td>
                 </tr>
                 <tr class="noop" title="Line 173" id="line173">
-                    <td>173</td><td></td><td></td><td><code>    paused: true,</code></td>
+                    <td>173</td><td></td><td></td><td><code>    errorsAreFatal: false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 174" id="line174">
-                    <td>174</td><td></td><td></td><td><code>  );</code></td>
+                    <td>174</td><td></td><td></td><td><code>    paused: true,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 175" id="line175">
-                    <td>175</td><td></td><td>2</td><td><code>  Squadron.config('created Isolate #$workerId');</code></td>
+                <tr class="noop" title="Line 175" id="line175">
+                    <td>175</td><td></td><td></td><td><code>  );</code></td>
                 </tr>
-                <tr class="noop" title="Line 176" id="line176">
-                    <td>176</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 176" id="line176">
+                    <td>176</td><td></td><td>2</td><td><code>  Squadron.config('created Isolate #$workerId');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 177" id="line177">
-                    <td>177</td><td></td><td>1</td><td><code>  final exitPort = ReceivePort();</code></td>
+                <tr class="noop" title="Line 177" id="line177">
+                    <td>177</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 178" id="line178">
-                    <td>178</td><td></td><td>1</td><td><code>  final errorPort = ReceivePort();</code></td>
+                    <td>178</td><td></td><td>1</td><td><code>  final exitPort = ReceivePort();</code></td>
                 </tr>
-                <tr class="noop" title="Line 179" id="line179">
-                    <td>179</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 179" id="line179">
+                    <td>179</td><td></td><td>1</td><td><code>  final errorPort = ReceivePort();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 180" id="line180">
-                    <td>180</td><td></td><td>2</td><td><code>  exitPort.listen((message) {</code></td>
+                <tr class="noop" title="Line 180" id="line180">
+                    <td>180</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 181" id="line181">
-                    <td>181</td><td></td><td>2</td><td><code>    Squadron.config('Isolate #$workerId terminated.');</code></td>
+                    <td>181</td><td></td><td>2</td><td><code>  exitPort.listen((message) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 182" id="line182">
-                    <td>182</td><td></td><td>1</td><td><code>    channel.close();</code></td>
+                    <td>182</td><td></td><td>2</td><td><code>    Squadron.config('Isolate #$workerId terminated.');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 183" id="line183">
-                    <td>183</td><td></td><td>1</td><td><code>    receiver.close();</code></td>
+                    <td>183</td><td></td><td>1</td><td><code>    channel.close();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 184" id="line184">
-                    <td>184</td><td></td><td>1</td><td><code>    exitPort.close();</code></td>
+                    <td>184</td><td></td><td>1</td><td><code>    receiver.close();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 185" id="line185">
-                    <td>185</td><td></td><td>1</td><td><code>    errorPort.close();</code></td>
+                    <td>185</td><td></td><td>1</td><td><code>    exitPort.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 186" id="line186">
-                    <td>186</td><td></td><td></td><td><code>  });</code></td>
+                <tr class="lineCov" title="Line 186" id="line186">
+                    <td>186</td><td></td><td>1</td><td><code>    errorPort.close();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 187" id="line187">
-                    <td>187</td><td></td><td>2</td><td><code>  isolate.addOnExitListener(exitPort.sendPort);</code></td>
+                <tr class="noop" title="Line 187" id="line187">
+                    <td>187</td><td></td><td></td><td><code>  });</code></td>
                 </tr>
-                <tr class="noop" title="Line 188" id="line188">
-                    <td>188</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 188" id="line188">
+                    <td>188</td><td></td><td>2</td><td><code>  isolate.addOnExitListener(exitPort.sendPort);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 189" id="line189">
-                    <td>189</td><td></td><td>2</td><td><code>  errorPort.listen((message) {</code></td>
+                <tr class="noop" title="Line 189" id="line189">
+                    <td>189</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 190" id="line190">
-                    <td>190</td><td></td><td>2</td><td><code>    final error = SquadronException.fromString(message[0]) ??</code></td>
+                    <td>190</td><td></td><td>2</td><td><code>  errorPort.listen((message) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 191" id="line191">
-                    <td>191</td><td></td><td>0</td><td><code>        WorkerException(message[0],</code></td>
+                <tr class="lineCov" title="Line 191" id="line191">
+                    <td>191</td><td></td><td>2</td><td><code>    final error = SquadronException.fromString(message[0]) ??</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 192" id="line192">
-                    <td>192</td><td></td><td>0</td><td><code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code></td>
+                    <td>192</td><td></td><td>0</td><td><code>        WorkerException(message[0],</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 193" id="line193">
-                    <td>193</td><td></td><td>1</td><td><code>    Squadron.warning(</code></td>
+                <tr class="lineNoCov" title="Line 193" id="line193">
+                    <td>193</td><td></td><td>0</td><td><code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 194" id="line194">
-                    <td>194</td><td></td><td>2</td><td><code>        'Unhandled error from Isolate #$workerId: ${error.message}.');</code></td>
+                    <td>194</td><td></td><td>1</td><td><code>    Squadron.warning(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 195" id="line195">
-                    <td>195</td><td></td><td>1</td><td><code>    if (!completer.isCompleted) {</code></td>
+                    <td>195</td><td></td><td>2</td><td><code>        'Unhandled error from Isolate #$workerId: ${error.message}.');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 196" id="line196">
-                    <td>196</td><td></td><td>2</td><td><code>      completer.completeError(error, error.stackTrace);</code></td>
+                    <td>196</td><td></td><td>1</td><td><code>    if (!completer.isCompleted) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 197" id="line197">
-                    <td>197</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 197" id="line197">
+                    <td>197</td><td></td><td>2</td><td><code>      completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 198" id="line198">
-                    <td>198</td><td></td><td></td><td><code>  });</code></td>
+                    <td>198</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 199" id="line199">
-                    <td>199</td><td></td><td>2</td><td><code>  isolate.addErrorListener(errorPort.sendPort);</code></td>
+                <tr class="noop" title="Line 199" id="line199">
+                    <td>199</td><td></td><td></td><td><code>  });</code></td>
                 </tr>
-                <tr class="noop" title="Line 200" id="line200">
-                    <td>200</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 200" id="line200">
+                    <td>200</td><td></td><td>2</td><td><code>  isolate.addErrorListener(errorPort.sendPort);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 201" id="line201">
-                    <td>201</td><td></td><td>2</td><td><code>  receiver.listen((message) {</code></td>
+                <tr class="noop" title="Line 201" id="line201">
+                    <td>201</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 202" id="line202">
-                    <td>202</td><td></td><td>1</td><td><code>    final response = WorkerResponse.deserialize(message);</code></td>
+                    <td>202</td><td></td><td>2</td><td><code>  receiver.listen((message) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 203" id="line203">
-                    <td>203</td><td></td><td></td><td><code>    if (response == null) return;</code></td>
+                <tr class="lineCov" title="Line 203" id="line203">
+                    <td>203</td><td></td><td>1</td><td><code>    final response = WorkerResponse.deserialize(message);</code></td>
                 </tr>
                 <tr class="noop" title="Line 204" id="line204">
-                    <td>204</td><td></td><td></td><td><code></code></td>
+                    <td>204</td><td></td><td></td><td><code>    if (response == null) return;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 205" id="line205">
-                    <td>205</td><td></td><td>1</td><td><code>    if (!completer.isCompleted) {</code></td>
+                <tr class="noop" title="Line 205" id="line205">
+                    <td>205</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 206" id="line206">
-                    <td>206</td><td></td><td>1</td><td><code>      final error = response.error;</code></td>
+                    <td>206</td><td></td><td>1</td><td><code>    if (!completer.isCompleted) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 207" id="line207">
-                    <td>207</td><td></td><td></td><td><code>      if (error != null) {</code></td>
+                <tr class="lineCov" title="Line 207" id="line207">
+                    <td>207</td><td></td><td>1</td><td><code>      final error = response.error;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 208" id="line208">
-                    <td>208</td><td></td><td>1</td><td><code>        isolate.kill(priority: Isolate.immediate);</code></td>
+                <tr class="noop" title="Line 208" id="line208">
+                    <td>208</td><td></td><td></td><td><code>      if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 209" id="line209">
-                    <td>209</td><td></td><td>1</td><td><code>        Squadron.severe(</code></td>
+                    <td>209</td><td></td><td>1</td><td><code>        isolate.kill(priority: Isolate.immediate);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 210" id="line210">
-                    <td>210</td><td></td><td>2</td><td><code>            'connection to Isolate #$workerId failed: ${response.error}');</code></td>
+                    <td>210</td><td></td><td>1</td><td><code>        Squadron.severe(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 211" id="line211">
-                    <td>211</td><td></td><td>2</td><td><code>        completer.completeError(error, error.stackTrace);</code></td>
+                    <td>211</td><td></td><td>2</td><td><code>            'connection to Isolate #$workerId failed: ${response.error}');</code></td>
                 </tr>
-                <tr class="noop" title="Line 212" id="line212">
-                    <td>212</td><td></td><td></td><td><code>      } else {</code></td>
+                <tr class="lineCov" title="Line 212" id="line212">
+                    <td>212</td><td></td><td>2</td><td><code>        completer.completeError(error, error.stackTrace);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 213" id="line213">
-                    <td>213</td><td></td><td>2</td><td><code>        channel._sendPort = response.result;</code></td>
+                <tr class="noop" title="Line 213" id="line213">
+                    <td>213</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 214" id="line214">
-                    <td>214</td><td></td><td>1</td><td><code>        channel._workerId = workerId;</code></td>
+                    <td>214</td><td></td><td>2</td><td><code>        channel._sendPort = response.result;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 215" id="line215">
-                    <td>215</td><td></td><td>2</td><td><code>        Squadron.config('connected to Isolate #$workerId');</code></td>
+                    <td>215</td><td></td><td>1</td><td><code>        channel._workerId = workerId;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 216" id="line216">
-                    <td>216</td><td></td><td>1</td><td><code>        completer.complete(channel);</code></td>
+                    <td>216</td><td></td><td>2</td><td><code>        Squadron.config('connected to Isolate #$workerId');</code></td>
                 </tr>
-                <tr class="noop" title="Line 217" id="line217">
-                    <td>217</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 217" id="line217">
+                    <td>217</td><td></td><td>1</td><td><code>        completer.complete(channel);</code></td>
                 </tr>
                 <tr class="noop" title="Line 218" id="line218">
-                    <td>218</td><td></td><td></td><td><code>    } else {</code></td>
+                    <td>218</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 219" id="line219">
-                    <td>219</td><td></td><td>0</td><td><code>      Squadron.config('unexpected response: ${response.serialize()}');</code></td>
+                <tr class="noop" title="Line 219" id="line219">
+                    <td>219</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 220" id="line220">
-                    <td>220</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineNoCov" title="Line 220" id="line220">
+                    <td>220</td><td></td><td>0</td><td><code>      Squadron.config('unexpected response: ${response.serialize()}');</code></td>
                 </tr>
                 <tr class="noop" title="Line 221" id="line221">
-                    <td>221</td><td></td><td></td><td><code>  });</code></td>
+                    <td>221</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 222" id="line222">
-                    <td>222</td><td></td><td></td><td><code></code></td>
+                    <td>222</td><td></td><td></td><td><code>  });</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 223" id="line223">
-                    <td>223</td><td></td><td>2</td><td><code>  isolate.resume(isolate.pauseCapability!);</code></td>
+                <tr class="noop" title="Line 223" id="line223">
+                    <td>223</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 224" id="line224">
-                    <td>224</td><td></td><td>1</td><td><code>  return completer.future;</code></td>
+                    <td>224</td><td></td><td>2</td><td><code>  isolate.resume(isolate.pauseCapability!);</code></td>
                 </tr>
-                <tr class="noop" title="Line 225" id="line225">
-                    <td>225</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 225" id="line225">
+                    <td>225</td><td></td><td>1</td><td><code>  return completer.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 226" id="line226">
-                    <td>226</td><td></td><td></td><td><code></code></td>
+                    <td>226</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 227" id="line227">
-                    <td>227</td><td></td><td></td><td><code>/// Creates a [_VmChannel] from a [SendPort].</code></td>
+                    <td>227</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 228" id="line228">
-                    <td>228</td><td></td><td>1</td><td><code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code></td>
+                <tr class="noop" title="Line 228" id="line228">
+                    <td>228</td><td></td><td></td><td><code>/// Creates a [_VmChannel] from a [SendPort].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 229" id="line229">
-                    <td>229</td><td></td><td>2</td><td><code>    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);</code></td>
+                    <td>229</td><td></td><td>1</td><td><code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 230" id="line230">
-                    <td>230</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 230" id="line230">
+                    <td>230</td><td></td><td>2</td><td><code>    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);</code></td>
                 </tr>
                 <tr class="noop" title="Line 231" id="line231">
-                    <td>231</td><td></td><td></td><td><code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code></td>
+                    <td>231</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 232" id="line232">
-                    <td>232</td><td></td><td>1</td><td><code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code></td>
+                <tr class="noop" title="Line 232" id="line232">
+                    <td>232</td><td></td><td></td><td><code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code></td>
                 </tr>
-                <tr class="noop" title="Line 233" id="line233">
-                    <td>233</td><td></td><td></td><td><code>    (channelInfo == null)</code></td>
+                <tr class="lineCov" title="Line 233" id="line233">
+                    <td>233</td><td></td><td>1</td><td><code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 234" id="line234">
-                    <td>234</td><td></td><td></td><td><code>        ? null</code></td>
+                    <td>234</td><td></td><td></td><td><code>    (channelInfo == null)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 235" id="line235">
-                    <td>235</td><td></td><td>2</td><td><code>        : (_VmWorkerChannel._().._sendPort = channelInfo);</code></td>
+                <tr class="noop" title="Line 235" id="line235">
+                    <td>235</td><td></td><td></td><td><code>        ? null</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 236" id="line236">
+                    <td>236</td><td></td><td>2</td><td><code>        : (_VmWorkerChannel._().._sendPort = channelInfo);</code></td>
                 </tr>
             </tbody>
         </table>

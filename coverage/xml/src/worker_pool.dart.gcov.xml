@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-01-01" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89403975" lines-covered="135" lines-valid="151" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.867052" lines-covered="150" lines-valid="173" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -244,6 +244,70 @@
         <line>
             <code/>
         </line>
+        <line>
+            <code>  final _workerPoolListeners =</code>
+        </line>
+        <line hits="1">
+            <code>      &lt;Object, void Function(W worker, bool removed)&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers a callback to be invoked when a worker thread is added or removed from the pool.</code>
+        </line>
+        <line hits="0">
+            <code>  Object registerWorkerPoolListener(</code>
+        </line>
+        <line>
+            <code>      void Function(W worker, bool removed) listener) {</code>
+        </line>
+        <line hits="0">
+            <code>    final token = Object();</code>
+        </line>
+        <line hits="0">
+            <code>    _workerPoolListeners[token] = listener;</code>
+        </line>
+        <line>
+            <code>    return token;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Unregisters a callback.</code>
+        </line>
+        <line hits="0">
+            <code>  void unregisterWorkerPoolListener(</code>
+        </line>
+        <line>
+            <code>      {Function(W worker, bool removed)? listener, Object? token}) {</code>
+        </line>
+        <line>
+            <code>    if (token != null) {</code>
+        </line>
+        <line hits="0">
+            <code>      _workerPoolListeners.remove(token);</code>
+        </line>
+        <line>
+            <code>    } else if (listener != null) {</code>
+        </line>
+        <line hits="0">
+            <code>      _workerPoolListeners.removeWhere((key, value) =&gt; value == listener);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line hits="2">
             <code>  Future&lt;void&gt; _provisionWorkers(int workload) async {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
@@ -321,9 +385,9 @@
         <line>
             <code>              // start succeeded: register worker</code>
         </line>
-        <line hits="3">
-            <code>              _workers.add(poolWorker);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>              _addWorkerAndNotify(poolWorker);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>              return true;</code>
@@ -335,6 +399,10 @@
         </line>
         <line>
             <code>              // start failed</code>
+        </line>
+        <line hits="3">
+            <code>              poolWorker.worker.stop();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>              errors.add(SquadronException.from(ex, st));</code>
@@ -465,7 +533,77 @@
             <code/>
         </line>
         <line hits="2">
-            <code>  int _removeWorker(PoolWorker poolWorker, bool force) {</code>
+            <code>  void _notify(W worker, {required bool removed}) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    for (var listener in _workerPoolListeners.values) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      try {</code>
+        </line>
+        <line hits="0">
+            <code>        listener(worker, removed);</code>
+        </line>
+        <line>
+            <code>      } catch (ex) {</code>
+        </line>
+        <line>
+            <code>        // swallow error from user land</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  void _removeWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _workers.remove(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _notify(poolWorker.worker, removed: true);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  void _addWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _workers.add(poolWorker);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _notify(poolWorker.worker, removed: false);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  int _removeWorker(PoolWorker&lt;W&gt; poolWorker, bool force) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -484,13 +622,13 @@
             <code>      poolWorker.worker.stop();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      _workers.remove(poolWorker);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="6">
             <code>      _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _removeWorkerAndNotify(poolWorker);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      return 1;</code>
@@ -792,8 +930,20 @@
             <code>    _timer = Timer(Duration.zero, () {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>      _workers</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          .where(PoolWorker.isStopped)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          .toList() // take a copy</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="3">
-            <code>      _workers.removeWhere(PoolWorker.isStopped);</code>
+            <code>          .forEach(_removeWorkerAndNotify);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">

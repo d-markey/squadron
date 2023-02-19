@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-01-01" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94666666" lines-covered="71" lines-valid="75" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9315069" lines-covered="68" lines-valid="73" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'channel.dart';</code>
@@ -411,19 +411,8 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (sq._parentChannel == null) {</code>
+            <code>    sq._parentChannel ??= parentChannel;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      sq._parentChannel ??= parentChannel;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      sq._logger = ParentSquadronLogger(parentChannel);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
         </line>
         <line>
             <code>  }</code>
@@ -578,9 +567,8 @@
         <line>
             <code>/// Logs a message</code>
         </line>
-        <line hits="3">
+        <line hits="0">
             <code>void squadronLog(String message) =&gt; Squadron._instance?._logger?.log(message);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-01-01" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90220046" lines-covered="369" lines-valid="409" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.902439" lines-covered="370" lines-valid="410" package="/src/xplat" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="_worker_stream_task.dart" functions-hit="0" functions-valid="0" lines-hit="63" lines-valid="71" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="63" name="&lt;unnamed&gt;"/>
@@ -34,8 +34,8 @@
         <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="62" lines-valid="70" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="62" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_identity.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_identity.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-01-01</dd>
+                    <dd>2023-02-19</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>126</td><td>160</td><td class="med">78.8%</td>
+                            <th scope="row">Lines</th><td>125</td><td>158</td><td class="med">79.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -123,8 +123,8 @@
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code>  /// The ID of the worker attached to this [Channel].</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>1</td><td><code>  String get workerId =&gt; _workerId ?? '';</code></td>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code>  String get workerId =&gt; _workerId ?? '';</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code>  String? _workerId;</code></td>
@@ -528,8 +528,8 @@
                 <tr class="noop" title="Line 156" id="line156">
                     <td>156</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 157" id="line157">
-                    <td>157</td><td></td><td>0</td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
+                <tr class="noop" title="Line 157" id="line157">
+                    <td>157</td><td></td><td></td><td><code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code></td>
                 </tr>
                 <tr class="noop" title="Line 158" id="line158">
                     <td>158</td><td></td><td></td><td><code></code></td>
@@ -874,28 +874,28 @@
                     <td>271</td><td></td><td></td><td><code>/// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 272" id="line272">
-                    <td>272</td><td></td><td>1</td><td><code>Future&lt;Channel&gt; openChannel(dynamic entryPoint, List startArguments) {</code></td>
+                    <td>272</td><td></td><td>1</td><td><code>Future&lt;Channel&gt; openChannel(</code></td>
                 </tr>
                 <tr class="noop" title="Line 273" id="line273">
-                    <td>273</td><td></td><td></td><td><code>  final completer = Completer&lt;Channel&gt;();</code></td>
+                    <td>273</td><td></td><td></td><td><code>    dynamic entryPoint, String workerId, List startArguments) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 274" id="line274">
-                    <td>274</td><td></td><td></td><td><code>  final channel = _JsChannel._();</code></td>
+                    <td>274</td><td></td><td></td><td><code>  final completer = Completer&lt;Channel&gt;();</code></td>
                 </tr>
                 <tr class="noop" title="Line 275" id="line275">
-                    <td>275</td><td></td><td></td><td><code>  final com = web.MessageChannel();</code></td>
+                    <td>275</td><td></td><td></td><td><code>  final channel = _JsChannel._();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 276" id="line276">
-                    <td>276</td><td></td><td>1</td><td><code>  final worker = web.Worker(entryPoint);</code></td>
+                <tr class="noop" title="Line 276" id="line276">
+                    <td>276</td><td></td><td></td><td><code>  final com = web.MessageChannel();</code></td>
                 </tr>
-                <tr class="noop" title="Line 277" id="line277">
-                    <td>277</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 277" id="line277">
+                    <td>277</td><td></td><td>1</td><td><code>  final worker = web.Worker(entryPoint);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 278" id="line278">
-                    <td>278</td><td></td><td>1</td><td><code>  final startRequest = WorkerRequest.start(com.port2, startArguments);</code></td>
+                <tr class="noop" title="Line 278" id="line278">
+                    <td>278</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 279" id="line279">
-                    <td>279</td><td></td><td></td><td><code>  final workerId = startRequest.id;</code></td>
+                <tr class="lineCov" title="Line 279" id="line279">
+                    <td>279</td><td></td><td>1</td><td><code>  final startRequest = WorkerRequest.start(com.port2, workerId, startArguments);</code></td>
                 </tr>
                 <tr class="noop" title="Line 280" id="line280">
                     <td>280</td><td></td><td></td><td><code></code></td>
