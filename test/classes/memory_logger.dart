@@ -10,7 +10,23 @@ class MemoryLogger extends BaseSquadronLogger {
   int get length => _messages.length;
 
   @override
-  void log(dynamic message) => _messages.add(message?.toString() ?? '');
+  Iterable<String> format(int level, dynamic message) {
+    final header =
+        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
+    if (message is Iterable) {
+      message = message
+          .map((m) => m?.toString() ?? '')
+          .expand((m) => m.toString().split('\n'));
+    } else {
+      message = message?.toString().split('\n') ?? const [];
+    }
+    return message.where((m) => m.isNotEmpty).map((line) => '$header $line');
+  }
+
+  @override
+  void log(String message) {
+    _messages.add(message);
+  }
 
   @override
   String toString() => _messages.join('\n');

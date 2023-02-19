@@ -1,3 +1,9 @@
+## 4.3.4
+
+- Add notifications when a worker is added or removed. Interested components can register listeners (callbacks) for these notifications.
+- Disable automatic log-forwarding between workers and their parents. It is possible to restore this behaviour manually by using [ParentSquadronLogger] as a logger during initialization of the platform worker.
+- Split logging logic between message formatting vs. emitting.
+
 ## 4.3.3
 
 - Rename `SquadronSerializer` to `SquadronMarshaller`.
@@ -5,8 +11,7 @@
 
 ## 4.3.2
 
-- `WorkerResponse`: if `result` is an `Iterable` but not a `List`, call `toList()` to get results before
-serializing the response back to the caller.
+- `WorkerResponse`: if `result` is an `Iterable` but not a `List`, call `toList()` to get results before serializing the response back to the caller.
 - `SerializeWith`: annotation used to indicate how to marshal data to/from a service running in a Worker. See also `SquadronSerializer` class.
 
 ## 4.3.1

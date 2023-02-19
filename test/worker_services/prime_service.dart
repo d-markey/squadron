@@ -40,19 +40,19 @@ class PrimeService implements WorkerService {
   };
 
   static Iterable<int> _getPrimeCandidates(int min, int max) sync* {
-    bool _inRange(int p) => (min <= p && p <= max);
+    bool inRange(int p) => (min <= p && p <= max);
 
     // handle 2 and 3
-    if (_inRange(2)) yield 2;
-    if (_inRange(3)) yield 3;
+    if (inRange(2)) yield 2;
+    if (inRange(3)) yield 3;
     // all other primes are of the form (6 * k) +/- 1
     // start with k = (min + 1) ~/ 6
     var p = 6 * ((min + 1) ~/ 6) - 1;
     while (p <= max) {
       // p = 6 * k - 1
-      if (_inRange(p)) yield p;
+      if (inRange(p)) yield p;
       p += 2; // p = 6 * k + 1
-      if (_inRange(p)) yield p;
+      if (inRange(p)) yield p;
       p += 4; // p = 6 * (k+1) - 1
     }
   }

@@ -76,6 +76,27 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// Number of errors.
   int get totalErrors => fullStats.fold<int>(0, (p, s) => p + s.totalErrors);
 
+  final _workerPoolListeners =
+      <Object, void Function(W worker, bool removed)>{};
+
+  /// Registers a callback to be invoked when a worker thread is added or removed from the pool.
+  Object registerWorkerPoolListener(
+      void Function(W worker, bool removed) listener) {
+    final token = Object();
+    _workerPoolListeners[token] = listener;
+    return token;
+  }
+
+  /// Unregisters a callback.
+  void unregisterWorkerPoolListener(
+      {Function(W worker, bool removed)? listener, Object? token}) {
+    if (token != null) {
+      _workerPoolListeners.remove(token);
+    } else if (listener != null) {
+      _workerPoolListeners.removeWhere((key, value) => value == listener);
+    }
+  }
+
   Future<void> _provisionWorkers(int workload) async {
     if (workload < minWorkers) {
       // at least minWorkers
@@ -97,10 +118,11 @@ class WorkerPool<W extends Worker> implements WorkerService {
           tasks.add(
             poolWorker.worker.start().then((_) {
               // start succeeded: register worker
-              _workers.add(poolWorker);
+              _addWorkerAndNotify(poolWorker);
               return true;
             }).onError<Object>((ex, st) {
               // start failed
+              poolWorker.worker.stop();
               errors.add(SquadronException.from(ex, st));
               return false;
             }),
@@ -138,13 +160,33 @@ class WorkerPool<W extends Worker> implements WorkerService {
     return _provisionWorkers(_queue.isEmpty ? 1 : _queue.length);
   }
 
-  int _removeWorker(PoolWorker poolWorker, bool force) {
+  void _notify(W worker, {required bool removed}) {
+    for (var listener in _workerPoolListeners.values) {
+      try {
+        listener(worker, removed);
+      } catch (ex) {
+        // swallow error from user land
+      }
+    }
+  }
+
+  void _removeWorkerAndNotify(PoolWorker<W> poolWorker) {
+    _workers.remove(poolWorker);
+    _notify(poolWorker.worker, removed: true);
+  }
+
+  void _addWorkerAndNotify(PoolWorker<W> poolWorker) {
+    _workers.add(poolWorker);
+    _notify(poolWorker.worker, removed: false);
+  }
+
+  int _removeWorker(PoolWorker<W> poolWorker, bool force) {
     if (_scheduling) return 0;
     if (force || _workers.length > concurrencySettings.minWorkers) {
       final workerId = poolWorker.worker.workerId;
       poolWorker.worker.stop();
-      _workers.remove(poolWorker);
       _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));
+      _removeWorkerAndNotify(poolWorker);
       return 1;
     } else {
       return 0;
@@ -233,7 +275,10 @@ class WorkerPool<W extends Worker> implements WorkerService {
       return;
     }
     _timer = Timer(Duration.zero, () {
-      _workers.removeWhere(PoolWorker.isStopped);
+      _workers
+          .where(PoolWorker.isStopped)
+          .toList() // take a copy
+          .forEach(_removeWorkerAndNotify);
       _queue.removeWhere((t) => t.isCancelled);
       if (_stopped && _queue.isEmpty && _executing.isEmpty) {
         stop();

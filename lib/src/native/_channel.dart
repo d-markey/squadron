@@ -159,13 +159,14 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
 
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
-Future<Channel> openChannel(dynamic entryPoint, List startArguments) async {
+Future<Channel> openChannel(
+    dynamic entryPoint, String workerId, List startArguments) async {
   final completer = Completer<Channel>();
   final channel = _VmChannel._();
   final receiver = ReceivePort();
 
-  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);
-  final workerId = startRequest.id;
+  final startRequest =
+      WorkerRequest.start(receiver.sendPort, workerId, startArguments);
   final isolate = await Isolate.spawn(
     entryPoint,
     startRequest.serialize(),

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:squadron/src/xplat/_identity.dart';
+
 import 'cancellation_token.dart';
 import 'channel.dart';
 import 'squadron_exception.dart';
@@ -13,7 +15,8 @@ import 'worker_stat.dart';
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
 abstract class Worker implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
-  Worker(this._entryPoint, {this.args = const []});
+  Worker(this._entryPoint, {this.args = const []})
+      : workerId = Identity.nextId();
 
   /// The [Worker]'s entry point.
   /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
@@ -90,7 +93,7 @@ abstract class Worker implements WorkerService {
   Future<Channel>? _openChannel;
 
   /// Worker ID
-  String get workerId => _channel?.workerId ?? '<no channel>';
+  final String workerId;
 
   /// Sends a workload to the worker.
   Future<T> send<T>(int command,
@@ -201,7 +204,7 @@ abstract class Worker implements WorkerService {
       throw WorkerException('worker is stopped', workerId: workerId);
     }
     if (_channel == null) {
-      _openChannel ??= Channel.open(_entryPoint, args);
+      _openChannel ??= Channel.open(_entryPoint, workerId, args);
       final channel = await _openChannel!;
       if (_channel == null) {
         _channel = channel;

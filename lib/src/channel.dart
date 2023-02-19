@@ -49,8 +49,9 @@ abstract class Channel {
 
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.
-  static Future<Channel> open(dynamic entryPoint, List startArguments) =>
-      openChannel(entryPoint, startArguments);
+  static Future<Channel> open(
+          dynamic entryPoint, String workerId, List startArguments) =>
+      openChannel(entryPoint, workerId, startArguments);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(dynamic channelInfo) =>

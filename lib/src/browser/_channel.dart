@@ -269,14 +269,14 @@ class Transferables {
 
 /// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
-Future<Channel> openChannel(dynamic entryPoint, List startArguments) {
+Future<Channel> openChannel(
+    dynamic entryPoint, String workerId, List startArguments) {
   final completer = Completer<Channel>();
   final channel = _JsChannel._();
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
 
-  final startRequest = WorkerRequest.start(com.port2, startArguments);
-  final workerId = startRequest.id;
+  final startRequest = WorkerRequest.start(com.port2, workerId, startArguments);
 
   Squadron.config('created Web Worker #$workerId');
 

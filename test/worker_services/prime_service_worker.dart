@@ -24,7 +24,7 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 }
 
 class PrimeWorker extends Worker implements PrimeService {
-  PrimeWorker([CacheWorker? cache])
+  PrimeWorker(CacheWorker? cache)
       : super(EntryPoints.prime, args: [cache?.channel!.share().serialize()]);
 
   @override

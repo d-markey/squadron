@@ -3,7 +3,6 @@ import 'channel.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
 import 'worker.dart';
-import 'xplat/_identity.dart';
 
 /// Class used to communicate from a [Channel] to the [Worker]. Typically a [WorkerRequest] consists of a command ID
 /// and a list of arguments. The [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method
@@ -32,9 +31,9 @@ class WorkerRequest {
             inspectResponse);
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo, List args)
-      : this._(channelInfo, _connectCommand, Identity.nextId(), args,
-            Squadron.logLevel, null, null, true);
+  WorkerRequest.start(dynamic channelInfo, String id, List args)
+      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null,
+            null, true);
 
   /// Creates a new cancellation request.
   WorkerRequest.cancelStream(int streamId)
@@ -91,8 +90,8 @@ class WorkerRequest {
       return {
         _$client: client?.serialize(),
         _$command: _connectCommand,
-        _$id: id,
         _$logLevel: logLevel,
+        _$id: id,
         if (args.isNotEmpty) _$args: args,
         if (!inspectResponse) _$inspectResponse: inspectResponse,
         if (Squadron.debugMode)
@@ -125,15 +124,14 @@ class WorkerRequest {
   /// The [command]'s ID.
   final int command;
 
+  /// The ID of the worker that initiated the command (only used for connection commands).
+  final String? id;
+
   /// The command's arguments, if any.
   final List args;
 
-  /// The worker id set by the caller, used for logging/debugging purpose.
-  /// This is only used for connection commands.
-  final String? id;
-
   /// The current Squadron log level.
-  /// This is set automaticallt and only used for connection commands.
+  /// This is set automatically and only used for connection commands.
   final int? logLevel;
 
   /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In

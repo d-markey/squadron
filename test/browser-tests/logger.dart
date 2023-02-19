@@ -96,7 +96,7 @@ class Logger {
   static final greenSeq = SequenceReplacement(
       [esc, ...'[32m'.codeUnits], '<span class="green">', '</span>');
 
-  static late final sequences = [
+  static final sequences = [
     cr,
     lf,
     amp,

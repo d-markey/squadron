@@ -12,8 +12,7 @@ abstract class SquadronLogger {
   set logLevel(int value);
 
   /// Base logging method. Implement this method to display the [message].
-  /// The method is called if the log level is enabled and is provided with a formatted message such as
-  /// `[timestamp] [log-level] [Squadron.id] text of the message`
+  /// The method is called if the log level is enabled.
   void log(String message);
 
   /// Logs a message at [SquadronLogLevel.debug] level
@@ -49,26 +48,19 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   @override
   int logLevel = Squadron.logLevel;
 
+  /// Formats the log [message] by calling its `toString()` method.
+  Iterable<String> format(int level, dynamic message) sync* {
+    yield message.toString();
+  }
+
   void _log(int level, dynamic message) {
     if (level >= logLevel ||
         (level == SquadronLogLevel.debug && Squadron.debugMode)) {
       if (message is Function) {
         message = message();
       }
-      final header =
-          '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
-      Iterable<String> lines;
-      if (message is Iterable) {
-        lines = message
-            .map((m) => m?.toString() ?? '')
-            .expand((m) => m.toString().split('\n'))
-            .where((m) => m.isNotEmpty);
-      } else {
-        lines = message?.toString().split('\n').where((m) => m.isNotEmpty) ??
-            const [];
-      }
-      for (var line in lines) {
-        log('$header $line');
+      for (var line in format(level, message)) {
+        log(line);
       }
     }
   }
@@ -101,30 +93,49 @@ abstract class BaseSquadronLogger implements SquadronLogger {
   void shout(dynamic message) => _log(SquadronLogLevel.shout, message);
 }
 
+/// Base class for dev loggers.
+abstract class BaseDevSquadronLogger extends BaseSquadronLogger {
+  /// Formats the log [message] by splitting it into individual lines with a header
+  /// including a timestamp, the worker id and the message's log [level].
+  @override
+  Iterable<String> format(int level, dynamic message) {
+    final header =
+        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
+    if (message is Iterable) {
+      message = message
+          .map((m) => m?.toString() ?? '')
+          .expand((m) => m.toString().split('\n'));
+    } else {
+      message = message?.toString().split('\n') ?? const [];
+    }
+    return message.where((m) => m.isNotEmpty).map((line) => '$header $line');
+  }
+}
+
 /// Simple logger based on `dart:dev` `log` function
-class DevSquadronLogger extends BaseSquadronLogger {
+class DevSquadronLogger extends BaseDevSquadronLogger {
   @override
 
   /// Log based on `dart:developer`
-  void log(dynamic message) => dev.log(message?.toString() ?? '');
+  void log(String message) => dev.log(message);
 }
 
 /// Simple console logger (`print` function)
-class ConsoleSquadronLogger extends BaseSquadronLogger {
+class ConsoleSquadronLogger extends BaseDevSquadronLogger {
   /// Log to console
   @override
-  void log(dynamic message) => print(message);
+  void log(String message) => print(message);
 }
 
 /// Logger for workers, forwarding log messages to parent
-class ParentSquadronLogger extends BaseSquadronLogger {
+class ParentSquadronLogger extends BaseDevSquadronLogger {
   ParentSquadronLogger(this._parent);
 
   final WorkerChannel _parent;
 
   /// Log to parent
   @override
-  void log(dynamic message) => _parent.log(message?.toString() ?? '');
+  void log(String message) => _parent.log(message);
 }
 
 /// Log level constants, compatible with `package:logging`
