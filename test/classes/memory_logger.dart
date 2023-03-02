@@ -9,10 +9,11 @@ class MemoryLogger extends BaseSquadronLogger {
 
   int get length => _messages.length;
 
+  List<String> get messages => List.unmodifiable(_messages);
+
   @override
   Iterable<String> format(int level, dynamic message) {
-    final header =
-        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';
+    final header = '[${Squadron.id}]';
     if (message is Iterable) {
       message = message
           .map((m) => m?.toString() ?? '')

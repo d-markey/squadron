@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
+
 import 'squadron_exception.dart';
 
 /// Exception to keep track of errors encountered in a worker.
@@ -137,7 +139,7 @@ class TaskTimeoutException extends CancelledException
           : null;
 }
 
-// for internal use
+@internal
 extension WorkerExceptionExt on WorkerException {
   WorkerException withWorkerId(String? workerId) {
     _workerId ??= workerId;

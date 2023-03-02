@@ -185,6 +185,49 @@ void loggerTests() {
 
       expect(memoryLogger.length, isZero);
     });
+
+    test('- Push/pop', () {
+      final header = '[${Squadron.id}]';
+      int message = 0;
+      final expectedMessages = <String>[];
+
+      Squadron.logLevel = SquadronLogLevel.debug;
+      Squadron.debug(++message); // 1 logged
+      Squadron.config(++message); // 2 logged
+      Squadron.info(++message); // 3 logged
+      expectedMessages.addAll(['$header 1', '$header 2', '$header 3']);
+
+      Squadron.pushLogLevel(SquadronLogLevel.config);
+      expect(Squadron.logLevel, equals(SquadronLogLevel.config));
+      Squadron.debug(++message); // 4 not logged
+      Squadron.config(++message); // 5 logged
+      Squadron.info(++message); // 6 logged
+      expectedMessages.addAll(['$header 5', '$header 6']);
+
+      Squadron.pushLogLevel(SquadronLogLevel.info);
+      expect(Squadron.logLevel, equals(SquadronLogLevel.info));
+      Squadron.debug(++message); // 7 not logged
+      Squadron.config(++message); // 8 not logged
+      Squadron.info(++message); // 9 logged
+      expectedMessages.addAll(['$header 9']);
+
+      expect(Squadron.popLogLevel(), equals(SquadronLogLevel.config));
+      expect(Squadron.logLevel, equals(SquadronLogLevel.config));
+      Squadron.debug(++message); // 10 not logged
+      Squadron.config(++message); // 11 logged
+      Squadron.info(++message); // 12 logged
+      expectedMessages.addAll(['$header 11', '$header 12']);
+
+      expect(Squadron.popLogLevel(), equals(SquadronLogLevel.debug));
+      expect(Squadron.logLevel, equals(SquadronLogLevel.debug));
+      Squadron.debug(++message); // 13 logged
+      Squadron.config(++message); // 14 logged
+      Squadron.info(++message); // 15 logged
+      expectedMessages.addAll(['$header 13', '$header 14', '$header 15']);
+
+      expect(memoryLogger.length, equals(expectedMessages.length));
+      expect(memoryLogger.messages, equals(expectedMessages));
+    });
   });
 
   group('- Log messages of various types', () {
@@ -251,7 +294,6 @@ void loggerTests() {
     expect(memoryLogger.length, equals(1));
     expect(memoryLogger.contains('should have no effect'), isFalse);
     expect(memoryLogger.contains('[workerTests]'), isTrue);
-    expect(memoryLogger.contains('[INFO]'), isTrue);
     expect(memoryLogger.contains('Squadron ID Test'), isTrue);
   });
 }

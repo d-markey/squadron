@@ -1,11 +1,13 @@
 import 'dart:html';
 
+import '../squadron_logger.dart';
 import '../xplat/_worker_monitor.dart';
 import '../xplat/_worker_runner.dart';
 import '../squadron.dart';
 import '../worker_service.dart';
 
-void bootstrap(WorkerInitializer initializer, Map? command) {
+void bootstrap(
+    WorkerInitializer initializer, Map? command, SquadronLogger? logger) {
   final scope = DedicatedWorkerGlobalScope.instance;
 
   final com = MessageChannel();
@@ -15,6 +17,8 @@ void bootstrap(WorkerInitializer initializer, Map? command) {
     com.port2.close();
     scope.close();
   });
+
+  Squadron.setLogger(logger);
 
   final runner = WorkerRunner(monitor);
 

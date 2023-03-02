@@ -53,7 +53,7 @@ class WorkerResponse {
       }
     }
     if (res._log != null) {
-      squadronLog(res._log!);
+      getSquadronLogger()?.log(res._log!);
       return null;
     }
     return res;

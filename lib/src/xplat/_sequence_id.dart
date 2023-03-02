@@ -13,8 +13,5 @@ class SequenceId {
   int _id = 0;
 
   /// Provides the next ID.
-  static int next() {
-    final id = ++_instance._id;
-    return id;
-  }
+  static int next() => ++_instance._id;
 }

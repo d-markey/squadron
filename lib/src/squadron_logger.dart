@@ -1,10 +1,11 @@
 import 'dart:developer' as dev show log;
 
-import 'channel.dart';
 import 'squadron.dart';
 
 /// Basic interface for logging
 abstract class SquadronLogger {
+  const SquadronLogger();
+
   /// Gets the log level
   int get logLevel;
 
@@ -129,13 +130,11 @@ class ConsoleSquadronLogger extends BaseDevSquadronLogger {
 
 /// Logger for workers, forwarding log messages to parent
 class ParentSquadronLogger extends BaseDevSquadronLogger {
-  ParentSquadronLogger(this._parent);
-
-  final WorkerChannel _parent;
+  ParentSquadronLogger();
 
   /// Log to parent
   @override
-  void log(String message) => _parent.log(message);
+  void log(String message) => Squadron.parentChannel?.log(message);
 }
 
 /// Log level constants, compatible with `package:logging`

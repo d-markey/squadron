@@ -18,7 +18,7 @@ class CompositeToken extends CancellationToken {
   CompositeToken(Iterable<CancellationToken> tokens, this.mode,
       [String message = 'The token was cancelled'])
       : assert(tokens.isNotEmpty),
-        _tokens = tokens.toList(),
+        _tokens = List.unmodifiable(tokens),
         _signaled = 0,
         super(message) {
     for (var token in _tokens) {
@@ -34,18 +34,18 @@ class CompositeToken extends CancellationToken {
     _check();
   }
 
-  /// Throws an exception, composite tokens may not be cancelled programmatically.
-  @override
-  void cancel([CancelledException? exception]) => throw newSquadronError(
-      'CompositeToken cannot be cancelled programmatically');
-
   final CompositeMode mode;
 
   final List<CancellationToken> _tokens;
   int _signaled;
 
-  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method for all tokens
-  /// registered with this [CompositeToken].
+  /// Throws an exception, composite tokens may not be cancelled programmatically.
+  @override
+  void cancel([CancelledException? exception]) => throw newSquadronError(
+      'CompositeToken cannot be cancelled programmatically');
+
+  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method
+  /// for all tokens registered with this [CompositeToken].
   @override
   void ensureStarted() {
     for (var token in _tokens) {

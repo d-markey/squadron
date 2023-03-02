@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'channel.dart';
 import 'squadron_logger.dart';
 
@@ -45,7 +47,7 @@ class Squadron {
     sq._logLevel = value;
   }
 
-  final List<int> _logLevels = [];
+  final _logLevels = <int>[];
 
   /// Remembers the current [logLevel], then setting it to [value] if not null. See [popLogLevel].
   static void pushLogLevel([int? value]) {
@@ -62,7 +64,7 @@ class Squadron {
   static int? popLogLevel() {
     final sq = _instance;
     if (sq == null || sq._logLevels.isEmpty) return null;
-    Squadron.logLevel = sq._logLevels.removeAt(0);
+    Squadron.logLevel = sq._logLevels.removeLast();
     return Squadron.logLevel;
   }
 
@@ -160,8 +162,5 @@ class Squadron {
   static void shout(dynamic message) => _instance?._logger?.shout(message);
 }
 
-// for internal use
+@internal
 SquadronLogger? getSquadronLogger() => Squadron._instance?._logger;
-
-/// Logs a message
-void squadronLog(String message) => Squadron._instance?._logger?.log(message);

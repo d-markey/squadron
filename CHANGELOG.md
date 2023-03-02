@@ -1,3 +1,7 @@
+## 4.3.5
+
+- Add `UseLogger` annotation to have package [squadron_builder](https://pub.dev/packages/squadron_builder) generate the associated code in worker threads.
+
 ## 4.3.4
 
 - Add notifications when a worker is added or removed. Interested components can register listeners (callbacks) for these notifications.

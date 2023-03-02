@@ -11,15 +11,15 @@ class TimeOutToken extends CancellationToken {
   TimeOutToken(this.duration, [String message = 'The token timed out'])
       : super(message);
 
-  /// Throws an exception, time-out tokens may not be cancelled programmatically.
-  @override
-  void cancel([CancelledException? exception]) => throw newSquadronError(
-      'TimeOutToken cannot be cancelled programmatically');
-
   /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.
   final Duration duration;
 
   Timer? _timer;
+
+  /// Throws an exception, time-out tokens may not be cancelled programmatically.
+  @override
+  void cancel([CancelledException? exception]) => throw newSquadronError(
+      'TimeOutToken cannot be cancelled programmatically');
 
   /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be
   /// started that will automatically cancel this token if processing takes longer than [duration].

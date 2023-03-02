@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:html' as web;
 
-import '../squadron_error.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
@@ -12,6 +11,7 @@ import '../worker_request.dart';
 import '../worker_response.dart';
 import '../worker_service.dart';
 import '../xplat/_value_wrapper.dart';
+import '_transferables.dart';
 
 class _BaseJsChannel {
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
@@ -206,62 +206,6 @@ class _JsForwardChannel extends _JsChannel {
   void close() {
     _remote = null;
     _com.port1.close();
-  }
-}
-
-class Transferables {
-  Transferables._();
-
-  static final _instance = Transferables._();
-
-  static Iterable<Object> get(Map args) => _instance._get(args, <Object>{});
-
-  bool _isBaseType(dynamic value) =>
-      (value == null || value is String || value is num || value is bool);
-
-  bool _isListOfBaseType(dynamic value) =>
-      (value is List<String> || value is List<num> || value is List<bool>);
-
-  bool _isSafeForTransfer(dynamic value) {
-    if (_isBaseType(value)) return true;
-    if (_isListOfBaseType(value)) return true;
-    if (value is List && value.every(_isSafeForTransfer)) return true;
-    if (value is Map &&
-        value.keys.every(_isBaseType) &&
-        value.values.every(_isSafeForTransfer)) return true;
-    return false;
-  }
-
-  /// Excludes base type values from [list].
-  Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {
-    for (var o in list.where((o) => !_isSafeForTransfer(o))) {
-      if (!seen.contains(o)) {
-        seen.add(o);
-        yield o as Object;
-      }
-    }
-  }
-
-  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them to
-  /// [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects -- essentially
-  /// [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.
-  Iterable<Object> _get(Map message, Set<Object> seen) sync* {
-    if (_isSafeForTransfer(message)) return;
-    if (!message.keys.every(_isBaseType)) {
-      throw newSquadronError('Keys must be strings, numbers or booleans.');
-    }
-    final toBeInspected = <Object>[];
-    toBeInspected.addAll(_getObjects(message.values, seen));
-    while (toBeInspected.isNotEmpty) {
-      final arg = toBeInspected.removeLast();
-      if (arg is Map) {
-        toBeInspected.addAll(_get(arg, seen));
-      } else if (arg is Iterable) {
-        toBeInspected.addAll(_getObjects(arg, seen));
-      } else {
-        yield arg;
-      }
-    }
   }
 }
 

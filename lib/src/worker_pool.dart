@@ -49,7 +49,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   final _workers = <PoolWorker<W>>[];
 
-  final List<WorkerStat> _deadWorkerStats = <WorkerStat>[];
+  final _deadWorkerStats = <WorkerStat>[];
 
   /// Whether this pool is scheduled for stopping.
   bool get stopped => _stopped;

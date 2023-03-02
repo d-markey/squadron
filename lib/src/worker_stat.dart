@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Base statistics for worker.
 class WorkerStat {
   WorkerStat._(
@@ -44,7 +46,7 @@ class WorkerStat {
   Duration idleTime;
 }
 
-// for internal use
+@internal
 WorkerStat createWorkerStat(
         Type workerType,
         String id,
@@ -59,6 +61,7 @@ WorkerStat createWorkerStat(
     WorkerStat._(workerType, id, isStopped, status, workload, maxWorkload,
         totalWorkload, totalErrors, upTime, idleTime);
 
+@internal
 extension WorkerStatExt on WorkerStat {
   WorkerStat withWorkerId(String workerId) {
     _id = workerId;

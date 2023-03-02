@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
+
 import 'squadron.dart';
 import 'squadron_exception.dart';
 
@@ -36,11 +38,13 @@ class SquadronError implements SquadronException {
   String toString() => jsonEncode(serialize());
 }
 
+@internal
 SquadronError newSquadronError(String message) {
   Squadron.severe('creating new SquadronError: $message');
   return SquadronError._(message);
 }
 
+@internal
 SquadronError? deserializeSquadronError(List data) {
   SquadronError? error;
   if (data[SquadronError._$type] == SquadronError._$typeMarker) {

@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'perf_counter_snapshot.dart';
 
 /// Simple performance counter to consolidate statistics about woker tast execution: total number of calls, total
@@ -38,7 +40,7 @@ class PerfCounter implements PerfCounterSnapshot {
   PerfCounterSnapshot get snapshot => PerfCounterSnapshot(this);
 }
 
-// for internal use
+@internal
 extension PerfCounterExt on PerfCounter {
   /// Updates counter value with the duration indicated by [timeInMicroseconds].
   /// 1. update the maximum elapsed time if required.

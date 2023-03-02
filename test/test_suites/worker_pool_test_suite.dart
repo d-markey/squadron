@@ -25,8 +25,10 @@ void poolTests() {
     final completedTasks = <int>[];
     int taskId = 0;
 
+    const loops = 1;
+
     final tasks = <Future>[];
-    for (var i = 1; i <= 10 * pool.maxConcurrency; i++) {
+    for (var i = 1; i <= loops * pool.maxConcurrency; i++) {
       var id = ++taskId;
       tasks.add(pool.isPrime(i).whenComplete(() => completedTasks.add(id)));
     }

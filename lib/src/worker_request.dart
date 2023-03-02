@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'cancellation_token.dart';
 import 'channel.dart';
 import 'squadron.dart';
@@ -162,7 +164,7 @@ class WorkerRequest {
   static const int _terminateCommand = -4;
 }
 
-// for internal use
+@internal
 extension WorkerRequestExt on WorkerRequest {
   void overrideCancelToken(CancellationToken token) {
     if (_cancelToken == null || _cancelToken!.id != token.id) {
