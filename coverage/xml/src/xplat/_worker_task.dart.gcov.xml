@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82051283" lines-covered="32" lines-valid="39" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8108108" lines-covered="30" lines-valid="37" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -34,48 +34,51 @@
         <line>
             <code>abstract class WorkerTask&lt;T, W extends Worker&gt; implements Task&lt;T&gt; {</code>
         </line>
-        <line hits="1">
-            <code>  WorkerTask(this._counter) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="2">
-            <code>    submitted = timeStamp();</code>
+            <code>  WorkerTask(this._counter) : submitted = _timeStamp();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  }</code>
+            <code/>
+        </line>
+        <line>
+            <code>  final int submitted;</code>
+        </line>
+        <line>
+            <code>  int? _executed;</code>
+        </line>
+        <line>
+            <code>  int? _finished;</code>
+        </line>
+        <line>
+            <code>  int? _cancelled;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  CancelledException? _cancelledException;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final PerfCounter? _counter;</code>
         </line>
         <line>
             <code/>
         </line>
         <line hits="3">
-            <code>  static int timeStamp() =&gt; DateTime.now().microsecondsSinceEpoch;</code>
+            <code>  CancelledException? get cancelledException =&gt; _cancelledException;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  late final int submitted;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
         </line>
         <line hits="1">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>  bool get isRunning =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      _executed != null &amp;&amp; _finished == null &amp;&amp; _cancelled == null;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  int? _executed;</code>
+        <line hits="2">
+            <code>  bool get isCancelled =&gt; _cancelled != null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -92,59 +95,17 @@
             <code>      _executed != null &amp;&amp; _finished != null &amp;&amp; _cancelled == null;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>  int? _finished;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="1">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>  bool get isCancelled =&gt; _cancelled != null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>  bool get isRunning =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>  int? _cancelled;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  CancelledException? get cancelledException =&gt; _cancelledException;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  CancelledException? _cancelledException;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  void throwIfCancelled() {</code>
-        </line>
-        <line hits="0">
-            <code>    final ex = _cancelledException;</code>
-        </line>
-        <line>
-            <code>    if (ex != null) throw ex;</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
-            <code>  Duration get waitTime =&gt; Duration(</code>
-        </line>
-        <line hits="0">
-            <code>      microseconds: (_executed ?? _cancelled ?? timeStamp()) - submitted);</code>
+        <line hits="4">
+            <code>      _executed != null &amp;&amp; _finished == null &amp;&amp; _cancelled == null;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -165,8 +126,83 @@
             <code>      : Duration(</code>
         </line>
         <line hits="1">
-            <code>          microseconds: (_cancelled ?? _finished ?? timeStamp()) - _executed!);</code>
+            <code>          microseconds: (_cancelled ?? _finished ?? _timeStamp()) - _executed!);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Duration get waitTime =&gt; Duration(</code>
+        </line>
+        <line hits="0">
+            <code>      microseconds: (_executed ?? _cancelled ?? _timeStamp()) - submitted);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  void cancel([String? message]) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _cancelled ??= _timeStamp();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _cancelledException ??= CancelledException(message: message);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  Future run(W worker) async {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _executed ??= _timeStamp();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (isCancelled) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw cancelledException!;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  void throwIfCancelled() {</code>
+        </line>
+        <line hits="0">
+            <code>    final ex = _cancelledException;</code>
+        </line>
+        <line>
+            <code>    if (ex != null) throw ex;</code>
+        </line>
+        <line>
+            <code>  }</code>
         </line>
         <line>
             <code/>
@@ -180,7 +216,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _finished = timeStamp();</code>
+            <code>      _finished = _timeStamp();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
@@ -201,56 +237,9 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  void cancel([String? message]) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="3">
-            <code>    _cancelled ??= timeStamp();</code>
+            <code>  static int _timeStamp() =&gt; DateTime.now().microsecondsSinceEpoch;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _cancelledException ??= CancelledException(message: message);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  Future run(W worker) async {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _executed ??= timeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (isCancelled) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      throw cancelledException!;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final PerfCounter? _counter;</code>
         </line>
         <line>
             <code>}</code>

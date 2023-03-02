@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9354839" lines-covered="29" lines-valid="31" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="composite_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9354839" lines-covered="29" lines-valid="31" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'cancellation_token.dart';</code>
@@ -63,9 +63,9 @@
             <code>      : assert(tokens.isNotEmpty),</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        _tokens = tokens.toList(),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        _tokens = List.unmodifiable(tokens),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        _signaled = 0,</code>
@@ -123,6 +123,21 @@
             <code/>
         </line>
         <line>
+            <code>  final CompositeMode mode;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final List&lt;CancellationToken&gt; _tokens;</code>
+        </line>
+        <line>
+            <code>  int _signaled;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// Throws an exception, composite tokens may not be cancelled programmatically.</code>
         </line>
         <line hits="1">
@@ -141,25 +156,10 @@
             <code/>
         </line>
         <line>
-            <code>  final CompositeMode mode;</code>
+            <code>  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method</code>
         </line>
         <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final List&lt;CancellationToken&gt; _tokens;</code>
-        </line>
-        <line>
-            <code>  int _signaled;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method for all tokens</code>
-        </line>
-        <line>
-            <code>  /// registered with this [CompositeToken].</code>
+            <code>  /// for all tokens registered with this [CompositeToken].</code>
         </line>
         <line hits="1">
             <code>  @override</code>

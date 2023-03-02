@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7096774" lines-covered="44" lines-valid="62" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="squadron_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.50793654" lines-covered="32" lines-valid="63" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:developer' as dev show log;</code>
         </line>
         <line>
             <code/>
-        </line>
-        <line>
-            <code>import 'channel.dart';</code>
         </line>
         <line>
             <code>import 'squadron.dart';</code>
@@ -21,6 +18,12 @@
         </line>
         <line>
             <code>abstract class SquadronLogger {</code>
+        </line>
+        <line hits="0">
+            <code>  const SquadronLogger();</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line>
             <code>  /// Gets the log level</code>
@@ -427,13 +430,7 @@
             <code>class ParentSquadronLogger extends BaseDevSquadronLogger {</code>
         </line>
         <line hits="0">
-            <code>  ParentSquadronLogger(this._parent);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  final WorkerChannel _parent;</code>
+            <code>  ParentSquadronLogger();</code>
         </line>
         <line>
             <code/>
@@ -445,7 +442,7 @@
             <code>  @override</code>
         </line>
         <line hits="0">
-            <code>  void log(String message) =&gt; _parent.log(message);</code>
+            <code>  void log(String message) =&gt; Squadron.parentChannel?.log(message);</code>
         </line>
         <line>
             <code>}</code>
@@ -567,56 +564,44 @@
         <line>
             <code>  /// Gets the log level name</code>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>  static String getName(int logLevel) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; debug) return 'ALL';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; finest) return 'DEBUG';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; finer) return 'FINEST';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; fine) return 'FINER';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; config) return 'FINE';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; info) return 'CONFIG';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; warning) return 'INFO';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; severe) return 'WARNING';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; shout) return 'SEVERE';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>    if (logLevel &lt; off) return 'SHOUT';</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>    return 'OFF';</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

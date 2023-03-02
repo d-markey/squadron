@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="timeout_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -43,6 +43,21 @@
             <code/>
         </line>
         <line>
+            <code>  /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.</code>
+        </line>
+        <line>
+            <code>  final Duration duration;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  Timer? _timer;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  /// Throws an exception, time-out tokens may not be cancelled programmatically.</code>
         </line>
         <line hits="1">
@@ -56,21 +71,6 @@
         <line hits="1">
             <code>      'TimeOutToken cannot be cancelled programmatically');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.</code>
-        </line>
-        <line>
-            <code>  final Duration duration;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  Timer? _timer;</code>
         </line>
         <line>
             <code/>

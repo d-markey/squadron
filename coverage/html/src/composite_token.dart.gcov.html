@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-02-19</dd>
+                    <dd>2023-03-02</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -121,7 +121,7 @@
                     <td>20</td><td></td><td>3</td><td><code>      : assert(tokens.isNotEmpty),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>1</td><td><code>        _tokens = tokens.toList(),</code></td>
+                    <td>21</td><td></td><td>2</td><td><code>        _tokens = List.unmodifiable(tokens),</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
                     <td>22</td><td></td><td></td><td><code>        _signaled = 0,</code></td>
@@ -169,40 +169,40 @@
                     <td>36</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>  /// Throws an exception, composite tokens may not be cancelled programmatically.</code></td>
+                    <td>37</td><td></td><td></td><td><code>  final CompositeMode mode;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 38" id="line38">
+                    <td>38</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>2</td><td><code>  void cancel([CancelledException? exception]) =&gt; throw newSquadronError(</code></td>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code>  final List&lt;CancellationToken&gt; _tokens;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>1</td><td><code>      'CompositeToken cannot be cancelled programmatically');</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code>  int _signaled;</code></td>
                 </tr>
                 <tr class="noop" title="Line 41" id="line41">
                     <td>41</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>  final CompositeMode mode;</code></td>
+                    <td>42</td><td></td><td></td><td><code>  /// Throws an exception, composite tokens may not be cancelled programmatically.</code></td>
                 </tr>
-                <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 43" id="line43">
+                    <td>43</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>  final List&lt;CancellationToken&gt; _tokens;</code></td>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>2</td><td><code>  void cancel([CancelledException? exception]) =&gt; throw newSquadronError(</code></td>
                 </tr>
-                <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>  int _signaled;</code></td>
+                <tr class="lineCov" title="Line 45" id="line45">
+                    <td>45</td><td></td><td>1</td><td><code>      'CompositeToken cannot be cancelled programmatically');</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code>  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method for all tokens</code></td>
+                    <td>47</td><td></td><td></td><td><code>  /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method</code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code>  /// registered with this [CompositeToken].</code></td>
+                    <td>48</td><td></td><td></td><td><code>  /// for all tokens registered with this [CompositeToken].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
                     <td>49</td><td></td><td>1</td><td><code>  @override</code></td>

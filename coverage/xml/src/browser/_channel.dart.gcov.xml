@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.79113925" lines-covered="125" lines-valid="158" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7642276" lines-covered="94" lines-valid="123" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,9 +9,6 @@
         </line>
         <line>
             <code/>
-        </line>
-        <line>
-            <code>import '../squadron_error.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_stream_wrapper.dart';</code>
@@ -42,6 +39,9 @@
         </line>
         <line>
             <code>import '../xplat/_value_wrapper.dart';</code>
+        </line>
+        <line>
+            <code>import '_transferables.dart';</code>
         </line>
         <line>
             <code/>
@@ -692,205 +692,6 @@
         </line>
         <line hits="0">
             <code>  }</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>class Transferables {</code>
-        </line>
-        <line hits="1">
-            <code>  Transferables._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static final _instance = Transferables._();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static Iterable&lt;Object&gt; get(Map args) =&gt; _instance._get(args, &lt;Object&gt;{});</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  bool _isBaseType(dynamic value) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      (value == null || value is String || value is num || value is bool);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  bool _isListOfBaseType(dynamic value) =&gt;</code>
-        </line>
-        <line hits="1">
-            <code>      (value is List&lt;String&gt; || value is List&lt;num&gt; || value is List&lt;bool&gt;);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  bool _isSafeForTransfer(dynamic value) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (_isBaseType(value)) return true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>    if (_isListOfBaseType(value)) return true;</code>
-        </line>
-        <line hits="1">
-            <code>    if (value is List &amp;&amp; value.every(_isSafeForTransfer)) return true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (value is Map &amp;&amp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        value.keys.every(_isBaseType) &amp;&amp;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        value.values.every(_isSafeForTransfer)) return true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    return false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Excludes base type values from [list].</code>
-        </line>
-        <line hits="1">
-            <code>  Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    for (var o in list.where((o) =&gt; !_isSafeForTransfer(o))) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (!seen.contains(o)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        seen.add(o);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        yield o as Object;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them to</code>
-        </line>
-        <line>
-            <code>  /// [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects -- essentially</code>
-        </line>
-        <line>
-            <code>  /// [web.MessagePort]s. The code makes no effort to ensure these objects really are transferable.</code>
-        </line>
-        <line hits="1">
-            <code>  Iterable&lt;Object&gt; _get(Map message, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (_isSafeForTransfer(message)) return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (!message.keys.every(_isBaseType)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      throw newSquadronError('Keys must be strings, numbers or booleans.');</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    final toBeInspected = &lt;Object&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    toBeInspected.addAll(_getObjects(message.values, seen));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    while (toBeInspected.isNotEmpty) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      final arg = toBeInspected.removeLast();</code>
-        </line>
-        <line hits="1">
-            <code>      if (arg is Map) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>        toBeInspected.addAll(_get(arg, seen));</code>
-        </line>
-        <line hits="1">
-            <code>      } else if (arg is Iterable) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        toBeInspected.addAll(_getObjects(arg, seen));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="1">
-            <code>        yield arg;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

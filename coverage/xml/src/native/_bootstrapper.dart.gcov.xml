@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-02-19" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/src/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:isolate';</code>
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import '../squadron_logger.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_worker_monitor.dart';</code>
@@ -23,8 +26,11 @@
             <code/>
         </line>
         <line hits="1">
-            <code>void bootstrap(WorkerInitializer initializer, Map? command) async {</code>
+            <code>void bootstrap(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    WorkerInitializer initializer, Map? command, SquadronLogger? logger) async {</code>
         </line>
         <line hits="1">
             <code>  final workerPort = ReceivePort();</code>
@@ -48,6 +54,13 @@
         </line>
         <line>
             <code>  });</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  Squadron.setLogger(logger);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
