@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:squadron/src/xplat/_identity.dart';
-
 import 'cancellation_token.dart';
 import 'channel.dart';
 import 'squadron_exception.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart';
 import 'worker_stat.dart';
+import 'xplat/_identity.dart';
 
 /// Base worker class.
 ///
@@ -96,48 +95,58 @@ abstract class Worker implements WorkerService {
   final String workerId;
 
   /// Sends a workload to the worker.
-  Future<T> send<T>(int command,
-      {List args = const [],
-      CancellationToken? token,
-      bool inspectRequest = false,
-      bool inspectResponse = false}) async {
+  Future<T> send<T>(
+    int command, {
+    List args = const [],
+    CancellationToken? token,
+    bool inspectRequest = false,
+    bool inspectResponse = false,
+  }) {
+    // ensure the worker is up and running
+    if (_channel != null) {
+      return _send(
+          _channel!, command, args, token, inspectRequest, inspectResponse);
+    } else {
+      return start().then((channel) => _send(
+          channel, command, args, token, inspectRequest, inspectResponse));
+    }
+  }
+
+  Future<T> _send<T>(Channel channel, int command, List args,
+      CancellationToken? token, bool inspectRequest, bool inspectResponse) {
+    // was the token cancelled?
+    SquadronException? error = token?.exception;
+    if (error != null) {
+      _totalErrors++;
+      throw error;
+    }
+
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
       _maxWorkload = _workload;
     }
 
-    // ensure the worker is up and running
-    late Channel channel;
-    if (_channel != null) {
-      channel = _channel!;
-    } else {
-      channel = await start();
-    }
-
-    SquadronException? error = token?.exception;
-    if (error == null) {
-      try {
-        // send request and return response
-        return await channel.sendRequest<T>(command, args,
+    // send command
+    return channel
+        .sendRequest<T>(command, args,
             token: token,
             inspectRequest: inspectRequest,
-            inspectResponse: inspectResponse);
-      } on CancelledException catch (e) {
-        error =
-            (token?.exception ?? e).withWorkerId(workerId).withCommand(command);
-      } catch (e, st) {
-        error = SquadronException.from(e, st, workerId, command);
-      } finally {
-        // update stats
-        _workload--;
-        _totalWorkload++;
-        _idle = DateTime.now().microsecondsSinceEpoch;
+            inspectResponse: inspectResponse)
+        .catchError((e, st) {
+      _totalErrors++;
+      if (e is CancelledException) {
+        throw (token?.exception ?? e)
+            .withWorkerId(workerId)
+            .withCommand(command);
+      } else {
+        throw SquadronException.from(e, st, workerId, command);
       }
-    }
-    // an error occured: update stats and throw exception
-    _totalErrors++;
-    throw error;
+    }).whenComplete(() {
+      _workload--;
+      _totalWorkload++;
+      _idle = DateTime.now().microsecondsSinceEpoch;
+    });
   }
 
   /// Sends a streaming workload to the worker.
@@ -162,32 +171,9 @@ abstract class Worker implements WorkerService {
       }
     }
 
-    final channel = _channel;
-    if (channel == null) {
-      // worker has not started yet: start it and forward the stream via a StreamController
-      late final StreamController<T> controller;
-      controller = StreamController<T>(onListen: () async {
-        try {
-          final channel = await start();
-          await controller.addStream(channel.sendStreamingRequest<T>(
-            command,
-            args,
-            onDone: onDone,
-            token: token,
-            inspectRequest: inspectRequest,
-            inspectResponse: inspectResponse,
-          ));
-        } catch (ex, st) {
-          controller.addError(SquadronException.from(ex, st), st);
-        } finally {
-          controller.close();
-          onDone();
-        }
-      });
-      return controller.stream;
-    } else {
-      // worker has started: return the stream directly
-      return channel.sendStreamingRequest<T>(
+    if (_channel != null) {
+      // worker is up and running: return the stream directly
+      return _channel!.sendStreamingRequest<T>(
         command,
         args,
         onDone: onDone,
@@ -196,6 +182,28 @@ abstract class Worker implements WorkerService {
         inspectResponse: inspectResponse,
       );
     }
+
+    // worker has not started yet: start it and forward the stream via a StreamController
+    late final StreamController<T> controller;
+    controller = StreamController<T>(onListen: () async {
+      try {
+        final channel = await start();
+        await controller.addStream(channel.sendStreamingRequest<T>(
+          command,
+          args,
+          onDone: onDone,
+          token: token,
+          inspectRequest: inspectRequest,
+          inspectResponse: inspectResponse,
+        ));
+      } catch (ex, st) {
+        controller.addError(SquadronException.from(ex, st), st);
+      } finally {
+        controller.close();
+        onDone();
+      }
+    });
+    return controller.stream;
   }
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].

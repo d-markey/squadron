@@ -97,67 +97,71 @@ class WorkerPool<W extends Worker> implements WorkerService {
     }
   }
 
-  Future<void> _provisionWorkers(int workload) async {
+  int _startingWorkers = 0;
+
+  int _getProvisionNeeds(int workload) {
     if (workload < minWorkers) {
       // at least minWorkers
       workload = minWorkers;
-    } else if (maxWorkers > 0 && workload > maxWorkers) {
+    }
+    if (maxWorkers > 0 && workload > maxWorkers) {
       // at most maxWorkers if > 0
       workload = maxWorkers;
     }
-    // adjust by _workers.length
-    workload -= _workers.length;
+    // adjust by _workers.length and _startingWorkers
+    return workload - _workers.length - _startingWorkers;
+  }
 
-    if (workload > 0) {
-      final maxWorkload = concurrencySettings.maxParallel;
-      final tasks = <Future>[];
-      final errors = [];
-      for (var i = 0; i < workload; i++) {
-        try {
-          final poolWorker = PoolWorker(_workerFactory(), maxWorkload);
-          tasks.add(
-            poolWorker.worker.start().then((_) {
-              // start succeeded: register worker
-              _addWorkerAndNotify(poolWorker);
-              return true;
-            }).onError<Object>((ex, st) {
-              // start failed
-              poolWorker.worker.stop();
-              errors.add(SquadronException.from(ex, st));
-              return false;
-            }),
-          );
-        } catch (ex, st) {
+  Future<void> _provisionWorkers(int workload) {
+    final tasks = <Future>[];
+    final errors = [];
+    for (var i = 0; i < workload; i++) {
+      try {
+        final poolWorker = PoolWorker(_workerFactory(), maxParallel);
+        _startingWorkers++;
+        tasks.add(poolWorker.worker.start().whenComplete(() {
+          _startingWorkers--;
+        }).then((_) {
+          // start succeeded: register worker
+          _addWorkerAndNotify(poolWorker);
+        }).catchError((ex, st) {
+          // start failed, ensure the worker is stopped
+          poolWorker.worker.stop();
           errors.add(SquadronException.from(ex, st));
-        }
+        }));
+      } catch (ex, st) {
+        errors.add(SquadronException.from(ex, st));
       }
+    }
 
-      await Future.wait(tasks);
-
+    return Future.wait(tasks).whenComplete(() {
       if (_workers.length > _maxSize) {
         _maxSize = _workers.length;
       }
       if (errors.isNotEmpty) {
-        if (errors.length >= tasks.length) {
+        if (errors.length < tasks.length) {
+          // some tasks failed: warn
+          Squadron.warning(() => 'Error while provisionning workers: $errors');
+        } else {
           // all tasks failed: throw
           throw errors.firstWhere((e) => e is SquadronError,
                   orElse: () => null) ??
               errors.firstWhere((e) => e is WorkerException,
                   orElse: () => null) ??
               errors.first;
-        } else {
-          // some tasks failed: warn
-          Squadron.warning(() => 'Error while provisionning workers: $errors');
         }
       }
-    }
+    });
   }
 
   /// Ensure at least [ConcurrencySettings.minWorkers] workers are started
   /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
-  Future start() {
+  FutureOr<void> start() {
     _stopped = false;
-    return _provisionWorkers(_queue.isEmpty ? 1 : _queue.length);
+    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);
+    if (needs > 0) {
+      return _provisionWorkers(needs);
+    }
   }
 
   void _notify(W worker, {required bool removed}) {
@@ -181,7 +185,6 @@ class WorkerPool<W extends Worker> implements WorkerService {
   }
 
   int _removeWorker(PoolWorker<W> poolWorker, bool force) {
-    if (_scheduling) return 0;
     if (force || _workers.length > concurrencySettings.minWorkers) {
       final workerId = poolWorker.worker.workerId;
       poolWorker.worker.stop();
@@ -257,71 +260,71 @@ class WorkerPool<W extends Worker> implements WorkerService {
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
-  Timer? _timer;
-  bool _scheduling = false;
-
-  /// The scheduler.
-  ///
-  /// Steps:
-  /// 1. remove stopped workers.
-  /// 2. remove cancelled tasks.
-  /// 3. if the task queue is not empty:
-  ///    (a) instantiate up to [maxWorkers] workers (if [maxWorkers] is zero, instanciate as many workers as there are pending tasks).
-  ///    (b) find max capacity available in the pool
-  ///    (c) distribute tasks to workers starting with workers with highest [PoolWorker.capacity], as long as [PoolWorker.capacity] > 0.
+  /// Schedule tasks.
   void _schedule() {
-    if (_timer?.isActive ?? false) {
-      // ignore if the last scheduling request has not executed yet
+    if (_workers.isEmpty && _startingWorkers > 0) {
+      // workers are still starting, defer
+      Future(_schedule);
       return;
     }
-    _timer = Timer(Duration.zero, () {
-      _workers
-          .where(PoolWorker.isStopped)
-          .toList() // take a copy
-          .forEach(_removeWorkerAndNotify);
-      _queue.removeWhere((t) => t.isCancelled);
-      if (_stopped && _queue.isEmpty && _executing.isEmpty) {
+
+    // remove dead workers
+    _workers
+        .where(PoolWorker.isStopped)
+        .toList() // take a copy
+        .forEach(_removeWorkerAndNotify);
+
+    // remove cancelled tasks
+    _queue.removeWhere((t) => t.isCancelled);
+
+    // any work to do?
+    if (_queue.isEmpty) {
+      // no: effectively stop the pool if needed and return
+      if (_stopped && _executing.isEmpty) {
         stop();
-      } else if (_queue.isNotEmpty) {
-        scheduleMicrotask(() {
-          _scheduling = true;
-          _provisionWorkers(_queue.length).then((_) {
-            int maxCapacity;
-            while (_queue.isNotEmpty &&
-                (maxCapacity = _sortAndGetMaxCapacity()) > 0) {
-              maxCapacity -= 1;
-              for (var idx = 0; idx < _workers.length; idx++) {
-                final w = _workers[idx];
-                if (_queue.isEmpty ||
-                    w.capacity == 0 ||
-                    w.capacity < maxCapacity) {
-                  break;
-                }
-                final task = _queue.removeFirst();
-                _executing.add(task);
-                w.run(task).whenComplete(() {
-                  _executing.remove(task);
-                  _schedule();
-                });
-              }
-            }
-            _scheduling = false;
-          }).catchError((ex) {
-            Squadron.severe('provisionning workers failed with error $ex');
-            while (_queue.isNotEmpty) {
-              final task = _queue.removeFirst();
-              task.cancel('provisionning workers failed');
-            }
-            _scheduling = false;
-          });
-        });
       }
-    });
+      return;
+    }
+
+    // yes: dispatch tasks to workers
+    _dispatchTasks();
+
+    // and provision more workers if possible and necessary
+    final needs = _getProvisionNeeds(_queue.length);
+    if (needs > 0) {
+      _provisionWorkers(needs).then((_) {
+        _dispatchTasks();
+      }).catchError((ex) {
+        Squadron.severe('provisionning workers failed with error $ex');
+        while (_queue.isNotEmpty) {
+          _queue.removeFirst().cancel('provisionning workers failed');
+        }
+      });
+    }
   }
 
   int _sortAndGetMaxCapacity() {
     _workers.sort(PoolWorker.compareCapacityDesc);
-    return _workers.first.capacity;
+    return _workers.isEmpty ? 0 : _workers.first.capacity;
+  }
+
+  void _dispatchTasks() {
+    int maxCapacity;
+    while (_queue.isNotEmpty && (maxCapacity = _sortAndGetMaxCapacity()) > 0) {
+      maxCapacity -= 1;
+      for (var idx = 0; idx < _workers.length; idx++) {
+        final w = _workers[idx];
+        if (_queue.isEmpty || w.capacity == 0 || w.capacity < maxCapacity) {
+          break;
+        }
+        final task = _queue.removeFirst();
+        _executing.add(task);
+        w.run(task).whenComplete(() {
+          _executing.remove(task);
+          _schedule();
+        });
+      }
+    }
   }
 
   /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.

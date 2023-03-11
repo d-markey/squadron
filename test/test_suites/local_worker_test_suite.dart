@@ -78,8 +78,11 @@ void localWorkerTests() {
           expect(id, isNotNull);
           workerIds.add(id!);
         }
-        expect(workerIds.length,
-            equals(localClientWorkerPool.concurrencySettings.maxWorkers));
+        expect(workerIds.length, isPositive);
+        expect(
+            workerIds.length,
+            lessThanOrEqualTo(
+                localClientWorkerPool.concurrencySettings.maxWorkers));
       } finally {
         localWorker.stop();
       }

@@ -39,13 +39,13 @@ void main() async {
     ///////////// SYNC /////////////
     log('///////////// SYNC /////////////');
 
-    final syncSw = Stopwatch();
-    syncSw.start();
+    final syncSw = Stopwatch()..start();
     for (var loop = 0; loop < loops; loop++) {
       final syncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
-        syncFutures.add(Future(() => sampleService.cpu(milliseconds: n)));
-        syncFutures.add(sampleService.io(milliseconds: n));
+        syncFutures
+          ..add(Future(() => sampleService.cpu(milliseconds: n)))
+          ..add(sampleService.io(milliseconds: n));
       }
       await Future.wait(syncFutures);
     }
@@ -68,15 +68,17 @@ void main() async {
     log('pool started');
 
     // create the pool monitor
-    final maxIdle = Duration(milliseconds: 500);
+    final maxIdle = Duration(milliseconds: 1000);
     final monitor = Timer.periodic(Duration(milliseconds: 250), (timer) {
       pool?.stop((w) => w.idleTime > maxIdle);
     });
 
+    log('pool monitor started');
+
     final tasks = <Future>[];
 
     // force maximum load on pool
-    for (var i = 0; i < pool.maxWorkers; i++) {
+    for (var i = 0; i < pool.maxConcurrency; i++) {
       tasks.add(pool.cpu(milliseconds: 5));
     }
 
@@ -89,13 +91,13 @@ void main() async {
     assert(pool.size == 2);
     log('pool monitor OK');
 
-    final asyncSw = Stopwatch();
-    asyncSw.start();
+    final asyncSw = Stopwatch()..start();
     for (var loop = 0; loop < loops; loop++) {
       final asyncFutures = <Future>[];
       for (var n = 0; n < max; n++) {
-        asyncFutures.add(pool.cpu(milliseconds: n));
-        asyncFutures.add(pool.io(milliseconds: n));
+        asyncFutures
+          ..add(pool.cpu(milliseconds: n))
+          ..add(pool.io(milliseconds: n));
       }
       await Future.wait(asyncFutures);
     }
@@ -122,8 +124,7 @@ void main() async {
 
     // shutdown pool
     log('waiting for monitor to stop workers...');
-    final sw = Stopwatch();
-    sw.start();
+    final sw = Stopwatch()..start();
     while (true) {
       final size = pool.size;
       log('  * pool.size = $size');

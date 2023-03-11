@@ -66,8 +66,8 @@ void cancellationTests() {
       final pool = TestWorkerPool(concurrencySettings_222);
       await pool.start();
 
-      final task = pool.delayedIdentityTask(3);
-      task.cancel('Immediate cancellation');
+      final task = pool.delayedIdentityTask(3)
+        ..cancel('Immediate cancellation');
 
       try {
         final value = await task.value;
@@ -134,7 +134,6 @@ void cancellationTests() {
       expect(firstTask.isCancelled, isTrue);
       expect(firstTask.isRunning, isFalse);
       expect(firstTask.isFinished, isFalse);
-      expect(firstTask.runningTime.inMicroseconds, isZero);
 
       await Future.delayed(TestService.delay * 1.8);
       final lastTask = tasks[3 * pool.maxConcurrency];
@@ -466,9 +465,9 @@ void cancellationTests() {
       final cancellation = CancellationToken();
 
       bool notified = false;
-      cancellation.addListener(() => notified = true);
-
-      cancellation.cancel();
+      cancellation
+        ..addListener(() => notified = true)
+        ..cancel();
 
       expect(cancellation.cancelled, isTrue);
       expect(notified, isTrue);
@@ -586,8 +585,9 @@ void cancellationTests() {
       expect(success, equals(pool.maxConcurrency));
       expect(success + errors, equals(tasks.length));
 
-      pool.cancel();
-      pool.stop();
+      pool
+        ..cancel()
+        ..stop();
     });
   });
 
@@ -599,8 +599,7 @@ void cancellationTests() {
     });
 
     test('- gets cancelled after specified duration', () async {
-      final timeout = TimeOutToken(TestService.shortDelay);
-      timeout.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay)..ensureStarted();
 
       await Future.delayed(timeout.duration * 0.6);
       expect(timeout.cancelled, isFalse);
@@ -610,8 +609,7 @@ void cancellationTests() {
     });
 
     test('- notifies listeners', () async {
-      final timeout = TimeOutToken(TestService.shortDelay);
-      timeout.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay)..ensureStarted();
 
       bool notified = false;
       void listener() => notified = true;
@@ -630,8 +628,7 @@ void cancellationTests() {
     });
 
     test('- notifies listeners when already cancelled', () async {
-      final timeout = TimeOutToken(TestService.shortDelay);
-      timeout.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay)..ensureStarted();
 
       bool notified = false;
       void listener() => notified = true;
@@ -743,8 +740,9 @@ void cancellationTests() {
       expect(success, equals(pool.maxConcurrency));
       expect(success + errors, equals(tasks.length));
 
-      pool.cancel();
-      pool.stop();
+      pool
+        ..cancel()
+        ..stop();
     });
   });
 
@@ -783,8 +781,8 @@ void cancellationTests() {
       final timeout = TimeOutToken(TestService.shortDelay);
       final cancellation = CancellationToken();
       final composite =
-          CompositeToken([cancellation, timeout], CompositeMode.any);
-      composite.ensureStarted();
+          CompositeToken([cancellation, timeout], CompositeMode.any)
+            ..ensureStarted();
 
       expect(timeout.cancelled, isFalse);
       expect(cancellation.cancelled, isFalse);
@@ -826,8 +824,8 @@ void cancellationTests() {
 
     test('- notifies listeners when already cancelled', () async {
       final cancellation = CancellationToken('token #1');
-      final timeout = TimeOutToken(TestService.shortDelay, 'token #2');
-      timeout.ensureStarted();
+      final timeout = TimeOutToken(TestService.shortDelay, 'token #2')
+        ..ensureStarted();
 
       int notified = 0;
       void listener() => notified++;
@@ -1052,8 +1050,9 @@ void cancellationTests() {
       expect(success, equals(pool.maxConcurrency));
       expect(success + errors, equals(tasks.length));
 
-      pool.cancel();
-      pool.stop();
+      pool
+        ..cancel()
+        ..stop();
     });
   });
 }

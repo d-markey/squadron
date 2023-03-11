@@ -1,3 +1,8 @@
+## 4.3.6
+
+- Downgrade `meta` version to `^1.8.0` to match `flutter_test` requirements.
+- Fix pool scheduler algorithm to ensure worker availability before dispatching tasks.
+
 ## 4.3.5
 
 - Add `UseLogger` annotation to have package [squadron_builder](https://pub.dev/packages/squadron_builder) generate the associated code in worker threads.

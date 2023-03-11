@@ -38,9 +38,9 @@ class _BaseJsChannel {
         }
       }
       _sendPort!.postMessage(message, transfer);
-    } catch (ex) {
+    } catch (ex, st) {
       Squadron.severe('failed to post request $message: error $ex');
-      rethrow;
+      throw SquadronException.from(ex, st);
     }
   }
 
@@ -53,9 +53,9 @@ class _BaseJsChannel {
       } else {
         _sendPort!.postMessage(message);
       }
-    } catch (ex) {
+    } catch (ex, st) {
       Squadron.severe('failed to post response $message: error $ex');
-      rethrow;
+      throw SquadronException.from(ex, st);
     }
   }
 }
@@ -195,9 +195,9 @@ class _JsForwardChannel extends _JsChannel {
     try {
       final transfer = Transferables.get(message).toList();
       _remote!.postMessage(message, transfer);
-    } catch (ex) {
+    } catch (ex, st) {
       Squadron.severe('failed to forward $message: error $ex');
-      rethrow;
+      throw SquadronException.from(ex, st);
     }
   }
 

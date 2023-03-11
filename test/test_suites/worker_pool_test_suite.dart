@@ -659,6 +659,7 @@ void poolTests() {
 
       // terminate
       sub1.cancel();
+      sub0.cancel();
 
       // /!\ cannot call getPendingInfiniteWithErrors() while task0 & task1 are still pending!
       final pending = await pool.getPendingInfiniteWithErrors();

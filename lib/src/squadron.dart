@@ -118,8 +118,7 @@ class Squadron {
   /// Sets the `WorkerChannel` to communicate with the parent. Once set, the `parentChannel` cannot be modified.
   /// When setting the parent channel, this method also installs a logger to forward log messages to the parent.
   static void setParent(WorkerChannel parentChannel) {
-    final sq = _getOrInitialize();
-    sq._parentChannel ??= parentChannel;
+    _getOrInitialize()._parentChannel ??= parentChannel;
   }
 
   /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be

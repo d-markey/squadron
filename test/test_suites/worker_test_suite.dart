@@ -205,7 +205,7 @@ void workerTests() {
       expect(worker.totalWorkload, equals(5));
 
       await Future.delayed(TestService.delay *
-          2.5); // 6 delays: tasks #4 and #8 complete, #7 still pending
+          3); // 6.5 delays: tasks #4 and #8 complete, #7 still pending
 
       expect(completedTasks, equals([6, 5, 4, 8]));
       expect(worker.workload, equals(1));
@@ -676,8 +676,7 @@ void workerTests() {
 
       final primeWorker = PrimeWorker(cache);
 
-      final sw = Stopwatch();
-      sw.start();
+      final sw = Stopwatch()..start();
       for (var prime in largePrimes) {
         expect(await primeWorker.isPrime(prime), isTrue);
       }

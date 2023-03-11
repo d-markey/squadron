@@ -29,9 +29,9 @@ class _BaseVmChannel {
     final message = req.serialize();
     try {
       _sendPort!.send(message);
-    } catch (ex) {
+    } catch (ex, st) {
       Squadron.severe('failed to post request $message: error $ex');
-      rethrow;
+      throw SquadronException.from(ex, st);
     }
   }
 
@@ -39,9 +39,9 @@ class _BaseVmChannel {
     final message = res.serialize();
     try {
       _sendPort!.send(message);
-    } catch (ex) {
+    } catch (ex, st) {
       Squadron.severe('failed to post response $message: error $ex');
-      rethrow;
+      throw SquadronException.from(ex, st);
     }
   }
 }
@@ -167,14 +167,8 @@ Future<Channel> openChannel(
 
   final startRequest =
       WorkerRequest.start(receiver.sendPort, workerId, startArguments);
-  final isolate = await Isolate.spawn(
-    entryPoint,
-    startRequest.serialize(),
-    errorsAreFatal: false,
-    paused: true,
-  );
-  Squadron.config('created Isolate #$workerId');
 
+  late final Isolate isolate;
   final exitPort = ReceivePort();
   final errorPort = ReceivePort();
 
@@ -185,7 +179,6 @@ Future<Channel> openChannel(
     exitPort.close();
     errorPort.close();
   });
-  isolate.addOnExitListener(exitPort.sendPort);
 
   errorPort.listen((message) {
     final error = SquadronException.fromString(message[0]) ??
@@ -197,7 +190,6 @@ Future<Channel> openChannel(
       completer.completeError(error, error.stackTrace);
     }
   });
-  isolate.addErrorListener(errorPort.sendPort);
 
   receiver.listen((message) {
     final response = WorkerResponse.deserialize(message);
@@ -221,7 +213,15 @@ Future<Channel> openChannel(
     }
   });
 
-  isolate.resume(isolate.pauseCapability!);
+  isolate = await Isolate.spawn(
+    entryPoint,
+    startRequest.serialize(),
+    errorsAreFatal: false,
+    onExit: exitPort.sendPort,
+    onError: errorPort.sendPort,
+  );
+
+  Squadron.config('created Isolate #$workerId');
   return completer.future;
 }
 

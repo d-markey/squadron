@@ -22,8 +22,9 @@ class Logger {
     } else {
       lines.add(message);
     }
-    div.innerHtml = lines.join('<br>');
-    div.scrollTo(0, 10000);
+    div
+      ..innerHtml = lines.join('<br>')
+      ..scrollTo(0, 10000);
   }
 
   void print(String message) {

@@ -34,16 +34,16 @@ void main() async {
       (dynamic message) => logger.print(message?.toString() ?? ''));
 
   final logHeader = querySelector('#log-header')!;
-  final separator = Element.span();
-  separator.text = ' - ';
+  final separator = Element.span()..text = ' - ';
   logHeader.append(separator);
-  final clearLink = Element.a();
-  clearLink.text = 'Clear';
-  clearLink.attributes['href'] = '#';
+  final clearLink = Element.a()
+    ..text = 'Clear'
+    ..attributes['href'] = '#';
   clearLink.onClick.listen((MouseEvent e) {
-    logger.clear();
-    logger.log('Ready');
-    logger.log('');
+    logger
+      ..clear()
+      ..log('Ready')
+      ..log('');
   });
   logHeader.append(clearLink);
 
@@ -80,6 +80,7 @@ void main() async {
     runButton.disabled = false;
   });
 
-  logger.log('Ready');
-  logger.log('');
+  logger
+    ..log('Ready')
+    ..log('');
 }

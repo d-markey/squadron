@@ -32,9 +32,9 @@ class WorkerMonitor {
   /// [CancellationTokenReference.noToken].
   CancellationTokenReference begin(WorkerRequest request) {
     _executing++;
-    final tokenRef = _getTokenRef(request.cancelToken);
-    tokenRef.usedBy(request);
-    return tokenRef;
+    final token = _getTokenRef(request.cancelToken);
+    token.usedBy(request);
+    return token;
   }
 
   Map<int, SquadronCallback>? _streamCancellers;

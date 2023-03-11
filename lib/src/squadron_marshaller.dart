@@ -12,6 +12,11 @@ abstract class SquadronMarshaller<T, S> {
   T unmarshall(S data);
 }
 
+/// Base class to abstract `S` in `SquadronMarshaller<T, S>`.
+abstract class GenericMarshaller<T> extends SquadronMarshaller<T, dynamic> {
+  const GenericMarshaller();
+}
+
 /// Identity marshaller.
 class IdentityMarshaller<T> implements SquadronMarshaller<T, T> {
   const IdentityMarshaller();

@@ -5,7 +5,7 @@ import 'worker_request.dart';
 typedef WorkerInitializer = FutureOr<WorkerService> Function(
     WorkerRequest startRequest);
 
-typedef CommandHandler = FutureOr Function(WorkerRequest req);
+typedef CommandHandler = FutureOr<dynamic> Function(WorkerRequest req);
 
 typedef SquadronCallback = void Function();
 

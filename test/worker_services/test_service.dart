@@ -124,6 +124,7 @@ class TestService implements WorkerService {
     }
 
     void onCancel() {
+      controller.close();
       _pendingInfiniteWithErrors--;
     }
 

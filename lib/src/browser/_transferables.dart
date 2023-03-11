@@ -42,8 +42,7 @@ class Transferables {
   static Iterable<Object> _get(Map message, Set<Object> seen) sync* {
     _checkKeys(message);
     if (_isSafeForTransfer(message)) return;
-    final toBeInspected = <Object>[];
-    toBeInspected.addAll(_getObjects(message.values, seen));
+    final toBeInspected = _getObjects(message.values, seen).toList();
     var i = 0;
     while (i < toBeInspected.length) {
       final arg = toBeInspected[i++];
