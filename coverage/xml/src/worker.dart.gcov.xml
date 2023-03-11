@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9519231" lines-covered="99" lines-valid="104" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-11" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9357798" lines-covered="102" lines-valid="109" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>import 'package:squadron/src/xplat/_identity.dart';</code>
         </line>
         <line>
             <code/>
@@ -30,6 +24,9 @@
         </line>
         <line>
             <code>import 'worker_stat.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_identity.dart';</code>
         </line>
         <line>
             <code/>
@@ -329,63 +326,84 @@
             <code>  /// Sends a workload to the worker.</code>
         </line>
         <line hits="2">
-            <code>  Future&lt;T&gt; send&lt;T&gt;(int command,</code>
+            <code>  Future&lt;T&gt; send&lt;T&gt;(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      {List args = const [],</code>
+            <code>    int command, {</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
+            <code>    List args = const [],</code>
         </line>
         <line>
-            <code>      bool inspectRequest = false,</code>
+            <code>    CancellationToken? token,</code>
         </line>
         <line>
-            <code>      bool inspectResponse = false}) async {</code>
+            <code>    bool inspectRequest = false,</code>
         </line>
         <line>
-            <code>    // update stats</code>
-        </line>
-        <line hits="3">
-            <code>    _workload++;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    if (_workload &gt; _maxWorkload) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      _maxWorkload = _workload;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <code>    bool inspectResponse = false,</code>
         </line>
         <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
+            <code>  }) {</code>
         </line>
         <line>
             <code>    // ensure the worker is up and running</code>
-        </line>
-        <line hits="1">
-            <code>    late Channel channel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    if (_channel != null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>      return _send(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="1">
-            <code>      channel = _channel!;</code>
+            <code>          _channel!, command, args, token, inspectRequest, inspectResponse);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
+        <line hits="5">
+            <code>      return start().then((channel) =&gt; _send(</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          channel, command, args, token, inspectRequest, inspectResponse));</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line hits="2">
-            <code>      channel = await start();</code>
+            <code>  Future&lt;T&gt; _send&lt;T&gt;(Channel channel, int command, List args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      CancellationToken? token, bool inspectRequest, bool inspectResponse) {</code>
+        </line>
+        <line>
+            <code>    // was the token cancelled?</code>
+        </line>
+        <line hits="0">
+            <code>    SquadronException? error = token?.exception;</code>
+        </line>
+        <line>
+            <code>    if (error != null) {</code>
+        </line>
+        <line hits="0">
+            <code>      _totalErrors++;</code>
+        </line>
+        <line>
+            <code>      throw error;</code>
         </line>
         <line>
             <code>    }</code>
@@ -393,24 +411,37 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>    SquadronException? error = token?.exception;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (error == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      try {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>        // send request and return response</code>
+            <code>    // update stats</code>
         </line>
         <line hits="2">
-            <code>        return await channel.sendRequest&lt;T&gt;(command, args,</code>
+            <code>    _workload++;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    if (_workload &gt; _maxWorkload) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _maxWorkload = _workload;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // send command</code>
+        </line>
+        <line hits="1">
+            <code>    return channel</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        .sendRequest&lt;T&gt;(command, args,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>            token: token,</code>
@@ -419,60 +450,60 @@
             <code>            inspectRequest: inspectRequest,</code>
         </line>
         <line>
-            <code>            inspectResponse: inspectResponse);</code>
-        </line>
-        <line hits="1">
-            <code>      } on CancelledException catch (e) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        error =</code>
-        </line>
-        <line hits="4">
-            <code>            (token?.exception ?? e).withWorkerId(workerId).withCommand(command);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      } catch (e, st) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>            inspectResponse: inspectResponse)</code>
         </line>
         <line hits="3">
-            <code>        error = SquadronException.from(e, st, workerId, command);</code>
+            <code>        .catchError((e, st) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>      } finally {</code>
+        <line hits="3">
+            <code>      _totalErrors++;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        // update stats</code>
+        <line hits="1">
+            <code>      if (e is CancelledException) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>        _workload--;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        _totalWorkload++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>        throw (token?.exception ?? e)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>        _idle = DateTime.now().microsecondsSinceEpoch;</code>
+            <code>            .withWorkerId(workerId)</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>            .withCommand(command);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line hits="3">
+            <code>        throw SquadronException.from(e, st, workerId, command);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line>
-            <code>    }</code>
+        <line hits="3">
+            <code>    }).whenComplete(() {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    // an error occured: update stats and throw exception</code>
+        <line hits="3">
+            <code>      _workload--;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    _totalErrors++;</code>
+            <code>      _totalWorkload++;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="4">
+            <code>      _idle = DateTime.now().microsecondsSinceEpoch;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="1">
-            <code>    throw error;</code>
+            <code>    });</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -561,94 +592,15 @@
             <code/>
         </line>
         <line hits="2">
-            <code>    final channel = _channel;</code>
+            <code>    if (_channel != null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    if (channel == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>      // worker has not started yet: start it and forward the stream via a StreamController</code>
-        </line>
-        <line hits="1">
-            <code>      late final StreamController&lt;T&gt; controller;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>      // worker is up and running: return the stream directly</code>
         </line>
         <line hits="3">
-            <code>      controller = StreamController&lt;T&gt;(onListen: () async {</code>
+            <code>      return _channel!.sendStreamingRequest&lt;T&gt;(</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        try {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          final channel = await start();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          await controller.addStream(channel.sendStreamingRequest&lt;T&gt;(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>            command,</code>
-        </line>
-        <line>
-            <code>            args,</code>
-        </line>
-        <line>
-            <code>            onDone: onDone,</code>
-        </line>
-        <line>
-            <code>            token: token,</code>
-        </line>
-        <line>
-            <code>            inspectRequest: inspectRequest,</code>
-        </line>
-        <line>
-            <code>            inspectResponse: inspectResponse,</code>
-        </line>
-        <line>
-            <code>          ));</code>
-        </line>
-        <line hits="0">
-            <code>        } catch (ex, st) {</code>
-        </line>
-        <line hits="0">
-            <code>          controller.addError(SquadronException.from(ex, st), st);</code>
-        </line>
-        <line>
-            <code>        } finally {</code>
-        </line>
-        <line hits="2">
-            <code>          controller.close();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          onDone();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="1">
-            <code>      });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      return controller.stream;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line>
-            <code>      // worker has started: return the stream directly</code>
-        </line>
-        <line hits="2">
-            <code>      return channel.sendStreamingRequest&lt;T&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        command,</code>
@@ -673,6 +625,81 @@
         </line>
         <line>
             <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // worker has not started yet: start it and forward the stream via a StreamController</code>
+        </line>
+        <line hits="1">
+            <code>    late final StreamController&lt;T&gt; controller;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    controller = StreamController&lt;T&gt;(onListen: () async {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        final channel = await start();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        await controller.addStream(channel.sendStreamingRequest&lt;T&gt;(</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          command,</code>
+        </line>
+        <line>
+            <code>          args,</code>
+        </line>
+        <line>
+            <code>          onDone: onDone,</code>
+        </line>
+        <line>
+            <code>          token: token,</code>
+        </line>
+        <line>
+            <code>          inspectRequest: inspectRequest,</code>
+        </line>
+        <line>
+            <code>          inspectResponse: inspectResponse,</code>
+        </line>
+        <line>
+            <code>        ));</code>
+        </line>
+        <line hits="0">
+            <code>      } catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>        controller.addError(SquadronException.from(ex, st), st);</code>
+        </line>
+        <line>
+            <code>      } finally {</code>
+        </line>
+        <line hits="2">
+            <code>        controller.close();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        onDone();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>    });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    return controller.stream;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>

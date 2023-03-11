@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9322034" lines-covered="110" lines-valid="118" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-11" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9327731" lines-covered="111" lines-valid="119" package="/src/native" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="_local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="12" lines-valid="12" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="12" name="&lt;unnamed&gt;"/>
@@ -7,8 +7,8 @@
         <source branches-hit="0" branches-valid="0" filename="_bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="10" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="10" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="88" lines-valid="96" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="88" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="89" lines-valid="97" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="89" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

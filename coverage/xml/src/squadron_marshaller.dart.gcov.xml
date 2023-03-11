@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="squadron_marshaller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="4" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-11" filename="squadron_marshaller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="5" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code>
@@ -36,6 +36,21 @@
         </line>
         <line>
             <code>  T unmarshall(S data);</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base class to abstract `S` in `SquadronMarshaller&lt;T, S&gt;`.</code>
+        </line>
+        <line>
+            <code>abstract class GenericMarshaller&lt;T&gt; extends SquadronMarshaller&lt;T, dynamic&gt; {</code>
+        </line>
+        <line hits="0">
+            <code>  const GenericMarshaller();</code>
         </line>
         <line>
             <code>}</code>

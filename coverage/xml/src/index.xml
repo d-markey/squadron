@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8642766" lines-covered="675" lines-valid="781" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-11" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8624204" lines-covered="677" lines-valid="785" package="/src" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="20" lines-valid="20" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="20" name="&lt;unnamed&gt;"/>
@@ -28,11 +28,11 @@
         <source branches-hit="0" branches-valid="0" filename="local_worker_client.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
         </source>
+        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="150" lines-valid="172" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="150" name="&lt;unnamed&gt;"/>
+        </source>
         <source branches-hit="0" branches-valid="0" filename="worker_request.dart" functions-hit="0" functions-valid="0" lines-hit="59" lines-valid="64" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="59" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="150" lines-valid="173" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="150" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="perf_counter.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="17" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="16" name="&lt;unnamed&gt;"/>
@@ -40,14 +40,14 @@
         <source branches-hit="0" branches-valid="0" filename="timeout_token.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="10" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="10" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron.dart" functions-hit="0" functions-valid="0" lines-hit="69" lines-valid="73" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="69" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron.dart" functions-hit="0" functions-valid="0" lines-hit="68" lines-valid="72" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="68" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker.dart" functions-hit="0" functions-valid="0" lines-hit="99" lines-valid="104" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="99" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker.dart" functions-hit="0" functions-valid="0" lines-hit="102" lines-valid="109" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="102" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="4" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="3" name="&lt;unnamed&gt;"/>
@@ -58,10 +58,10 @@
         <source branches-hit="0" branches-valid="0" filename="cancellation_token.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="27" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
         </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_marshaller.dart" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib"/>
         <source branches-hit="0" branches-valid="0" filename="composite_token.dart" functions-hit="0" functions-valid="0" lines-hit="29" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="29" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_marshaller.dart" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="4" prefix="/home/runner/work/squadron/squadron/lib"/>
         <source branches-hit="0" branches-valid="0" filename="worker_service.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
         </source>

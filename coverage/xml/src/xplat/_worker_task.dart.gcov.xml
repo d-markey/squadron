@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-02" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8108108" lines-covered="30" lines-valid="37" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-03-11" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7837838" lines-covered="29" lines-valid="37" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -114,9 +114,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>  Duration get runningTime =&gt; _executed == null</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      ? Duration.zero</code>
@@ -125,9 +125,8 @@
         <line hits="0">
             <code>      : Duration(</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>          microseconds: (_cancelled ?? _finished ?? _timeStamp()) - _executed!);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

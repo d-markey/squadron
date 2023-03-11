@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-03-02</dd>
+                    <dd>2023-03-11</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>30</td><td>33</td><td class="high">90.9%</td>
+                            <th scope="row">Lines</th><td>29</td><td>32</td><td class="high">90.6%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -193,52 +193,49 @@
                     <td>44</td><td></td><td>1</td><td><code>    if (_isSafeForTransfer(message)) return;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>1</td><td><code>    final toBeInspected = &lt;Object&gt;[];</code></td>
+                    <td>45</td><td></td><td>1</td><td><code>    final toBeInspected = _getObjects(message.values, seen).toList();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>1</td><td><code>    toBeInspected.addAll(_getObjects(message.values, seen));</code></td>
+                <tr class="noop" title="Line 46" id="line46">
+                    <td>46</td><td></td><td></td><td><code>    var i = 0;</code></td>
                 </tr>
-                <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code>    var i = 0;</code></td>
+                <tr class="lineCov" title="Line 47" id="line47">
+                    <td>47</td><td></td><td>1</td><td><code>    while (i &lt; toBeInspected.length) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>1</td><td><code>    while (i &lt; toBeInspected.length) {</code></td>
+                <tr class="noop" title="Line 48" id="line48">
+                    <td>48</td><td></td><td></td><td><code>      final arg = toBeInspected[i++];</code></td>
                 </tr>
-                <tr class="noop" title="Line 49" id="line49">
-                    <td>49</td><td></td><td></td><td><code>      final arg = toBeInspected[i++];</code></td>
+                <tr class="lineCov" title="Line 49" id="line49">
+                    <td>49</td><td></td><td>1</td><td><code>      if (arg is Map) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>1</td><td><code>      if (arg is Map) {</code></td>
+                <tr class="noop" title="Line 50" id="line50">
+                    <td>50</td><td></td><td></td><td><code>        _checkKeys(arg);</code></td>
                 </tr>
-                <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code>        _checkKeys(arg);</code></td>
+                <tr class="lineNoCov" title="Line 51" id="line51">
+                    <td>51</td><td></td><td>0</td><td><code>        toBeInspected.addAll(_getObjects(arg.values, seen));</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>0</td><td><code>        toBeInspected.addAll(_getObjects(arg.values, seen));</code></td>
+                <tr class="lineCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>1</td><td><code>      } else if (arg is Iterable) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>1</td><td><code>      } else if (arg is Iterable) {</code></td>
+                    <td>53</td><td></td><td>1</td><td><code>        toBeInspected.addAll(_getObjects(arg, seen));</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>1</td><td><code>        toBeInspected.addAll(_getObjects(arg, seen));</code></td>
+                <tr class="noop" title="Line 54" id="line54">
+                    <td>54</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 55" id="line55">
-                    <td>55</td><td></td><td></td><td><code>      } else {</code></td>
+                <tr class="lineCov" title="Line 55" id="line55">
+                    <td>55</td><td></td><td>1</td><td><code>        yield arg;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>1</td><td><code>        yield arg;</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code>      }</code></td>
+                    <td>57</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 58" id="line58">
+                    <td>58</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>1</td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 59" id="line59">
+                    <td>59</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

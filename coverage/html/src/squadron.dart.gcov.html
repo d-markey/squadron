@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-03-02</dd>
+                    <dd>2023-03-11</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>69</td><td>73</td><td class="high">94.5%</td>
+                            <th scope="row">Lines</th><td>68</td><td>72</td><td class="high">94.4%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -421,142 +421,139 @@
                     <td>120</td><td></td><td>1</td><td><code>  static void setParent(WorkerChannel parentChannel) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>2</td><td><code>    final sq = _getOrInitialize();</code></td>
+                    <td>121</td><td></td><td>3</td><td><code>    _getOrInitialize()._parentChannel ??= parentChannel;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>2</td><td><code>    sq._parentChannel ??= parentChannel;</code></td>
+                <tr class="noop" title="Line 122" id="line122">
+                    <td>122</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 123" id="line123">
-                    <td>123</td><td></td><td></td><td><code>  }</code></td>
+                    <td>123</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 124" id="line124">
-                    <td>124</td><td></td><td></td><td><code></code></td>
+                    <td>124</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be</code></td>
                 </tr>
                 <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be</code></td>
+                    <td>125</td><td></td><td></td><td><code>  /// displayed regardless of [Squadron.logLevel]. If `false`, the message will be logged if [Squadron.logLevel]</code></td>
                 </tr>
                 <tr class="noop" title="Line 126" id="line126">
-                    <td>126</td><td></td><td></td><td><code>  /// displayed regardless of [Squadron.logLevel]. If `false`, the message will be logged if [Squadron.logLevel]</code></td>
+                    <td>126</td><td></td><td></td><td><code>  /// is set to [SquadronLogLevel.all].</code></td>
                 </tr>
-                <tr class="noop" title="Line 127" id="line127">
-                    <td>127</td><td></td><td></td><td><code>  /// is set to [SquadronLogLevel.all].</code></td>
+                <tr class="lineCov" title="Line 127" id="line127">
+                    <td>127</td><td></td><td>2</td><td><code>  static void debug(dynamic message) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>2</td><td><code>  static void debug(dynamic message) {</code></td>
+                    <td>128</td><td></td><td>2</td><td><code>    final logger = _instance?._logger;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>2</td><td><code>    final logger = _instance?._logger;</code></td>
+                    <td>129</td><td></td><td>1</td><td><code>    if (logger != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 130" id="line130">
-                    <td>130</td><td></td><td>1</td><td><code>    if (logger != null) {</code></td>
+                    <td>130</td><td></td><td>1</td><td><code>      logger.debug(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>1</td><td><code>      logger.debug(message);</code></td>
+                    <td>131</td><td></td><td>1</td><td><code>    } else if (debugMode) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 132" id="line132">
-                    <td>132</td><td></td><td>1</td><td><code>    } else if (debugMode) {</code></td>
+                <tr class="lineNoCov" title="Line 132" id="line132">
+                    <td>132</td><td></td><td>0</td><td><code>      if (message is Function) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>0</td><td><code>      if (message is Function) {</code></td>
+                    <td>133</td><td></td><td>0</td><td><code>        message = message();</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 134" id="line134">
-                    <td>134</td><td></td><td>0</td><td><code>        message = message();</code></td>
+                <tr class="noop" title="Line 134" id="line134">
+                    <td>134</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="noop" title="Line 135" id="line135">
-                    <td>135</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineNoCov" title="Line 135" id="line135">
+                    <td>135</td><td></td><td>0</td><td><code>      print('[DEBUG] $message');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 136" id="line136">
-                    <td>136</td><td></td><td>0</td><td><code>      print('[DEBUG] $message');</code></td>
+                <tr class="noop" title="Line 136" id="line136">
+                    <td>136</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 137" id="line137">
-                    <td>137</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 137" id="line137">
+                    <td>137</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 138" id="line138">
+                    <td>138</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 139" id="line139">
-                    <td>139</td><td></td><td></td><td><code></code></td>
+                    <td>139</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.finest] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 140" id="line140">
-                    <td>140</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.finest] level</code></td>
+                <tr class="lineCov" title="Line 140" id="line140">
+                    <td>140</td><td></td><td>4</td><td><code>  static void finest(dynamic message) =&gt; _instance?._logger?.finest(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>4</td><td><code>  static void finest(dynamic message) =&gt; _instance?._logger?.finest(message);</code></td>
+                <tr class="noop" title="Line 141" id="line141">
+                    <td>141</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 142" id="line142">
-                    <td>142</td><td></td><td></td><td><code></code></td>
+                    <td>142</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.finer] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.finer] level</code></td>
+                <tr class="lineCov" title="Line 143" id="line143">
+                    <td>143</td><td></td><td>4</td><td><code>  static void finer(dynamic message) =&gt; _instance?._logger?.finer(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>4</td><td><code>  static void finer(dynamic message) =&gt; _instance?._logger?.finer(message);</code></td>
+                <tr class="noop" title="Line 144" id="line144">
+                    <td>144</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code></code></td>
+                    <td>145</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.fine] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.fine] level</code></td>
+                <tr class="lineCov" title="Line 146" id="line146">
+                    <td>146</td><td></td><td>4</td><td><code>  static void fine(dynamic message) =&gt; _instance?._logger?.fine(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>4</td><td><code>  static void fine(dynamic message) =&gt; _instance?._logger?.fine(message);</code></td>
+                <tr class="noop" title="Line 147" id="line147">
+                    <td>147</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code></code></td>
+                    <td>148</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.config] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 149" id="line149">
-                    <td>149</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.config] level</code></td>
+                <tr class="lineCov" title="Line 149" id="line149">
+                    <td>149</td><td></td><td>4</td><td><code>  static void config(dynamic message) =&gt; _instance?._logger?.config(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>4</td><td><code>  static void config(dynamic message) =&gt; _instance?._logger?.config(message);</code></td>
+                <tr class="noop" title="Line 150" id="line150">
+                    <td>150</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 151" id="line151">
-                    <td>151</td><td></td><td></td><td><code></code></td>
+                    <td>151</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.info] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 152" id="line152">
-                    <td>152</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.info] level</code></td>
+                <tr class="lineCov" title="Line 152" id="line152">
+                    <td>152</td><td></td><td>4</td><td><code>  static void info(dynamic message) =&gt; _instance?._logger?.info(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 153" id="line153">
-                    <td>153</td><td></td><td>4</td><td><code>  static void info(dynamic message) =&gt; _instance?._logger?.info(message);</code></td>
+                <tr class="noop" title="Line 153" id="line153">
+                    <td>153</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 154" id="line154">
-                    <td>154</td><td></td><td></td><td><code></code></td>
+                    <td>154</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.warning] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.warning] level</code></td>
+                <tr class="lineCov" title="Line 155" id="line155">
+                    <td>155</td><td></td><td>4</td><td><code>  static void warning(dynamic message) =&gt; _instance?._logger?.warning(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>4</td><td><code>  static void warning(dynamic message) =&gt; _instance?._logger?.warning(message);</code></td>
+                <tr class="noop" title="Line 156" id="line156">
+                    <td>156</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 157" id="line157">
-                    <td>157</td><td></td><td></td><td><code></code></td>
+                    <td>157</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.severe] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.severe] level</code></td>
+                <tr class="lineCov" title="Line 158" id="line158">
+                    <td>158</td><td></td><td>4</td><td><code>  static void severe(dynamic message) =&gt; _instance?._logger?.severe(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 159" id="line159">
-                    <td>159</td><td></td><td>4</td><td><code>  static void severe(dynamic message) =&gt; _instance?._logger?.severe(message);</code></td>
+                <tr class="noop" title="Line 159" id="line159">
+                    <td>159</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code></code></td>
+                    <td>160</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.shout] level</code></td>
                 </tr>
-                <tr class="noop" title="Line 161" id="line161">
-                    <td>161</td><td></td><td></td><td><code>  /// Logs a message at [SquadronLogLevel.shout] level</code></td>
+                <tr class="lineCov" title="Line 161" id="line161">
+                    <td>161</td><td></td><td>4</td><td><code>  static void shout(dynamic message) =&gt; _instance?._logger?.shout(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>4</td><td><code>  static void shout(dynamic message) =&gt; _instance?._logger?.shout(message);</code></td>
+                <tr class="noop" title="Line 162" id="line162">
+                    <td>162</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 163" id="line163">
-                    <td>163</td><td></td><td></td><td><code>}</code></td>
+                    <td>163</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 164" id="line164">
-                    <td>164</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 164" id="line164">
+                    <td>164</td><td></td><td>1</td><td><code>@internal</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 165" id="line165">
-                    <td>165</td><td></td><td>1</td><td><code>@internal</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>2</td><td><code>SquadronLogger? getSquadronLogger() =&gt; Squadron._instance?._logger;</code></td>
+                    <td>165</td><td></td><td>2</td><td><code>SquadronLogger? getSquadronLogger() =&gt; Squadron._instance?._logger;</code></td>
                 </tr>
             </tbody>
         </table>
