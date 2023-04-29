@@ -19,7 +19,7 @@ class WorkerMonitor {
   bool _terminationRequested = false;
   int _executing = 0;
 
-  final _cancelTokens = <int, CancellationTokenReference>{};
+  final _cancelTokens = <String, CancellationTokenReference>{};
 
   CancellationTokenReference _getTokenRef(CancellationToken? token) =>
       (token == null)

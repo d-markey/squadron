@@ -23,14 +23,14 @@ import '_worker_monitor.dart';
 class CancellationTokenReference extends CancellationToken {
   CancellationTokenReference._noToken() : _hasRef = false {
     _refCount = 1;
-    withId(0);
+    withId('');
   }
 
   /// Singleton token reference instance for requests containing no token.
   static final noToken = CancellationTokenReference._noToken();
 
   /// Creates a new token reference for [tokenId].
-  CancellationTokenReference(int tokenId) : _hasRef = true {
+  CancellationTokenReference(String tokenId) : _hasRef = true {
     withId(tokenId);
   }
 

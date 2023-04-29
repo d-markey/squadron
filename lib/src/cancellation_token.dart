@@ -19,8 +19,8 @@ class CancellationToken {
   final String? message;
 
   /// The token's id
-  int get id => _id;
-  int _id;
+  String get id => _id;
+  String _id;
 
   /// Exception to be thrown upon cancellation
   CancelledException? get exception => _exception;
@@ -81,5 +81,5 @@ class CancellationToken {
 
 @internal
 extension TokenIdExt on CancellationToken {
-  void withId(int id) => _id = id;
+  void withId(String id) => _id = id;
 }

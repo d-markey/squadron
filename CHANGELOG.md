@@ -1,3 +1,7 @@
+## 4.3.7
+
+- Ensure uniqueness of cancellation token IDs across workers (breaking change for classes implementing/deriving from `CancellationToken`: `id` is now a `String`).
+
 ## 4.3.6
 
 - Downgrade `meta` version to `^1.8.0` to match `flutter_test` requirements.
