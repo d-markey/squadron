@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-03-11</dd>
+                    <dd>2023-04-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>3</td><td>3</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>6</td><td>6</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,55 +61,70 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>/// Singleton class used to generate unique IDs for cancellation tokens.</code></td>
+                    <td>1</td><td></td><td></td><td><code>import '../squadron.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code>///</code></td>
+                    <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. Because of Dart's</code></td>
+                    <td>3</td><td></td><td></td><td><code>/// Singleton class used to generate unique IDs for cancellation tokens.</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>/// architecture, this guarantees unicity per event loop (thread) only. If the [SequenceId] is used from an Isolate</code></td>
+                    <td>4</td><td></td><td></td><td><code>///</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>/// or a Web Worker, IDs may overlap across threads. This may be a problem in complex scenarios where workers invoke</code></td>
+                    <td>5</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. Because of Dart's</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>/// other workers while creating their own cancellation tokens. Ideally, workers should forward the cancellation token</code></td>
+                    <td>6</td><td></td><td></td><td><code>/// architecture, this guarantees unicity per event loop (thread) only. If the [SequenceId] is used from an Isolate</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>/// they received when calling other workers.</code></td>
+                    <td>7</td><td></td><td></td><td><code>/// or a Web Worker, IDs may overlap across threads. This may be a problem in complex scenarios where workers invoke</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>class SequenceId {</code></td>
+                    <td>8</td><td></td><td></td><td><code>/// other workers while creating their own cancellation tokens. Ideally, workers should forward the cancellation token</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>2</td><td><code>  SequenceId._();</code></td>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code>/// they received when calling other workers.</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                    <td>10</td><td></td><td></td><td><code>class SequenceId {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>4</td><td><code>  static final _instance = SequenceId._();</code></td>
+                    <td>11</td><td></td><td>2</td><td><code>  SequenceId._();</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
                     <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>  int _id = 0;</code></td>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>4</td><td><code>  static final _instance = SequenceId._();</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
+                    <td>15</td><td></td><td></td><td><code>  int _id = 0;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>5</td><td><code>  static int next() =&gt; ++_instance._id;</code></td>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>}</code></td>
+                    <td>17</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>2</td><td><code>  static String next() {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 19" id="line19">
+                    <td>19</td><td></td><td>4</td><td><code>    final id = ++_instance._id;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>3</td><td><code>    return '$id@${Squadron.id}';</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
