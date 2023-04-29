@@ -1017,7 +1017,7 @@ flutter build web
 
 ## <a name="thanks"></a>Thanks!
 
-* [SwissCheese5](https://github.com/SwissCheese5) for his patience and feedback when implementing
+* [SaadArdati](https://github.com/SaadArdati) for his patience and feedback when implementing
 Squadron into his Flutter application.
 * [martin-robert-fink](https://github.com/martin-robert-fink) for the feedback on Squadron's
 `Stream` implementation -- this has resulted in huge progress and a major improvement!
