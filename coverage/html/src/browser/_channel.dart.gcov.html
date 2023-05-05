@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-04-29</dd>
+                    <dd>2023-05-05</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>102</td><td>126</td><td class="med">81.0%</td>
+                            <th scope="row">Lines</th><td>95</td><td>126</td><td class="med">75.4%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -747,8 +747,8 @@
                 <tr class="noop" title="Line 229" id="line229">
                     <td>229</td><td></td><td></td><td><code>      String msg;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 230" id="line230">
-                    <td>230</td><td></td><td>1</td><td><code>      if (event is web.ErrorEvent) {</code></td>
+                <tr class="lineNoCov" title="Line 230" id="line230">
+                    <td>230</td><td></td><td>0</td><td><code>      if (event is web.ErrorEvent) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 231" id="line231">
                     <td>231</td><td></td><td></td><td><code>        final error = event;</code></td>
@@ -756,8 +756,8 @@
                 <tr class="noop" title="Line 232" id="line232">
                     <td>232</td><td></td><td></td><td><code>        msg =</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 233" id="line233">
-                    <td>233</td><td></td><td>1</td><td><code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code></td>
+                <tr class="lineNoCov" title="Line 233" id="line233">
+                    <td>233</td><td></td><td>0</td><td><code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code></td>
                 </tr>
                 <tr class="noop" title="Line 234" id="line234">
                     <td>234</td><td></td><td></td><td><code>      } else {</code></td>
@@ -768,17 +768,17 @@
                 <tr class="noop" title="Line 236" id="line236">
                     <td>236</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 237" id="line237">
-                    <td>237</td><td></td><td>1</td><td><code>      final error = WorkerException(msg);</code></td>
+                <tr class="lineNoCov" title="Line 237" id="line237">
+                    <td>237</td><td></td><td>0</td><td><code>      final error = WorkerException(msg);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 238" id="line238">
-                    <td>238</td><td></td><td>1</td><td><code>      Squadron.warning(</code></td>
+                <tr class="lineNoCov" title="Line 238" id="line238">
+                    <td>238</td><td></td><td>0</td><td><code>      Squadron.warning(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 239" id="line239">
-                    <td>239</td><td></td><td>1</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
+                <tr class="lineNoCov" title="Line 239" id="line239">
+                    <td>239</td><td></td><td>0</td><td><code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 240" id="line240">
-                    <td>240</td><td></td><td>1</td><td><code>      if (!completer.isCompleted) {</code></td>
+                <tr class="lineNoCov" title="Line 240" id="line240">
+                    <td>240</td><td></td><td>0</td><td><code>      if (!completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 241" id="line241">
                     <td>241</td><td></td><td>0</td><td><code>        completer.completeError(error, error.stackTrace);</code></td>
@@ -786,8 +786,8 @@
                 <tr class="noop" title="Line 242" id="line242">
                     <td>242</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 243" id="line243">
-                    <td>243</td><td></td><td>1</td><td><code>    },</code></td>
+                <tr class="lineNoCov" title="Line 243" id="line243">
+                    <td>243</td><td></td><td>0</td><td><code>    },</code></td>
                 </tr>
                 <tr class="noop" title="Line 244" id="line244">
                     <td>244</td><td></td><td></td><td><code>  );</code></td>
