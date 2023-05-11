@@ -1,3 +1,8 @@
+## 5.0.0
+
+- Enable support of Dart 3. 
+- Breaking change: use `List` instead of `Map` for serialization of worker request/response.
+
 ## 4.3.8
 
 - Downgrade `meta` version to `^1.8.0` to match `flutter_test` requirements (fix for https://github.com/d-markey/squadron/issues/18).

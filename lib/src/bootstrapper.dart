@@ -9,5 +9,5 @@ import 'native/_bootstrapper.dart'
 /// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument must be
 /// set to the [Isolate]'s startup parameter.
 void run(WorkerInitializer initializer,
-        [Map? command, SquadronLogger? logger]) =>
+        [List? command, SquadronLogger? logger]) =>
     bootstrap(initializer, command, logger);

@@ -7,7 +7,7 @@ import '../squadron.dart';
 import '../worker_service.dart';
 
 void bootstrap(
-    WorkerInitializer initializer, Map? command, SquadronLogger? logger) {
+    WorkerInitializer initializer, List? command, SquadronLogger? logger) {
   final scope = DedicatedWorkerGlobalScope.instance;
 
   final com = MessageChannel();

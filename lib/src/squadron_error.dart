@@ -28,7 +28,11 @@ class SquadronError implements SquadronException {
   static const _$typeMarker = '\$';
 
   @override
-  List serialize() => [_$typeMarker, message, _stackTrace?.toString()];
+  List serialize() => List.unmodifiable([
+        _$typeMarker,
+        message,
+        _stackTrace?.toString(),
+      ]);
 
   @override
   StackTrace? get stackTrace => _stackTrace;

@@ -32,18 +32,18 @@ class WorkerResponse {
   /// End of stream response.
   static final closeStream = WorkerResponse._endOfStream();
 
-  static const _$result = 'a';
-  static const _$error = 'b';
-  static const _$endOfStream = 'c';
-  static const _$timestamp = 'd';
-  static const _$log = 'e';
+  static const _$result = 0;
+  static const _$error = 1;
+  static const _$endOfStream = 2;
+  static const _$log = 3;
+  static const _$timestamp = 4;
 
   /// Creates a new [WorkerResponse] from a message sent by the worker.
-  static WorkerResponse? deserialize(Map message) {
+  static WorkerResponse? deserialize(List message) {
     final res = WorkerResponse._(
         message[_$result],
         SquadronException.deserialize(message[_$error]),
-        message[_$endOfStream] ?? false,
+        message[_$endOfStream],
         message[_$log]);
     final ts = message[_$timestamp];
     if (ts != null) {
@@ -60,38 +60,13 @@ class WorkerResponse {
   }
 
   /// [WorkerResponse] serialization.
-  Map<String, dynamic> serialize() {
-    if (error != null) {
-      return {
-        _$error: error!.serialize(),
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else if (_log != null) {
-      return {
-        _$log: _log,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else if (endOfStream) {
-      return {
-        _$endOfStream: true,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else if (_result == null) {
-      return {
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else {
-      return {
-        _$result: _result,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch
-      };
-    }
-  }
+  List serialize() => List.unmodifiable([
+        _result,
+        error?.serialize(),
+        endOfStream,
+        _log,
+        Squadron.debugMode ? DateTime.now().microsecondsSinceEpoch : null,
+      ]);
 
   /// Flag indicating the end of the [Stream]ing operation.
   final bool endOfStream;

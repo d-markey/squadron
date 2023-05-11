@@ -6,8 +6,8 @@ import '../xplat/_worker_runner.dart';
 import '../squadron.dart';
 import '../worker_service.dart';
 
-void bootstrap(
-    WorkerInitializer initializer, Map? command, SquadronLogger? logger) async {
+void bootstrap(WorkerInitializer initializer, List? command,
+    SquadronLogger? logger) async {
   final workerPort = ReceivePort();
   final monitor = WorkerMonitor(() {
     Squadron.config('terminating Isolate');

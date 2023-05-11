@@ -5,7 +5,11 @@ class CustomException extends WorkerException {
       : super(message, stackTrace: stackTrace);
 
   @override
-  List serialize() => ['CUSTOM', message, stackTrace?.toString()];
+  List serialize() => List.unmodifiable([
+        'CUSTOM',
+        message,
+        stackTrace?.toString(),
+      ]);
 
   static CustomException? deserialize(List data) {
     if (data[0] == 'CUSTOM') {

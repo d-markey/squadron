@@ -30,8 +30,13 @@ class WorkerException extends SquadronException {
   static const _$typeMarker = '\$W';
 
   @override
-  List serialize() =>
-      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];
+  List serialize() => List.unmodifiable([
+        _$typeMarker,
+        message,
+        _stackTrace?.toString(),
+        _workerId,
+        _command,
+      ]);
 
   static WorkerException? deserialize(List data) =>
       (data[_$type] == _$typeMarker)
@@ -75,8 +80,13 @@ class CancelledException extends WorkerException {
   static const _$typeMarker = '\$C';
 
   @override
-  List serialize() =>
-      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];
+  List serialize() => List.unmodifiable([
+        _$typeMarker,
+        message,
+        _stackTrace?.toString(),
+        _workerId,
+        _command,
+      ]);
 
   static CancelledException? deserialize(List data) =>
       (data[_$type] == _$typeMarker)
@@ -114,14 +124,14 @@ class TaskTimeoutException extends CancelledException
   static const _$typeMarker = '\$T';
 
   @override
-  List serialize() => [
+  List serialize() => List.unmodifiable([
         _$typeMarker,
         message,
         _stackTrace?.toString(),
         _workerId,
         _command,
         duration?.inMicroseconds
-      ];
+      ]);
 
   @override
   final Duration? duration;

@@ -3,7 +3,7 @@ import '../squadron_error.dart';
 class Transferables {
   const Transferables._();
 
-  static Iterable<Object> get(Map args) => _get(args, <Object>{});
+  static Iterable<Object> get(List args) => _get(args, <Object>{});
 
   static bool _isBaseType(dynamic data) =>
       (data == null || data is String || data is num || data is bool);
@@ -39,10 +39,9 @@ class Transferables {
   /// Yields objects contained in [message]. Used to identify non-base type objects and provide them
   /// to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects. The code makes
   /// no effort to ensure these objects really are transferable.
-  static Iterable<Object> _get(Map message, Set<Object> seen) sync* {
-    _checkKeys(message);
+  static Iterable<Object> _get(List message, Set<Object> seen) sync* {
     if (_isSafeForTransfer(message)) return;
-    final toBeInspected = _getObjects(message.values, seen).toList();
+    final toBeInspected = _getObjects(message, seen).toList();
     var i = 0;
     while (i < toBeInspected.length) {
       final arg = toBeInspected[i++];

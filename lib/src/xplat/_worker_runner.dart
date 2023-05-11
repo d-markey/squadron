@@ -32,7 +32,7 @@ class WorkerRunner {
   /// is called to build the [WorkerService] associated to the worker. The runner's [_operations] map will be
   /// populated with operations from the service.
   Future connect(
-      Map? message, Object channelInfo, WorkerInitializer initializer) async {
+      List? message, Object channelInfo, WorkerInitializer initializer) async {
     final startRequest = WorkerRequest.deserialize(message);
     final client = startRequest?.client;
 
@@ -74,7 +74,7 @@ class WorkerRunner {
   }
 
   /// [WorkerRequest] handler dispatching commands according to the [_operations] map.
-  void processMessage(Map message) async {
+  void processMessage(List message) async {
     final request = WorkerRequest.deserialize(message);
     final client = request?.client;
 

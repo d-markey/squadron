@@ -50,18 +50,18 @@ class WorkerRequest {
   WorkerRequest.stop()
       : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);
 
-  static const _$client = 'a';
-  static const _$command = 'b';
-  static const _$args = 'c';
-  static const _$token = 'd';
-  static const _$streamId = 'e';
-  static const _$id = 'f';
-  static const _$logLevel = 'g';
-  static const _$inspectResponse = 'h';
-  static const _$timestamp = 'i';
+  static const _$client = 0;
+  static const _$command = 1;
+  static const _$args = 2;
+  static const _$token = 3;
+  static const _$streamId = 4;
+  static const _$id = 5;
+  static const _$logLevel = 6;
+  static const _$inspectResponse = 7;
+  static const _$timestamp = 8;
 
   /// Creates a new [WorkerRequest] from a message received by the worker.
-  static WorkerRequest? deserialize(Map? message) {
+  static WorkerRequest? deserialize(List? message) {
     if (message == null) return null;
     final req = WorkerRequest._(
       message[_$client],
@@ -81,37 +81,17 @@ class WorkerRequest {
   }
 
   /// [WorkerRequest] serialization.
-  Map<String, dynamic> serialize() {
-    if (terminate) {
-      return {
-        _$command: _terminateCommand,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else if (connect) {
-      return {
-        _$client: client?.serialize(),
-        _$command: _connectCommand,
-        _$logLevel: logLevel,
-        _$id: id,
-        if (args.isNotEmpty) _$args: args,
-        if (!inspectResponse) _$inspectResponse: inspectResponse,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    } else {
-      return {
-        if (client != null) _$client: client?.serialize(),
-        _$command: command,
-        if (args.isNotEmpty) _$args: args,
-        if (_cancelToken != null) _$token: _cancelToken!.serialize(),
-        if (streamId != null) _$streamId: streamId,
-        if (!inspectResponse) _$inspectResponse: inspectResponse,
-        if (Squadron.debugMode)
-          _$timestamp: DateTime.now().microsecondsSinceEpoch,
-      };
-    }
-  }
+  List serialize() => List.unmodifiable([
+        client?.serialize(),
+        command,
+        args,
+        _cancelToken?.serialize(),
+        streamId,
+        id,
+        logLevel,
+        inspectResponse,
+        Squadron.debugMode ? DateTime.now().microsecondsSinceEpoch : null,
+      ]);
 
   /// The client's [WorkerChannel].
   final WorkerChannel? client;
