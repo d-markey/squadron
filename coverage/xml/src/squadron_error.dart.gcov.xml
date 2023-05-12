@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-05" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="20" lines-valid="20" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="23" lines-valid="23" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:convert';</code>
@@ -96,9 +96,24 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>  List serialize() =&gt; [_$typeMarker, message, _stackTrace?.toString()];</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        _$typeMarker,</code>
+        </line>
+        <line hits="2">
+            <code>        message,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _stackTrace?.toString(),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

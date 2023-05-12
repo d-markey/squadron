@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-05" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8857143" lines-covered="62" lines-valid="70" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8857143" lines-covered="62" lines-valid="70" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -110,7 +110,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      Map? message, Object channelInfo, WorkerInitializer initializer) async {</code>
+            <code>      List? message, Object channelInfo, WorkerInitializer initializer) async {</code>
         </line>
         <line hits="1">
             <code>    final startRequest = WorkerRequest.deserialize(message);</code>
@@ -253,7 +253,7 @@
             <code>  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.</code>
         </line>
         <line hits="2">
-            <code>  void processMessage(Map message) async {</code>
+            <code>  void processMessage(List message) async {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">

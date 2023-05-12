@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-05" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90625" lines-covered="29" lines-valid="32" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82758623" lines-covered="24" lines-valid="29" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../squadron_error.dart';</code>
@@ -17,15 +17,14 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  static Iterable&lt;Object&gt; get(Map args) =&gt; _get(args, &lt;Object&gt;{});</code>
+            <code>  static Iterable&lt;Object&gt; get(List args) =&gt; _get(args, &lt;Object&gt;{});</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>  static bool _isBaseType(dynamic data) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      (data == null || data is String || data is num || data is bool);</code>
@@ -113,13 +112,11 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line>
             <code>  static void _checkKeys(Map data) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>    if (!data.keys.every(_isBaseType)) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw newSquadronError('Map keys must be strings, numbers or booleans.');</code>
@@ -127,9 +124,8 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line>
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -144,11 +140,7 @@
             <code>  /// no effort to ensure these objects really are transferable.</code>
         </line>
         <line hits="1">
-            <code>  static Iterable&lt;Object&gt; _get(Map message, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    _checkKeys(message);</code>
+            <code>  static Iterable&lt;Object&gt; _get(List message, Set&lt;Object&gt; seen) sync* {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -156,7 +148,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    final toBeInspected = _getObjects(message.values, seen).toList();</code>
+            <code>    final toBeInspected = _getObjects(message, seen).toList();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>

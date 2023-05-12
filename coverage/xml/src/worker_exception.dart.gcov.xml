@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-05" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9166667" lines-covered="55" lines-valid="60" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9264706" lines-covered="63" lines-valid="68" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -102,13 +102,32 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>  List serialize() =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
-            <code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        _$typeMarker,</code>
+        </line>
+        <line hits="2">
+            <code>        message,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        _stackTrace?.toString(),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _workerId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _command,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -253,12 +272,31 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>  List serialize() =&gt;</code>
+        <line hits="2">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
-            <code>      [_$typeMarker, message, _stackTrace?.toString(), _workerId, _command];</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        _$typeMarker,</code>
+        </line>
+        <line hits="1">
+            <code>        message,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        _stackTrace?.toString(),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        _workerId,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        _command,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      ]);</code>
         </line>
         <line>
             <code/>
@@ -382,9 +420,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>  List serialize() =&gt; [</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        _$typeMarker,</code>
@@ -410,7 +448,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>      ];</code>
+            <code>      ]);</code>
         </line>
         <line>
             <code/>
