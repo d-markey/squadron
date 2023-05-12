@@ -171,9 +171,9 @@ void workerTests() {
 
       /////////// time origin for next tasks ///////////
 
-      createTask(TestService.delay * 4); // #4 complete at 4 delays
-      createTask(TestService.delay * 3); // #5 complete at 3 delays
-      createTask(TestService.delay * 2); // #6 complete at 2 delays
+      createTask(TestService.delay * 7); // #4 complete at 7 delays
+      createTask(TestService.delay * 5); // #5 complete at 5 delays
+      createTask(TestService.delay * 3); // #6 complete at 3 delays
 
       expect(completedTasks, isEmpty);
       expect(worker.workload, equals(3));
@@ -189,15 +189,15 @@ void workerTests() {
       expect(worker.totalWorkload, equals(3));
 
       await Future.delayed(TestService.delay *
-          2); // 3.5 delays: tasks #6 & #5 finished, #4 still pending
+          4); // 5.5 delays: tasks #6 & #5 finished, #4 still pending
 
       expect(completedTasks, equals([6, 5]));
       expect(worker.workload, equals(1));
       expect(worker.maxWorkload, equals(3));
       expect(worker.totalWorkload, equals(5));
 
-      createTask(TestService.delay * 4); // #7 complete at 7.5 delays
-      createTask(TestService.delay * 2); // #8 complete at 5.5 delays
+      createTask(TestService.delay * 5); // #7 complete at 10.5 delays
+      createTask(TestService.delay * 3); // #8 complete at 8.5 delays
 
       expect(completedTasks, equals([6, 5]));
       expect(worker.workload, equals(3));
@@ -205,7 +205,7 @@ void workerTests() {
       expect(worker.totalWorkload, equals(5));
 
       await Future.delayed(TestService.delay *
-          3); // 6.5 delays: tasks #4 and #8 complete, #7 still pending
+          4); // 9.5 delays: tasks #4 and #8 complete, #7 still pending
 
       expect(completedTasks, equals([6, 5, 4, 8]));
       expect(worker.workload, equals(1));
@@ -213,7 +213,7 @@ void workerTests() {
       expect(worker.totalWorkload, equals(7));
 
       await Future.delayed(
-          TestService.delay * 2); // 8 delays: all tasks finished
+          TestService.delay * 2.5); // 12 delays: all tasks finished
 
       expect(completedTasks, equals([6, 5, 4, 8, 7]));
       expect(worker.workload, isZero);
