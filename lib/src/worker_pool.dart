@@ -17,6 +17,8 @@ import 'worker_stat.dart';
 
 import 'worker_task.dart';
 
+typedef WorkerFactory<W> = W Function();
+
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
 class WorkerPool<W extends Worker> implements WorkerService {
@@ -30,7 +32,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   WorkerPool(this._workerFactory, {ConcurrencySettings? concurrencySettings})
       : concurrencySettings = concurrencySettings ?? ConcurrencySettings();
 
-  final W Function() _workerFactory;
+  final WorkerFactory<W> _workerFactory;
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
@@ -229,7 +231,8 @@ class WorkerPool<W extends Worker> implements WorkerService {
   WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
     if (_stopped) {
       throw newSquadronError(
-          'the pool cannot accept new requests because it is stopped');
+          'the pool cannot accept new requests because it is stopped',
+          StackTrace.current);
     }
     _queue.addLast(task);
     _schedule();

@@ -13,6 +13,11 @@ import '../worker_service.dart';
 import '../xplat/_value_wrapper.dart';
 import '_transferables.dart';
 
+typedef EntryPoint = String;
+typedef PlatformWorker = web.Worker;
+
+typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);
+
 class _BaseJsChannel {
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
   /// [web.MessagePort] to return values to the client.
@@ -27,34 +32,34 @@ class _BaseJsChannel {
 
   void _postRequest(WorkerRequest req, bool inspectRequest) {
     req.cancelToken?.ensureStarted();
-    final message = req.serialize();
+    req.wrapRequest();
     try {
       final transfer = <Object>[];
       if (inspectRequest) {
-        transfer.addAll(Transferables.get(message));
+        transfer.addAll(Transferables.get(req));
       } else {
-        if (req.client != null) {
-          transfer.add(req.client!.serialize());
+        if (req.channelInfo != null) {
+          transfer.add(req.channelInfo);
         }
       }
-      _sendPort!.postMessage(message, transfer);
+      _sendPort!.postMessage(req, transfer);
     } catch (ex, st) {
-      Squadron.severe('failed to post request $message: error $ex');
+      Squadron.severe('failed to post request $req: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
   void _postResponse(WorkerResponse res, bool inspectResponse) {
-    final message = res.serialize();
+    res.wrapResponse();
     try {
       if (inspectResponse) {
-        final transfer = Transferables.get(message).toList();
-        _sendPort!.postMessage(message, transfer);
+        final transfer = Transferables.get(res).toList();
+        _sendPort!.postMessage(res, transfer);
       } else {
-        _sendPort!.postMessage(message);
+        _sendPort!.postMessage(res);
       }
     } catch (ex, st) {
-      Squadron.severe('failed to post response $message: error $ex');
+      Squadron.severe('failed to post response $res: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
@@ -72,7 +77,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _postRequest(WorkerRequest.stop(), false);
+      _postRequest(WorkerRequestImpl.stop(), false);
       _sendPort = null;
     }
   }
@@ -86,7 +91,8 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       bool inspectResponse = false}) {
     final com = web.MessageChannel();
     final wrapper = ValueWrapper<T>(
-      WorkerRequest(com.port2, command, args, token, inspectResponse),
+      WorkerRequestImpl.userCommand(
+          com.port2, command, args, token, inspectResponse),
       postMethod: _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       token: token,
@@ -109,7 +115,8 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       bool inspectResponse = false}) {
     final com = web.MessageChannel();
     final wrapper = StreamWrapper<T>(
-      WorkerRequest(com.port2, command, args, token, inspectResponse),
+      WorkerRequestImpl.userCommand(
+          com.port2, command, args, token, inspectResponse),
       postMethod: _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       onDone: () {
@@ -151,10 +158,11 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// [web.Worker] only.
   @override
   void reply(dynamic data, bool inspectResponse) =>
-      _postResponse(WorkerResponse(data), inspectResponse);
+      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);
 
   @override
-  void log(String message) => _postResponse(WorkerResponse.log(message), false);
+  void log(String message) =>
+      _postResponse(WorkerResponseImpl.log(message), false);
 
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.
   @override
@@ -163,13 +171,13 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]
   /// only.
   @override
-  void closeStream() => _postResponse(WorkerResponse.closeStream, false);
+  void closeStream() => _postResponse(WorkerResponseImpl.closeStream(), false);
 
   /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
     Squadron.debug(() => 'replying with error: $error');
-    _postResponse(WorkerResponse.withError(error), false);
+    _postResponse(WorkerResponseImpl.withError(error), false);
   }
 }
 
@@ -214,13 +222,22 @@ class _JsForwardChannel extends _JsChannel {
 /// Starts a [web.Worker] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [web.Worker]'s main program has provided the [web.MessagePort] via [_JsWorkerChannel.connect].
 Future<Channel> openChannel(
-    dynamic entryPoint, String workerId, List startArguments) {
+    EntryPoint entryPoint, String workerId, List startArguments,
+    [PlatformWorkerHook? hook]) {
   final completer = Completer<Channel>();
   final channel = _JsChannel._();
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
 
-  final startRequest = WorkerRequest.start(com.port2, workerId, startArguments);
+  try {
+    hook?.call(worker);
+  } catch (ex) {
+    Squadron.warning(
+        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');
+  }
+
+  final startRequest =
+      WorkerRequestImpl.start(com.port2, workerId, startArguments);
 
   Squadron.config('created Web Worker #$workerId');
 
@@ -245,8 +262,10 @@ Future<Channel> openChannel(
 
   com.port1.onMessage.listen(
     (event) {
-      final response = WorkerResponse.deserialize(event.data);
-      if (response == null) return;
+      final response = event.data as List;
+      if (!response.unwrapResponse()) {
+        return;
+      }
 
       if (!completer.isCompleted) {
         final error = response.error;
@@ -257,25 +276,26 @@ Future<Channel> openChannel(
           completer.completeError(error, error.stackTrace);
         } else {
           channel._sendPort = response.result;
-          channel._workerId = startRequest.id;
+          channel._workerId = workerId;
           Squadron.config('connected to Web Worker #$workerId');
           completer.complete(channel);
         }
       } else {
-        Squadron.config('unexpected response: ${response.serialize()}');
+        Squadron.config('unexpected response: $response');
       }
     },
   );
 
-  final message = startRequest.serialize();
+  startRequest.wrapRequest();
   try {
-    final transfer = Transferables.get(message).toList();
-    worker.postMessage(message, transfer);
+    final transfer = Transferables.get(startRequest).toList();
+    worker.postMessage(startRequest, transfer);
   } catch (ex, st) {
     com.port1.close();
     com.port2.close();
     worker.terminate();
-    Squadron.severe('failed to post connection request $message: error $ex');
+    Squadron.severe(
+        'failed to post connection request $startRequest: error $ex');
     completer.completeError(SquadronException.from(ex, st), st);
   }
   return completer.future;

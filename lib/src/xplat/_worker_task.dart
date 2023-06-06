@@ -6,10 +6,11 @@ import '../worker_exception.dart';
 import '../worker_pool.dart';
 import '../worker_service.dart';
 import '../worker_task.dart';
+import '_helpers.dart';
 
 /// [WorkerTask] registered in the [WorkerPool].
 abstract class WorkerTask<T, W extends Worker> implements Task<T> {
-  WorkerTask(this._counter) : submitted = _timeStamp();
+  WorkerTask(this._counter) : submitted = microsecTimeStamp();
 
   final int submitted;
   int? _executed;
@@ -35,20 +36,22 @@ abstract class WorkerTask<T, W extends Worker> implements Task<T> {
   Duration get runningTime => _executed == null
       ? Duration.zero
       : Duration(
-          microseconds: (_cancelled ?? _finished ?? _timeStamp()) - _executed!);
+          microseconds:
+              (_cancelled ?? _finished ?? microsecTimeStamp()) - _executed!);
 
   @override
   Duration get waitTime => Duration(
-      microseconds: (_executed ?? _cancelled ?? _timeStamp()) - submitted);
+      microseconds:
+          (_executed ?? _cancelled ?? microsecTimeStamp()) - submitted);
 
   @override
   void cancel([String? message]) {
-    _cancelled ??= _timeStamp();
+    _cancelled ??= microsecTimeStamp();
     _cancelledException ??= CancelledException(message: message);
   }
 
   Future run(W worker) async {
-    _executed ??= _timeStamp();
+    _executed ??= microsecTimeStamp();
     if (isCancelled) {
       throw cancelledException!;
     }
@@ -61,11 +64,9 @@ abstract class WorkerTask<T, W extends Worker> implements Task<T> {
 
   void wrapUp(SquadronCallback callback, bool success) async {
     if (_finished == null) {
-      _finished = _timeStamp();
+      _finished = microsecTimeStamp();
       _counter?.update(_finished! - _executed!, success);
       callback();
     }
   }
-
-  static int _timeStamp() => DateTime.now().microsecondsSinceEpoch;
 }

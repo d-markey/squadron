@@ -98,7 +98,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
     try {
       final stream = await _streamer.future;
       if (stream == null) {
-        _done(newSquadronError('null stream'));
+        _done(newSquadronError('null stream', StackTrace.current));
       } else {
         _subscription = stream.listen(
           _onData,

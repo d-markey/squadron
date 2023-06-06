@@ -6,6 +6,8 @@ import 'local_client_worker.dart' as local_client;
 import 'prime_worker.dart' as prime;
 import 'test_worker.dart' as test;
 
+const platform = 'NATIVE';
+
 void setEntryPoints() {
   EntryPoints.cache = cache.start;
   EntryPoints.issues = issues.start;

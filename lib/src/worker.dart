@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'cancellation_token.dart';
 import 'channel.dart';
+import 'entrypoint.dart';
 import 'squadron_exception.dart';
 import 'worker_exception.dart';
 import 'worker_service.dart';
 import 'worker_stat.dart';
-import 'xplat/_identity.dart';
+import 'xplat/_helpers.dart';
+import 'xplat/_worker_id.dart';
 
 /// Base worker class.
 ///
@@ -14,12 +16,13 @@ import 'xplat/_identity.dart';
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
 abstract class Worker implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
-  Worker(this._entryPoint, {this.args = const []})
-      : workerId = Identity.nextId();
+  Worker(this._entryPoint, {this.args = const [], this.platformWorkerHook});
 
   /// The [Worker]'s entry point.
   /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
-  final dynamic _entryPoint;
+  final EntryPoint _entryPoint;
+
+  final PlatformWorkerHook? platformWorkerHook;
 
   /// The [Worker]'s start arguments.
   final List args;
@@ -49,14 +52,12 @@ abstract class Worker implements WorkerService {
   /// Up time.
   Duration get upTime => (_started == null)
       ? Duration.zero
-      : Duration(
-          microseconds:
-              (_stopped ?? DateTime.now().microsecondsSinceEpoch) - _started!);
+      : Duration(microseconds: (_stopped ?? microsecTimeStamp()) - _started!);
 
   /// Idle time.
   Duration get idleTime => (_workload > 0 || _idle == null)
       ? Duration.zero
-      : Duration(microseconds: DateTime.now().microsecondsSinceEpoch - _idle!);
+      : Duration(microseconds: microsecTimeStamp() - _idle!);
   int? _idle;
 
   /// Indicates if the [Worker] has been stopped.
@@ -92,7 +93,7 @@ abstract class Worker implements WorkerService {
   Future<Channel>? _openChannel;
 
   /// Worker ID
-  final String workerId;
+  final String workerId = WorkerId.next();
 
   /// Sends a workload to the worker.
   Future<T> send<T>(
@@ -145,7 +146,7 @@ abstract class Worker implements WorkerService {
     }).whenComplete(() {
       _workload--;
       _totalWorkload++;
-      _idle = DateTime.now().microsecondsSinceEpoch;
+      _idle = microsecTimeStamp();
     });
   }
 
@@ -167,7 +168,7 @@ abstract class Worker implements WorkerService {
         done = true;
         _workload--;
         _totalWorkload++;
-        _idle = DateTime.now().microsecondsSinceEpoch;
+        _idle = microsecTimeStamp();
       }
     }
 
@@ -212,11 +213,12 @@ abstract class Worker implements WorkerService {
       throw WorkerException('worker is stopped', workerId: workerId);
     }
     if (_channel == null) {
-      _openChannel ??= Channel.open(_entryPoint, workerId, args);
+      _openChannel ??=
+          Channel.open(_entryPoint, workerId, args, platformWorkerHook);
       final channel = await _openChannel!;
       if (_channel == null) {
         _channel = channel;
-        _started = DateTime.now().microsecondsSinceEpoch;
+        _started = microsecTimeStamp();
         _idle = _started;
       }
     }
@@ -226,7 +228,7 @@ abstract class Worker implements WorkerService {
   /// Stops this worker.
   void stop() {
     if (_stopped == null) {
-      _stopped = DateTime.now().microsecondsSinceEpoch;
+      _stopped = microsecTimeStamp();
       _openChannel = null;
       _channel?.close();
       _channel = null;

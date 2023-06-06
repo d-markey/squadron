@@ -7,6 +7,7 @@ import '../squadron_error.dart';
 import '../squadron_exception.dart';
 import '../worker.dart';
 import '../worker_exception.dart';
+import '../worker_message.dart';
 import '../worker_request.dart';
 import '../worker_service.dart';
 
@@ -31,22 +32,24 @@ class WorkerRunner {
   /// worker. Typically, [channelInfo] would be a [SendPort] (native) or a [MessagePort] (browser). [initializer]
   /// is called to build the [WorkerService] associated to the worker. The runner's [_operations] map will be
   /// populated with operations from the service.
-  Future connect(
-      List? message, Object channelInfo, WorkerInitializer initializer) async {
-    final startRequest = WorkerRequest.deserialize(message);
+  Future connect(List? startRequest, Object channelInfo,
+      WorkerInitializer initializer) async {
+    startRequest?.unwrapRequest();
     final client = startRequest?.client;
 
     if (startRequest == null) {
-      throw newSquadronError('connection request expected');
+      throw newSquadronError('connection request expected', StackTrace.current);
     } else if (client == null) {
-      throw newSquadronError('missing client for connection request');
+      throw newSquadronError(
+          'missing client for connection request', StackTrace.current);
     }
 
     try {
-      if (!startRequest.connect) {
-        throw newSquadronError('connection request expected');
+      if (!startRequest.isConnection) {
+        throw newSquadronError(
+            'connection request expected', StackTrace.current);
       } else if (_operations.isNotEmpty) {
-        throw newSquadronError('already connected');
+        throw newSquadronError('already connected', StackTrace.current);
       }
 
       Squadron.setId(startRequest.id!);
@@ -64,7 +67,8 @@ class WorkerRunner {
       final operations = service.operations;
       if (operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw newSquadronError(
-            'invalid command identifier in service operations map; command ids must be > 0');
+            'invalid command identifier in service operations map; command ids must be > 0',
+            StackTrace.current);
       }
       _operations.addAll(operations);
       client.connect(channelInfo);
@@ -74,31 +78,31 @@ class WorkerRunner {
   }
 
   /// [WorkerRequest] handler dispatching commands according to the [_operations] map.
-  void processMessage(List message) async {
-    final request = WorkerRequest.deserialize(message);
-    final client = request?.client;
+  void processMessage(List request) async {
+    request.unwrapRequest();
+    final client = request.client;
 
-    if (request == null) {
-      throw newSquadronError('invalid message');
-    } else if (request.terminate) {
+    if (request.isTermination) {
       // terminate the worker
       return _monitor.terminate();
-    } else if (request.cancel) {
+    } else if (request.isCancellation) {
       // cancel a token
       return _monitor.cancelToken(request.cancelToken!);
-    } else if (request.cancelStream) {
+    } else if (request.isStreamCancellation) {
       // cancel a stream
       return _monitor.cancelStream(request.streamId!);
     } else if (client == null) {
-      throw newSquadronError('missing client for request: $request');
+      throw newSquadronError(
+          'missing client for request: $request', StackTrace.current);
     }
 
     // start monitoring execution
     final tokenRef = _monitor.begin(request);
     try {
-      if (request.connect) {
+      if (request.isConnection) {
         // connection request must be handled beforehand
-        throw newSquadronError('unexpected connection request: $message');
+        throw newSquadronError(
+            'unexpected connection request: $request', StackTrace.current);
       } else if (_operations.isEmpty) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
         throw WorkerException('worker service is not ready');

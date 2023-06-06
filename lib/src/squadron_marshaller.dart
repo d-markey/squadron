@@ -2,13 +2,12 @@
 abstract class SquadronMarshaller<T, S> {
   const SquadronMarshaller();
 
-  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary
-  /// representation.
+  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary representation.
   S marshall(T data);
 
-  /// Deserialize a representation of type [S] back to the original data of type
-  /// [T]. `unmarshall(marshall(data))` must produce an instance of [T] that is
-  /// equivalent to original instance [data].
+  /// Deserialize a representation of type [S] back to the original data of type [T].
+  /// `unmarshall(marshall(data))` must produce an instance of [T] that is equivalent to
+  /// original instance [data].
   T unmarshall(S data);
 }
 

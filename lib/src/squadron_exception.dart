@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
+
 import 'squadron_error.dart';
 import 'worker_exception.dart';
 
 typedef WorkerExceptionDeserializer = WorkerException? Function(List data);
+
+@internal
+typedef SquadronExceptionDeserializer = SquadronException? Function(List data);
 
 /// Base abstract class for exceptions in Squadron.
 abstract class SquadronException implements Exception {
@@ -54,12 +59,17 @@ abstract class SquadronException implements Exception {
   /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.
   List serialize();
 
-  static final _customDeserializers = <WorkerExceptionDeserializer>[];
+  static final _deserializers = <SquadronExceptionDeserializer>[
+    deserializeSquadronError,
+    WorkerException.deserialize,
+    CancelledException.deserialize,
+    TaskTimeoutException.deserialize,
+  ];
 
   /// Registers the deserializer for a custom [WorkerException].
   static void registerExceptionDeserializer(
       WorkerExceptionDeserializer deserializer) {
-    _customDeserializers.add(deserializer);
+    _deserializers.add(deserializer);
   }
 
   /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.
@@ -73,24 +83,18 @@ abstract class SquadronException implements Exception {
     }
     SquadronException? error;
     try {
-      error = deserializeSquadronError(data) ??
-          WorkerException.deserialize(data) ??
-          CancelledException.deserialize(data) ??
-          TaskTimeoutException.deserialize(data);
-      if (error == null) {
-        for (var i = 0; i < _customDeserializers.length; i++) {
-          final deserializer = _customDeserializers[i];
-          error = deserializer(data);
-          if (error != null) {
-            break;
-          }
+      for (var i = 0; i < _deserializers.length; i++) {
+        error = _deserializers[i](data);
+        if (error != null) {
+          break;
         }
       }
       error ??= newSquadronError(
-          'failed to deserialize exception information: $data');
-    } catch (ex) {
-      error =
-          newSquadronError('failed to deserialize exception information: $ex');
+          'failed to deserialize exception information: $data',
+          StackTrace.current);
+    } catch (ex, st) {
+      error = newSquadronError(
+          'failed to deserialize exception information: $ex', st);
     }
     return error;
   }

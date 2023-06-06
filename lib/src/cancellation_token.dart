@@ -4,13 +4,13 @@ import 'worker_exception.dart';
 import 'worker_request.dart';
 import 'worker_service.dart' show SquadronCallback;
 import 'xplat/_helpers.dart';
-import 'xplat/_sequence_id.dart';
+import 'xplat/_token_id.dart';
 
 /// Base cancellation token.
 class CancellationToken {
   CancellationToken._(this.message, this._id);
 
-  CancellationToken([String? message]) : this._(message, SequenceId.next());
+  CancellationToken([String? message]) : this._(message, TokenId.next());
 
   static const _$id = 0;
   static const _$message = 1;
@@ -70,7 +70,7 @@ class CancellationToken {
       _listeners?.remove(listener);
 
   /// Seralization of a [CancellationToken]
-  List serialize() => [_id, message];
+  List serialize() => List.unmodifiable([_id, message]);
 
   /// Deseralization of a [CancellationToken]
   static CancellationToken? deserialize(List? token) {

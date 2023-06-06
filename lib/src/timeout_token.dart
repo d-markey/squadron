@@ -19,7 +19,7 @@ class TimeOutToken extends CancellationToken {
   /// Throws an exception, time-out tokens may not be cancelled programmatically.
   @override
   void cancel([CancelledException? exception]) => throw newSquadronError(
-      'TimeOutToken cannot be cancelled programmatically');
+      'TimeOutToken cannot be cancelled programmatically', StackTrace.current);
 
   /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be
   /// started that will automatically cancel this token if processing takes longer than [duration].

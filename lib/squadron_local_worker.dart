@@ -1,5 +1,5 @@
 export 'squadron_service.dart';
 
-export 'src/channel.dart' show Channel;
-export 'src/local_worker.dart' show LocalWorker;
-export 'src/local_worker_client.dart' show LocalWorkerClient;
+export 'src/channel.dart';
+export 'src/local_worker.dart';
+export 'src/local_worker_client.dart';

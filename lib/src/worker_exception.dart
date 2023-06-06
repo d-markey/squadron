@@ -27,7 +27,7 @@ class WorkerException extends SquadronException {
   static const _$workerId = 3;
   static const _$command = 4;
 
-  static const _$typeMarker = '\$W';
+  static const _$typeMarker = -2;
 
   @override
   List serialize() => List.unmodifiable([
@@ -77,7 +77,7 @@ class CancelledException extends WorkerException {
   static const _$workerId = 3;
   static const _$command = 4;
 
-  static const _$typeMarker = '\$C';
+  static const _$typeMarker = -3;
 
   @override
   List serialize() => List.unmodifiable([
@@ -121,7 +121,7 @@ class TaskTimeoutException extends CancelledException
   static const _$command = 4;
   static const _$duration = 5;
 
-  static const _$typeMarker = '\$T';
+  static const _$typeMarker = -4;
 
   @override
   List serialize() => List.unmodifiable([

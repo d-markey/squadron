@@ -47,7 +47,7 @@ class StreamWrapper<T> {
   late final StreamController<T> _controller;
   int _paused = 0;
 
-  void _canceller() => _postMethod(WorkerRequest.cancel(_token!), false);
+  void _canceller() => _postMethod(WorkerRequestImpl.cancel(_token!), false);
 
   void _process(WorkerResponse res) {
     final error = res.error;
@@ -68,6 +68,11 @@ class StreamWrapper<T> {
   void _onListen() {
     _messages.listen(
       (message) {
+        final res = message as List;
+        if (!res.unwrapResponse()) {
+          return;
+        }
+
         if (_controller.isClosed) return;
         final cancelException = _token?.exception;
         if (cancelException != null) {
@@ -79,8 +84,6 @@ class StreamWrapper<T> {
           _controller.close();
           return;
         }
-        final res = WorkerResponse.deserialize(message);
-        if (res == null) return;
 
         if (res.endOfStream) {
           _controller.close();
@@ -108,7 +111,7 @@ class StreamWrapper<T> {
   Future _onCancel() async {
     final streamId = await _streamId.future;
     // notify the worker that the streaming operation has been cancelled
-    _postMethod(WorkerRequest.cancelStream(streamId), false);
+    _postMethod(WorkerRequestImpl.cancelStream(streamId), false);
     _buffer.clear();
     _controller.close();
   }

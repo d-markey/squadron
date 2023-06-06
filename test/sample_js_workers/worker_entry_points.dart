@@ -1,5 +1,7 @@
 import '../worker_services/worker_entry_points.dart' show EntryPoints;
 
+const platform = 'WEB';
+
 void setEntryPoints() {
   EntryPoints.echo = 'sample_js_workers/echo_worker.dart.js';
 

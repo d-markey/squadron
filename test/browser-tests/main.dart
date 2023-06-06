@@ -3,12 +3,17 @@
 import 'dart:html';
 
 import 'package:js/js.dart';
+import 'package:squadron/squadron.dart';
 
 import '../worker_services/worker_entry_points.dart';
+import '../test_suites/logger_test_suite.dart';
+import '../test_suites/squadron_singleton_test_suite.dart';
 import '../test_suites/web_worker_test_suite.dart';
 import '../test_suites/worker_pool_test_suite.dart';
 import '../test_suites/worker_test_suite.dart';
 import '../test_suites/local_worker_test_suite.dart';
+import '../test_suites/cancellation_test_suite.dart';
+import '../test_suites/issues_test_suite.dart';
 
 import 'logger.dart';
 
@@ -54,6 +59,24 @@ void main() async {
 
   runButton.onClick.listen((MouseEvent m) {
     runButton.disabled = true;
+
+    Squadron.shutdown();
+
+    try {
+      squadronSingletonTests();
+    } catch (e) {
+      logger.log('Squadron singleton tests failed with exception: $e');
+    }
+
+    Squadron.setId('workerTests');
+    Squadron.logLevel = SquadronLogLevel.off;
+
+    try {
+      loggerTests();
+    } catch (e) {
+      logger.log('Logger tests failed with exception: $e');
+    }
+
     try {
       webWorkerTests();
     } catch (e) {
@@ -77,6 +100,19 @@ void main() async {
     } catch (e) {
       logger.log('Squadron Local Worker tests failed with exception: $e');
     }
+
+    try {
+      cancellationTests();
+    } catch (e) {
+      logger.log('Cancellation tests failed with exception: $e');
+    }
+
+    try {
+      githubIssuesTests();
+    } catch (e) {
+      logger.log('Issues tests failed with exception: $e');
+    }
+
     runButton.disabled = false;
   });
 

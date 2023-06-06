@@ -19,7 +19,7 @@ import 'worker_services/worker_entry_points.dart';
 
 void main() async {
   EntryPoints.init();
-  await _checkWebWorkers(EntryPoints.entryPoints.cast<String>());
+  await _checkWebWorkers(EntryPoints.entryPoints);
 
   group('BROWSER', () {
     print('Running browser tests on ${web.window.navigator.appVersion}...');
@@ -40,7 +40,7 @@ void main() async {
   });
 }
 
-Future _checkWebWorkers(Iterable<String> workerUrls) async {
+Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   if (!web.Worker.supported) {
     throw Exception('''
 
@@ -57,7 +57,7 @@ Web Workers are not supported on this platform
 
   final workerLinks = html.querySelectorAll('link[rel="x-web-worker"]');
 
-  var workers = <String>{};
+  var workers = <EntryPoint>{};
   for (var workerLink in workerLinks) {
     var path = workerLink.attributes['href'];
     if (path == null) {

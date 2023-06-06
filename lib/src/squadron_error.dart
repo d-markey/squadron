@@ -25,7 +25,7 @@ class SquadronError implements SquadronException {
   static const _$message = 1;
   static const _$stackTrace = 2;
 
-  static const _$typeMarker = '\$';
+  static const _$typeMarker = -1;
 
   @override
   List serialize() => List.unmodifiable([
@@ -43,17 +43,14 @@ class SquadronError implements SquadronException {
 }
 
 @internal
-SquadronError newSquadronError(String message) {
-  Squadron.severe('creating new SquadronError: $message');
-  return SquadronError._(message);
+SquadronError newSquadronError(String message, StackTrace stackTrace) {
+  Squadron.severe('SquadronError: $message');
+  return SquadronError._(message, stackTrace);
 }
 
 @internal
-SquadronError? deserializeSquadronError(List data) {
-  SquadronError? error;
-  if (data[SquadronError._$type] == SquadronError._$typeMarker) {
-    error = SquadronError._(data[SquadronError._$message],
-        SquadronException.loadStackTrace(data[SquadronError._$stackTrace]));
-  }
-  return error;
-}
+SquadronException? deserializeSquadronError(List data) =>
+    (data[SquadronError._$type] == SquadronError._$typeMarker)
+        ? SquadronError._(data[SquadronError._$message],
+            SquadronException.loadStackTrace(data[SquadronError._$stackTrace]))
+        : null;

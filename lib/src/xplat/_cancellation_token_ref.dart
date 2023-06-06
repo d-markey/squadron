@@ -48,7 +48,7 @@ class CancellationTokenReference extends CancellationToken {
       _refCount++;
       request.overrideCancelToken(this);
     } else if (request.cancelToken != null) {
-      throw newSquadronError('Token reference mismatch');
+      throw newSquadronError('Token reference mismatch', StackTrace.current);
     }
   }
 

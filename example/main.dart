@@ -29,27 +29,32 @@ void main() async {
   log();
 
   final identityService = IdentityServiceImpl();
-  final identityServer = LocalWorker<IdentityService>.create(identityService);
-  final identityClient = IdentityClient(identityServer.channel!.share());
+  final localIdentityWorker =
+      LocalWorker<IdentityService>.create(identityService);
+  final identityClient = IdentityClient(localIdentityWorker.channel!.share());
   final sampleService = SampleServiceImpl(identityClient);
-
   SampleWorkerPool? pool;
+
+  Future<Stopwatch> measure(SampleService srv) async {
+    final sw = Stopwatch()..start();
+    for (var loop = 0; loop < loops; loop++) {
+      final futures = <Future>[];
+      for (var n = 0; n < max; n++) {
+        futures
+          ..add(Future(() => srv.cpu(milliseconds: n)))
+          ..add(srv.io(milliseconds: n));
+      }
+      await Future.wait(futures);
+    }
+    sw.stop();
+    return sw;
+  }
 
   try {
     ///////////// SYNC /////////////
     log('///////////// SYNC /////////////');
 
-    final syncSw = Stopwatch()..start();
-    for (var loop = 0; loop < loops; loop++) {
-      final syncFutures = <Future>[];
-      for (var n = 0; n < max; n++) {
-        syncFutures
-          ..add(Future(() => sampleService.cpu(milliseconds: n)))
-          ..add(sampleService.io(milliseconds: n));
-      }
-      await Future.wait(syncFutures);
-    }
-    syncSw.stop();
+    final syncSw = await measure(sampleService);
     final syncElapsed = syncSw.elapsedMicroseconds;
 
     log('sync version completed in ${Duration(microseconds: syncElapsed)}');
@@ -62,8 +67,12 @@ void main() async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 2);
 
-    pool = SampleWorkerPool(
-        sample_isolate.start, identityServer, concurrencySettings);
+    void workerHook(PlatformWorker worker) {
+      log('Worker created with runtime type = ${worker.runtimeType}');
+    }
+
+    pool = SampleWorkerPool(sample_isolate.start, localIdentityWorker,
+        workerHook, concurrencySettings);
     await pool.start();
     log('pool started');
 
@@ -91,17 +100,7 @@ void main() async {
     assert(pool.size == 2);
     log('pool monitor OK');
 
-    final asyncSw = Stopwatch()..start();
-    for (var loop = 0; loop < loops; loop++) {
-      final asyncFutures = <Future>[];
-      for (var n = 0; n < max; n++) {
-        asyncFutures
-          ..add(pool.cpu(milliseconds: n))
-          ..add(pool.io(milliseconds: n));
-      }
-      await Future.wait(asyncFutures);
-    }
-    asyncSw.stop();
+    final asyncSw = await measure(pool);
     final asyncElapsed = asyncSw.elapsedMicroseconds;
 
     log('async version completed in ${Duration(microseconds: asyncElapsed)}');
@@ -119,8 +118,8 @@ void main() async {
     }
     await Future.wait(tasks);
 
-    // stop the identity local worker
-    identityServer.stop();
+    // stop the local identity worker
+    localIdentityWorker.stop();
 
     // shutdown pool
     log('waiting for monitor to stop workers...');

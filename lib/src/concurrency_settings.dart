@@ -10,8 +10,8 @@ class ConcurrencySettings {
   /// Minimum number of workers in the pool.
   final int minWorkers;
 
-  /// Maximum number of workers in the pool.
-  /// If this is set to 0, the number of workers is unbounded (as a result, any task posted to the pool will be assigned a worker asap).
+  /// Maximum number of workers in the pool. If this is set to 0, the number of workers is unbounded
+  /// (as a result, any task posted to the pool will be assigned a worker asap).
   final int maxWorkers;
 
   /// Maximum number of tasks that can be posted to a worker.
@@ -36,7 +36,7 @@ class ConcurrencySettings {
   static const eightIoThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 8, maxParallel: 50);
 
-  /// 1 task per worker, 1 workers.
+  /// 1 task per worker, 1 worker.
   static const oneCpuThread =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);
 
@@ -44,7 +44,7 @@ class ConcurrencySettings {
   static const threeCpuThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 3, maxParallel: 1);
 
-  /// 1 tasks per worker, 1 to 7 workers.
+  /// 1 task per worker, 1 to 7 workers.
   static const sevenCpuThreads =
       ConcurrencySettings(minWorkers: 1, maxWorkers: 7, maxParallel: 1);
 }

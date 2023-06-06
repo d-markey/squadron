@@ -42,7 +42,8 @@ class CompositeToken extends CancellationToken {
   /// Throws an exception, composite tokens may not be cancelled programmatically.
   @override
   void cancel([CancelledException? exception]) => throw newSquadronError(
-      'CompositeToken cannot be cancelled programmatically');
+      'CompositeToken cannot be cancelled programmatically',
+      StackTrace.current);
 
   /// Called just before processing a [WorkerRequest]. This method calls the [ensureStarted] method
   /// for all tokens registered with this [CompositeToken].

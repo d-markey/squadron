@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'cancellation_token.dart';
-import 'native/_channel.dart'
+
+import 'xplat/_channel.dart'
+    if (dart.library.io) 'native/_channel.dart'
     if (dart.library.js) 'browser/_channel.dart'
     if (dart.library.html) 'browser/_channel.dart';
 
@@ -50,8 +52,9 @@ abstract class Channel {
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
   /// must not complete before the worker is ready to serve requests.
   static Future<Channel> open(
-          dynamic entryPoint, String workerId, List startArguments) =>
-      openChannel(entryPoint, workerId, startArguments);
+          EntryPoint entryPoint, String workerId, List startArguments,
+          [PlatformWorkerHook? hook]) =>
+      openChannel(entryPoint, workerId, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(dynamic channelInfo) =>

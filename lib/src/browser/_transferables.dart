@@ -32,7 +32,8 @@ class Transferables {
 
   static void _checkKeys(Map data) {
     if (!data.keys.every(_isBaseType)) {
-      throw newSquadronError('Map keys must be strings, numbers or booleans.');
+      throw newSquadronError(
+          'Map keys must be strings, numbers or booleans.', StackTrace.current);
     }
   }
 

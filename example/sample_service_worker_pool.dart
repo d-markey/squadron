@@ -8,12 +8,14 @@ import 'sample_service.dart';
 class SampleWorkerPool extends WorkerPool<SampleWorker>
     implements SampleService {
   SampleWorkerPool(
-      dynamic entryPoint,
+      EntryPoint entryPoint,
       LocalWorker<IdentityService> identityServer,
+      PlatformWorkerHook? platformWorkerHook,
       ConcurrencySettings concurrencySettings)
       : super(
             () => SampleWorker(entryPoint,
-                args: [identityServer.channel?.share().serialize()]),
+                args: [identityServer.channel?.share().serialize()],
+                platformWorkerHook: platformWorkerHook),
             concurrencySettings: concurrencySettings);
 
   @override
@@ -29,8 +31,9 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
 }
 
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(dynamic entryPoint, {List args = const []})
-      : super(entryPoint, args: args);
+  SampleWorker(EntryPoint entryPoint,
+      {List args = const [], PlatformWorkerHook? platformWorkerHook})
+      : super(entryPoint, args: args, platformWorkerHook: platformWorkerHook);
 
   @override
   Future io({required int milliseconds}) =>

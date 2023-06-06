@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
 
 abstract class SampleService {
-  FutureOr io({required int milliseconds});
+  Future io({required int milliseconds});
   FutureOr cpu({required int milliseconds});
   FutureOr<String> whoAreYouTalkingTo();
 

@@ -104,9 +104,10 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 }
 
 class TestWorker extends Worker implements TestService {
-  TestWorker._(dynamic entryPoint) : super(entryPoint);
+  TestWorker._(dynamic entryPoint, [PlatformWorkerHook? hook])
+      : super(entryPoint, platformWorkerHook: hook);
 
-  TestWorker() : this._(EntryPoints.test);
+  TestWorker([PlatformWorkerHook? hook]) : this._(EntryPoints.test, hook);
 
   TestWorker.failedInit() : this._(EntryPoints.failedInit);
 

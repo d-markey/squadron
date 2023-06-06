@@ -5,138 +5,130 @@ import 'channel.dart';
 import 'squadron.dart';
 import 'squadron_error.dart';
 import 'worker.dart';
+import 'worker_message.dart';
 
-/// Class used to communicate from a [Channel] to the [Worker]. Typically a [WorkerRequest] consists of a command ID
-/// and a list of arguments. The [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method
-/// responsible for handling it. The [WorkerRequest] is effectively sent to the [Worker] by calling the
-/// [WorkerRequest.send] or [WorkerRequest.stream] method. These methods will serialize the [WorkerRequest] as a
-/// [Map] to be transfered from the client to the worker and contains:
-/// * the serialized [Channel] to communicate with the [Worker]
-/// * the [command] ID
-/// * the command's arguments [args]
+/// Make [WorkerRequest] a [WorkerMessage] to minimize serialization overhead.
+typedef WorkerRequest = WorkerMessage;
+
+/// Extension methods operating on a `List` as a [WorkerRequest]. [WorkerRequest]s are used to communicate from a
+/// [Channel] to a [Worker]. Typically a [WorkerRequest] consists of a command ID and a list of arguments. The
+/// [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method responsible for handling
+/// it.
 /// The command's arguments are passed as a list and should only contain primitive values or objects that can be
 /// transfered across workers. For applications running on a VM platform, Dart objects should be safe according to
-/// Dart's documentation of [SendPort.send]. The worker is responsible for deserializing the messages it receives
-/// using the [WorkerRequest.deserialize] constructor. [WorkerRequest] also implements specific requests used
-/// for worker startup, token cancellation, and worker termination.
-class WorkerRequest {
-  static const _noArgs = [];
-
-  WorkerRequest._(dynamic channelInfo, this.command, this.id, this.args,
-      this.logLevel, this._cancelToken, this.streamId, this.inspectResponse)
-      : client = WorkerChannel.deserialize(channelInfo);
+/// Dart's documentation of [SendPort.send]. [WorkerRequestImpl] also implements specific requests used for worker
+/// startup, stream/token cancellation, worker termination...
+extension WorkerRequestImpl on WorkerRequest {
+  static const _$client = 1;
+  static const _$command = 2;
+  static const _$args = 3;
+  static const _$token = 4;
+  static const _$streamId = 5;
+  static const _$logLevel = 5;
+  static const _$id = 6;
+  static const _$inspectResponse = 7;
 
   /// Creates a new request with the specified [command] ID and optional arguments.
-  WorkerRequest(dynamic channelInfo, int command, List args,
-      CancellationToken? token, bool inspectResponse)
-      : this._(channelInfo, command, null, args, null, token, null,
-            inspectResponse);
+  static WorkerRequest userCommand(dynamic channelInfo, int command, List args,
+          CancellationToken? token, bool inspectResponse) =>
+      [
+        null, // 0 - travel time
+        channelInfo, // 1 - client
+        command, // 2 - command
+        args, // 3 - args
+        token, // 4 - cancellation token
+        null, // 5 - stream id / log level
+        null, // 6 - worker id
+        inspectResponse, // 8 - inspect response
+      ];
 
   /// Creates a new start request.
-  WorkerRequest.start(dynamic channelInfo, String id, List args)
-      : this._(channelInfo, _connectCommand, id, args, Squadron.logLevel, null,
-            null, true);
+  static WorkerRequest start(dynamic channelInfo, String id, List args) => [
+        null, // 0 - travel time
+        channelInfo, // 1 - client
+        _connectCommand, // 2 - command
+        args, // 3 - args
+        null, // 4 - cancellation token
+        Squadron.logLevel, // 5 - log level
+        id, // 6 - worker id
+        true, // 7 - inspect response
+      ];
+
+  /// Creates a new stream cancellation request.
+  static WorkerRequest cancelStream(int streamId) => [
+        null, // 0 - travel time
+        null, // 1 - client
+        _cancelStreamCommand, // 2 - command
+        null, // 3 - args
+        null, // 4 - cancellation token
+        streamId, // 5 - stream id
+        null, // 6 - worker id
+        null, // 7 - inspect response
+      ];
 
   /// Creates a new cancellation request.
-  WorkerRequest.cancelStream(int streamId)
-      : this._(null, _cancelStreamCommand, null, _noArgs, null, null, streamId,
-            false);
-
-  /// Creates a new cancellation request.
-  WorkerRequest.cancel(CancellationToken token)
-      : this._(null, _cancelCommand, null, _noArgs, null, token, null, false);
+  static WorkerRequest cancel(CancellationToken token) => [
+        null, // 0 - travel time
+        null, // 1 - client
+        _cancelCommand, // 2 - command
+        null, // 3 - args
+        token, // 4 - cancellation token
+        null, // 5 - stream id / log level
+        null, // 6 - worker id
+        null, // 7 - inspect response
+      ];
 
   /// Creates a new termination request.
-  WorkerRequest.stop()
-      : this._(null, _terminateCommand, null, _noArgs, null, null, null, false);
+  static WorkerRequest stop() => [
+        null, // 0 - travel time
+        null, // 1 - client
+        _terminateCommand, // 2 - command
+        null, // 3 - args
+        null, // 4 - cancellation token
+        null, // 5 - stream id / log level
+        null, // 6 - worker id
+        null, // 7 - inspect response
+      ];
 
-  static const _$client = 0;
-  static const _$command = 1;
-  static const _$args = 2;
-  static const _$token = 3;
-  static const _$streamId = 4;
-  static const _$id = 5;
-  static const _$logLevel = 6;
-  static const _$inspectResponse = 7;
-  static const _$timestamp = 8;
+  /// The client's [WorkerChannel]. Only valid on the receiving end.
+  WorkerChannel? get client => this[_$client];
 
-  /// Creates a new [WorkerRequest] from a message received by the worker.
-  static WorkerRequest? deserialize(List? message) {
-    if (message == null) return null;
-    final req = WorkerRequest._(
-      message[_$client],
-      message[_$command],
-      message[_$id],
-      message[_$args] ?? const [],
-      message[_$logLevel],
-      CancellationToken.deserialize(message[_$token]),
-      message[_$streamId],
-      message[_$inspectResponse] ?? true,
-    );
-    final ts = message[_$timestamp];
-    if (ts != null) {
-      req._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
-    }
-    return req;
-  }
-
-  /// [WorkerRequest] serialization.
-  List serialize() => List.unmodifiable([
-        client?.serialize(),
-        command,
-        args,
-        _cancelToken?.serialize(),
-        streamId,
-        id,
-        logLevel,
-        inspectResponse,
-        Squadron.debugMode ? DateTime.now().microsecondsSinceEpoch : null,
-      ]);
-
-  /// The client's [WorkerChannel].
-  final WorkerChannel? client;
+  /// The client's channel info.
+  dynamic get channelInfo => this[_$client];
 
   /// Cancellation token.
-  CancellationToken? get cancelToken => _cancelToken;
-  CancellationToken? _cancelToken;
+  CancellationToken? get cancelToken => this[_$token];
 
   /// Stream id.
-  final int? streamId;
+  int? get streamId => this[_$streamId];
+
+  /// The current Squadron log level. This is set automatically and only used for connection commands.
+  int? get logLevel => this[_$logLevel];
 
   /// The [command]'s ID.
-  final int command;
+  int get command => this[_$command];
 
   /// The ID of the worker that initiated the command (only used for connection commands).
-  final String? id;
+  String? get id => this[_$id];
 
   /// The command's arguments, if any.
-  final List args;
-
-  /// The current Squadron log level.
-  /// This is set automatically and only used for connection commands.
-  final int? logLevel;
+  List get args => this[_$args];
 
   /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In
   /// Web workers, ownership of these objects must be transfered across threads.
-  final bool inspectResponse;
-
-  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time
-  /// (in microseconds) it took between the moment the message was serialized and the moment it was
-  /// deserialized.
-  int? get travelTime => _travelTime;
-  int? _travelTime;
+  bool get inspectResponse => this[_$inspectResponse];
 
   /// flag for start requests.
-  bool get connect => command == _connectCommand;
+  bool get isConnection => (command == _connectCommand);
 
   /// flag for stream cancellation requests.
-  bool get cancelStream => command == _cancelStreamCommand;
+  bool get isStreamCancellation => (command == _cancelStreamCommand);
 
   /// flag for cancellation requests.
-  bool get cancel => command == _cancelCommand;
+  bool get isCancellation => (command == _cancelCommand);
 
   /// flag for termination requests.
-  bool get terminate => command == _terminateCommand;
+  bool get isTermination => (command == _terminateCommand);
 
   static const int _connectCommand = -1;
   static const int _cancelStreamCommand = -2;
@@ -146,10 +138,30 @@ class WorkerRequest {
 
 @internal
 extension WorkerRequestExt on WorkerRequest {
+  static const _$client = WorkerRequestImpl._$client;
+  static const _$args = WorkerRequestImpl._$args;
+  static const _$token = WorkerRequestImpl._$token;
+  static const _$inspectResponse = WorkerRequestImpl._$inspectResponse;
+
+  /// In-place deserialization of a [WorkerRequest] received by the worker.
+  void unwrapRequest() {
+    this[_$client] = WorkerChannel.deserialize(this[_$client]);
+    this[_$token] = CancellationToken.deserialize(this[_$token]);
+    this[_$inspectResponse] ??= false;
+    this[_$args] ??= const [];
+    setTravelTime();
+  }
+
+  /// In-place serialization of a [WorkerRequest].
+  void wrapRequest() {
+    this[_$token] = (this[_$token] as CancellationToken?)?.serialize();
+    initTravelTime();
+  }
+
   void overrideCancelToken(CancellationToken token) {
-    if (_cancelToken == null || _cancelToken!.id != token.id) {
-      throw newSquadronError('cancellation token mismatch');
+    if (cancelToken == null || cancelToken!.id != token.id) {
+      throw newSquadronError('cancellation token mismatch', StackTrace.current);
     }
-    _cancelToken = token;
+    this[_$token] = token;
   }
 }

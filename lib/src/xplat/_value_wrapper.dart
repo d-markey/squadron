@@ -24,6 +24,11 @@ class ValueWrapper<T> {
     _token?.addListener(_canceller);
     _sub = messages.listen(
       (message) {
+        final res = message as List;
+        if (!res.unwrapResponse()) {
+          return;
+        }
+
         final cancelException = _token?.exception;
         if (cancelException != null) {
           if (!_completer.isCompleted) {
@@ -31,9 +36,6 @@ class ValueWrapper<T> {
                 cancelException, cancelException.stackTrace);
           }
         } else {
-          final res = WorkerResponse.deserialize(message);
-          if (res == null) return;
-
           if (!_completer.isCompleted) {
             final error = res.error;
             if (error != null) {
@@ -62,7 +64,7 @@ class ValueWrapper<T> {
   late final Completer<T> _completer;
   late final StreamSubscription _sub;
 
-  void _canceller() => _postMethod(WorkerRequest.cancel(_token!), false);
+  void _canceller() => _postMethod(WorkerRequestImpl.cancel(_token!), false);
 
   Future<T> compute() {
     // initiate operation now!

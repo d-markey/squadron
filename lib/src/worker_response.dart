@@ -1,92 +1,116 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
+
 import 'squadron.dart';
 import 'worker.dart';
 import 'squadron_exception.dart';
+import 'worker_message.dart';
+
+/// Make [WorkerResponse] a [WorkerMessage] to minimize serialization overhead.
+typedef WorkerResponse = WorkerMessage;
 
 /// Class used to communicate from a [Worker] to clients.
 /// [WorkerResponse]s are used to provide individual results to the client. [Future]-based services simply return a
 /// single [WorkerResponse] with the result. [Stream]ing services will return one [WorkerResponse]s for each stream
-/// item and mmust send a [WorkerResponse.endOfStream] message to indicate completion. [WorkerResponse]s can also
+/// item and mmust send a [WorkerResponseImpl.closeStream] message to indicate completion. [WorkerResponse]s can also
 /// send error messages.
-class WorkerResponse {
-  WorkerResponse._(dynamic result, this.error, this.endOfStream, this._log)
-      : _result =
-            (result is Iterable && result is! List) ? result.toList() : result;
+
+/// Extension methods operating on a `List` as a [WorkerResponse]. [WorkerResponse] is used to provide individual
+/// results to the client. [Future]-based services simply return a single [WorkerResponse] with the result. [Stream]
+/// services return one [WorkerResponse] for each stream item and mmust send a [WorkerResponseImpl.closeStream]
+/// message to indicate completion. A [WorkerResponse] can also be used to send error messages.
+extension WorkerResponseImpl on WorkerResponse {
+  static const _$result = 1;
+  static const _$error = 2;
+  static const _$endOfStream = 3;
+  static const _$log = 4;
 
   /// [WorkerResponse] with a valid [result]. If [result] is an `Iterable` but not a `List`, it will be converted
   /// to a `List` by calling `toList()`.
-  WorkerResponse(dynamic result) : this._(result, null, false, null);
+  static WorkerResponse withResult(dynamic result) => [
+        null, // 0 - travel time
+        result, // 1 - result
+        null, // 2 - error
+        null, // 3 - end of stream
+        null, // 4 - log message
+      ];
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  WorkerResponse.withError(Object exception, [StackTrace? stackTrace])
-      : this._(
-            null, SquadronException.from(exception, stackTrace), false, null);
+  static WorkerResponse withError(Object exception, [StackTrace? stackTrace]) =>
+      [
+        null, // 0 - travel time
+        null, // 1 - result
+        SquadronException.from(exception, stackTrace), // 2 - error
+        null, // 3 - end of stream
+        null, // 4 - log message
+      ];
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  WorkerResponse.log(String message) : this._(null, null, false, message);
+  static WorkerResponse log(String message) => [
+        null, // 0 - travel time
+        null, // 1 - result
+        null, // 2 - error
+        null, // 3 - end of stream
+        message, // 4 - log message
+      ];
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
-  WorkerResponse._endOfStream() : this._(null, null, true, null);
-
-  /// End of stream response.
-  static final closeStream = WorkerResponse._endOfStream();
-
-  static const _$result = 0;
-  static const _$error = 1;
-  static const _$endOfStream = 2;
-  static const _$log = 3;
-  static const _$timestamp = 4;
-
-  /// Creates a new [WorkerResponse] from a message sent by the worker.
-  static WorkerResponse? deserialize(List message) {
-    final res = WorkerResponse._(
-        message[_$result],
-        SquadronException.deserialize(message[_$error]),
-        message[_$endOfStream],
-        message[_$log]);
-    final ts = message[_$timestamp];
-    if (ts != null) {
-      res._travelTime = DateTime.now().microsecondsSinceEpoch - (ts as int);
-      if (Squadron.debugMode && res._log == null) {
-        Squadron.debug('response received in ${res._travelTime} µs');
-      }
-    }
-    if (res._log != null) {
-      getSquadronLogger()?.log(res._log!);
-      return null;
-    }
-    return res;
-  }
-
-  /// [WorkerResponse] serialization.
-  List serialize() => List.unmodifiable([
-        _result,
-        error?.serialize(),
-        endOfStream,
-        _log,
-        Squadron.debugMode ? DateTime.now().microsecondsSinceEpoch : null,
-      ]);
+  static WorkerResponse closeStream() => [
+        null, // 0 - travel time
+        null, // 1 - result
+        null, // 2 - error
+        true, // 3 - end of stream
+        null, // 4 - log message
+      ];
 
   /// Flag indicating the end of the [Stream]ing operation.
-  final bool endOfStream;
+  bool get endOfStream => this[_$endOfStream];
 
   /// The [WorkerResponse] exception, if any.
-  final SquadronException? error;
-
-  /// Flag indicating whether an error occured.
-  bool get hasError => error != null;
-
-  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time
-  /// (in microseconds) it took between the moment the message was serialized and the moment it was
-  /// deserialized.
-  int? get travelTime => _travelTime;
-  int? _travelTime;
-
-  final String? _log;
+  SquadronException? get error => this[_$error];
 
   /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,
   /// an the [error] exception is thrown.
-  dynamic get result => hasError ? throw error! : _result;
-  final dynamic _result;
+  dynamic get result {
+    final err = error;
+    if (err != null) {
+      throw err;
+    } else {
+      return this[_$result];
+    }
+  }
+}
+
+@internal
+extension WorkerResponseExt on WorkerResponse {
+  static const _$result = WorkerResponseImpl._$result;
+  static const _$error = WorkerResponseImpl._$error;
+  static const _$endOfStream = WorkerResponseImpl._$endOfStream;
+  static const _$log = WorkerResponseImpl._$log;
+
+  /// In-place deserialization of a [WorkerResponse] sent by the worker. Returns `false` if
+  /// the message requires no further processing (currently used for log messages only).
+  bool unwrapResponse() {
+    final log = this[_$log];
+    if (log != null) {
+      getSquadronLogger()?.log(log);
+      return false;
+    } else {
+      this[_$error] = SquadronException.deserialize(this[_$error]);
+      this[_$endOfStream] ??= false;
+      setTravelTime();
+    }
+    return true;
+  }
+
+  /// In-place serialization of a [WorkerResponse].
+  void wrapResponse() {
+    final res = this[_$result];
+    if (res is! List && res is Iterable) {
+      this[_$result] = res.toList();
+    }
+    this[_$error] = (this[_$error] as SquadronException?)?.serialize();
+    initTravelTime();
+  }
 }

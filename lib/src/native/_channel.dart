@@ -12,6 +12,11 @@ import '../worker_response.dart';
 import '../worker_service.dart';
 import '../xplat/_value_wrapper.dart';
 
+typedef EntryPoint = FutureOr Function(List);
+typedef PlatformWorker = Isolate;
+
+typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);
+
 class _BaseVmChannel {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
   /// to return values to the client.
@@ -26,21 +31,21 @@ class _BaseVmChannel {
 
   void _postRequest(WorkerRequest req, bool inspectRequest) {
     req.cancelToken?.ensureStarted();
-    final message = req.serialize();
+    req.wrapRequest();
     try {
-      _sendPort!.send(message);
+      _sendPort!.send(req);
     } catch (ex, st) {
-      Squadron.severe('failed to post request $message: error $ex');
+      Squadron.severe('failed to post request $req: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
   void _postResponse(WorkerResponse res, bool inspectResponse) {
-    final message = res.serialize();
+    res.wrapResponse();
     try {
-      _sendPort!.send(message);
+      _sendPort!.send(res);
     } catch (ex, st) {
-      Squadron.severe('failed to post response $message: error $ex');
+      Squadron.severe('failed to post response $res: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
@@ -58,7 +63,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   @override
   FutureOr close() {
     if (_sendPort != null) {
-      _postRequest(WorkerRequest.stop(), false);
+      _postRequest(WorkerRequestImpl.stop(), false);
       _sendPort = null;
     }
   }
@@ -72,7 +77,8 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       bool inspectResponse = false}) {
     final receiver = ReceivePort();
     final wrapper = ValueWrapper<T>(
-      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
+      WorkerRequestImpl.userCommand(
+          receiver.sendPort, command, args, token, inspectResponse),
       postMethod: _postRequest,
       messages: receiver,
       token: token,
@@ -91,7 +97,8 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       bool inspectResponse = false}) {
     final receiver = ReceivePort();
     final wrapper = StreamWrapper<T>(
-      WorkerRequest(receiver.sendPort, command, args, token, inspectResponse),
+      WorkerRequestImpl.userCommand(
+          receiver.sendPort, command, args, token, inspectResponse),
       postMethod: _postRequest,
       messages: receiver,
       onDone: () {
@@ -133,10 +140,11 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   /// [Isolate] only.
   @override
   void reply(dynamic data, bool inspectResponse) =>
-      _postResponse(WorkerResponse(data), inspectResponse);
+      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);
 
   @override
-  void log(String message) => _postResponse(WorkerResponse.log(message), false);
+  void log(String message) =>
+      _postResponse(WorkerResponseImpl.log(message), false);
 
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a
   /// [ReceivePort].
@@ -145,28 +153,29 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
 
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.
   @override
-  void closeStream() => _postResponse(WorkerResponse.closeStream, false);
+  void closeStream() => _postResponse(WorkerResponseImpl.closeStream(), false);
 
   /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.
   @override
   void error(SquadronException error) {
     Squadron.debug('replying with error: $error');
-    _postResponse(WorkerResponse.withError(error), false);
+    _postResponse(WorkerResponseImpl.withError(error), false);
   }
 }
 
-/// Stub implementations.
+// Stub implementations.
 
 /// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future
 /// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].
 Future<Channel> openChannel(
-    dynamic entryPoint, String workerId, List startArguments) async {
+    EntryPoint entryPoint, String workerId, List startArguments,
+    [PlatformWorkerHook? hook]) async {
   final completer = Completer<Channel>();
   final channel = _VmChannel._();
   final receiver = ReceivePort();
 
   final startRequest =
-      WorkerRequest.start(receiver.sendPort, workerId, startArguments);
+      WorkerRequestImpl.start(receiver.sendPort, workerId, startArguments);
 
   late final Isolate isolate;
   final exitPort = ReceivePort();
@@ -192,8 +201,10 @@ Future<Channel> openChannel(
   });
 
   receiver.listen((message) {
-    final response = WorkerResponse.deserialize(message);
-    if (response == null) return;
+    final response = message as List;
+    if (!response.unwrapResponse()) {
+      return;
+    }
 
     if (!completer.isCompleted) {
       final error = response.error;
@@ -209,17 +220,25 @@ Future<Channel> openChannel(
         completer.complete(channel);
       }
     } else {
-      Squadron.config('unexpected response: ${response.serialize()}');
+      Squadron.config('unexpected response: $response');
     }
   });
 
+  startRequest.wrapRequest();
   isolate = await Isolate.spawn(
     entryPoint,
-    startRequest.serialize(),
+    startRequest,
     errorsAreFatal: false,
     onExit: exitPort.sendPort,
     onError: errorPort.sendPort,
   );
+
+  try {
+    hook?.call(isolate);
+  } catch (ex) {
+    Squadron.warning(
+        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');
+  }
 
   Squadron.config('created Isolate #$workerId');
   return completer.future;

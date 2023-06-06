@@ -1,13 +1,21 @@
+import 'package:squadron/squadron.dart';
+
 import '../sample_vm_workers/worker_entry_points.dart'
     if (dart.library.js) '../sample_js_workers/worker_entry_points.dart'
-    if (dart.library.html) '../sample_js_workers/worker_entry_points.dart';
+    if (dart.library.html) '../sample_js_workers/worker_entry_points.dart'
+    as platform_entrypoints;
 
 class EntryPoints {
   static void init() {
-    setEntryPoints();
+    _platform = platform_entrypoints.platform;
+    platform_entrypoints.setEntryPoints();
   }
 
-  static Iterable<Object> get entryPoints => [
+  static String _platform = 'N/A';
+
+  static String get platform => _platform;
+
+  static Iterable<EntryPoint> get entryPoints => [
         echo,
         cache,
         issues,
@@ -17,7 +25,7 @@ class EntryPoints {
         failedInit,
         invalidCommand,
         missingStartRequest,
-      ].where((e) => e != null).cast<Object>();
+      ].where((e) => e != null).cast<EntryPoint>();
 
   static dynamic echo;
 

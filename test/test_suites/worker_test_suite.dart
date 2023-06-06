@@ -1,18 +1,38 @@
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/squadron.dart';
 import 'package:test/test.dart';
 
 import '../classes/custom_exception.dart';
+import '../classes/memory_logger.dart';
 import '../classes/prime_numbers.dart';
 import '../classes/platform.dart';
 import '../worker_services/cache_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/test_service.dart';
 import '../worker_services/test_service_worker.dart';
+import '../worker_services/worker_entry_points.dart';
 
 void workerTests() {
   group('- start/stop', () {
+    dynamic initialLogger;
+    final memoryLogger = MemoryLogger();
+
+    setUp(() {
+      initialLogger = getSquadronLogger();
+      memoryLogger.clear();
+      Squadron.pushLogLevel(SquadronLogLevel.all);
+      Squadron.setLogger(memoryLogger);
+      Squadron.debugMode = false;
+    });
+
+    tearDown(() {
+      Squadron.setLogger(initialLogger);
+      Squadron.popLogLevel();
+      Squadron.debugMode = false;
+    });
+
     test('- start & stop', () async {
       final worker = TestWorker();
 
@@ -45,6 +65,50 @@ void workerTests() {
 
       expect(worker.upTime, equals(upTime));
       expect(worker.idleTime, greaterThan(worker.upTime));
+    });
+
+    test('- hook', () async {
+      String? platformTypeName;
+
+      void hook(PlatformWorker pw) {
+        platformTypeName = pw.runtimeType.toString();
+      }
+
+      final worker = TestWorker(hook);
+
+      await Future.delayed(TestService.shortDelay);
+      expect(platformTypeName, isNull);
+
+      await worker.start();
+      expect(platformTypeName,
+          equals(EntryPoints.platform == 'WEB' ? 'Worker' : 'Isolate'));
+
+      worker.stop();
+
+      await Future.delayed(TestService.shortDelay);
+    });
+
+    test('- hook failure', () async {
+      String? platformTypeName;
+
+      void hook(PlatformWorker pw) {
+        platformTypeName = pw.runtimeType.toString();
+        throw Exception('intended exception for $platformTypeName');
+      }
+
+      final worker = TestWorker(hook);
+
+      await Future.delayed(TestService.shortDelay);
+      expect(platformTypeName, isNull);
+
+      await worker.start();
+      expect(platformTypeName,
+          equals(EntryPoints.platform == 'WEB' ? 'Worker' : 'Isolate'));
+      expect(memoryLogger.contains('intended exception'), isTrue);
+
+      worker.stop();
+
+      await Future.delayed(TestService.shortDelay);
     });
 
     test('- cannot restart after stop', () async {
