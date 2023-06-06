@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-05-12</dd>
+                    <dd>2023-06-06</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -79,7 +79,7 @@
                     <td>6</td><td></td><td></td><td><code>import 'xplat/_helpers.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>import 'xplat/_sequence_id.dart';</code></td>
+                    <td>7</td><td></td><td></td><td><code>import 'xplat/_token_id.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
                     <td>8</td><td></td><td></td><td><code></code></td>
@@ -97,7 +97,7 @@
                     <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>4</td><td><code>  CancellationToken([String? message]) : this._(message, SequenceId.next());</code></td>
+                    <td>13</td><td></td><td>4</td><td><code>  CancellationToken([String? message]) : this._(message, TokenId.next());</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code></code></td>
@@ -277,7 +277,7 @@
                     <td>72</td><td></td><td></td><td><code>  /// Seralization of a [CancellationToken]</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>5</td><td><code>  List serialize() =&gt; [_id, message];</code></td>
+                    <td>73</td><td></td><td>6</td><td><code>  List serialize() =&gt; List.unmodifiable([_id, message]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 74" id="line74">
                     <td>74</td><td></td><td></td><td><code></code></td>

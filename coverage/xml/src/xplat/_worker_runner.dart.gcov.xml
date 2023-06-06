@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8857143" lines-covered="62" lines-valid="70" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8513514" lines-covered="63" lines-valid="74" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -27,6 +27,9 @@
         </line>
         <line>
             <code>import '../worker_exception.dart';</code>
+        </line>
+        <line>
+            <code>import '../worker_message.dart';</code>
         </line>
         <line>
             <code>import '../worker_request.dart';</code>
@@ -106,14 +109,14 @@
             <code>  /// populated with operations from the service.</code>
         </line>
         <line hits="1">
-            <code>  Future connect(</code>
+            <code>  Future connect(List? startRequest, Object channelInfo,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      List? message, Object channelInfo, WorkerInitializer initializer) async {</code>
+            <code>      WorkerInitializer initializer) async {</code>
         </line>
         <line hits="1">
-            <code>    final startRequest = WorkerRequest.deserialize(message);</code>
+            <code>    startRequest?.unwrapRequest();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -126,15 +129,18 @@
         <line>
             <code>    if (startRequest == null) {</code>
         </line>
-        <line hits="1">
-            <code>      throw newSquadronError('connection request expected');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      throw newSquadronError('connection request expected', StackTrace.current);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else if (client == null) {</code>
         </line>
         <line hits="0">
-            <code>      throw newSquadronError('missing client for connection request');</code>
+            <code>      throw newSquadronError(</code>
+        </line>
+        <line hits="0">
+            <code>          'missing client for connection request', StackTrace.current);</code>
         </line>
         <line>
             <code>    }</code>
@@ -146,18 +152,21 @@
             <code>    try {</code>
         </line>
         <line hits="1">
-            <code>      if (!startRequest.connect) {</code>
+            <code>      if (!startRequest.isConnection) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>        throw newSquadronError('connection request expected');</code>
+            <code>        throw newSquadronError(</code>
+        </line>
+        <line hits="0">
+            <code>            'connection request expected', StackTrace.current);</code>
         </line>
         <line hits="2">
             <code>      } else if (_operations.isNotEmpty) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>        throw newSquadronError('already connected');</code>
+            <code>        throw newSquadronError('already connected', StackTrace.current);</code>
         </line>
         <line>
             <code>      }</code>
@@ -220,7 +229,11 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>            'invalid command identifier in service operations map; command ids must be &gt; 0');</code>
+            <code>            'invalid command identifier in service operations map; command ids must be &gt; 0',</code>
+        </line>
+        <line hits="1">
+            <code>            StackTrace.current);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -253,28 +266,22 @@
             <code>  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.</code>
         </line>
         <line hits="2">
-            <code>  void processMessage(List message) async {</code>
+            <code>  void processMessage(List request) async {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    final request = WorkerRequest.deserialize(message);</code>
+            <code>    request.unwrapRequest();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    final client = request?.client;</code>
+            <code>    final client = request.client;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line>
-            <code>    if (request == null) {</code>
-        </line>
-        <line hits="0">
-            <code>      throw newSquadronError('invalid message');</code>
-        </line>
         <line hits="1">
-            <code>    } else if (request.terminate) {</code>
+            <code>    if (request.isTermination) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -285,7 +292,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    } else if (request.cancel) {</code>
+            <code>    } else if (request.isCancellation) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -296,7 +303,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    } else if (request.cancelStream) {</code>
+            <code>    } else if (request.isStreamCancellation) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -310,7 +317,10 @@
             <code>    } else if (client == null) {</code>
         </line>
         <line hits="0">
-            <code>      throw newSquadronError('missing client for request: $request');</code>
+            <code>      throw newSquadronError(</code>
+        </line>
+        <line hits="0">
+            <code>          'missing client for request: $request', StackTrace.current);</code>
         </line>
         <line>
             <code>    }</code>
@@ -330,14 +340,17 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      if (request.connect) {</code>
+            <code>      if (request.isConnection) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        // connection request must be handled beforehand</code>
         </line>
         <line hits="0">
-            <code>        throw newSquadronError('unexpected connection request: $message');</code>
+            <code>        throw newSquadronError(</code>
+        </line>
+        <line hits="0">
+            <code>            'unexpected connection request: $request', StackTrace.current);</code>
         </line>
         <line hits="2">
             <code>      } else if (_operations.isEmpty) {</code>

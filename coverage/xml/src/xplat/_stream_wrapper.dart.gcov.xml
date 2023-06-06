@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9848485" lines-covered="65" lines-valid="66" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9701493" lines-covered="65" lines-valid="67" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -163,7 +163,7 @@
             <code/>
         </line>
         <line hits="6">
-            <code>  void _canceller() =&gt; _postMethod(WorkerRequest.cancel(_token!), false);</code>
+            <code>  void _canceller() =&gt; _postMethod(WorkerRequestImpl.cancel(_token!), false);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -173,9 +173,9 @@
             <code>  void _process(WorkerResponse res) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>    final error = res.error;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    if (error != null) {</code>
@@ -236,6 +236,23 @@
             <code>      (message) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="1">
+            <code>        final res = message as List;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        if (!res.unwrapResponse()) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>          return;</code>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line hits="3">
             <code>        if (_controller.isClosed) return;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
@@ -278,20 +295,12 @@
         <line>
             <code>        }</code>
         </line>
-        <line hits="2">
-            <code>        final res = WorkerResponse.deserialize(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (res == null) return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>        if (res.endOfStream) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>          _controller.close();</code>
@@ -382,7 +391,7 @@
             <code>    // notify the worker that the streaming operation has been cancelled</code>
         </line>
         <line hits="4">
-            <code>    _postMethod(WorkerRequest.cancelStream(streamId), false);</code>
+            <code>    _postMethod(WorkerRequestImpl.cancelStream(streamId), false);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">

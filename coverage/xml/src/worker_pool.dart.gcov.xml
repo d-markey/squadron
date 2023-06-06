@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.877907" lines-covered="151" lines-valid="172" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8786127" lines-covered="152" lines-valid="173" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -59,6 +59,12 @@
             <code/>
         </line>
         <line>
+            <code>typedef WorkerFactory&lt;W&gt; = W Function();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>/// Worker pool responsible for instantiating, starting and stopping workers running in parallel.</code>
         </line>
         <line>
@@ -99,7 +105,7 @@
             <code/>
         </line>
         <line>
-            <code>  final W Function() _workerFactory;</code>
+            <code>  final WorkerFactory&lt;W&gt; _workerFactory;</code>
         </line>
         <line>
             <code/>
@@ -781,7 +787,11 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          'the pool cannot accept new requests because it is stopped');</code>
+            <code>          'the pool cannot accept new requests because it is stopped',</code>
+        </line>
+        <line hits="2">
+            <code>          StackTrace.current);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

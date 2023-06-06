@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9357798" lines-covered="102" lines-valid="109" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9351852" lines-covered="101" lines-valid="108" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -14,6 +14,9 @@
             <code>import 'channel.dart';</code>
         </line>
         <line>
+            <code>import 'entrypoint.dart';</code>
+        </line>
+        <line>
             <code>import 'squadron_exception.dart';</code>
         </line>
         <line>
@@ -26,7 +29,10 @@
             <code>import 'worker_stat.dart';</code>
         </line>
         <line>
-            <code>import 'xplat/_identity.dart';</code>
+            <code>import 'xplat/_helpers.dart';</code>
+        </line>
+        <line>
+            <code>import 'xplat/_worker_id.dart';</code>
         </line>
         <line>
             <code/>
@@ -50,11 +56,7 @@
             <code>  /// Creates a [Worker] with the specified entrypoint.</code>
         </line>
         <line hits="2">
-            <code>  Worker(this._entryPoint, {this.args = const []})</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      : workerId = Identity.nextId();</code>
+            <code>  Worker(this._entryPoint, {this.args = const [], this.platformWorkerHook});</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -67,7 +69,13 @@
             <code>  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.</code>
         </line>
         <line>
-            <code>  final dynamic _entryPoint;</code>
+            <code>  final EntryPoint _entryPoint;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final PlatformWorkerHook? platformWorkerHook;</code>
         </line>
         <line>
             <code/>
@@ -162,15 +170,8 @@
             <code>      ? Duration.zero</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>      : Duration(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          microseconds:</code>
-        </line>
         <line hits="6">
-            <code>              (_stopped ?? DateTime.now().microsecondsSinceEpoch) - _started!);</code>
+            <code>      : Duration(microseconds: (_stopped ?? microsecTimeStamp()) - _started!);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -187,9 +188,9 @@
             <code>      ? Duration.zero</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
-            <code>      : Duration(microseconds: DateTime.now().microsecondsSinceEpoch - _idle!);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>      : Duration(microseconds: microsecTimeStamp() - _idle!);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int? _idle;</code>
@@ -317,7 +318,7 @@
             <code>  /// Worker ID</code>
         </line>
         <line>
-            <code>  final String workerId;</code>
+            <code>  final String workerId = WorkerId.next();</code>
         </line>
         <line>
             <code/>
@@ -498,9 +499,9 @@
             <code>      _totalWorkload++;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>      _idle = DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>      _idle = microsecTimeStamp();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    });</code>
@@ -577,9 +578,9 @@
             <code>        _totalWorkload++;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>        _idle = DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>        _idle = microsecTimeStamp();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -730,9 +731,13 @@
             <code>    if (_channel == null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
-            <code>      _openChannel ??= Channel.open(_entryPoint, workerId, args);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      _openChannel ??=</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>          Channel.open(_entryPoint, workerId, args, platformWorkerHook);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      final channel = await _openChannel!;</code>
@@ -746,9 +751,9 @@
             <code>        _channel = channel;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>        _started = DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        _started = microsecTimeStamp();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>        _idle = _started;</code>
@@ -782,9 +787,9 @@
             <code>    if (_stopped == null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>      _stopped = DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>      _stopped = microsecTimeStamp();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      _openChannel = null;</code>

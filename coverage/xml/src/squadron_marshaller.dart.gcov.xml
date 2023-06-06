@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="squadron_marshaller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="5" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="squadron_marshaller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="5" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code>
@@ -14,10 +14,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary</code>
-        </line>
-        <line>
-            <code>  /// representation.</code>
+            <code>  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary representation.</code>
         </line>
         <line>
             <code>  S marshall(T data);</code>
@@ -26,13 +23,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Deserialize a representation of type [S] back to the original data of type</code>
+            <code>  /// Deserialize a representation of type [S] back to the original data of type [T].</code>
         </line>
         <line>
-            <code>  /// [T]. `unmarshall(marshall(data))` must produce an instance of [T] that is</code>
+            <code>  /// `unmarshall(marshall(data))` must produce an instance of [T] that is equivalent to</code>
         </line>
         <line>
-            <code>  /// equivalent to original instance [data].</code>
+            <code>  /// original instance [data].</code>
         </line>
         <line>
             <code>  T unmarshall(S data);</code>

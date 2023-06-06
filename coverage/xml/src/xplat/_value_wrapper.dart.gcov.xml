@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75757575" lines-covered="25" lines-valid="33" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7352941" lines-covered="25" lines-valid="34" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -85,6 +85,23 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
+            <code>        final res = message as List;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        if (!res.unwrapResponse()) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>          return;</code>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
             <code>        final cancelException = _token?.exception;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -106,24 +123,13 @@
         <line>
             <code>        } else {</code>
         </line>
-        <line hits="2">
-            <code>          final res = WorkerResponse.deserialize(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          if (res == null) return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="3">
             <code>          if (!_completer.isCompleted) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>            final error = res.error;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>            if (error != null) {</code>
@@ -212,7 +218,7 @@
             <code/>
         </line>
         <line hits="0">
-            <code>  void _canceller() =&gt; _postMethod(WorkerRequest.cancel(_token!), false);</code>
+            <code>  void _canceller() =&gt; _postMethod(WorkerRequestImpl.cancel(_token!), false);</code>
         </line>
         <line>
             <code/>

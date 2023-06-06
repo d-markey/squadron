@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7837838" lines-covered="29" lines-valid="37" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7777778" lines-covered="28" lines-valid="36" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -26,6 +26,9 @@
             <code>import '../worker_task.dart';</code>
         </line>
         <line>
+            <code>import '_helpers.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
@@ -35,7 +38,7 @@
             <code>abstract class WorkerTask&lt;T, W extends Worker&gt; implements Task&lt;T&gt; {</code>
         </line>
         <line hits="2">
-            <code>  WorkerTask(this._counter) : submitted = _timeStamp();</code>
+            <code>  WorkerTask(this._counter) : submitted = microsecTimeStamp();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -125,8 +128,11 @@
         <line hits="0">
             <code>      : Duration(</code>
         </line>
+        <line>
+            <code>          microseconds:</code>
+        </line>
         <line hits="0">
-            <code>          microseconds: (_cancelled ?? _finished ?? _timeStamp()) - _executed!);</code>
+            <code>              (_cancelled ?? _finished ?? microsecTimeStamp()) - _executed!);</code>
         </line>
         <line>
             <code/>
@@ -137,8 +143,11 @@
         <line hits="0">
             <code>  Duration get waitTime =&gt; Duration(</code>
         </line>
+        <line>
+            <code>      microseconds:</code>
+        </line>
         <line hits="0">
-            <code>      microseconds: (_executed ?? _cancelled ?? _timeStamp()) - submitted);</code>
+            <code>          (_executed ?? _cancelled ?? microsecTimeStamp()) - submitted);</code>
         </line>
         <line>
             <code/>
@@ -152,7 +161,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>    _cancelled ??= _timeStamp();</code>
+            <code>    _cancelled ??= microsecTimeStamp();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -171,7 +180,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>    _executed ??= _timeStamp();</code>
+            <code>    _executed ??= microsecTimeStamp();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -215,7 +224,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _finished = _timeStamp();</code>
+            <code>      _finished = microsecTimeStamp();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
@@ -232,13 +241,6 @@
         <line hits="1">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  static int _timeStamp() =&gt; DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

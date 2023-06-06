@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-05-12</dd>
+                    <dd>2023-06-06</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>23</td><td>23</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>23</td><td>24</td><td class="high">95.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -96,8 +96,8 @@
                 <tr class="noop" title="Line 12" id="line12">
                     <td>12</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>3</td><td><code>        _stackTrace = StackTrace.current;</code></td>
+                <tr class="lineNoCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>0</td><td><code>        _stackTrace = StackTrace.current;</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code>      } catch (_) {</code></td>
@@ -142,7 +142,7 @@
                     <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>  static const _$typeMarker = '\$';</code></td>
+                    <td>28</td><td></td><td></td><td><code>  static const _$typeMarker = -1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
                     <td>29</td><td></td><td></td><td><code></code></td>
@@ -196,13 +196,13 @@
                     <td>45</td><td></td><td>1</td><td><code>@internal</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>1</td><td><code>SquadronError newSquadronError(String message) {</code></td>
+                    <td>46</td><td></td><td>1</td><td><code>SquadronError newSquadronError(String message, StackTrace stackTrace) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>3</td><td><code>  Squadron.severe('creating new SquadronError: $message');</code></td>
+                    <td>47</td><td></td><td>3</td><td><code>  Squadron.severe('SquadronError: $message');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>2</td><td><code>  return SquadronError._(message);</code></td>
+                    <td>48</td><td></td><td>2</td><td><code>  return SquadronError._(message, stackTrace);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
                     <td>49</td><td></td><td>1</td><td><code>}</code></td>
@@ -213,29 +213,20 @@
                 <tr class="lineCov" title="Line 51" id="line51">
                     <td>51</td><td></td><td>1</td><td><code>@internal</code></td>
                 </tr>
-                <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>SquadronError? deserializeSquadronError(List data) {</code></td>
+                <tr class="lineCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>1</td><td><code>SquadronException? deserializeSquadronError(List data) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 53" id="line53">
-                    <td>53</td><td></td><td></td><td><code>  SquadronError? error;</code></td>
+                <tr class="lineCov" title="Line 53" id="line53">
+                    <td>53</td><td></td><td>3</td><td><code>    (data[SquadronError._$type] == SquadronError._$typeMarker)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>3</td><td><code>  if (data[SquadronError._$type] == SquadronError._$typeMarker) {</code></td>
+                    <td>54</td><td></td><td>3</td><td><code>        ? SquadronError._(data[SquadronError._$message],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>3</td><td><code>    error = SquadronError._(data[SquadronError._$message],</code></td>
+                    <td>55</td><td></td><td>3</td><td><code>            SquadronException.loadStackTrace(data[SquadronError._$stackTrace]))</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>3</td><td><code>        SquadronException.loadStackTrace(data[SquadronError._$stackTrace]));</code></td>
-                </tr>
-                <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>  return error;</code></td>
-                </tr>
-                <tr class="noop" title="Line 59" id="line59">
-                    <td>59</td><td></td><td></td><td><code>}</code></td>
+                    <td>56</td><td></td><td>1</td><td><code>        : null;</code></td>
                 </tr>
             </tbody>
         </table>

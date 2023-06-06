@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info _sequence_id.dart</title>
+        <title>LCOV - lcov.info _token_id.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,12 +13,12 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../index.html">top level</a> - <a href="index.html">/src/xplat</a> - _sequence_id.dart
+                        <a href="../../index.html">top level</a> - <a href="index.html">/src/xplat</a> - _token_id.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-05-12</dd>
+                    <dd>2023-06-06</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -73,58 +73,55 @@
                     <td>4</td><td></td><td></td><td><code>///</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. Because of Dart's</code></td>
+                    <td>5</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. The generated</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>/// architecture, this guarantees unicity per event loop (thread) only. If the [SequenceId] is used from an Isolate</code></td>
+                    <td>6</td><td></td><td></td><td><code>/// ID also integrates [Squadron.id] to guarantee unicity across event loops (provided [Squadron.id]s are also</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>/// or a Web Worker, IDs may overlap across threads. This may be a problem in complex scenarios where workers invoke</code></td>
+                    <td>7</td><td></td><td></td><td><code>/// unique across event loops). Workers should forward the cancellation token they received when calling other</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>/// other workers while creating their own cancellation tokens. Ideally, workers should forward the cancellation token</code></td>
+                    <td>8</td><td></td><td></td><td><code>/// workers.</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>/// they received when calling other workers.</code></td>
+                    <td>9</td><td></td><td></td><td><code>class TokenId {</code></td>
                 </tr>
-                <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>class SequenceId {</code></td>
+                <tr class="lineCov" title="Line 10" id="line10">
+                    <td>10</td><td></td><td>2</td><td><code>  TokenId._();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>2</td><td><code>  SequenceId._();</code></td>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>4</td><td><code>  static final _instance = TokenId._();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>4</td><td><code>  static final _instance = SequenceId._();</code></td>
+                <tr class="noop" title="Line 13" id="line13">
+                    <td>13</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code></code></td>
+                    <td>14</td><td></td><td></td><td><code>  int _id = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  int _id = 0;</code></td>
+                    <td>15</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                    <td>16</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
                 </tr>
-                <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
+                <tr class="lineCov" title="Line 17" id="line17">
+                    <td>17</td><td></td><td>2</td><td><code>  static String next() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>2</td><td><code>  static String next() {</code></td>
+                    <td>18</td><td></td><td>4</td><td><code>    final id = ++_instance._id;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>4</td><td><code>    final id = ++_instance._id;</code></td>
+                    <td>19</td><td></td><td>3</td><td><code>    return '$id@${Squadron.id}';</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>3</td><td><code>    return '$id@${Squadron.id}';</code></td>
+                    <td>20</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>1</td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

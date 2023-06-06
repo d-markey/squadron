@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82758623" lines-covered="24" lines-valid="29" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="24" lines-valid="30" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../squadron_error.dart';</code>
@@ -119,7 +119,10 @@
             <code>    if (!data.keys.every(_isBaseType)) {</code>
         </line>
         <line hits="0">
-            <code>      throw newSquadronError('Map keys must be strings, numbers or booleans.');</code>
+            <code>      throw newSquadronError(</code>
+        </line>
+        <line hits="0">
+            <code>          'Map keys must be strings, numbers or booleans.', StackTrace.current);</code>
         </line>
         <line>
             <code>    }</code>

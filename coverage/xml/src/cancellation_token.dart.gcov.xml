@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9259259" lines-covered="25" lines-valid="27" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="cancellation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9259259" lines-covered="25" lines-valid="27" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -20,7 +20,7 @@
             <code>import 'xplat/_helpers.dart';</code>
         </line>
         <line>
-            <code>import 'xplat/_sequence_id.dart';</code>
+            <code>import 'xplat/_token_id.dart';</code>
         </line>
         <line>
             <code/>
@@ -39,7 +39,7 @@
             <code/>
         </line>
         <line hits="4">
-            <code>  CancellationToken([String? message]) : this._(message, SequenceId.next());</code>
+            <code>  CancellationToken([String? message]) : this._(message, TokenId.next());</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -236,9 +236,9 @@
         <line>
             <code>  /// Seralization of a [CancellationToken]</code>
         </line>
-        <line hits="5">
-            <code>  List serialize() =&gt; [_id, message];</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>  List serialize() =&gt; List.unmodifiable([_id, message]);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

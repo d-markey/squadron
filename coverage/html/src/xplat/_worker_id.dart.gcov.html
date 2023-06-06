@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info _identity.dart</title>
+        <title>LCOV - lcov.info _worker_id.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,12 +13,12 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../index.html">top level</a> - <a href="index.html">/src/xplat</a> - _identity.dart
+                        <a href="../../index.html">top level</a> - <a href="index.html">/src/xplat</a> - _worker_id.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-05-12</dd>
+                    <dd>2023-06-06</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>6</td><td>6</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -73,49 +73,52 @@
                     <td>4</td><td></td><td></td><td><code>///</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. Because of Dart's</code></td>
+                    <td>5</td><td></td><td></td><td><code>/// The class implements a simple counter that is incremented each time a new ID will be requested. The generated</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>/// architecture, this guarantees unicity per event loop (thread) only.</code></td>
+                    <td>6</td><td></td><td></td><td><code>/// ID also integrates [Squadron.id] to guarantee unicity across event loops (provided [Squadron.id]s are also</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>class Identity {</code></td>
+                    <td>7</td><td></td><td></td><td><code>/// unique across event loops).</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>2</td><td><code>  Identity._();</code></td>
+                <tr class="noop" title="Line 8" id="line8">
+                    <td>8</td><td></td><td></td><td><code>class WorkerId {</code></td>
                 </tr>
-                <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 9" id="line9">
+                    <td>9</td><td></td><td>2</td><td><code>  WorkerId._();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>4</td><td><code>  static final _instance = Identity._();</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>4</td><td><code>  static final _instance = WorkerId._();</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>  int _counter = 0;</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>  int _counter = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
+                    <td>14</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>2</td><td><code>  static String nextId() {</code></td>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code>  /// Provides the next ID.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>4</td><td><code>    final id = ++_instance._counter;</code></td>
+                    <td>16</td><td></td><td>1</td><td><code>  static String next() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>3</td><td><code>    return '${Squadron.id}.$id';</code></td>
+                    <td>17</td><td></td><td>4</td><td><code>    final id = ++_instance._counter;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>18</td><td></td><td>2</td><td><code>    return '${Squadron.id}.$id';</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>}</code></td>
+                    <td>19</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

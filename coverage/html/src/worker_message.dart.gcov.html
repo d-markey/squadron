@@ -2,9 +2,9 @@
 <html>
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info _local_worker.dart</title>
+        <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../jgenhtml.js"></script>
+        <title>LCOV - lcov.info worker_message.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,7 +13,7 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../index.html">top level</a> - <a href="index.html">/src/native</a> - _local_worker.dart
+                        <a href="../index.html">top level</a> - <a href="index.html">/src</a> - worker_message.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>12</td><td>12</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>7</td><td>9</td><td class="med">77.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,94 +61,106 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'dart:isolate';</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'package:meta/meta.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../xplat/_worker_runner.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import 'squadron.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '../channel.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code>import 'xplat/_helpers.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import '../local_worker.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '../worker_service.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code></code></td>
+                    <td>7</td><td></td><td></td><td><code>typedef WorkerMessage = List&lt;dynamic&gt;;</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>class _VmLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code></td>
+                    <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>2</td><td><code>  _VmLocalWorker._(W service) : super(service) {</code></td>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code>extension WorkerMessageImpl on List {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>1</td><td><code>    final runner = WorkerRunner.use(this);</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code>  static const _$traveltime = 0;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>4</td><td><code>    _port.listen((message) =&gt; runner.processMessage(message));</code></td>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>  }</code></td>
+                    <td>12</td><td></td><td></td><td><code>  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>  /// (in microseconds) it took between the moment the message was serialized and the moment it was</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  final _port = ReceivePort();</code></td>
+                    <td>14</td><td></td><td></td><td><code>  /// deserialized.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>4</td><td><code>  late Channel? _channel = Channel.deserialize(_port.sendPort);</code></td>
+                    <td>15</td><td></td><td>2</td><td><code>  int? get travelTime =&gt; this[_$traveltime];</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                    <td>16</td><td></td><td></td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>1</td><td><code>  Channel? get channel =&gt; _channel;</code></td>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code></code></td>
+                    <td>19</td><td></td><td></td><td><code>extension WorkerMessageExt on List {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  static const _$traveltime = WorkerMessageImpl._$traveltime;</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>  void stop() {</code></td>
+                    <td>21</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>2</td><td><code>    _port.close();</code></td>
+                    <td>22</td><td></td><td>1</td><td><code>  void initTravelTime() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>2</td><td><code>    _channel?.close();</code></td>
+                    <td>23</td><td></td><td>1</td><td><code>    if (Squadron.debugMode) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>1</td><td><code>    _channel = null;</code></td>
+                <tr class="lineNoCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>0</td><td><code>      this[_$traveltime] = microsecTimeStamp();</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>  }</code></td>
+                    <td>25</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>}</code></td>
+                    <td>26</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
                     <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>/// Creates a [LocalWorker] on a native platform.</code></td>
+                <tr class="lineCov" title="Line 28" id="line28">
+                    <td>28</td><td></td><td>2</td><td><code>  void setTravelTime() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>1</td><td><code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(W service) =&gt;</code></td>
+                    <td>29</td><td></td><td>2</td><td><code>    final ts = this[_$traveltime];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>1</td><td><code>    _VmLocalWorker._(service);</code></td>
+                    <td>30</td><td></td><td>1</td><td><code>    if (ts != null) {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 31" id="line31">
+                    <td>31</td><td></td><td>0</td><td><code>      this[_$traveltime] = microsecTimeStamp() - (ts as int);</code></td>
+                </tr>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 34" id="line34">
+                    <td>34</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

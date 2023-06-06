@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-05-12" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7559055" lines-covered="96" lines-valid="127" package="/src/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-06" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7480916" lines-covered="98" lines-valid="131" package="/src/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -42,6 +42,21 @@
         </line>
         <line>
             <code>import '_transferables.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef EntryPoint = String;</code>
+        </line>
+        <line>
+            <code>typedef PlatformWorker = web.Worker;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);</code>
         </line>
         <line>
             <code/>
@@ -92,7 +107,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    final message = req.serialize();</code>
+            <code>    req.wrapRequest();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -108,17 +123,16 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>        transfer.addAll(Transferables.get(message));</code>
+            <code>        transfer.addAll(Transferables.get(req));</code>
         </line>
         <line>
             <code>      } else {</code>
         </line>
-        <line hits="1">
-            <code>        if (req.client != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        if (req.channelInfo != null) {</code>
         </line>
         <line hits="1">
-            <code>          transfer.add(req.client!.serialize());</code>
+            <code>          transfer.add(req.channelInfo);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -128,7 +142,7 @@
             <code>      }</code>
         </line>
         <line hits="1">
-            <code>      _sendPort!.postMessage(message, transfer);</code>
+            <code>      _sendPort!.postMessage(req, transfer);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -136,7 +150,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      Squadron.severe('failed to post request $message: error $ex');</code>
+            <code>      Squadron.severe('failed to post request $req: error $ex');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -158,7 +172,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    final message = res.serialize();</code>
+            <code>    res.wrapResponse();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -169,16 +183,16 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        final transfer = Transferables.get(message).toList();</code>
+            <code>        final transfer = Transferables.get(res).toList();</code>
         </line>
         <line hits="0">
-            <code>        _sendPort!.postMessage(message, transfer);</code>
+            <code>        _sendPort!.postMessage(res, transfer);</code>
         </line>
         <line>
             <code>      } else {</code>
         </line>
         <line hits="1">
-            <code>        _sendPort!.postMessage(message);</code>
+            <code>        _sendPort!.postMessage(res);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -188,7 +202,7 @@
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.severe('failed to post response $message: error $ex');</code>
+            <code>      Squadron.severe('failed to post response $res: error $ex');</code>
         </line>
         <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
@@ -247,7 +261,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      _postRequest(WorkerRequest.stop(), false);</code>
+            <code>      _postRequest(WorkerRequestImpl.stop(), false);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -293,8 +307,11 @@
             <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>      WorkerRequestImpl.userCommand(</code>
+        </line>
         <line hits="1">
-            <code>      WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
+            <code>          com.port2, command, args, token, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -373,8 +390,11 @@
             <code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>      WorkerRequestImpl.userCommand(</code>
+        </line>
         <line hits="1">
-            <code>      WorkerRequest(com.port2, command, args, token, inspectResponse),</code>
+            <code>          com.port2, command, args, token, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -511,7 +531,7 @@
             <code>  void reply(dynamic data, bool inspectResponse) =&gt;</code>
         </line>
         <line hits="1">
-            <code>      _postResponse(WorkerResponse(data), inspectResponse);</code>
+            <code>      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -521,7 +541,10 @@
             <code>  @override</code>
         </line>
         <line>
-            <code>  void log(String message) =&gt; _postResponse(WorkerResponse.log(message), false);</code>
+            <code>  void log(String message) =&gt;</code>
+        </line>
+        <line>
+            <code>      _postResponse(WorkerResponseImpl.log(message), false);</code>
         </line>
         <line>
             <code/>
@@ -548,7 +571,7 @@
             <code>  @override</code>
         </line>
         <line hits="1">
-            <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream, false);</code>
+            <code>  void closeStream() =&gt; _postResponse(WorkerResponseImpl.closeStream(), false);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -569,7 +592,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    _postResponse(WorkerResponse.withError(error), false);</code>
+            <code>    _postResponse(WorkerResponseImpl.withError(error), false);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -717,7 +740,10 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    dynamic entryPoint, String workerId, List startArguments) {</code>
+            <code>    EntryPoint entryPoint, String workerId, List startArguments,</code>
+        </line>
+        <line>
+            <code>    [PlatformWorkerHook? hook]) {</code>
         </line>
         <line>
             <code>  final completer = Completer&lt;Channel&gt;();</code>
@@ -737,7 +763,35 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  final startRequest = WorkerRequest.start(com.port2, workerId, startArguments);</code>
+            <code>  try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    hook?.call(worker);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  } catch (ex) {</code>
+        </line>
+        <line hits="1">
+            <code>    Squadron.warning(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final startRequest =</code>
+        </line>
+        <line hits="1">
+            <code>      WorkerRequestImpl.start(com.port2, workerId, startArguments);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -817,12 +871,18 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      final response = WorkerResponse.deserialize(event.data);</code>
+            <code>      final response = event.data as List;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      if (response == null) return;</code>
+            <code>      if (!response.unwrapResponse()) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        return;</code>
+        </line>
+        <line>
+            <code>      }</code>
         </line>
         <line>
             <code/>
@@ -831,9 +891,8 @@
             <code>      if (!completer.isCompleted) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line>
             <code>        final error = response.error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>        if (error != null) {</code>
@@ -863,7 +922,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          channel._workerId = startRequest.id;</code>
+            <code>          channel._workerId = workerId;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -881,7 +940,7 @@
             <code>      } else {</code>
         </line>
         <line hits="0">
-            <code>        Squadron.config('unexpected response: ${response.serialize()}');</code>
+            <code>        Squadron.config('unexpected response: $response');</code>
         </line>
         <line>
             <code>      }</code>
@@ -897,17 +956,17 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  final message = startRequest.serialize();</code>
+            <code>  startRequest.wrapRequest();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>  try {</code>
         </line>
         <line>
-            <code>    final transfer = Transferables.get(message).toList();</code>
+            <code>    final transfer = Transferables.get(startRequest).toList();</code>
         </line>
         <line hits="1">
-            <code>    worker.postMessage(message, transfer);</code>
+            <code>    worker.postMessage(startRequest, transfer);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -923,7 +982,10 @@
             <code>    worker.terminate();</code>
         </line>
         <line hits="0">
-            <code>    Squadron.severe('failed to post connection request $message: error $ex');</code>
+            <code>    Squadron.severe(</code>
+        </line>
+        <line hits="0">
+            <code>        'failed to post connection request $startRequest: error $ex');</code>
         </line>
         <line hits="0">
             <code>    completer.completeError(SquadronException.from(ex, st), st);</code>
