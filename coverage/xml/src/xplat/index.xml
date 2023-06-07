@@ -16,11 +16,11 @@
         <source branches-hit="0" branches-valid="0" filename="_token_id.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_value_wrapper.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="34" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
-        </source>
         <source branches-hit="0" branches-valid="0" filename="_pool_worker.dart" functions-hit="0" functions-valid="0" lines-hit="20" lines-valid="20" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="20" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_value_wrapper.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="34" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="_cancellation_token_ref.dart" functions-hit="0" functions-valid="0" lines-hit="24" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="24" name="&lt;unnamed&gt;"/>
