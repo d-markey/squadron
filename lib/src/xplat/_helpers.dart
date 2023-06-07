@@ -14,4 +14,4 @@ void safeInvoke(SquadronCallback? callback) {
 final _sqEpoch = DateTime.utc(2020, 1, 1);
 
 int microsecTimeStamp() =>
-    DateTime.timestamp().difference(_sqEpoch).inMicroseconds;
+    DateTime.now().toUtc().difference(_sqEpoch).inMicroseconds;

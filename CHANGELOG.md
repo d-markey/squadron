@@ -1,3 +1,7 @@
+## 5.1.1
+
+- Use `DateTime.now().toUtc()` instead of `DartTime.timestamp()` which is available starting from Dart 3 only. Fixes https://github.com/d-markey/squadron/issues/22.
+
 ## 5.1.0
 
 - Make `WorkerRequest` and `WorkerResponse` aliases of `List` to minimize serialization overhead. Replace previous `WorkerRequest` and `WorkerResponse` implementations with extension methods. This may be a breaking change.
