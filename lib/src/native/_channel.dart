@@ -12,10 +12,10 @@ import '../worker_response.dart';
 import '../worker_service.dart';
 import '../xplat/_value_wrapper.dart';
 
-typedef EntryPoint = FutureOr Function(List);
+typedef EntryPoint = FutureOr<void> Function(List);
 typedef PlatformWorker = Isolate;
 
-typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);
+typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
 class _BaseVmChannel {
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]

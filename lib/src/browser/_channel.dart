@@ -16,7 +16,7 @@ import '_transferables.dart';
 typedef EntryPoint = String;
 typedef PlatformWorker = web.Worker;
 
-typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);
+typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
 class _BaseJsChannel {
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,

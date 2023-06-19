@@ -1,0 +1,15 @@
+<svg width="536" height="536" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <g id="tl">
+            <path id="arms" xmlns="http://www.w3.org/2000/svg" d="M 244 244 L 0 244 L 0 208 Q 0 200, 192 192 Q 200 0, 208 0 L 244 0 L 244 244"/>
+            <path id="arc" xmlns="http://www.w3.org/2000/svg" d="M 160 160 Q 152 168, 0 188 Q 0 0, 188 0 Q 168 152, 160 160"/>
+        </g>
+    </defs>
+
+    <g transform="translate(12 12)">
+        <use href="#tl" x="0" y="0" fill="#00D2B8" stroke="transparent"/> 
+        <use href="#tl" x="0" y="0" fill="#45D1FD" stroke="transparent" transform="rotate(90 256 256) " /> 
+        <use href="#tl" x="0" y="0" fill="#0082C8" stroke="transparent" transform="rotate(180 256 256) " /> 
+        <use href="#tl" x="0" y="0" fill="#02539A" stroke="transparent" transform="rotate(270 256 256) " /> 
+    </g>
+</svg>

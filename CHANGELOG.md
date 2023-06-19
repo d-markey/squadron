@@ -1,3 +1,7 @@
+## 5.1.2
+
+- `PlatformWorkerHook` and `EntryPoint` aliases now return `FutureOr<void>`.
+
 ## 5.1.1
 
 - Use `DateTime.now().toUtc()` instead of `DartTime.timestamp()` which is available starting from Dart 3 only. Fixes https://github.com/d-markey/squadron/issues/22.
@@ -5,7 +9,7 @@
 ## 5.1.0
 
 - Make `WorkerRequest` and `WorkerResponse` aliases of `List` to minimize serialization overhead. Replace previous `WorkerRequest` and `WorkerResponse` implementations with extension methods. This may be a breaking change.
-- Add `EntryPoint` and `PlatformWorker` typedefs to enforce type safety across runtime platforms. `EntryPoint` and `PlatformWorker` should both resolve to `dynamic` in the IDE. At compile time, they should resolve to the concrete types according to the platform (ie. `String` and `Worker` from `dart:html` for Web platforms, `FutureOr Function(List)` and `Isolate` on native platforms). This should help prevent issues such as https://github.com/d-markey/squadron/issues/17.
+- Add `EntryPoint` and `PlatformWorker` typedefs to enforce type safety across runtime platforms. `EntryPoint` and `PlatformWorker` should both resolve to `dynamic` in the IDE. At compile time, they should resolve to the concrete types according to the platform (ie. `String` and `Worker` from `dart:html` for Web platforms, `FutureOr<void> Function(List)` and `Isolate` on native platforms). This should help prevent issues such as https://github.com/d-markey/squadron/issues/17.
 - Provide access to platform worker instance upon initialization. See https://github.com/d-markey/squadron/issues/20.
 
 ## 5.0.0

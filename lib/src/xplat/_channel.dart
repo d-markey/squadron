@@ -6,7 +6,7 @@ import '../squadron_error.dart';
 typedef EntryPoint = dynamic;
 typedef PlatformWorker = dynamic;
 
-typedef PlatformWorkerHook = FutureOr Function(PlatformWorker);
+typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
 Future<Channel> openChannel(
         EntryPoint entryPoint, String workerId, List startArguments,
