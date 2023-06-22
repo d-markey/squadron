@@ -1,6 +1,6 @@
 <table><tr>
-<td style="width: 180px;">
-  <img src="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg" style="object-fit: cover;" />
+<td style="vertical-align:top;">
+  <img src="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg" width="120" alt="Squadron logo" />
 </td>
 <td>
 
