@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-19" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8685259" lines-covered="654" lines-valid="753" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8515625" lines-covered="654" lines-valid="768" package="/src" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="23" lines-valid="24" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="23" name="&lt;unnamed&gt;"/>
@@ -46,6 +46,7 @@
         <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
         </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="20" prefix="/home/runner/work/squadron/squadron/lib"/>
         <source branches-hit="0" branches-valid="0" filename="worker_message.dart" functions-hit="0" functions-valid="0" lines-hit="7" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="7" name="&lt;unnamed&gt;"/>
         </source>
@@ -61,7 +62,6 @@
         <source branches-hit="0" branches-valid="0" filename="cancellation_token.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="27" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_marshaller.dart" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib"/>
         <source branches-hit="0" branches-valid="0" filename="composite_token.dart" functions-hit="0" functions-valid="0" lines-hit="29" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="29" name="&lt;unnamed&gt;"/>
         </source>
