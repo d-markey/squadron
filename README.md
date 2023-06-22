@@ -1,5 +1,5 @@
 <table><tr>
-<td style="vertical-align:top;">
+<td valign="top">
   <img src="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg" width="120" alt="Squadron logo" />
 </td>
 <td>
