@@ -1,3 +1,15 @@
+<table><tr>
+<td style="width: 180px;">
+  <img src="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg" style="object-fit: cover;" />
+</td>
+<td>
+
+## **Squadron**
+
+Multithreading and worker pools in Dart.
+
+Offload CPU-bound and long running tasks and give your mobile and Web apps some air!
+
 [![Pub Package](https://img.shields.io/pub/v/squadron)](https://pub.dev/packages/squadron)
 [![Dart Platforms](https://badgen.net/pub/dart-platform/squadron)](https://pub.dev/packages/squadron)
 [![Flutter Platforms](https://badgen.net/pub/flutter-platform/squadron)](https://pub.dev/packages/squadron)
@@ -14,17 +26,21 @@
 [![Code Lines](https://img.shields.io/badge/dynamic/json?color=blue&label=code%20lines&query=%24.linesValid&url=https%3A%2F%2Fraw.githubusercontent.com%2Fd-markey%2Fsquadron%2Fmain%2Fcoverage.json)](https://github.com/d-markey/squadron/tree/main/coverage/html)
 [![Code Coverage](https://img.shields.io/badge/dynamic/json?color=blue&label=code%20coverage&query=%24.lineRate&suffix=%25&url=https%3A%2F%2Fraw.githubusercontent.com%2Fd-markey%2Fsquadron%2Fmain%2Fcoverage.json)](https://github.com/d-markey/squadron/tree/main/coverage/html)
 
-Multithreading and worker pools in Dart to offload CPU-bound or long running tasks and give your mobile and Web apps some air.
+</td>
+</tr></table>
 
-## Summary
 
-* [Features](#features)
+## Table of Contents
+
+* [Highly Recommended](#hr)
 * [Flutter Demo](#demo)
+* [Features](#features)
 * [Getting Started](#started)
 * [Usage](#usage)
-  * [Code generation with squadron_builder](#codegen)
+  * [Code generation with `squadron_builder`](#codegen)
 * [Remarks on Isolates / Web Workers](#remarks)
   * [Channels, Types, and Browser Platforms](#channels_and_types)
+  * [Marshaling data with `squadron_builder`](#marshal)
   * [Note on `package:json_annotation`](#json_annotation)
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
@@ -35,19 +51,23 @@ Multithreading and worker pools in Dart to offload CPU-bound or long running tas
 * [Logging & Debug Mode](#logging)
 * [Thanks!](#thanks)
 
-## <a name="features"></a>Features
+## <a name="hr"></a>Highly recommended
 
-`Worker`: a base worker class managing a platform thread (Isolate or Web Worker) and the communication between clients and  workers.
+***With [squadron_builder][pub_squadron_builder], any stateless Dart class can be automatically turned into a service running on dedicated threads.***
 
-`WorkerPool<W>`: a worker pool for `W` workers. The number of workers is configurable as well as the degree of concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool can be cancelled.
+Stay focus on implementing your service, and let [squadron_builder][pub_squadron_builder] generate the boilerplate code to run it on native `Isolates` as well as `Web Workers`!
 
 ## <a name="demo"></a>Flutter Demo
 
-A demo is available from [GitHub: squadron_sample](https://github.com/d-markey/squadron_sample).
+A demo is available from [GitHub: squadron_sample](https://github.com/d-markey/squadron_sample). It provides a Flutter App running on native and browser platforms, showcasing Squadron integration with [Flutter](https://flutter.dev/). Some of the service workers rely on [squadron_builder][pub_squadron_builder] but others take the manual approach to better understand how things integrate together.
 
-It provides a Flutter App running on native and browser platforms, showcasing Squadron integration with [Flutter](https://flutter.dev/).
+Another demo including code generation is available at [GitHub: flutter_mandel_squadron](https://github.com/d-markey/flutter_mandel_squadron). This sample is a fork from [GitHub: flutter_mandel](https://github.com/escamoteur/flutter_mandel) by [escamoteur](https://github.com/escamoteur), which originally runs on native platforms only. With Squadron, the sample also runs in Web browsers!
 
-Another demo including code generation is available at https://github.com/d-markey/flutter_mandel_squadron.
+## <a name="features"></a>Features
+
+`Worker`: a base worker class managing a platform thread (`Isolate` or `Web Worker`) and the communication between clients and  workers.
+
+`WorkerPool<W>`: a worker pool for `W` workers. The number of workers is configurable as well as the degree of concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool can be cancelled.
 
 ## <a name="started"></a>Getting Started
 
@@ -89,7 +109,7 @@ class SampleService implements WorkerService {
 }
 ```
 
-The rest is a matter of connecting the service class with platform workers. The following code explains step by step how to assemble the service class with workers and worker pools. In practice, this is just boilerplate code that can be generated using Squadron's annotations together with Squadron's codegen companion package [squadron_builder](https://pub.dev/packages/squadron_builder). The code generation approach should be prefered; for more details, see [Code generation with squadron_builder](#codegen).
+The rest is a matter of connecting the service class with platform workers. The following code explains step by step how to assemble the service class with workers and worker pools. In practice, this is just boilerplate code that can be generated using Squadron's annotations together with Squadron's codegen companion package [squadron_builder][pub_squadron_builder]. The code generation approach should be prefered; for more details, see [Code generation with squadron_builder](#codegen).
 
 The sample worker class extends Squadron's `Worker` class and uses the `SampleService` class as a contract. The resulting worker can then be used in Dart Isolates as well as Web Workers.
 
@@ -149,13 +169,13 @@ Using a `WorkerPool`, you are now able to distribute your workloads:
 
 ### <a name="codegen"></a>Code generation with squadron_builder
 
-To simplify the developer experience, Squadron provides annotations leveraged by [squadron_builder](https://pub.dev/packages/squadron_builder) to automatically generate the code for workers and worker pools. As a result, developers need to focus on functionality only, leaving plumbing and bootstrapping aspects to [squadron_builder](https://pub.dev/packages/squadron_builder).
+To simplify the developer experience, Squadron provides annotations leveraged by [squadron_builder][pub_squadron_builder] to automatically generate the code for workers and worker pools. As a result, developers need to focus on functionality only, leaving plumbing and bootstrapping aspects to [squadron_builder][pub_squadron_builder].
 
 ```dart
 part 'sample_service.worker.g.dart';
 
 @SquadronService()
-class SampleService implements WorkerService {
+class SampleService {
   @SquadronMethod()
   Future io({required int milliseconds}) =>
       Future.delayed(Duration(milliseconds: milliseconds));
@@ -165,10 +185,6 @@ class SampleService implements WorkerService {
     final sw = Stopwatch()..start();
     while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
   }
-
-  @override
-  late final Map<int, CommandHandler> operations =
-      buildSampleServiceOperations(this);
 }
 ```
 
@@ -183,11 +199,11 @@ While `Isolates` enable multithreading in Dart applications, several aspects mus
 
 * `Isolate`s do not share memory; in particular, global contexts are not shared across `Isolate`s and may have to be initialized multiple times thus increasing the application's memory footprint and startup time.
 
-* Communicating with an `Isolate` invoves marshalling data in and out; theoretically, only primitive types (`num`, `String`, `bool`, `null`...), `List`/`Map` of primitive types and some specific types like `SendPort` are supported. However, object instances may be sent across `Isolate`s on some platforms, e.g. the Dart Native platform (instances will still be copied).
+* Communicating with an `Isolate` invoves marshaling data in and out; theoretically, only primitive types (`num`, `String`, `bool`, `null`...), `List`/`Map` of primitive types and some specific types like `SendPort` are supported. However, most object instances may be sent across `Isolate`s on native platforms (instances will still be copied).
 
-Web Workers have similar characteristics. Only primitive types and objects implementing [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across Web Worker boundaries.
+Web Workers have similar characteristics but only primitive types and objects implementing [Transferable](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) can be sent across Web Worker boundaries.
 
-Communication between threads does not come for free, and some experiments have found that using `jsonEncode()` may actually be more efficient when sending large data sets (e.g. a `List` containing  many `Map`s) even with the overhead of calling `jsonDecode()` on the receiving end. This is especially true on Web platforms because Dart's implementation of [postMessage](https://api.dart.dev/stable/dart-html/MessagePort/postMessage.html) involves converting Dart objects to native JavaScript objects. These objects will then be cloned by the browser.
+Communication across threads does not come for free, and some experiments have found that using `jsonEncode()` may actually be more efficient when sending large data sets (e.g. a `List` containing  many `Map`s) even with the overhead of calling `jsonDecode()` on the receiving end. This is especially true on Web platforms because Dart's implementation of [postMessage](https://api.dart.dev/stable/dart-html/MessagePort/postMessage.html) involves converting Dart objects to native JavaScript objects. These objects will then be cloned by the browser.
 
 ### <a name="channels_and_types"></a>Channels, Types, and Browser Platforms
 
@@ -287,15 +303,157 @@ class ServiceWorkerPool extends WorkerPool<ServiceWorker> implements ServiceDefi
 }
 ```
 
+### <a name="marshal"></a>Marshaling data with `squadron_builder`
+
+Serialization/deserialization aspects can be delegated to [squadron_builder][pub_squadron_builder] in several ways:
+
+* service methods and parameters may be decorated with `@SerializeWith(marshaler)` to explicitly set the class responsible for marshaling/unmarshaling return values/arguments through platform channels. `marshaler` must be a class (with a *const* constructor) deriving from `SquadronMarshaler<T, S>` or a constant instance of such a class, where `T` is the type of the service method return value or parameter and `S` the type used for transit. For instance, data could be transported as bytes like in the following example:
+
+```dart
+@SquadronService()
+class DataService {
+
+  @SquadronMethod()
+  @SerializeWith(DataMarshaler)
+  FutureOr<Data> doSomething(@SerializeWith(DataMarshaler) Data input) =>
+      Data(input.a + 1, !input.b, '(was $input)');
+}
+
+class Data {
+  Data(this.a, this.b, this.c);
+
+  final int a; // 32-bits
+  final bool b;
+  final String c;
+
+  @override
+  String toString() => 'a=$a, b=$b, c=$c';
+}
+
+class DataMarshaler extends SquadronMarshaler<Data, Uint8List> {
+  const DataMarshaler();
+
+  @override
+  Uint8List marshal(Data payload) {
+    final str = utf8.encode(payload.c);
+    final buffer = Uint8List(4 + 1 + str.length);
+    _writeInt(buffer, 0, payload.a);
+    buffer[4] = payload.b ?  1 : 0;
+    buffer.setRange(5 /* = 4 + 1 */, buffer.length, str);
+    return buffer;
+  }
+
+  @override
+  Data unmarshal(Uint8List buffer) {
+    final a = _readInt(buffer, 0);
+    final b = (buffer[4] != 0);
+    final c = utf8.decode(buffer.skip(5).toList());
+    return Data(a, b, c);
+  }
+
+  static void _writeInt(Uint8List buffer, int pos, int value) {
+    buffer[pos  ] = (value & 0xFF000000)>>24;
+    buffer[pos+1] = (value & 0x00FF0000)>>16;
+    buffer[pos+2] = (value & 0x0000FF00)>>8;
+    buffer[pos+3] = (value & 0x000000FF);
+  }
+
+  static int _readInt(Uint8List buffer, int pos) =>
+        (buffer[pos]<<24) | (buffer[pos+1]<<16) 
+      | (buffer[pos+2]<<8) | buffer[pos+3];
+}
+```
+
+* return value/parameter classes may also implement their own `marshal()`/`unmarshal()` methods. If no `@SerializeWith()` annotation is present, these methods will be used for marshaling/unmarshaling data through platform channels, like in the following example:
+
+```dart
+@SquadronService()
+class DataService {
+
+  @SquadronMethod()
+  FutureOr<Data> doSomething(Data input) =>
+      Data(input.a + 1, !input.b, '(was $input)');
+}
+
+class Data {
+  Data(this.a, this.b, this.c);
+
+  final int a; // 32-bits
+  final bool b;
+  final String c;
+
+  @override
+  String toString() => 'a=$a, b=$b, c=$c';
+
+  Uint8List marshal() {
+    final str = utf8.encode(c);
+    final buffer = Uint8List(4 + 1 + str.length);
+    _writeInt(buffer, 0, a);
+    buffer[4] = b ?  1 : 0;
+    buffer.setRange(5 /* = 4 + 1 */, buffer.length, str);
+    return buffer;
+  }
+
+  Data.unmarshal(Uint8List buffer)
+      : a = _readInt(buffer, 0),
+        b = (buffer[4] != 0),
+        c = utf8.decode(buffer.skip(5).toList());
+
+  static void _writeInt(Uint8List buffer, int pos, int value) {
+    buffer[pos  ] = (value & 0xFF000000)>>24;
+    buffer[pos+1] = (value & 0x00FF0000)>>16;
+    buffer[pos+2] = (value & 0x0000FF00)>>8;
+    buffer[pos+3] = (value & 0x000000FF);
+  }
+
+  static int _readInt(Uint8List buffer, int pos) =>
+        (buffer[pos]<<24) | (buffer[pos+1]<<16) 
+      | (buffer[pos+2]<<8) | buffer[pos+3];
+}
+```
+
+* alternatively, [squadron_builder][pub_squadron_builder] will consider `toJson()`/`fromJson()` methods (which could be generated eg. with [json_serializable][pub_json_serializable]). When applicable, custom-typed members must also be taken into account and serialized/deserialized.
+
+```dart
+@SquadronService()
+class DataService {
+
+  @SquadronMethod()
+  FutureOr<Data> doSomething(Data input) =>
+      Data(input.a + 1, !input.b, '(was $input)');
+}
+
+class Data {
+  Data(this.a, this.b, this.c);
+
+  final int a; // 32-bits
+  final bool b;
+  final String c;
+
+  @override
+  String toString() => 'a=$a, b=$b, c=$c';
+
+  Map toJson() => {'a': a, 'b': b, 'c': c};
+
+  static Data fromJson(Map json) => Data(json['a'], json['b'], json['c']);
+}
+```
+
+These approaches must comply with the following invariants to ensure that data sent through a channel is received on the other side as a clone that is functionally equivalent to the original data:
+
+* with marshaler `M`: the output of `M.marshal(M.unmarshal(data))` must be functionally equivalent to the original `data`.
+* with `marshal()`/`unmarshal()` methods: the output of `Data.unmarshal(data.marshal())` must be functionally equivalent to the original `data`.
+* with `toJson()`/`fromJson()` methods: the output of `Data.fromJson(data.toJson())` must be functionally equivalent to the original `data`.
+
 ### <a name="json_annotation"></a>Note on `package:json_annotation`
 
-Packages such as [json_annotation](https://pub.dev/packages/json_annotation) / [json_serializable](https://pub.dev/packages/json_serializable) can be used to generate the serialization and deserialization code for custom classes. By default, objects will be serialized to / deserialized from `Map<String, dynamic>` data structures.
+Packages such as [json_annotation][pub_json_annotation] / [json_serializable][pub_json_serializable] can be used to generate the serialization and deserialization code for custom classes. By default, objects will be serialized to / deserialized from `Map<String, dynamic>` data structures.
 
 In Browser scenarios, this will lead to errors as the `Map<String, dynamic>` structures lose their strong types when they get processed by the browser.
 
-Luckily, [json_annotation](https://pub.dev/packages/json_annotation) provides the `anyMap` option to control code generation: by setting `anyMap` to `true`, the code builders from [json_serializable](https://pub.dev/packages/json_serializable) will handle JSON objects as `Map` instead of `Map<String, dynamic>`.
+Luckily, [json_annotation][pub_json_annotation] provides the `anyMap` option to control code generation: by setting `anyMap` to `true`, the code builders from [json_serializable][pub_json_serializable] will handle JSON objects as `Map` instead of `Map<String, dynamic>`.
 
-**Setting `anyMap` to `true` is mandatory for classes that are transferred to/from Squadron workers.**
+**On Web platforms, setting `anyMap` to `true` is mandatory for classes that are transferred to/from Squadron workers.**
 
 ## <a name="scaling"></a>Scaling Options
 
@@ -857,11 +1015,11 @@ The pool will not accept new tasks unless it is restarted with `pool.start()`.
 
 ## <a name="logging"></a>Logging & Debug Mode
 
-Squadron provides a minimal logging infrastructure to facilitate logging and debugging. The interface to log messages is similar to that of the [logging](https://pub.dev/packages/logging) package, including compatible log levels.
+Squadron provides a minimal logging infrastructure to facilitate logging and debugging. The interface to log messages is similar to that of the [logging][pub_logging] package, including compatible log levels.
 
 To enable logging in the main application, simply set the appropriate log level and install a logger. Squadron provides two simple loggers out of the box:
-* `DevSquadronLogger` where messages are logged via `dart:developper`'s `log()`
-* `ConsoleSquadronLogger` where messages are logged with `print()`
+* `DevSquadronLogger` where messages are logged via `dart:developper`'s `log()` method
+* `ConsoleSquadronLogger` where messages are logged with the `print()` method
 
 For instance:
 
@@ -901,3 +1059,10 @@ flutter build web
 * [Saad Ardati](https://github.com/SaadArdati) for his patience and feedback when implementing Squadron into his Flutter application.
 * [Martin Fink](https://github.com/martin-robert-fink) for the feedback on Squadron's `Stream` implementation -- this has resulted in huge progress and a major improvement!
 * [Klemen Tusar](https://github.com/techouse) for providing a [sample Chopper JSON decoder](https://hadrien-lejard.gitbook.io/chopper/faq#decoding-json-using-isolates) leveraging Squadron.
+
+
+
+[pub_squadron_builder]: https://pub.dev/packages/squadron_builder
+[pub_json_annotation]: https://pub.dev/packages/json_annotation
+[pub_json_serializable]: https://pub.dev/packages/json_serializable
+[pub_logging]: https://pub.dev/packages/logging

@@ -11,4 +11,4 @@ export 'src/squadron_error.dart'
 export 'src/squadron_exception.dart' hide SquadronExceptionDeserializer;
 export 'src/worker_exception.dart' hide WorkerExceptionExt;
 export 'src/worker_service.dart';
-export 'src/squadron_marshaller.dart';
+export 'src/squadron_marshaler.dart';

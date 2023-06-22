@@ -1,3 +1,7 @@
+## 5.1.3
+
+- Fix 'marshal' typo -- provide a compatibility layer to mark as deprecated all versions using '*marshall*' and mark these artefacts as deprecated. They will eventually be removed.
+
 ## 5.1.2
 
 - `PlatformWorkerHook` and `EntryPoint` aliases now return `FutureOr<void>`.
