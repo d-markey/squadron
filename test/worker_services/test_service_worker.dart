@@ -80,6 +80,10 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       stream((w) => w.infinite(token));
 
   @override
+  Stream<int> clock({int frequency = 1, CancellationToken? token}) =>
+      stream((w) => w.clock(frequency: frequency, token: token));
+
+  @override
   Future cancellableInfiniteCpu(CancellationToken token) =>
       execute((w) => w.cancellableInfiniteCpu(token));
 
@@ -169,6 +173,10 @@ class TestWorker extends Worker implements TestService {
   @override
   Stream<int> infinite([CancellationToken? token]) =>
       stream(TestService.infiniteCommand, token: token);
+
+  @override
+  Stream<int> clock({int frequency = 1, CancellationToken? token}) =>
+      stream(TestService.clockCommand, args: [frequency], token: token);
 
   @override
   Future cancellableInfiniteCpu(CancellationToken token) =>

@@ -711,6 +711,19 @@ void workerTests() {
       pending = await worker.getPendingInfiniteWithErrors();
       expect(pending, isZero);
     });
+
+    test('- subscription cancellation', () async {
+      var counter = 0;
+      final clock = worker.clock(frequency: 100);
+      final sub = clock.listen((n) {
+        counter++;
+      });
+      await Future.delayed(Duration(milliseconds: 100));
+      expect(counter, isPositive);
+      sub.cancel();
+      worker.stop();
+      worker = TestWorker();
+    });
   });
 
   group('- sharing wokers', () {

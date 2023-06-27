@@ -71,6 +71,21 @@ class TestService implements WorkerService {
     }
   }
 
+  Stream<int> clock(
+      {int frequency = 1 /* Hz */, CancellationToken? token}) async* {
+    var n = 0;
+    final ms = 1000 ~/ frequency;
+    if (ms == 0) {
+      throw Exception('Frequency is too high!');
+    }
+    final delay = Duration(milliseconds: ms);
+    while (token == null || !token.cancelled) {
+      yield n;
+      n += 1;
+      await Future.delayed(delay);
+    }
+  }
+
   Future cancellableInfiniteCpu(CancellationToken token) async {
     bool stop = false;
     token.addListener(() => stop = true);
@@ -160,9 +175,10 @@ class TestService implements WorkerService {
   static const pingCommand = 11;
   static const finiteCommand = 14;
   static const infiniteCommand = 15;
-  static const cancellableInfiniteCpuCommand = 16;
-  static const getPendingInfiniteWithErrorsCommand = 17;
-  static const infiniteWithErrorsCommand = 18;
+  static const clockCommand = 16;
+  static const cancellableInfiniteCpuCommand = 17;
+  static const getPendingInfiniteWithErrorsCommand = 18;
+  static const infiniteWithErrorsCommand = 19;
 
   @override
   late final Map<int, CommandHandler> operations = {
@@ -183,6 +199,7 @@ class TestService implements WorkerService {
     pingCommand: (r) => ping(),
     finiteCommand: (r) => finite(r.args[0]),
     infiniteCommand: (r) => infinite(),
+    clockCommand: (r) => clock(frequency: r.args[0], token: r.cancelToken),
     cancellableInfiniteCpuCommand: (r) =>
         cancellableInfiniteCpu(r.cancelToken!),
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
