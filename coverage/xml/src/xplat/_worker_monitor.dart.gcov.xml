@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../cancellation_token.dart';</code>
@@ -26,28 +26,31 @@
             <code/>
         </line>
         <line>
-            <code>/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests. Worker</code>
+            <code>/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests.</code>
         </line>
         <line>
-            <code>/// tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services the chance to</code>
+            <code>/// Worker tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services</code>
         </line>
         <line>
-            <code>/// handle cancellation requests gracefully, or without a [CancellationToken] via [WorkerPool.cancel] or</code>
+            <code>/// the chance to handle cancellation requests gracefully, or without a [CancellationToken] via</code>
         </line>
         <line>
-            <code>/// [Task.cancel].</code>
+            <code>/// [WorkerPool.cancel] or [Task.cancel].</code>
         </line>
         <line>
             <code>class WorkerMonitor {</code>
         </line>
         <line>
-            <code>  /// Constructs a new [WorkerMonitor]. The [terminate] callback will be called by [WorkerMonitor.terminate]. This</code>
+            <code>  /// Constructs a new [WorkerMonitor]. The [_terminate] callback will be called by</code>
         </line>
         <line>
-            <code>  /// callback should contain code to shutdown the platform worker and release resources.</code>
+            <code>  /// [WorkerMonitor.terminate]. This callback should contain code to shutdown the</code>
+        </line>
+        <line>
+            <code>  /// platform worker and release resources.</code>
         </line>
         <line hits="2">
-            <code>  WorkerMonitor(SquadronCallback terminate) : _terminate = terminate;</code>
+            <code>  WorkerMonitor(this._terminate);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -96,13 +99,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it is overridden</code>
+            <code>  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it</code>
         </line>
         <line>
-            <code>  /// with a [CancellationTokenReference] and this reference is rturned to the sender. Otherwise, returns</code>
+            <code>  /// is overridden with a [CancellationTokenReference] and this reference is returned to the sender.</code>
         </line>
         <line>
-            <code>  /// [CancellationTokenReference.noToken].</code>
+            <code>  /// Otherwise, returns [CancellationTokenReference.noToken].</code>
         </line>
         <line hits="1">
             <code>  CancellationTokenReference begin(WorkerRequest request) {</code>
@@ -150,16 +153,16 @@
             <code>      CancellationTokenReference tokenRef, SquadronCallback canceller) {</code>
         </line>
         <line hits="2">
-            <code>    final streamId = (++_streamId);</code>
+            <code>    final streamId = ++_streamId;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>    (_streamCancellers ??= &lt;int, SquadronCallback&gt;{})[streamId] = canceller;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>    tokenRef.addListener(canceller);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    return streamId;</code>

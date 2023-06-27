@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7352941" lines-covered="25" lines-valid="34" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="_value_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7352941" lines-covered="25" lines-valid="34" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -45,28 +45,25 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      {required PostMethod postMethod,</code>
+            <code>      {required PostRequest postMethod,</code>
         </line>
         <line>
             <code>      required Stream messages,</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
-        </line>
-        <line>
-            <code>      required bool inspectRequest})</code>
+            <code>      CancellationToken? token})</code>
         </line>
         <line>
             <code>      : _request = request,</code>
         </line>
         <line>
-            <code>        _postMethod = postMethod,</code>
+            <code>        _postRequest = postMethod,</code>
         </line>
         <line>
             <code>        _token = token,</code>
         </line>
         <line>
-            <code>        _inspectRequest = inspectRequest,</code>
+            <code>        // _inspectRequest = inspectRequest,</code>
         </line>
         <line hits="1">
             <code>        _completer = Completer&lt;T&gt;() {</code>
@@ -195,13 +192,13 @@
             <code>  final WorkerRequest _request;</code>
         </line>
         <line>
-            <code>  final PostMethod _postMethod;</code>
+            <code>  final PostRequest _postRequest;</code>
         </line>
         <line>
             <code>  final CancellationToken? _token;</code>
         </line>
         <line>
-            <code>  final bool _inspectRequest;</code>
+            <code>  // final bool _inspectRequest;</code>
         </line>
         <line>
             <code/>
@@ -218,41 +215,47 @@
             <code/>
         </line>
         <line hits="0">
-            <code>  void _canceller() =&gt; _postMethod(WorkerRequestImpl.cancel(_token!), false);</code>
+            <code>  void _canceller() =&gt; _postRequest(WorkerRequestImpl.cancel(_token!));</code>
         </line>
         <line>
             <code/>
         </line>
         <line hits="2">
-            <code>  Future&lt;T&gt; compute() {</code>
+            <code>  void _done() {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    // initiate operation now!</code>
-        </line>
-        <line hits="5">
-            <code>    _postMethod(_request, _inspectRequest);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>    return _completer.future.whenComplete(() {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1">
-            <code>      _token?.removeListener(_canceller);</code>
+            <code>    _token?.removeListener(_canceller);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>      _sub.cancel();</code>
+            <code>    _sub.cancel();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  Future&lt;T&gt; compute() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    // initiate operation now!</code>
+        </line>
+        <line hits="4">
+            <code>    _postRequest(_request);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>    return _completer.future.whenComplete(_done);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
         </line>
         <line>
             <code>}</code>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9705882" lines-covered="33" lines-valid="34" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9722222" lines-covered="35" lines-valid="36" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -290,6 +290,20 @@
         <line hits="3">
             <code>  WorkerChannel? get client =&gt; this[_$client];</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// The channel method to be used for sending data back.</code>
+        </line>
+        <line hits="1">
+            <code>  void Function(dynamic)? get reply =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      inspectResponse ? client?.inspectAndReply : client?.reply;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-06-22</dd>
+                    <dd>2023-06-27</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>33</td><td>34</td><td class="high">97.1%</td>
+                            <th scope="row">Lines</th><td>35</td><td>36</td><td class="high">97.2%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -346,220 +346,232 @@
                     <td>95</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 96" id="line96">
-                    <td>96</td><td></td><td></td><td><code>  /// The client's channel info.</code></td>
+                    <td>96</td><td></td><td></td><td><code>  /// The channel method to be used for sending data back.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>1</td><td><code>  dynamic get channelInfo =&gt; this[_$client];</code></td>
+                    <td>97</td><td></td><td>1</td><td><code>  void Function(dynamic)? get reply =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 98" id="line98">
-                    <td>98</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 98" id="line98">
+                    <td>98</td><td></td><td>4</td><td><code>      inspectResponse ? client?.inspectAndReply : client?.reply;</code></td>
                 </tr>
                 <tr class="noop" title="Line 99" id="line99">
-                    <td>99</td><td></td><td></td><td><code>  /// Cancellation token.</code></td>
+                    <td>99</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>3</td><td><code>  CancellationToken? get cancelToken =&gt; this[_$token];</code></td>
+                <tr class="noop" title="Line 100" id="line100">
+                    <td>100</td><td></td><td></td><td><code>  /// The client's channel info.</code></td>
                 </tr>
-                <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 101" id="line101">
+                    <td>101</td><td></td><td>1</td><td><code>  dynamic get channelInfo =&gt; this[_$client];</code></td>
                 </tr>
                 <tr class="noop" title="Line 102" id="line102">
-                    <td>102</td><td></td><td></td><td><code>  /// Stream id.</code></td>
+                    <td>102</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 103" id="line103">
-                    <td>103</td><td></td><td>3</td><td><code>  int? get streamId =&gt; this[_$streamId];</code></td>
+                <tr class="noop" title="Line 103" id="line103">
+                    <td>103</td><td></td><td></td><td><code>  /// Cancellation token.</code></td>
                 </tr>
-                <tr class="noop" title="Line 104" id="line104">
-                    <td>104</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 104" id="line104">
+                    <td>104</td><td></td><td>3</td><td><code>  CancellationToken? get cancelToken =&gt; this[_$token];</code></td>
                 </tr>
                 <tr class="noop" title="Line 105" id="line105">
-                    <td>105</td><td></td><td></td><td><code>  /// The current Squadron log level. This is set automatically and only used for connection commands.</code></td>
+                    <td>105</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>2</td><td><code>  int? get logLevel =&gt; this[_$logLevel];</code></td>
+                <tr class="noop" title="Line 106" id="line106">
+                    <td>106</td><td></td><td></td><td><code>  /// Stream id.</code></td>
                 </tr>
-                <tr class="noop" title="Line 107" id="line107">
-                    <td>107</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 107" id="line107">
+                    <td>107</td><td></td><td>3</td><td><code>  int? get streamId =&gt; this[_$streamId];</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
-                    <td>108</td><td></td><td></td><td><code>  /// The [command]'s ID.</code></td>
+                    <td>108</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>3</td><td><code>  int get command =&gt; this[_$command];</code></td>
+                <tr class="noop" title="Line 109" id="line109">
+                    <td>109</td><td></td><td></td><td><code>  /// The current Squadron log level. This is set automatically and only used for connection commands.</code></td>
                 </tr>
-                <tr class="noop" title="Line 110" id="line110">
-                    <td>110</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 110" id="line110">
+                    <td>110</td><td></td><td>2</td><td><code>  int? get logLevel =&gt; this[_$logLevel];</code></td>
                 </tr>
                 <tr class="noop" title="Line 111" id="line111">
-                    <td>111</td><td></td><td></td><td><code>  /// The ID of the worker that initiated the command (only used for connection commands).</code></td>
+                    <td>111</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>2</td><td><code>  String? get id =&gt; this[_$id];</code></td>
+                <tr class="noop" title="Line 112" id="line112">
+                    <td>112</td><td></td><td></td><td><code>  /// The [command]'s ID.</code></td>
                 </tr>
-                <tr class="noop" title="Line 113" id="line113">
-                    <td>113</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 113" id="line113">
+                    <td>113</td><td></td><td>3</td><td><code>  int get command =&gt; this[_$command];</code></td>
                 </tr>
                 <tr class="noop" title="Line 114" id="line114">
-                    <td>114</td><td></td><td></td><td><code>  /// The command's arguments, if any.</code></td>
+                    <td>114</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 115" id="line115">
-                    <td>115</td><td></td><td>3</td><td><code>  List get args =&gt; this[_$args];</code></td>
+                <tr class="noop" title="Line 115" id="line115">
+                    <td>115</td><td></td><td></td><td><code>  /// The ID of the worker that initiated the command (only used for connection commands).</code></td>
                 </tr>
-                <tr class="noop" title="Line 116" id="line116">
-                    <td>116</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 116" id="line116">
+                    <td>116</td><td></td><td>2</td><td><code>  String? get id =&gt; this[_$id];</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
-                    <td>117</td><td></td><td></td><td><code>  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In</code></td>
+                    <td>117</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 118" id="line118">
-                    <td>118</td><td></td><td></td><td><code>  /// Web workers, ownership of these objects must be transfered across threads.</code></td>
+                    <td>118</td><td></td><td></td><td><code>  /// The command's arguments, if any.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>3</td><td><code>  bool get inspectResponse =&gt; this[_$inspectResponse];</code></td>
+                    <td>119</td><td></td><td>3</td><td><code>  List get args =&gt; this[_$args];</code></td>
                 </tr>
                 <tr class="noop" title="Line 120" id="line120">
                     <td>120</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 121" id="line121">
-                    <td>121</td><td></td><td></td><td><code>  /// flag for start requests.</code></td>
+                    <td>121</td><td></td><td></td><td><code>  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>3</td><td><code>  bool get isConnection =&gt; (command == _connectCommand);</code></td>
+                <tr class="noop" title="Line 122" id="line122">
+                    <td>122</td><td></td><td></td><td><code>  /// Web workers, ownership of these objects must be transfered across threads.</code></td>
                 </tr>
-                <tr class="noop" title="Line 123" id="line123">
-                    <td>123</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 123" id="line123">
+                    <td>123</td><td></td><td>3</td><td><code>  bool get inspectResponse =&gt; this[_$inspectResponse];</code></td>
                 </tr>
                 <tr class="noop" title="Line 124" id="line124">
-                    <td>124</td><td></td><td></td><td><code>  /// flag for stream cancellation requests.</code></td>
+                    <td>124</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>3</td><td><code>  bool get isStreamCancellation =&gt; (command == _cancelStreamCommand);</code></td>
+                <tr class="noop" title="Line 125" id="line125">
+                    <td>125</td><td></td><td></td><td><code>  /// flag for start requests.</code></td>
                 </tr>
-                <tr class="noop" title="Line 126" id="line126">
-                    <td>126</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 126" id="line126">
+                    <td>126</td><td></td><td>3</td><td><code>  bool get isConnection =&gt; (command == _connectCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 127" id="line127">
-                    <td>127</td><td></td><td></td><td><code>  /// flag for cancellation requests.</code></td>
+                    <td>127</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>3</td><td><code>  bool get isCancellation =&gt; (command == _cancelCommand);</code></td>
+                <tr class="noop" title="Line 128" id="line128">
+                    <td>128</td><td></td><td></td><td><code>  /// flag for stream cancellation requests.</code></td>
                 </tr>
-                <tr class="noop" title="Line 129" id="line129">
-                    <td>129</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 129" id="line129">
+                    <td>129</td><td></td><td>3</td><td><code>  bool get isStreamCancellation =&gt; (command == _cancelStreamCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 130" id="line130">
-                    <td>130</td><td></td><td></td><td><code>  /// flag for termination requests.</code></td>
+                    <td>130</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>3</td><td><code>  bool get isTermination =&gt; (command == _terminateCommand);</code></td>
+                <tr class="noop" title="Line 131" id="line131">
+                    <td>131</td><td></td><td></td><td><code>  /// flag for cancellation requests.</code></td>
                 </tr>
-                <tr class="noop" title="Line 132" id="line132">
-                    <td>132</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 132" id="line132">
+                    <td>132</td><td></td><td>3</td><td><code>  bool get isCancellation =&gt; (command == _cancelCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 133" id="line133">
-                    <td>133</td><td></td><td></td><td><code>  static const int _connectCommand = -1;</code></td>
+                    <td>133</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
-                    <td>134</td><td></td><td></td><td><code>  static const int _cancelStreamCommand = -2;</code></td>
+                    <td>134</td><td></td><td></td><td><code>  /// flag for termination requests.</code></td>
                 </tr>
-                <tr class="noop" title="Line 135" id="line135">
-                    <td>135</td><td></td><td></td><td><code>  static const int _cancelCommand = -3;</code></td>
+                <tr class="lineCov" title="Line 135" id="line135">
+                    <td>135</td><td></td><td>3</td><td><code>  bool get isTermination =&gt; (command == _terminateCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 136" id="line136">
-                    <td>136</td><td></td><td></td><td><code>  static const int _terminateCommand = -4;</code></td>
+                    <td>136</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 137" id="line137">
-                    <td>137</td><td></td><td></td><td><code>}</code></td>
+                    <td>137</td><td></td><td></td><td><code>  static const int _connectCommand = -1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 138" id="line138">
-                    <td>138</td><td></td><td></td><td><code></code></td>
+                    <td>138</td><td></td><td></td><td><code>  static const int _cancelStreamCommand = -2;</code></td>
                 </tr>
                 <tr class="noop" title="Line 139" id="line139">
-                    <td>139</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>139</td><td></td><td></td><td><code>  static const int _cancelCommand = -3;</code></td>
                 </tr>
                 <tr class="noop" title="Line 140" id="line140">
-                    <td>140</td><td></td><td></td><td><code>extension WorkerRequestExt on WorkerRequest {</code></td>
+                    <td>140</td><td></td><td></td><td><code>  static const int _terminateCommand = -4;</code></td>
                 </tr>
                 <tr class="noop" title="Line 141" id="line141">
-                    <td>141</td><td></td><td></td><td><code>  static const _$client = WorkerRequestImpl._$client;</code></td>
+                    <td>141</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 142" id="line142">
-                    <td>142</td><td></td><td></td><td><code>  static const _$args = WorkerRequestImpl._$args;</code></td>
+                    <td>142</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code>  static const _$token = WorkerRequestImpl._$token;</code></td>
+                    <td>143</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code>  static const _$inspectResponse = WorkerRequestImpl._$inspectResponse;</code></td>
+                    <td>144</td><td></td><td></td><td><code>extension WorkerRequestExt on WorkerRequest {</code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code></code></td>
+                    <td>145</td><td></td><td></td><td><code>  static const _$client = WorkerRequestImpl._$client;</code></td>
                 </tr>
                 <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code></td>
+                    <td>146</td><td></td><td></td><td><code>  static const _$args = WorkerRequestImpl._$args;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>1</td><td><code>  void unwrapRequest() {</code></td>
+                <tr class="noop" title="Line 147" id="line147">
+                    <td>147</td><td></td><td></td><td><code>  static const _$token = WorkerRequestImpl._$token;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>4</td><td><code>    this[_$client] = WorkerChannel.deserialize(this[_$client]);</code></td>
+                <tr class="noop" title="Line 148" id="line148">
+                    <td>148</td><td></td><td></td><td><code>  static const _$inspectResponse = WorkerRequestImpl._$inspectResponse;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>4</td><td><code>    this[_$token] = CancellationToken.deserialize(this[_$token]);</code></td>
+                <tr class="noop" title="Line 149" id="line149">
+                    <td>149</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>2</td><td><code>    this[_$inspectResponse] ??= false;</code></td>
+                <tr class="noop" title="Line 150" id="line150">
+                    <td>150</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 151" id="line151">
-                    <td>151</td><td></td><td>2</td><td><code>    this[_$args] ??= const [];</code></td>
+                    <td>151</td><td></td><td>1</td><td><code>  void unwrapRequest() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 152" id="line152">
-                    <td>152</td><td></td><td>2</td><td><code>    setTravelTime();</code></td>
+                    <td>152</td><td></td><td>4</td><td><code>    this[_$client] = WorkerChannel.deserialize(this[_$client]);</code></td>
                 </tr>
-                <tr class="noop" title="Line 153" id="line153">
-                    <td>153</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 153" id="line153">
+                    <td>153</td><td></td><td>4</td><td><code>    this[_$token] = CancellationToken.deserialize(this[_$token]);</code></td>
                 </tr>
-                <tr class="noop" title="Line 154" id="line154">
-                    <td>154</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 154" id="line154">
+                    <td>154</td><td></td><td>2</td><td><code>    this[_$inspectResponse] ??= false;</code></td>
                 </tr>
-                <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerRequest].</code></td>
+                <tr class="lineCov" title="Line 155" id="line155">
+                    <td>155</td><td></td><td>2</td><td><code>    this[_$args] ??= const [];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>2</td><td><code>  void wrapRequest() {</code></td>
+                    <td>156</td><td></td><td>2</td><td><code>    setTravelTime();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 157" id="line157">
-                    <td>157</td><td></td><td>4</td><td><code>    this[_$token] = (this[_$token] as CancellationToken?)?.serialize();</code></td>
+                <tr class="noop" title="Line 157" id="line157">
+                    <td>157</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 158" id="line158">
-                    <td>158</td><td></td><td>1</td><td><code>    initTravelTime();</code></td>
+                <tr class="noop" title="Line 158" id="line158">
+                    <td>158</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 159" id="line159">
-                    <td>159</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 159" id="line159">
+                    <td>159</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerRequest].</code></td>
                 </tr>
-                <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 160" id="line160">
+                    <td>160</td><td></td><td>2</td><td><code>  void wrapRequest() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 161" id="line161">
-                    <td>161</td><td></td><td>1</td><td><code>  void overrideCancelToken(CancellationToken token) {</code></td>
+                    <td>161</td><td></td><td>4</td><td><code>    this[_$token] = (this[_$token] as CancellationToken?)?.serialize();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>5</td><td><code>    if (cancelToken == null || cancelToken!.id != token.id) {</code></td>
+                    <td>162</td><td></td><td>1</td><td><code>    initTravelTime();</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 163" id="line163">
-                    <td>163</td><td></td><td>0</td><td><code>      throw newSquadronError('cancellation token mismatch', StackTrace.current);</code></td>
+                <tr class="lineCov" title="Line 163" id="line163">
+                    <td>163</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 164" id="line164">
-                    <td>164</td><td></td><td></td><td><code>    }</code></td>
+                    <td>164</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 165" id="line165">
-                    <td>165</td><td></td><td>1</td><td><code>    this[_$token] = token;</code></td>
+                    <td>165</td><td></td><td>1</td><td><code>  void overrideCancelToken(CancellationToken token) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 166" id="line166">
-                    <td>166</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 166" id="line166">
+                    <td>166</td><td></td><td>5</td><td><code>    if (cancelToken == null || cancelToken!.id != token.id) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 167" id="line167">
-                    <td>167</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 167" id="line167">
+                    <td>167</td><td></td><td>0</td><td><code>      throw newSquadronError('cancellation token mismatch', StackTrace.current);</code></td>
+                </tr>
+                <tr class="noop" title="Line 168" id="line168">
+                    <td>168</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 169" id="line169">
+                    <td>169</td><td></td><td>1</td><td><code>    this[_$token] = token;</code></td>
+                </tr>
+                <tr class="noop" title="Line 170" id="line170">
+                    <td>170</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 171" id="line171">
+                    <td>171</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

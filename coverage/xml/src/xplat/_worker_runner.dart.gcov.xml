@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8513514" lines-covered="63" lines-valid="74" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.81666666" lines-covered="49" lines-valid="60" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -369,7 +369,7 @@
             <code/>
         </line>
         <line>
-            <code>      // retrieve operation matching the request command</code>
+            <code>      // find the operation matching the request command</code>
         </line>
         <line hits="4">
             <code>      final op = _operations[request.command];</code>
@@ -405,8 +405,11 @@
         <line>
             <code/>
         </line>
+        <line>
+            <code>      // send results back with the proper reply method</code>
+        </line>
         <line hits="1">
-            <code>      final inspectResponse = request.inspectResponse;</code>
+            <code>      final reply = request.reply!;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -416,98 +419,9 @@
         <line>
             <code>        // result is a stream: forward data to the client</code>
         </line>
-        <line hits="1">
-            <code>        late final StreamSubscription subscription;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        final done = Completer();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>        // stream canceller</code>
-        </line>
-        <line hits="2">
-            <code>        void shutdown() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          client.closeStream();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          subscription.cancel();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          done.complete();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>        // register stream canceller callback and connect stream with client</code>
-        </line>
-        <line hits="2">
-            <code>        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        client.connectStream(streamId);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>        // start forwarding messages to the client</code>
-        </line>
-        <line hits="2">
-            <code>        subscription = result.listen(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="3">
-            <code>          (data) =&gt; client.reply(data, inspectResponse),</code>
+            <code>        await client.pipe(result, reply, _monitor, tokenRef);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          onError: (ex, st) =&gt; client.error(SquadronException.from(ex, st)),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          onDone: shutdown,</code>
-        </line>
-        <line>
-            <code>          cancelOnError: false,</code>
-        </line>
-        <line>
-            <code>        );</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="4">
-            <code>        await done.future.whenComplete(() {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>          // unregister stream canceller callback</code>
-        </line>
-        <line hits="3">
-            <code>          _monitor.unregisterStreamCanceller(tokenRef, streamId);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -515,9 +429,9 @@
         <line>
             <code>        // result is a value: send to the client</code>
         </line>
-        <line hits="1">
-            <code>        client.reply(result, inspectResponse);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        reply(result);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>

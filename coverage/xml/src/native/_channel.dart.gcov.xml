@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.92156863" lines-covered="94" lines-valid="102" package="/src/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9238095" lines-covered="97" lines-valid="105" package="/src/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import '../squadron_error.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_stream_wrapper.dart';</code>
@@ -61,6 +64,13 @@
         <line>
             <code>class _BaseVmChannel {</code>
         </line>
+        <line hits="1">
+            <code>  _BaseVmChannel._(this.workerId, this._sendPort);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line>
             <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]</code>
         </line>
@@ -68,7 +78,7 @@
             <code>  /// to return values to the client.</code>
         </line>
         <line>
-            <code>  SendPort? _sendPort;</code>
+            <code>  final SendPort _sendPort;</code>
         </line>
         <line>
             <code/>
@@ -76,11 +86,8 @@
         <line>
             <code>  /// The ID of the worker attached to this [Channel].</code>
         </line>
-        <line hits="0">
-            <code>  String get workerId =&gt; _workerId ?? '';</code>
-        </line>
         <line>
-            <code>  String? _workerId;</code>
+            <code>  final String workerId;</code>
         </line>
         <line>
             <code/>
@@ -96,7 +103,7 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  void _postRequest(WorkerRequest req, bool inspectRequest) {</code>
+            <code>  void _postRequest(WorkerRequest req) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -111,7 +118,7 @@
             <code>    try {</code>
         </line>
         <line hits="2">
-            <code>      _sendPort!.send(req);</code>
+            <code>      _sendPort.send(req);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -134,8 +141,14 @@
         <line>
             <code/>
         </line>
+        <line hits="0">
+            <code>  void _inspectAndPostRequest(WorkerRequest req) =&gt; _postRequest(req);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line hits="1">
-            <code>  void _postResponse(WorkerResponse res, bool inspectResponse) {</code>
+            <code>  void _postResponse(WorkerResponse res) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -146,7 +159,7 @@
             <code>    try {</code>
         </line>
         <line hits="2">
-            <code>      _sendPort!.send(res);</code>
+            <code>      _sendPort.send(res);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -179,8 +192,18 @@
             <code>class _VmChannel extends _BaseVmChannel implements Channel {</code>
         </line>
         <line hits="1">
-            <code>  _VmChannel._();</code>
+            <code>  _VmChannel._(String workerId, SendPort sendPort)</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      : super._(workerId, sendPort);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  bool _closed = false;</code>
         </line>
         <line>
             <code/>
@@ -209,15 +232,15 @@
             <code>  FutureOr close() {</code>
         </line>
         <line hits="1">
-            <code>    if (_sendPort != null) {</code>
+            <code>    if (!_closed) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _postRequest(WorkerRequestImpl.stop(), false);</code>
+            <code>      _postRequest(WorkerRequestImpl.stop());</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      _sendPort = null;</code>
+            <code>      _closed = true;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -252,6 +275,16 @@
             <code>      bool inspectResponse = false}) {</code>
         </line>
         <line hits="1">
+            <code>    if (_closed) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw newSquadronError('Channel is closed', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
             <code>    final receiver = ReceivePort();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -268,7 +301,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      postMethod: _postRequest,</code>
+            <code>      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -278,14 +311,11 @@
             <code>      token: token,</code>
         </line>
         <line>
-            <code>      inspectRequest: inspectRequest,</code>
-        </line>
-        <line>
             <code>    );</code>
         </line>
-        <line hits="4">
-            <code>    return wrapper.compute().whenComplete(() =&gt; receiver.close());</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>    return wrapper.compute().whenComplete(receiver.close);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -319,6 +349,16 @@
             <code>      bool inspectResponse = false}) {</code>
         </line>
         <line hits="1">
+            <code>    if (_closed) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw newSquadronError('Channel is closed', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
             <code>    final receiver = ReceivePort();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -335,7 +375,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      postMethod: _postRequest,</code>
+            <code>      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -358,9 +398,6 @@
         </line>
         <line>
             <code>      token: token,</code>
-        </line>
-        <line>
-            <code>      inspectRequest: inspectRequest,</code>
         </line>
         <line>
             <code>    );</code>
@@ -388,7 +425,11 @@
             <code>class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {</code>
         </line>
         <line hits="1">
-            <code>  _VmWorkerChannel._();</code>
+            <code>  _VmWorkerChannel._(String workerId, SendPort sendPort)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      : super._(workerId, sendPort);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -412,7 +453,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      reply(channelInfo.sendPort, true);</code>
+            <code>      inspectAndReply(channelInfo.sendPort);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -434,29 +475,6 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the</code>
-        </line>
-        <line>
-            <code>  /// [Worker] that the stream has been cancelled on the client-side.</code>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  void connectStream(int streamId) {</code>
-        </line>
-        <line hits="1">
-            <code>    reply(streamId, false);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
             <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
@@ -467,11 +485,28 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  void reply(dynamic data, bool inspectResponse) =&gt;</code>
+            <code>  void reply(dynamic data) =&gt;</code>
         </line>
         <line hits="2">
-            <code>      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);</code>
+            <code>      _postResponse(WorkerResponseImpl.withResult(data));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+        </line>
+        <line>
+            <code>  /// [Isolate] only. Same as [reply] on VM platforms.</code>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  void inspectAndReply(dynamic data) =&gt; reply(data);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -479,11 +514,8 @@
         <line hits="0">
             <code>  @override</code>
         </line>
-        <line>
-            <code>  void log(String message) =&gt;</code>
-        </line>
         <line hits="0">
-            <code>      _postResponse(WorkerResponseImpl.log(message), false);</code>
+            <code>  void log(String message) =&gt; _postResponse(WorkerResponseImpl.log(message));</code>
         </line>
         <line>
             <code/>
@@ -513,7 +545,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  void closeStream() =&gt; _postResponse(WorkerResponseImpl.closeStream(), false);</code>
+            <code>  void closeStream() =&gt; _postResponse(WorkerResponseImpl.closeStream());</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -534,7 +566,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    _postResponse(WorkerResponseImpl.withError(error), false);</code>
+            <code>    _postResponse(WorkerResponseImpl.withError(error));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -570,10 +602,6 @@
         </line>
         <line hits="1">
             <code>  final completer = Completer&lt;Channel&gt;();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  final channel = _VmChannel._();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -616,10 +644,6 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    channel.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>    receiver.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -645,11 +669,13 @@
             <code>    final error = SquadronException.fromString(message[0]) ??</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>        WorkerException(message[0],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    Squadron.warning(</code>
@@ -727,20 +753,12 @@
             <code>      } else {</code>
         </line>
         <line hits="2">
-            <code>        channel._sendPort = response.result;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        channel._workerId = workerId;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
             <code>        Squadron.config('connected to Isolate #$workerId');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        completer.complete(channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>        completer.complete(_VmChannel._(workerId, response.result));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -836,9 +854,9 @@
             <code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>    (channelInfo == null) ? null : _VmChannel._('&lt;deserialized&gt;', channelInfo);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -856,9 +874,9 @@
         <line>
             <code>        ? null</code>
         </line>
-        <line hits="2">
-            <code>        : (_VmWorkerChannel._().._sendPort = channelInfo);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>        : _VmWorkerChannel._('&lt;deserialized&gt;', channelInfo);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

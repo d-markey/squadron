@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="24" lines-valid="24" package="/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line>
             <code/>
@@ -12,6 +18,9 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'xplat/_cancellation_token_ref.dart';</code>
         </line>
         <line>
             <code>import 'xplat/_channel.dart'</code>
@@ -44,10 +53,13 @@
             <code>import 'worker_service.dart';</code>
         </line>
         <line>
+            <code>import 'xplat/_worker_monitor.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
-            <code>typedef PostMethod = void Function(WorkerRequest req, bool inspectRequest);</code>
+            <code>typedef PostRequest = void Function(WorkerRequest req);</code>
         </line>
         <line>
             <code/>
@@ -226,13 +238,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Connects the [Channel] with a stream managed by the Squadron [Worker]. [streamId] is a unique identifier</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// representing the stream in the worker's thread.</code>
+            <code>  /// worker only. On Web patforms, this version does not check arguments for transferable objects.</code>
         </line>
         <line>
-            <code>  void connectStream(int streamId);</code>
+            <code>  void reply(dynamic data);</code>
         </line>
         <line>
             <code/>
@@ -241,10 +253,10 @@
             <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
         </line>
         <line>
-            <code>  /// worker only.</code>
+            <code>  /// worker only. On Web patforms, this version must check arguments for transferable objects.</code>
         </line>
         <line>
-            <code>  void reply(dynamic data, bool inspectResponse);</code>
+            <code>  void inspectAndReply(dynamic data);</code>
         </line>
         <line>
             <code/>
@@ -298,9 +310,122 @@
             <code>  static WorkerChannel? deserialize(dynamic channelInfo) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>      deserializeWorkerChannel(channelInfo);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension PipeExtension on WorkerChannel {</code>
+        </line>
+        <line>
+            <code>  /// Forwards stream events to client.</code>
+        </line>
+        <line hits="2">
+            <code>  Future&lt;void&gt; pipe(Stream stream, void Function(dynamic) reply,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      WorkerMonitor monitor, CancellationTokenReference tokenRef) {</code>
+        </line>
+        <line hits="1">
+            <code>    StreamSubscription? subscription;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    final done = Completer();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // stream canceller</code>
+        </line>
+        <line hits="2">
+            <code>    void onDone() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      closeStream();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      subscription?.cancel();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      done.complete();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // register stream canceller callback and connect stream with client</code>
+        </line>
+        <line hits="1">
+            <code>    final streamId = monitor.registerStreamCanceller(tokenRef, onDone);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    reply(streamId);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // start forwarding messages to the client</code>
+        </line>
+        <line hits="2">
+            <code>    subscription = stream.listen(reply,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        onError: _err, onDone: onDone, cancelOnError: false);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="4">
+            <code>    return done.future.whenComplete(() {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // unregister stream canceller callback</code>
+        </line>
+        <line hits="2">
+            <code>      monitor.unregisterStreamCanceller(tokenRef, streamId);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    });</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="5">
+            <code>  void _err(Object ex, StackTrace st) =&gt; error(SquadronException.from(ex, st));</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

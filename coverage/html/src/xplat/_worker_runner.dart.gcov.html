@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-06-22</dd>
+                    <dd>2023-06-27</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>63</td><td>74</td><td class="med">85.1%</td>
+                            <th scope="row">Lines</th><td>49</td><td>60</td><td class="med">81.7%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -391,7 +391,7 @@
                     <td>110</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 111" id="line111">
-                    <td>111</td><td></td><td></td><td><code>      // retrieve operation matching the request command</code></td>
+                    <td>111</td><td></td><td></td><td><code>      // find the operation matching the request command</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
                     <td>112</td><td></td><td>4</td><td><code>      final op = _operations[request.command];</code></td>
@@ -423,131 +423,59 @@
                 <tr class="noop" title="Line 121" id="line121">
                     <td>121</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>1</td><td><code>      final inspectResponse = request.inspectResponse;</code></td>
+                <tr class="noop" title="Line 122" id="line122">
+                    <td>122</td><td></td><td></td><td><code>      // send results back with the proper reply method</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 123" id="line123">
-                    <td>123</td><td></td><td>3</td><td><code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code></td>
+                    <td>123</td><td></td><td>1</td><td><code>      final reply = request.reply!;</code></td>
                 </tr>
-                <tr class="noop" title="Line 124" id="line124">
-                    <td>124</td><td></td><td></td><td><code>        // result is a stream: forward data to the client</code></td>
+                <tr class="lineCov" title="Line 124" id="line124">
+                    <td>124</td><td></td><td>3</td><td><code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>1</td><td><code>        late final StreamSubscription subscription;</code></td>
+                <tr class="noop" title="Line 125" id="line125">
+                    <td>125</td><td></td><td></td><td><code>        // result is a stream: forward data to the client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>1</td><td><code>        final done = Completer();</code></td>
+                    <td>126</td><td></td><td>3</td><td><code>        await client.pipe(result, reply, _monitor, tokenRef);</code></td>
                 </tr>
                 <tr class="noop" title="Line 127" id="line127">
-                    <td>127</td><td></td><td></td><td><code></code></td>
+                    <td>127</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="noop" title="Line 128" id="line128">
-                    <td>128</td><td></td><td></td><td><code>        // stream canceller</code></td>
+                    <td>128</td><td></td><td></td><td><code>        // result is a value: send to the client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>2</td><td><code>        void shutdown() {</code></td>
+                    <td>129</td><td></td><td>2</td><td><code>        reply(result);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 130" id="line130">
-                    <td>130</td><td></td><td>2</td><td><code>          client.closeStream();</code></td>
+                <tr class="noop" title="Line 130" id="line130">
+                    <td>130</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>2</td><td><code>          subscription.cancel();</code></td>
+                    <td>131</td><td></td><td>1</td><td><code>    } catch (e, st) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 132" id="line132">
-                    <td>132</td><td></td><td>2</td><td><code>          done.complete();</code></td>
+                <tr class="noop" title="Line 132" id="line132">
+                    <td>132</td><td></td><td></td><td><code>      // error: send to client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>1</td><td><code>        }</code></td>
+                    <td>133</td><td></td><td>3</td><td><code>      client.error(SquadronException.from(e, st));</code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
-                    <td>134</td><td></td><td></td><td><code></code></td>
+                    <td>134</td><td></td><td></td><td><code>    } finally {</code></td>
                 </tr>
                 <tr class="noop" title="Line 135" id="line135">
-                    <td>135</td><td></td><td></td><td><code>        // register stream canceller callback and connect stream with client</code></td>
+                    <td>135</td><td></td><td></td><td><code>      // stop monitoring execution</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 136" id="line136">
-                    <td>136</td><td></td><td>2</td><td><code>        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);</code></td>
+                    <td>136</td><td></td><td>2</td><td><code>      _monitor.done(tokenRef);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>1</td><td><code>        client.connectStream(streamId);</code></td>
+                <tr class="noop" title="Line 137" id="line137">
+                    <td>137</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 138" id="line138">
-                    <td>138</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 138" id="line138">
+                    <td>138</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 139" id="line139">
-                    <td>139</td><td></td><td></td><td><code>        // start forwarding messages to the client</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>2</td><td><code>        subscription = result.listen(</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>3</td><td><code>          (data) =&gt; client.reply(data, inspectResponse),</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>3</td><td><code>          onError: (ex, st) =&gt; client.error(SquadronException.from(ex, st)),</code></td>
-                </tr>
-                <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code>          onDone: shutdown,</code></td>
-                </tr>
-                <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
-                </tr>
-                <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code>        );</code></td>
-                </tr>
-                <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>4</td><td><code>        await done.future.whenComplete(() {</code></td>
-                </tr>
-                <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code>          // unregister stream canceller callback</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>3</td><td><code>          _monitor.unregisterStreamCanceller(tokenRef, streamId);</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>1</td><td><code>        });</code></td>
-                </tr>
-                <tr class="noop" title="Line 151" id="line151">
-                    <td>151</td><td></td><td></td><td><code>      } else {</code></td>
-                </tr>
-                <tr class="noop" title="Line 152" id="line152">
-                    <td>152</td><td></td><td></td><td><code>        // result is a value: send to the client</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 153" id="line153">
-                    <td>153</td><td></td><td>1</td><td><code>        client.reply(result, inspectResponse);</code></td>
-                </tr>
-                <tr class="noop" title="Line 154" id="line154">
-                    <td>154</td><td></td><td></td><td><code>      }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 155" id="line155">
-                    <td>155</td><td></td><td>1</td><td><code>    } catch (e, st) {</code></td>
-                </tr>
-                <tr class="noop" title="Line 156" id="line156">
-                    <td>156</td><td></td><td></td><td><code>      // error: send to client</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 157" id="line157">
-                    <td>157</td><td></td><td>3</td><td><code>      client.error(SquadronException.from(e, st));</code></td>
-                </tr>
-                <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>    } finally {</code></td>
-                </tr>
-                <tr class="noop" title="Line 159" id="line159">
-                    <td>159</td><td></td><td></td><td><code>      // stop monitoring execution</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 160" id="line160">
-                    <td>160</td><td></td><td>2</td><td><code>      _monitor.done(tokenRef);</code></td>
-                </tr>
-                <tr class="noop" title="Line 161" id="line161">
-                    <td>161</td><td></td><td></td><td><code>    }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>1</td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 163" id="line163">
-                    <td>163</td><td></td><td></td><td><code>}</code></td>
+                    <td>139</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

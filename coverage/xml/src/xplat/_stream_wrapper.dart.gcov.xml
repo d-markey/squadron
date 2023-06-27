@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9701493" lines-covered="65" lines-valid="67" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.97183096" lines-covered="69" lines-valid="71" package="/src/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -45,7 +45,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      {required PostMethod postMethod,</code>
+            <code>      {required PostRequest postMethod,</code>
         </line>
         <line>
             <code>      required Stream messages,</code>
@@ -54,25 +54,23 @@
             <code>      required SquadronCallback onDone,</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
-        </line>
-        <line>
-            <code>      required bool inspectRequest})</code>
+            <code>      CancellationToken? token})</code>
         </line>
         <line>
             <code>      : _streamRequest = streamRequest,</code>
         </line>
         <line>
-            <code>        _postMethod = postMethod,</code>
+            <code>        _postRequest = postMethod,</code>
         </line>
         <line>
             <code>        _messages = messages,</code>
         </line>
         <line>
-            <code>        _token = token,</code>
+            <code>        _token = token {</code>
         </line>
-        <line>
-            <code>        _inspectRequest = inspectRequest {</code>
+        <line hits="3">
+            <code>    _handle = _process;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>    _controller = StreamController&lt;T&gt;(</code>
@@ -141,13 +139,10 @@
             <code>  final WorkerRequest _streamRequest;</code>
         </line>
         <line>
-            <code>  final PostMethod _postMethod;</code>
+            <code>  final PostRequest _postRequest;</code>
         </line>
         <line>
             <code>  final CancellationToken? _token;</code>
-        </line>
-        <line>
-            <code>  final bool _inspectRequest;</code>
         </line>
         <line>
             <code/>
@@ -157,25 +152,64 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
+            <code/>
+        </line>
+        <line>
             <code>  int _paused = 0;</code>
+        </line>
+        <line hits="1">
+            <code>  late void Function(WorkerResponse) _handle;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line hits="6">
-            <code>  void _canceller() =&gt; _postMethod(WorkerRequestImpl.cancel(_token!), false);</code>
+            <code>  void _canceller() =&gt; _postRequest(WorkerRequestImpl.cancel(_token!));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
+        <line hits="1">
+            <code>  List&lt;WorkerResponse&gt;? _buffer;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Bufferize worker responses (paused stream).</code>
+        </line>
+        <line hits="2">
+            <code>  void _bufferize(WorkerResponse res) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    final buffer = (_buffer ??= &lt;WorkerResponse&gt;[]);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    buffer.add(res);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Forward worker responses (non-paused stream).</code>
+        </line>
         <line hits="2">
             <code>  void _process(WorkerResponse res) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    final error = res.error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    if (error != null) {</code>
@@ -203,20 +237,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Buffered storing worker responses while the stream is paused.</code>
-        </line>
-        <line hits="1">
-            <code>  final _buffer = &lt;WorkerResponse&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>  /// Will eventually store the stream ID received from the worker. If the stream is cancelled on the</code>
         </line>
         <line>
-            <code/>
+            <code>  /// client side, the stream ID will be sent to the worker so it has a chance to stop streaming from</code>
         </line>
         <line>
-            <code>  /// Will eventually store the stream ID received from the worker. If the stream is cancelled on the client side,</code>
-        </line>
-        <line>
-            <code>  /// the stream ID will be sent to the worker so it has a chance to stop streaming from the worker service.</code>
+            <code>  /// the worker service.</code>
         </line>
         <line>
             <code>  final _streamId = Completer&lt;int&gt;();</code>
@@ -240,9 +267,9 @@
             <code>        final res = message as List;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>        if (!res.unwrapResponse()) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>        if (!res.unwrapResponse() || _controller.isClosed) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>          return;</code>
@@ -252,10 +279,6 @@
         </line>
         <line>
             <code/>
-        </line>
-        <line hits="3">
-            <code>        if (_controller.isClosed) return;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>        final cancelException = _token?.exception;</code>
@@ -281,7 +304,7 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>          _buffer.clear();</code>
+            <code>          _buffer?.clear();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -289,68 +312,36 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>        if (res.endOfStream) {</code>
+            <code>        } else if (res.endOfStream) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>          _controller.close();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>          return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
         <line hits="3">
-            <code>        if (!_streamId.isCompleted) {</code>
+            <code>        } else if (!_streamId.isCompleted) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          // The first message received from the worker contains the stream ID. If the stream is cancelled on</code>
+            <code>          // The first message received from the worker contains the stream ID. If the stream</code>
         </line>
         <line>
-            <code>          // the client side, the stream from the worker context should also be cancelled by sending a</code>
+            <code>          // is cancelled on the client side, the stream from the worker context should also</code>
         </line>
         <line>
-            <code>          // WorkerRequest.cancelStream with this stream id.</code>
+            <code>          // be cancelled by sending a WorkerRequest.cancelStream with this stream id.</code>
         </line>
         <line hits="4">
             <code>          _streamId.complete(res.result);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>          return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line hits="3">
-            <code>        if (_paused &gt; 0) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          _buffer.add(res);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
             <code>        } else {</code>
         </line>
-        <line hits="2">
-            <code>          _process(res);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>          _handle(res);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        }</code>
@@ -368,9 +359,9 @@
         <line>
             <code>    // initiate streaming operations now!</code>
         </line>
-        <line hits="5">
-            <code>    _postMethod(_streamRequest, _inspectRequest);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>    _postRequest(_streamRequest);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -391,11 +382,11 @@
             <code>    // notify the worker that the streaming operation has been cancelled</code>
         </line>
         <line hits="4">
-            <code>    _postMethod(WorkerRequestImpl.cancelStream(streamId), false);</code>
+            <code>    _postRequest(WorkerRequestImpl.cancelStream(streamId));</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>    _buffer.clear();</code>
+            <code>    _buffer?.clear();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -421,6 +412,17 @@
         </line>
         <line>
             <code>    // stream.</code>
+        </line>
+        <line hits="3">
+            <code>    if (_paused == 0) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      _handle = _bufferize;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
         </line>
         <line hits="2">
             <code>    _paused++;</code>
@@ -471,19 +473,27 @@
             <code>      // may emit events again.</code>
         </line>
         <line hits="3">
-            <code>      for (var e in _buffer) {</code>
+            <code>      _handle = _process;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        _process(e);</code>
+            <code>      final buffer = _buffer;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (buffer != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>        buffer.forEach(_process);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        buffer.clear();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
-        </line>
-        <line hits="3">
-            <code>      _buffer.clear();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

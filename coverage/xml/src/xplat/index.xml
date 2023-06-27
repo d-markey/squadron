@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-22" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8915663" lines-covered="370" lines-valid="415" package="/src/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-06-27" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8864198" lines-covered="359" lines-valid="405" package="/src/xplat" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="_worker_id.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
@@ -7,11 +7,11 @@
         <source branches-hit="0" branches-valid="0" filename="_worker_stream_task.dart" functions-hit="0" functions-valid="0" lines-hit="63" lines-valid="71" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="63" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_helpers.dart" functions-hit="0" functions-valid="0" lines-hit="9" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="9" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_helpers.dart" functions-hit="0" functions-valid="0" lines-hit="8" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="8" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_stream_wrapper.dart" functions-hit="0" functions-valid="0" lines-hit="65" lines-valid="67" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="65" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_stream_wrapper.dart" functions-hit="0" functions-valid="0" lines-hit="69" lines-valid="71" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="69" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="_token_id.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
@@ -34,8 +34,8 @@
         <source branches-hit="0" branches-valid="0" filename="_worker_task.dart" functions-hit="0" functions-valid="0" lines-hit="28" lines-valid="36" prefix="/home/runner/work/squadron/squadron/lib">
             <testCase branch-hit="0" function-hit="0" line-hit="28" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="63" lines-valid="74" prefix="/home/runner/work/squadron/squadron/lib">
-            <testCase branch-hit="0" function-hit="0" line-hit="63" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="49" lines-valid="60" prefix="/home/runner/work/squadron/squadron/lib">
+            <testCase branch-hit="0" function-hit="0" line-hit="49" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
