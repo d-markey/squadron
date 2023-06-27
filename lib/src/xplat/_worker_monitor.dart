@@ -6,14 +6,15 @@ import '../worker_task.dart';
 
 import '_cancellation_token_ref.dart';
 
-/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests. Worker
-/// tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services the chance to
-/// handle cancellation requests gracefully, or without a [CancellationToken] via [WorkerPool.cancel] or
-/// [Task.cancel].
+/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests.
+/// Worker tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services
+/// the chance to handle cancellation requests gracefully, or without a [CancellationToken] via
+/// [WorkerPool.cancel] or [Task.cancel].
 class WorkerMonitor {
-  /// Constructs a new [WorkerMonitor]. The [terminate] callback will be called by [WorkerMonitor.terminate]. This
-  /// callback should contain code to shutdown the platform worker and release resources.
-  WorkerMonitor(SquadronCallback terminate) : _terminate = terminate;
+  /// Constructs a new [WorkerMonitor]. The [_terminate] callback will be called by
+  /// [WorkerMonitor.terminate]. This callback should contain code to shutdown the
+  /// platform worker and release resources.
+  WorkerMonitor(this._terminate);
 
   final SquadronCallback _terminate;
   bool _terminationRequested = false;
@@ -27,9 +28,9 @@ class WorkerMonitor {
           : _cancelTokens.putIfAbsent(
               token.id, () => CancellationTokenReference(token.id));
 
-  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it is overridden
-  /// with a [CancellationTokenReference] and this reference is rturned to the sender. Otherwise, returns
-  /// [CancellationTokenReference.noToken].
+  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it
+  /// is overridden with a [CancellationTokenReference] and this reference is returned to the sender.
+  /// Otherwise, returns [CancellationTokenReference.noToken].
   CancellationTokenReference begin(WorkerRequest request) {
     _executing++;
     final token = _getTokenRef(request.cancelToken);
@@ -43,7 +44,7 @@ class WorkerMonitor {
   /// Assigns a stream ID to the stream canceller callback and registers the callback.
   int registerStreamCanceller(
       CancellationTokenReference tokenRef, SquadronCallback canceller) {
-    final streamId = (++_streamId);
+    final streamId = ++_streamId;
     (_streamCancellers ??= <int, SquadronCallback>{})[streamId] = canceller;
     tokenRef.addListener(canceller);
     return streamId;

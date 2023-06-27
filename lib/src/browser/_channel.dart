@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:html' as web;
 
+import '../squadron_error.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
@@ -19,45 +20,55 @@ typedef PlatformWorker = web.Worker;
 typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
 class _BaseJsChannel {
+  _BaseJsChannel._(this.workerId, this._sendPort);
+
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
   /// [web.MessagePort] to return values to the client.
-  web.MessagePort? _sendPort;
+  final web.MessagePort _sendPort;
 
   /// The ID of the worker attached to this [Channel].
-  String get workerId => _workerId ?? '';
-  String? _workerId;
+  final String workerId;
 
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   dynamic serialize() => _sendPort;
 
-  void _postRequest(WorkerRequest req, bool inspectRequest) {
+  void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
     req.wrapRequest();
     try {
-      final transfer = <Object>[];
-      if (inspectRequest) {
-        transfer.addAll(Transferables.get(req));
-      } else {
-        if (req.channelInfo != null) {
-          transfer.add(req.channelInfo);
-        }
-      }
-      _sendPort!.postMessage(req, transfer);
+      _sendPort.postMessage(
+          req, (req.channelInfo == null) ? null : [req.channelInfo]);
     } catch (ex, st) {
       Squadron.severe('failed to post request $req: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
-  void _postResponse(WorkerResponse res, bool inspectResponse) {
+  void _inspectAndPostRequest(WorkerRequest req) {
+    req.cancelToken?.ensureStarted();
+    req.wrapRequest();
+    try {
+      _sendPort.postMessage(req, Transferables.get(req).toList());
+    } catch (ex, st) {
+      Squadron.severe('failed to post request $req: error $ex');
+      throw SquadronException.from(ex, st);
+    }
+  }
+
+  void _postResponse(WorkerResponse res) {
     res.wrapResponse();
     try {
-      if (inspectResponse) {
-        final transfer = Transferables.get(res).toList();
-        _sendPort!.postMessage(res, transfer);
-      } else {
-        _sendPort!.postMessage(res);
-      }
+      _sendPort.postMessage(res);
+    } catch (ex, st) {
+      Squadron.severe('failed to post response $res: error $ex');
+      throw SquadronException.from(ex, st);
+    }
+  }
+
+  void _inspectAndPostResponse(WorkerResponse res) {
+    res.wrapResponse();
+    try {
+      _sendPort.postMessage(res, Transferables.get(res).toList());
     } catch (ex, st) {
       Squadron.severe('failed to post response $res: error $ex');
       throw SquadronException.from(ex, st);
@@ -67,18 +78,21 @@ class _BaseJsChannel {
 
 /// [Channel] implementation for the JavaScript world.
 class _JsChannel extends _BaseJsChannel implements Channel {
-  _JsChannel._();
+  _JsChannel._(String workerId, web.MessagePort sendPort)
+      : super._(workerId, sendPort);
+
+  bool _closed = false;
 
   /// [Channel] sharing in JavaScript world returns a [_JsForwardChannel].
   @override
-  Channel share() => _JsForwardChannel._(_sendPort!);
+  Channel share() => _JsForwardChannel._(_sendPort, web.MessageChannel());
 
   /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].
   @override
   FutureOr close() {
-    if (_sendPort != null) {
-      _postRequest(WorkerRequestImpl.stop(), false);
-      _sendPort = null;
+    if (!_closed) {
+      _postRequest(WorkerRequestImpl.stop());
+      _closed = true;
     }
   }
 
@@ -89,14 +103,16 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       {CancellationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
+    if (_closed) {
+      throw newSquadronError('Channel is closed', StackTrace.current);
+    }
     final com = web.MessageChannel();
     final wrapper = ValueWrapper<T>(
       WorkerRequestImpl.userCommand(
           com.port2, command, args, token, inspectResponse),
-      postMethod: _postRequest,
+      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       token: token,
-      inspectRequest: inspectRequest,
     );
     return wrapper.compute().whenComplete(() {
       com.port1.close();
@@ -113,18 +129,20 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       CancellationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
+    if (_closed) {
+      throw newSquadronError('Channel is closed', StackTrace.current);
+    }
     final com = web.MessageChannel();
     final wrapper = StreamWrapper<T>(
       WorkerRequestImpl.userCommand(
           com.port2, command, args, token, inspectResponse),
-      postMethod: _postRequest,
+      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       onDone: () {
         com.port1.close();
         onDone();
       },
       token: token,
-      inspectRequest: inspectRequest,
     );
 
     return wrapper.stream;
@@ -133,36 +151,35 @@ class _JsChannel extends _BaseJsChannel implements Channel {
 
 /// [WorkerChannel] implementation for the JavaScript world.
 class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
-  _JsWorkerChannel._();
+  _JsWorkerChannel._(String workerId, web.MessagePort sendPort)
+      : super._(workerId, sendPort);
 
   /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the
   /// [web.Worker] upon startup.
   @override
   void connect(Object channelInfo) {
     if (channelInfo is web.MessagePort) {
-      reply(channelInfo, true);
+      inspectAndReply(channelInfo);
     } else {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: MessagePort expected');
     }
   }
 
-  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the
-  /// [Worker] that the stream has been cancelled on the client-side.
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// [web.Worker] only. On Web patforms, this version does not check arguments for transferable objects.
   @override
-  void connectStream(int streamId) {
-    reply(streamId, false);
-  }
+  void reply(dynamic data) =>
+      _postResponse(WorkerResponseImpl.withResult(data));
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
-  /// [web.Worker] only.
+  /// [web.Worker] only. On Web patforms, this version checks arguments for transferable objects.
   @override
-  void reply(dynamic data, bool inspectResponse) =>
-      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);
+  void inspectAndReply(dynamic data) =>
+      _inspectAndPostResponse(WorkerResponseImpl.withResult(data));
 
   @override
-  void log(String message) =>
-      _postResponse(WorkerResponseImpl.log(message), false);
+  void log(String message) => _postResponse(WorkerResponseImpl.log(message));
 
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` for browser platforms.
   @override
@@ -171,38 +188,39 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [web.Worker]
   /// only.
   @override
-  void closeStream() => _postResponse(WorkerResponseImpl.closeStream(), false);
+  void closeStream() => _postResponse(WorkerResponseImpl.closeStream());
 
   /// Sends the [WorkerResponse] to the worker client. This method must be called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
     Squadron.debug(() => 'replying with error: $error');
-    _postResponse(WorkerResponseImpl.withError(error), false);
+    _postResponse(WorkerResponseImpl.withError(error));
   }
 }
 
 /// [Channel] used to communicate between [web.Worker]s. Creates a [web.MessageChannel] to receive commands on
 /// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].
 class _JsForwardChannel extends _JsChannel {
-  /// [remote] is the worker's [web.MessagePort]
-  _JsForwardChannel._(web.MessagePort remote) : super._() {
-    _remote = remote;
+  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate message channel
+  _JsForwardChannel._(this._remote, this._com)
+      : super._('<forward>', _com.port2) {
     _com.port1.onMessage.listen(_forward);
-    _sendPort = _com.port2;
   }
 
   /// [web.MessagePort] to the worker.
-  web.MessagePort? _remote;
+  final web.MessagePort _remote;
 
   /// [web.MessageChannel] used for forwarding messages.
-  final _com = web.MessageChannel();
+  final web.MessageChannel _com;
 
   /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
+    if (_closed) {
+      throw newSquadronError('Channel is closed', StackTrace.current);
+    }
     final message = e.data;
     try {
-      final transfer = Transferables.get(message).toList();
-      _remote!.postMessage(message, transfer);
+      _remote.postMessage(message, Transferables.get(message).toList());
     } catch (ex, st) {
       Squadron.severe('failed to forward $message: error $ex');
       throw SquadronException.from(ex, st);
@@ -212,8 +230,10 @@ class _JsForwardChannel extends _JsChannel {
   /// Closes this [Channel], effectively stopping message forwarding.
   @override
   void close() {
-    _remote = null;
-    _com.port1.close();
+    if (!_closed) {
+      _com.port1.close();
+      _closed = true;
+    }
   }
 }
 
@@ -225,7 +245,6 @@ Future<Channel> openChannel(
     EntryPoint entryPoint, String workerId, List startArguments,
     [PlatformWorkerHook? hook]) {
   final completer = Completer<Channel>();
-  final channel = _JsChannel._();
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
 
@@ -275,10 +294,8 @@ Future<Channel> openChannel(
               'connection to Web Worker #$workerId failed: ${response.error}');
           completer.completeError(error, error.stackTrace);
         } else {
-          channel._sendPort = response.result;
-          channel._workerId = workerId;
           Squadron.config('connected to Web Worker #$workerId');
-          completer.complete(channel);
+          completer.complete(_JsChannel._(workerId, response.result));
         }
       } else {
         Squadron.config('unexpected response: $response');
@@ -303,10 +320,10 @@ Future<Channel> openChannel(
 
 /// Creates a [_JsChannel] from a [web.MessagePort].
 Channel? deserializeChannel(dynamic channelInfo) =>
-    (channelInfo == null) ? null : (_JsChannel._().._sendPort = channelInfo);
+    (channelInfo == null) ? null : _JsChannel._('<deserialized>', channelInfo);
 
 /// Creates a [_JsWorkerChannel] from a [web.MessagePort].
 WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
     (channelInfo == null)
         ? null
-        : (_JsWorkerChannel._().._sendPort = channelInfo);
+        : _JsWorkerChannel._('<deserialized>', channelInfo);

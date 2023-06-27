@@ -37,8 +37,8 @@ class Transferables {
     }
   }
 
-  /// Yields objects contained in [message]. Used to identify non-base type objects and provide them
-  /// to [web.Worker.postMessage]. [web.Worker.postMessage] will clone these objects. The code makes
+  /// Yields objects contained in [message]. Used to identify non-base type objects and provide
+  /// them to [Worker.postMessage]. [Worker.postMessage] will clone these objects. The code makes
   /// no effort to ensure these objects really are transferable.
   static Iterable<Object> _get(List message, Set<Object> seen) sync* {
     if (_isSafeForTransfer(message)) return;

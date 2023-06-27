@@ -53,17 +53,20 @@ class CancellationToken {
   /// tokens that need to cancel automatically (eg. a timeout token).
   void ensureStarted() {}
 
+  /// Synchronously check whether the token has been cancelled.
+  bool isCancelledSync({bool throwIfCancelled = false}) {
+    final ex = exception;
+    return (ex == null)
+        ? false
+        : throwIfCancelled
+            ? throw ex
+            : true;
+  }
+
   /// Await this method in Worker code to give cancellation requests a chance
   /// to come through.
-  Future<bool> isCancelled({bool throwIfCancelled = false}) => Future(() {
-        // throw if the token has been cancelled
-        final ex = exception;
-        return (ex == null)
-            ? false
-            : throwIfCancelled
-                ? throw ex
-                : true;
-      });
+  Future<bool> isCancelled({bool throwIfCancelled = false}) =>
+      Future(() => isCancelledSync(throwIfCancelled: throwIfCancelled));
 
   /// Unregisters a listener that has been installed with [addListener].
   void removeListener(SquadronCallback listener) =>

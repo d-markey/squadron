@@ -1,6 +1,7 @@
 ## 5.1.3
 
 - Add unit test raising a 'Null check operator used on a null value' exception when cancelling a streaming service method + stopping the worker.
+- Fix 'Null check operator used on a null value' exception when cancelling a streaming service method + stopping the worker.
 
 ## 5.1.2
 

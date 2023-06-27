@@ -4,9 +4,7 @@
 </td>
 <td>
 
-## **Squadron**
-
-Multithreading and worker pools in Dart.
+## **Squadron - Multithreading and worker pools in Dart**
 
 Offload CPU-bound and long running tasks and give your mobile and Web apps some air!
 

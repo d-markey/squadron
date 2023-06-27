@@ -12,14 +12,13 @@ class ValueWrapper<T> {
   /// compute operation will be initiated by calling [compute], which will send the [request] to the worker
   /// using [postMethod].
   ValueWrapper(WorkerRequest request,
-      {required PostMethod postMethod,
+      {required PostRequest postMethod,
       required Stream messages,
-      CancellationToken? token,
-      required bool inspectRequest})
+      CancellationToken? token})
       : _request = request,
-        _postMethod = postMethod,
+        _postRequest = postMethod,
         _token = token,
-        _inspectRequest = inspectRequest,
+        // _inspectRequest = inspectRequest,
         _completer = Completer<T>() {
     _token?.addListener(_canceller);
     _sub = messages.listen(
@@ -57,21 +56,23 @@ class ValueWrapper<T> {
   }
 
   final WorkerRequest _request;
-  final PostMethod _postMethod;
+  final PostRequest _postRequest;
   final CancellationToken? _token;
-  final bool _inspectRequest;
+  // final bool _inspectRequest;
 
   late final Completer<T> _completer;
   late final StreamSubscription _sub;
 
-  void _canceller() => _postMethod(WorkerRequestImpl.cancel(_token!), false);
+  void _canceller() => _postRequest(WorkerRequestImpl.cancel(_token!));
+
+  void _done() {
+    _token?.removeListener(_canceller);
+    _sub.cancel();
+  }
 
   Future<T> compute() {
     // initiate operation now!
-    _postMethod(_request, _inspectRequest);
-    return _completer.future.whenComplete(() {
-      _token?.removeListener(_canceller);
-      _sub.cancel();
-    });
+    _postRequest(_request);
+    return _completer.future.whenComplete(_done);
   }
 }

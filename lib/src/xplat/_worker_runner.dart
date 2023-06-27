@@ -108,7 +108,7 @@ class WorkerRunner {
         throw WorkerException('worker service is not ready');
       }
 
-      // retrieve operation matching the request command
+      // find the operation matching the request command
       final op = _operations[request.command];
       if (op == null) {
         throw WorkerException('unknown command: ${request.command}');
@@ -119,38 +119,14 @@ class WorkerRunner {
         result = await result;
       }
 
-      final inspectResponse = request.inspectResponse;
+      // send results back with the proper reply method
+      final reply = request.reply!;
       if (result is Stream && client.canStream(result)) {
         // result is a stream: forward data to the client
-        late final StreamSubscription subscription;
-        final done = Completer();
-
-        // stream canceller
-        void shutdown() {
-          client.closeStream();
-          subscription.cancel();
-          done.complete();
-        }
-
-        // register stream canceller callback and connect stream with client
-        final streamId = _monitor.registerStreamCanceller(tokenRef, shutdown);
-        client.connectStream(streamId);
-
-        // start forwarding messages to the client
-        subscription = result.listen(
-          (data) => client.reply(data, inspectResponse),
-          onError: (ex, st) => client.error(SquadronException.from(ex, st)),
-          onDone: shutdown,
-          cancelOnError: false,
-        );
-
-        await done.future.whenComplete(() {
-          // unregister stream canceller callback
-          _monitor.unregisterStreamCanceller(tokenRef, streamId);
-        });
+        await client.pipe(result, reply, _monitor, tokenRef);
       } else {
         // result is a value: send to the client
-        client.reply(result, inspectResponse);
+        reply(result);
       }
     } catch (e, st) {
       // error: send to client

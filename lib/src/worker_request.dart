@@ -93,6 +93,10 @@ extension WorkerRequestImpl on WorkerRequest {
   /// The client's [WorkerChannel]. Only valid on the receiving end.
   WorkerChannel? get client => this[_$client];
 
+  /// The channel method to be used for sending data back.
+  void Function(dynamic)? get reply =>
+      inspectResponse ? client?.inspectAndReply : client?.reply;
+
   /// The client's channel info.
   dynamic get channelInfo => this[_$client];
 

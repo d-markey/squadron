@@ -1,4 +1,4 @@
-export 'src/channel.dart';
+export 'src/channel.dart' hide PipeExtension;
 export 'src/entrypoint.dart';
 export 'src/worker.dart';
 export 'src/worker_stat.dart' hide WorkerStatExt, createWorkerStat;

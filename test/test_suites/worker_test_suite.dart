@@ -508,17 +508,17 @@ void workerTests() {
 
       late StreamSubscription sub;
       sub = worker.infiniteWithErrors().listen(
-            (number) => numbers.add(number),
-            onError: (ex) {
-              errors.add(ex);
-              if (errors.length >= maxErrors) {
-                sub.cancel();
-                done.complete();
-              }
-            },
-            onDone: () => done.complete(),
-            cancelOnError: false,
-          );
+        numbers.add,
+        onError: (ex) {
+          errors.add(ex);
+          if (errors.length >= maxErrors) {
+            sub.cancel();
+            done.complete();
+          }
+        },
+        onDone: done.complete,
+        cancelOnError: false,
+      );
 
       pending = await worker.getPendingInfiniteWithErrors();
       expect(pending, equals(1));
@@ -542,10 +542,7 @@ void workerTests() {
       try {
         final done = worker
             .infiniteWithErrors()
-            .listen(
-              (number) => numbers.add(number),
-              cancelOnError: true,
-            )
+            .listen(numbers.add, cancelOnError: true)
             .asFuture();
 
         pending = await worker.getPendingInfiniteWithErrors();
@@ -621,11 +618,9 @@ void workerTests() {
       final numbers = <int>[];
       final errors = <SquadronException>[];
 
-      final sub = worker.infiniteWithErrors().listen(
-            (number) => numbers.add(number),
-            onError: (ex) => errors.add(ex),
-            cancelOnError: false,
-          );
+      final sub = worker
+          .infiniteWithErrors()
+          .listen(numbers.add, onError: errors.add, cancelOnError: false);
 
       int countNumbers = 0;
       int countErrors = 0;
@@ -695,11 +690,9 @@ void workerTests() {
       final numbers = <int>[];
       final errors = <SquadronException>[];
 
-      final sub = worker.infiniteWithErrors().listen(
-            (number) => numbers.add(number),
-            onError: (ex) => errors.add(ex),
-            cancelOnError: false,
-          );
+      final sub = worker
+          .infiniteWithErrors()
+          .listen(numbers.add, onError: errors.add, cancelOnError: false);
 
       sub.cancel();
 

@@ -1,7 +1,7 @@
 export 'src/squadron.dart' hide getSquadronLogger;
 export 'src/squadron_logger.dart';
 export 'src/bootstrapper.dart';
-export 'src/channel.dart';
+export 'src/channel.dart' hide PipeExtension;
 export 'src/cancellation_token.dart' hide TokenIdExt;
 export 'src/worker_message.dart' hide WorkerMessageExt;
 export 'src/worker_request.dart' hide WorkerRequestExt;

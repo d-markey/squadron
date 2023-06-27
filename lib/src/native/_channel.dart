@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import '../squadron_error.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../cancellation_token.dart';
 import '../channel.dart' show Channel, WorkerChannel;
@@ -18,32 +19,35 @@ typedef PlatformWorker = Isolate;
 typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
 class _BaseVmChannel {
+  _BaseVmChannel._(this.workerId, this._sendPort);
+
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]
   /// to return values to the client.
-  SendPort? _sendPort;
+  final SendPort _sendPort;
 
   /// The ID of the worker attached to this [Channel].
-  String get workerId => _workerId ?? '';
-  String? _workerId;
+  final String workerId;
 
   /// [Channel] serialization in Native world returns the [SendPort].
   dynamic serialize() => _sendPort;
 
-  void _postRequest(WorkerRequest req, bool inspectRequest) {
+  void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
     req.wrapRequest();
     try {
-      _sendPort!.send(req);
+      _sendPort.send(req);
     } catch (ex, st) {
       Squadron.severe('failed to post request $req: error $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
-  void _postResponse(WorkerResponse res, bool inspectResponse) {
+  void _inspectAndPostRequest(WorkerRequest req) => _postRequest(req);
+
+  void _postResponse(WorkerResponse res) {
     res.wrapResponse();
     try {
-      _sendPort!.send(res);
+      _sendPort.send(res);
     } catch (ex, st) {
       Squadron.severe('failed to post response $res: error $ex');
       throw SquadronException.from(ex, st);
@@ -53,7 +57,10 @@ class _BaseVmChannel {
 
 /// [Channel] implementation for the Native world.
 class _VmChannel extends _BaseVmChannel implements Channel {
-  _VmChannel._();
+  _VmChannel._(String workerId, SendPort sendPort)
+      : super._(workerId, sendPort);
+
+  bool _closed = false;
 
   /// [Channel] sharing in Native world returns the same instance.
   @override
@@ -62,9 +69,9 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   /// Sends a termination [WorkerRequest] to the [Isolate] and clears the [SendPort].
   @override
   FutureOr close() {
-    if (_sendPort != null) {
-      _postRequest(WorkerRequestImpl.stop(), false);
-      _sendPort = null;
+    if (!_closed) {
+      _postRequest(WorkerRequestImpl.stop());
+      _closed = true;
     }
   }
 
@@ -75,16 +82,18 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       {CancellationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
+    if (_closed) {
+      throw newSquadronError('Channel is closed', StackTrace.current);
+    }
     final receiver = ReceivePort();
     final wrapper = ValueWrapper<T>(
       WorkerRequestImpl.userCommand(
           receiver.sendPort, command, args, token, inspectResponse),
-      postMethod: _postRequest,
+      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: receiver,
       token: token,
-      inspectRequest: inspectRequest,
     );
-    return wrapper.compute().whenComplete(() => receiver.close());
+    return wrapper.compute().whenComplete(receiver.close);
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of
@@ -95,18 +104,20 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       CancellationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
+    if (_closed) {
+      throw newSquadronError('Channel is closed', StackTrace.current);
+    }
     final receiver = ReceivePort();
     final wrapper = StreamWrapper<T>(
       WorkerRequestImpl.userCommand(
           receiver.sendPort, command, args, token, inspectResponse),
-      postMethod: _postRequest,
+      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: receiver,
       onDone: () {
         receiver.close();
         onDone();
       },
       token: token,
-      inspectRequest: inspectRequest,
     );
 
     return wrapper.stream;
@@ -115,36 +126,34 @@ class _VmChannel extends _BaseVmChannel implements Channel {
 
 /// [WorkerChannel] implementation for the native world.
 class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
-  _VmWorkerChannel._();
+  _VmWorkerChannel._(String workerId, SendPort sendPort)
+      : super._(workerId, sendPort);
 
   /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon
   /// startup.
   @override
   void connect(Object channelInfo) {
     if (channelInfo is ReceivePort) {
-      reply(channelInfo.sendPort, true);
+      inspectAndReply(channelInfo.sendPort);
     } else {
       throw WorkerException(
           'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');
     }
   }
 
-  /// Sends the [streamId] to the client. If the client cancels the streaming operation, it should inform the
-  /// [Worker] that the stream has been cancelled on the client-side.
-  @override
-  void connectStream(int streamId) {
-    reply(streamId, false);
-  }
-
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
   /// [Isolate] only.
   @override
-  void reply(dynamic data, bool inspectResponse) =>
-      _postResponse(WorkerResponseImpl.withResult(data), inspectResponse);
+  void reply(dynamic data) =>
+      _postResponse(WorkerResponseImpl.withResult(data));
+
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// [Isolate] only. Same as [reply] on VM platforms.
+  @override
+  void inspectAndReply(dynamic data) => reply(data);
 
   @override
-  void log(String message) =>
-      _postResponse(WorkerResponseImpl.log(message), false);
+  void log(String message) => _postResponse(WorkerResponseImpl.log(message));
 
   /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a
   /// [ReceivePort].
@@ -153,13 +162,13 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
 
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.
   @override
-  void closeStream() => _postResponse(WorkerResponseImpl.closeStream(), false);
+  void closeStream() => _postResponse(WorkerResponseImpl.closeStream());
 
   /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.
   @override
   void error(SquadronException error) {
     Squadron.debug('replying with error: $error');
-    _postResponse(WorkerResponseImpl.withError(error), false);
+    _postResponse(WorkerResponseImpl.withError(error));
   }
 }
 
@@ -171,7 +180,6 @@ Future<Channel> openChannel(
     EntryPoint entryPoint, String workerId, List startArguments,
     [PlatformWorkerHook? hook]) async {
   final completer = Completer<Channel>();
-  final channel = _VmChannel._();
   final receiver = ReceivePort();
 
   final startRequest =
@@ -183,7 +191,6 @@ Future<Channel> openChannel(
 
   exitPort.listen((message) {
     Squadron.config('Isolate #$workerId terminated.');
-    channel.close();
     receiver.close();
     exitPort.close();
     errorPort.close();
@@ -214,10 +221,8 @@ Future<Channel> openChannel(
             'connection to Isolate #$workerId failed: ${response.error}');
         completer.completeError(error, error.stackTrace);
       } else {
-        channel._sendPort = response.result;
-        channel._workerId = workerId;
         Squadron.config('connected to Isolate #$workerId');
-        completer.complete(channel);
+        completer.complete(_VmChannel._(workerId, response.result));
       }
     } else {
       Squadron.config('unexpected response: $response');
@@ -246,10 +251,10 @@ Future<Channel> openChannel(
 
 /// Creates a [_VmChannel] from a [SendPort].
 Channel? deserializeChannel(dynamic channelInfo) =>
-    (channelInfo == null) ? null : (_VmChannel._().._sendPort = channelInfo);
+    (channelInfo == null) ? null : _VmChannel._('<deserialized>', channelInfo);
 
 /// Creates a [_VmWorkerChannel] from a [SendPort].
 WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
     (channelInfo == null)
         ? null
-        : (_VmWorkerChannel._().._sendPort = channelInfo);
+        : _VmWorkerChannel._('<deserialized>', channelInfo);

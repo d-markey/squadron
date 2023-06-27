@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
+
 import 'cancellation_token.dart';
 
+import 'xplat/_cancellation_token_ref.dart';
 import 'xplat/_channel.dart'
     if (dart.library.io) 'native/_channel.dart'
     if (dart.library.js) 'browser/_channel.dart'
@@ -12,8 +15,9 @@ import 'worker.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
 import 'worker_service.dart';
+import 'xplat/_worker_monitor.dart';
 
-typedef PostMethod = void Function(WorkerRequest req, bool inspectRequest);
+typedef PostRequest = void Function(WorkerRequest req);
 
 /// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
 /// a platform worker.
@@ -71,13 +75,13 @@ abstract class WorkerChannel {
   /// as a [Channel]. This method must be called by the worker upon startup.
   void connect(Object channelInfo);
 
-  /// Connects the [Channel] with a stream managed by the Squadron [Worker]. [streamId] is a unique identifier
-  /// representing the stream in the worker's thread.
-  void connectStream(int streamId);
+  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
+  /// worker only. On Web patforms, this version does not check arguments for transferable objects.
+  void reply(dynamic data);
 
   /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the
-  /// worker only.
-  void reply(dynamic data, bool inspectResponse);
+  /// worker only. On Web patforms, this version must check arguments for transferable objects.
+  void inspectAndReply(dynamic data);
 
   /// Sends a [WorkerResponse.log] with the specified data to the worker client. This method must be called from the
   /// worker only.
@@ -96,4 +100,36 @@ abstract class WorkerChannel {
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static WorkerChannel? deserialize(dynamic channelInfo) =>
       deserializeWorkerChannel(channelInfo);
+}
+
+@internal
+extension PipeExtension on WorkerChannel {
+  /// Forwards stream events to client.
+  Future<void> pipe(Stream stream, void Function(dynamic) reply,
+      WorkerMonitor monitor, CancellationTokenReference tokenRef) {
+    StreamSubscription? subscription;
+    final done = Completer();
+
+    // stream canceller
+    void onDone() {
+      closeStream();
+      subscription?.cancel();
+      done.complete();
+    }
+
+    // register stream canceller callback and connect stream with client
+    final streamId = monitor.registerStreamCanceller(tokenRef, onDone);
+    reply(streamId);
+
+    // start forwarding messages to the client
+    subscription = stream.listen(reply,
+        onError: _err, onDone: onDone, cancelOnError: false);
+
+    return done.future.whenComplete(() {
+      // unregister stream canceller callback
+      monitor.unregisterStreamCanceller(tokenRef, streamId);
+    });
+  }
+
+  void _err(Object ex, StackTrace st) => error(SquadronException.from(ex, st));
 }
