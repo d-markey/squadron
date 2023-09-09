@@ -1,3 +1,10 @@
+## 5.1.4
+
+- BREAKING CHANGE: Removed `squadron_service.dart`, `squadron_worker.dart` and `squadron_local_worker.dart` libraries: import only `squadron.dart` instead.
+- Added check to verify Web worker entry point exists upon error.
+- Reorganized source code.
+- Added topics and funding to pubspec.
+
 ## 5.1.3
 
 - Add unit test raising a 'Null check operator used on a null value' exception when cancelling a streaming service method + stopping the worker.

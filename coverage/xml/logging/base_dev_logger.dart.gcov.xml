@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-09" filename="base_dev_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.2" lines-covered="2" lines-valid="10" package="/logging" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '../squadron.dart';</code>
+        </line>
+        <line>
+            <code>import 'base_logger.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_log_level.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Base class for dev loggers.</code>
+        </line>
+        <line>
+            <code>abstract class BaseDevSquadronLogger extends BaseSquadronLogger {</code>
+        </line>
+        <line>
+            <code>  /// Formats the log [message] by splitting it into individual lines with a header</code>
+        </line>
+        <line>
+            <code>  /// including a timestamp, the worker id and the message's log [level].</code>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Iterable&lt;String&gt; format(int level, dynamic message) {</code>
+        </line>
+        <line>
+            <code>    final header =</code>
+        </line>
+        <line hits="0">
+            <code>        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';</code>
+        </line>
+        <line hits="0">
+            <code>    if (message is Iterable) {</code>
+        </line>
+        <line hits="0">
+            <code>      message = message</code>
+        </line>
+        <line hits="0">
+            <code>          .map((m) =&gt; m?.toString() ?? '')</code>
+        </line>
+        <line hits="1">
+            <code>          .expand((m) =&gt; m.toString().split('\n'));</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="0">
+            <code>      message = message?.toString().split('\n') ?? const [];</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>    return message.where((m) =&gt; m.isNotEmpty).map((line) =&gt; '$header $line');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>  }</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

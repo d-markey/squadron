@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 dynamic getUntransferableImpl() => ReceivePort();
 

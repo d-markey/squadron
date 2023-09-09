@@ -1,4 +1,4 @@
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 class MemoryLogger extends BaseSquadronLogger {
   final _messages = <String>[];

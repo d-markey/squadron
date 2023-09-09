@@ -1,9 +1,15 @@
-import '../worker_pool.dart';
+import '../worker/worker_pool.dart';
 
 /// Annotation for service classes to be wrapped as workers.
 class SquadronService {
   const SquadronService(
       {this.pool = true, this.vm = true, this.web = true, this.baseUrl = ''});
+
+  const SquadronService.web({bool pool = true, required String baseUrl})
+      : this(pool: pool, vm: false, web: true, baseUrl: baseUrl);
+
+  const SquadronService.vm({bool pool = true})
+      : this(pool: pool, vm: true, web: false);
 
   /// Controls code generation of a [WorkerPool] exposing the target service class.
   /// `true` by default.

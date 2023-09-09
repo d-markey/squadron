@@ -20,7 +20,7 @@ void workerTests() {
     final memoryLogger = MemoryLogger();
 
     setUp(() {
-      initialLogger = getSquadronLogger();
+      initialLogger = LoggerExt.logger;
       memoryLogger.clear();
       Squadron.pushLogLevel(SquadronLogLevel.all);
       Squadron.setLogger(memoryLogger);

@@ -1,7 +1,8 @@
 import 'package:meta/meta.dart';
 
-import 'channel.dart';
-import 'squadron_logger.dart';
+import 'logging/squadron_log_level.dart';
+import 'logging/squadron_logger.dart';
+import 'worker/worker_channel.dart';
 
 /// Squadron singleton. The main application thread and each worker thread will have their own private
 /// [Squadron] singleton.
@@ -13,8 +14,9 @@ class Squadron {
   static Squadron _getOrInitialize() {
     var sq = _instance;
     if (sq == null) {
-      _instance = sq = Squadron._();
+      sq = Squadron._();
       sq._debugMode = __debugMode;
+      _instance = sq;
     }
     return sq;
   }
@@ -62,9 +64,10 @@ class Squadron {
   /// was never called, this method has no effect and return `null`. Otherwise, it returns the value of
   /// [logLevel] after it has been restored.
   static int? popLogLevel() {
-    final sq = _instance;
-    if (sq == null || sq._logLevels.isEmpty) return null;
-    Squadron.logLevel = sq._logLevels.removeLast();
+    final sq = _getOrInitialize();
+    if (sq._logLevels.isNotEmpty) {
+      Squadron.logLevel = sq._logLevels.removeLast();
+    }
     return Squadron.logLevel;
   }
 
@@ -80,14 +83,11 @@ class Squadron {
 
   /// Flag indicating whether Squadron runs in debug mode. When running in debug mode, messages logged at
   /// [SquadronLogLevel.debug] level will be logged regardless of the current [logLevel].
-  static bool get debugMode =>
-      (_instance == null) ? __debugMode : _instance!._debugMode;
+  static bool get debugMode => _instance?._debugMode ?? __debugMode;
+
   static set debugMode(bool value) {
-    if (_instance == null) {
-      __debugMode = value;
-    } else {
-      _instance!._debugMode = value;
-    }
+    __debugMode = value;
+    _instance?._debugMode = value;
   }
 
   static bool __debugMode = false;
@@ -117,9 +117,8 @@ class Squadron {
 
   /// Sets the `WorkerChannel` to communicate with the parent. Once set, the `parentChannel` cannot be modified.
   /// When setting the parent channel, this method also installs a logger to forward log messages to the parent.
-  static void setParent(WorkerChannel parentChannel) {
-    _getOrInitialize()._parentChannel ??= parentChannel;
-  }
+  static void setParent(WorkerChannel parentChannel) =>
+      _getOrInitialize()._parentChannel ??= parentChannel;
 
   /// Logs a message at [SquadronLogLevel.debug] level. If [Squadron.debugMode] is `true`, the message will be
   /// displayed regardless of [Squadron.logLevel]. If `false`, the message will be logged if [Squadron.logLevel]
@@ -162,4 +161,6 @@ class Squadron {
 }
 
 @internal
-SquadronLogger? getSquadronLogger() => Squadron._instance?._logger;
+extension LoggerExt on Squadron {
+  static SquadronLogger? get logger => Squadron._instance?._logger;
+}

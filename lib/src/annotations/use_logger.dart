@@ -1,6 +1,8 @@
-import '../squadron_logger.dart';
+import '../logging/console_logger.dart';
+import '../logging/parent_logger.dart';
+import '../logging/squadron_logger.dart';
 
-/// Annotation used to indicate the type of a logger to be used in worker threads.
+/// Annotation used to indicate the type of logger to be used in worker threads.
 /// Package `squadron_builder` will register the provided [logger] when initializing
 /// the worker thread.
 class UseLogger {
@@ -10,3 +12,6 @@ class UseLogger {
   /// The type or instance type must implement [SquadronLogger].
   final dynamic logger;
 }
+
+const useParentLogger = UseLogger(ParentSquadronLogger);
+const useConsoleLogger = UseLogger(ConsoleSquadronLogger);

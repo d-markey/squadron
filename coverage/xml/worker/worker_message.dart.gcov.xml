@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-09" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7777778" lines-covered="7" lines-valid="9" package="/worker" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_helpers.dart';</code>
+        </line>
+        <line>
+            <code>import '../squadron.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code>
+        </line>
+        <line>
+            <code>typedef WorkerMessage = List&lt;dynamic&gt;;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>extension WorkerMessageImpl on List {</code>
+        </line>
+        <line>
+            <code>  static const _$traveltime = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time</code>
+        </line>
+        <line>
+            <code>  /// (in microseconds) it took between the moment the message was serialized and the moment it was</code>
+        </line>
+        <line>
+            <code>  /// deserialized.</code>
+        </line>
+        <line hits="2">
+            <code>  int? get travelTime =&gt; this[_$traveltime];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension WorkerMessageExt on List {</code>
+        </line>
+        <line>
+            <code>  static const _$traveltime = WorkerMessageImpl._$traveltime;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  void initTravelTime() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (Squadron.debugMode) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      this[_$traveltime] = microsecTimeStamp();</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  void setTravelTime() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    final ts = this[_$traveltime];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (ts != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      this[_$traveltime] = microsecTimeStamp() - (ts as int);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

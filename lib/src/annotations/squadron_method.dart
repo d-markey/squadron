@@ -17,3 +17,5 @@ class SquadronMethod {
   /// worker).
   final bool inspectResponse;
 }
+
+const squadronMethod = SquadronMethod();

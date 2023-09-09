@@ -1,4 +1,4 @@
-import '../squadron_marshaler.dart';
+import '../marshalers/squadron_marshaler.dart';
 
 /// Annotation used to indicate the type of a serializer to be used when
 /// marshaling/unmarshaling data to/from a worker service. Package

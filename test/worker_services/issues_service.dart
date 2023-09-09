@@ -1,4 +1,4 @@
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 class IssuesService implements WorkerService {
   Stream<dynamic> issue_8(List<dynamic> words) async* {

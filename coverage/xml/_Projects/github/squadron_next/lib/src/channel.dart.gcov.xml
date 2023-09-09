@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-09" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/_Projects/github/squadron_next/lib/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_impl/xplat/_channel.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.io) '_impl/native/_channel.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js) '_impl/browser/_channel.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.html) '_impl/browser/_channel.dart';</code>
+        </line>
+        <line>
+            <code>import 'tokens/cancellation_token.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker/worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker/worker_response.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker/worker_service.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to</code>
+        </line>
+        <line>
+            <code>/// a platform worker.</code>
+        </line>
+        <line>
+            <code>abstract class Channel {</code>
+        </line>
+        <line>
+            <code>  /// The ID of the worker attached to this [Channel].</code>
+        </line>
+        <line>
+            <code>  String get workerId;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
+        </line>
+        <line>
+            <code>  dynamic serialize();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the</code>
+        </line>
+        <line>
+            <code>  /// channel's worker.</code>
+        </line>
+        <line>
+            <code>  Channel share();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should release any resource related to the</code>
+        </line>
+        <line>
+            <code>  /// worker and should not be used after this method has been called.</code>
+        </line>
+        <line>
+            <code>  FutureOr close();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Static method that does nothing. Useful when a [SquadronCallback] is required but there is nothing to do.</code>
+        </line>
+        <line hits="2">
+            <code>  static void noop() {}</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.</code>
+        </line>
+        <line>
+            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
+        </line>
+        <line>
+            <code>      {CancellationToken? token,</code>
+        </line>
+        <line>
+            <code>      bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>      bool inspectResponse = false});</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects a stream of values from the worker.</code>
+        </line>
+        <line>
+            <code>  /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].</code>
+        </line>
+        <line>
+            <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
+        </line>
+        <line>
+            <code>      {SquadronCallback onDone = Channel.noop,</code>
+        </line>
+        <line>
+            <code>      CancellationToken? token,</code>
+        </line>
+        <line>
+            <code>      bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>      bool inspectResponse = false});</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
+        </line>
+        <line>
+            <code>  /// must not complete before the worker is ready to serve requests.</code>
+        </line>
+        <line hits="1">
+            <code>  static Future&lt;Channel&gt; open(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          EntryPoint entryPoint, String workerId, List startArguments,</code>
+        </line>
+        <line>
+            <code>          [PlatformWorkerHook? hook]) =&gt;</code>
+        </line>
+        <line hits="2">
+            <code>      openChannel(entryPoint, workerId, startArguments, hook);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
+        </line>
+        <line hits="1">
+            <code>  static Channel? deserialize(dynamic channelInfo) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      deserializeChannel(channelInfo);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../../../../"/>
+    <base href="../../../../../"/>
+</coverage>

@@ -1,4 +1,4 @@
-import 'package:squadron/squadron_service.dart';
+import 'package:squadron/squadron.dart';
 
 import '../worker_services/test_service.dart';
 

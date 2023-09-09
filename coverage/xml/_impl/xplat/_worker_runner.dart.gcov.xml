@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-09" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8196721" lines-covered="50" lines-valid="61" package="/_impl/xplat" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../../channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/worker_exception.dart';</code>
+        </line>
+        <line>
+            <code>import '../../local_worker/local_worker.dart';</code>
+        </line>
+        <line>
+            <code>import '../../squadron.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_message.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_service.dart';</code>
+        </line>
+        <line>
+            <code>import '_worker_monitor.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class WorkerRunner {</code>
+        </line>
+        <line>
+            <code>  /// Constructs a new worker runner monitored by [monitor].</code>
+        </line>
+        <line hits="2">
+            <code>  WorkerRunner(WorkerMonitor monitor) : _monitor = monitor;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Constructs a new worker runner for a [localWorker].</code>
+        </line>
+        <line hits="1">
+            <code>  factory WorkerRunner.use(LocalWorker localWorker) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    final runner = WorkerRunner(WorkerMonitor(Channel.noop));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>    runner._operations.addAll(localWorker.service.operations);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    return runner;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final _operations = &lt;int, CommandHandler&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final WorkerMonitor _monitor;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Called by the platform worker upon startup, in response to a start [WorkerRequest]. [channelInfo] is an opaque</code>
+        </line>
+        <line>
+            <code>  /// object sent back from the platform worker to the Squadron [Worker] and used to communicate with the platform</code>
+        </line>
+        <line>
+            <code>  /// worker. Typically, [channelInfo] would be a [SendPort] (native) or a [MessagePort] (browser). [initializer]</code>
+        </line>
+        <line>
+            <code>  /// is called to build the [WorkerService] associated to the worker. The runner's [_operations] map will be</code>
+        </line>
+        <line>
+            <code>  /// populated with operations from the service.</code>
+        </line>
+        <line hits="1">
+            <code>  Future connect(List? startRequest, Object channelInfo,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      WorkerInitializer initializer) async {</code>
+        </line>
+        <line hits="1">
+            <code>    startRequest?.unwrapRequest();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    final client = startRequest?.client;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    if (startRequest == null) {</code>
+        </line>
+        <line hits="1">
+            <code>      throw SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          'connection request expected', StackTrace.current);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else if (client == null) {</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'missing client for connection request', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    try {</code>
+        </line>
+        <line hits="1">
+            <code>      if (!startRequest.isConnection) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>            'connection request expected', StackTrace.current);</code>
+        </line>
+        <line hits="2">
+            <code>      } else if (_operations.isNotEmpty) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        throw SquadronErrorExt.create('already connected', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>      Squadron.setId(startRequest.id!);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.setParent(client);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      Squadron.logLevel = startRequest.logLevel!;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      Squadron.debugMode = (startRequest.travelTime != null);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>      WorkerService service;</code>
+        </line>
+        <line hits="1">
+            <code>      var init = initializer(startRequest);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (init is Future) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        service = await init;</code>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line>
+            <code>        service = init;</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>      final operations = service.operations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      if (operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        throw SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>            'invalid command identifier in service operations map; command ids must be &gt; 0',</code>
+        </line>
+        <line hits="1">
+            <code>            StackTrace.current);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="2">
+            <code>      _operations.addAll(operations);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      client.connect(channelInfo);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="2">
+            <code>      client.error(SquadronException.from(ex, st));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.</code>
+        </line>
+        <line hits="2">
+            <code>  void processMessage(List request) async {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    request.unwrapRequest();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    final client = request.client;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>    if (request.isTermination) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // terminate the worker</code>
+        </line>
+        <line hits="2">
+            <code>      return _monitor.terminate();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    } else if (request.isCancellation) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // cancel a token</code>
+        </line>
+        <line hits="3">
+            <code>      return _monitor.cancelToken(request.cancelToken!);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    } else if (request.isStreamCancellation) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // cancel a stream</code>
+        </line>
+        <line hits="4">
+            <code>      return _monitor.cancelStream(request.streamId!);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else if (client == null) {</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'missing client for request: $request', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // start monitoring execution</code>
+        </line>
+        <line hits="3">
+            <code>    final tokenRef = _monitor.begin(request);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (request.isConnection) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        // connection request must be handled beforehand</code>
+        </line>
+        <line hits="0">
+            <code>        throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>            'unexpected connection request: $request', StackTrace.current);</code>
+        </line>
+        <line hits="3">
+            <code>      } else if (_operations.isEmpty) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code>
+        </line>
+        <line hits="0">
+            <code>        throw WorkerException('worker service is not ready');</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>      // find the operation matching the request command</code>
+        </line>
+        <line hits="4">
+            <code>      final op = _operations[request.command];</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      if (op == null) {</code>
+        </line>
+        <line hits="3">
+            <code>        throw WorkerException('unknown command: ${request.command}');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>      // process</code>
+        </line>
+        <line hits="2">
+            <code>      dynamic result = op(request);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      if (result is Future) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        result = await result;</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>      // send results back with the proper reply method</code>
+        </line>
+        <line hits="2">
+            <code>      final reply = request.reply!;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        // result is a stream: forward data to the client</code>
+        </line>
+        <line hits="3">
+            <code>        await client.pipe(result, reply, _monitor, tokenRef);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line>
+            <code>        // result is a value: send to the client</code>
+        </line>
+        <line hits="2">
+            <code>        reply(result);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="1">
+            <code>    } catch (e, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // error: send to client</code>
+        </line>
+        <line hits="3">
+            <code>      client.error(SquadronException.from(e, st));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } finally {</code>
+        </line>
+        <line>
+            <code>      // stop monitoring execution</code>
+        </line>
+        <line hits="2">
+            <code>      _monitor.done(tokenRef);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>
