@@ -1,3 +1,7 @@
+## 5.1.5
+
+- Removed `stdout_logger.dart` because it imports `dart:io` which made pub.dev revoke the support for Web platforms.
+
 ## 5.1.4
 
 - BREAKING CHANGE: Removed `squadron_service.dart`, `squadron_worker.dart` and `squadron_local_worker.dart` libraries: import only `squadron.dart` instead.

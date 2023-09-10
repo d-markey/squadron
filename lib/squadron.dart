@@ -5,7 +5,6 @@ export 'src/logging/dev_logger.dart';
 export 'src/logging/parent_logger.dart';
 export 'src/logging/squadron_log_level.dart';
 export 'src/logging/squadron_logger.dart';
-export 'src/logging/stdout_logger.dart';
 
 export 'src/tokens/cancellation_token.dart' hide TokenIdExt;
 export 'src/tokens/composite_token.dart';
