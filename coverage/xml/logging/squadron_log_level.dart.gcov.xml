@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="squadron_log_level.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="14" package="/logging" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron_log_level.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="7" lines-valid="14" package="/logging" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>/// Log level constants, compatible with `package:logging`</code>
@@ -115,26 +115,33 @@
         <line>
             <code>  /// Gets the log level name</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  static String getName(int logLevel) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; debug) return 'ALL';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; finest) return 'DEBUG';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; finer) return 'FINEST';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; fine) return 'FINER';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; config) return 'FINE';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>    if (logLevel &lt; info) return 'CONFIG';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>    if (logLevel &lt; warning) return 'INFO';</code>

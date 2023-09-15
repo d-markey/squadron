@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-09-10</dd>
+                    <dd>2023-09-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>2</td><td>2</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>2</td><td>4</td><td class="low">50.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -67,61 +67,121 @@
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import 'worker_request.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import '../worker/worker.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code></code></td>
+                    <td>4</td><td></td><td></td><td><code>import 'worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code></td>
+                    <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>    WorkerRequest startRequest);</code></td>
+                    <td>6</td><td></td><td></td><td><code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code></code></td>
+                    <td>7</td><td></td><td></td><td><code>    WorkerRequest startRequest);</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>typedef CommandHandler = FutureOr&lt;dynamic&gt; Function(WorkerRequest req);</code></td>
+                    <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code></code></td>
+                    <td>9</td><td></td><td></td><td><code>typedef CommandHandler = FutureOr&lt;dynamic&gt; Function(WorkerRequest req);</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>typedef SquadronCallback = void Function();</code></td>
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                    <td>11</td><td></td><td></td><td><code>typedef SquadronCallback = void Function();</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>/// Base class for a worker service.</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>abstract class WorkerService {</code></td>
+                    <td>13</td><td></td><td></td><td><code>/// Extend this class or implement this interface in your worker service if it needs</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform worker will dispatch the request</code></td>
+                    <td>14</td><td></td><td></td><td><code>/// to take action when the worker thread is started or stopped.</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  /// to the [CommandHandler] mathing the value of [WorkerRequest.command].</code></td>
+                    <td>15</td><td></td><td></td><td><code>class ServiceInstaller {</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
+                    <td>16</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread initialization.</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code></code></td>
+                    <td>17</td><td></td><td></td><td><code>  /// It will be called just after the service instance has been constructed. The</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
+                    <td>18</td><td></td><td></td><td><code>  /// future returned by [Worker.start] will not complete before this method completes</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code>  /// whether synchronously or asynchronously. If this method throws, the future</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  /// returned by [Worker.start] will complete with an error and the service will not</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>}</code></td>
+                    <td>21</td><td></td><td></td><td><code>  /// be available.</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>0</td><td><code>  FutureOr&lt;void&gt; install() {}</code></td>
+                </tr>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread shutdown process.</code></td>
+                </tr>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code>  /// It will be called just before effectively closing the platform channel. If</code></td>
+                </tr>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code>  /// this method throws, the exception will not bubble up to the parent thread.</code></td>
+                </tr>
+                <tr class="noop" title="Line 27" id="line27">
+                    <td>27</td><td></td><td></td><td><code>  /// Also, [Worker.stop] does not wait for this method to complete.</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 28" id="line28">
+                    <td>28</td><td></td><td>0</td><td><code>  FutureOr&lt;void&gt; uninstall() {}</code></td>
+                </tr>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+                <tr class="noop" title="Line 30" id="line30">
+                    <td>30</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code>/// Base class for a worker service.</code></td>
+                </tr>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>abstract class WorkerService {</code></td>
+                </tr>
+                <tr class="noop" title="Line 33" id="line33">
+                    <td>33</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code></td>
+                </tr>
+                <tr class="noop" title="Line 34" id="line34">
+                    <td>34</td><td></td><td></td><td><code>  /// worker will dispatch the request to the [CommandHandler] mathing the value</code></td>
+                </tr>
+                <tr class="noop" title="Line 35" id="line35">
+                    <td>35</td><td></td><td></td><td><code>  /// of [WorkerRequest.command].</code></td>
+                </tr>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
+                </tr>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 38" id="line38">
+                    <td>38</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 39" id="line39">
+                    <td>39</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 40" id="line40">
+                    <td>40</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
+                </tr>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

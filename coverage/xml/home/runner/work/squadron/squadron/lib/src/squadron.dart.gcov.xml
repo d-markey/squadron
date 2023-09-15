@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.943662" lines-covered="67" lines-valid="71" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9577465" lines-covered="68" lines-valid="71" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -393,8 +393,9 @@
         <line>
             <code>  /// `WorkerChannel` to communicate with the parent. In the main thread, this will be `null`.</code>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>  static WorkerChannel? get parentChannel =&gt; _instance?._parentChannel;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  WorkerChannel? _parentChannel;</code>

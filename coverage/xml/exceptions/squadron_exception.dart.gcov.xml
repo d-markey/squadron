@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75609756" lines-covered="31" lines-valid="41" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85106385" lines-covered="40" lines-valid="47" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -201,30 +201,37 @@
         <line>
             <code/>
         </line>
-        <line hits="3">
-            <code>  static final _deserializers = &lt;SquadronExceptionDeserializer&gt;[</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  static final _deserializers = &lt;SquadronExceptionDeserializer&gt;{</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    SquadronErrorExt.deserialize,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    WorkerException.deserialize,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    CancelledException.deserialize,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    TaskTimeoutException.deserialize,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  ];</code>
+            <code>  };</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Registers the deserializer for a custom [WorkerException].</code>
+            <code>  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is</code>
+        </line>
+        <line>
+            <code>  /// already registered, registering it again will have no effect.</code>
         </line>
         <line hits="1">
             <code>  static void registerExceptionDeserializer(</code>
@@ -235,6 +242,35 @@
         </line>
         <line hits="3">
             <code>    _deserializers.add(deserializer);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Unregisters a deserializer that was previously registered, does nothing otherwise.</code>
+        </line>
+        <line>
+            <code>  /// Please note that for a deregistration to have an effect, the exact same instance that</code>
+        </line>
+        <line>
+            <code>  /// was provided to [registerExceptionDeserializer] must be provided to this method; avoid</code>
+        </line>
+        <line>
+            <code>  /// passing lambdas, prefer passing static methods or top-level functions instead.</code>
+        </line>
+        <line hits="1">
+            <code>  static void unregisterExceptionDeserializer(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      WorkerExceptionDeserializer deserializer) {</code>
+        </line>
+        <line hits="3">
+            <code>    _deserializers.remove(deserializer);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -281,13 +317,13 @@
         <line hits="0">
             <code>    try {</code>
         </line>
-        <line hits="5">
-            <code>      for (var i = 0; i &lt; _deserializers.length; i++) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>      for (var deserializer in _deserializers) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>        error = _deserializers[i](data);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        error = deserializer(data);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>        if (error != null) {</code>
@@ -303,14 +339,17 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>      error ??= SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>          'failed to deserialize exception information: $data',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>          StackTrace.current);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>    } catch (ex, st) {</code>

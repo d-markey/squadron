@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9385965" lines-covered="107" lines-valid="114" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9385965" lines-covered="107" lines-valid="114" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -32,6 +32,9 @@
             <code>import '../tokens/cancellation_token.dart';</code>
         </line>
         <line>
+            <code>import '../worker/worker_request.dart';</code>
+        </line>
+        <line>
             <code>import 'worker_service.dart';</code>
         </line>
         <line>
@@ -44,10 +47,13 @@
             <code>///</code>
         </line>
         <line>
-            <code>/// This base class takes care of creating the [Channel] and firing up the worker.</code>
+            <code>/// This base class takes care of creating the [Channel] and firing up the</code>
         </line>
         <line>
-            <code>/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.</code>
+            <code>/// worker. Typically, derived classes should add proxy methods sending</code>
+        </line>
+        <line>
+            <code>/// [WorkerRequest]s to the worker.</code>
         </line>
         <line>
             <code>abstract class Worker implements WorkerService {</code>

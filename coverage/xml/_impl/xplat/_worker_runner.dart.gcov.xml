@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8196721" lines-covered="50" lines-valid="61" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82539684" lines-covered="52" lines-valid="63" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -201,7 +201,7 @@
             <code>      WorkerService service;</code>
         </line>
         <line hits="1">
-            <code>      var init = initializer(startRequest);</code>
+            <code>      final init = initializer(startRequest);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -219,6 +219,9 @@
         </line>
         <line>
             <code>      }</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="1">
             <code>      final operations = service.operations;</code>
@@ -245,6 +248,26 @@
         <line hits="2">
             <code>      _operations.addAll(operations);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>      final install = _monitor.install(service);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      if (install is Future) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        await install;</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="1">
             <code>      client.connect(channelInfo);</code>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95238096" lines-covered="80" lines-valid="84" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96428573" lines-covered="81" lines-valid="84" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="concurrency_settings.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6">
             <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron.dart" functions-hit="0" functions-valid="0" lines-hit="67" lines-valid="71">
-            <testCase branch-hit="0" function-hit="0" line-hit="67" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron.dart" functions-hit="0" functions-valid="0" lines-hit="68" lines-valid="71">
+            <testCase branch-hit="0" function-hit="0" line-hit="68" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>

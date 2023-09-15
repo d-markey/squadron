@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75268817" lines-covered="140" lines-valid="186" package="/_impl/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7580645" lines-covered="141" lines-valid="186" package="/_impl/browser" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="_local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="11" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="11" name="&lt;unnamed&gt;"/>
@@ -13,8 +13,8 @@
         <source branches-hit="0" branches-valid="0" filename="_transferables.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="98" lines-valid="137" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="98" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="99" lines-valid="137" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="99" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

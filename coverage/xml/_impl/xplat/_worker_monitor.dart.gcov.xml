@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-10" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96" lines-covered="48" lines-valid="50" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
         <line>
             <code>import '../../tokens/cancellation_token.dart';</code>
         </line>
@@ -23,28 +29,31 @@
             <code/>
         </line>
         <line>
-            <code>/// Each platform worker will instantiate a [WorkerMonitor] responsible for handling cancellation requests.</code>
+            <code>/// Each platform worker will instantiate a [WorkerMonitor] responsible for</code>
         </line>
         <line>
-            <code>/// Worker tasks in Squadron may be cancelled in two ways: with a [CancellationToken], giving worker services</code>
+            <code>/// handling cancellation requests. Worker tasks in Squadron may be cancelled in</code>
         </line>
         <line>
-            <code>/// the chance to handle cancellation requests gracefully, or without a [CancellationToken] via</code>
+            <code>/// two ways: with a [CancellationToken], giving worker services the chance to</code>
         </line>
         <line>
-            <code>/// [WorkerPool.cancel] or [Task.cancel].</code>
+            <code>/// handle cancellation requests gracefully, or without a [CancellationToken]</code>
+        </line>
+        <line>
+            <code>/// via [WorkerPool.cancel] or [Task.cancel].</code>
         </line>
         <line>
             <code>class WorkerMonitor {</code>
         </line>
         <line>
-            <code>  /// Constructs a new [WorkerMonitor]. The [_terminate] callback will be called by</code>
+            <code>  /// Constructs a new [WorkerMonitor]. The [_terminate] callback will be called</code>
         </line>
         <line>
-            <code>  /// [WorkerMonitor.terminate]. This callback should contain code to shutdown the</code>
+            <code>  /// by [WorkerMonitor.terminate]. This callback should contain code to</code>
         </line>
         <line>
-            <code>  /// platform worker and release resources.</code>
+            <code>  /// shutdown the platform worker and release resources.</code>
         </line>
         <line hits="2">
             <code>  WorkerMonitor(this._terminate);</code>
@@ -61,6 +70,9 @@
         </line>
         <line>
             <code>  int _executing = 0;</code>
+        </line>
+        <line>
+            <code>  ServiceInstaller? _installer;</code>
         </line>
         <line>
             <code/>
@@ -262,14 +274,88 @@
             <code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>      _terminate();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>      _shutdown();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
         <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Installs the service if it implements [ServiceInstaller].</code>
+        </line>
+        <line hits="1">
+            <code>  FutureOr&lt;void&gt; install(WorkerService service) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (service is ServiceInstaller) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      final installer = service as ServiceInstaller;</code>
+        </line>
+        <line hits="1">
+            <code>      _installer = installer;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return installer.install();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Installs the service if it implements [ServiceInstaller].</code>
+        </line>
+        <line hits="1">
+            <code>  FutureOr&lt;void&gt; _uninstall(ServiceInstaller? installer) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (installer != null) {</code>
+        </line>
+        <line>
+            <code>      try {</code>
+        </line>
+        <line hits="1">
+            <code>        var res = installer.uninstall();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (res is Future&lt;void&gt;) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>          res = res.onError((error, stackTrace) =&gt; {/* swallow excepions */});</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code>        return res;</code>
+        </line>
+        <line>
+            <code>      } catch (ex) {/* swallow exceptions*/}</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="0">
             <code>  }</code>
         </line>
         <line>
@@ -289,9 +375,9 @@
             <code>    if (_executing == 0) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>      _terminate();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>      _shutdown();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -304,6 +390,38 @@
             <code>    }</code>
         </line>
         <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  void _shutdown() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    final uninstall = _uninstall(_installer);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (uninstall is Future) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      uninstall.whenComplete(_terminate);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="2">
+            <code>      _terminate();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="0">
             <code>  }</code>
         </line>
         <line>

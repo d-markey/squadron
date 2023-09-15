@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-09-10</dd>
+                    <dd>2023-09-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>2</td><td>10</td><td class="low">20.0%</td>
+                            <th scope="row">Lines</th><td>6</td><td>10</td><td class="low">60.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -84,8 +84,8 @@
                 <tr class="noop" title="Line 8" id="line8">
                     <td>8</td><td></td><td></td><td><code>  /// including a timestamp, the worker id and the message's log [level].</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="lineCov" title="Line 9" id="line9">
+                    <td>9</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 10" id="line10">
                     <td>10</td><td></td><td>0</td><td><code>  Iterable&lt;String&gt; format(int level, dynamic message) {</code></td>
@@ -93,11 +93,11 @@
                 <tr class="noop" title="Line 11" id="line11">
                     <td>11</td><td></td><td></td><td><code>    final header =</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>0</td><td><code>        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';</code></td>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>6</td><td><code>        '[${DateTime.now().toUtc().toIso8601String()}] [${SquadronLogLevel.getName(level)}] [${Squadron.id}]';</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>0</td><td><code>    if (message is Iterable) {</code></td>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>1</td><td><code>    if (message is Iterable) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 14" id="line14">
                     <td>14</td><td></td><td>0</td><td><code>      message = message</code></td>
@@ -111,14 +111,14 @@
                 <tr class="noop" title="Line 17" id="line17">
                     <td>17</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>0</td><td><code>      message = message?.toString().split('\n') ?? const [];</code></td>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>2</td><td><code>      message = message?.toString().split('\n') ?? const [];</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>    return message.where((m) =&gt; m.isNotEmpty).map((line) =&gt; '$header $line');</code></td>
+                    <td>20</td><td></td><td>7</td><td><code>    return message.where((m) =&gt; m.isNotEmpty).map((line) =&gt; '$header $line');</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 21" id="line21">
                     <td>21</td><td></td><td>0</td><td><code>  }</code></td>
