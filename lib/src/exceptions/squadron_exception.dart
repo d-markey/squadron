@@ -59,17 +59,27 @@ abstract class SquadronException implements Exception {
   /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.
   List serialize();
 
-  static final _deserializers = <SquadronExceptionDeserializer>[
+  static final _deserializers = <SquadronExceptionDeserializer>{
     SquadronErrorExt.deserialize,
     WorkerException.deserialize,
     CancelledException.deserialize,
     TaskTimeoutException.deserialize,
-  ];
+  };
 
-  /// Registers the deserializer for a custom [WorkerException].
+  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is
+  /// already registered, registering it again will have no effect.
   static void registerExceptionDeserializer(
       WorkerExceptionDeserializer deserializer) {
     _deserializers.add(deserializer);
+  }
+
+  /// Unregisters a deserializer that was previously registered, does nothing otherwise.
+  /// Please note that for a deregistration to have an effect, the exact same instance that
+  /// was provided to [registerExceptionDeserializer] must be provided to this method; avoid
+  /// passing lambdas, prefer passing static methods or top-level functions instead.
+  static void unregisterExceptionDeserializer(
+      WorkerExceptionDeserializer deserializer) {
+    _deserializers.remove(deserializer);
   }
 
   /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.
@@ -83,8 +93,8 @@ abstract class SquadronException implements Exception {
     }
     SquadronException? error;
     try {
-      for (var i = 0; i < _deserializers.length; i++) {
-        error = _deserializers[i](data);
+      for (var deserializer in _deserializers) {
+        error = deserializer(data);
         if (error != null) {
           break;
         }

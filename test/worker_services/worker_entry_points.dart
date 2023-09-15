@@ -18,6 +18,7 @@ class EntryPoints {
   static Iterable<EntryPoint> get entryPoints => [
         echo,
         cache,
+        installable,
         issues,
         local,
         prime,
@@ -25,11 +26,12 @@ class EntryPoints {
         failedInit,
         invalidCommand,
         missingStartRequest,
-      ].where((e) => e != null).cast<EntryPoint>();
+      ].whereType<EntryPoint>();
 
   static dynamic echo;
 
   static dynamic cache;
+  static dynamic installable;
   static dynamic issues;
   static dynamic local;
   static dynamic prime;

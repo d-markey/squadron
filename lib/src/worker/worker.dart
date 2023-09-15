@@ -8,12 +8,14 @@ import '../_impl/xplat/_helpers.dart';
 import '../_impl/xplat/_worker_id.dart';
 import '../stats/worker_stat.dart';
 import '../tokens/cancellation_token.dart';
+import '../worker/worker_request.dart';
 import 'worker_service.dart';
 
 /// Base worker class.
 ///
-/// This base class takes care of creating the [Channel] and firing up the worker.
-/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
+/// This base class takes care of creating the [Channel] and firing up the
+/// worker. Typically, derived classes should add proxy methods sending
+/// [WorkerRequest]s to the worker.
 abstract class Worker implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint, {this.args = const [], this.platformWorkerHook});

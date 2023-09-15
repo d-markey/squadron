@@ -252,6 +252,38 @@ void poolTests() {
 
       pool.stop();
     });
+
+    test('- CustomException - after deserializer deregistation', () async {
+      SquadronException.registerExceptionDeserializer(
+          CustomException.deserialize);
+
+      final pool = TestWorkerPool();
+
+      try {
+        await pool.throwCustomException();
+        // should never happen
+        throw Exception('cancel() completed sucessfully');
+      } catch (ex) {
+        expect(ex, isA<CustomException>());
+        final wex = ex as CustomException;
+        expect(wex.message, contains('intentional CUSTOM exception'));
+      }
+
+      SquadronException.unregisterExceptionDeserializer(
+          CustomException.deserialize);
+
+      try {
+        await pool.throwCustomException();
+        // should never happen
+        throw Exception('cancel() completed sucessfully');
+      } catch (ex) {
+        expect(ex, isNot(isA<CustomException>()));
+        final wex = ex as SquadronException;
+        expect(wex.message, contains('intentional CUSTOM exception'));
+      }
+
+      pool.stop();
+    });
   });
 
   test('- value - performance', () async {

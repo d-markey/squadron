@@ -9,6 +9,7 @@ import '../classes/memory_logger.dart';
 import '../classes/prime_numbers.dart';
 import '../classes/platform.dart';
 import '../worker_services/cache_service_worker.dart';
+import '../worker_services/installable_service_worker.dart';
 import '../worker_services/prime_service_worker.dart';
 import '../worker_services/test_service.dart';
 import '../worker_services/test_service_worker.dart';
@@ -109,6 +110,90 @@ void workerTests() {
       worker.stop();
 
       await Future.delayed(TestService.shortDelay);
+    });
+
+    group('- Install', () {
+      test('No error', () async {
+        final worker = InstallableWorker();
+
+        await worker.start();
+        expect(memoryLogger.contains('intended failure on install'), isFalse);
+        expect(memoryLogger.contains('service installed successfully'), isTrue);
+
+        final installed = await worker.isInstalled();
+        expect(installed, isTrue);
+
+        final uninstalled = await worker.isUninstalled();
+        expect(uninstalled, isFalse);
+
+        worker.stop();
+        expect(memoryLogger.contains('intended failure on uninstall'), isFalse);
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isFalse);
+
+        await Future.delayed(TestService.delay * 2);
+        expect(memoryLogger.contains('intended failure on uninstall'), isFalse);
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isTrue);
+      });
+
+      test('Error on installation', () async {
+        final worker = InstallableWorker(throwOnInstall: true);
+
+        try {
+          await worker.start();
+          throw Exception('start completed successfully');
+        } on WorkerException catch (ex) {
+          expect(ex.message.contains('intended failure on install'), isTrue);
+          expect(memoryLogger.contains('intended failure on install'), isTrue);
+          expect(
+              memoryLogger.contains('service installed successfully'), isFalse);
+        }
+
+        try {
+          await worker.isInstalled();
+          throw Exception('start completed successfully');
+        } on WorkerException catch (ex) {
+          expect(ex.message.contains('intended failure on install'), isTrue);
+          expect(memoryLogger.contains('intended failure on install'), isTrue);
+          expect(
+              memoryLogger.contains('service installed successfully'), isFalse);
+        }
+
+        worker.stop();
+        expect(memoryLogger.contains('intended failure on uninstall'), isFalse);
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isFalse);
+
+        await Future.delayed(TestService.delay * 2);
+        expect(memoryLogger.contains('intended failure on uninstall'), isFalse);
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isFalse);
+      });
+
+      test('Error on uninstallation', () async {
+        final worker = InstallableWorker(throwOnUninstall: true);
+
+        await worker.start();
+        expect(memoryLogger.contains('service installed successfully'), isTrue);
+
+        final installed = await worker.isInstalled();
+        expect(installed, isTrue);
+
+        final uninstalled = await worker.isUninstalled();
+        expect(uninstalled, isFalse);
+
+        worker.stop();
+        expect(memoryLogger.contains('intended failure on uninstall'), isFalse);
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isFalse);
+
+        await Future.delayed(TestService.delay * 2);
+        expect(memoryLogger.contains('intended failure on uninstall'),
+            anyOf(isFalse, isTrue));
+        expect(
+            memoryLogger.contains('service uninstalled successfully'), isFalse);
+      });
     });
 
     test('- cannot restart after stop', () async {

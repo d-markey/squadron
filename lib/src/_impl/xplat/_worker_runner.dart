@@ -59,12 +59,13 @@ class WorkerRunner {
       Squadron.debugMode = (startRequest.travelTime != null);
 
       WorkerService service;
-      var init = initializer(startRequest);
+      final init = initializer(startRequest);
       if (init is Future) {
         service = await init;
       } else {
         service = init;
       }
+
       final operations = service.operations;
       if (operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw SquadronErrorExt.create(
@@ -72,6 +73,12 @@ class WorkerRunner {
             StackTrace.current);
       }
       _operations.addAll(operations);
+
+      final install = _monitor.install(service);
+      if (install is Future) {
+        await install;
+      }
+
       client.connect(channelInfo);
     } catch (ex, st) {
       client.error(SquadronException.from(ex, st));

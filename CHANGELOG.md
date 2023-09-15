@@ -1,3 +1,8 @@
+## 5.1.6
+
+- Rework exception deserializer management to protect from multiple registrations and allow for deregistration. See https://github.com/d-markey/squadron/issues/27#issuecomment-1717452323.
+- Added support for installable/uninstallable worker services. If a service needs to take action after the worker thread has started or before it is stopped, it should extend or implement `ServiceInstaller` and provide one or both of `install()` / `uninstall()`. These methods will be called on platform thread setup/teardown. See https://github.com/d-markey/squadron/issues/29#issuecomment-1719682340.
+
 ## 5.1.5
 
 - Removed `stdout_logger.dart` because it imports `dart:io` which made pub.dev revoke the support for Web platforms.
