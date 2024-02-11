@@ -1,7 +1,7 @@
 import 'package:squadron/squadron.dart';
 
+import '_test_context.dart';
 import 'issues_service.dart';
-import 'worker_entry_points.dart';
 
 class IssuesWorkerPool extends WorkerPool<IssuesWorker>
     implements IssuesService {
@@ -16,7 +16,7 @@ class IssuesWorkerPool extends WorkerPool<IssuesWorker>
 }
 
 class IssuesWorker extends Worker implements IssuesService {
-  IssuesWorker() : super(EntryPoints.issues);
+  IssuesWorker() : super(TestContext.entryPoints.issues);
 
   @override
   Stream<dynamic> issue_8(List<dynamic> words) =>

@@ -10,9 +10,3 @@ class IdentityMarshaler<T> extends SquadronMarshaler<T, T> {
   @override
   T unmarshal(T data) => data;
 }
-
-/// Provided temporarily for compatibility reasons. See [IdentityMarshaler].
-@Deprecated('use "IdentityMarshaler<T>" instead.')
-class IdentityMarshaller<T> extends SquadronMarshaller<T, T> {
-  const IdentityMarshaller();
-}

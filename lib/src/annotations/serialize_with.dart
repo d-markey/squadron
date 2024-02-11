@@ -11,8 +11,4 @@ class SerializeWith {
   /// to/from the worker service. The type or instance type must implement
   /// [SquadronMarshaler].
   final dynamic marshaler;
-
-  /// Provided temporarily for compatibility reasons. See [marshaler].
-  @Deprecated('use "marshaler" instead')
-  dynamic get marshaller => marshaler;
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import '../worker/worker.dart';
-import 'worker_request.dart';
+import 'worker/worker.dart';
+import 'worker/worker_request.dart';
 
 typedef WorkerInitializer = FutureOr<WorkerService> Function(
     WorkerRequest startRequest);

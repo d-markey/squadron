@@ -4,10 +4,10 @@ import '_impl/xplat/_channel.dart'
     if (dart.library.io) '_impl/native/_channel.dart'
     if (dart.library.js) '_impl/browser/_channel.dart'
     if (dart.library.html) '_impl/browser/_channel.dart';
-import 'tokens/cancellation_token.dart';
+import 'tokens/_squadron_cancelation_token.dart';
 import 'worker/worker_request.dart';
 import 'worker/worker_response.dart';
-import 'worker/worker_service.dart';
+import 'worker_service.dart';
 
 /// A [Channel] supports communication from a client to a platform worker. It is used to send a [WorkerRequest] to
 /// a platform worker.
@@ -16,7 +16,7 @@ abstract class Channel {
   String get workerId;
 
   /// [Channel] serialization. Returns an opaque object that can be transfered from the client to the worker.
-  dynamic serialize();
+  PlatformChannel serialize();
 
   /// [Channel] sharing. Returns a [Channel] object that can be provided to enable another worker to call the
   /// channel's worker.
@@ -31,7 +31,7 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects a single value from the worker.
   Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? token,
+      {SquadronCancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false});
 
@@ -39,7 +39,7 @@ abstract class Channel {
   /// The worker must send a [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop,
-      CancellationToken? token,
+      SquadronCancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false});
 
@@ -51,6 +51,6 @@ abstract class Channel {
       openChannel(entryPoint, workerId, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static Channel? deserialize(dynamic channelInfo) =>
+  static Channel? deserialize(PlatformChannel? channelInfo) =>
       deserializeChannel(channelInfo);
 }

@@ -1,16 +1,18 @@
 import 'dart:async';
 import 'dart:html' as web;
 
+import 'package:cancelation_token/cancelation_token.dart';
+
 import '../../channel.dart' show Channel;
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../exceptions/worker_exception.dart';
 import '../../squadron.dart';
-import '../../tokens/cancellation_token.dart';
+import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker/worker_service.dart';
+import '../../worker_service.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../xplat/_value_wrapper.dart';
 import '_transferables.dart';
@@ -18,6 +20,7 @@ import '_uri_checker.dart';
 
 typedef EntryPoint = String;
 typedef PlatformWorker = web.Worker;
+typedef PlatformChannel = web.MessagePort;
 
 typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
 
@@ -32,47 +35,62 @@ class _BaseJsChannel {
   final String workerId;
 
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
-  dynamic serialize() => _sendPort;
+  PlatformChannel serialize() => _sendPort;
 
   void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
-    req.wrapRequest();
+    req.wrapRequestInPlace();
     try {
-      _sendPort.postMessage(
-          req, (req.channelInfo == null) ? null : [req.channelInfo]);
+      final channelInfo = req.channelInfo;
+      _sendPort.postMessage(req, (channelInfo == null) ? null : [channelInfo]);
+    } on UnimplementedError catch (ex, st) {
+      Squadron.severe('failed to post request $req: $ex');
+      throw SquadronErrorExt.create(ex.message ?? 'Unimplemented', st);
     } catch (ex, st) {
-      Squadron.severe('failed to post request $req: error $ex');
+      Squadron.severe('failed to post request $req: $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
-    req.wrapRequest();
+    req.wrapRequestInPlace();
     try {
       _sendPort.postMessage(req, Transferables.get(req).toList());
+    } on UnimplementedError catch (ex, st) {
+      Squadron.severe('failed to post request $req: $ex');
+      throw SquadronErrorExt.create(
+          ex.message ?? 'message contains untransferable objects', st);
     } catch (ex, st) {
-      Squadron.severe('failed to post request $req: error $ex');
+      Squadron.severe('failed to post request $req: $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
   void _postResponse(WorkerResponse res) {
-    res.wrapResponse();
+    res.wrapResponseInPlace();
     try {
       _sendPort.postMessage(res);
+    } on UnimplementedError catch (ex, st) {
+      Squadron.severe('failed to post response $res: $ex');
+      throw SquadronErrorExt.create(
+          ex.message ?? 'message contains untransferable objects', st);
     } catch (ex, st) {
-      Squadron.severe('failed to post response $res: error $ex');
+      Squadron.severe('failed to post response $res: $ex');
       throw SquadronException.from(ex, st);
     }
   }
 
   void _inspectAndPostResponse(WorkerResponse res) {
-    res.wrapResponse();
+    res.wrapResponseInPlace();
     try {
       _sendPort.postMessage(res, Transferables.get(res).toList());
+    } on UnimplementedError catch (ex, st) {
+      Squadron.severe('failed to post response $res: $ex');
+      throw SquadronErrorExt.create(
+          ex.message ?? 'message contains untransferable objects', st);
     } catch (ex, st) {
-      Squadron.severe('failed to post response $res: error $ex');
+      Squadron.severe('failed to post response $res: $ex');
       throw SquadronException.from(ex, st);
     }
   }
@@ -80,8 +98,7 @@ class _BaseJsChannel {
 
 /// [Channel] implementation for the JavaScript world.
 class _JsChannel extends _BaseJsChannel implements Channel {
-  _JsChannel._(String workerId, web.MessagePort sendPort)
-      : super._(workerId, sendPort);
+  _JsChannel._(super.workerId, super.sendPort) : super._();
 
   bool _closed = false;
 
@@ -102,19 +119,20 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   /// single value from the [web.Worker].
   @override
   Future<T> sendRequest<T>(int command, List args,
-      {CancellationToken? token,
+      {CancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
     }
     final com = web.MessageChannel();
+    final squadronToken = SquadronCancelationToken.wrap(token);
     final wrapper = ValueWrapper<T>(
       WorkerRequestImpl.userCommand(
-          com.port2, command, args, token, inspectResponse),
+          com.port2, command, args, squadronToken, inspectResponse),
       postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
-      token: token,
+      token: squadronToken,
     );
     return wrapper.compute().whenComplete(() {
       com.port1.close();
@@ -128,23 +146,24 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   @override
   Stream<T> sendStreamingRequest<T>(int command, List args,
       {SquadronCallback onDone = Channel.noop,
-      CancellationToken? token,
+      CancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
     }
     final com = web.MessageChannel();
+    final squadronToken = SquadronCancelationToken.wrap(token);
     final wrapper = StreamWrapper<T>(
       WorkerRequestImpl.userCommand(
-          com.port2, command, args, token, inspectResponse),
+          com.port2, command, args, squadronToken, inspectResponse),
       postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       onDone: () {
         com.port1.close();
         onDone();
       },
-      token: token,
+      token: squadronToken,
     );
 
     return wrapper.stream;
@@ -153,8 +172,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
 
 /// [WorkerChannel] implementation for the JavaScript world.
 class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
-  _JsWorkerChannel._(String workerId, web.MessagePort sendPort)
-      : super._(workerId, sendPort);
+  _JsWorkerChannel._(super.workerId, super.sendPort) : super._();
 
   /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This method must be called by the
   /// [web.Worker] upon startup.
@@ -258,9 +276,9 @@ Future<Channel> openChannel(
       if (event is web.ErrorEvent) {
         final error = event;
         msg =
-            '$entryPoint => ${error.message} [${error.filename}(${error.lineno})]';
+            '$entryPoint => ${error.runtimeType} ${error.message} [${error.filename}(${error.lineno})]';
       } else {
-        msg = '$entryPoint: ${event.type} / $event';
+        msg = '$entryPoint: ${event.runtimeType} ${event.type} / $event';
       }
       if (!found) {
         msg = '!! WARNING: it seems no worker code lives at $msg';
@@ -292,7 +310,7 @@ Future<Channel> openChannel(
   com.port1.onMessage.listen(
     (event) {
       final response = event.data as List;
-      if (!response.unwrapResponse()) {
+      if (!response.unwrapResponseInPlace()) {
         return;
       }
 
@@ -313,7 +331,7 @@ Future<Channel> openChannel(
     },
   );
 
-  startRequest.wrapRequest();
+  startRequest.wrapRequestInPlace();
   try {
     final transfer = Transferables.get(startRequest).toList();
     worker.postMessage(startRequest, transfer);
@@ -329,11 +347,11 @@ Future<Channel> openChannel(
 }
 
 /// Creates a [_JsChannel] from a [web.MessagePort].
-Channel? deserializeChannel(dynamic channelInfo) =>
+Channel? deserializeChannel(PlatformChannel? channelInfo) =>
     (channelInfo == null) ? null : _JsChannel._('<deserialized>', channelInfo);
 
 /// Creates a [_JsWorkerChannel] from a [web.MessagePort].
-WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =>
+WorkerChannel? deserializeWorkerChannel(PlatformChannel? channelInfo) =>
     (channelInfo == null)
         ? null
         : _JsWorkerChannel._('<deserialized>', channelInfo);

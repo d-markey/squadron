@@ -1,6 +1,6 @@
-import '../../worker/worker.dart';
-import '../../worker/worker_pool.dart';
+import '../../pool/worker_pool.dart';
 import '../../stats/worker_stat.dart';
+import '../../worker/worker.dart';
 import '_worker_task.dart';
 
 /// Class representing a [Worker] from a [WorkerPool].

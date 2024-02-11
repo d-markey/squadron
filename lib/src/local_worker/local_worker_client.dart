@@ -1,7 +1,9 @@
+import 'package:cancelation_token/cancelation_token.dart';
+
 import '../channel.dart';
-import '../tokens/cancellation_token.dart';
+import '../tokens/_squadron_cancelation_token.dart';
 import '../worker/worker_request.dart';
-import '../worker/worker_service.dart';
+import '../worker_service.dart';
 import 'local_worker.dart';
 
 /// Base class used to communicate with a [LocalWorker].
@@ -18,23 +20,23 @@ class LocalWorkerClient implements WorkerService {
   /// Sends a command to the [LocalWorker].
   Future<T> send<T>(int command,
           {List args = const [],
-          CancellationToken? token,
+          CancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
       channel.sendRequest<T>(command, args,
-          token: token,
+          token: SquadronCancelationToken.wrap(token),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 
   /// Sends a streaming command to the [LocalWorker].
   Stream<T> stream<T>(int command,
           {List args = const [],
-          CancellationToken? token,
+          CancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
       channel.sendStreamingRequest<T>(command, args,
           onDone: Channel.noop,
-          token: token,
+          token: SquadronCancelationToken.wrap(token),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 

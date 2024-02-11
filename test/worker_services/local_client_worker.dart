@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
+import '_test_context.dart';
 import 'local_workers/local_client.dart';
 import 'local_workers/local_service.dart';
-import 'worker_entry_points.dart';
 
 abstract class LocalClientService {
   FutureOr<String> checkIds();
@@ -77,7 +77,7 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
 
 class LocalClientWorker extends Worker implements LocalClientService {
   LocalClientWorker({List args = const []})
-      : super(EntryPoints.local!, args: args);
+      : super(TestContext.entryPoints.local!, args: args);
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand);

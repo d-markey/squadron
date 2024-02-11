@@ -1,43 +1,45 @@
-@TestOn('browser')
-
 import 'dart:async';
 import 'dart:html' as web;
 
-import 'package:test/test.dart';
-
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/_impl/browser/_uri_checker.dart';
 
-import 'test_suites/cancellation_test_suite.dart';
-import 'test_suites/issues_test_suite.dart';
-import 'test_suites/local_worker_test_suite.dart';
-import 'test_suites/logger_test_suite.dart';
-import 'test_suites/squadron_singleton_test_suite.dart';
-import 'test_suites/web_worker_test_suite.dart';
-import 'test_suites/worker_pool_test_suite.dart';
-import 'test_suites/worker_test_suite.dart';
-import 'worker_services/worker_entry_points.dart';
+import '../worker_services/_test_context.dart' show TestPlatform, TestContext;
 
-void main() async {
-  EntryPoints.init();
-  await _checkWebWorkers(EntryPoints.entryPoints);
+const platform = TestPlatform.js;
+String platformName = web.window.navigator.userAgent;
 
-  group('BROWSER', () {
-    print('Running browser tests on ${web.window.navigator.appVersion}...');
+bool _set = false;
 
-    setUp(() {
-      Squadron.setId('workerTests');
-      Squadron.logLevel = SquadronLogLevel.off;
-    });
+Future<void> setEntryPoints(String root) async {
+  if (!_set) {
+    _set = true;
+    root = '${root}sample_js_workers';
 
-    group('- Squadron Singleton', squadronSingletonTests);
-    group('- Logging', loggerTests);
-    group("- WebWorker", webWorkerTests);
-    group("- Worker", workerTests);
-    group("- WorkerPool", poolTests);
-    group("- Cancellation", cancellationTests);
-    group("- LocalWorker", localWorkerTests);
-    group("- GitHub Issues", githubIssuesTests);
-  });
+    TestContext.entryPoints.inMemory =
+        'data:application/javascript,${Uri.encodeComponent('''onmessage = (e) => {
+  console.log("Message received from main script");
+  const workerResult = `ECHO "\${e.data}"`;
+  console.log("Posting message back to main script");
+  postMessage(workerResult);
+};''')}';
+
+    TestContext.entryPoints.echo = '$root/echo_worker.dart.js';
+    TestContext.entryPoints.native = '$root/native_worker.js';
+
+    TestContext.entryPoints.cache = '$root/cache_worker.dart.js';
+    TestContext.entryPoints.installable = '$root/installable_worker.dart.js';
+    TestContext.entryPoints.issues = '$root/issues_worker.dart.js';
+    TestContext.entryPoints.local = '$root/local_client_worker.dart.js';
+    TestContext.entryPoints.prime = '$root/prime_worker.dart.js';
+
+    TestContext.entryPoints.test = '$root/test_worker.dart.js';
+    // TestContext.entryPoints.failedInit = '$root/test_worker_failing.dart.js';
+    // TestContext.entryPoints.invalidCommand =
+    //     '$root/test_worker_invalid.dart.js';
+
+    await _checkWebWorkers(TestContext.definedEntryPoints);
+  }
 }
 
 Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
@@ -65,7 +67,7 @@ Web Workers are not supported on this platform
     } else if (!path.endsWith('.js')) {
       messages.add(
           'URLs for Web Worker $path must reference a JavaScript file ending with \'.js\'');
-    } else if (!await exists(path)) {
+    } else if (!await UriChecker.exists(Uri.parse(path))) {
       messages.add('Web Worker $path could not be found');
     } else if (!workerUrls.contains(path)) {
       messages.add('Web Worker $path is not used');
@@ -91,14 +93,5 @@ Please ensure Web Workers have been compiled prior to running Browser tests.
 ${messages.join('\n')}
 ============================================================================ 
 ''');
-  }
-}
-
-Future<bool> exists(String path) async {
-  try {
-    await web.HttpRequest.getString(path);
-    return true;
-  } catch (e) {
-    return false;
   }
 }

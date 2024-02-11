@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 import '../squadron.dart';
+import '_well_known_exceptions.dart';
 import 'squadron_exception.dart';
 
 /// Squadron Error
@@ -25,11 +26,9 @@ class SquadronError implements SquadronException {
   static const _$message = 1;
   static const _$stackTrace = 2;
 
-  static const _$typeMarker = -1;
-
   @override
   List serialize() => List.unmodifiable([
-        _$typeMarker,
+        $squadronErrorType,
         message,
         _stackTrace?.toString(),
       ]);
@@ -49,11 +48,11 @@ extension SquadronErrorExt on SquadronError {
     return SquadronError._(message, stackTrace);
   }
 
-  static SquadronException? deserialize(List data) =>
-      (data[SquadronError._$type] == SquadronError._$typeMarker)
+  static SquadronException? deserialize(List exceptionInfo) =>
+      (exceptionInfo[SquadronError._$type] == $squadronErrorType)
           ? SquadronError._(
-              data[SquadronError._$message],
+              exceptionInfo[SquadronError._$message],
               SquadronException.loadStackTrace(
-                  data[SquadronError._$stackTrace]))
+                  exceptionInfo[SquadronError._$stackTrace]))
           : null;
 }

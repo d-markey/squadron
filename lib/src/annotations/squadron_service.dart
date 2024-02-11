@@ -1,4 +1,4 @@
-import '../worker/worker_pool.dart';
+import '../pool/worker_pool.dart';
 
 /// Annotation for service classes to be wrapped as workers.
 class SquadronService {

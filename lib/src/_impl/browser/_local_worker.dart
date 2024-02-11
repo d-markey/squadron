@@ -2,12 +2,12 @@ import 'dart:html' as web;
 
 import '../../channel.dart';
 import '../../local_worker/local_worker.dart';
-import '../../worker/worker_service.dart';
+import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
 class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
-  _JsLocalWorker._(W service) : super(service) {
+  _JsLocalWorker._(super.service) {
     final runner = WorkerRunner.use(this);
     _port.port1.onMessage.listen(runner.handle);
   }

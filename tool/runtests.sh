@@ -6,7 +6,7 @@ rm -rf ./test/coverage
 mkdir ./test/coverage
 
 # run tests
-dart test --coverage=./test/coverage
+dart test -j 1 --coverage=./test/coverage
 test_status=$?
 
 # generate coverage report if tests succeed

@@ -5,20 +5,20 @@ class Transferables {
 
   static Iterable<Object> get(List args) => _get(args, <Object>{});
 
-  static bool _isBaseType(dynamic data) =>
+  static bool _isBaseType(Object? data) =>
       (data == null || data is String || data is num || data is bool);
 
-  static bool _isListOfBaseType(dynamic data) =>
+  static bool _isListOfBaseType(Object? data) =>
       (data is List<String> || data is List<num> || data is List<bool>);
 
-  static bool _isSafeForTransfer(dynamic data) {
+  static bool _isSafeForTransfer(Object? data) {
     if (_isBaseType(data)) return true;
     if (_isListOfBaseType(data)) return true;
     if (data is List && data.every(_isSafeForTransfer)) return true;
     return false;
   }
 
-  static bool _isNotSafeForTransfer(dynamic data) => !_isSafeForTransfer(data);
+  static bool _isNotSafeForTransfer(Object? data) => !_isSafeForTransfer(data);
 
   /// Excludes base type values from [list].
   static Iterable<Object> _getObjects(Iterable list, Set<Object> seen) sync* {

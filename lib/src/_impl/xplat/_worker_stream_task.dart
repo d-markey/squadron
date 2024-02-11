@@ -2,9 +2,9 @@ import 'dart:async';
 
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../pool/stream_task.dart';
 import '../../stats/perf_counter.dart';
 import '../../worker/worker.dart';
-import '../../worker/worker_task.dart';
 import '_worker_task.dart';
 
 class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
@@ -72,7 +72,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   @override
   void cancel([String? message]) {
     super.cancel(message);
-    _done(cancelledException);
+    _done(canceledException);
   }
 
   void _onError(ex, st) {
@@ -80,8 +80,8 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   void _onData(T data) {
-    if (isCancelled) {
-      _done(cancelledException);
+    if (isCanceled) {
+      _done(canceledException);
     } else {
       _controller.add(data);
     }
@@ -91,8 +91,8 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
     if (_controller.isClosed) {
       return _done();
     }
-    if (isCancelled) {
-      return _done(cancelledException);
+    if (isCanceled) {
+      return _done(canceledException);
     }
     try {
       final stream = await _streamer.future;
@@ -115,7 +115,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   @override
-  Future run(W worker) => super.run(worker).then((_) {
+  Future<void> run(W worker) => super.run(worker).then((_) {
         _streamer.complete(_producer(worker));
         return _controller.done;
       });

@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import '../../exceptions/squadron_exception.dart';
-import '../../exceptions/worker_exception.dart';
+import '../../pool/value_task.dart';
 import '../../stats/perf_counter.dart';
 import '../../worker/worker.dart';
-import '../../worker/worker_task.dart';
 import '_worker_task.dart';
 
 class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
@@ -18,34 +17,39 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
   @override
   Future<T> get value => _completer.future;
 
-  void _completeWithError(SquadronException exception) {
-    wrapUp(
-        () => _completer.completeError(exception, exception.stackTrace), false);
+  void _completeWithError(Object exception, StackTrace stackTrace) {
+    final ex = (exception is SquadronException)
+        ? exception
+        : SquadronException.from(exception, stackTrace);
+    wrapUp(() {
+      if (!_completer.isCompleted) {
+        _completer.completeError(ex, ex.stackTrace);
+      }
+    }, false);
   }
 
   void _completeWithResult(dynamic data) {
-    wrapUp(() => _completer.complete(data), true);
+    wrapUp(() {
+      if (!_completer.isCompleted) {
+        _completer.complete(data);
+      }
+    }, true);
   }
 
   @override
   void cancel([String? message]) {
     super.cancel(message);
     if (!isRunning && !isFinished) {
-      _completeWithError(cancelledException!);
+      _completeWithError(
+        canceledException!,
+        canceledException?.stackTrace ?? StackTrace.current,
+      );
     }
   }
 
   @override
-  Future run(W worker) async {
-    await super.run(worker);
-    try {
-      if (isCancelled) {
-        throw CancelledException();
-      }
-      final value = await _computer(worker);
-      _completeWithResult(value);
-    } catch (ex, st) {
-      _completeWithError(SquadronException.from(ex, st));
-    }
-  }
+  Future<void> run(W worker) => super
+      .run(worker)
+      .then((_) => _computer(worker).then(_completeWithResult))
+      .catchError(_completeWithError);
 }

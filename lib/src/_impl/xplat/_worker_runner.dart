@@ -10,7 +10,7 @@ import '../../worker/worker.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
-import '../../worker/worker_service.dart';
+import '../../worker_service.dart';
 import '_worker_monitor.dart';
 
 class WorkerRunner {
@@ -34,7 +34,7 @@ class WorkerRunner {
   /// populated with operations from the service.
   Future connect(List? startRequest, Object channelInfo,
       WorkerInitializer initializer) async {
-    startRequest?.unwrapRequest();
+    startRequest?.unwrapRequestInPlace();
     final client = startRequest?.client;
 
     if (startRequest == null) {
@@ -87,16 +87,16 @@ class WorkerRunner {
 
   /// [WorkerRequest] handler dispatching commands according to the [_operations] map.
   void processMessage(List request) async {
-    request.unwrapRequest();
+    request.unwrapRequestInPlace();
     final client = request.client;
 
     if (request.isTermination) {
       // terminate the worker
       return _monitor.terminate();
-    } else if (request.isCancellation) {
+    } else if (request.isTokenCancelation) {
       // cancel a token
-      return _monitor.cancelToken(request.cancelToken!);
-    } else if (request.isStreamCancellation) {
+      return _monitor.updateToken(request.cancelToken!);
+    } else if (request.isStreamCancelation) {
       // cancel a stream
       return _monitor.cancelStream(request.streamId!);
     } else if (client == null) {
@@ -131,7 +131,7 @@ class WorkerRunner {
       final reply = request.reply!;
       if (result is Stream && client.canStream(result)) {
         // result is a stream: forward data to the client
-        await client.pipe(result, reply, _monitor, tokenRef);
+        await client.pipe(result, reply, _monitor);
       } else {
         // result is a value: send to the client
         reply(result);

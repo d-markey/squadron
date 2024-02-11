@@ -31,9 +31,7 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
 }
 
 class SampleWorker extends Worker implements SampleService {
-  SampleWorker(EntryPoint entryPoint,
-      {List args = const [], PlatformWorkerHook? platformWorkerHook})
-      : super(entryPoint, args: args, platformWorkerHook: platformWorkerHook);
+  SampleWorker(super.entryPoint, {super.args, super.platformWorkerHook});
 
   @override
   Future io({required int milliseconds}) =>

@@ -1,16 +1,18 @@
 import 'dart:async';
 
-import '../../tokens/cancellation_token.dart';
-import '../../worker/worker_pool.dart';
+import 'package:cancelation_token/cancelation_token.dart';
+
+import '../../pool/worker_pool.dart';
+import '../../tokens/_cancelation_token_ref.dart';
+import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_request.dart';
-import '../../worker/worker_service.dart';
-import '../../worker/worker_task.dart';
-import '_cancellation_token_ref.dart';
+import '../../worker_service.dart';
+import '_task.dart';
 
 /// Each platform worker will instantiate a [WorkerMonitor] responsible for
-/// handling cancellation requests. Worker tasks in Squadron may be cancelled in
-/// two ways: with a [CancellationToken], giving worker services the chance to
-/// handle cancellation requests gracefully, or without a [CancellationToken]
+/// handling cancelation requests. Worker tasks in Squadron may be canceled in
+/// two ways: with a [CancelationToken], giving worker services the chance to
+/// handle cancelation requests gracefully, or without a [CancelationToken]
 /// via [WorkerPool.cancel] or [Task.cancel].
 class WorkerMonitor {
   /// Constructs a new [WorkerMonitor]. The [_terminate] callback will be called
@@ -23,58 +25,53 @@ class WorkerMonitor {
   int _executing = 0;
   ServiceInstaller? _installer;
 
-  final _cancelTokens = <String, CancellationTokenReference>{};
+  final _cancelTokens = <String, CancelationTokenReference>{};
 
-  CancellationTokenReference _getTokenRef(CancellationToken? token) =>
+  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =>
       (token == null)
-          ? CancellationTokenReference.noToken
+          ? CancelationTokenReference.noToken
           : _cancelTokens.putIfAbsent(
-              token.id, () => CancellationTokenReference(token.id));
+              token.id, () => CancelationTokenReference(token.id));
 
-  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it
-  /// is overridden with a [CancellationTokenReference] and this reference is returned to the sender.
-  /// Otherwise, returns [CancellationTokenReference.noToken].
-  CancellationTokenReference begin(WorkerRequest request) {
+  /// Starts monitoring execution of this [request]. If the request contains a cancelation token, it
+  /// is overridden with a [CancelationTokenReference] and this reference is returned to the sender.
+  /// Otherwise, returns [CancelationTokenReference.noToken].
+  CancelationTokenReference begin(WorkerRequest request) {
     _executing++;
     final token = _getTokenRef(request.cancelToken);
     token.usedBy(request);
     return token;
   }
 
-  Map<int, SquadronCallback>? _streamCancellers;
+  Map<int, SquadronCallback>? _streamCancelers;
   int _streamId = 0;
 
-  /// Assigns a stream ID to the stream canceller callback and registers the callback.
-  int registerStreamCanceller(
-      CancellationTokenReference tokenRef, SquadronCallback canceller) {
+  /// Assigns a stream ID to the stream canceler callback and registers the callback.
+  int registerStreamCanceler(SquadronCallback canceler) {
     final streamId = ++_streamId;
-    (_streamCancellers ??= <int, SquadronCallback>{})[streamId] = canceller;
-    tokenRef.addListener(canceller);
+    (_streamCancelers ??= <int, SquadronCallback>{})[streamId] = canceler;
     return streamId;
   }
 
-  /// Unregisters the stream cancelled callback associated to the [streamId].
-  void unregisterStreamCanceller(
-      CancellationTokenReference tokenRef, int streamId) {
-    final canceller = _streamCancellers?[streamId];
-    if (canceller != null) {
-      tokenRef.removeListener(canceller);
-      _streamCancellers?.remove(streamId);
+  /// Unregisters the stream canceled callback associated to the [streamId].
+  void unregisterStreamCanceler(int streamId) {
+    final canceler = _streamCancelers?[streamId];
+    if (canceler != null) {
+      _streamCancelers?.remove(streamId);
     }
   }
 
-  /// Cancels a [token] via the corresponding [CancellationTokenReference].
-  void cancelToken(CancellationToken token) =>
-      _getTokenRef(token).notifyCancellation();
+  /// Updates a [token] via the corresponding [CancelationTokenReference].
+  void updateToken(SquadronCancelationToken token) =>
+      _getTokenRef(token).update(token);
 
   /// Cancels a stream via the corresponding [streamId].
-  void cancelStream(int streamId) => _streamCancellers?[streamId]?.call();
+  void cancelStream(int streamId) => _streamCancelers?[streamId]?.call();
 
   /// Stops monitoring execution and releases the [tokenRef].
-  void done(CancellationTokenReference tokenRef) {
+  void done(CancelationTokenReference tokenRef) {
     tokenRef.release();
-    if (tokenRef.refCount == 0 && !tokenRef.cancelled) {
-      // track only cancelled tokens
+    if (tokenRef.refCount == 0) {
       _cancelTokens.remove(tokenRef.id);
     }
     _executing--;
@@ -92,7 +89,7 @@ class WorkerMonitor {
     }
   }
 
-  /// Installs the service if it implements [ServiceInstaller].
+  /// Uninstalls the service if it implements [ServiceInstaller].
   FutureOr<void> _uninstall(ServiceInstaller? installer) {
     if (installer != null) {
       try {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../exceptions/squadron_exception.dart';
-import '../../tokens/cancellation_token.dart';
+import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
@@ -14,36 +14,38 @@ class ValueWrapper<T> {
   ValueWrapper(WorkerRequest request,
       {required PostRequest postMethod,
       required Stream messages,
-      CancellationToken? token})
+      SquadronCancelationToken? token})
       : _request = request,
-        _postRequest = postMethod,
-        _token = token,
-        // _inspectRequest = inspectRequest,
-        _completer = Completer<T>() {
-    _token?.addListener(_canceller);
+        _postRequest = postMethod {
+    if (token != null) {
+      token.onCanceled.then((_) {
+        _postRequest(WorkerRequestImpl.cancel(token));
+      });
+    }
+
     _sub = messages.listen(
       (message) {
         final res = message as List;
-        if (!res.unwrapResponse()) {
-          return;
-        }
 
-        final cancelException = _token?.exception;
-        if (cancelException != null) {
-          if (!_completer.isCompleted) {
-            _completer.completeError(
-                cancelException, cancelException.stackTrace);
+        // final cancelException = _token?.exception;
+        // if (cancelException != null) {
+        //   if (!_completer.isCompleted) {
+        //     _completer.completeError(
+        //         cancelException, cancelException.stackTrace);
+        //   }
+        // } else {
+        if (!_completer.isCompleted) {
+          if (!res.unwrapResponseInPlace()) {
+            return;
           }
-        } else {
-          if (!_completer.isCompleted) {
-            final error = res.error;
-            if (error != null) {
-              _completer.completeError(error, error.stackTrace);
-            } else {
-              _completer.complete(res.result);
-            }
+          final error = res.error;
+          if (error != null) {
+            _completer.completeError(error, error.stackTrace);
+          } else {
+            _completer.complete(res.result);
           }
         }
+        // }
       },
       onError: (e, st) {
         if (!_completer.isCompleted) {
@@ -57,22 +59,15 @@ class ValueWrapper<T> {
 
   final WorkerRequest _request;
   final PostRequest _postRequest;
-  final CancellationToken? _token;
-  // final bool _inspectRequest;
 
-  late final Completer<T> _completer;
+  final _completer = Completer<T>();
+
+  // ignore: cancel_subscriptions
   late final StreamSubscription _sub;
-
-  void _canceller() => _postRequest(WorkerRequestImpl.cancel(_token!));
-
-  void _done() {
-    _token?.removeListener(_canceller);
-    _sub.cancel();
-  }
 
   Future<T> compute() {
     // initiate operation now!
     _postRequest(_request);
-    return _completer.future.whenComplete(_done);
+    return _completer.future.whenComplete(_sub.cancel);
   }
 }

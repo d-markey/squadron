@@ -2,7 +2,7 @@ import 'dart:isolate';
 
 import '../../logging/squadron_logger.dart';
 import '../../squadron.dart';
-import '../../worker/worker_service.dart';
+import '../../worker_service.dart';
 import '../xplat/_worker_monitor.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';

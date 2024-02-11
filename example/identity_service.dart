@@ -22,7 +22,7 @@ class IdentityServiceImpl extends IdentityService {
 
 // The service client: this class will be used in workers that need to call the service implementation
 class IdentityClient extends LocalWorkerClient implements IdentityService {
-  IdentityClient(Channel channel) : super(channel);
+  IdentityClient(super.channel);
 
   @override
   Future<String> whoAreYou() => send(IdentityService.whoAreYouCommand);

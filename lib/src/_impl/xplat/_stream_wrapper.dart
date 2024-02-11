@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import '../../tokens/cancellation_token.dart';
+import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker/worker_service.dart';
+import '../../worker_service.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a streaming worker request.
 class StreamWrapper<T> {
@@ -15,7 +15,7 @@ class StreamWrapper<T> {
       {required PostRequest postMethod,
       required Stream messages,
       required SquadronCallback onDone,
-      CancellationToken? token})
+      SquadronCancelationToken? token})
       : _streamRequest = streamRequest,
         _postRequest = postMethod,
         _messages = messages,
@@ -27,11 +27,8 @@ class StreamWrapper<T> {
       onResume: _onResume,
       onCancel: _onCancel,
     );
-    _token?.addListener(_canceller);
-    _controller.done.then((_) {
-      _token?.removeListener(_canceller);
-      onDone();
-    });
+    _token?.onCanceled.then((ex) => _canceler());
+    _controller.done.then((_) => onDone());
   }
 
   /// The actual data stream from the worker.
@@ -40,14 +37,14 @@ class StreamWrapper<T> {
   final Stream<dynamic> _messages;
   final WorkerRequest _streamRequest;
   final PostRequest _postRequest;
-  final CancellationToken? _token;
+  final SquadronCancelationToken? _token;
 
   late final StreamController<T> _controller;
 
   int _paused = 0;
   late void Function(WorkerResponse) _handle;
 
-  void _canceller() => _postRequest(WorkerRequestImpl.cancel(_token!));
+  void _canceler() => _postRequest(WorkerRequestImpl.cancel(_token!));
 
   List<WorkerResponse>? _buffer;
 
@@ -67,7 +64,7 @@ class StreamWrapper<T> {
     }
   }
 
-  /// Will eventually store the stream ID received from the worker. If the stream is cancelled on the
+  /// Will eventually store the stream ID received from the worker. If the stream is canceled on the
   /// client side, the stream ID will be sent to the worker so it has a chance to stop streaming from
   /// the worker service.
   final _streamId = Completer<int>();
@@ -76,7 +73,7 @@ class StreamWrapper<T> {
     _messages.listen(
       (message) {
         final res = message as List;
-        if (!res.unwrapResponse() || _controller.isClosed) {
+        if (!res.unwrapResponseInPlace() || _controller.isClosed) {
           return;
         }
 
@@ -92,8 +89,8 @@ class StreamWrapper<T> {
           _controller.close();
         } else if (!_streamId.isCompleted) {
           // The first message received from the worker contains the stream ID. If the stream
-          // is cancelled on the client side, the stream from the worker context should also
-          // be cancelled by sending a WorkerRequest.cancelStream with this stream id.
+          // is canceled on the client side, the stream from the worker context should also
+          // be canceled by sending a WorkerRequest.cancelStream with this stream id.
           _streamId.complete(res.result);
         } else {
           _handle(res);
@@ -107,7 +104,7 @@ class StreamWrapper<T> {
 
   Future _onCancel() async {
     final streamId = await _streamId.future;
-    // notify the worker that the streaming operation has been cancelled
+    // notify the worker that the streaming operation has been canceled
     _postRequest(WorkerRequestImpl.cancelStream(streamId));
     _buffer?.clear();
     _controller.close();

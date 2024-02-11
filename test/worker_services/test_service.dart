@@ -1,11 +1,17 @@
 import 'dart:async';
 
+import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
 import '../classes/custom_exception.dart';
 import '../classes/platform.dart';
+import 'biging_marshaler.dart';
 
 class TestService implements WorkerService {
+  static const startupOk = 0;
+  static const startupThrows = 1;
+  static const startupInvalid = 2;
+
   TestService({bool invalid = false})
       : _invalid = invalid,
         super();
@@ -39,10 +45,10 @@ class TestService implements WorkerService {
       throw WorkerException('intentional worker exception');
 
   Future<int> throwTaskTimeOutException() =>
-      throw TaskTimeoutException(message: 'intentional timeout exception');
+      throw TimeoutException('intentional timeout exception');
 
-  Future<int> throwCancelledException() =>
-      throw CancelledException(message: 'intentional cancelled exception');
+  Future<int> throwCanceledException() =>
+      throw CanceledException('intentional canceled exception');
 
   FutureOr throwCustomException() =>
       throw CustomException('intentional CUSTOM exception');
@@ -72,23 +78,23 @@ class TestService implements WorkerService {
   }
 
   Stream<int> clock(
-      {int frequency = 1 /* Hz */, CancellationToken? token}) async* {
+      {int frequency = 1 /* Hz */, CancelationToken? token}) async* {
     var n = 0;
     final ms = 1000 ~/ frequency;
     if (ms == 0) {
       throw Exception('Frequency is too high!');
     }
     final delay = Duration(milliseconds: ms);
-    while (token == null || !token.cancelled) {
+    while (token == null || !token.isCanceled) {
       yield n;
       n += 1;
       await Future.delayed(delay);
     }
   }
 
-  Future cancellableInfiniteCpu(CancellationToken token) async {
+  Future cancelableInfiniteCpu(CancelationToken token) async {
     bool stop = false;
-    token.addListener(() => stop = true);
+    token.onCanceled.then((_) => stop = true);
     while (!stop) {
       await Future.delayed(Duration.zero);
       for (var i = 0; i < 10000; i++) {/* cpu */}
@@ -152,6 +158,10 @@ class TestService implements WorkerService {
     return controller.stream;
   }
 
+  FutureOr<BigInt> bigIntAdd(BigInt a, BigInt b,
+          {required bool marshalIn, required bool marshalOut}) =>
+      a + b;
+
   final bool _invalid;
 
   static const shortDelay = Duration(milliseconds: 10);
@@ -167,7 +177,7 @@ class TestService implements WorkerService {
   static const throwExceptionCommand = 6;
   static const throwWorkerExceptionCommand = 5;
   static const throwTaskTimeOutExceptionCommand = 12;
-  static const throwCancelledExceptionCommand = 13;
+  static const throwCanceledExceptionCommand = 13;
   static const throwCustomExceptionCommand = 7;
   static const forwardCommand = 8;
   static const missingCommand = 9;
@@ -176,9 +186,10 @@ class TestService implements WorkerService {
   static const finiteCommand = 14;
   static const infiniteCommand = 15;
   static const clockCommand = 16;
-  static const cancellableInfiniteCpuCommand = 17;
+  static const cancelableInfiniteCpuCommand = 17;
   static const getPendingInfiniteWithErrorsCommand = 18;
   static const infiniteWithErrorsCommand = 19;
+  static const bigIntAddCommand = 20;
 
   @override
   late final Map<int, CommandHandler> operations = {
@@ -191,7 +202,7 @@ class TestService implements WorkerService {
     throwExceptionCommand: (r) => throwException(),
     throwWorkerExceptionCommand: (r) => throwWorkerException(),
     throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
-    throwCancelledExceptionCommand: (r) => throwCancelledException(),
+    throwCanceledExceptionCommand: (r) => throwCanceledException(),
     throwCustomExceptionCommand: (r) => throwCustomException(),
     forwardCommand: (r) => forward(r.args[0]),
     invalidResponseCommand: (r) => invalidResponse(),
@@ -200,9 +211,18 @@ class TestService implements WorkerService {
     finiteCommand: (r) => finite(r.args[0]),
     infiniteCommand: (r) => infinite(),
     clockCommand: (r) => clock(frequency: r.args[0], token: r.cancelToken),
-    cancellableInfiniteCpuCommand: (r) =>
-        cancellableInfiniteCpu(r.cancelToken!),
+    cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
     infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
+    bigIntAddCommand: (r) async {
+      final marshalIn = r.args[2] as bool;
+      final marshalOut = r.args[3] as bool;
+      final bigIntMarshaler = BigIntMarshaler();
+      final a = marshalIn ? bigIntMarshaler.unmarshal(r.args[0]) : r.args[0];
+      final b = marshalIn ? bigIntMarshaler.unmarshal(r.args[1]) : r.args[1];
+      final res =
+          await bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
+      return marshalOut ? bigIntMarshaler.marshal(res) : res;
+    }
   };
 }

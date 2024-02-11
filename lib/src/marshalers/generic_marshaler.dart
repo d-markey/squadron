@@ -4,9 +4,3 @@ import 'squadron_marshaler.dart';
 abstract class GenericMarshaler<T> extends SquadronMarshaler<T, dynamic> {
   const GenericMarshaler();
 }
-
-/// Provided temporarily for compatibility reasons. See [GenericMarshaler].
-@Deprecated('use "GenericMarshaler<T>" instead.')
-abstract class GenericMarshaller<T> extends SquadronMarshaller<T, dynamic> {
-  const GenericMarshaller();
-}

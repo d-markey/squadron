@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import 'exceptions/exception_manager.dart';
 import 'logging/squadron_log_level.dart';
 import 'logging/squadron_logger.dart';
 import 'worker/worker_channel.dart';
@@ -31,6 +32,20 @@ class Squadron {
   static void shutdown() {
     __debugMode = false;
     _instance = null;
+  }
+
+  final _exceptionManager = ExceptionManager();
+
+  static ExceptionManager? get exceptionManager => _instance?._exceptionManager;
+
+  SquadronLogger? _logger;
+
+  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].
+  static void setLogger(SquadronLogger? logger) {
+    final sq = _getOrInitialize();
+    final level = logLevel;
+    sq._logger = logger;
+    sq._logger?.logLevel = level;
   }
 
   int _logLevel = SquadronLogLevel.off;
@@ -69,16 +84,6 @@ class Squadron {
       Squadron.logLevel = sq._logLevels.removeLast();
     }
     return Squadron.logLevel;
-  }
-
-  SquadronLogger? _logger;
-
-  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].
-  static void setLogger(SquadronLogger? logger) {
-    final sq = _getOrInitialize();
-    final level = logLevel;
-    sq._logger = logger;
-    sq._logger?.logLevel = level;
   }
 
   /// Flag indicating whether Squadron runs in debug mode. When running in debug mode, messages logged at

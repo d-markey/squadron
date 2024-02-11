@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:meta/meta.dart';
 
-import '../_impl/xplat/_cancellation_token_ref.dart';
 import '../_impl/xplat/_channel.dart'
     if (dart.library.io) '../_impl/native/_channel.dart'
     if (dart.library.js) '../_impl/browser/_channel.dart'
@@ -17,7 +16,7 @@ typedef PostRequest = void Function(WorkerRequest req);
 /// It is used to send [WorkerResponse] back to the client.
 abstract class WorkerChannel {
   /// [WorkerChannel] serialization. Returns an opaque object that can be transfered from the client to the worker.
-  dynamic serialize();
+  PlatformChannel serialize();
 
   /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized
   /// as a [Channel]. This method must be called by the worker upon startup.
@@ -46,27 +45,27 @@ abstract class WorkerChannel {
   void error(SquadronException error);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static WorkerChannel? deserialize(dynamic channelInfo) =>
+  static WorkerChannel? deserialize(PlatformChannel? channelInfo) =>
       deserializeWorkerChannel(channelInfo);
 }
 
 @internal
 extension WorkerChannelExt on WorkerChannel {
   /// Forwards stream events to client.
-  Future<void> pipe(Stream stream, void Function(dynamic) reply,
-      WorkerMonitor monitor, CancellationTokenReference tokenRef) {
+  Future<void> pipe(
+      Stream stream, void Function(dynamic) reply, WorkerMonitor monitor) {
     StreamSubscription? subscription;
     final done = Completer();
 
-    // stream canceller
+    // stream canceler
     void onDone() {
       closeStream();
       subscription?.cancel();
       done.complete();
     }
 
-    // register stream canceller callback and connect stream with client
-    final streamId = monitor.registerStreamCanceller(tokenRef, onDone);
+    // register stream canceler callback and connect stream with client
+    final streamId = monitor.registerStreamCanceler(onDone);
     reply(streamId);
 
     // start forwarding messages to the client
@@ -74,8 +73,8 @@ extension WorkerChannelExt on WorkerChannel {
         onError: _err, onDone: onDone, cancelOnError: false);
 
     return done.future.whenComplete(() {
-      // unregister stream canceller callback
-      monitor.unregisterStreamCanceller(tokenRef, streamId);
+      // unregister stream canceler callback
+      monitor.unregisterStreamCanceler(streamId);
     });
   }
 

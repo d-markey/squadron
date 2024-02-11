@@ -1,18 +1,19 @@
 import 'package:squadron/squadron.dart';
 
 class CustomException extends WorkerException {
-  CustomException(String message, {StackTrace? stackTrace})
-      : super(message, stackTrace: stackTrace);
+  CustomException(super.message, {super.stackTrace});
+
+  static const typeId = 'CUSTOM';
 
   @override
   List serialize() => List.unmodifiable([
-        'CUSTOM',
+        typeId,
         message,
         stackTrace?.toString(),
       ]);
 
   static CustomException? deserialize(List data) {
-    if (data[0] == 'CUSTOM') {
+    if (data[0] == typeId) {
       return CustomException(data[1],
           stackTrace: SquadronException.loadStackTrace(data[2]));
     }

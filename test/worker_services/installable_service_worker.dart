@@ -1,7 +1,7 @@
 import 'package:squadron/squadron.dart';
 
+import '_test_context.dart';
 import 'installable_service.dart';
-import 'worker_entry_points.dart';
 
 class InstallableWorkerPool extends WorkerPool<InstallableWorker>
     implements InstallableService {
@@ -32,7 +32,7 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 class InstallableWorker extends Worker implements InstallableService {
   InstallableWorker(
       {bool throwOnInstall = false, bool throwOnUninstall = false})
-      : super(EntryPoints.installable,
+      : super(TestContext.entryPoints.installable,
             args: [throwOnInstall, throwOnUninstall]);
 
   @override

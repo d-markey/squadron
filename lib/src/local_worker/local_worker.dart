@@ -1,9 +1,9 @@
-import '../channel.dart';
 import '../_impl/native/_local_worker.dart'
     if (dart.library.js) '../_impl/browser/_local_worker.dart'
     if (dart.library.html) '../_impl/browser/_local_worker.dart';
+import '../channel.dart';
 import '../worker/worker_request.dart';
-import '../worker/worker_service.dart';
+import '../worker_service.dart';
 
 /// Base local worker class.
 ///

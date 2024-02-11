@@ -3,7 +3,7 @@ import 'package:squadron/squadron.dart';
 import 'local_service.dart';
 
 class LocalClient extends LocalWorkerClient implements LocalService {
-  LocalClient(Channel channel) : super(channel);
+  LocalClient(super.channel);
 
   @override
   Future<String> getId() => send(LocalService.getIdCommand);

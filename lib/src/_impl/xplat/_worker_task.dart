@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import '../../exceptions/worker_exception.dart';
+import '../../exceptions/task_canceled_exception.dart';
+import '../../pool/worker_pool.dart';
 import '../../stats/perf_counter.dart';
 import '../../worker/worker.dart';
-import '../../worker/worker_pool.dart';
-import '../../worker/worker_service.dart';
-import '../../worker/worker_task.dart';
+import '../../worker_service.dart';
 import '_helpers.dart';
+import '_task.dart';
 
 /// [WorkerTask] registered in the [WorkerPool].
 abstract class WorkerTask<T, W extends Worker> implements Task<T> {
@@ -15,51 +15,52 @@ abstract class WorkerTask<T, W extends Worker> implements Task<T> {
   final int submitted;
   int? _executed;
   int? _finished;
-  int? _cancelled;
-
-  CancelledException? _cancelledException;
+  int? _canceled;
 
   final PerfCounter? _counter;
 
-  CancelledException? get cancelledException => _cancelledException;
   @override
-  bool get isCancelled => _cancelled != null;
+  bool get isCanceled => _canceled != null;
+
+  @override
+  bool get isPending => _executed == null && _canceled == null;
 
   @override
   bool get isFinished =>
-      _executed != null && _finished != null && _cancelled == null;
+      _executed != null && _finished != null && _canceled == null;
+
   @override
   bool get isRunning =>
-      _executed != null && _finished == null && _cancelled == null;
+      _executed != null && _finished == null && _canceled == null;
 
   @override
   Duration get runningTime => _executed == null
       ? Duration.zero
       : Duration(
           microseconds:
-              (_cancelled ?? _finished ?? microsecTimeStamp()) - _executed!);
+              (_canceled ?? _finished ?? microsecTimeStamp()) - _executed!);
 
   @override
   Duration get waitTime => Duration(
       microseconds:
-          (_executed ?? _cancelled ?? microsecTimeStamp()) - submitted);
+          (_executed ?? _canceled ?? microsecTimeStamp()) - submitted);
+
+  TaskCanceledException? _canceledException;
+  TaskCanceledException? get canceledException => _canceledException;
 
   @override
   void cancel([String? message]) {
-    _cancelled ??= microsecTimeStamp();
-    _cancelledException ??= CancelledException(message: message);
+    _canceled ??= microsecTimeStamp();
+    _canceledException ??= TaskCanceledException(message);
   }
 
-  Future run(W worker) async {
+  static final _ready = Future<void>.value();
+
+  Future<void> run(W worker) {
     _executed ??= microsecTimeStamp();
-    if (isCancelled) {
-      throw cancelledException!;
-    }
-  }
-
-  void throwIfCancelled() {
-    final ex = _cancelledException;
-    if (ex != null) throw ex;
+    return (_canceledException == null)
+        ? _ready
+        : Future.error(_canceledException!);
   }
 
   void wrapUp(SquadronCallback callback, bool success) async {

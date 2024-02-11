@@ -1,15 +1,17 @@
 import 'dart:async';
 
+import 'package:cancelation_token/cancelation_token.dart';
+
+import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_worker_id.dart';
 import '../channel.dart';
 import '../entrypoint.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
-import '../_impl/xplat/_helpers.dart';
-import '../_impl/xplat/_worker_id.dart';
 import '../stats/worker_stat.dart';
-import '../tokens/cancellation_token.dart';
+import '../tokens/_squadron_cancelation_token.dart';
 import '../worker/worker_request.dart';
-import 'worker_service.dart';
+import '../worker_service.dart';
 
 /// Base worker class.
 ///
@@ -101,7 +103,7 @@ abstract class Worker implements WorkerService {
   Future<T> send<T>(
     int command, {
     List args = const [],
-    CancellationToken? token,
+    CancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
@@ -116,14 +118,7 @@ abstract class Worker implements WorkerService {
   }
 
   Future<T> _send<T>(Channel channel, int command, List args,
-      CancellationToken? token, bool inspectRequest, bool inspectResponse) {
-    // was the token cancelled?
-    SquadronException? error = token?.exception;
-    if (error != null) {
-      _totalErrors++;
-      throw error;
-    }
-
+      CancelationToken? token, bool inspectRequest, bool inspectResponse) {
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -131,20 +126,15 @@ abstract class Worker implements WorkerService {
     }
 
     // send command
+    final squadronToken = SquadronCancelationToken.wrap(token);
     return channel
         .sendRequest<T>(command, args,
-            token: token,
+            token: squadronToken,
             inspectRequest: inspectRequest,
             inspectResponse: inspectResponse)
         .catchError((e, st) {
       _totalErrors++;
-      if (e is CancelledException) {
-        throw (token?.exception ?? e)
-            .withWorkerId(workerId)
-            .withCommand(command);
-      } else {
-        throw SquadronException.from(e, st, workerId, command);
-      }
+      throw SquadronException.from(e, st, workerId, command);
     }).whenComplete(() {
       _workload--;
       _totalWorkload++;
@@ -155,9 +145,11 @@ abstract class Worker implements WorkerService {
   /// Sends a streaming workload to the worker.
   Stream<T> stream<T>(int command,
       {List args = const [],
-      CancellationToken? token,
+      CancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
+    final squadronToken = SquadronCancelationToken.wrap(token);
+
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -180,7 +172,7 @@ abstract class Worker implements WorkerService {
         command,
         args,
         onDone: onDone,
-        token: token,
+        token: squadronToken,
         inspectRequest: inspectRequest,
         inspectResponse: inspectResponse,
       );
@@ -195,7 +187,7 @@ abstract class Worker implements WorkerService {
           command,
           args,
           onDone: onDone,
-          token: token,
+          token: squadronToken,
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse,
         ));

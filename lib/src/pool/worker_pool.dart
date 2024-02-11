@@ -1,20 +1,22 @@
 import 'dart:async';
 import 'dart:collection';
 
+import '../_impl/xplat/_pool_worker.dart';
+import '../_impl/xplat/_task.dart';
+import '../_impl/xplat/_worker_stream_task.dart';
+import '../_impl/xplat/_worker_task.dart';
+import '../_impl/xplat/_worker_value_task.dart';
 import '../concurrency_settings.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
-import '../_impl/xplat/_pool_worker.dart';
-import '../_impl/xplat/_worker_stream_task.dart';
-import '../_impl/xplat/_worker_task.dart';
-import '../_impl/xplat/_worker_value_task.dart';
 import '../squadron.dart';
 import '../stats/perf_counter.dart';
 import '../stats/worker_stat.dart';
-import 'worker.dart';
-import 'worker_service.dart';
-import 'worker_task.dart';
+import '../worker/worker.dart';
+import '../worker_service.dart';
+import 'stream_task.dart';
+import 'value_task.dart';
 
 typedef WorkerFactory<W> = W Function();
 
@@ -276,8 +278,8 @@ class WorkerPool<W extends Worker> implements WorkerService {
         .toList() // take a copy
         .forEach(_removeWorkerAndNotify);
 
-    // remove cancelled tasks
-    _queue.removeWhere((t) => t.isCancelled);
+    // remove canceled tasks
+    _queue.removeWhere((t) => t.isCanceled);
 
     // any work to do?
     if (_queue.isEmpty) {
@@ -329,18 +331,18 @@ class WorkerPool<W extends Worker> implements WorkerService {
     }
   }
 
-  /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.
-  /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.
+  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.
+  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.
   void cancel([Task? task, String? message]) {
     if (task != null) {
       _executing.remove(task);
       _queue.removeWhere((t) => t == task);
       task.cancel(message);
     } else {
-      final cancelled = _executing.followedBy(_queue).toList();
+      final toBeCanceled = _executing.followedBy(_queue).toList();
       _executing.clear();
       _queue.clear();
-      for (var task in cancelled) {
+      for (var task in toBeCanceled) {
         task.cancel(message);
       }
     }

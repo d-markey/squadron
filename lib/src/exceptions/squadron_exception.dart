@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
+import 'package:cancelation_token/cancelation_token.dart';
 
-import 'squadron_error.dart';
+import '../squadron.dart';
+import '_well_known_exceptions.dart';
 import 'worker_exception.dart';
-
-typedef WorkerExceptionDeserializer = WorkerException? Function(List data);
-
-@internal
-typedef SquadronExceptionDeserializer = SquadronException? Function(List data);
 
 /// Base abstract class for exceptions in Squadron.
 abstract class SquadronException implements Exception {
@@ -17,22 +13,23 @@ abstract class SquadronException implements Exception {
   /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].
   static SquadronException from(Object error,
       [StackTrace? stackTrace, String? workerId, int? command]) {
-    if (error is SquadronError) {
-      return error;
-    } else if (error is WorkerException) {
+    if (error is WorkerException) {
       return error
-          .withCommand(command)
-          .withWorkerId(workerId)
-          .withCommand(command);
+        ..withCommand(command)
+        ..withWorkerId(workerId);
+    } else if (error is SquadronException) {
+      return error;
+    } else if (error is CanceledException) {
+      return error.toSquadronException();
     } else if (error is TimeoutException) {
-      return TaskTimeoutException(
-          message: error.message ?? 'Task timeout',
-          duration: error.duration,
-          workerId: workerId,
-          command: command);
+      return error.toSquadronException();
     } else {
-      return WorkerException(error.toString(),
-          stackTrace: stackTrace, workerId: workerId, command: command);
+      return WorkerException(
+        error.toString(),
+        stackTrace: stackTrace,
+        workerId: workerId,
+        command: command,
+      );
     }
   }
 
@@ -40,7 +37,8 @@ abstract class SquadronException implements Exception {
     try {
       final data = jsonDecode(message);
       if (data is List) {
-        return deserialize(data);
+        Squadron.debug('SquadronException.fromString is really used!');
+        return Squadron.exceptionManager?.deserialize(data);
       }
     } catch (ex) {
       // not a String representing a SquadronException
@@ -59,53 +57,7 @@ abstract class SquadronException implements Exception {
   /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.
   List serialize();
 
-  static final _deserializers = <SquadronExceptionDeserializer>{
-    SquadronErrorExt.deserialize,
-    WorkerException.deserialize,
-    CancelledException.deserialize,
-    TaskTimeoutException.deserialize,
-  };
-
-  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is
-  /// already registered, registering it again will have no effect.
-  static void registerExceptionDeserializer(
-      WorkerExceptionDeserializer deserializer) {
-    _deserializers.add(deserializer);
-  }
-
-  /// Unregisters a deserializer that was previously registered, does nothing otherwise.
-  /// Please note that for a deregistration to have an effect, the exact same instance that
-  /// was provided to [registerExceptionDeserializer] must be provided to this method; avoid
-  /// passing lambdas, prefer passing static methods or top-level functions instead.
-  static void unregisterExceptionDeserializer(
-      WorkerExceptionDeserializer deserializer) {
-    _deserializers.remove(deserializer);
-  }
-
-  /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.
+  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.
   static StackTrace? loadStackTrace(String? stackTrace) =>
       (stackTrace == null) ? null : StackTrace.fromString(stackTrace);
-
-  /// Deserializes a [List] that was produced by [serialize].
-  static SquadronException? deserialize(List? data) {
-    if (data == null) {
-      return null;
-    }
-    SquadronException? error;
-    try {
-      for (var deserializer in _deserializers) {
-        error = deserializer(data);
-        if (error != null) {
-          break;
-        }
-      }
-      error ??= SquadronErrorExt.create(
-          'failed to deserialize exception information: $data',
-          StackTrace.current);
-    } catch (ex, st) {
-      error = SquadronErrorExt.create(
-          'failed to deserialize exception information: $ex', st);
-    }
-    return error;
-  }
 }

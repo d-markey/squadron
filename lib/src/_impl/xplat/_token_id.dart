@@ -1,11 +1,11 @@
 import '../../squadron.dart';
 
-/// Singleton class used to generate unique IDs for cancellation tokens.
+/// Singleton class used to generate unique IDs for cancelation tokens.
 ///
-/// The class implements a simple counter that is incremented each time a new ID will be requested. The generated
-/// ID also integrates [Squadron.id] to guarantee unicity across event loops (provided [Squadron.id]s are also
-/// unique across event loops). Workers should forward the cancellation token they received when calling other
-/// workers.
+/// The class implements a simple counter that is incremented each time a new ID will be
+/// requested. The generated ID also integrates [Squadron.id] to guarantee unicity across
+/// event loops (provided [Squadron.id]s are also unique across event loops). Workers
+/// should forward the cancelation token they received when calling other workers.
 class TokenId {
   TokenId._();
 

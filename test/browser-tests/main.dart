@@ -5,16 +5,16 @@ import 'dart:html';
 import 'package:js/js.dart';
 import 'package:squadron/squadron.dart';
 
-import '../worker_services/worker_entry_points.dart';
-import '../test_suites/logger_test_suite.dart';
-import '../test_suites/squadron_singleton_test_suite.dart';
-import '../test_suites/web_worker_test_suite.dart';
-import '../test_suites/worker_pool_test_suite.dart';
-import '../test_suites/worker_test_suite.dart';
-import '../test_suites/local_worker_test_suite.dart';
-import '../test_suites/cancellation_test_suite.dart';
-import '../test_suites/issues_test_suite.dart';
-
+import '../test_suites/cancelation_test_suite.dart' as cancelation_test;
+import '../test_suites/issues_test_suite.dart' as issues_test;
+import '../test_suites/local_worker_test_suite.dart' as local_worker_test;
+import '../test_suites/logger_test_suite.dart' as logger_test;
+import '../test_suites/squadron_singleton_test_suite.dart'
+    as squadron_singleton_test;
+import '../test_suites/web_worker_test_suite.dart' as web_worker_test;
+import '../test_suites/worker_pool_test_suite.dart' as worker_pool_test;
+import '../test_suites/worker_test_suite.dart' as worker_test;
+import '../worker_services/_test_context.dart';
 import 'logger.dart';
 
 @JS()
@@ -24,14 +24,7 @@ external get dartPrint;
 external set dartPrint(value);
 
 void main() async {
-  EntryPoints.cache = '/sample_js_workers/cache_worker.dart.js';
-  EntryPoints.echo = '/sample_js_workers/echo_worker.dart.js';
-  EntryPoints.local = '/sample_js_workers/local_client_worker.dart.js';
-  EntryPoints.prime = '/sample_js_workers/prime_worker.dart.js';
-
-  EntryPoints.test = '/sample_js_workers/test_worker.dart.js';
-  EntryPoints.failedInit = '/sample_js_workers/test_worker_failing.dart.js';
-  EntryPoints.invalidCommand = '/sample_js_workers/test_worker_invalid.dart.js';
+  await TestContext.init('/');
 
   final logger = Logger(querySelector('#output') as DivElement);
 
@@ -63,7 +56,7 @@ void main() async {
     Squadron.shutdown();
 
     try {
-      squadronSingletonTests();
+      squadron_singleton_test.main();
     } catch (e) {
       logger.log('Squadron singleton tests failed with exception: $e');
     }
@@ -72,43 +65,43 @@ void main() async {
     Squadron.logLevel = SquadronLogLevel.off;
 
     try {
-      loggerTests();
+      logger_test.main();
     } catch (e) {
       logger.log('Logger tests failed with exception: $e');
     }
 
     try {
-      webWorkerTests();
+      web_worker_test.main();
     } catch (e) {
       logger.log('Classic Web Worker tests failed with exception: $e');
     }
 
     try {
-      workerTests();
+      worker_test.main();
     } catch (e) {
       logger.log('Squadron Worker tests failed with exception: $e');
     }
 
     try {
-      poolTests();
+      worker_pool_test.main();
     } catch (e) {
       logger.log('Squadron Worker Pool tests failed with exception: $e');
     }
 
     try {
-      localWorkerTests();
+      local_worker_test.main();
     } catch (e) {
       logger.log('Squadron Local Worker tests failed with exception: $e');
     }
 
     try {
-      cancellationTests();
+      cancelation_test.main();
     } catch (e) {
-      logger.log('Cancellation tests failed with exception: $e');
+      logger.log('Cancelation tests failed with exception: $e');
     }
 
     try {
-      githubIssuesTests();
+      issues_test.main();
     } catch (e) {
       logger.log('Issues tests failed with exception: $e');
     }

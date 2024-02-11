@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
+import '_test_context.dart';
 import 'cache_service_worker.dart';
 import 'prime_service.dart';
-import 'worker_entry_points.dart';
 
 class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
   PrimeWorkerPool(
@@ -25,7 +25,8 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 
 class PrimeWorker extends Worker implements PrimeService {
   PrimeWorker(CacheWorker? cache)
-      : super(EntryPoints.prime, args: [cache?.channel!.share().serialize()]);
+      : super(TestContext.entryPoints.prime,
+            args: [cache?.channel!.share().serialize()]);
 
   @override
   Future<bool> isPrime(int n) =>

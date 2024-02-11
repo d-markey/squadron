@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
+import '_test_context.dart';
 import 'cache_service.dart';
-import 'worker_entry_points.dart';
 
 class CacheWorker extends Worker implements Cache {
-  CacheWorker() : super(EntryPoints.cache);
+  CacheWorker() : super(TestContext.entryPoints.cache);
 
   @override
   Future<dynamic> get(dynamic key) =>

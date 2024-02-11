@@ -1,9 +1,10 @@
 import 'package:meta/meta.dart';
 
+import '../_impl/xplat/_channel.dart';
 import '../channel.dart';
 import '../exceptions/squadron_error.dart';
 import '../squadron.dart';
-import '../tokens/cancellation_token.dart';
+import '../tokens/_squadron_cancelation_token.dart';
 import 'worker.dart';
 import 'worker_channel.dart';
 import 'worker_message.dart';
@@ -18,7 +19,7 @@ typedef WorkerRequest = WorkerMessage;
 /// The command's arguments are passed as a list and should only contain primitive values or objects that can be
 /// transfered across workers. For applications running on a VM platform, Dart objects should be safe according to
 /// Dart's documentation of [SendPort.send]. [WorkerRequestImpl] also implements specific requests used for worker
-/// startup, stream/token cancellation, worker termination...
+/// startup, stream/token cancelation, worker termination...
 extension WorkerRequestImpl on WorkerRequest {
   // 0 is reserved for travel time
   static const _$client = 1;
@@ -31,50 +32,52 @@ extension WorkerRequestImpl on WorkerRequest {
   static const _$inspectResponse = 7;
 
   /// Creates a new request with the specified [command] ID and optional arguments.
-  static WorkerRequest userCommand(dynamic channelInfo, int command, List args,
-          CancellationToken? token, bool inspectResponse) =>
+  static WorkerRequest userCommand(PlatformChannel channelInfo, int command,
+          List args, SquadronCancelationToken? token, bool inspectResponse) =>
       [
         null, // 0 - travel time
         channelInfo, // 1 - client
         command, // 2 - command
         args, // 3 - args
-        token, // 4 - cancellation token
+        token, // 4 - Squadron cancelation token
         null, // 5 - stream id / log level
         null, // 6 - worker id
         inspectResponse, // 8 - inspect response
       ];
 
   /// Creates a new start request.
-  static WorkerRequest start(dynamic channelInfo, String id, List args) => [
+  static WorkerRequest start(
+          PlatformChannel channelInfo, String id, List args) =>
+      [
         null, // 0 - travel time
         channelInfo, // 1 - client
         _connectCommand, // 2 - command
         args, // 3 - args
-        null, // 4 - cancellation token
+        null, // 4 - Squadron cancelation token
         Squadron.logLevel, // 5 - log level
         id, // 6 - worker id
         true, // 7 - inspect response
       ];
 
-  /// Creates a new stream cancellation request.
+  /// Creates a new stream cancelation request.
   static WorkerRequest cancelStream(int streamId) => [
         null, // 0 - travel time
         null, // 1 - client
         _cancelStreamCommand, // 2 - command
         null, // 3 - args
-        null, // 4 - cancellation token
+        null, // 4 - Squadron cancelation token
         streamId, // 5 - stream id
         null, // 6 - worker id
         null, // 7 - inspect response
       ];
 
-  /// Creates a new cancellation request.
-  static WorkerRequest cancel(CancellationToken token) => [
+  /// Creates a new cancelation request.
+  static WorkerRequest cancel(SquadronCancelationToken token) => [
         null, // 0 - travel time
         null, // 1 - client
-        _cancelCommand, // 2 - command
+        _cancelTokenCommand, // 2 - command
         null, // 3 - args
-        token, // 4 - cancellation token
+        token, // 4 - Squadron cancelation token
         null, // 5 - stream id / log level
         null, // 6 - worker id
         null, // 7 - inspect response
@@ -86,7 +89,7 @@ extension WorkerRequestImpl on WorkerRequest {
         null, // 1 - client
         _terminateCommand, // 2 - command
         null, // 3 - args
-        null, // 4 - cancellation token
+        null, // 4 - Squadron cancelation token
         null, // 5 - stream id / log level
         null, // 6 - worker id
         null, // 7 - inspect response
@@ -100,10 +103,10 @@ extension WorkerRequestImpl on WorkerRequest {
       inspectResponse ? client?.inspectAndReply : client?.reply;
 
   /// The client's channel info.
-  dynamic get channelInfo => this[_$client];
+  PlatformChannel? get channelInfo => this[_$client];
 
-  /// Cancellation token.
-  CancellationToken? get cancelToken => this[_$token];
+  /// Cancelation token.
+  SquadronCancelationToken? get cancelToken => this[_$token];
 
   /// Stream id.
   int? get streamId => this[_$streamId];
@@ -127,18 +130,18 @@ extension WorkerRequestImpl on WorkerRequest {
   /// flag for start requests.
   bool get isConnection => (command == _connectCommand);
 
-  /// flag for stream cancellation requests.
-  bool get isStreamCancellation => (command == _cancelStreamCommand);
+  /// flag for stream cancelation requests.
+  bool get isStreamCancelation => (command == _cancelStreamCommand);
 
-  /// flag for cancellation requests.
-  bool get isCancellation => (command == _cancelCommand);
+  /// flag for cancelation requests.
+  bool get isTokenCancelation => (command == _cancelTokenCommand);
 
   /// flag for termination requests.
   bool get isTermination => (command == _terminateCommand);
 
   static const int _connectCommand = -1;
   static const int _cancelStreamCommand = -2;
-  static const int _cancelCommand = -3;
+  static const int _cancelTokenCommand = -3;
   static const int _terminateCommand = -4;
 }
 
@@ -150,24 +153,27 @@ extension WorkerRequestExt on WorkerRequest {
   static const _$inspectResponse = WorkerRequestImpl._$inspectResponse;
 
   /// In-place deserialization of a [WorkerRequest] received by the worker.
-  void unwrapRequest() {
+  void unwrapRequestInPlace() {
     this[_$client] = WorkerChannel.deserialize(this[_$client]);
-    this[_$token] = CancellationToken.deserialize(this[_$token]);
+    this[_$token] = SquadronCancelationToken.deserialize(this[_$token]);
     this[_$inspectResponse] ??= false;
     this[_$args] ??= const [];
     setTravelTime();
   }
 
   /// In-place serialization of a [WorkerRequest].
-  void wrapRequest() {
-    this[_$token] = (this[_$token] as CancellationToken?)?.serialize();
+  void wrapRequestInPlace() {
+    final token = this[_$token];
+    if (token is SquadronCancelationToken) {
+      this[_$token] = token.serialize();
+    }
     initTravelTime();
   }
 
-  void overrideCancelToken(CancellationToken token) {
+  void overrideCancelToken(SquadronCancelationToken token) {
     if (cancelToken == null || cancelToken!.id != token.id) {
       throw SquadronErrorExt.create(
-          'cancellation token mismatch', StackTrace.current);
+          'cancelation token mismatch', StackTrace.current);
     }
     this[_$token] = token;
   }

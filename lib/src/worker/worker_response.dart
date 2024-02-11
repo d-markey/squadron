@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 
 import '../exceptions/squadron_exception.dart';
 import '../squadron.dart';
-import 'worker.dart';
 import 'worker_message.dart';
 
 /// Make [WorkerResponse] a [WorkerMessage] to minimize serialization overhead.
@@ -38,11 +37,12 @@ extension WorkerResponseImpl on WorkerResponse {
       ];
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  static WorkerResponse withError(Object exception, [StackTrace? stackTrace]) =>
+  static WorkerResponse withError(SquadronException exception,
+          [StackTrace? stackTrace]) =>
       [
         null, // 0 - travel time
         null, // 1 - result
-        SquadronException.from(exception, stackTrace), // 2 - error
+        exception, // 2 - error
         null, // 3 - end of stream
         null, // 4 - log message
       ];
@@ -69,7 +69,7 @@ extension WorkerResponseImpl on WorkerResponse {
   bool get endOfStream => this[_$endOfStream];
 
   /// The [WorkerResponse] exception, if any.
-  SquadronException? get error => this[_$error];
+  dynamic get error => this[_$error];
 
   /// Retrieves the result associated to this [WorkerResponse]. If the [WorkerResponse] contains an error,
   /// an the [error] exception is thrown.
@@ -85,6 +85,7 @@ extension WorkerResponseImpl on WorkerResponse {
 
 @internal
 extension WorkerResponseExt on WorkerResponse {
+  // 0 is reserved for travel time
   static const _$result = WorkerResponseImpl._$result;
   static const _$error = WorkerResponseImpl._$error;
   static const _$endOfStream = WorkerResponseImpl._$endOfStream;
@@ -92,13 +93,13 @@ extension WorkerResponseExt on WorkerResponse {
 
   /// In-place deserialization of a [WorkerResponse] sent by the worker. Returns `false` if
   /// the message requires no further processing (currently used for log messages only).
-  bool unwrapResponse() {
+  bool unwrapResponseInPlace() {
     final log = this[_$log];
     if (log != null) {
       LoggerExt.logger?.log(log);
       return false;
     } else {
-      this[_$error] = SquadronException.deserialize(this[_$error]);
+      this[_$error] = Squadron.exceptionManager?.deserialize(this[_$error]);
       this[_$endOfStream] ??= false;
       setTravelTime();
     }
@@ -106,7 +107,7 @@ extension WorkerResponseExt on WorkerResponse {
   }
 
   /// In-place serialization of a [WorkerResponse].
-  void wrapResponse() {
+  void wrapResponseInPlace() {
     final res = this[_$result];
     if (res is! List && res is Iterable) {
       this[_$result] = res.toList();
