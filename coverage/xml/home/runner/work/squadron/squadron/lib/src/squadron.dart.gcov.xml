@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9577465" lines-covered="68" lines-valid="71" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9583333" lines-covered="69" lines-valid="72" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import 'logging/squadron_log_level.dart';</code>
@@ -28,9 +31,9 @@
         <line>
             <code>class Squadron {</code>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  Squadron._();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -41,13 +44,13 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  static Squadron _getOrInitialize() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    var sq = _instance;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    if (sq == null) {</code>
@@ -67,13 +70,13 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    return sq;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -117,6 +120,55 @@
             <code/>
         </line>
         <line>
+            <code>  final _exceptionManager = ExceptionManager();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="3">
+            <code>  static ExceptionManager? get exceptionManager =&gt; _instance?._exceptionManager;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  SquadronLogger? _logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].</code>
+        </line>
+        <line hits="2">
+            <code>  static void setLogger(SquadronLogger? logger) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    final sq = _getOrInitialize();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    final level = logLevel;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    sq._logger = logger;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    sq._logger?.logLevel = level;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>  int _logLevel = SquadronLogLevel.off;</code>
         </line>
         <line>
@@ -128,21 +180,21 @@
         <line>
             <code>  /// was created. Changes to this property do not propagate to workers after they have started.</code>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  static int get logLevel =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      _instance?._logger?.logLevel ??</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>      _instance?._logger?.logLevel ??</code>
+            <code>      _instance?._logLevel ??</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _instance?._logLevel ??</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>      SquadronLogLevel.off;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -154,17 +206,17 @@
             <code>  static set logLevel(int value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    final sq = _getOrInitialize();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="3">
-            <code>    sq._logger?.logLevel = value;</code>
+            <code>    final sq = _getOrInitialize();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="4">
+            <code>    sq._logger?.logLevel = value;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
             <code>    sq._logLevel = value;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -173,9 +225,9 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  final _logLevels = &lt;int&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -243,42 +295,6 @@
         <line hits="2">
             <code>    return Squadron.logLevel;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  SquadronLogger? _logger;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Sets the current [logger] and sets the logger's [SquadronLogger.logLevel] to [Squadron.logLevel].</code>
-        </line>
-        <line hits="2">
-            <code>  static void setLogger(SquadronLogger? logger) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    final sq = _getOrInitialize();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    final level = logLevel;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    sq._logger = logger;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    sq._logger?.logLevel = level;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -357,25 +373,25 @@
             <code>  static void setId(String value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>    final sq = _getOrInitialize();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>    if (sq._id == null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>      value = value.trim();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      if (value.isNotEmpty) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>        sq._id ??= value;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -445,9 +461,9 @@
             <code>      logger.debug(message);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>    } else if (debugMode) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      if (message is Function) {</code>

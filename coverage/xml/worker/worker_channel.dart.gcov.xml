@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -12,9 +12,6 @@
         </line>
         <line>
             <code/>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_cancellation_token_ref.dart';</code>
         </line>
         <line>
             <code>import '../_impl/xplat/_channel.dart'</code>
@@ -59,7 +56,7 @@
             <code>  /// [WorkerChannel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
         </line>
         <line>
-            <code>  dynamic serialize();</code>
+            <code>  PlatformChannel serialize();</code>
         </line>
         <line>
             <code/>
@@ -146,7 +143,7 @@
             <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
         </line>
         <line hits="1">
-            <code>  static WorkerChannel? deserialize(dynamic channelInfo) =&gt;</code>
+            <code>  static WorkerChannel? deserialize(PlatformChannel? channelInfo) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -169,11 +166,11 @@
             <code>  /// Forwards stream events to client.</code>
         </line>
         <line hits="2">
-            <code>  Future&lt;void&gt; pipe(Stream stream, void Function(dynamic) reply,</code>
+            <code>  Future&lt;void&gt; pipe(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      WorkerMonitor monitor, CancellationTokenReference tokenRef) {</code>
+            <code>      Stream stream, void Function(dynamic) reply, WorkerMonitor monitor) {</code>
         </line>
         <line hits="1">
             <code>    StreamSubscription? subscription;</code>
@@ -187,7 +184,7 @@
             <code/>
         </line>
         <line>
-            <code>    // stream canceller</code>
+            <code>    // stream canceler</code>
         </line>
         <line hits="2">
             <code>    void onDone() {</code>
@@ -213,10 +210,10 @@
             <code/>
         </line>
         <line>
-            <code>    // register stream canceller callback and connect stream with client</code>
+            <code>    // register stream canceler callback and connect stream with client</code>
         </line>
         <line hits="1">
-            <code>    final streamId = monitor.registerStreamCanceller(tokenRef, onDone);</code>
+            <code>    final streamId = monitor.registerStreamCanceler(onDone);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -245,10 +242,10 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      // unregister stream canceller callback</code>
+            <code>      // unregister stream canceler callback</code>
         </line>
         <line hits="2">
-            <code>      monitor.unregisterStreamCanceller(tokenRef, streamId);</code>
+            <code>      monitor.unregisterStreamCanceler(streamId);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">

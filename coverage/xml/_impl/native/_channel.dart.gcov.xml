@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94285715" lines-covered="99" lines-valid="105" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90178573" lines-covered="101" lines-valid="112" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
             <code>import 'dart:isolate';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
             <code/>
@@ -26,7 +32,7 @@
             <code>import '../../squadron.dart';</code>
         </line>
         <line>
-            <code>import '../../tokens/cancellation_token.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_channel.dart';</code>
@@ -38,7 +44,7 @@
             <code>import '../../worker/worker_response.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_service.dart';</code>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_stream_wrapper.dart';</code>
@@ -54,6 +60,9 @@
         </line>
         <line>
             <code>typedef PlatformWorker = Isolate;</code>
+        </line>
+        <line>
+            <code>typedef PlatformChannel = SendPort;</code>
         </line>
         <line>
             <code/>
@@ -99,7 +108,7 @@
             <code>  /// [Channel] serialization in Native world returns the [SendPort].</code>
         </line>
         <line hits="2">
-            <code>  dynamic serialize() =&gt; _sendPort;</code>
+            <code>  PlatformChannel serialize() =&gt; _sendPort;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -114,7 +123,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    req.wrapRequest();</code>
+            <code>    req.wrapRequestInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -124,16 +133,33 @@
             <code>      _sendPort.send(req);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    } catch (ex, st) {</code>
+        <line hits="1">
+            <code>    } on ArgumentError catch (ex, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      Squadron.severe('failed to post request $req: error $ex');</code>
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      throw SquadronException.from(ex, st);</code>
+            <code>      throw SquadronErrorExt.create(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          ex.message?.toString() ?? 'message contains untransferable objects',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          st);</code>
+        </line>
+        <line>
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronException.from(ex, st);</code>
         </line>
         <line>
             <code>    }</code>
@@ -144,18 +170,12 @@
         <line>
             <code/>
         </line>
-        <line hits="0">
-            <code>  void _inspectAndPostRequest(WorkerRequest req) =&gt; _postRequest(req);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="1">
             <code>  void _postResponse(WorkerResponse res) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    res.wrapResponse();</code>
+            <code>    res.wrapResponseInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -165,16 +185,33 @@
             <code>      _sendPort.send(res);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    } catch (ex, st) {</code>
+        <line hits="1">
+            <code>    } on ArgumentError catch (ex, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      Squadron.severe('failed to post response $res: error $ex');</code>
+            <code>      Squadron.severe('failed to post response $res: $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      throw SquadronException.from(ex, st);</code>
+            <code>      throw SquadronErrorExt.create(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          ex.message?.toString() ?? 'message contains untransferable objects',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          st);</code>
+        </line>
+        <line>
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post response $res: ${ex.runtimeType} $ex');</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronException.from(ex, st);</code>
         </line>
         <line>
             <code>    }</code>
@@ -194,13 +231,9 @@
         <line>
             <code>class _VmChannel extends _BaseVmChannel implements Channel {</code>
         </line>
-        <line hits="1">
-            <code>  _VmChannel._(String workerId, SendPort sendPort)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      : super._(workerId, sendPort);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  _VmChannel._(super.workerId, super.sendPort) : super._();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -269,7 +302,7 @@
             <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
         </line>
         <line>
-            <code>      {CancellationToken? token,</code>
+            <code>      {CancelationToken? token,</code>
         </line>
         <line>
             <code>      bool inspectRequest = false,</code>
@@ -292,6 +325,10 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
             <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -300,18 +337,18 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          receiver.sendPort, command, args, token, inspectResponse),</code>
+            <code>          receiver.sendPort, command, args, squadronToken, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,</code>
+            <code>      postMethod: _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      messages: receiver,</code>
         </line>
         <line>
-            <code>      token: token,</code>
+            <code>      token: squadronToken,</code>
         </line>
         <line>
             <code>    );</code>
@@ -343,7 +380,7 @@
             <code>      {SquadronCallback onDone = Channel.noop,</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
+            <code>      CancelationToken? token,</code>
         </line>
         <line>
             <code>      bool inspectRequest = false,</code>
@@ -366,6 +403,10 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
             <code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -374,11 +415,11 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          receiver.sendPort, command, args, token, inspectResponse),</code>
+            <code>          receiver.sendPort, command, args, squadronToken, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,</code>
+            <code>      postMethod: _postRequest,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -400,7 +441,7 @@
             <code>      },</code>
         </line>
         <line>
-            <code>      token: token,</code>
+            <code>      token: squadronToken,</code>
         </line>
         <line>
             <code>    );</code>
@@ -427,13 +468,9 @@
         <line>
             <code>class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {</code>
         </line>
-        <line hits="1">
-            <code>  _VmWorkerChannel._(String workerId, SendPort sendPort)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      : super._(workerId, sendPort);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>  _VmWorkerChannel._(super.workerId, super.sendPort) : super._();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -566,9 +603,9 @@
         <line>
             <code>  void error(SquadronException error) {</code>
         </line>
-        <line hits="2">
-            <code>    Squadron.debug('replying with error: $error');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>    Squadron.debug('replying with error: ${error.runtimeType} $error');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    _postResponse(WorkerResponseImpl.withError(error));</code>
@@ -674,13 +711,11 @@
             <code>    final error = SquadronException.fromString(message[0]) ??</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>        WorkerException(message[0],</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    Squadron.warning(</code>
@@ -715,7 +750,7 @@
             <code>    final response = message as List;</code>
         </line>
         <line hits="1">
-            <code>    if (!response.unwrapResponse()) {</code>
+            <code>    if (!response.unwrapResponseInPlace()) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -784,7 +819,7 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  startRequest.wrapRequest();</code>
+            <code>  startRequest.wrapRequestInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -856,7 +891,7 @@
             <code>/// Creates a [_VmChannel] from a [SendPort].</code>
         </line>
         <line hits="1">
-            <code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
+            <code>Channel? deserializeChannel(PlatformChannel? channelInfo) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -870,7 +905,7 @@
             <code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code>
         </line>
         <line hits="1">
-            <code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
+            <code>WorkerChannel? deserializeWorkerChannel(PlatformChannel? channelInfo) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>

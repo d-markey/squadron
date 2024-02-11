@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_well_known_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/exceptions" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_timeout_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const $squadronErrorType = '\$sqdrn';</code>
+        </line>
+        <line>
+            <code>const $workerExceptionType = '\$wrkr';</code>
+        </line>
+        <line>
+            <code>const $canceledExceptionType = '\$cncld';</code>
+        </line>
+        <line>
+            <code>const $canceledExceptionsType = '\$cncld*';</code>
+        </line>
+        <line>
+            <code>const $timeoutExceptionType = '\$tmt';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const $reservedExceptionTypeIds = {</code>
+        </line>
+        <line>
+            <code>  $squadronErrorType,</code>
+        </line>
+        <line>
+            <code>  $workerExceptionType,</code>
+        </line>
+        <line>
+            <code>  $canceledExceptionType,</code>
+        </line>
+        <line>
+            <code>  $canceledExceptionsType,</code>
+        </line>
+        <line>
+            <code>  $timeoutExceptionType,</code>
+        </line>
+        <line>
+            <code>};</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>extension CanceledConversion on CanceledException {</code>
+        </line>
+        <line hits="1">
+            <code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      SquadronCanceledException.from(tokenId ?? '', this);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>extension TimeoutConversion on TimeoutException {</code>
+        </line>
+        <line hits="1">
+            <code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      SquadronTimeoutException(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          tokenId ?? '', message ?? 'Operation timeout', duration, null);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

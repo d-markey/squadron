@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96" lines-covered="48" lines-valid="50" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_worker_monitor.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9574468" lines-covered="45" lines-valid="47" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -8,22 +8,28 @@
             <code/>
         </line>
         <line>
-            <code>import '../../tokens/cancellation_token.dart';</code>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_pool.dart';</code>
+            <code/>
+        </line>
+        <line>
+            <code>import '../../pool/worker_pool.dart';</code>
+        </line>
+        <line>
+            <code>import '../../tokens/_cancelation_token_ref.dart';</code>
+        </line>
+        <line>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_request.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_service.dart';</code>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_task.dart';</code>
-        </line>
-        <line>
-            <code>import '_cancellation_token_ref.dart';</code>
+            <code>import '_task.dart';</code>
         </line>
         <line>
             <code/>
@@ -32,13 +38,13 @@
             <code>/// Each platform worker will instantiate a [WorkerMonitor] responsible for</code>
         </line>
         <line>
-            <code>/// handling cancellation requests. Worker tasks in Squadron may be cancelled in</code>
+            <code>/// handling cancelation requests. Worker tasks in Squadron may be canceled in</code>
         </line>
         <line>
-            <code>/// two ways: with a [CancellationToken], giving worker services the chance to</code>
+            <code>/// two ways: with a [CancelationToken], giving worker services the chance to</code>
         </line>
         <line>
-            <code>/// handle cancellation requests gracefully, or without a [CancellationToken]</code>
+            <code>/// handle cancelation requests gracefully, or without a [CancelationToken]</code>
         </line>
         <line>
             <code>/// via [WorkerPool.cancel] or [Task.cancel].</code>
@@ -78,14 +84,14 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  final _cancelTokens = &lt;String, CancellationTokenReference&gt;{};</code>
+            <code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line hits="2">
-            <code>  CancellationTokenReference _getTokenRef(CancellationToken? token) =&gt;</code>
+            <code>  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -93,7 +99,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          ? CancellationTokenReference.noToken</code>
+            <code>          ? CancelationTokenReference.noToken</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -101,23 +107,23 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
-            <code>              token.id, () =&gt; CancellationTokenReference(token.id));</code>
+            <code>              token.id, () =&gt; CancelationTokenReference(token.id));</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Starts monitoring execution of this [request]. If the request contains a cancellation token, it</code>
+            <code>  /// Starts monitoring execution of this [request]. If the request contains a cancelation token, it</code>
         </line>
         <line>
-            <code>  /// is overridden with a [CancellationTokenReference] and this reference is returned to the sender.</code>
+            <code>  /// is overridden with a [CancelationTokenReference] and this reference is returned to the sender.</code>
         </line>
         <line>
-            <code>  /// Otherwise, returns [CancellationTokenReference.noToken].</code>
+            <code>  /// Otherwise, returns [CancelationTokenReference.noToken].</code>
         </line>
         <line hits="1">
-            <code>  CancellationTokenReference begin(WorkerRequest request) {</code>
+            <code>  CancelationTokenReference begin(WorkerRequest request) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -142,7 +148,7 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  Map&lt;int, SquadronCallback&gt;? _streamCancellers;</code>
+            <code>  Map&lt;int, SquadronCallback&gt;? _streamCancelers;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -152,26 +158,19 @@
             <code/>
         </line>
         <line>
-            <code>  /// Assigns a stream ID to the stream canceller callback and registers the callback.</code>
+            <code>  /// Assigns a stream ID to the stream canceler callback and registers the callback.</code>
         </line>
         <line hits="1">
-            <code>  int registerStreamCanceller(</code>
+            <code>  int registerStreamCanceler(SquadronCallback canceler) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      CancellationTokenReference tokenRef, SquadronCallback canceller) {</code>
         </line>
         <line hits="2">
             <code>    final streamId = ++_streamId;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>    (_streamCancellers ??= &lt;int, SquadronCallback&gt;{})[streamId] = canceller;</code>
+            <code>    (_streamCancelers ??= &lt;int, SquadronCallback&gt;{})[streamId] = canceler;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    tokenRef.addListener(canceller);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    return streamId;</code>
@@ -183,29 +182,21 @@
             <code/>
         </line>
         <line>
-            <code>  /// Unregisters the stream cancelled callback associated to the [streamId].</code>
+            <code>  /// Unregisters the stream canceled callback associated to the [streamId].</code>
         </line>
         <line hits="1">
-            <code>  void unregisterStreamCanceller(</code>
+            <code>  void unregisterStreamCanceler(int streamId) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>      CancellationTokenReference tokenRef, int streamId) {</code>
-        </line>
         <line hits="3">
-            <code>    final canceller = _streamCancellers?[streamId];</code>
+            <code>    final canceler = _streamCancelers?[streamId];</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    if (canceller != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      tokenRef.removeListener(canceller);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>    if (canceler != null) {</code>
         </line>
         <line hits="3">
-            <code>      _streamCancellers?.remove(streamId);</code>
+            <code>      _streamCancelers?.remove(streamId);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -218,14 +209,14 @@
             <code/>
         </line>
         <line>
-            <code>  /// Cancels a [token] via the corresponding [CancellationTokenReference].</code>
+            <code>  /// Updates a [token] via the corresponding [CancelationTokenReference].</code>
         </line>
         <line hits="1">
-            <code>  void cancelToken(CancellationToken token) =&gt;</code>
+            <code>  void updateToken(SquadronCancelationToken token) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _getTokenRef(token).notifyCancellation();</code>
+            <code>      _getTokenRef(token).update(token);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -235,7 +226,7 @@
             <code>  /// Cancels a stream via the corresponding [streamId].</code>
         </line>
         <line hits="5">
-            <code>  void cancelStream(int streamId) =&gt; _streamCancellers?[streamId]?.call();</code>
+            <code>  void cancelStream(int streamId) =&gt; _streamCancelers?[streamId]?.call();</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -245,19 +236,16 @@
             <code>  /// Stops monitoring execution and releases the [tokenRef].</code>
         </line>
         <line hits="1">
-            <code>  void done(CancellationTokenReference tokenRef) {</code>
+            <code>  void done(CancelationTokenReference tokenRef) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    tokenRef.release();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>    if (tokenRef.refCount == 0 &amp;&amp; !tokenRef.cancelled) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      // track only cancelled tokens</code>
+        <line hits="2">
+            <code>    if (tokenRef.refCount == 0) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>      _cancelTokens.remove(tokenRef.id);</code>
@@ -319,7 +307,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Installs the service if it implements [ServiceInstaller].</code>
+            <code>  /// Uninstalls the service if it implements [ServiceInstaller].</code>
         </line>
         <line hits="1">
             <code>  FutureOr&lt;void&gt; _uninstall(ServiceInstaller? installer) {</code>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7" lines-covered="28" lines-valid="40" package="/exceptions" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../squadron.dart';</code>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_timeout_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef WorkerExceptionDeserializer = WorkerException? Function(List props);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>typedef SquadronExceptionDeserializer = SquadronException? Function(List props);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>class ExceptionManager {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>  final _deserializers = &lt;String, SquadronExceptionDeserializer&gt;{</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    $canceledExceptionType: SquadronCanceledException.deserialize,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    $timeoutExceptionType: SquadronTimeoutException.deserialize,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    $canceledExceptionsType: SquadronCanceledExceptions.deserialize,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    $squadronErrorType: SquadronErrorExt.deserialize,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    $workerExceptionType: WorkerException.deserialize,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  };</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is</code>
+        </line>
+        <line>
+            <code>  /// already registered, registering it again will have no effect.</code>
+        </line>
+        <line hits="2">
+            <code>  void register(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      String exceptionTypeId, WorkerExceptionDeserializer deserializer) {</code>
+        </line>
+        <line hits="2">
+            <code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code>
+        </line>
+        <line hits="0">
+            <code>          StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="3">
+            <code>    final existing = _deserializers[exceptionTypeId];</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (existing != null &amp;&amp; existing != deserializer) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      Squadron.config(</code>
+        </line>
+        <line hits="0">
+            <code>          'Replacing exception deserializer for "$exceptionTypeId"');</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="3">
+            <code>    _deserializers[exceptionTypeId] = deserializer;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Unregisters a deserializer that was previously registered, does nothing otherwise.</code>
+        </line>
+        <line>
+            <code>  /// Please note that for a deregistration to have an effect, the exact same instance that</code>
+        </line>
+        <line>
+            <code>  /// was provided to [register] must be provided to this method; avoid passing lambdas,</code>
+        </line>
+        <line>
+            <code>  /// prefer passing static methods or top-level functions instead.</code>
+        </line>
+        <line hits="1">
+            <code>  void unregister(String exceptionTypeId) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code>
+        </line>
+        <line hits="0">
+            <code>          StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="3">
+            <code>    Squadron.config('Removing exception deserializer for "$exceptionTypeId"');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    _deserializers.remove(exceptionTypeId);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Deserializes a [List] that was produced by [serialize].</code>
+        </line>
+        <line hits="2">
+            <code>  SquadronException? deserialize(List? data) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (data == null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="2">
+            <code>    final exceptionType = data[0];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    SquadronException? error;</code>
+        </line>
+        <line hits="0">
+            <code>    try {</code>
+        </line>
+        <line hits="3">
+            <code>      final deserializer = _deserializers[exceptionType];</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      error = deserializer?.call(data) ??</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>              'failed to deserialize exception information: $data',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>              StackTrace.current);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>      error = SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'failed to deserialize exception information: $ex', st);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>    return error;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

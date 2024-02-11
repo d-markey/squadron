@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9385965" lines-covered="107" lines-valid="114" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95454544" lines-covered="105" lines-valid="110" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_helpers.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_worker_id.dart';</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>
@@ -20,22 +32,16 @@
             <code>import '../exceptions/worker_exception.dart';</code>
         </line>
         <line>
-            <code>import '../_impl/xplat/_helpers.dart';</code>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_worker_id.dart';</code>
-        </line>
-        <line>
             <code>import '../stats/worker_stat.dart';</code>
         </line>
         <line>
-            <code>import '../tokens/cancellation_token.dart';</code>
+            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
             <code>import '../worker/worker_request.dart';</code>
         </line>
         <line>
-            <code>import 'worker_service.dart';</code>
+            <code>import '../worker_service.dart';</code>
         </line>
         <line>
             <code/>
@@ -343,7 +349,7 @@
             <code>    List args = const [],</code>
         </line>
         <line>
-            <code>    CancellationToken? token,</code>
+            <code>    CancelationToken? token,</code>
         </line>
         <line>
             <code>    bool inspectRequest = false,</code>
@@ -395,28 +401,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      CancellationToken? token, bool inspectRequest, bool inspectResponse) {</code>
-        </line>
-        <line>
-            <code>    // was the token cancelled?</code>
-        </line>
-        <line hits="0">
-            <code>    SquadronException? error = token?.exception;</code>
-        </line>
-        <line>
-            <code>    if (error != null) {</code>
-        </line>
-        <line hits="0">
-            <code>      _totalErrors++;</code>
-        </line>
-        <line>
-            <code>      throw error;</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code/>
+            <code>      CancelationToken? token, bool inspectRequest, bool inspectResponse) {</code>
         </line>
         <line>
             <code>    // update stats</code>
@@ -442,6 +427,10 @@
         <line>
             <code>    // send command</code>
         </line>
+        <line hits="2">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="1">
             <code>    return channel</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
@@ -451,7 +440,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>            token: token,</code>
+            <code>            token: squadronToken,</code>
         </line>
         <line>
             <code>            inspectRequest: inspectRequest,</code>
@@ -467,31 +456,9 @@
             <code>      _totalErrors++;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      if (e is CancelledException) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        throw (token?.exception ?? e)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="3">
-            <code>            .withWorkerId(workerId)</code>
+            <code>      throw SquadronException.from(e, st, workerId, command);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>            .withCommand(command);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      } else {</code>
-        </line>
-        <line hits="3">
-            <code>        throw SquadronException.from(e, st, workerId, command);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
         </line>
         <line hits="3">
             <code>    }).whenComplete(() {</code>
@@ -531,13 +498,20 @@
             <code>      {List args = const [],</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
+            <code>      CancelationToken? token,</code>
         </line>
         <line>
             <code>      bool inspectRequest = false,</code>
         </line>
         <line>
             <code>      bool inspectResponse = false}) {</code>
+        </line>
+        <line hits="2">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
         </line>
         <line>
             <code>    // update stats</code>
@@ -619,7 +593,7 @@
             <code>        onDone: onDone,</code>
         </line>
         <line>
-            <code>        token: token,</code>
+            <code>        token: squadronToken,</code>
         </line>
         <line>
             <code>        inspectRequest: inspectRequest,</code>
@@ -672,7 +646,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          token: token,</code>
+            <code>          token: squadronToken,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">

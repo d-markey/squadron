@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85106385" lines-covered="40" lines-valid="47" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="23" lines-valid="23" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -11,31 +11,19 @@
             <code/>
         </line>
         <line>
-            <code>import 'package:meta/meta.dart';</code>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>import 'squadron_error.dart';</code>
+            <code>import '../squadron.dart';</code>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
         </line>
         <line>
             <code>import 'worker_exception.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>typedef WorkerExceptionDeserializer = WorkerException? Function(List data);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>@internal</code>
-        </line>
-        <line>
-            <code>typedef SquadronExceptionDeserializer = SquadronException? Function(List data);</code>
         </line>
         <line>
             <code/>
@@ -60,61 +48,67 @@
             <code>      [StackTrace? stackTrace, String? workerId, int? command]) {</code>
         </line>
         <line hits="2">
-            <code>    if (error is SquadronError) {</code>
+            <code>    if (error is WorkerException) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      return error</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        ..withCommand(command)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        ..withWorkerId(workerId);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    } else if (error is SquadronException) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      return error;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="2">
+            <code>    } else if (error is CanceledException) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="1">
-            <code>    } else if (error is WorkerException) {</code>
+            <code>      return error.toSquadronException();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return error</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          .withCommand(command)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          .withWorkerId(workerId)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          .withCommand(command);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>    } else if (error is TimeoutException) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>      return TaskTimeoutException(</code>
-        </line>
-        <line hits="0">
-            <code>          message: error.message ?? 'Task timeout',</code>
-        </line>
-        <line hits="0">
-            <code>          duration: error.duration,</code>
-        </line>
-        <line>
-            <code>          workerId: workerId,</code>
-        </line>
-        <line>
-            <code>          command: command);</code>
+        <line hits="1">
+            <code>      return error.toSquadronException();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="3">
-            <code>      return WorkerException(error.toString(),</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      return WorkerException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        error.toString(),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>          stackTrace: stackTrace, workerId: workerId, command: command);</code>
+            <code>        stackTrace: stackTrace,</code>
+        </line>
+        <line>
+            <code>        workerId: workerId,</code>
+        </line>
+        <line>
+            <code>        command: command,</code>
+        </line>
+        <line>
+            <code>      );</code>
         </line>
         <line>
             <code>    }</code>
@@ -142,8 +136,12 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        return deserialize(data);</code>
+            <code>        Squadron.debug('SquadronException.fromString is really used!');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        return Squadron.exceptionManager?.deserialize(data);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -201,86 +199,8 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>  static final _deserializers = &lt;SquadronExceptionDeserializer&gt;{</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    SquadronErrorExt.deserialize,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    WorkerException.deserialize,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    CancelledException.deserialize,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    TaskTimeoutException.deserialize,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line>
-            <code>  };</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is</code>
-        </line>
-        <line>
-            <code>  /// already registered, registering it again will have no effect.</code>
-        </line>
-        <line hits="1">
-            <code>  static void registerExceptionDeserializer(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      WorkerExceptionDeserializer deserializer) {</code>
-        </line>
-        <line hits="3">
-            <code>    _deserializers.add(deserializer);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Unregisters a deserializer that was previously registered, does nothing otherwise.</code>
-        </line>
-        <line>
-            <code>  /// Please note that for a deregistration to have an effect, the exact same instance that</code>
-        </line>
-        <line>
-            <code>  /// was provided to [registerExceptionDeserializer] must be provided to this method; avoid</code>
-        </line>
-        <line>
-            <code>  /// passing lambdas, prefer passing static methods or top-level functions instead.</code>
-        </line>
-        <line hits="1">
-            <code>  static void unregisterExceptionDeserializer(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      WorkerExceptionDeserializer deserializer) {</code>
-        </line>
-        <line hits="3">
-            <code>    _deserializers.remove(deserializer);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Deserializes a [stackTrace] if any. Ruturns null if no [StackTrace] is provided.</code>
+            <code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code>
         </line>
         <line hits="1">
             <code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
@@ -288,87 +208,6 @@
         </line>
         <line hits="1">
             <code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Deserializes a [List] that was produced by [serialize].</code>
-        </line>
-        <line hits="2">
-            <code>  static SquadronException? deserialize(List? data) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    if (data == null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return null;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>    SquadronException? error;</code>
-        </line>
-        <line hits="0">
-            <code>    try {</code>
-        </line>
-        <line hits="3">
-            <code>      for (var deserializer in _deserializers) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        error = deserializer(data);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (error != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          break;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        }</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line hits="1">
-            <code>      error ??= SquadronErrorExt.create(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          'failed to deserialize exception information: $data',</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          StackTrace.current);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>    } catch (ex, st) {</code>
-        </line>
-        <line hits="0">
-            <code>      error = SquadronErrorExt.create(</code>
-        </line>
-        <line hits="0">
-            <code>          'failed to deserialize exception information: $ex', st);</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="1">
-            <code>    return error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>

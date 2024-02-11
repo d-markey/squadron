@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_canceled_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.87096775" lines-covered="27" lines-valid="31" package="/exceptions" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_timeout_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class SquadronCanceledException</code>
+        </line>
+        <line>
+            <code>    implements CanceledException, SquadronException {</code>
+        </line>
+        <line hits="2">
+            <code>  SquadronCanceledException(this.tokenId, this.message, this.stackTrace);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  factory SquadronCanceledException.from(String tokenId, CanceledException ex) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (ex is TimeoutCanceledException) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      return SquadronTimeoutException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>          tokenId, ex.message, ex.duration, ex.stackTrace);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    } else if (ex is CanceledExceptions) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      return SquadronCanceledExceptions(</code>
+        </line>
+        <line>
+            <code>        tokenId,</code>
+        </line>
+        <line hits="0">
+            <code>        ex.innerExceptions</code>
+        </line>
+        <line hits="1">
+            <code>            .map((e) =&gt; SquadronCanceledException.from(tokenId, e)),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      );</code>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="4">
+            <code>      return SquadronCanceledException(tokenId, ex.message, ex.stackTrace);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final String tokenId;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final String message;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final StackTrace? stackTrace;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static const _$type = 0;</code>
+        </line>
+        <line>
+            <code>  static const _$tokenId = 1;</code>
+        </line>
+        <line>
+            <code>  static const _$message = 2;</code>
+        </line>
+        <line>
+            <code>  static const _$stackTrace = 3;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        $canceledExceptionType,</code>
+        </line>
+        <line hits="2">
+            <code>        tokenId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        stackTrace?.toString(),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  static SquadronCanceledException? deserialize(List? props) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (props == null) return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    switch (props[_$type]) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      case $canceledExceptionType:</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        return SquadronCanceledException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          props[_$tokenId],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          props[_$message],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>          SquadronException.loadStackTrace(props[_$stackTrace]),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        );</code>
+        </line>
+        <line hits="1">
+            <code>      case $canceledExceptionsType:</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        return SquadronCanceledExceptions.deserialize(props);</code>
+        </line>
+        <line hits="1">
+            <code>      case $timeoutExceptionType:</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        return SquadronTimeoutException.deserialize(props);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      default:</code>
+        </line>
+        <line hits="0">
+            <code>        return null;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

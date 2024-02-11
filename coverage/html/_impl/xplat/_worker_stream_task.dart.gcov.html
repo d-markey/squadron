@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-09-15</dd>
+                    <dd>2024-02-11</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -73,13 +73,13 @@
                     <td>4</td><td></td><td></td><td><code>import '../../exceptions/squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import '../../stats/perf_counter.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import '../../pool/stream_task.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '../../worker/worker.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>import '../../stats/perf_counter.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>import '../../worker/worker_task.dart';</code></td>
+                    <td>7</td><td></td><td></td><td><code>import '../../worker/worker.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
                     <td>8</td><td></td><td></td><td><code>import '_worker_task.dart';</code></td>
@@ -283,7 +283,7 @@
                     <td>74</td><td></td><td>2</td><td><code>    super.cancel(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>3</td><td><code>    _done(cancelledException);</code></td>
+                    <td>75</td><td></td><td>3</td><td><code>    _done(canceledException);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 76" id="line76">
                     <td>76</td><td></td><td>1</td><td><code>  }</code></td>
@@ -307,10 +307,10 @@
                     <td>82</td><td></td><td>2</td><td><code>  void _onData(T data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>2</td><td><code>    if (isCancelled) {</code></td>
+                    <td>83</td><td></td><td>2</td><td><code>    if (isCanceled) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>0</td><td><code>      _done(cancelledException);</code></td>
+                    <td>84</td><td></td><td>0</td><td><code>      _done(canceledException);</code></td>
                 </tr>
                 <tr class="noop" title="Line 85" id="line85">
                     <td>85</td><td></td><td></td><td><code>    } else {</code></td>
@@ -340,10 +340,10 @@
                     <td>93</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 94" id="line94">
-                    <td>94</td><td></td><td>1</td><td><code>    if (isCancelled) {</code></td>
+                    <td>94</td><td></td><td>1</td><td><code>    if (isCanceled) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 95" id="line95">
-                    <td>95</td><td></td><td>0</td><td><code>      return _done(cancelledException);</code></td>
+                    <td>95</td><td></td><td>0</td><td><code>      return _done(canceledException);</code></td>
                 </tr>
                 <tr class="noop" title="Line 96" id="line96">
                     <td>96</td><td></td><td></td><td><code>    }</code></td>
@@ -412,7 +412,7 @@
                     <td>117</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>4</td><td><code>  Future run(W worker) =&gt; super.run(worker).then((_) {</code></td>
+                    <td>118</td><td></td><td>4</td><td><code>  Future&lt;void&gt; run(W worker) =&gt; super.run(worker).then((_) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
                     <td>119</td><td></td><td>5</td><td><code>        _streamer.complete(_producer(worker));</code></td>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-09-15</dd>
+                    <dd>2024-02-11</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -97,7 +97,7 @@
                     <td>12</td><td></td><td></td><td><code>import '../../worker/worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>import '../../worker/worker_service.dart';</code></td>
+                    <td>13</td><td></td><td></td><td><code>import '../../worker_service.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code>import '_worker_monitor.dart';</code></td>
@@ -169,7 +169,7 @@
                     <td>36</td><td></td><td></td><td><code>      WorkerInitializer initializer) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>1</td><td><code>    startRequest?.unwrapRequest();</code></td>
+                    <td>37</td><td></td><td>1</td><td><code>    startRequest?.unwrapRequestInPlace();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
                     <td>38</td><td></td><td>1</td><td><code>    final client = startRequest?.client;</code></td>
@@ -328,7 +328,7 @@
                     <td>89</td><td></td><td>2</td><td><code>  void processMessage(List request) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>2</td><td><code>    request.unwrapRequest();</code></td>
+                    <td>90</td><td></td><td>2</td><td><code>    request.unwrapRequestInPlace();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 91" id="line91">
                     <td>91</td><td></td><td>1</td><td><code>    final client = request.client;</code></td>
@@ -346,16 +346,16 @@
                     <td>95</td><td></td><td>2</td><td><code>      return _monitor.terminate();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>1</td><td><code>    } else if (request.isCancellation) {</code></td>
+                    <td>96</td><td></td><td>1</td><td><code>    } else if (request.isTokenCancelation) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 97" id="line97">
                     <td>97</td><td></td><td></td><td><code>      // cancel a token</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
-                    <td>98</td><td></td><td>3</td><td><code>      return _monitor.cancelToken(request.cancelToken!);</code></td>
+                    <td>98</td><td></td><td>3</td><td><code>      return _monitor.updateToken(request.cancelToken!);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>1</td><td><code>    } else if (request.isStreamCancellation) {</code></td>
+                    <td>99</td><td></td><td>1</td><td><code>    } else if (request.isStreamCancelation) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 100" id="line100">
                     <td>100</td><td></td><td></td><td><code>      // cancel a stream</code></td>
@@ -460,7 +460,7 @@
                     <td>133</td><td></td><td></td><td><code>        // result is a stream: forward data to the client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 134" id="line134">
-                    <td>134</td><td></td><td>3</td><td><code>        await client.pipe(result, reply, _monitor, tokenRef);</code></td>
+                    <td>134</td><td></td><td>3</td><td><code>        await client.pipe(result, reply, _monitor);</code></td>
                 </tr>
                 <tr class="noop" title="Line 135" id="line135">
                     <td>135</td><td></td><td></td><td><code>      } else {</code></td>

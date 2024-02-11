@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90697676" lines-covered="351" lines-valid="387" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94711536" lines-covered="197" lines-valid="208" package="/worker" testname="lcov.info" version="1.5">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="152" lines-valid="173" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="152" name="&lt;unnamed&gt;"/>
-        </source>
         <source branches-hit="0" branches-valid="0" filename="worker_message.dart" functions-hit="0" functions-valid="0" lines-hit="7" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="7" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="worker_channel.dart" functions-hit="0" functions-valid="0" lines-hit="19" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="19" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_request.dart" functions-hit="0" functions-valid="0" lines-hit="35" lines-valid="37" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="35" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker_request.dart" functions-hit="0" functions-valid="0" lines-hit="38" lines-valid="40" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="38" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_response.dart" functions-hit="0" functions-valid="0" lines-hit="29" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="29" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker_response.dart" functions-hit="0" functions-valid="0" lines-hit="28" lines-valid="30" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="28" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker.dart" functions-hit="0" functions-valid="0" lines-hit="107" lines-valid="114" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="107" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_service.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="4" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker.dart" functions-hit="0" functions-valid="0" lines-hit="105" lines-valid="110" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="105" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

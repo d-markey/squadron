@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9354839" lines-covered="29" lines-valid="31" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="28" lines-valid="30" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -18,9 +18,6 @@
         </line>
         <line>
             <code>import '../squadron.dart';</code>
-        </line>
-        <line>
-            <code>import 'worker.dart';</code>
         </line>
         <line>
             <code>import 'worker_message.dart';</code>
@@ -123,8 +120,11 @@
             <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
         </line>
         <line hits="1">
-            <code>  static WorkerResponse withError(Object exception, [StackTrace? stackTrace]) =&gt;</code>
+            <code>  static WorkerResponse withError(SquadronException exception,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          [StackTrace? stackTrace]) =&gt;</code>
         </line>
         <line hits="1">
             <code>      [</code>
@@ -136,9 +136,8 @@
         <line>
             <code>        null, // 1 - result</code>
         </line>
-        <line hits="2">
-            <code>        SquadronException.from(exception, stackTrace), // 2 - error</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        exception, // 2 - error</code>
         </line>
         <line>
             <code>        null, // 3 - end of stream</code>
@@ -222,7 +221,7 @@
             <code>  /// The [WorkerResponse] exception, if any.</code>
         </line>
         <line hits="3">
-            <code>  SquadronException? get error =&gt; this[_$error];</code>
+            <code>  dynamic get error =&gt; this[_$error];</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -276,6 +275,9 @@
             <code>extension WorkerResponseExt on WorkerResponse {</code>
         </line>
         <line>
+            <code>  // 0 is reserved for travel time</code>
+        </line>
+        <line>
             <code>  static const _$result = WorkerResponseImpl._$result;</code>
         </line>
         <line>
@@ -297,7 +299,7 @@
             <code>  /// the message requires no further processing (currently used for log messages only).</code>
         </line>
         <line hits="2">
-            <code>  bool unwrapResponse() {</code>
+            <code>  bool unwrapResponseInPlace() {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -319,9 +321,9 @@
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="4">
-            <code>      this[_$error] = SquadronException.deserialize(this[_$error]);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>      this[_$error] = Squadron.exceptionManager?.deserialize(this[_$error]);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      this[_$endOfStream] ??= false;</code>
@@ -349,7 +351,7 @@
             <code>  /// In-place serialization of a [WorkerResponse].</code>
         </line>
         <line hits="2">
-            <code>  void wrapResponse() {</code>
+            <code>  void wrapResponseInPlace() {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">

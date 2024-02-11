@@ -5520,23 +5520,29 @@
     CancelationTokenReference: function CancelationTokenReference(t0, t1, t2) {
       var _ = this;
       _.id = t0;
-      _._hasRef = t1;
-      _._refCount = 0;
-      _.__cancelation_token_ref$_completer = t2;
       _.__cancelation_token_ref$_exception = null;
+      _.__cancelation_token_ref$_completer = t1;
+      _._hasRef = t2;
+      _._refCount = 0;
+    },
+    SquadronCancelationToken$_(token, id) {
+      var t1 = new A.SquadronCancelationToken(id, token, new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_CanceledException), type$._AsyncCompleter_CanceledException));
+      t1.SquadronCancelationToken$_$2(token, id);
+      return t1;
     },
     SquadronCancelationToken_deserialize(props) {
-      var t1, id, ex;
+      var t1, id, ex, token;
       if (props == null)
         return null;
       t1 = J.getInterceptor$ax(props);
       id = t1.$index(props, 0);
       ex = A.SquadronCanceledException_deserialize(type$.nullable_List_dynamic._as(t1.$index(props, 1)));
-      A._asString(id);
-      t1 = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_CanceledException), type$._AsyncCompleter_CanceledException);
-      if (ex != null)
-        t1.complete$1(0, ex);
-      return new A.SquadronCancelationToken(id, null, t1);
+      token = A.SquadronCancelationToken$_(null, A._asString(id));
+      if (ex != null) {
+        token.__squadron_cancelation_token$_exception = ex;
+        token._completer.complete$1(0, ex);
+      }
+      return token;
     },
     SquadronCancelationToken: function SquadronCancelationToken(t0, t1, t2) {
       var _ = this;
@@ -11318,7 +11324,11 @@
     }
   };
   A._AudioParamMap_JavaScriptObject_MapMixin.prototype = {};
-  A.CancelationToken.prototype = {};
+  A.CancelationToken.prototype = {
+    get$isCanceled() {
+      return this.__squadron_cancelation_token$_exception != null;
+    }
+  };
   A.CanceledException.prototype = {
     toString$0(_) {
       var t1 = this.message;
@@ -11451,7 +11461,7 @@
   A.WorkerMonitor__getTokenRef_closure.prototype = {
     call$0() {
       var t1 = this.token;
-      return new A.CancelationTokenReference(t1.get$id(t1), true, new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_SquadronCanceledException), type$._AsyncCompleter_SquadronCanceledException));
+      return new A.CancelationTokenReference(t1.get$id(t1), new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_SquadronCanceledException), type$._AsyncCompleter_SquadronCanceledException), true);
     },
     $signature: 29
   };
@@ -11591,7 +11601,7 @@
     processMessage$body$WorkerRunner(request) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, client, tokenRef, op, result, reply, e, st, t1, t2, t3, ex, t4, token, exception, $async$exception;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, client, tokenRef, op, result, reply, e, st, t1, t2, ex, t3, t4, token, exception, $async$exception;
       var $async$processMessage$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -11619,13 +11629,10 @@
                 t1 = type$.nullable_SquadronCancelationToken._as(t1.$index(request, 4));
                 t1.toString;
                 t2 = $async$self._monitor._getTokenRef$1(t1);
-                t3 = t2.__cancelation_token_ref$_completer;
-                if ((t3.future._state & 30) === 0) {
-                  ex = t1.get$exception();
-                  if (ex != null) {
-                    t2.__cancelation_token_ref$_exception = ex;
-                    t3.complete$1(0, ex);
-                  }
+                ex = t1.get$exception();
+                if (ex != null && (t2.__cancelation_token_ref$_completer.future._state & 30) === 0) {
+                  t2.__cancelation_token_ref$_exception = ex;
+                  t2.__cancelation_token_ref$_completer.complete$1(0, ex);
                 }
                 $async$returnValue = null;
                 // goto return
@@ -11886,7 +11893,7 @@
       return this.__cancelation_token_ref$_exception;
     },
     get$isCanceled() {
-      return (this.__cancelation_token_ref$_completer.future._state & 30) !== 0;
+      return this.__cancelation_token_ref$_exception != null;
     },
     get$onCanceled() {
       return this.__cancelation_token_ref$_completer.future;
@@ -11898,11 +11905,10 @@
     }
   };
   A.SquadronCancelationToken.prototype = {
+    SquadronCancelationToken$_$2(token, id) {
+    },
     get$exception() {
       return this.__squadron_cancelation_token$_exception;
-    },
-    get$isCanceled() {
-      return (this._completer.future._state & 30) !== 0;
     },
     get$onCanceled() {
       return this._completer.future;
@@ -13191,7 +13197,7 @@
     });
     _lazyFinal($, "_sqEpoch", "$get$_sqEpoch", () => new A.DateTime(A.checkInt(A.Primitives_valueFromDecomposedDate(2020, 1, 1, 0, 0, 0, 0, true)), true));
     _lazyFinal($, "CancelationTokenReference_noToken", "$get$CancelationTokenReference_noToken", () => {
-      var t1 = new A.CancelationTokenReference("", false, A.Completer_Completer(type$.SquadronCanceledException));
+      var t1 = new A.CancelationTokenReference("", A.Completer_Completer(type$.SquadronCanceledException), false);
       t1._refCount = 1;
       return t1;
     });

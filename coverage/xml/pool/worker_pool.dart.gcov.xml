@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8786127" lines-covered="152" lines-valid="173" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8786127" lines-covered="152" lines-valid="173" package="/pool" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,21 @@
         </line>
         <line>
             <code/>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_pool_worker.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_task.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_worker_stream_task.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_worker_task.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_worker_value_task.dart';</code>
         </line>
         <line>
             <code>import '../concurrency_settings.dart';</code>
@@ -23,18 +38,6 @@
             <code>import '../exceptions/worker_exception.dart';</code>
         </line>
         <line>
-            <code>import '../_impl/xplat/_pool_worker.dart';</code>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_worker_stream_task.dart';</code>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_worker_task.dart';</code>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_worker_value_task.dart';</code>
-        </line>
-        <line>
             <code>import '../squadron.dart';</code>
         </line>
         <line>
@@ -44,13 +47,16 @@
             <code>import '../stats/worker_stat.dart';</code>
         </line>
         <line>
-            <code>import 'worker.dart';</code>
+            <code>import '../worker/worker.dart';</code>
         </line>
         <line>
-            <code>import 'worker_service.dart';</code>
+            <code>import '../worker_service.dart';</code>
         </line>
         <line>
-            <code>import 'worker_task.dart';</code>
+            <code>import 'stream_task.dart';</code>
+        </line>
+        <line>
+            <code>import 'value_task.dart';</code>
         </line>
         <line>
             <code/>
@@ -943,10 +949,10 @@
             <code/>
         </line>
         <line>
-            <code>    // remove cancelled tasks</code>
+            <code>    // remove canceled tasks</code>
         </line>
         <line hits="5">
-            <code>    _queue.removeWhere((t) =&gt; t.isCancelled);</code>
+            <code>    _queue.removeWhere((t) =&gt; t.isCanceled);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -1135,10 +1141,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Task cancellation. If a specific [task] is provided, only this task will be cancelled.</code>
+            <code>  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.</code>
         </line>
         <line>
-            <code>  /// Otherwise, all tasks registered with the [WorkerPool] are cancelled.</code>
+            <code>  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.</code>
         </line>
         <line hits="2">
             <code>  void cancel([Task? task, String? message]) {</code>
@@ -1164,7 +1170,7 @@
             <code>    } else {</code>
         </line>
         <line hits="4">
-            <code>      final cancelled = _executing.followedBy(_queue).toList();</code>
+            <code>      final toBeCanceled = _executing.followedBy(_queue).toList();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
@@ -1176,7 +1182,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>      for (var task in cancelled) {</code>
+            <code>      for (var task in toBeCanceled) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">

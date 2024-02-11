@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../jgenhtml.js"></script>
-        <title>LCOV - lcov.info timeout_token.dart</title>
+        <title>LCOV - lcov.info _well_known_exceptions.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,12 +13,12 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../index.html">top level</a> - <a href="index.html">/tokens</a> - timeout_token.dart
+                        <a href="../index.html">top level</a> - <a href="index.html">/exceptions</a> - _well_known_exceptions.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2023-09-15</dd>
+                    <dd>2024-02-11</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>10</td><td>10</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -67,100 +67,94 @@
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../exceptions/squadron_error.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import 'package:cancelation_token/cancelation_token.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '../exceptions/worker_exception.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import 'cancellation_token.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import 'squadron_canceled_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code></code></td>
+                    <td>6</td><td></td><td></td><td><code>import 'squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>/// Time-out cancellation tokens used by callers of worker services. The token is cancelled automatically after</code></td>
+                    <td>7</td><td></td><td></td><td><code>import 'squadron_timeout_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>/// a period of time indicated by [duration] with a countdown starting only when the task is assigned to a</code></td>
+                    <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>/// platform worker.</code></td>
+                    <td>9</td><td></td><td></td><td><code>const $squadronErrorType = '\$sqdrn';</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>class TimeOutToken extends CancellationToken {</code></td>
+                    <td>10</td><td></td><td></td><td><code>const $workerExceptionType = '\$wrkr';</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>1</td><td><code>  TimeOutToken(this.duration, [String message = 'The token timed out'])</code></td>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code>const $canceledExceptionType = '\$cncld';</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>1</td><td><code>      : super(message);</code></td>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code>const $canceledExceptionsType = '\$cncld*';</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>const $timeoutExceptionType = '\$tmt';</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>  /// Duration of the timeout. The timer is not started before task is scheduled on a platform worker.</code></td>
+                    <td>14</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  final Duration duration;</code></td>
+                    <td>15</td><td></td><td></td><td><code>const $reservedExceptionTypeIds = {</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                    <td>16</td><td></td><td></td><td><code>  $squadronErrorType,</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>  Timer? _timer;</code></td>
+                    <td>17</td><td></td><td></td><td><code>  $workerExceptionType,</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code></code></td>
+                    <td>18</td><td></td><td></td><td><code>  $canceledExceptionType,</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>  /// Throws an exception, time-out tokens may not be cancelled programmatically.</code></td>
+                    <td>19</td><td></td><td></td><td><code>  $canceledExceptionsType,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  $timeoutExceptionType,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>2</td><td><code>  void cancel([CancelledException? exception]) =&gt; throw SquadronErrorExt.create(</code></td>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>};</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>2</td><td><code>      'TimeOutToken cannot be cancelled programmatically', StackTrace.current);</code></td>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code></code></td>
+                    <td>23</td><td></td><td></td><td><code>extension CanceledConversion on CanceledException {</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>  /// Called just before processing a [WorkerRequest]. The [onTimeout] callback may not be null, and a timer will be</code></td>
+                <tr class="lineCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>1</td><td><code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>  /// started that will automatically cancel this token if processing takes longer than [duration].</code></td>
+                <tr class="lineCov" title="Line 25" id="line25">
+                    <td>25</td><td></td><td>1</td><td><code>      SquadronCanceledException.from(tokenId ?? '', this);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>5</td><td><code>  void ensureStarted() =&gt; _timer ??= Timer(duration, () {</code></td>
+                <tr class="noop" title="Line 27" id="line27">
+                    <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>        super</code></td>
+                    <td>28</td><td></td><td></td><td><code>extension TimeoutConversion on TimeoutException {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>5</td><td><code>            .cancel(TaskTimeoutException(message: message, duration: duration));</code></td>
+                    <td>29</td><td></td><td>1</td><td><code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>1</td><td><code>      });</code></td>
+                    <td>30</td><td></td><td>1</td><td><code>      SquadronTimeoutException(</code></td>
                 </tr>
-                <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 31" id="line31">
+                    <td>31</td><td></td><td>2</td><td><code>          tokenId ?? '', message ?? 'Operation timeout', duration, null);</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  /// Returns `true` if the timeout has started, `false` otherwise.</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>3</td><td><code>  bool get started =&gt; _timer != null;</code></td>
-                </tr>
-                <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>}</code></td>
+                    <td>32</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

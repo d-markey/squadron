@@ -1,7 +1,7 @@
-file:///C:/Flutter/src/flutter/bin/cache/dart-sdk/lib/_internal/dart2js_platform.dill
-file:///C:/Flutter/src/flutter/bin/cache/dart-sdk/lib/libraries.json
-file:///C:/_Projects/github/squadron/.dart_tool/package_config.json
-file:///C:/_Projects/github/squadron/test/sample_js_workers/echo_worker.dart
+file:///home/runner/work/squadron/squadron/.dart_tool/package_config.json
+file:///home/runner/work/squadron/squadron/test/sample_js_workers/echo_worker.dart
+file:///opt/hostedtoolcache/dart-sdk/lib/_internal/dart2js_platform.dill
+file:///opt/hostedtoolcache/dart-sdk/lib/libraries.json
 org-dartlang-sdk:///lib/_http/crypto.dart
 org-dartlang-sdk:///lib/_http/embedder_config.dart
 org-dartlang-sdk:///lib/_http/http.dart

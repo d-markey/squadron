@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9583333" lines-covered="23" lines-valid="24" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9583333" lines-covered="23" lines-valid="24" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:convert';</code>
@@ -15,6 +15,9 @@
         </line>
         <line>
             <code>import '../squadron.dart';</code>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
         </line>
         <line>
             <code>import 'squadron_exception.dart';</code>
@@ -85,12 +88,6 @@
         <line>
             <code/>
         </line>
-        <line>
-            <code>  static const _$typeMarker = -1;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="1">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
@@ -100,7 +97,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        _$typeMarker,</code>
+            <code>        $squadronErrorType,</code>
         </line>
         <line hits="2">
             <code>        message,</code>
@@ -171,11 +168,11 @@
             <code/>
         </line>
         <line hits="2">
-            <code>  static SquadronException? deserialize(List data) =&gt;</code>
+            <code>  static SquadronException? deserialize(List exceptionInfo) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>      (data[SquadronError._$type] == SquadronError._$typeMarker)</code>
+            <code>      (exceptionInfo[SquadronError._$type] == $squadronErrorType)</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
@@ -183,7 +180,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>              data[SquadronError._$message],</code>
+            <code>              exceptionInfo[SquadronError._$message],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -191,7 +188,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>                  data[SquadronError._$stackTrace]))</code>
+            <code>                  exceptionInfo[SquadronError._$stackTrace]))</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">

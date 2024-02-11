@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="2" lines-valid="4" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="2" lines-valid="4" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -8,10 +8,10 @@
             <code/>
         </line>
         <line>
-            <code>import '../worker/worker.dart';</code>
+            <code>import 'worker/worker.dart';</code>
         </line>
         <line>
-            <code>import 'worker_request.dart';</code>
+            <code>import 'worker/worker_request.dart';</code>
         </line>
         <line>
             <code/>
@@ -128,6 +128,6 @@
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
-    <base href="../"/>
-    <base href="../"/>
+    <base href="../../../../../../../"/>
+    <base href="../../../../../../../"/>
 </coverage>

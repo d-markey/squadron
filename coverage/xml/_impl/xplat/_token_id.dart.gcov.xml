@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_token_id.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="6" lines-valid="6" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_token_id.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../../squadron.dart';</code>
@@ -8,22 +8,22 @@
             <code/>
         </line>
         <line>
-            <code>/// Singleton class used to generate unique IDs for cancellation tokens.</code>
+            <code>/// Singleton class used to generate unique IDs for cancelation tokens.</code>
         </line>
         <line>
             <code>///</code>
         </line>
         <line>
-            <code>/// The class implements a simple counter that is incremented each time a new ID will be requested. The generated</code>
+            <code>/// The class implements a simple counter that is incremented each time a new ID will be</code>
         </line>
         <line>
-            <code>/// ID also integrates [Squadron.id] to guarantee unicity across event loops (provided [Squadron.id]s are also</code>
+            <code>/// requested. The generated ID also integrates [Squadron.id] to guarantee unicity across</code>
         </line>
         <line>
-            <code>/// unique across event loops). Workers should forward the cancellation token they received when calling other</code>
+            <code>/// event loops (provided [Squadron.id]s are also unique across event loops). Workers</code>
         </line>
         <line>
-            <code>/// workers.</code>
+            <code>/// should forward the cancelation token they received when calling other workers.</code>
         </line>
         <line>
             <code>class TokenId {</code>
@@ -51,21 +51,20 @@
         <line>
             <code>  /// Provides the next ID.</code>
         </line>
-        <line hits="2">
+        <line hits="1">
             <code>  static String next() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>    final id = ++_instance._id;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="2">
             <code>    return '$id@${Squadron.id}';</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line>
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

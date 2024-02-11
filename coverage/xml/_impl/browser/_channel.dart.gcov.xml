@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.72262776" lines-covered="99" lines-valid="137" package="/_impl/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6273292" lines-covered="101" lines-valid="161" package="/_impl/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
             <code>import 'dart:html' as web;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
             <code/>
@@ -26,7 +32,7 @@
             <code>import '../../squadron.dart';</code>
         </line>
         <line>
-            <code>import '../../tokens/cancellation_token.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_channel.dart';</code>
@@ -38,7 +44,7 @@
             <code>import '../../worker/worker_response.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_service.dart';</code>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_stream_wrapper.dart';</code>
@@ -60,6 +66,9 @@
         </line>
         <line>
             <code>typedef PlatformWorker = web.Worker;</code>
+        </line>
+        <line>
+            <code>typedef PlatformChannel = web.MessagePort;</code>
         </line>
         <line>
             <code/>
@@ -104,7 +113,7 @@
             <code>  /// [Channel] serialization in JavaScript world returns the [web.MessagePort].</code>
         </line>
         <line hits="1">
-            <code>  dynamic serialize() =&gt; _sendPort;</code>
+            <code>  PlatformChannel serialize() =&gt; _sendPort;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -119,32 +128,40 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    req.wrapRequest();</code>
+            <code>    req.wrapRequestInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    try {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>      final channelInfo = req.channelInfo;</code>
+        </line>
         <line hits="1">
-            <code>      _sendPort.postMessage(</code>
+            <code>      _sendPort.postMessage(req, (channelInfo == null) ? null : [channelInfo]);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>          req, (req.channelInfo == null) ? null : [req.channelInfo]);</code>
+            <code>    } on UnimplementedError catch (ex, st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      throw SquadronErrorExt.create(ex.message ?? 'Unimplemented', st);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
             <code>    } catch (ex, st) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      Squadron.severe('failed to post request $req: error $ex');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -156,35 +173,57 @@
         <line>
             <code/>
         </line>
-        <line>
+        <line hits="1">
             <code>  void _inspectAndPostRequest(WorkerRequest req) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    req.cancelToken?.ensureStarted();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>    req.wrapRequest();</code>
+        <line hits="1">
+            <code>    req.wrapRequestInPlace();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>      _sendPort.postMessage(req, Transferables.get(req).toList());</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
+            <code>    } on UnimplementedError catch (ex, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      throw SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          ex.message ?? 'message contains untransferable objects', st);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
             <code>    } catch (ex, st) {</code>
         </line>
-        <line>
-            <code>      Squadron.severe('failed to post request $req: error $ex');</code>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post request $req: $ex');</code>
         </line>
-        <line>
+        <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line>
+        <line hits="1">
             <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -194,7 +233,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>    res.wrapResponse();</code>
+            <code>    res.wrapResponseInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -205,10 +244,22 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
+            <code>    } on UnimplementedError catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post response $res: $ex');</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          ex.message ?? 'message contains untransferable objects', st);</code>
+        </line>
+        <line hits="0">
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.severe('failed to post response $res: error $ex');</code>
+            <code>      Squadron.severe('failed to post response $res: $ex');</code>
         </line>
         <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
@@ -227,7 +278,7 @@
             <code>  void _inspectAndPostResponse(WorkerResponse res) {</code>
         </line>
         <line hits="0">
-            <code>    res.wrapResponse();</code>
+            <code>    res.wrapResponseInPlace();</code>
         </line>
         <line hits="0">
             <code>    try {</code>
@@ -236,10 +287,22 @@
             <code>      _sendPort.postMessage(res, Transferables.get(res).toList());</code>
         </line>
         <line hits="0">
+            <code>    } on UnimplementedError catch (ex, st) {</code>
+        </line>
+        <line hits="0">
+            <code>      Squadron.severe('failed to post response $res: $ex');</code>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          ex.message ?? 'message contains untransferable objects', st);</code>
+        </line>
+        <line hits="0">
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.severe('failed to post response $res: error $ex');</code>
+            <code>      Squadron.severe('failed to post response $res: $ex');</code>
         </line>
         <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
@@ -263,11 +326,8 @@
             <code>class _JsChannel extends _BaseJsChannel implements Channel {</code>
         </line>
         <line hits="1">
-            <code>  _JsChannel._(String workerId, web.MessagePort sendPort)</code>
+            <code>  _JsChannel._(super.workerId, super.sendPort) : super._();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      : super._(workerId, sendPort);</code>
         </line>
         <line>
             <code/>
@@ -337,7 +397,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      {CancellationToken? token,</code>
+            <code>      {CancelationToken? token,</code>
         </line>
         <line>
             <code>      bool inspectRequest = false,</code>
@@ -359,6 +419,10 @@
             <code>    final com = web.MessageChannel();</code>
         </line>
         <line hits="1">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
             <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -366,7 +430,7 @@
             <code>      WorkerRequestImpl.userCommand(</code>
         </line>
         <line hits="1">
-            <code>          com.port2, command, args, token, inspectResponse),</code>
+            <code>          com.port2, command, args, squadronToken, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -378,7 +442,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      token: token,</code>
+            <code>      token: squadronToken,</code>
         </line>
         <line>
             <code>    );</code>
@@ -426,7 +490,7 @@
             <code>      {SquadronCallback onDone = Channel.noop,</code>
         </line>
         <line>
-            <code>      CancellationToken? token,</code>
+            <code>      CancelationToken? token,</code>
         </line>
         <line>
             <code>      bool inspectRequest = false,</code>
@@ -448,6 +512,10 @@
             <code>    final com = web.MessageChannel();</code>
         </line>
         <line hits="1">
+            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
             <code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
@@ -455,7 +523,7 @@
             <code>      WorkerRequestImpl.userCommand(</code>
         </line>
         <line hits="1">
-            <code>          com.port2, command, args, token, inspectResponse),</code>
+            <code>          com.port2, command, args, squadronToken, inspectResponse),</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -483,7 +551,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      token: token,</code>
+            <code>      token: squadronToken,</code>
         </line>
         <line>
             <code>    );</code>
@@ -512,11 +580,8 @@
             <code>class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {</code>
         </line>
         <line hits="1">
-            <code>  _JsWorkerChannel._(String workerId, web.MessagePort sendPort)</code>
+            <code>  _JsWorkerChannel._(super.workerId, super.sendPort) : super._();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      : super._(workerId, sendPort);</code>
         </line>
         <line>
             <code/>
@@ -829,9 +894,8 @@
             <code>    (event) async {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      final found = await UriChecker.exists(Uri.parse(entryPoint));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -839,9 +903,8 @@
         <line>
             <code>      String msg;</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      if (event is web.ErrorEvent) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        final error = event;</code>
@@ -849,15 +912,14 @@
         <line>
             <code>        msg =</code>
         </line>
-        <line hits="1">
-            <code>            '$entryPoint =&gt; ${error.message} [${error.filename}(${error.lineno})]';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="0">
+            <code>            '$entryPoint =&gt; ${error.runtimeType} ${error.message} [${error.filename}(${error.lineno})]';</code>
         </line>
         <line>
             <code>      } else {</code>
         </line>
         <line hits="0">
-            <code>        msg = '$entryPoint: ${event.type} / $event';</code>
+            <code>        msg = '$entryPoint: ${event.runtimeType} ${event.type} / $event';</code>
         </line>
         <line>
             <code>      }</code>
@@ -871,17 +933,14 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      final error = WorkerException(msg);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      Squadron.warning(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>          'Unhandled error from Web worker #$workerId: ${error.message}.');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      if (!found) {</code>
@@ -892,9 +951,8 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>      if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        completer.completeError(error, error.stackTrace);</code>
@@ -902,9 +960,8 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="0">
             <code>    },</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  );</code>
@@ -967,7 +1024,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      if (!response.unwrapResponse()) {</code>
+            <code>      if (!response.unwrapResponseInPlace()) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -1041,7 +1098,7 @@
             <code/>
         </line>
         <line hits="1">
-            <code>  startRequest.wrapRequest();</code>
+            <code>  startRequest.wrapRequestInPlace();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -1093,7 +1150,7 @@
             <code>/// Creates a [_JsChannel] from a [web.MessagePort].</code>
         </line>
         <line>
-            <code>Channel? deserializeChannel(dynamic channelInfo) =&gt;</code>
+            <code>Channel? deserializeChannel(PlatformChannel? channelInfo) =&gt;</code>
         </line>
         <line>
             <code>    (channelInfo == null) ? null : _JsChannel._('&lt;deserialized&gt;', channelInfo);</code>
@@ -1105,7 +1162,7 @@
             <code>/// Creates a [_JsWorkerChannel] from a [web.MessagePort].</code>
         </line>
         <line>
-            <code>WorkerChannel? deserializeWorkerChannel(dynamic channelInfo) =&gt;</code>
+            <code>WorkerChannel? deserializeWorkerChannel(PlatformChannel? channelInfo) =&gt;</code>
         </line>
         <line>
             <code>    (channelInfo == null)</code>
@@ -1113,9 +1170,8 @@
         <line>
             <code>        ? null</code>
         </line>
-        <line hits="1">
+        <line>
             <code>        : _JsWorkerChannel._('&lt;deserialized&gt;', channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

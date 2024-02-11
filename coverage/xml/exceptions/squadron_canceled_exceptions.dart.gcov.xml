@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="/exceptions" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class SquadronCanceledExceptions</code>
+        </line>
+        <line>
+            <code>    implements SquadronCanceledException, CanceledExceptions {</code>
+        </line>
+        <line hits="0">
+            <code>  SquadronCanceledExceptions(</code>
+        </line>
+        <line>
+            <code>      this.tokenId, Iterable&lt;SquadronCanceledException&gt; exceptions)</code>
+        </line>
+        <line hits="0">
+            <code>      : _exceptions = exceptions.toList();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final String tokenId;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final List&lt;SquadronCanceledException&gt; _exceptions;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Iterable&lt;CanceledException&gt; get innerExceptions =&gt; _exceptions;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  String get message =&gt; _exceptions.map((e) =&gt; e.message).join('\n');</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  StackTrace? get stackTrace =&gt; null;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static const _$type = 0;</code>
+        </line>
+        <line>
+            <code>  static const _$tokenId = 1;</code>
+        </line>
+        <line>
+            <code>  static const _$innerExceptions = 2;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+        </line>
+        <line>
+            <code>        $canceledExceptionsType,</code>
+        </line>
+        <line hits="0">
+            <code>        tokenId,</code>
+        </line>
+        <line hits="1">
+            <code>        _exceptions.map((e) =&gt; e.serialize()),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      ]);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  static SquadronCanceledExceptions? deserialize(List? props) {</code>
+        </line>
+        <line hits="0">
+            <code>    if (props == null) return null;</code>
+        </line>
+        <line hits="0">
+            <code>    if (props[_$type] != $canceledExceptionsType) return null;</code>
+        </line>
+        <line hits="0">
+            <code>    return SquadronCanceledExceptions(</code>
+        </line>
+        <line hits="0">
+            <code>      props[_$tokenId],</code>
+        </line>
+        <line hits="0">
+            <code>      props[_$innerExceptions].map(SquadronCanceledException.deserialize),</code>
+        </line>
+        <line>
+            <code>    );</code>
+        </line>
+        <line hits="0">
+            <code>  }</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

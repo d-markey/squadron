@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_timeout_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="/exceptions" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class SquadronTimeoutException extends SquadronCanceledException</code>
+        </line>
+        <line>
+            <code>    implements TimeoutCanceledException {</code>
+        </line>
+        <line hits="2">
+            <code>  SquadronTimeoutException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      String tokenId, String message, this.duration, StackTrace? stackTrace)</code>
+        </line>
+        <line hits="1">
+            <code>      : super(tokenId, message, stackTrace);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final Duration? duration;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static const _$type = 0;</code>
+        </line>
+        <line>
+            <code>  static const _$tokenId = 1;</code>
+        </line>
+        <line>
+            <code>  static const _$message = 2;</code>
+        </line>
+        <line>
+            <code>  static const _$stackTrace = 3;</code>
+        </line>
+        <line>
+            <code>  static const _$duration = 4;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        $timeoutExceptionType,</code>
+        </line>
+        <line hits="2">
+            <code>        tokenId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        message,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        stackTrace?.toString(),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        duration?.inMicroseconds,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  static SquadronTimeoutException? deserialize(List? props) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    if (props == null) return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (props[_$type] != $timeoutExceptionType) return null;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    final microSecs = props[_$duration];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    return SquadronTimeoutException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      props[_$tokenId],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      props[_$message],</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      (microSecs == null) ? null : Duration(microseconds: microSecs),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      SquadronException.loadStackTrace(props[_$stackTrace]),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    );</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

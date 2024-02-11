@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2023-09-15" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.97183096" lines-covered="69" lines-valid="71" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_stream_wrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9705882" lines-covered="66" lines-valid="68" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -8,7 +8,7 @@
             <code/>
         </line>
         <line>
-            <code>import '../../tokens/cancellation_token.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_channel.dart';</code>
@@ -20,7 +20,7 @@
             <code>import '../../worker/worker_response.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker_service.dart';</code>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line>
             <code/>
@@ -54,7 +54,7 @@
             <code>      required SquadronCallback onDone,</code>
         </line>
         <line>
-            <code>      CancellationToken? token})</code>
+            <code>      SquadronCancelationToken? token})</code>
         </line>
         <line>
             <code>      : _streamRequest = streamRequest,</code>
@@ -95,25 +95,13 @@
         <line>
             <code>    );</code>
         </line>
-        <line hits="4">
-            <code>    _token?.addListener(_canceller);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>    _token?.onCanceled.then((ex) =&gt; _canceler());</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>    _controller.done.then((_) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      _token?.removeListener(_canceller);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      onDone();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>    _controller.done.then((_) =&gt; onDone());</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  }</code>
@@ -142,7 +130,7 @@
             <code>  final PostRequest _postRequest;</code>
         </line>
         <line>
-            <code>  final CancellationToken? _token;</code>
+            <code>  final SquadronCancelationToken? _token;</code>
         </line>
         <line>
             <code/>
@@ -165,7 +153,7 @@
             <code/>
         </line>
         <line hits="6">
-            <code>  void _canceller() =&gt; _postRequest(WorkerRequestImpl.cancel(_token!));</code>
+            <code>  void _canceler() =&gt; _postRequest(WorkerRequestImpl.cancel(_token!));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -237,7 +225,7 @@
             <code/>
         </line>
         <line>
-            <code>  /// Will eventually store the stream ID received from the worker. If the stream is cancelled on the</code>
+            <code>  /// Will eventually store the stream ID received from the worker. If the stream is canceled on the</code>
         </line>
         <line>
             <code>  /// client side, the stream ID will be sent to the worker so it has a chance to stop streaming from</code>
@@ -268,7 +256,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>        if (!res.unwrapResponse() || _controller.isClosed) {</code>
+            <code>        if (!res.unwrapResponseInPlace() || _controller.isClosed) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
@@ -327,10 +315,10 @@
             <code>          // The first message received from the worker contains the stream ID. If the stream</code>
         </line>
         <line>
-            <code>          // is cancelled on the client side, the stream from the worker context should also</code>
+            <code>          // is canceled on the client side, the stream from the worker context should also</code>
         </line>
         <line>
-            <code>          // be cancelled by sending a WorkerRequest.cancelStream with this stream id.</code>
+            <code>          // be canceled by sending a WorkerRequest.cancelStream with this stream id.</code>
         </line>
         <line hits="4">
             <code>          _streamId.complete(res.result);</code>
@@ -379,7 +367,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    // notify the worker that the streaming operation has been cancelled</code>
+            <code>    // notify the worker that the streaming operation has been canceled</code>
         </line>
         <line hits="4">
             <code>    _postRequest(WorkerRequestImpl.cancelStream(streamId));</code>

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_cancelation_token_ref.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5263158" lines-covered="20" lines-valid="38" package="/tokens" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_worker_monitor.dart';</code>
+        </line>
+        <line>
+            <code>import '../exceptions/squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>import '../exceptions/squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import '../worker/worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import '_squadron_cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Cancelation token reference. This special cancelation token is managed by the [WorkerMonitor] and is used to</code>
+        </line>
+        <line>
+            <code>/// mirror cancelation tokens presented to Squadron by callers of a worker service. When a [WorkerRequest] is</code>
+        </line>
+        <line>
+            <code>/// handled by the platform worker and that request is associated with a cancelation request, the [WorkerMonitor]</code>
+        </line>
+        <line>
+            <code>/// will override the request's cancelation token with a [CancelationTokenReference]. The same cancelation may</code>
+        </line>
+        <line>
+            <code>/// be used for several service calls, so the [WorkerMonitor] keeps a map of [CancelationTokenReference] and a</code>
+        </line>
+        <line>
+            <code>/// reference count that is incremented for each [WorkerRequest] having the same cancelation token and decremented</code>
+        </line>
+        <line>
+            <code>/// when processing is finished. When the reference count drops to 0 and the cancelation token was not canceled,</code>
+        </line>
+        <line>
+            <code>/// the [CancelationTokenReference] is removed from the map.</code>
+        </line>
+        <line>
+            <code>///</code>
+        </line>
+        <line>
+            <code>/// When a caller cancels a token, a cancelation notification is sent to all workers in the pool and the</code>
+        </line>
+        <line>
+            <code>/// corresponding [CancelationTokenReference] will be canceled. Services executing in the context of a platform</code>
+        </line>
+        <line>
+            <code>/// worker will be able to inspect the token's status to interrupt processing gracefully. If the token's status is</code>
+        </line>
+        <line>
+            <code>/// not inspected, processing will continue in platform workers, but will be interrupted on caller-side with a</code>
+        </line>
+        <line>
+            <code>/// [CanceledException].</code>
+        </line>
+        <line>
+            <code>class CancelationTokenReference implements SquadronCancelationToken {</code>
+        </line>
+        <line hits="2">
+            <code>  CancelationTokenReference._noToken()</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      : _hasRef = false,</code>
+        </line>
+        <line>
+            <code>        id = '' {</code>
+        </line>
+        <line hits="2">
+            <code>    _refCount = 1;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final String id;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Singleton token reference instance for requests containing no token.</code>
+        </line>
+        <line hits="4">
+            <code>  static final noToken = CancelationTokenReference._noToken();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Creates a new token reference for [id].</code>
+        </line>
+        <line hits="1">
+            <code>  CancelationTokenReference(this.id) : _hasRef = true;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  SquadronCanceledException? get exception =&gt; _exception;</code>
+        </line>
+        <line>
+            <code>  SquadronCanceledException? _exception;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  bool get isCanceled =&gt; (_exception != null);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code>
+        </line>
+        <line hits="1">
+            <code>  final _completer = Completer&lt;SquadronCanceledException&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Whether this token reference instance has a reference. A token reference</code>
+        </line>
+        <line>
+            <code>  /// without a reference does nothing.</code>
+        </line>
+        <line>
+            <code>  final bool _hasRef;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Reference counter.</code>
+        </line>
+        <line hits="3">
+            <code>  int get refCount =&gt; _refCount;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _refCount = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Use this token reference for [request]. Increments the internal reference</code>
+        </line>
+        <line>
+            <code>  /// counter and overrides [WorkerRequest.cancelToken] with this token.</code>
+        </line>
+        <line hits="1">
+            <code>  void usedBy(WorkerRequest request) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_hasRef) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _refCount++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      request.overrideCancelToken(this);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    } else if (request.cancelToken != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>          'Token reference mismatch', StackTrace.current);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Release this token reference. Decrements the internal reference counter.</code>
+        </line>
+        <line hits="1">
+            <code>  void release() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (_hasRef) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _refCount--;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  void update(SquadronCancelationToken token) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    final ex = token.exception;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (ex != null &amp;&amp; !_completer.isCompleted) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      _exception = ex;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      _completer.complete(ex);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  void ensureStarted() {/* nothing to do */}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  void throwIfCanceled() {</code>
+        </line>
+        <line hits="0">
+            <code>    if (_exception != null) {</code>
+        </line>
+        <line hits="0">
+            <code>      throw _exception!;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Future&lt;void&gt; refreshAndThrowIfCanceled() =&gt; Future(throwIfCanceled);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  // no native cancelation token in workers</code>
+        </line>
+        <line hits="0">
+            <code>  CancelationToken? get token =&gt; throw UnimplementedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  // serialization of token references</code>
+        </line>
+        <line hits="1">
+            <code>  List serialize() =&gt; throw UnimplementedError();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>
