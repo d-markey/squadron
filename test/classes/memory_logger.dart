@@ -1,34 +1,33 @@
-import 'package:squadron/squadron.dart';
+import 'package:logger/logger.dart';
 
-class MemoryLogger extends BaseSquadronLogger {
-  final _messages = <String>[];
+import 'test_logger.dart';
 
-  void clear() => _messages.clear();
+class MemoryLogger extends Logger {
+  MemoryLogger(List<String> logs, MemoryLogFilter filter)
+      : _logs = logs,
+        _filter = filter,
+        super(filter: filter, output: NoOutput(), printer: EmptyPrinter());
 
-  bool contains(String text) => _messages.any((m) => m.contains(text));
+  final MemoryLogFilter _filter;
 
-  int get length => _messages.length;
+  Level get level => _filter.level!;
+  set level(Level value) => _filter.level = value;
 
-  List<String> get messages => List.unmodifiable(_messages);
+  final List<String> _logs;
+
+  void clear() => _logs.clear();
 
   @override
-  Iterable<String> format(int level, dynamic message) {
-    final header = '[${Squadron.id}]';
-    if (message is Iterable) {
-      message = message
-          .map((m) => m?.toString() ?? '')
-          .expand((m) => m.toString().split('\n'));
-    } else {
-      message = message?.toString().split('\n') ?? const [];
+  void log(Level level, dynamic message,
+      {DateTime? time, Object? error, StackTrace? stackTrace}) {
+    if (level.value >= _filter.level!.value) {
+      _logs.add(message?.toString() ?? error?.toString() ?? '<no log message>');
     }
-    return message.where((m) => m.isNotEmpty).map((line) => '$header $line');
+    super.log(level, message, time: time, error: error, stackTrace: stackTrace);
   }
+}
 
+class MemoryLogFilter extends LogFilter {
   @override
-  void log(String message) {
-    _messages.add(message);
-  }
-
-  @override
-  String toString() => _messages.join('\n');
+  bool shouldLog(LogEvent event) => event.level.value >= level!.value;
 }

@@ -1,22 +1,22 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
+
 import '../../channel.dart';
+import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
+import "../../typedefs.dart";
 import '../../worker/worker_channel.dart';
 
-typedef EntryPoint = dynamic;
-typedef PlatformWorker = dynamic;
-typedef PlatformChannel = dynamic;
-
-typedef PlatformWorkerHook = FutureOr<void> Function(PlatformWorker);
-
-Future<Channel> openChannel(
-        EntryPoint entryPoint, String workerId, List startArguments,
-        [PlatformWorkerHook? hook]) =>
+Future<Channel> openChannel(EntryPoint entryPoint,
+        ExceptionManager exceptionManager, Logger? logger, List startArguments,
+        [PlatformThreadHook? hook]) =>
     throw SquadronErrorExt.create('Platform not supported', StackTrace.current);
 
-Channel? deserializeChannel(PlatformChannel? channelInfo) =>
+Channel? deserializeChannel(PlatformChannel? channelInfo, Logger? logger,
+        ExceptionManager exceptionManager) =>
     throw SquadronErrorExt.create('Platform not supported', StackTrace.current);
 
-WorkerChannel? deserializeWorkerChannel(PlatformChannel? channelInfo) =>
+WorkerChannel? deserializeWorkerChannel(
+        PlatformChannel? channelInfo, Logger? logger) =>
     throw SquadronErrorExt.create('Platform not supported', StackTrace.current);

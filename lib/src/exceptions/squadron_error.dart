@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 
-import '../squadron.dart';
 import '_well_known_exceptions.dart';
 import 'squadron_exception.dart';
 
@@ -43,10 +42,8 @@ class SquadronError implements SquadronException {
 
 @internal
 extension SquadronErrorExt on SquadronError {
-  static SquadronError create(String message, StackTrace stackTrace) {
-    Squadron.severe('SquadronError: $message');
-    return SquadronError._(message, stackTrace);
-  }
+  static SquadronError create(String message, StackTrace stackTrace) =>
+      SquadronError._(message, stackTrace);
 
   static SquadronException? deserialize(List exceptionInfo) =>
       (exceptionInfo[SquadronError._$type] == $squadronErrorType)

@@ -10,12 +10,12 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   SampleWorkerPool(
       EntryPoint entryPoint,
       LocalWorker<IdentityService> identityServer,
-      PlatformWorkerHook? platformWorkerHook,
+      PlatformThreadHook? threadHook,
       ConcurrencySettings concurrencySettings)
       : super(
             () => SampleWorker(entryPoint,
                 args: [identityServer.channel?.share().serialize()],
-                platformWorkerHook: platformWorkerHook),
+                threadHook: threadHook),
             concurrencySettings: concurrencySettings);
 
   @override
@@ -30,8 +30,8 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future<String> whoAreYouTalkingTo() => execute((w) => w.whoAreYouTalkingTo());
 }
 
-class SampleWorker extends Worker implements SampleService {
-  SampleWorker(super.entryPoint, {super.args, super.platformWorkerHook});
+class SampleWorker extends Worker<SampleService> implements SampleService {
+  SampleWorker(super.entryPoint, {super.args, super.threadHook});
 
   @override
   Future io({required int milliseconds}) =>

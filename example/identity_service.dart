@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
+import 'thread_id.dart';
+
 // The service interface
 abstract class IdentityService implements WorkerService {
   FutureOr<String> whoAreYou();
@@ -17,7 +19,7 @@ abstract class IdentityService implements WorkerService {
 // The service implementation
 class IdentityServiceImpl extends IdentityService {
   @override
-  String whoAreYou() => Squadron.id ?? '<undefined>';
+  String whoAreYou() => threadId;
 }
 
 // The service client: this class will be used in workers that need to call the service implementation

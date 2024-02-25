@@ -1,23 +1,23 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
 import 'sample_service.dart';
 import 'sample_service_worker_pool.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
+import 'thread_id.dart';
 
 void main() async {
   final sw = Stopwatch()..start();
 
-  Squadron.setId('MAIN');
-  Squadron.debugMode = false;
-  Squadron.logLevel = SquadronLogLevel.info;
-  Squadron.setLogger(ConsoleSquadronLogger());
+  final logger = Logger(level: Level.all);
 
   void log([String? message]) {
     message ??= '';
-    Squadron.info(message.isEmpty ? ' ' : '[${sw.elapsed}] $message');
+    print(message.isEmpty ? ' ' : '[${sw.elapsed}] $message');
+    logger.i(message.isEmpty ? ' ' : '[${sw.elapsed}] $message');
   }
 
   final loops = 5;
@@ -26,6 +26,7 @@ void main() async {
   log();
   log('loops = $loops');
   log('max = $max');
+  log('threadId = $threadId');
   log();
 
   final identityService = IdentityServiceImpl();
@@ -67,17 +68,19 @@ void main() async {
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 2);
 
-    void workerHook(PlatformWorker worker) {
-      log('Worker created with runtime type = ${worker.runtimeType}');
+    void workerHook(PlatformThread worker) {
+      log('Worker created with runtime type = ${worker.runtimeType}, threadId=$threadId');
     }
 
     pool = SampleWorkerPool(sample_isolate.start, localIdentityWorker,
         workerHook, concurrencySettings);
+    pool.logger = logger;
     await pool.start();
     log('pool started');
 
     // create the pool monitor
     final maxIdle = Duration(milliseconds: 1000);
+
     final monitor = Timer.periodic(Duration(milliseconds: 250), (timer) {
       pool?.stop((w) => w.idleTime > maxIdle);
     });

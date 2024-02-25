@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
 
-import '../_impl/xplat/_worker_monitor.dart';
 import '../exceptions/squadron_canceled_exception.dart';
 import '../exceptions/squadron_error.dart';
 import '../worker/worker_request.dart';

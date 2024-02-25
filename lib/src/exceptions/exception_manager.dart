@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 
-import '../squadron.dart';
 import '_well_known_exceptions.dart';
 import 'squadron_canceled_exception.dart';
 import 'squadron_canceled_exceptions.dart';
@@ -15,6 +14,8 @@ typedef WorkerExceptionDeserializer = WorkerException? Function(List props);
 typedef SquadronExceptionDeserializer = SquadronException? Function(List props);
 
 class ExceptionManager {
+  ExceptionManager();
+
   final _deserializers = <String, SquadronExceptionDeserializer>{
     $canceledExceptionType: SquadronCanceledException.deserialize,
     $timeoutExceptionType: SquadronTimeoutException.deserialize,
@@ -32,11 +33,6 @@ class ExceptionManager {
           'Invalid exception type ID: $exceptionTypeId is reserved.',
           StackTrace.current);
     }
-    final existing = _deserializers[exceptionTypeId];
-    if (existing != null && existing != deserializer) {
-      Squadron.config(
-          'Replacing exception deserializer for "$exceptionTypeId"');
-    }
     _deserializers[exceptionTypeId] = deserializer;
   }
 
@@ -50,7 +46,6 @@ class ExceptionManager {
           'Invalid exception type ID: $exceptionTypeId is reserved.',
           StackTrace.current);
     }
-    Squadron.config('Removing exception deserializer for "$exceptionTypeId"');
     _deserializers.remove(exceptionTypeId);
   }
 

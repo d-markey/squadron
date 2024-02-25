@@ -9,6 +9,7 @@ typedef WorkerInitializer = FutureOr<WorkerService> Function(
 typedef CommandHandler = FutureOr<dynamic> Function(WorkerRequest req);
 
 typedef SquadronCallback = void Function();
+typedef SquadronAsyncCallback = FutureOr<void> Function();
 
 /// Extend this class or implement this interface in your worker service if it needs
 /// to take action when the worker thread is started or stopped.

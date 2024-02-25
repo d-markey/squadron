@@ -18,8 +18,8 @@ class WorkerStat {
   final Type workerType;
 
   /// The worker ID.
-  String get id => _id;
-  String _id;
+  int get id => _id;
+  int _id;
 
   /// Worker running flag.
   final bool isStopped;
@@ -48,14 +48,14 @@ class WorkerStat {
 
 @internal
 extension WorkerStatExt on WorkerStat {
-  WorkerStat withWorkerId(String workerId) {
-    _id = workerId;
+  WorkerStat withHashCode(int hashCode) {
+    _id = hashCode;
     return this;
   }
 
   static WorkerStat create(
           Type workerType,
-          String id,
+          int id,
           bool isStopped,
           String status,
           int workload,

@@ -3,18 +3,14 @@
 import 'dart:html';
 
 import 'package:js/js.dart';
-import 'package:squadron/squadron.dart';
 
-import '../test_suites/cancelation_test_suite.dart' as cancelation_test;
-import '../test_suites/issues_test_suite.dart' as issues_test;
-import '../test_suites/local_worker_test_suite.dart' as local_worker_test;
-import '../test_suites/logger_test_suite.dart' as logger_test;
-import '../test_suites/squadron_singleton_test_suite.dart'
-    as squadron_singleton_test;
-import '../test_suites/web_worker_test_suite.dart' as web_worker_test;
-import '../test_suites/worker_pool_test_suite.dart' as worker_pool_test;
-import '../test_suites/worker_test_suite.dart' as worker_test;
-import '../worker_services/_test_context.dart';
+import '../cancelation_test.dart' as cancelation_test;
+import '../classes/test_context.dart';
+import '../issues_test.dart' as issues_test;
+import '../local_worker_test.dart' as local_worker_test;
+import '../web_worker_test.dart' as web_worker_test;
+import '../worker_pool_test.dart' as worker_pool_test;
+import '../worker_test.dart' as worker_test;
 import 'logger.dart';
 
 @JS()
@@ -24,12 +20,12 @@ external get dartPrint;
 external set dartPrint(value);
 
 void main() async {
-  await TestContext.init('/');
-
   final logger = Logger(querySelector('#output') as DivElement);
 
   dartPrint = allowInterop(
       (dynamic message) => logger.print(message?.toString() ?? ''));
+
+  final testContext = await TestContext.init('/');
 
   final logHeader = querySelector('#log-header')!;
   final separator = Element.span()..text = ' - ';
@@ -50,58 +46,41 @@ void main() async {
   final runButton = buttonBar.append(ButtonElement()..text = 'Run all tests')
       as ButtonElement;
 
-  runButton.onClick.listen((MouseEvent m) {
+  runButton.onClick.listen((MouseEvent m) async {
     runButton.disabled = true;
 
-    Squadron.shutdown();
-
     try {
-      squadron_singleton_test.main();
-    } catch (e) {
-      logger.log('Squadron singleton tests failed with exception: $e');
-    }
-
-    Squadron.setId('workerTests');
-    Squadron.logLevel = SquadronLogLevel.off;
-
-    try {
-      logger_test.main();
-    } catch (e) {
-      logger.log('Logger tests failed with exception: $e');
-    }
-
-    try {
-      web_worker_test.main();
+      await web_worker_test.execute(testContext);
     } catch (e) {
       logger.log('Classic Web Worker tests failed with exception: $e');
     }
 
     try {
-      worker_test.main();
+      await worker_test.execute(testContext);
     } catch (e) {
       logger.log('Squadron Worker tests failed with exception: $e');
     }
 
     try {
-      worker_pool_test.main();
+      await worker_pool_test.execute(testContext);
     } catch (e) {
       logger.log('Squadron Worker Pool tests failed with exception: $e');
     }
 
     try {
-      local_worker_test.main();
+      await local_worker_test.execute(testContext);
     } catch (e) {
       logger.log('Squadron Local Worker tests failed with exception: $e');
     }
 
     try {
-      cancelation_test.main();
+      await cancelation_test.execute(testContext);
     } catch (e) {
       logger.log('Cancelation tests failed with exception: $e');
     }
 
     try {
-      issues_test.main();
+      await issues_test.execute(testContext);
     } catch (e) {
       logger.log('Issues tests failed with exception: $e');
     }

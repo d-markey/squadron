@@ -1,12 +1,13 @@
 import 'package:squadron/squadron.dart';
 
-import '_test_context.dart';
+import '../classes/test_context.dart';
 import 'issues_service.dart';
 
 class IssuesWorkerPool extends WorkerPool<IssuesWorker>
     implements IssuesService {
-  IssuesWorkerPool([ConcurrencySettings? concurrencySettings])
-      : super(() => IssuesWorker(),
+  IssuesWorkerPool(TestContext context,
+      [ConcurrencySettings? concurrencySettings])
+      : super(() => IssuesWorker(context),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
@@ -16,7 +17,7 @@ class IssuesWorkerPool extends WorkerPool<IssuesWorker>
 }
 
 class IssuesWorker extends Worker implements IssuesService {
-  IssuesWorker() : super(TestContext.entryPoints.issues);
+  IssuesWorker(TestContext context) : super(context.entryPoints.issues);
 
   @override
   Stream<dynamic> issue_8(List<dynamic> words) =>

@@ -1,26 +1,30 @@
 import 'package:squadron/squadron.dart';
 
-import '_test_context.dart';
+import '../classes/test_context.dart';
 import 'installable_service.dart';
 
 class InstallableWorkerPool extends WorkerPool<InstallableWorker>
     implements InstallableService {
-  InstallableWorkerPool(
+  InstallableWorkerPool(TestContext context,
       {bool throwOnInstall = false,
       bool throwOnUninstall = false,
       ConcurrencySettings? concurrencySettings})
       : super(
-            () => InstallableWorker(
+            () => InstallableWorker(context,
                 throwOnInstall: throwOnInstall,
                 throwOnUninstall: throwOnUninstall),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
   @override
-  void install() {}
+  void install() {
+    logger?.d('$runtimeType.install');
+  }
 
   @override
-  void uninstall() {}
+  void uninstall() {
+    logger?.d('$runtimeType.uninstall');
+  }
 
   @override
   Future<bool> isInstalled() => execute((w) => w.isInstalled());
@@ -30,16 +34,20 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 }
 
 class InstallableWorker extends Worker implements InstallableService {
-  InstallableWorker(
+  InstallableWorker(TestContext context,
       {bool throwOnInstall = false, bool throwOnUninstall = false})
-      : super(TestContext.entryPoints.installable,
+      : super(context.entryPoints.installable,
             args: [throwOnInstall, throwOnUninstall]);
 
   @override
-  void install() {}
+  void install() {
+    logger?.d('$runtimeType.install');
+  }
 
   @override
-  void uninstall() {}
+  void uninstall() {
+    logger?.d('$runtimeType.uninstall');
+  }
 
   @override
   Future<bool> isInstalled() => send(InstallableService.cmdIsInstalled);

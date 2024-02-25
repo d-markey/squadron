@@ -1,6 +1,8 @@
 #!/bin/bash
 declare -i test_status=0
 
+pushd "$(dirname $0)/.."
+
 # clean coverage directory
 rm -rf ./test/coverage
 mkdir ./test/coverage
@@ -24,6 +26,8 @@ then
     git commit -am "Automated test coverage report"
     git push
 fi
+
+popd
 
 # return test status
 exit $test_status

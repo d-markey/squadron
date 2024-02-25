@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '_test_context.dart';
+import '../classes/platform.dart';
+import '../classes/test_context.dart';
 import 'local_workers/local_client.dart';
 import 'local_workers/local_service.dart';
 
@@ -23,7 +24,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
 
   @override
   Future<String> checkIds() async =>
-      'Worker running as "${Squadron.id}", ${await _localClient.getId()}';
+      'Worker running as "$threadId", ${await _localClient.getId()}';
 
   @override
   Future<bool> checkException() async {
@@ -56,10 +57,12 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
 
 class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
     implements LocalClientService {
-  LocalClientWorkerPool(LocalWorker<LocalService> localService,
+  LocalClientWorkerPool(
+      TestContext context,
+      LocalWorker<LocalService> localService,
       ConcurrencySettings? concurrencySettings)
       : super(
-            () => LocalClientWorker(
+            () => LocalClientWorker(context,
                 args: [localService.channel?.share().serialize()]),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
@@ -76,8 +79,8 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
 }
 
 class LocalClientWorker extends Worker implements LocalClientService {
-  LocalClientWorker({List args = const []})
-      : super(TestContext.entryPoints.local!, args: args);
+  LocalClientWorker(TestContext context, {List args = const []})
+      : super(context.entryPoints.local!, args: args);
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand);

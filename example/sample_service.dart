@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
+import 'thread_id.dart';
 
 abstract class SampleService {
   Future io({required int milliseconds});
@@ -19,6 +21,7 @@ class SampleServiceImpl implements SampleService, WorkerService {
   SampleServiceImpl(this._identityClient);
 
   final IdentityClient _identityClient;
+  final Logger _logger = Logger(level: Level.all);
 
   @override
   Future io({required int milliseconds}) =>
@@ -34,8 +37,8 @@ class SampleServiceImpl implements SampleService, WorkerService {
   Future<String> whoAreYouTalkingTo() async {
     // this is where the local worker is called
     final localWorkerIdentity = await _identityClient.whoAreYou();
-    Squadron.fine('talking to $localWorkerIdentity');
-    return 'I am ${Squadron.id}, and I am talking to $localWorkerIdentity.';
+    _logger.i('talking to $localWorkerIdentity');
+    return 'I am $threadId, and I am talking to $localWorkerIdentity.';
   }
 
   // command IDs --> command handlers

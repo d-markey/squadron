@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
+import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_token_id.dart';
+import '../channel.dart';
 import '../exceptions/squadron_canceled_exception.dart';
 
 class SquadronCancelationToken extends CancelationToken {
@@ -33,13 +35,6 @@ class SquadronCancelationToken extends CancelationToken {
     return token;
   }
 
-  static SquadronCancelationToken? wrap(CancelationToken? token) {
-    if (token == null) return null;
-    final wrapper = SquadronCancelationToken._(token, TokenId.next());
-    wrapper._checkToken();
-    return wrapper;
-  }
-
   // cancelation token ID
   final String id;
 
@@ -68,5 +63,17 @@ class SquadronCancelationToken extends CancelationToken {
         _completer.complete(ex);
       }
     }
+  }
+}
+
+@internal
+extension SquadronCancelationTokenExt on Channel {
+  SquadronCancelationToken? wrap(CancelationToken? token) {
+    if (token == null) return null;
+    if (token is SquadronCancelationToken) return token;
+    final tok =
+        SquadronCancelationToken._(token, '${TokenId.next()}@$hashCode');
+    tok._checkToken();
+    return tok;
   }
 }

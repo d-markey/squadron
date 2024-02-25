@@ -3,32 +3,39 @@ import 'dart:async';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import '_test_context.dart';
+import '../classes/test_context.dart';
 import 'biging_marshaler.dart';
 import 'test_service.dart';
 
 class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
-  TestWorkerPool._(super.entryPoint, ConcurrencySettings? concurrencySettings)
+  TestWorkerPool._(
+      super._workerFactory, ConcurrencySettings? concurrencySettings)
       : super(
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
-  TestWorkerPool([ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker(),
+  TestWorkerPool(TestContext context,
+      [ConcurrencySettings? concurrencySettings])
+      : this._(() => TestWorker(context),
             concurrencySettings ?? ConcurrencySettings.fourIoThreads);
 
-  TestWorkerPool.throws([ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker.throws(), concurrencySettings);
+  TestWorkerPool.throws(TestContext context,
+      [ConcurrencySettings? concurrencySettings])
+      : this._(() => TestWorker.throws(context), concurrencySettings);
 
-  static TestWorkerPool? missingStartRequest(
+  static TestWorkerPool? missingStartRequest(TestContext context,
           [ConcurrencySettings? concurrencySettings]) =>
-      (TestContext.entryPoints.missingStartRequest == null)
+      (context.entryPoints.missingStartRequest == null)
           ? null
-          : TestWorkerPool._(
-              () => TestWorker.missingStartRequest()!, concurrencySettings);
+          : TestWorkerPool._(() => TestWorker.missingStartRequest(context)!,
+              concurrencySettings);
 
-  TestWorkerPool.invalid([ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker.invalid(), concurrencySettings);
+  TestWorkerPool.invalid(TestContext context,
+      [ConcurrencySettings? concurrencySettings])
+      : this._(() => TestWorker.invalid(context), concurrencySettings);
+
+  @override
+  Future setLevel(int level) => execute((w) => w.setLevel(level));
 
   @override
   Future log() => execute((w) => w.log());
@@ -116,37 +123,41 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 }
 
 class TestWorker extends Worker implements TestService {
-  TestWorker._(super.entryPoint, List args, [PlatformWorkerHook? hook])
-      : super(platformWorkerHook: hook, args: args);
+  TestWorker._(super.entryPoint, List args, [PlatformThreadHook? hook])
+      : super(threadHook: hook, args: args);
 
-  TestWorker([PlatformWorkerHook? hook])
+  TestWorker(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          TestContext.entryPoints.test,
+          context.entryPoints.test,
           [TestService.startupOk],
           hook,
         );
 
-  TestWorker.throws([PlatformWorkerHook? hook])
+  TestWorker.throws(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          TestContext.entryPoints.test,
+          context.entryPoints.test,
           [TestService.startupThrows],
           hook,
         );
 
-  TestWorker.invalid([PlatformWorkerHook? hook])
+  TestWorker.invalid(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          TestContext.entryPoints.test,
+          context.entryPoints.test,
           [TestService.startupInvalid],
           hook,
         );
 
-  static TestWorker? missingStartRequest() =>
-      (TestContext.entryPoints.missingStartRequest == null)
+  static TestWorker? missingStartRequest(TestContext context) =>
+      (context.entryPoints.missingStartRequest == null)
           ? null
           : TestWorker._(
-              TestContext.entryPoints.missingStartRequest,
+              context.entryPoints.missingStartRequest,
               [TestService.startupOk],
             );
+
+  @override
+  Future setLevel(int level) =>
+      send(TestService.setLevelCommand, args: [level]);
 
   @override
   Future log() => send(TestService.logCommand);

@@ -1,22 +1,25 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
+
+import '../../../squadron.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../worker/worker_channel.dart';
-import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker_service.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a streaming worker request.
 class StreamWrapper<T> {
   /// Constructs a new stream wrapper on top of [messages] (stream of messages received from the worker). Streaming
   /// operations will be initiated by sending the [streamRequest] to the worker using [postMethod]. This will not be
   /// done before a listener is attached to this instance's [stream] property.
-  StreamWrapper(WorkerRequest streamRequest,
+  StreamWrapper(WorkerRequest streamRequest, ExceptionManager exceptionManager,
+      Logger? logger,
       {required PostRequest postMethod,
       required Stream messages,
       required SquadronCallback onDone,
       SquadronCancelationToken? token})
-      : _streamRequest = streamRequest,
+      : _exceptionManager = exceptionManager,
+        _logger = logger,
+        _streamRequest = streamRequest,
         _postRequest = postMethod,
         _messages = messages,
         _token = token {
@@ -33,6 +36,9 @@ class StreamWrapper<T> {
 
   /// The actual data stream from the worker.
   Stream<T> get stream => _controller.stream;
+
+  final ExceptionManager _exceptionManager;
+  final Logger? _logger;
 
   final Stream<dynamic> _messages;
   final WorkerRequest _streamRequest;
@@ -73,7 +79,8 @@ class StreamWrapper<T> {
     _messages.listen(
       (message) {
         final res = message as List;
-        if (!res.unwrapResponseInPlace() || _controller.isClosed) {
+        if (!res.unwrapResponseInPlace(_exceptionManager, _logger) ||
+            _controller.isClosed) {
           return;
         }
 

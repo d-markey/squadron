@@ -13,23 +13,29 @@ enum TestPlatform {
 }
 
 class TestContext {
-  static Future<void> init(String root) async {
-    await platform_test_context.setEntryPoints(root);
-    _platform = platform_test_context.platform;
-    _platformName = platform_test_context.platformName;
+  TestContext._(this.platform, this.platformName);
+
+  static Future<TestContext> init(String root) async {
+    final testContext = TestContext._(
+        platform_test_context.platform, platform_test_context.platformName);
+    await testContext.setEntryPoints(root);
+    return testContext;
   }
 
-  static TestPlatform _platform = TestPlatform.unknown;
-  static TestPlatform get platform => _platform;
+  void run(void Function() testSuite) {
+    testSuite();
+    // group(platformName, testSuite);
+  }
 
-  static bool get isVm => _platform == TestPlatform.vm;
-  static bool get isJs => _platform == TestPlatform.js;
-  static bool get isWasm => _platform == TestPlatform.wasm;
+  final TestPlatform platform;
 
-  static String _platformName = 'N/A';
-  static String get platformName => _platformName;
+  bool get isVm => platform == TestPlatform.vm;
+  bool get isJs => platform == TestPlatform.js;
+  bool get isWasm => platform == TestPlatform.wasm;
 
-  static Iterable<EntryPoint> get definedEntryPoints => [
+  final String platformName;
+
+  Iterable<EntryPoint> get definedEntryPoints => [
         entryPoints.echo,
         entryPoints.native,
         entryPoints.cache,
@@ -43,7 +49,7 @@ class TestContext {
         entryPoints.missingStartRequest,
       ].whereType<EntryPoint>();
 
-  static final entryPoints = EntryPoints();
+  final entryPoints = EntryPoints();
 }
 
 class EntryPoints {

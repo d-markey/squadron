@@ -1,16 +1,18 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:logger/logger.dart';
+
 import '../_impl/xplat/_pool_worker.dart';
 import '../_impl/xplat/_task.dart';
 import '../_impl/xplat/_worker_stream_task.dart';
 import '../_impl/xplat/_worker_task.dart';
 import '../_impl/xplat/_worker_value_task.dart';
 import '../concurrency_settings.dart';
+import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
-import '../squadron.dart';
 import '../stats/perf_counter.dart';
 import '../stats/worker_stat.dart';
 import '../worker/worker.dart';
@@ -34,6 +36,13 @@ class WorkerPool<W extends Worker> implements WorkerService {
       : concurrencySettings = concurrencySettings ?? ConcurrencySettings();
 
   final WorkerFactory<W> _workerFactory;
+
+  Logger? logger;
+
+  ExceptionManager? _exceptionManager;
+
+  ExceptionManager get exceptionManager =>
+      (_exceptionManager ??= ExceptionManager());
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
@@ -120,7 +129,11 @@ class WorkerPool<W extends Worker> implements WorkerService {
     final errors = [];
     for (var i = 0; i < workload; i++) {
       try {
-        final poolWorker = PoolWorker(_workerFactory(), maxParallel);
+        final worker = _workerFactory();
+        worker.logger = logger;
+        worker.setExceptionManager(exceptionManager);
+
+        final poolWorker = PoolWorker(worker, maxParallel);
         _startingWorkers++;
         tasks.add(poolWorker.worker.start().whenComplete(() {
           _startingWorkers--;
@@ -144,7 +157,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       if (errors.isNotEmpty) {
         if (errors.length < tasks.length) {
           // some tasks failed: warn
-          Squadron.warning(() => 'Error while provisionning workers: $errors');
+          logger?.e(() => 'Error while provisionning workers: $errors');
         } else {
           // all tasks failed: throw
           throw errors.firstWhere((e) => e is SquadronError,
@@ -189,9 +202,9 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   int _removeWorker(PoolWorker<W> poolWorker, bool force) {
     if (force || _workers.length > concurrencySettings.minWorkers) {
-      final workerId = poolWorker.worker.workerId;
+      final hashCode = poolWorker.worker.hashCode;
       poolWorker.worker.stop();
-      _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));
+      _deadWorkerStats.add(poolWorker.worker.stats.withHashCode(hashCode));
       _removeWorkerAndNotify(poolWorker);
       return 1;
     } else {
@@ -299,7 +312,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       _provisionWorkers(needs).then((_) {
         _dispatchTasks();
       }).catchError((ex) {
-        Squadron.severe('provisionning workers failed with error $ex');
+        logger?.e('provisionning workers failed with error $ex');
         while (_queue.isNotEmpty) {
           _queue.removeFirst().cancel('provisionning workers failed');
         }

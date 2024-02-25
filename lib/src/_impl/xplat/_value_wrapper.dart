@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
+
+import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
@@ -11,7 +14,8 @@ class ValueWrapper<T> {
   /// Constructs a new value wrapper on top of [messages] (stream of messages received from the worker). The
   /// compute operation will be initiated by calling [compute], which will send the [request] to the worker
   /// using [postMethod].
-  ValueWrapper(WorkerRequest request,
+  ValueWrapper(
+      WorkerRequest request, ExceptionManager exceptionManager, Logger? logger,
       {required PostRequest postMethod,
       required Stream messages,
       SquadronCancelationToken? token})
@@ -27,15 +31,8 @@ class ValueWrapper<T> {
       (message) {
         final res = message as List;
 
-        // final cancelException = _token?.exception;
-        // if (cancelException != null) {
-        //   if (!_completer.isCompleted) {
-        //     _completer.completeError(
-        //         cancelException, cancelException.stackTrace);
-        //   }
-        // } else {
         if (!_completer.isCompleted) {
-          if (!res.unwrapResponseInPlace()) {
+          if (!res.unwrapResponseInPlace(exceptionManager, logger)) {
             return;
           }
           final error = res.error;

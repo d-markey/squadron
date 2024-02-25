@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
+import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import '../classes/custom_exception.dart';
 import '../classes/platform.dart';
+import '../classes/test_logger.dart';
 import 'biging_marshaler.dart';
 
 class TestService implements WorkerService {
@@ -16,15 +18,19 @@ class TestService implements WorkerService {
       : _invalid = invalid,
         super();
 
+  final _logger = TestLogger(TestFilter());
+
+  void setLevel(int level) {
+    _logger.level = Level.values.where((l) => l.value == level).first;
+  }
+
   void log() {
-    Squadron.finest('finest test in worker');
-    Squadron.finer('finer test in worker');
-    Squadron.fine('fine test in worker');
-    Squadron.config('config test in worker');
-    Squadron.info('info test in worker');
-    Squadron.warning('warning test in worker');
-    Squadron.severe('severe test in worker');
-    Squadron.shout('shout test in worker');
+    _logger.t('trace test in worker');
+    _logger.d('debug test in worker');
+    _logger.i('info test in worker');
+    _logger.w('warning test in worker');
+    _logger.e('error test in worker');
+    _logger.f('fatal test in worker');
   }
 
   Future io({required int ms}) => Future.delayed(Duration(milliseconds: ms));
@@ -57,7 +63,7 @@ class TestService implements WorkerService {
 
   FutureOr missing() {}
 
-  FutureOr<dynamic> invalidResponse() => getUntransferable();
+  FutureOr<dynamic> invalidResponse() => getUnsendable();
 
   FutureOr<bool> ping() => true;
 
@@ -170,31 +176,33 @@ class TestService implements WorkerService {
   static const invalidCommand1 = -1; // command IDs must be > 0
   static const invalidCommand0 = 0; // command IDs must be > 0
 
-  static const logCommand = 1;
-  static const ioCommand = 2;
-  static const cpuCommand = 3;
-  static const delayedCommand = 4;
-  static const throwExceptionCommand = 6;
-  static const throwWorkerExceptionCommand = 5;
-  static const throwTaskTimeOutExceptionCommand = 12;
-  static const throwCanceledExceptionCommand = 13;
-  static const throwCustomExceptionCommand = 7;
-  static const forwardCommand = 8;
-  static const missingCommand = 9;
-  static const invalidResponseCommand = 10;
-  static const pingCommand = 11;
-  static const finiteCommand = 14;
-  static const infiniteCommand = 15;
-  static const clockCommand = 16;
-  static const cancelableInfiniteCpuCommand = 17;
-  static const getPendingInfiniteWithErrorsCommand = 18;
-  static const infiniteWithErrorsCommand = 19;
-  static const bigIntAddCommand = 20;
+  static const setLevelCommand = 1;
+  static const logCommand = 2;
+  static const ioCommand = 11;
+  static const cpuCommand = 12;
+  static const delayedCommand = 13;
+  static const throwExceptionCommand = 21;
+  static const throwWorkerExceptionCommand = 22;
+  static const throwTaskTimeOutExceptionCommand = 23;
+  static const throwCanceledExceptionCommand = 24;
+  static const throwCustomExceptionCommand = 25;
+  static const forwardCommand = 31;
+  static const missingCommand = 32;
+  static const invalidResponseCommand = 33;
+  static const pingCommand = 34;
+  static const finiteCommand = 41;
+  static const infiniteCommand = 42;
+  static const clockCommand = 43;
+  static const cancelableInfiniteCpuCommand = 44;
+  static const getPendingInfiniteWithErrorsCommand = 45;
+  static const infiniteWithErrorsCommand = 46;
+  static const bigIntAddCommand = 51;
 
   @override
   late final Map<int, CommandHandler> operations = {
     if (_invalid) invalidCommand1: (r) => null,
     if (_invalid) invalidCommand0: (r) => null,
+    setLevelCommand: (r) => setLevel(r.args[0]),
     logCommand: (r) => log(),
     ioCommand: (r) => io(ms: r.args[0]),
     cpuCommand: (r) => cpu(ms: r.args[0]),

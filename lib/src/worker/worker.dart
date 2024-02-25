@@ -1,15 +1,17 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
+import 'package:logger/logger.dart';
+import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
-import '../_impl/xplat/_worker_id.dart';
 import '../channel.dart';
-import '../entrypoint.dart';
+import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
 import '../stats/worker_stat.dart';
 import '../tokens/_squadron_cancelation_token.dart';
+import '../typedefs.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
 
@@ -18,15 +20,24 @@ import '../worker_service.dart';
 /// This base class takes care of creating the [Channel] and firing up the
 /// worker. Typically, derived classes should add proxy methods sending
 /// [WorkerRequest]s to the worker.
-abstract class Worker implements WorkerService {
+abstract class Worker<S> implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
-  Worker(this._entryPoint, {this.args = const [], this.platformWorkerHook});
+  Worker(this.entryPoint,
+      {this.args = const [], PlatformThreadHook? threadHook})
+      : _threadHook = threadHook;
 
   /// The [Worker]'s entry point.
   /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
-  final EntryPoint _entryPoint;
+  final EntryPoint entryPoint;
 
-  final PlatformWorkerHook? platformWorkerHook;
+  Logger? logger;
+
+  ExceptionManager? _exceptionManager;
+
+  ExceptionManager get exceptionManager =>
+      (_exceptionManager ??= ExceptionManager());
+
+  final PlatformThreadHook? _threadHook;
 
   /// The [Worker]'s start arguments.
   final List args;
@@ -81,7 +92,7 @@ abstract class Worker implements WorkerService {
   /// [Worker] statistics.
   WorkerStat get stats => WorkerStatExt.create(
       runtimeType,
-      workerId,
+      hashCode,
       isStopped,
       status,
       workload,
@@ -95,9 +106,6 @@ abstract class Worker implements WorkerService {
   Channel? get channel => _channel;
   Channel? _channel;
   Future<Channel>? _openChannel;
-
-  /// Worker ID
-  final String workerId = WorkerId.next();
 
   /// Sends a workload to the worker.
   Future<T> send<T>(
@@ -126,7 +134,7 @@ abstract class Worker implements WorkerService {
     }
 
     // send command
-    final squadronToken = SquadronCancelationToken.wrap(token);
+    final squadronToken = channel.wrap(token);
     return channel
         .sendRequest<T>(command, args,
             token: squadronToken,
@@ -134,7 +142,7 @@ abstract class Worker implements WorkerService {
             inspectResponse: inspectResponse)
         .catchError((e, st) {
       _totalErrors++;
-      throw SquadronException.from(e, st, workerId, command);
+      throw SquadronException.from(e, st, command);
     }).whenComplete(() {
       _workload--;
       _totalWorkload++;
@@ -148,8 +156,6 @@ abstract class Worker implements WorkerService {
       CancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false}) {
-    final squadronToken = SquadronCancelationToken.wrap(token);
-
     // update stats
     _workload++;
     if (_workload > _maxWorkload) {
@@ -168,6 +174,7 @@ abstract class Worker implements WorkerService {
 
     if (_channel != null) {
       // worker is up and running: return the stream directly
+      final squadronToken = _channel!.wrap(token);
       return _channel!.sendStreamingRequest<T>(
         command,
         args,
@@ -183,6 +190,7 @@ abstract class Worker implements WorkerService {
     controller = StreamController<T>(onListen: () async {
       try {
         final channel = await start();
+        final squadronToken = _channel!.wrap(token);
         await controller.addStream(channel.sendStreamingRequest<T>(
           command,
           args,
@@ -204,11 +212,11 @@ abstract class Worker implements WorkerService {
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   Future<Channel> start() async {
     if (_stopped != null) {
-      throw WorkerException('worker is stopped', workerId: workerId);
+      throw WorkerException('worker is stopped');
     }
     if (_channel == null) {
       _openChannel ??=
-          Channel.open(_entryPoint, workerId, args, platformWorkerHook);
+          Channel.open(exceptionManager, logger, entryPoint, args, _threadHook);
       final channel = await _openChannel!;
       if (_channel == null) {
         _channel = channel;
@@ -232,4 +240,11 @@ abstract class Worker implements WorkerService {
   /// Workers do not need an [operations] map.
   @override
   Map<int, CommandHandler> get operations => WorkerService.noOperations;
+}
+
+@internal
+extension WorkerExt on Worker {
+  void setExceptionManager(ExceptionManager exceptionManager) {
+    _exceptionManager = exceptionManager;
+  }
 }

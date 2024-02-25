@@ -1,24 +1,18 @@
 import 'dart:html';
 
-import '../../logging/squadron_logger.dart';
-import '../../squadron.dart';
 import '../../worker_service.dart';
-import '../xplat/_worker_monitor.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-void bootstrap(
-    WorkerInitializer initializer, List? command, SquadronLogger? logger) {
-  Squadron.setLogger(logger);
-
+void bootstrap(WorkerInitializer initializer, List? command) {
   final com = MessageChannel();
 
-  final runner = WorkerRunner(WorkerMonitor(() {
-    Squadron.config('terminating Web worker');
+  final runner = WorkerRunner((r) {
+    r.logger.t('terminating Web worker');
     com.port1.close();
     com.port2.close();
     DedicatedWorkerGlobalScope.instance.close();
-  }));
+  });
 
   com.port1.onMessage.listen(runner.handle);
 

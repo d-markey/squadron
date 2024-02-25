@@ -1,44 +1,44 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html' as web;
 
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/browser/_uri_checker.dart';
 
-import '../worker_services/_test_context.dart' show TestPlatform, TestContext;
+import '../classes/test_context.dart';
 
 const platform = TestPlatform.js;
 String platformName = web.window.navigator.userAgent;
 
 bool _set = false;
 
-Future<void> setEntryPoints(String root) async {
-  if (!_set) {
-    _set = true;
-    root = '${root}sample_js_workers';
+extension EntryPointsExt on TestContext {
+  Future<void> setEntryPoints(String root) async {
+    if (!_set) {
+      _set = true;
+      root = '${root}sample_js_workers';
 
-    TestContext.entryPoints.inMemory =
-        'data:application/javascript,${Uri.encodeComponent('''onmessage = (e) => {
+      entryPoints.inMemory =
+          'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
   console.log("Message received from main script");
   const workerResult = `ECHO "\${e.data}"`;
   console.log("Posting message back to main script");
   postMessage(workerResult);
-};''')}';
+};'''))}';
 
-    TestContext.entryPoints.echo = '$root/echo_worker.dart.js';
-    TestContext.entryPoints.native = '$root/native_worker.js';
+      entryPoints.echo = '$root/echo_worker.dart.js';
+      entryPoints.native = '$root/native_worker.js';
 
-    TestContext.entryPoints.cache = '$root/cache_worker.dart.js';
-    TestContext.entryPoints.installable = '$root/installable_worker.dart.js';
-    TestContext.entryPoints.issues = '$root/issues_worker.dart.js';
-    TestContext.entryPoints.local = '$root/local_client_worker.dart.js';
-    TestContext.entryPoints.prime = '$root/prime_worker.dart.js';
+      entryPoints.cache = '$root/cache_worker.dart.js';
+      entryPoints.installable = '$root/installable_worker.dart.js';
+      entryPoints.issues = '$root/issues_worker.dart.js';
+      entryPoints.local = '$root/local_client_worker.dart.js';
+      entryPoints.prime = '$root/prime_worker.dart.js';
 
-    TestContext.entryPoints.test = '$root/test_worker.dart.js';
-    // TestContext.entryPoints.failedInit = '$root/test_worker_failing.dart.js';
-    // TestContext.entryPoints.invalidCommand =
-    //     '$root/test_worker_invalid.dart.js';
+      entryPoints.test = '$root/test_worker.dart.js';
 
-    await _checkWebWorkers(TestContext.definedEntryPoints);
+      await _checkWebWorkers(definedEntryPoints);
+    }
   }
 }
 
