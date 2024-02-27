@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75" lines-covered="3" lines-valid="4" package="/local_worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6666667" lines-covered="4" lines-valid="6" package="/local_worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../_impl/native/_local_worker.dart'</code>
@@ -12,6 +12,9 @@
         </line>
         <line>
             <code>import '../channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import '../worker/worker_request.dart';</code>
@@ -29,34 +32,46 @@
             <code>///</code>
         </line>
         <line>
-            <code>/// Local workers are similar to other Workers except that they run in the context of the current thread.</code>
+            <code>/// Local workers are similar to other Workers except that they run in the</code>
         </line>
         <line>
-            <code>/// They do not create any platform thread (such as Isolate or Web Worker) but they provide a [channel] that</code>
+            <code>/// context of the current thread. They do not create any platform thread</code>
         </line>
         <line>
-            <code>/// can be shared with other workers to support communication between threads. One interesting use-case is</code>
+            <code>/// (such as Isolate or Web Worker) but they provide a [channel] that can be</code>
         </line>
         <line>
-            <code>/// accessing UI components or platform plugins in Flutter, where only code running in the main thread is</code>
+            <code>/// shared with other workers to support communication between threads. One</code>
         </line>
         <line>
-            <code>/// allowed access to such features. Creating a [LocalWorker] in the main application and sharing its</code>
+            <code>/// interesting use-case is accessing UI components or platform plugins in</code>
         </line>
         <line>
-            <code>/// [channel] with other workers enables providing access to Flutter features.</code>
+            <code>/// Flutter, where only code running in the main thread is allowed access to</code>
+        </line>
+        <line>
+            <code>/// such features. Creating a [LocalWorker] in the main application and sharing</code>
+        </line>
+        <line>
+            <code>/// its [channel] with other workers enables providing access to Flutter</code>
+        </line>
+        <line>
+            <code>/// features.</code>
         </line>
         <line>
             <code>///</code>
         </line>
         <line>
-            <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local worker are deserialized as</code>
+            <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local</code>
         </line>
         <line>
-            <code>/// [WorkerRequest] and dispatched to a handler defined in the [service]'s [WorkerService.operations] map</code>
+            <code>/// worker are deserialized as [WorkerRequest] and dispatched to a handler</code>
         </line>
         <line>
-            <code>/// according to the [WorkerRequest.command].</code>
+            <code>/// defined in the [service]'s [WorkerService.operations] map according to the</code>
+        </line>
+        <line>
+            <code>/// [WorkerRequest.command].</code>
         </line>
         <line>
             <code>abstract class LocalWorker&lt;W extends WorkerService&gt; implements WorkerService {</code>
@@ -69,8 +84,18 @@
             <code/>
         </line>
         <line hits="2">
-            <code>  factory LocalWorker.create(W service) =&gt; createLocalWorker&lt;W&gt;(service);</code>
+            <code>  factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>      createLocalWorker&lt;W&gt;(service, exceptionManager ?? ExceptionManager());</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  static void terminate() {}</code>
         </line>
         <line>
             <code/>

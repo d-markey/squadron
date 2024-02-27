@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-02-27</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -76,16 +76,16 @@
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 6" id="line6">
-                    <td>6</td><td></td><td>1</td><td><code>  static Iterable&lt;Object&gt; get(List args) =&gt; _get(args, &lt;Object&gt;{});</code></td>
+                    <td>6</td><td></td><td>6</td><td><code>  static Iterable&lt;Object&gt; get(List args) =&gt; _get(args, &lt;Object&gt;{});</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
                     <td>7</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>1</td><td><code>  static bool _isBaseType(Object? data) =&gt;</code></td>
+                    <td>8</td><td></td><td>6</td><td><code>  static bool _isBaseType(Object? data) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>1</td><td><code>      (data == null || data is String || data is num || data is bool);</code></td>
+                    <td>9</td><td></td><td>6</td><td><code>      (data == null || data is String || data is num || data is bool);</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
                     <td>10</td><td></td><td></td><td><code></code></td>
@@ -94,34 +94,34 @@
                     <td>11</td><td></td><td></td><td><code>  static bool _isListOfBaseType(Object? data) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>1</td><td><code>      (data is List&lt;String&gt; || data is List&lt;num&gt; || data is List&lt;bool&gt;);</code></td>
+                    <td>12</td><td></td><td>6</td><td><code>      (data is List&lt;String&gt; || data is List&lt;num&gt; || data is List&lt;bool&gt;);</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>1</td><td><code>  static bool _isSafeForTransfer(Object? data) {</code></td>
+                    <td>14</td><td></td><td>6</td><td><code>  static bool _isSafeForTransfer(Object? data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>1</td><td><code>    if (_isBaseType(data)) return true;</code></td>
+                    <td>15</td><td></td><td>6</td><td><code>    if (_isBaseType(data)) return true;</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 16" id="line16">
                     <td>16</td><td></td><td>0</td><td><code>    if (_isListOfBaseType(data)) return true;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>1</td><td><code>    if (data is List &amp;&amp; data.every(_isSafeForTransfer)) return true;</code></td>
+                    <td>17</td><td></td><td>6</td><td><code>    if (data is List &amp;&amp; data.every(_isSafeForTransfer)) return true;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>1</td><td><code>    return false;</code></td>
+                    <td>18</td><td></td><td>6</td><td><code>    return false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>19</td><td></td><td>6</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
                     <td>20</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>1</td><td><code>  static bool _isNotSafeForTransfer(Object? data) =&gt; !_isSafeForTransfer(data);</code></td>
+                    <td>21</td><td></td><td>6</td><td><code>  static bool _isNotSafeForTransfer(Object? data) =&gt; !_isSafeForTransfer(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
                     <td>22</td><td></td><td></td><td><code></code></td>
@@ -130,19 +130,19 @@
                     <td>23</td><td></td><td></td><td><code>  /// Excludes base type values from [list].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>1</td><td><code>  static Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code></td>
+                    <td>24</td><td></td><td>6</td><td><code>  static Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>1</td><td><code>    for (var o in list.where(_isNotSafeForTransfer)) {</code></td>
+                    <td>25</td><td></td><td>6</td><td><code>    for (var o in list.where(_isNotSafeForTransfer)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>      if (!seen.contains(o)) {</code></td>
+                    <td>26</td><td></td><td>6</td><td><code>      if (!seen.contains(o)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>1</td><td><code>        seen.add(o);</code></td>
+                    <td>27</td><td></td><td>6</td><td><code>        seen.add(o);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>1</td><td><code>        yield o as Object;</code></td>
+                    <td>28</td><td></td><td>6</td><td><code>        yield o as Object;</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
                     <td>29</td><td></td><td></td><td><code>      }</code></td>
@@ -151,7 +151,7 @@
                     <td>30</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>31</td><td></td><td>6</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
                     <td>32</td><td></td><td></td><td><code></code></td>
@@ -187,25 +187,25 @@
                     <td>42</td><td></td><td></td><td><code>  /// no effort to ensure these objects really are transferable.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>1</td><td><code>  static Iterable&lt;Object&gt; _get(List message, Set&lt;Object&gt; seen) sync* {</code></td>
+                    <td>43</td><td></td><td>6</td><td><code>  static Iterable&lt;Object&gt; _get(List message, Set&lt;Object&gt; seen) sync* {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>1</td><td><code>    if (_isSafeForTransfer(message)) return;</code></td>
+                    <td>44</td><td></td><td>6</td><td><code>    if (_isSafeForTransfer(message)) return;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>1</td><td><code>    final toBeInspected = _getObjects(message, seen).toList();</code></td>
+                    <td>45</td><td></td><td>6</td><td><code>    final toBeInspected = _getObjects(message, seen).toList();</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code>    var i = 0;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>1</td><td><code>    while (i &lt; toBeInspected.length) {</code></td>
+                    <td>47</td><td></td><td>6</td><td><code>    while (i &lt; toBeInspected.length) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>1</td><td><code>      final arg = toBeInspected[i++];</code></td>
+                    <td>48</td><td></td><td>6</td><td><code>      final arg = toBeInspected[i++];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>1</td><td><code>      if (arg is Map) {</code></td>
+                    <td>49</td><td></td><td>6</td><td><code>      if (arg is Map) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 50" id="line50">
                     <td>50</td><td></td><td></td><td><code>        _checkKeys(arg);</code></td>
@@ -214,16 +214,16 @@
                     <td>51</td><td></td><td>0</td><td><code>        toBeInspected.addAll(_getObjects(arg.values, seen));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>1</td><td><code>      } else if (arg is Iterable) {</code></td>
+                    <td>52</td><td></td><td>6</td><td><code>      } else if (arg is Iterable) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>1</td><td><code>        toBeInspected.addAll(_getObjects(arg, seen));</code></td>
+                    <td>53</td><td></td><td>4</td><td><code>        toBeInspected.addAll(_getObjects(arg, seen));</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
                     <td>54</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>1</td><td><code>        yield arg;</code></td>
+                    <td>55</td><td></td><td>6</td><td><code>        yield arg;</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
                     <td>56</td><td></td><td></td><td><code>      }</code></td>
@@ -232,7 +232,7 @@
                     <td>57</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>58</td><td></td><td>6</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
                     <td>59</td><td></td><td></td><td><code>}</code></td>

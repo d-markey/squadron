@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-02-27</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -73,313 +73,310 @@
                     <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import '../_impl/xplat/_worker_monitor.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import '../exceptions/squadron_canceled_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '../exceptions/squadron_canceled_exception.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>import '../exceptions/squadron_error.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>import '../exceptions/squadron_error.dart';</code></td>
+                    <td>7</td><td></td><td></td><td><code>import '../worker/worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>import '../worker/worker_request.dart';</code></td>
+                    <td>8</td><td></td><td></td><td><code>import '_squadron_cancelation_token.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>import '_squadron_cancelation_token.dart';</code></td>
+                    <td>9</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                    <td>10</td><td></td><td></td><td><code>/// Cancelation token reference. This special cancelation token is managed by the [WorkerMonitor] and is used to</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>/// Cancelation token reference. This special cancelation token is managed by the [WorkerMonitor] and is used to</code></td>
+                    <td>11</td><td></td><td></td><td><code>/// mirror cancelation tokens presented to Squadron by callers of a worker service. When a [WorkerRequest] is</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>/// mirror cancelation tokens presented to Squadron by callers of a worker service. When a [WorkerRequest] is</code></td>
+                    <td>12</td><td></td><td></td><td><code>/// handled by the platform worker and that request is associated with a cancelation request, the [WorkerMonitor]</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>/// handled by the platform worker and that request is associated with a cancelation request, the [WorkerMonitor]</code></td>
+                    <td>13</td><td></td><td></td><td><code>/// will override the request's cancelation token with a [CancelationTokenReference]. The same cancelation may</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>/// will override the request's cancelation token with a [CancelationTokenReference]. The same cancelation may</code></td>
+                    <td>14</td><td></td><td></td><td><code>/// be used for several service calls, so the [WorkerMonitor] keeps a map of [CancelationTokenReference] and a</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>/// be used for several service calls, so the [WorkerMonitor] keeps a map of [CancelationTokenReference] and a</code></td>
+                    <td>15</td><td></td><td></td><td><code>/// reference count that is incremented for each [WorkerRequest] having the same cancelation token and decremented</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>/// reference count that is incremented for each [WorkerRequest] having the same cancelation token and decremented</code></td>
+                    <td>16</td><td></td><td></td><td><code>/// when processing is finished. When the reference count drops to 0 and the cancelation token was not canceled,</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>/// when processing is finished. When the reference count drops to 0 and the cancelation token was not canceled,</code></td>
+                    <td>17</td><td></td><td></td><td><code>/// the [CancelationTokenReference] is removed from the map.</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>/// the [CancelationTokenReference] is removed from the map.</code></td>
+                    <td>18</td><td></td><td></td><td><code>///</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>///</code></td>
+                    <td>19</td><td></td><td></td><td><code>/// When a caller cancels a token, a cancelation notification is sent to all workers in the pool and the</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code>/// When a caller cancels a token, a cancelation notification is sent to all workers in the pool and the</code></td>
+                    <td>20</td><td></td><td></td><td><code>/// corresponding [CancelationTokenReference] will be canceled. Services executing in the context of a platform</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>/// corresponding [CancelationTokenReference] will be canceled. Services executing in the context of a platform</code></td>
+                    <td>21</td><td></td><td></td><td><code>/// worker will be able to inspect the token's status to interrupt processing gracefully. If the token's status is</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>/// worker will be able to inspect the token's status to interrupt processing gracefully. If the token's status is</code></td>
+                    <td>22</td><td></td><td></td><td><code>/// not inspected, processing will continue in platform workers, but will be interrupted on caller-side with a</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>/// not inspected, processing will continue in platform workers, but will be interrupted on caller-side with a</code></td>
+                    <td>23</td><td></td><td></td><td><code>/// [CanceledException].</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>/// [CanceledException].</code></td>
+                    <td>24</td><td></td><td></td><td><code>class CancelationTokenReference implements SquadronCancelationToken {</code></td>
                 </tr>
-                <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>class CancelationTokenReference implements SquadronCancelationToken {</code></td>
+                <tr class="lineCov" title="Line 25" id="line25">
+                    <td>25</td><td></td><td>7</td><td><code>  CancelationTokenReference._noToken()</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>2</td><td><code>  CancelationTokenReference._noToken()</code></td>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code>      : _hasRef = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>      : _hasRef = false,</code></td>
+                    <td>27</td><td></td><td></td><td><code>        id = '' {</code></td>
                 </tr>
-                <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>        id = '' {</code></td>
+                <tr class="lineCov" title="Line 28" id="line28">
+                    <td>28</td><td></td><td>7</td><td><code>    _refCount = 1;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>2</td><td><code>    _refCount = 1;</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  }</code></td>
+                    <td>30</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code></code></td>
+                    <td>31</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  @override</code></td>
+                    <td>32</td><td></td><td></td><td><code>  final String id;</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  final String id;</code></td>
+                    <td>33</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code></code></td>
+                    <td>34</td><td></td><td></td><td><code>  /// Singleton token reference instance for requests containing no token.</code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  /// Singleton token reference instance for requests containing no token.</code></td>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>19</td><td><code>  static final noToken = CancelationTokenReference._noToken();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>4</td><td><code>  static final noToken = CancelationTokenReference._noToken();</code></td>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code></code></td>
+                    <td>37</td><td></td><td></td><td><code>  /// Creates a new token reference for [id].</code></td>
                 </tr>
-                <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>  /// Creates a new token reference for [id].</code></td>
+                <tr class="lineCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>2</td><td><code>  CancelationTokenReference(this.id) : _hasRef = true;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>1</td><td><code>  CancelationTokenReference(this.id) : _hasRef = true;</code></td>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 40" id="line40">
-                    <td>40</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 40" id="line40">
+                    <td>40</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>0</td><td><code>  @override</code></td>
+                    <td>41</td><td></td><td>0</td><td><code>  SquadronCanceledException? get exception =&gt; _exception;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>0</td><td><code>  SquadronCanceledException? get exception =&gt; _exception;</code></td>
+                <tr class="noop" title="Line 42" id="line42">
+                    <td>42</td><td></td><td></td><td><code>  SquadronCanceledException? _exception;</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code>  SquadronCanceledException? _exception;</code></td>
+                    <td>43</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>0</td><td><code>  @override</code></td>
+                    <td>45</td><td></td><td>0</td><td><code>  bool get isCanceled =&gt; (_exception != null);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>0</td><td><code>  bool get isCanceled =&gt; (_exception != null);</code></td>
+                <tr class="noop" title="Line 46" id="line46">
+                    <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 47" id="line47">
+                    <td>47</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>0</td><td><code>  @override</code></td>
+                    <td>48</td><td></td><td>0</td><td><code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>0</td><td><code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code></td>
+                <tr class="lineCov" title="Line 49" id="line49">
+                    <td>49</td><td></td><td>1</td><td><code>  final _completer = Completer&lt;SquadronCanceledException&gt;();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>1</td><td><code>  final _completer = Completer&lt;SquadronCanceledException&gt;();</code></td>
+                <tr class="noop" title="Line 50" id="line50">
+                    <td>50</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code></code></td>
+                    <td>51</td><td></td><td></td><td><code>  /// Whether this token reference instance has a reference. A token reference</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>  /// Whether this token reference instance has a reference. A token reference</code></td>
+                    <td>52</td><td></td><td></td><td><code>  /// without a reference does nothing.</code></td>
                 </tr>
                 <tr class="noop" title="Line 53" id="line53">
-                    <td>53</td><td></td><td></td><td><code>  /// without a reference does nothing.</code></td>
+                    <td>53</td><td></td><td></td><td><code>  final bool _hasRef;</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
-                    <td>54</td><td></td><td></td><td><code>  final bool _hasRef;</code></td>
+                    <td>54</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 55" id="line55">
-                    <td>55</td><td></td><td></td><td><code></code></td>
+                    <td>55</td><td></td><td></td><td><code>  /// Reference counter.</code></td>
                 </tr>
-                <tr class="noop" title="Line 56" id="line56">
-                    <td>56</td><td></td><td></td><td><code>  /// Reference counter.</code></td>
+                <tr class="lineCov" title="Line 56" id="line56">
+                    <td>56</td><td></td><td>13</td><td><code>  int get refCount =&gt; _refCount;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>3</td><td><code>  int get refCount =&gt; _refCount;</code></td>
+                <tr class="noop" title="Line 57" id="line57">
+                    <td>57</td><td></td><td></td><td><code>  int _refCount = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code>  int _refCount = 0;</code></td>
+                    <td>58</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
-                    <td>59</td><td></td><td></td><td><code></code></td>
+                    <td>59</td><td></td><td></td><td><code>  /// Use this token reference for [request]. Increments the internal reference</code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>  /// Use this token reference for [request]. Increments the internal reference</code></td>
+                    <td>60</td><td></td><td></td><td><code>  /// counter and overrides [WorkerRequest.cancelToken] with this token.</code></td>
                 </tr>
-                <tr class="noop" title="Line 61" id="line61">
-                    <td>61</td><td></td><td></td><td><code>  /// counter and overrides [WorkerRequest.cancelToken] with this token.</code></td>
+                <tr class="lineCov" title="Line 61" id="line61">
+                    <td>61</td><td></td><td>6</td><td><code>  void usedBy(WorkerRequest request) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>1</td><td><code>  void usedBy(WorkerRequest request) {</code></td>
+                    <td>62</td><td></td><td>7</td><td><code>    if (_hasRef) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 63" id="line63">
-                    <td>63</td><td></td><td>2</td><td><code>    if (_hasRef) {</code></td>
+                    <td>63</td><td></td><td>4</td><td><code>      _refCount++;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>2</td><td><code>      _refCount++;</code></td>
+                    <td>64</td><td></td><td>2</td><td><code>      request.overrideCancelToken(this);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>1</td><td><code>      request.overrideCancelToken(this);</code></td>
+                    <td>65</td><td></td><td>6</td><td><code>    } else if (request.cancelToken != null) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>1</td><td><code>    } else if (request.cancelToken != null) {</code></td>
+                <tr class="lineNoCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
+                    <td>67</td><td></td><td>0</td><td><code>          'Token reference mismatch', StackTrace.current);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>0</td><td><code>          'Token reference mismatch', StackTrace.current);</code></td>
+                <tr class="noop" title="Line 68" id="line68">
+                    <td>68</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 69" id="line69">
-                    <td>69</td><td></td><td></td><td><code>    }</code></td>
+                    <td>69</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
-                    <td>70</td><td></td><td></td><td><code>  }</code></td>
+                    <td>70</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 71" id="line71">
-                    <td>71</td><td></td><td></td><td><code></code></td>
+                    <td>71</td><td></td><td></td><td><code>  /// Release this token reference. Decrements the internal reference counter.</code></td>
                 </tr>
-                <tr class="noop" title="Line 72" id="line72">
-                    <td>72</td><td></td><td></td><td><code>  /// Release this token reference. Decrements the internal reference counter.</code></td>
+                <tr class="lineCov" title="Line 72" id="line72">
+                    <td>72</td><td></td><td>6</td><td><code>  void release() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>1</td><td><code>  void release() {</code></td>
+                    <td>73</td><td></td><td>7</td><td><code>    if (_hasRef) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>2</td><td><code>    if (_hasRef) {</code></td>
+                    <td>74</td><td></td><td>4</td><td><code>      _refCount--;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>2</td><td><code>      _refCount--;</code></td>
+                <tr class="noop" title="Line 75" id="line75">
+                    <td>75</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 76" id="line76">
-                    <td>76</td><td></td><td></td><td><code>    }</code></td>
+                    <td>76</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 77" id="line77">
-                    <td>77</td><td></td><td></td><td><code>  }</code></td>
+                    <td>77</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 78" id="line78">
-                    <td>78</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 78" id="line78">
+                    <td>78</td><td></td><td>2</td><td><code>  void update(SquadronCancelationToken token) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 79" id="line79">
-                    <td>79</td><td></td><td>1</td><td><code>  void update(SquadronCancelationToken token) {</code></td>
+                    <td>79</td><td></td><td>2</td><td><code>    final ex = token.exception;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>1</td><td><code>    final ex = token.exception;</code></td>
+                    <td>80</td><td></td><td>4</td><td><code>    if (ex != null &amp;&amp; !_completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 81" id="line81">
-                    <td>81</td><td></td><td>2</td><td><code>    if (ex != null &amp;&amp; !_completer.isCompleted) {</code></td>
+                    <td>81</td><td></td><td>2</td><td><code>      _exception = ex;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 82" id="line82">
-                    <td>82</td><td></td><td>1</td><td><code>      _exception = ex;</code></td>
+                    <td>82</td><td></td><td>4</td><td><code>      _completer.complete(ex);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>2</td><td><code>      _completer.complete(ex);</code></td>
+                <tr class="noop" title="Line 83" id="line83">
+                    <td>83</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
-                    <td>84</td><td></td><td></td><td><code>    }</code></td>
+                    <td>84</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 85" id="line85">
-                    <td>85</td><td></td><td></td><td><code>  }</code></td>
+                    <td>85</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 86" id="line86">
-                    <td>86</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 86" id="line86">
+                    <td>86</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 87" id="line87">
-                    <td>87</td><td></td><td>0</td><td><code>  @override</code></td>
+                    <td>87</td><td></td><td>0</td><td><code>  void ensureStarted() {/* nothing to do */}</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>0</td><td><code>  void ensureStarted() {/* nothing to do */}</code></td>
+                <tr class="noop" title="Line 88" id="line88">
+                    <td>88</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 89" id="line89">
-                    <td>89</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 89" id="line89">
+                    <td>89</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 90" id="line90">
+                    <td>90</td><td></td><td></td><td><code>  void throwIfCanceled() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 91" id="line91">
-                    <td>91</td><td></td><td></td><td><code>  void throwIfCanceled() {</code></td>
+                <tr class="lineNoCov" title="Line 91" id="line91">
+                    <td>91</td><td></td><td>0</td><td><code>    if (_exception != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 92" id="line92">
-                    <td>92</td><td></td><td>0</td><td><code>    if (_exception != null) {</code></td>
+                    <td>92</td><td></td><td>0</td><td><code>      throw _exception!;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 93" id="line93">
-                    <td>93</td><td></td><td>0</td><td><code>      throw _exception!;</code></td>
+                <tr class="noop" title="Line 93" id="line93">
+                    <td>93</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 94" id="line94">
-                    <td>94</td><td></td><td></td><td><code>    }</code></td>
+                    <td>94</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 95" id="line95">
-                    <td>95</td><td></td><td></td><td><code>  }</code></td>
+                    <td>95</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 96" id="line96">
-                    <td>96</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 96" id="line96">
+                    <td>96</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>0</td><td><code>  @override</code></td>
+                    <td>97</td><td></td><td>0</td><td><code>  Future&lt;void&gt; refreshAndThrowIfCanceled() =&gt; Future(throwIfCanceled);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 98" id="line98">
-                    <td>98</td><td></td><td>0</td><td><code>  Future&lt;void&gt; refreshAndThrowIfCanceled() =&gt; Future(throwIfCanceled);</code></td>
+                <tr class="noop" title="Line 98" id="line98">
+                    <td>98</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 99" id="line99">
-                    <td>99</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 99" id="line99">
+                    <td>99</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 100" id="line100">
+                    <td>100</td><td></td><td></td><td><code>  // no native cancelation token in workers</code></td>
                 </tr>
-                <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code>  // no native cancelation token in workers</code></td>
+                <tr class="lineNoCov" title="Line 101" id="line101">
+                    <td>101</td><td></td><td>0</td><td><code>  CancelationToken? get token =&gt; throw UnimplementedError();</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>0</td><td><code>  CancelationToken? get token =&gt; throw UnimplementedError();</code></td>
+                <tr class="noop" title="Line 102" id="line102">
+                    <td>102</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 103" id="line103">
-                    <td>103</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 103" id="line103">
+                    <td>103</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 104" id="line104">
-                    <td>104</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 104" id="line104">
+                    <td>104</td><td></td><td></td><td><code>  // serialization of token references</code></td>
                 </tr>
-                <tr class="noop" title="Line 105" id="line105">
-                    <td>105</td><td></td><td></td><td><code>  // serialization of token references</code></td>
+                <tr class="lineCov" title="Line 105" id="line105">
+                    <td>105</td><td></td><td>1</td><td><code>  List serialize() =&gt; throw UnimplementedError();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>1</td><td><code>  List serialize() =&gt; throw UnimplementedError();</code></td>
-                </tr>
-                <tr class="noop" title="Line 107" id="line107">
-                    <td>107</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 106" id="line106">
+                    <td>106</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

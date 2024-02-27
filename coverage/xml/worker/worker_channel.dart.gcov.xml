@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -8,7 +8,7 @@
             <code/>
         </line>
         <line>
-            <code>import 'package:meta/meta.dart';</code>
+            <code>import 'package:logger/logger.dart';</code>
         </line>
         <line>
             <code/>
@@ -26,10 +26,10 @@
             <code>    if (dart.library.html) '../_impl/browser/_channel.dart';</code>
         </line>
         <line>
-            <code>import '../_impl/xplat/_worker_monitor.dart';</code>
+            <code>import '../exceptions/squadron_exception.dart';</code>
         </line>
         <line>
-            <code>import '../exceptions/squadron_exception.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line>
             <code>import 'worker_request.dart';</code>
@@ -44,16 +44,22 @@
             <code/>
         </line>
         <line>
-            <code>/// A [WorkerChannel] supports communication from a platform worker to the client that posted the [WorkerRequest].</code>
+            <code>/// A [WorkerChannel] supports communication from a platform worker to the</code>
         </line>
         <line>
-            <code>/// It is used to send [WorkerResponse] back to the client.</code>
+            <code>/// client that posted the [WorkerRequest]. It is used to send [WorkerResponse]</code>
+        </line>
+        <line>
+            <code>/// back to the client.</code>
         </line>
         <line>
             <code>abstract class WorkerChannel {</code>
         </line>
         <line>
-            <code>  /// [WorkerChannel] serialization. Returns an opaque object that can be transfered from the client to the worker.</code>
+            <code>  /// [WorkerChannel] serialization. Returns an opaque object that can be</code>
+        </line>
+        <line>
+            <code>  /// transfered from the client to the worker.</code>
         </line>
         <line>
             <code>  PlatformChannel serialize();</code>
@@ -62,22 +68,28 @@
             <code/>
         </line>
         <line>
-            <code>  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an opaque object than can be deserialized</code>
+            <code>  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an</code>
         </line>
         <line>
-            <code>  /// as a [Channel]. This method must be called by the worker upon startup.</code>
+            <code>  /// opaque object than can be deserialized as a [Channel]. This method must</code>
         </line>
         <line>
-            <code>  void connect(Object channelInfo);</code>
+            <code>  /// be called by the worker upon startup.</code>
+        </line>
+        <line>
+            <code>  void connect(PlatformChannel channelInfo);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
         </line>
         <line>
-            <code>  /// worker only. On Web patforms, this version does not check arguments for transferable objects.</code>
+            <code>  /// This method must be called from the worker only. On Web patforms, this</code>
+        </line>
+        <line>
+            <code>  /// version does not check arguments for transferable objects.</code>
         </line>
         <line>
             <code>  void reply(dynamic data);</code>
@@ -86,10 +98,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
         </line>
         <line>
-            <code>  /// worker only. On Web patforms, this version must check arguments for transferable objects.</code>
+            <code>  /// This method must be called from the worker only. On Web patforms, this</code>
+        </line>
+        <line>
+            <code>  /// version must check arguments for transferable objects.</code>
         </line>
         <line>
             <code>  void inspectAndReply(dynamic data);</code>
@@ -98,13 +113,13 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.log] with the specified data to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse.log] with the specified data to the worker</code>
         </line>
         <line>
-            <code>  /// worker only.</code>
+            <code>  /// client. This method must be called from the worker only.</code>
         </line>
         <line>
-            <code>  void log(String message);</code>
+            <code>  void log(LogEvent message);</code>
         </line>
         <line>
             <code/>
@@ -119,7 +134,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the worker only.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method</code>
+        </line>
+        <line>
+            <code>  /// must be called from the worker only.</code>
         </line>
         <line>
             <code>  void closeStream();</code>
@@ -128,10 +146,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified error to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse] with the specified error to the worker client.</code>
         </line>
         <line>
-            <code>  /// worker only.</code>
+            <code>  /// This method must be called from the worker only.</code>
         </line>
         <line>
             <code>  void error(SquadronException error);</code>
@@ -142,126 +160,16 @@
         <line>
             <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
         </line>
-        <line hits="1">
-            <code>  static WorkerChannel? deserialize(PlatformChannel? channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      deserializeWorkerChannel(channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>  static WorkerChannel? deserialize(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>}</code>
+            <code>          PlatformChannel? channelInfo, Logger? logger) =&gt;</code>
         </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>@internal</code>
-        </line>
-        <line>
-            <code>extension WorkerChannelExt on WorkerChannel {</code>
-        </line>
-        <line>
-            <code>  /// Forwards stream events to client.</code>
-        </line>
-        <line hits="2">
-            <code>  Future&lt;void&gt; pipe(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      Stream stream, void Function(dynamic) reply, WorkerMonitor monitor) {</code>
-        </line>
-        <line hits="1">
-            <code>    StreamSubscription? subscription;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    final done = Completer();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>    // stream canceler</code>
-        </line>
-        <line hits="2">
-            <code>    void onDone() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      closeStream();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      subscription?.cancel();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      done.complete();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>    // register stream canceler callback and connect stream with client</code>
-        </line>
-        <line hits="1">
-            <code>    final streamId = monitor.registerStreamCanceler(onDone);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    reply(streamId);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>    // start forwarding messages to the client</code>
-        </line>
-        <line hits="2">
-            <code>    subscription = stream.listen(reply,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        onError: _err, onDone: onDone, cancelOnError: false);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="4">
-            <code>    return done.future.whenComplete(() {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      // unregister stream canceler callback</code>
-        </line>
-        <line hits="2">
-            <code>      monitor.unregisterStreamCanceler(streamId);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="5">
-            <code>  void _err(Object ex, StackTrace st) =&gt; error(SquadronException.from(ex, st));</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      deserializeWorkerChannel(channelInfo, logger);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

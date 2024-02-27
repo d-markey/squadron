@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8786127" lines-covered="152" lines-valid="173" package="/pool" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8764045" lines-covered="156" lines-valid="178" package="/pool" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
             <code>import 'dart:collection';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:logger/logger.dart';</code>
         </line>
         <line>
             <code/>
@@ -29,6 +35,9 @@
             <code>import '../concurrency_settings.dart';</code>
         </line>
         <line>
+            <code>import '../exceptions/exception_manager.dart';</code>
+        </line>
+        <line>
             <code>import '../exceptions/squadron_error.dart';</code>
         </line>
         <line>
@@ -36,9 +45,6 @@
         </line>
         <line>
             <code>import '../exceptions/worker_exception.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
         </line>
         <line>
             <code>import '../stats/perf_counter.dart';</code>
@@ -97,9 +103,9 @@
         <line>
             <code>  /// controls how many tasks can be posted to each individual worker in the pool.</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  WorkerPool(this._workerFactory, {ConcurrencySettings? concurrencySettings})</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      : concurrencySettings = concurrencySettings ?? ConcurrencySettings();</code>
@@ -109,6 +115,29 @@
         </line>
         <line>
             <code>  final WorkerFactory&lt;W&gt; _workerFactory;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  Logger? logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  ExceptionManager? _exceptionManager;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="5">
+            <code>  ExceptionManager get exceptionManager =&gt;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>      (_exceptionManager ??= ExceptionManager());</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -125,9 +154,9 @@
         <line>
             <code>  /// Minimum workers.</code>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>  int get minWorkers =&gt; concurrencySettings.minWorkers;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -135,9 +164,9 @@
         <line>
             <code>  /// Maximum workers.</code>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -145,9 +174,9 @@
         <line>
             <code>  /// Maximum tasks per worker.</code>
         </line>
-        <line hits="4">
+        <line hits="15">
             <code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -155,23 +184,23 @@
         <line>
             <code>  /// Maximum running tasks.</code>
         </line>
-        <line hits="4">
+        <line hits="12">
             <code>  int get maxConcurrency =&gt; concurrencySettings.maxConcurrency;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="4">
+            <code>  final _workers = &lt;PoolWorker&lt;W&gt;&gt;[];</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  final _workers = &lt;PoolWorker&lt;W&gt;&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
+        <line hits="4">
             <code>  final _deadWorkerStats = &lt;WorkerStat&gt;[];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -256,9 +285,9 @@
         <line>
             <code>  final _workerPoolListeners =</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      &lt;Object, void Function(W worker, bool removed)&gt;{};</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -323,34 +352,34 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  int _getProvisionNeeds(int workload) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    if (workload &lt; minWorkers) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // at least minWorkers</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      workload = minWorkers;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>    if (maxWorkers &gt; 0 &amp;&amp; workload &gt; maxWorkers) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // at most maxWorkers if &gt; 0</code>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>      workload = maxWorkers;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -358,66 +387,81 @@
         <line>
             <code>    // adjust by _workers.length and _startingWorkers</code>
         </line>
-        <line hits="6">
+        <line hits="24">
             <code>    return workload - _workers.length - _startingWorkers;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  Future&lt;void&gt; _provisionWorkers(int workload) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    final tasks = &lt;Future&gt;[];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>    final errors = [];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    for (var i = 0; i &lt; workload; i++) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      try {</code>
         </line>
-        <line hits="5">
-            <code>        final poolWorker = PoolWorker(_workerFactory(), maxParallel);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="12">
+            <code>        final worker = _workerFactory();</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
+            <code>        worker.logger = logger;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>        worker.setExceptionManager(exceptionManager);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="12">
+            <code>        final poolWorker = PoolWorker(worker, maxParallel);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
             <code>        _startingWorkers++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="24">
             <code>        tasks.add(poolWorker.worker.start().whenComplete(() {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>          _startingWorkers--;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        }).then((_) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          // start succeeded: register worker</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>          _addWorkerAndNotify(poolWorker);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>        }).catchError((ex, st) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          // start failed, ensure the worker is stopped</code>
@@ -449,24 +493,24 @@
         <line>
             <code/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>    return Future.wait(tasks).whenComplete(() {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>      if (_workers.length &gt; _maxSize) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>        _maxSize = _workers.length;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      if (errors.isNotEmpty) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>        if (errors.length &lt; tasks.length) {</code>
@@ -475,9 +519,8 @@
         <line>
             <code>          // some tasks failed: warn</code>
         </line>
-        <line hits="1">
-            <code>          Squadron.warning(() =&gt; 'Error while provisionning workers: $errors');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="0">
+            <code>          logger?.e(() =&gt; 'Error while provisionning workers: $errors');</code>
         </line>
         <line>
             <code>        } else {</code>
@@ -485,9 +528,9 @@
         <line>
             <code>          // all tasks failed: throw</code>
         </line>
-        <line hits="4">
+        <line hits="7">
             <code>          throw errors.firstWhere((e) =&gt; e is SquadronError,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>                  orElse: () =&gt; null) ??</code>
@@ -511,13 +554,13 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -528,25 +571,25 @@
         <line>
             <code>  /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).</code>
         </line>
-        <line hits="2">
-            <code>  FutureOr&lt;void&gt; start() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    _stopped = false;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="4">
-            <code>    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);</code>
+            <code>  FutureOr&lt;void&gt; start() {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    if (needs &gt; 0) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>    _stopped = false;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
+            <code>    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    if (needs &gt; 0) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
             <code>      return _provisionWorkers(needs);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -558,13 +601,13 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void _notify(W worker, {required bool removed}) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    for (var listener in _workerPoolListeners.values) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      try {</code>
@@ -584,43 +627,43 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  void _removeWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>    _workers.remove(poolWorker);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>    _notify(poolWorker.worker, removed: true);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  void _addWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _workers.add(poolWorker);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _notify(poolWorker.worker, removed: false);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -628,33 +671,33 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  int _removeWorker(PoolWorker&lt;W&gt; poolWorker, bool force) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="8">
             <code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      final workerId = poolWorker.worker.workerId;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="9">
+            <code>      final hashCode = poolWorker.worker.hashCode;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>      poolWorker.worker.stop();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18">
+            <code>      _deadWorkerStats.add(poolWorker.worker.stats.withHashCode(hashCode));</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6">
-            <code>      _deadWorkerStats.add(poolWorker.worker.stats.withWorkerId(workerId));</code>
+            <code>      _removeWorkerAndNotify(poolWorker);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>      _removeWorkerAndNotify(poolWorker);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
+        <line hits="3">
             <code>      return 1;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -666,9 +709,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -691,9 +734,9 @@
         <line>
             <code>  /// Returns the number of workers that have been stopped.</code>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  int stop([bool Function(W worker)? predicate]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code>
@@ -710,13 +753,13 @@
         <line>
             <code>      // kill workers while keeping enough workers alive to process pending tasks</code>
         </line>
-        <line hits="6">
+        <line hits="18">
             <code>      targets = _workers.skip(_queue.length).toList();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>      _stopped = true;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -734,35 +777,35 @@
         <line>
             <code>    var stopped = 0;</code>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>    for (var poolWorker in targets) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>      stopped += _removeWorker(poolWorker, force);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>    return stopped;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  final _queue = Queue&lt;WorkerTask&gt;();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  final _executing = &lt;WorkerTask&gt;{};</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -770,20 +813,20 @@
         <line>
             <code>  /// Gets remaining workload</code>
         </line>
-        <line hits="4">
+        <line hits="8">
             <code>  int get pendingWorkload =&gt; _queue.length;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="7">
             <code>  WorkerTask&lt;T, W&gt; _enqueue&lt;T&gt;(WorkerTask&lt;T, W&gt; task) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (_stopped) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>      throw SquadronErrorExt.create(</code>
@@ -799,21 +842,21 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _queue.addLast(task);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    _schedule();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    return task;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    _schedule();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    return task;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
+        <line hits="3">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -824,16 +867,16 @@
         <line>
             <code>  /// Returns a future that completes with the task's value.</code>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>  Future&lt;T&gt; execute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          {PerfCounter? counter}) =&gt;</code>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>      scheduleTask(task, counter: counter).value;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -844,16 +887,16 @@
         <line>
             <code>  /// Returns a stream containing the task's values.</code>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>  Stream&lt;T&gt; stream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          {PerfCounter? counter}) =&gt;</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      scheduleStream(task, counter: counter).stream;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -864,16 +907,16 @@
         <line>
             <code>  /// Returns a [ValueTask]&lt;T&gt;.</code>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>  ValueTask&lt;T&gt; scheduleTask&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          {PerfCounter? counter}) =&gt;</code>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -884,16 +927,16 @@
         <line>
             <code>  /// Returns a [StreamTask]&lt;T&gt;.</code>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  StreamTask&lt;T&gt; scheduleStream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          {PerfCounter? counter}) =&gt;</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -901,24 +944,24 @@
         <line>
             <code>  /// Schedule tasks.</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void _schedule() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="16">
             <code>    if (_workers.isEmpty &amp;&amp; _startingWorkers &gt; 0) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // workers are still starting, defer</code>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>      Future(_schedule);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -929,21 +972,21 @@
         <line>
             <code>    // remove dead workers</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>    _workers</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        .where(PoolWorker.isStopped)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        .toList() // take a copy</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        .forEach(_removeWorkerAndNotify);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -951,9 +994,9 @@
         <line>
             <code>    // remove canceled tasks</code>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>    _queue.removeWhere((t) =&gt; t.isCanceled);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -961,16 +1004,16 @@
         <line>
             <code>    // any work to do?</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (_queue.isEmpty) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // no: effectively stop the pool if needed and return</code>
         </line>
-        <line hits="4">
+        <line hits="10">
             <code>      if (_stopped &amp;&amp; _executing.isEmpty) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
             <code>        stop();</code>
@@ -979,9 +1022,9 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      return;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -992,9 +1035,9 @@
         <line>
             <code>    // yes: dispatch tasks to workers</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    _dispatchTasks();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -1002,29 +1045,29 @@
         <line>
             <code>    // and provision more workers if possible and necessary</code>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>    final needs = _getProvisionNeeds(_queue.length);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (needs &gt; 0) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>      _provisionWorkers(needs).then((_) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>      _provisionWorkers(needs).then((_) {</code>
+            <code>        _dispatchTasks();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>        _dispatchTasks();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
+        <line hits="5">
             <code>      }).catchError((ex) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>        Squadron.severe('provisionning workers failed with error $ex');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>        logger?.e('provisionning workers failed with error $ex');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>        while (_queue.isNotEmpty) {</code>
@@ -1044,24 +1087,24 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  int _sortAndGetMaxCapacity() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _workers.sort(PoolWorker.compareCapacityDesc);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="24">
             <code>    return _workers.isEmpty ? 0 : _workers.first.capacity;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -1069,63 +1112,63 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void _dispatchTasks() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    int maxCapacity;</code>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>    while (_queue.isNotEmpty &amp;&amp; (maxCapacity = _sortAndGetMaxCapacity()) &gt; 0) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      maxCapacity -= 1;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>      for (var idx = 0; idx &lt; _workers.length; idx++) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>        final w = _workers[idx];</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="28">
+            <code>        if (_queue.isEmpty || w.capacity == 0 || w.capacity &lt; maxCapacity) {</code>
+            <hit count="28" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>        final w = _workers[idx];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>        if (_queue.isEmpty || w.capacity == 0 || w.capacity &lt; maxCapacity) {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>          break;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        }</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        final task = _queue.removeFirst();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        _executing.add(task);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16">
+            <code>        w.run(task).whenComplete(() {</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>          _executing.remove(task);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>          _schedule();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>        w.run(task).whenComplete(() {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>          _executing.remove(task);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>          _schedule();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>        });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -1133,9 +1176,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

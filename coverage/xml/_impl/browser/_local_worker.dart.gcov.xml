@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="11" lines-valid="11" package="/_impl/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="10" lines-valid="10" package="/_impl/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:html' as web;</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code>import '../../channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import '../../local_worker/local_worker.dart';</code>
@@ -29,19 +32,26 @@
             <code>class _JsLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code>
         </line>
         <line hits="1">
-            <code>  _JsLocalWorker._(super.service) {</code>
+            <code>  _JsLocalWorker._(super.service, ExceptionManager exceptionManager) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    final runner = WorkerRunner.use(this);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    _port.port1.onMessage.listen(runner.handle);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>    _channel =</code>
+        </line>
         <line hits="1">
-            <code>  }</code>
+            <code>        Channel.deserialize(_port.port2, runner.logger, exceptionManager);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
         </line>
         <line>
             <code/>
@@ -50,7 +60,7 @@
             <code>  final _port = web.MessageChannel();</code>
         </line>
         <line hits="1">
-            <code>  late Channel? _channel = Channel.deserialize(_port.port2);</code>
+            <code>  late Channel? _channel;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -59,9 +69,8 @@
         <line>
             <code>  @override</code>
         </line>
-        <line hits="1">
+        <line>
             <code>  Channel? get channel =&gt; _channel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -102,11 +111,13 @@
             <code>/// Creates a [LocalWorker] on a browser platform.</code>
         </line>
         <line>
-            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(W service) =&gt;</code>
+            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(</code>
         </line>
-        <line hits="1">
-            <code>    _JsLocalWorker._(service);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        W service, ExceptionManager exceptionManager) =&gt;</code>
+        </line>
+        <line>
+            <code>    _JsLocalWorker._(service, exceptionManager);</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

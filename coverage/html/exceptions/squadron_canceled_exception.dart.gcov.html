@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-02-27</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -88,16 +88,16 @@
                     <td>9</td><td></td><td></td><td><code>    implements CanceledException, SquadronException {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>2</td><td><code>  SquadronCanceledException(this.tokenId, this.message, this.stackTrace);</code></td>
+                    <td>10</td><td></td><td>6</td><td><code>  SquadronCanceledException(this.tokenId, this.message, this.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
                     <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>2</td><td><code>  factory SquadronCanceledException.from(String tokenId, CanceledException ex) {</code></td>
+                    <td>12</td><td></td><td>5</td><td><code>  factory SquadronCanceledException.from(String tokenId, CanceledException ex) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>2</td><td><code>    if (ex is TimeoutCanceledException) {</code></td>
+                    <td>13</td><td></td><td>5</td><td><code>    if (ex is TimeoutCanceledException) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
                     <td>14</td><td></td><td>2</td><td><code>      return SquadronTimeoutException(</code></td>
@@ -106,7 +106,7 @@
                     <td>15</td><td></td><td>4</td><td><code>          tokenId, ex.message, ex.duration, ex.stackTrace);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>2</td><td><code>    } else if (ex is CanceledExceptions) {</code></td>
+                    <td>16</td><td></td><td>4</td><td><code>    } else if (ex is CanceledExceptions) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 17" id="line17">
                     <td>17</td><td></td><td>0</td><td><code>      return SquadronCanceledExceptions(</code></td>
@@ -118,7 +118,7 @@
                     <td>19</td><td></td><td>0</td><td><code>        ex.innerExceptions</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>            .map((e) =&gt; SquadronCanceledException.from(tokenId, e)),</code></td>
+                    <td>20</td><td></td><td>6</td><td><code>            .map((e) =&gt; SquadronCanceledException.from(tokenId, e)),</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code>      );</code></td>
@@ -127,13 +127,13 @@
                     <td>22</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>4</td><td><code>      return SquadronCanceledException(tokenId, ex.message, ex.stackTrace);</code></td>
+                    <td>23</td><td></td><td>11</td><td><code>      return SquadronCanceledException(tokenId, ex.message, ex.stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
                     <td>24</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>25</td><td></td><td>2</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
                     <td>26</td><td></td><td></td><td><code></code></td>
@@ -178,52 +178,52 @@
                     <td>39</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>40</td><td></td><td>3</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>3</td><td><code>  List serialize() =&gt; List.unmodifiable([</code></td>
+                    <td>41</td><td></td><td>8</td><td><code>  List serialize() =&gt; List.unmodifiable([</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
                     <td>42</td><td></td><td></td><td><code>        $canceledExceptionType,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>2</td><td><code>        tokenId,</code></td>
+                    <td>43</td><td></td><td>5</td><td><code>        tokenId,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>2</td><td><code>        message,</code></td>
+                    <td>44</td><td></td><td>5</td><td><code>        message,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>2</td><td><code>        stackTrace?.toString(),</code></td>
+                    <td>45</td><td></td><td>5</td><td><code>        stackTrace?.toString(),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>1</td><td><code>      ]);</code></td>
+                    <td>46</td><td></td><td>2</td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
                     <td>47</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>2</td><td><code>  static SquadronCanceledException? deserialize(List? props) {</code></td>
+                    <td>48</td><td></td><td>5</td><td><code>  static SquadronCanceledException? deserialize(List? props) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>1</td><td><code>    if (props == null) return null;</code></td>
+                    <td>49</td><td></td><td>2</td><td><code>    if (props == null) return null;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>2</td><td><code>    switch (props[_$type]) {</code></td>
+                    <td>50</td><td></td><td>5</td><td><code>    switch (props[_$type]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>1</td><td><code>      case $canceledExceptionType:</code></td>
+                    <td>51</td><td></td><td>3</td><td><code>      case $canceledExceptionType:</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>2</td><td><code>        return SquadronCanceledException(</code></td>
+                    <td>52</td><td></td><td>5</td><td><code>        return SquadronCanceledException(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>2</td><td><code>          props[_$tokenId],</code></td>
+                    <td>53</td><td></td><td>5</td><td><code>          props[_$tokenId],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>2</td><td><code>          props[_$message],</code></td>
+                    <td>54</td><td></td><td>5</td><td><code>          props[_$message],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>3</td><td><code>          SquadronException.loadStackTrace(props[_$stackTrace]),</code></td>
+                    <td>55</td><td></td><td>8</td><td><code>          SquadronException.loadStackTrace(props[_$stackTrace]),</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
                     <td>56</td><td></td><td></td><td><code>        );</code></td>
@@ -250,7 +250,7 @@
                     <td>63</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>64</td><td></td><td>2</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 65" id="line65">
                     <td>65</td><td></td><td></td><td><code>}</code></td>

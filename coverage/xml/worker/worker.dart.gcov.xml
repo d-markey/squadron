@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95454544" lines-covered="105" lines-valid="110" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95689654" lines-covered="111" lines-valid="116" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -11,19 +11,22 @@
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
             <code>import '../_impl/xplat/_helpers.dart';</code>
         </line>
         <line>
-            <code>import '../_impl/xplat/_worker_id.dart';</code>
-        </line>
-        <line>
             <code>import '../channel.dart';</code>
         </line>
         <line>
-            <code>import '../entrypoint.dart';</code>
+            <code>import '../exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import '../exceptions/squadron_exception.dart';</code>
@@ -36,6 +39,9 @@
         </line>
         <line>
             <code>import '../tokens/_squadron_cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line>
             <code>import '../worker/worker_request.dart';</code>
@@ -62,14 +68,22 @@
             <code>/// [WorkerRequest]s to the worker.</code>
         </line>
         <line>
-            <code>abstract class Worker implements WorkerService {</code>
+            <code>abstract class Worker&lt;S&gt; implements WorkerService {</code>
         </line>
         <line>
             <code>  /// Creates a [Worker] with the specified entrypoint.</code>
         </line>
+        <line hits="6">
+            <code>  Worker(this.entryPoint,</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="2">
-            <code>  Worker(this._entryPoint, {this.args = const [], this.platformWorkerHook});</code>
+            <code>      {this.args = const [], PlatformThreadHook? threadHook})</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      : _threadHook = threadHook;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -81,13 +95,36 @@
             <code>  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.</code>
         </line>
         <line>
-            <code>  final EntryPoint _entryPoint;</code>
+            <code>  final EntryPoint entryPoint;</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  final PlatformWorkerHook? platformWorkerHook;</code>
+            <code>  Logger? logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  ExceptionManager? _exceptionManager;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="7">
+            <code>  ExceptionManager get exceptionManager =&gt;</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18">
+            <code>      (_exceptionManager ??= ExceptionManager());</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final PlatformThreadHook? _threadHook;</code>
         </line>
         <line>
             <code/>
@@ -122,9 +159,9 @@
         <line>
             <code>  /// Current workload.</code>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>  int get workload =&gt; _workload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _workload = 0;</code>
@@ -135,9 +172,9 @@
         <line>
             <code>  /// Maximum acceptable workload.</code>
         </line>
-        <line hits="3">
+        <line hits="10">
             <code>  int get maxWorkload =&gt; _maxWorkload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _maxWorkload = 0;</code>
@@ -148,9 +185,9 @@
         <line>
             <code>  /// Total processed workload.</code>
         </line>
-        <line hits="3">
+        <line hits="9">
             <code>  int get totalWorkload =&gt; _totalWorkload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _totalWorkload = 0;</code>
@@ -161,9 +198,9 @@
         <line>
             <code>  /// Total errors.</code>
         </line>
-        <line hits="3">
+        <line hits="10">
             <code>  int get totalErrors =&gt; _totalErrors;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _totalErrors = 0;</code>
@@ -174,17 +211,17 @@
         <line>
             <code>  /// Up time.</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>  Duration get upTime =&gt; (_started == null)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      ? Duration.zero</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="22">
             <code>      : Duration(microseconds: (_stopped ?? microsecTimeStamp()) - _started!);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -192,17 +229,17 @@
         <line>
             <code>  /// Idle time.</code>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>  Duration get idleTime =&gt; (_workload &gt; 0 || _idle == null)</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      ? Duration.zero</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>      : Duration(microseconds: microsecTimeStamp() - _idle!);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int? _idle;</code>
@@ -213,9 +250,9 @@
         <line>
             <code>  /// Indicates if the [Worker] has been stopped.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  bool get isStopped =&gt; _stopped != null;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -223,25 +260,25 @@
         <line>
             <code>  /// [Worker] status.</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  String get status {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (isStopped) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return 'STOPPED';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>    } else if (_workload == 0) {</code>
+            <code>      return 'STOPPED';</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
+            <code>    } else if (_workload == 0) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
             <code>      return 'IDLE';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -252,9 +289,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -262,49 +299,49 @@
         <line>
             <code>  /// [Worker] statistics.</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>  WorkerStat get stats =&gt; WorkerStatExt.create(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      runtimeType,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      workerId,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>      hashCode,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      isStopped,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      status,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      workload,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      maxWorkload,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      totalWorkload,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      totalErrors,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>      upTime,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      idleTime);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -312,25 +349,16 @@
         <line>
             <code>  /// [Channel] to communicate with the worker.</code>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>  Channel? get channel =&gt; _channel;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  Channel? _channel;</code>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>  Future&lt;Channel&gt;? _openChannel;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Worker ID</code>
-        </line>
-        <line>
-            <code>  final String workerId = WorkerId.next();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -338,9 +366,9 @@
         <line>
             <code>  /// Sends a workload to the worker.</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>  Future&lt;T&gt; send&lt;T&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    int command, {</code>
@@ -363,42 +391,42 @@
         <line>
             <code>    // ensure the worker is up and running</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    if (_channel != null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>      return _send(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>          _channel!, command, args, token, inspectRequest, inspectResponse);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="5">
+        <line hits="10">
             <code>      return start().then((channel) =&gt; _send(</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>          channel, command, args, token, inspectRequest, inspectResponse));</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>  Future&lt;T&gt; _send&lt;T&gt;(Channel channel, int command, List args,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      CancelationToken? token, bool inspectRequest, bool inspectResponse) {</code>
@@ -406,17 +434,17 @@
         <line>
             <code>    // update stats</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    _workload++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="20">
             <code>    if (_workload &gt; _maxWorkload) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>      _maxWorkload = _workload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -427,17 +455,17 @@
         <line>
             <code>    // send command</code>
         </line>
-        <line hits="2">
-            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="10">
+            <code>    final squadronToken = channel.wrap(token);</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    return channel</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>        .sendRequest&lt;T&gt;(command, args,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>            token: squadronToken,</code>
@@ -448,41 +476,41 @@
         <line>
             <code>            inspectResponse: inspectResponse)</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        .catchError((e, st) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="7">
             <code>      _totalErrors++;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      throw SquadronException.from(e, st, workerId, command);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>      throw SquadronException.from(e, st, command);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>    }).whenComplete(() {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>      _workload--;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>      _totalWorkload++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>      _idle = microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -490,9 +518,9 @@
         <line>
             <code>  /// Sends a streaming workload to the worker.</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>  Stream&lt;T&gt; stream&lt;T&gt;(int command,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      {List args = const [],</code>
@@ -506,27 +534,20 @@
         <line>
             <code>      bool inspectResponse = false}) {</code>
         </line>
-        <line hits="2">
-            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line>
             <code>    // update stats</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    _workload++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="20">
             <code>    if (_workload &gt; _maxWorkload) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      _maxWorkload = _workload;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -534,54 +555,58 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    bool done = false;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    void onDone() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>      if (!done) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>        done = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>        _workload--;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>        _totalWorkload++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>        _idle = microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    if (_channel != null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // worker is up and running: return the stream directly</code>
         </line>
-        <line hits="3">
+        <line hits="15">
+            <code>      final squadronToken = _channel!.wrap(token);</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="15">
             <code>      return _channel!.sendStreamingRequest&lt;T&gt;(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        command,</code>
@@ -630,6 +655,10 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
+            <code>        final squadronToken = _channel!.wrap(token);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
             <code>        await controller.addStream(channel.sendStreamingRequest&lt;T&gt;(</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
@@ -645,9 +674,8 @@
             <code>          onDone: onDone,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line>
             <code>          token: squadronToken,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>          inspectRequest: inspectRequest,</code>
@@ -688,9 +716,9 @@
             <code>    return controller.stream;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -698,52 +726,52 @@
         <line>
             <code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>  Future&lt;Channel&gt; start() async {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    if (_stopped != null) {</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    if (_stopped != null) {</code>
+            <code>      throw WorkerException('worker is stopped');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>      throw WorkerException('worker is stopped', workerId: workerId);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>    if (_channel == null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>      _openChannel ??=</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
-            <code>          Channel.open(_entryPoint, workerId, args, platformWorkerHook);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line hits="42">
+            <code>          Channel.open(exceptionManager, logger, entryPoint, args, _threadHook);</code>
+            <hit count="42" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>      final channel = await _openChannel!;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>      if (_channel == null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>        _channel = channel;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="18">
             <code>        _started = microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="17">
             <code>        _idle = _started;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="17" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -751,13 +779,13 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>    return _channel!;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -765,36 +793,36 @@
         <line>
             <code>  /// Stops this worker.</code>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>  void stop() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>    if (_stopped == null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>      _stopped = microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>      _openChannel = null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>      _channel?.close();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>      _channel = null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -807,6 +835,29 @@
         </line>
         <line hits="0">
             <code>  Map&lt;int, CommandHandler&gt; get operations =&gt; WorkerService.noOperations;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension WorkerExt on Worker {</code>
+        </line>
+        <line hits="4">
+            <code>  void setExceptionManager(ExceptionManager exceptionManager) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    _exceptionManager = exceptionManager;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
         </line>
         <line>
             <code>}</code>

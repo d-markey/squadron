@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7777778" lines-covered="7" lines-valid="9" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -9,9 +9,6 @@
         </line>
         <line>
             <code>import '../_impl/xplat/_helpers.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron.dart';</code>
         </line>
         <line>
             <code/>
@@ -35,17 +32,16 @@
             <code/>
         </line>
         <line>
-            <code>  /// When [Squadron.debugMode] is `true`, [travelTime] is set by the receiving end and measures the time</code>
+            <code>  /// [travelTime] is set by the receiving end and measures the time (in</code>
         </line>
         <line>
-            <code>  /// (in microseconds) it took between the moment the message was serialized and the moment it was</code>
+            <code>  /// microseconds) it took between the moment the message was serialized and</code>
         </line>
         <line>
-            <code>  /// deserialized.</code>
+            <code>  /// the moment it was deserialized.</code>
         </line>
-        <line hits="2">
+        <line hits="0">
             <code>  int? get travelTime =&gt; this[_$traveltime];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
@@ -65,40 +61,21 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  void initTravelTime() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>  void unwrapTravelTime() {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    if (Squadron.debugMode) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      this[_$traveltime] = microsecTimeStamp();</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  void setTravelTime() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
+        <line hits="12">
             <code>    final ts = this[_$traveltime];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    if (ts != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="24">
             <code>      this[_$traveltime] = microsecTimeStamp() - (ts as int);</code>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

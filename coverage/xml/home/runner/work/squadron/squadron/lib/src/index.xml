@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.94382024" lines-covered="84" lines-valid="89" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8888889" lines-covered="16" lines-valid="18" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="concurrency_settings.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6">
             <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron.dart" functions-hit="0" functions-valid="0" lines-hit="69" lines-valid="72">
-            <testCase branch-hit="0" function-hit="0" line-hit="69" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="channel.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6">
+            <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="worker_service.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="4">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="channel.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5">
-            <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

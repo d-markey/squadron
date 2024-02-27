@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_pool_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="20" lines-valid="20" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="_pool_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="20" lines-valid="20" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '../../pool/worker_pool.dart';</code>
@@ -25,9 +25,9 @@
         <line>
             <code>  /// Constructs a new [PoolWorker].</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  PoolWorker(this.worker, this._maxWorkload) : _capacity = _maxWorkload;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -56,9 +56,9 @@
         <line>
             <code>  /// The current capacity of this [PoolWorker].</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>  int get capacity =&gt; _capacity;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -76,44 +76,44 @@
         <line>
             <code>  /// Run the specified [task] in the [worker].</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  Future run(WorkerTask task) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>    _lastStart = DateTime.now().millisecondsSinceEpoch;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    _capacity--;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="20">
             <code>    return task.run(worker).whenComplete(() {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      _capacity++;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>      if (_capacity == _maxWorkload) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        _lastStart = null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>    });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -121,36 +121,36 @@
         <line>
             <code>  /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).</code>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  static int compareCapacityDesc(PoolWorker a, PoolWorker b) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
+        <line hits="21">
             <code>    if (a.capacity != b.capacity) return b.capacity.compareTo(a.capacity);</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>    if (a._lastStart == null) return 1;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>    if (b._lastStart == null) return -1;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="12">
             <code>    return a._lastStart!.compareTo(b._lastStart!);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>  static bool isStopped(PoolWorker w) =&gt; w.worker.isStopped;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>  static WorkerStat getStats(PoolWorker w) =&gt; w.worker.stats;</code>

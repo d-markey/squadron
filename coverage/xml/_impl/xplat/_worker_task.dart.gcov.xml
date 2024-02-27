@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7894737" lines-covered="30" lines-valid="38" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-27" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7894737" lines-covered="30" lines-valid="38" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -37,9 +37,9 @@
         <line>
             <code>abstract class WorkerTask&lt;T, W extends Worker&gt; implements Task&lt;T&gt; {</code>
         </line>
-        <line hits="2">
+        <line hits="12">
             <code>  WorkerTask(this._counter) : submitted = microsecTimeStamp();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -65,13 +65,13 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>  bool get isCanceled =&gt; _canceled != null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -85,32 +85,32 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  bool get isFinished =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="5">
             <code>      _executed != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>  bool get isRunning =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="6">
             <code>      _executed != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -157,95 +157,95 @@
         <line>
             <code>  TaskCanceledException? _canceledException;</code>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>  TaskCanceledException? get canceledException =&gt; _canceledException;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  void cancel([String? message]) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>    _canceled ??= microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>    _canceledException ??= TaskCanceledException(message);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
+        </line>
+        <line hits="16">
+            <code>  static final _ready = Future&lt;void&gt;.value();</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="8">
+            <code>  Future&lt;void&gt; run(W worker) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    _executed ??= microsecTimeStamp();</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    return (_canceledException == null)</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>        ? _ready</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        : Future.error(_canceledException!);</code>
         </line>
         <line hits="4">
-            <code>  static final _ready = Future&lt;void&gt;.value();</code>
+            <code>  }</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>  Future&lt;void&gt; run(W worker) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>    _executed ??= microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>    return (_canceledException == null)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        ? _ready</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>        : Future.error(_canceledException!);</code>
-        </line>
-        <line hits="1">
-            <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void wrapUp(SquadronCallback callback, bool success) async {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (_finished == null) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      _finished = microsecTimeStamp();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="9">
             <code>      _counter?.update(_finished! - _executed!, success);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      callback();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
