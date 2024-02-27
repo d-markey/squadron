@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:html';
 
-class Logger {
-  Logger(this.div) {
+class HtmlLogger {
+  HtmlLogger(this.div) {
     _sw.start();
   }
 

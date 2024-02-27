@@ -67,10 +67,8 @@ Future<void> execute(TestContext testContext) async {
             final value = await task.value;
             throw Exception(
                 'delayedIdentityTask() completed with value $value');
-          } catch (ex) {
-            expect(ex, isA<CanceledException>());
-            expect((ex as CanceledException).message,
-                equals('Immediate cancelation'));
+          } on CanceledException catch (ex) {
+            expect(ex.message, equals('Immediate cancelation'));
           }
         });
 
@@ -82,10 +80,8 @@ Future<void> execute(TestContext testContext) async {
             final value = await task.value;
             throw Exception(
                 'delayedIdentityTask() completed with value $value');
-          } catch (ex) {
-            expect(ex, isA<CanceledException>());
-            expect((ex as CanceledException).message,
-                equals('Immediate cancelation'));
+          } on CanceledException catch (ex) {
+            expect(ex.message, equals('Immediate cancelation'));
           }
         });
 
@@ -477,8 +473,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('finite() completed successfully');
-          } catch (e) {
-            expect(e, isA<CanceledException>());
+          } on CanceledException catch (_) {
+            /* expected exception */
           }
 
           timer.cancel();
@@ -505,8 +501,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('infinite() completed sucessfully');
-          } on CanceledException catch (ex) {
-            expect(ex, isA<CanceledException>());
+          } on CanceledException catch (_) {
+            /* expected exception */
           }
 
           timer.cancel();
@@ -571,8 +567,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('finite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<SquadronTimeoutException>());
+          } on SquadronTimeoutException catch (_) {
+            /* expected exception */
           }
 
           expect(timeout.isCanceled, isTrue);
@@ -596,8 +592,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('infinite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<SquadronTimeoutException>());
+          } on SquadronTimeoutException catch (_) {
+            /* expected exception */
           }
 
           expect(count, isPositive);
@@ -659,8 +655,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('finite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<CanceledException>());
+          } on CanceledException catch (_) {
+            /* expected exception */
           }
 
           expect(composite1.isCanceled, isTrue);
@@ -687,8 +683,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('finite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<SquadronTimeoutException>());
+          } on SquadronTimeoutException catch (_) {
+            /* expected exception */
           }
 
           expect(composite2.isCanceled, isTrue);
@@ -720,8 +716,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('infinite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<CanceledException>());
+          } on CanceledException catch (_) {
+            /* expected exception */
           }
 
           expect(composite1.isCanceled, isTrue);
@@ -745,8 +741,8 @@ Future<void> execute(TestContext testContext) async {
             }
             // should never happen
             throw Exception('infinite() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<SquadronTimeoutException>());
+          } on SquadronTimeoutException catch (_) {
+            /* expected exception */
           }
 
           expect(count, isPositive);

@@ -8,10 +8,11 @@ import '../cancelation_test.dart' as cancelation_test;
 import '../classes/test_context.dart';
 import '../issues_test.dart' as issues_test;
 import '../local_worker_test.dart' as local_worker_test;
+import '../marshaler_test.dart' as marshaler;
 import '../web_worker_test.dart' as web_worker_test;
 import '../worker_pool_test.dart' as worker_pool_test;
 import '../worker_test.dart' as worker_test;
-import 'logger.dart';
+import 'html_logger.dart';
 
 @JS()
 external get dartPrint;
@@ -20,10 +21,10 @@ external get dartPrint;
 external set dartPrint(value);
 
 void main() async {
-  final logger = Logger(querySelector('#output') as DivElement);
+  final htmlLogger = HtmlLogger(querySelector('#output') as DivElement);
 
   dartPrint = allowInterop(
-      (dynamic message) => logger.print(message?.toString() ?? ''));
+      (dynamic message) => htmlLogger.print(message?.toString() ?? ''));
 
   final testContext = await TestContext.init('/');
 
@@ -34,7 +35,7 @@ void main() async {
     ..text = 'Clear'
     ..attributes['href'] = '#';
   clearLink.onClick.listen((MouseEvent e) {
-    logger
+    htmlLogger
       ..clear()
       ..log('Ready')
       ..log('');
@@ -52,43 +53,49 @@ void main() async {
     try {
       await web_worker_test.execute(testContext);
     } catch (e) {
-      logger.log('Classic Web Worker tests failed with exception: $e');
+      htmlLogger.log('Classic Web Worker tests failed with exception: $e');
     }
 
     try {
       await worker_test.execute(testContext);
     } catch (e) {
-      logger.log('Squadron Worker tests failed with exception: $e');
+      htmlLogger.log('Squadron Worker tests failed with exception: $e');
     }
 
     try {
       await worker_pool_test.execute(testContext);
     } catch (e) {
-      logger.log('Squadron Worker Pool tests failed with exception: $e');
+      htmlLogger.log('Squadron Worker Pool tests failed with exception: $e');
     }
 
     try {
       await local_worker_test.execute(testContext);
     } catch (e) {
-      logger.log('Squadron Local Worker tests failed with exception: $e');
+      htmlLogger.log('Squadron Local Worker tests failed with exception: $e');
     }
 
     try {
       await cancelation_test.execute(testContext);
     } catch (e) {
-      logger.log('Cancelation tests failed with exception: $e');
+      htmlLogger.log('Cancelation tests failed with exception: $e');
+    }
+
+    try {
+      await marshaler.execute(testContext);
+    } catch (e) {
+      htmlLogger.log('Marshaler tests failed with exception: $e');
     }
 
     try {
       await issues_test.execute(testContext);
     } catch (e) {
-      logger.log('Issues tests failed with exception: $e');
+      htmlLogger.log('Issues tests failed with exception: $e');
     }
 
     runButton.disabled = false;
   });
 
-  logger
+  htmlLogger
     ..log('Ready')
     ..log('');
 }

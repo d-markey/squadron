@@ -23,8 +23,6 @@ void main() async {
 }
 
 Future<void> execute(TestContext testContext) async {
-  print('ThreadId = $threadId');
-
   testContext.run(() {
     group("- Worker", () {
       final logs = <String>[];
@@ -386,14 +384,14 @@ Future<void> execute(TestContext testContext) async {
             await worker.start();
             throw Exception('start() returned successfully');
           } on WorkerException catch (_) {
-            /* expected */
+            /* expected exception */
           }
 
           try {
             await worker.ping();
             throw Exception('ping() returned successfully');
           } on WorkerException catch (_) {
-            /* expected */
+            /* expected exception */
           }
         });
 
@@ -404,16 +402,14 @@ Future<void> execute(TestContext testContext) async {
               await worker.start();
               throw Exception('start() returned successfully');
             } on SquadronError catch (_) {
-              /* expected */
-            } catch (ex) {
-              print(ex);
+              /* expected exception */
             }
 
             try {
               await worker.ping();
               throw Exception('ping() returned successfully');
             } on SquadronError catch (_) {
-              /* expected */
+              /* expected exception */
             }
           }
         });
@@ -424,14 +420,14 @@ Future<void> execute(TestContext testContext) async {
             await worker.start();
             throw Exception('start() returned successfully');
           } on SquadronError catch (_) {
-            /* expected */
+            /* expected exception */
           }
 
           try {
             await worker.ping();
             throw Exception('ping() returned successfully');
           } on SquadronError catch (_) {
-/* expected */
+            /* expected exception */
           }
         });
       });

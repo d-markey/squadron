@@ -126,7 +126,7 @@ extension WorkerResponseExt on WorkerResponse {
 
 extension LogEventSerialization on LogEvent {
   List serialize() => [
-        level,
+        level.value,
         message?.toString(),
         microsecTimeStamp(time),
         error?.toString(),
@@ -136,10 +136,15 @@ extension LogEventSerialization on LogEvent {
   static LogEvent? deserialize(List? props) => (props == null)
       ? null
       : LogEvent(
-          props[0],
+          _getLevel(props[0]),
           props[1],
           time: fromMicrosecTimeStamp(props[2]),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );
+
+  static Level _getLevel(int? value) {
+    if (value == null) return Level.debug;
+    return Level.values.where((_) => _.value == value).first;
+  }
 }

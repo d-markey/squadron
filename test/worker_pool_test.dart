@@ -128,14 +128,14 @@ Future<void> execute(TestContext testContext) async {
               await pool.start();
               throw Exception('start() returned successfully');
             } on WorkerException catch (_) {
-              // ok
+              /* expected exception */
             }
 
             try {
               await pool.ping();
               throw Exception('ping() returned successfully');
             } on CanceledException catch (_) {
-              // ok
+              /* expected exception */
             }
 
             expect(pool.size, isZero);
@@ -152,14 +152,14 @@ Future<void> execute(TestContext testContext) async {
                 await pool.start();
                 throw Exception('start() returned successfully');
               } on SquadronError catch (_) {
-                // ok
+                /* expected exception */
               }
 
               try {
                 await pool.ping();
                 throw Exception('ping() returned successfully');
               } on CanceledException catch (_) {
-                // ok
+                /* expected exception */
               }
 
               expect(pool.size, isZero);
@@ -176,14 +176,14 @@ Future<void> execute(TestContext testContext) async {
               await pool.start();
               throw Exception('start() returned successfully');
             } on SquadronError catch (_) {
-              // ok
+              /* expected exception */
             }
 
             try {
               await pool.ping();
               throw Exception('ping() returned successfully');
             } on CanceledException catch (_) {
-              // ok
+              /* expected exception */
             }
 
             expect(pool.size, isZero);
@@ -509,9 +509,7 @@ Future<void> execute(TestContext testContext) async {
                 .asFuture();
             await future;
             throw Exception('infiniteWithErrors() completed successfully');
-          } catch (e) {
-            expect(e, isA<WorkerException>());
-            final ex = e as WorkerException;
+          } on WorkerException catch (ex) {
             expect(ex.message, contains('error #'));
           }
 

@@ -1,6 +1,15 @@
+## 6.0.0
+
+- /!\ BREAKING CHANGES /!\
+- Merged `worker_monitor` into `worker_runner`.
+- Removed custom cancelation token implementations and switched to `package:cancelation_token`.
+- Removed custom logger implementations and switched to `package:logger` for logging.
+- Eliminated the Squadron singleton.
+- Reworked unit tests.
+
 ## 5.1.6
 
-- Rework exception deserializer management to protect from multiple registrations and allow for deregistration. See https://github.com/d-markey/squadron/issues/27#issuecomment-1717452323.
+- Reworked exception deserializer management to protect from multiple registrations and allow for deregistration. See https://github.com/d-markey/squadron/issues/27#issuecomment-1717452323.
 - Added support for installable/uninstallable worker services. If a service needs to take action after the worker thread has started or before it is stopped, it should extend or implement `ServiceInstaller` and provide one or both of `install()` / `uninstall()`. These methods will be called on platform thread setup/teardown. See https://github.com/d-markey/squadron/issues/29#issuecomment-1719682340.
 
 ## 5.1.5

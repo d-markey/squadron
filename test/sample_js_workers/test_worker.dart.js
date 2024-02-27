@@ -12032,7 +12032,7 @@
         t3 = A.microsecTimeStamp(null);
         t4 = J.toString$0$(t2.message);
         t5 = A.microsecTimeStamp(t2.time);
-        t1 = t1._postResponse$1([t3, null, null, null, [t2.level, t4, t5, null, null]]);
+        t1 = t1._postResponse$1([t3, null, null, null, [t2.level.value, t4, t5, null, null]]);
       }
       return t1;
     },

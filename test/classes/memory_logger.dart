@@ -23,7 +23,13 @@ class MemoryLogger extends Logger {
     if (level.value >= _filter.level!.value) {
       _logs.add(message?.toString() ?? error?.toString() ?? '<no log message>');
     }
-    super.log(level, message, time: time, error: error, stackTrace: stackTrace);
+    super.log(
+      level,
+      message,
+      time: time ?? DateTime.now(),
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 }
 

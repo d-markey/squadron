@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:logger/logger.dart';
-import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_channel.dart'
     if (dart.library.io) '../_impl/native/_channel.dart'
@@ -56,6 +55,3 @@ abstract class WorkerChannel {
           PlatformChannel? channelInfo, Logger? logger) =>
       deserializeWorkerChannel(channelInfo, logger);
 }
-
-@internal
-extension WorkerChannelExt on WorkerChannel {}

@@ -23,7 +23,7 @@ export 'src/stats/perf_counter_snapshot.dart';
 export 'src/stats/worker_stat.dart' hide WorkerStatExt;
 export 'src/typedefs.dart';
 export 'src/worker/worker.dart' hide WorkerExt;
-export 'src/worker/worker_channel.dart' hide WorkerChannelExt;
+export 'src/worker/worker_channel.dart';
 export 'src/worker/worker_message.dart' hide WorkerMessageExt;
 export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;

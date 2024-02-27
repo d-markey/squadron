@@ -323,7 +323,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
           completer.completeError(error, error.stackTrace);
           worker.terminate();
         } else {
-          logger?.e('connected to Web Worker');
+          logger?.t('connected to Web Worker');
           final channel =
               _JsChannel._(response.result, logger, exceptionManager);
           completer.complete(channel);

@@ -121,11 +121,9 @@ Future<void> execute(TestContext testContext) async {
                 ?.sendRequest(LocalService.throwExceptionCommand, []);
             // should never happen
             throw Exception('throwException() completed successfully');
-          } catch (ex) {
-            expect(ex, isA<WorkerException>());
-            final wex = ex as WorkerException;
-            expect(wex.message, contains('Intentional exception'));
-            expect(wex.stackTrace.toString(), contains('throwException'));
+          } on WorkerException catch (ex) {
+            expect(ex.message, contains('Intentional exception'));
+            expect(ex.stackTrace.toString(), contains('throwException'));
           }
         });
 
