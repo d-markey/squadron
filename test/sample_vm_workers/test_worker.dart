@@ -17,17 +17,17 @@ void start(List command) => run(
       command,
     );
 
-// void startWithException(List command) => run(
-//       (startRequest) => throw Exception('Intentional failure'),
-//       command,
-//     );
-
 void startWithMissingCommand(List command) => run(
-      (startRequest) => TestService(),
+      (startRequest) {
+        switch (startRequest.args[0]) {
+          case TestService.startupThrows:
+            throw Exception('Intentional failure');
+          case TestService.startupInvalid:
+            return TestService(invalid: true);
+          case TestService.startupOk:
+          default:
+            return TestService();
+        }
+      },
       /* intentionally missing command */
     );
-
-// void startWithInvalidCommand(List command) => run(
-//       (startRequest) => TestService(invalid: true),
-//       command,
-//     );

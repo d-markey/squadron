@@ -58,8 +58,8 @@ abstract class Channel {
       openChannel(entryPoint, exceptionManager, logger, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static Channel? deserialize(PlatformChannel? channelInfo,
-          [Logger? logger, ExceptionManager? exceptionManager]) =>
+  static Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
+          [ExceptionManager? exceptionManager]) =>
       deserializeChannel(
           channelInfo, logger, exceptionManager ?? ExceptionManager());
 }

@@ -6,7 +6,11 @@ class MemoryLogger extends Logger {
   MemoryLogger(List<String> logs, MemoryLogFilter filter)
       : _logs = logs,
         _filter = filter,
-        super(filter: filter, output: NoOutput(), printer: EmptyPrinter());
+        super(
+            filter: filter,
+            output: NoOutput(),
+            printer: EmptyPrinter(),
+            level: Level.all);
 
   final MemoryLogFilter _filter;
 
@@ -21,7 +25,8 @@ class MemoryLogger extends Logger {
   void log(Level level, dynamic message,
       {DateTime? time, Object? error, StackTrace? stackTrace}) {
     if (level.value >= _filter.level!.value) {
-      _logs.add(message?.toString() ?? error?.toString() ?? '<no log message>');
+      final msg = (message is Function) ? message() : message;
+      _logs.add(msg?.toString() ?? error?.toString() ?? '<no log message>');
     }
     super.log(
       level,

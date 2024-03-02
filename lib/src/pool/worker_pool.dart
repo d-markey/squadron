@@ -312,7 +312,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       _provisionWorkers(needs).then((_) {
         _dispatchTasks();
       }).catchError((ex) {
-        logger?.e('provisionning workers failed with error $ex');
+        logger?.e(() => 'provisionning workers failed with error $ex');
         while (_queue.isNotEmpty) {
           _queue.removeFirst().cancel('provisionning workers failed');
         }

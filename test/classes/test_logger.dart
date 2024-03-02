@@ -3,9 +3,11 @@ import 'package:logger/logger.dart';
 class TestLogger extends Logger {
   TestLogger(TestFilter filter)
       : _filter = filter,
-        super(filter: filter, output: NoOutput(), printer: EmptyPrinter()) {
-    level = Level.all;
-  }
+        super(
+            filter: filter,
+            output: NoOutput(),
+            printer: EmptyPrinter(),
+            level: Level.all);
 
   final TestFilter _filter;
 

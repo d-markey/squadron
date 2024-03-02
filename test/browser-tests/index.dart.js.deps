@@ -642,8 +642,8 @@ file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_response.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
-file:///C:/_Projects/github/squadron/test/browser-tests/html_logger.dart
-file:///C:/_Projects/github/squadron/test/browser-tests/main.dart
+file:///C:/_Projects/github/squadron/test/browser-tests/index.dart
+file:///C:/_Projects/github/squadron/test/browser-tests/tests.dart
 file:///C:/_Projects/github/squadron/test/cancelation_test.dart
 file:///C:/_Projects/github/squadron/test/classes/custom_exception.dart
 file:///C:/_Projects/github/squadron/test/classes/memory_logger.dart
@@ -654,6 +654,7 @@ file:///C:/_Projects/github/squadron/test/classes/test_context.dart
 file:///C:/_Projects/github/squadron/test/classes/test_logger.dart
 file:///C:/_Projects/github/squadron/test/issues_test.dart
 file:///C:/_Projects/github/squadron/test/local_worker_test.dart
+file:///C:/_Projects/github/squadron/test/logging_test.dart
 file:///C:/_Projects/github/squadron/test/marshaler_test.dart
 file:///C:/_Projects/github/squadron/test/sample_js_workers/_test_context.dart
 file:///C:/_Projects/github/squadron/test/web_worker_test.dart

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:squadron/squadron.dart';
+import 'package:test/test.dart';
 
 import '../sample_vm_workers/_test_context.dart'
     if (dart.library.js) '../sample_js_workers/_test_context.dart'
@@ -9,7 +12,7 @@ enum TestPlatform {
   unknown,
   vm,
   js,
-  wasm,
+  wasm, // TODO!
 }
 
 class TestContext {
@@ -23,8 +26,8 @@ class TestContext {
   }
 
   void run(void Function() testSuite) {
-    testSuite();
-    // group(platformName, testSuite);
+    // testSuite();
+    group(platformName, testSuite);
   }
 
   final TestPlatform platform;

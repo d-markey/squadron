@@ -29,7 +29,7 @@ class _NoLogFilter extends LogFilter {
 }
 
 class WorkerRunner {
-  /// Constructs a new worker runner monitored by [monitor].
+  /// Constructs a new worker runner.
   WorkerRunner(this._terminate);
 
   void Function(WorkerRunner) _terminate;

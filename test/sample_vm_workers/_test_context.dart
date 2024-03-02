@@ -12,7 +12,7 @@ const platform = TestPlatform.vm;
 String platformName = Platform.operatingSystemVersion;
 
 extension EntryPointsExt on TestContext {
-  Future<void> setEntryPoints(String root) {
+  Future<void> setEntryPoints(String root) async {
     entryPoints.cache = cache.start;
     entryPoints.installable = installable.start;
     entryPoints.issues = issues.start;
@@ -21,7 +21,5 @@ extension EntryPointsExt on TestContext {
 
     entryPoints.test = test.start;
     entryPoints.missingStartRequest = test.startWithMissingCommand;
-
-    return Future.value();
   }
 }

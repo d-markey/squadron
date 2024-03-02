@@ -24,7 +24,7 @@ class TestService implements WorkerService {
     _logger.level = Level.values.where((l) => l.value == level).first;
   }
 
-  void log() {
+  void log() async {
     _logger.t('trace test in worker');
     _logger.d('debug test in worker');
     _logger.i('info test in worker');
