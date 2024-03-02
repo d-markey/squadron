@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
@@ -100,9 +100,9 @@
         <line hits="0">
             <code>        tokenId,</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>        _exceptions.map((e) =&gt; e.serialize()),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      ]);</code>

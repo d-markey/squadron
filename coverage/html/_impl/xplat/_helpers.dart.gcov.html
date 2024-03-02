@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-03-02</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>3</td><td>3</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,16 +61,25 @@
             </thead>
             <tbody>
                 <tr class="lineCov" title="Line 1" id="line1">
-                    <td>1</td><td></td><td>4</td><td><code>final _sqEpoch = DateTime.utc(2020, 1, 1);</code></td>
+                    <td>1</td><td></td><td>28</td><td><code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 3" id="line3">
-                    <td>3</td><td></td><td>1</td><td><code>int microsecTimeStamp() =&gt;</code></td>
+                    <td>3</td><td></td><td>14</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 4" id="line4">
-                    <td>4</td><td></td><td>6</td><td><code>    DateTime.now().toUtc().difference(_sqEpoch).inMicroseconds;</code></td>
+                    <td>4</td><td></td><td>42</td><td><code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code></td>
+                </tr>
+                <tr class="noop" title="Line 5" id="line5">
+                    <td>5</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 6" id="line6">
+                    <td>6</td><td></td><td>6</td><td><code>DateTime fromMicrosecTimeStamp(int microsecs) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 7" id="line7">
+                    <td>7</td><td></td><td>24</td><td><code>    _latestUPDEpoch.add(Duration(microseconds: microsecs));</code></td>
                 </tr>
             </tbody>
         </table>

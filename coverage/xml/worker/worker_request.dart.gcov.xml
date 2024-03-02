@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95" lines-covered="38" lines-valid="40" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95" lines-covered="38" lines-valid="40" package="/worker" testname="lcov.info" version="1.5">
     <lines>
+        <line>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
         <line>
             <code>import 'package:meta/meta.dart';</code>
         </line>
@@ -8,7 +11,7 @@
             <code/>
         </line>
         <line>
-            <code>import '../_impl/xplat/_channel.dart';</code>
+            <code>import '../_impl/xplat/_helpers.dart';</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>
@@ -17,10 +20,10 @@
             <code>import '../exceptions/squadron_error.dart';</code>
         </line>
         <line>
-            <code>import '../squadron.dart';</code>
+            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
-            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line>
             <code>import 'worker.dart';</code>
@@ -44,28 +47,37 @@
             <code/>
         </line>
         <line>
-            <code>/// Extension methods operating on a `List` as a [WorkerRequest]. [WorkerRequest]s are used to communicate from a</code>
+            <code>/// Extension methods operating on a `List` as a [WorkerRequest].</code>
         </line>
         <line>
-            <code>/// [Channel] to a [Worker]. Typically a [WorkerRequest] consists of a command ID and a list of arguments. The</code>
+            <code>/// [WorkerRequest]s are used to communicate from a [Channel] to a [Worker].</code>
         </line>
         <line>
-            <code>/// [command] ID is used by the [Worker] to dispatch the [WorkerRequest] to the method responsible for handling</code>
+            <code>/// Typically a [WorkerRequest] consists of a command ID and a list of</code>
         </line>
         <line>
-            <code>/// it.</code>
+            <code>/// arguments. The [command] ID is used by the [Worker] to dispatch the</code>
         </line>
         <line>
-            <code>/// The command's arguments are passed as a list and should only contain primitive values or objects that can be</code>
+            <code>/// [WorkerRequest] to the method responsible for handling it.</code>
         </line>
         <line>
-            <code>/// transfered across workers. For applications running on a VM platform, Dart objects should be safe according to</code>
+            <code>/// The command's arguments are passed as a list and should only contain</code>
         </line>
         <line>
-            <code>/// Dart's documentation of [SendPort.send]. [WorkerRequestImpl] also implements specific requests used for worker</code>
+            <code>/// primitive values or objects that can be transfered across workers. For</code>
         </line>
         <line>
-            <code>/// startup, stream/token cancelation, worker termination...</code>
+            <code>/// applications running on a VM platform, Dart objects should be safe</code>
+        </line>
+        <line>
+            <code>/// according to Dart's documentation of [SendPort.send]. [WorkerRequestImpl]</code>
+        </line>
+        <line>
+            <code>/// also implements specific requests used for worker startup, stream/token</code>
+        </line>
+        <line>
+            <code>/// cancelation, worker termination...</code>
         </line>
         <line>
             <code>extension WorkerRequestImpl on WorkerRequest {</code>
@@ -89,13 +101,7 @@
             <code>  static const _$streamId = 5;</code>
         </line>
         <line>
-            <code>  static const _$logLevel = 5;</code>
-        </line>
-        <line>
-            <code>  static const _$id = 6;</code>
-        </line>
-        <line>
-            <code>  static const _$inspectResponse = 7;</code>
+            <code>  static const _$inspectResponse = 6;</code>
         </line>
         <line>
             <code/>
@@ -103,19 +109,20 @@
         <line>
             <code>  /// Creates a new request with the specified [command] ID and optional arguments.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  static WorkerRequest userCommand(PlatformChannel channelInfo, int command,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          List args, SquadronCancelationToken? token, bool inspectResponse) =&gt;</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      [</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        null, // 0 - travel time</code>
+        <line hits="14">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        channelInfo, // 1 - client</code>
@@ -127,16 +134,13 @@
             <code>        args, // 3 - args</code>
         </line>
         <line>
-            <code>        token, // 4 - Squadron cancelation token</code>
+            <code>        token, // 4 - cancelation token</code>
         </line>
         <line>
-            <code>        null, // 5 - stream id / log level</code>
+            <code>        null, // 5 - stream id</code>
         </line>
         <line>
-            <code>        null, // 6 - worker id</code>
-        </line>
-        <line>
-            <code>        inspectResponse, // 8 - inspect response</code>
+            <code>        inspectResponse, // 6 - inspect response</code>
         </line>
         <line>
             <code>      ];</code>
@@ -147,19 +151,13 @@
         <line>
             <code>  /// Creates a new start request.</code>
         </line>
-        <line hits="1">
-            <code>  static WorkerRequest start(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>  static WorkerRequest start(PlatformChannel channelInfo, List args) =&gt; [</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>          PlatformChannel channelInfo, String id, List args) =&gt;</code>
-        </line>
-        <line hits="1">
-            <code>      [</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>        null, // 0 - travel time</code>
+        <line hits="14">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        channelInfo, // 1 - client</code>
@@ -171,17 +169,13 @@
             <code>        args, // 3 - args</code>
         </line>
         <line>
-            <code>        null, // 4 - Squadron cancelation token</code>
-        </line>
-        <line hits="2">
-            <code>        Squadron.logLevel, // 5 - log level</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <code>        null, // 4 - cancelation token</code>
         </line>
         <line>
-            <code>        id, // 6 - worker id</code>
+            <code>        null, // 5 - stream id</code>
         </line>
         <line>
-            <code>        true, // 7 - inspect response</code>
+            <code>        true, // 6 - inspect response</code>
         </line>
         <line>
             <code>      ];</code>
@@ -192,12 +186,13 @@
         <line>
             <code>  /// Creates a new stream cancelation request.</code>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>  static WorkerRequest cancelStream(int streamId) =&gt; [</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        null, // 0 - travel time</code>
+        <line hits="10">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        null, // 1 - client</code>
@@ -209,16 +204,13 @@
             <code>        null, // 3 - args</code>
         </line>
         <line>
-            <code>        null, // 4 - Squadron cancelation token</code>
+            <code>        null, // 4 - cancelation token</code>
         </line>
         <line>
             <code>        streamId, // 5 - stream id</code>
         </line>
         <line>
-            <code>        null, // 6 - worker id</code>
-        </line>
-        <line>
-            <code>        null, // 7 - inspect response</code>
+            <code>        null, // 6 - inspect response</code>
         </line>
         <line>
             <code>      ];</code>
@@ -229,12 +221,13 @@
         <line>
             <code>  /// Creates a new cancelation request.</code>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>  static WorkerRequest cancel(SquadronCancelationToken token) =&gt; [</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        null, // 0 - travel time</code>
+        <line hits="4">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        null, // 1 - client</code>
@@ -246,16 +239,13 @@
             <code>        null, // 3 - args</code>
         </line>
         <line>
-            <code>        token, // 4 - Squadron cancelation token</code>
+            <code>        token, // 4 - cancelation token</code>
         </line>
         <line>
-            <code>        null, // 5 - stream id / log level</code>
+            <code>        null, // 5 - stream id</code>
         </line>
         <line>
-            <code>        null, // 6 - worker id</code>
-        </line>
-        <line>
-            <code>        null, // 7 - inspect response</code>
+            <code>        null, // 6 - inspect response</code>
         </line>
         <line>
             <code>      ];</code>
@@ -266,12 +256,13 @@
         <line>
             <code>  /// Creates a new termination request.</code>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>  static WorkerRequest stop() =&gt; [</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>        null, // 0 - travel time</code>
+        <line hits="14">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        null, // 1 - client</code>
@@ -283,16 +274,13 @@
             <code>        null, // 3 - args</code>
         </line>
         <line>
-            <code>        null, // 4 - Squadron cancelation token</code>
+            <code>        null, // 4 - cancelation token</code>
         </line>
         <line>
-            <code>        null, // 5 - stream id / log level</code>
+            <code>        null, // 5 - stream id</code>
         </line>
         <line>
-            <code>        null, // 6 - worker id</code>
-        </line>
-        <line>
-            <code>        null, // 7 - inspect response</code>
+            <code>        null, // 6 - inspect response</code>
         </line>
         <line>
             <code>      ];</code>
@@ -303,9 +291,9 @@
         <line>
             <code>  /// The client's [WorkerChannel]. Only valid on the receiving end.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  WorkerChannel? get client =&gt; this[_$client];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -313,13 +301,13 @@
         <line>
             <code>  /// The channel method to be used for sending data back.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void Function(dynamic)? get reply =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="22">
             <code>      inspectResponse ? client?.inspectAndReply : client?.reply;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -327,9 +315,9 @@
         <line>
             <code>  /// The client's channel info.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  PlatformChannel? get channelInfo =&gt; this[_$client];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -337,9 +325,9 @@
         <line>
             <code>  /// Cancelation token.</code>
         </line>
-        <line hits="3">
+        <line hits="21">
             <code>  SquadronCancelationToken? get cancelToken =&gt; this[_$token];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -347,19 +335,9 @@
         <line>
             <code>  /// Stream id.</code>
         </line>
-        <line hits="3">
+        <line hits="11">
             <code>  int? get streamId =&gt; this[_$streamId];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// The current Squadron log level. This is set automatically and only used for connection commands.</code>
-        </line>
-        <line hits="2">
-            <code>  int? get logLevel =&gt; this[_$logLevel];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -367,19 +345,9 @@
         <line>
             <code>  /// The [command]'s ID.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  int get command =&gt; this[_$command];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// The ID of the worker that initiated the command (only used for connection commands).</code>
-        </line>
-        <line hits="2">
-            <code>  String? get id =&gt; this[_$id];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -387,9 +355,9 @@
         <line>
             <code>  /// The command's arguments, if any.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  List get args =&gt; this[_$args];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -400,9 +368,9 @@
         <line>
             <code>  /// Web workers, ownership of these objects must be transfered across threads.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  bool get inspectResponse =&gt; this[_$inspectResponse];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -410,9 +378,9 @@
         <line>
             <code>  /// flag for start requests.</code>
         </line>
-        <line hits="3">
+        <line hits="21">
             <code>  bool get isConnection =&gt; (command == _connectCommand);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -420,9 +388,9 @@
         <line>
             <code>  /// flag for stream cancelation requests.</code>
         </line>
-        <line hits="3">
+        <line hits="21">
             <code>  bool get isStreamCancelation =&gt; (command == _cancelStreamCommand);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -430,9 +398,9 @@
         <line>
             <code>  /// flag for cancelation requests.</code>
         </line>
-        <line hits="3">
+        <line hits="21">
             <code>  bool get isTokenCancelation =&gt; (command == _cancelTokenCommand);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -440,9 +408,9 @@
         <line>
             <code>  /// flag for termination requests.</code>
         </line>
-        <line hits="3">
+        <line hits="21">
             <code>  bool get isTermination =&gt; (command == _terminateCommand);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -489,29 +457,29 @@
         <line>
             <code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code>
         </line>
-        <line hits="1">
-            <code>  void unwrapRequestInPlace() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>  void unwrapRequestInPlace(Logger? logger) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>    this[_$client] = WorkerChannel.deserialize(this[_$client]);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="22">
+            <code>    this[_$client] = WorkerChannel.deserialize(this[_$client], logger);</code>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="22">
             <code>    this[_$token] = SquadronCancelationToken.deserialize(this[_$token]);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    this[_$inspectResponse] ??= false;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    this[_$args] ??= const [];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    setTravelTime();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>    unwrapTravelTime();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -522,43 +490,48 @@
         <line>
             <code>  /// In-place serialization of a [WorkerRequest].</code>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>  void wrapRequestInPlace() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>    final token = this[_$token];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (token is SquadronCancelationToken) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="6">
             <code>      this[_$token] = token.serialize();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
-            <code>    initTravelTime();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
+        <line hits="7">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  void overrideCancelToken(SquadronCancelationToken token) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>@internal</code>
         </line>
-        <line hits="5">
+        <line>
+            <code>extension CancelationTokenExt on WorkerRequest {</code>
+        </line>
+        <line hits="2">
+            <code>  void overrideCancelToken(SquadronCancelationToken token) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10">
             <code>    if (cancelToken == null || cancelToken!.id != token.id) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw SquadronErrorExt.create(</code>
@@ -569,9 +542,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
-            <code>    this[_$token] = token;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    this[WorkerRequestExt._$token] = token;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>

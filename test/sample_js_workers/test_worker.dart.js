@@ -12295,7 +12295,7 @@
     },
     log$0() {
       var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.dynamic),
+        $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1;
       var $async$log$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)

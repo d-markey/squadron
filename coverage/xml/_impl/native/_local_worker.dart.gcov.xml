@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="12" lines-valid="12" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="13" lines-valid="13" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:isolate';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code>import '../../channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import '../../local_worker/local_worker.dart';</code>
@@ -29,7 +32,7 @@
             <code>class _VmLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code>
         </line>
         <line hits="1">
-            <code>  _VmLocalWorker._(super.service) {</code>
+            <code>  _VmLocalWorker._(super.service, ExceptionManager exceptionManager) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -40,6 +43,14 @@
             <code>    _port.listen(runner.handle);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="1">
+            <code>    _channel =</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>        Channel.deserialize(_port.sendPort, runner.logger, exceptionManager);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
         <line>
             <code>  }</code>
         </line>
@@ -49,9 +60,8 @@
         <line>
             <code>  final _port = ReceivePort();</code>
         </line>
-        <line hits="4">
-            <code>  late Channel? _channel = Channel.deserialize(_port.sendPort);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>  late Channel? _channel;</code>
         </line>
         <line>
             <code/>
@@ -99,11 +109,14 @@
             <code>/// Creates a [LocalWorker] on a native platform.</code>
         </line>
         <line hits="1">
-            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(W service) =&gt;</code>
+            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>        W service, ExceptionManager exceptionManager) =&gt;</code>
+        </line>
         <line hits="1">
-            <code>    _VmLocalWorker._(service);</code>
+            <code>    _VmLocalWorker._(service, exceptionManager);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
     </lines>

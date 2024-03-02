@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_cancelation_token_ref.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5263158" lines-covered="20" lines-valid="38" package="/tokens" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_cancelation_token_ref.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5263158" lines-covered="20" lines-valid="38" package="/tokens" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -12,9 +12,6 @@
         </line>
         <line>
             <code/>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_worker_monitor.dart';</code>
         </line>
         <line>
             <code>import '../exceptions/squadron_canceled_exception.dart';</code>
@@ -76,9 +73,9 @@
         <line>
             <code>class CancelationTokenReference implements SquadronCancelationToken {</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  CancelationTokenReference._noToken()</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      : _hasRef = false,</code>
@@ -86,9 +83,9 @@
         <line>
             <code>        id = '' {</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    _refCount = 1;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -108,9 +105,9 @@
         <line>
             <code>  /// Singleton token reference instance for requests containing no token.</code>
         </line>
-        <line hits="4">
+        <line hits="22">
             <code>  static final noToken = CancelationTokenReference._noToken();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -118,9 +115,9 @@
         <line>
             <code>  /// Creates a new token reference for [id].</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  CancelationTokenReference(this.id) : _hasRef = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -174,9 +171,9 @@
         <line>
             <code>  /// Reference counter.</code>
         </line>
-        <line hits="3">
+        <line hits="15">
             <code>  int get refCount =&gt; _refCount;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  int _refCount = 0;</code>
@@ -190,25 +187,25 @@
         <line>
             <code>  /// counter and overrides [WorkerRequest.cancelToken] with this token.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void usedBy(WorkerRequest request) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (_hasRef) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      _refCount++;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _refCount++;</code>
+            <code>      request.overrideCancelToken(this);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      request.overrideCancelToken(this);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
+        <line hits="7">
             <code>    } else if (request.cancelToken != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw SquadronErrorExt.create(</code>
@@ -228,17 +225,17 @@
         <line>
             <code>  /// Release this token reference. Decrements the internal reference counter.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void release() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (_hasRef) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>      _refCount--;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -249,25 +246,25 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  void update(SquadronCancelationToken token) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    final ex = token.exception;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>    if (ex != null &amp;&amp; !_completer.isCompleted) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      _exception = ex;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      _completer.complete(ex);</code>
+            <code>      _exception = ex;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      _completer.complete(ex);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

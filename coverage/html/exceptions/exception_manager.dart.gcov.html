@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-03-02</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>28</td><td>40</td><td class="low">70.0%</td>
+                            <th scope="row">Lines</th><td>25</td><td>35</td><td class="low">71.4%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -67,226 +67,211 @@
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../squadron.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import '_well_known_exceptions.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '_well_known_exceptions.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code>import 'squadron_canceled_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import 'squadron_canceled_exception.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import 'squadron_canceled_exceptions.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import 'squadron_canceled_exceptions.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>import 'squadron_error.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>import 'squadron_error.dart';</code></td>
+                    <td>7</td><td></td><td></td><td><code>import 'squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>import 'squadron_exception.dart';</code></td>
+                    <td>8</td><td></td><td></td><td><code>import 'squadron_timeout_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>import 'squadron_timeout_exception.dart';</code></td>
+                    <td>9</td><td></td><td></td><td><code>import 'worker_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>import 'worker_exception.dart';</code></td>
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                    <td>11</td><td></td><td></td><td><code>typedef WorkerExceptionDeserializer = WorkerException? Function(List props);</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>typedef WorkerExceptionDeserializer = WorkerException? Function(List props);</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>14</td><td></td><td></td><td><code>typedef SquadronExceptionDeserializer = SquadronException? Function(List props);</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>typedef SquadronExceptionDeserializer = SquadronException? Function(List props);</code></td>
+                    <td>15</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                    <td>16</td><td></td><td></td><td><code>class ExceptionManager {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>2</td><td><code>class ExceptionManager {</code></td>
+                    <td>17</td><td></td><td>12</td><td><code>  ExceptionManager();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>2</td><td><code>  final _deserializers = &lt;String, SquadronExceptionDeserializer&gt;{</code></td>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>2</td><td><code>    $canceledExceptionType: SquadronCanceledException.deserialize,</code></td>
+                    <td>19</td><td></td><td>7</td><td><code>  final _deserializers = &lt;String, SquadronExceptionDeserializer&gt;{</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>2</td><td><code>    $timeoutExceptionType: SquadronTimeoutException.deserialize,</code></td>
+                    <td>20</td><td></td><td>7</td><td><code>    $canceledExceptionType: SquadronCanceledException.deserialize,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>2</td><td><code>    $canceledExceptionsType: SquadronCanceledExceptions.deserialize,</code></td>
+                    <td>21</td><td></td><td>7</td><td><code>    $timeoutExceptionType: SquadronTimeoutException.deserialize,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>2</td><td><code>    $squadronErrorType: SquadronErrorExt.deserialize,</code></td>
+                    <td>22</td><td></td><td>7</td><td><code>    $canceledExceptionsType: SquadronCanceledExceptions.deserialize,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>2</td><td><code>    $workerExceptionType: WorkerException.deserialize,</code></td>
+                    <td>23</td><td></td><td>7</td><td><code>    $squadronErrorType: SquadronErrorExt.deserialize,</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>  };</code></td>
+                <tr class="lineCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>7</td><td><code>    $workerExceptionType: WorkerException.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code></code></td>
+                    <td>25</td><td></td><td></td><td><code>  };</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is</code></td>
+                    <td>26</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>  /// already registered, registering it again will have no effect.</code></td>
+                    <td>27</td><td></td><td></td><td><code>  /// Registers a deserializer for a custom [WorkerException]. If the deserializer is</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>2</td><td><code>  void register(</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code>  /// already registered, registering it again will have no effect.</code></td>
                 </tr>
-                <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>      String exceptionTypeId, WorkerExceptionDeserializer deserializer) {</code></td>
+                <tr class="lineCov" title="Line 29" id="line29">
+                    <td>29</td><td></td><td>3</td><td><code>  void register(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>2</td><td><code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code></td>
+                <tr class="noop" title="Line 30" id="line30">
+                    <td>30</td><td></td><td></td><td><code>      String exceptionTypeId, WorkerExceptionDeserializer deserializer) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
+                <tr class="lineCov" title="Line 31" id="line31">
+                    <td>31</td><td></td><td>4</td><td><code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>0</td><td><code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code></td>
+                    <td>32</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>0</td><td><code>          StackTrace.current);</code></td>
+                    <td>33</td><td></td><td>0</td><td><code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code></td>
                 </tr>
-                <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineNoCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>0</td><td><code>          StackTrace.current);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>3</td><td><code>    final existing = _deserializers[exceptionTypeId];</code></td>
+                <tr class="noop" title="Line 35" id="line35">
+                    <td>35</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>2</td><td><code>    if (existing != null &amp;&amp; existing != deserializer) {</code></td>
+                    <td>36</td><td></td><td>6</td><td><code>    _deserializers[exceptionTypeId] = deserializer;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>0</td><td><code>      Squadron.config(</code></td>
+                <tr class="lineCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>0</td><td><code>          'Replacing exception deserializer for "$exceptionTypeId"');</code></td>
+                <tr class="noop" title="Line 38" id="line38">
+                    <td>38</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>    }</code></td>
+                    <td>39</td><td></td><td></td><td><code>  /// Unregisters a deserializer that was previously registered, does nothing otherwise.</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>3</td><td><code>    _deserializers[exceptionTypeId] = deserializer;</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code>  /// Please note that for a deregistration to have an effect, the exact same instance that</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>  /// was provided to [register] must be provided to this method; avoid passing lambdas,</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code></code></td>
+                    <td>42</td><td></td><td></td><td><code>  /// prefer passing static methods or top-level functions instead.</code></td>
                 </tr>
-                <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code>  /// Unregisters a deserializer that was previously registered, does nothing otherwise.</code></td>
+                <tr class="lineCov" title="Line 43" id="line43">
+                    <td>43</td><td></td><td>2</td><td><code>  void unregister(String exceptionTypeId) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>  /// Please note that for a deregistration to have an effect, the exact same instance that</code></td>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>4</td><td><code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>  /// was provided to [register] must be provided to this method; avoid passing lambdas,</code></td>
+                <tr class="lineNoCov" title="Line 45" id="line45">
+                    <td>45</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
                 </tr>
-                <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code>  /// prefer passing static methods or top-level functions instead.</code></td>
+                <tr class="lineNoCov" title="Line 46" id="line46">
+                    <td>46</td><td></td><td>0</td><td><code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>1</td><td><code>  void unregister(String exceptionTypeId) {</code></td>
+                <tr class="lineNoCov" title="Line 47" id="line47">
+                    <td>47</td><td></td><td>0</td><td><code>          StackTrace.current);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>2</td><td><code>    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {</code></td>
+                <tr class="noop" title="Line 48" id="line48">
+                    <td>48</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create(</code></td>
+                <tr class="lineCov" title="Line 49" id="line49">
+                    <td>49</td><td></td><td>6</td><td><code>    _deserializers.remove(exceptionTypeId);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>0</td><td><code>          'Invalid exception type ID: $exceptionTypeId is reserved.',</code></td>
+                <tr class="noop" title="Line 50" id="line50">
+                    <td>50</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>0</td><td><code>          StackTrace.current);</code></td>
+                <tr class="noop" title="Line 51" id="line51">
+                    <td>51</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>    }</code></td>
+                    <td>52</td><td></td><td></td><td><code>  /// Deserializes a [List] that was produced by [serialize].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>3</td><td><code>    Squadron.config('Removing exception deserializer for "$exceptionTypeId"');</code></td>
+                    <td>53</td><td></td><td>14</td><td><code>  SquadronException? deserialize(List? data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>3</td><td><code>    _deserializers.remove(exceptionTypeId);</code></td>
+                    <td>54</td><td></td><td>7</td><td><code>    if (data == null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 55" id="line55">
-                    <td>55</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 55" id="line55">
+                    <td>55</td><td></td><td>7</td><td><code>      return null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
-                    <td>56</td><td></td><td></td><td><code></code></td>
+                    <td>56</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code>  /// Deserializes a [List] that was produced by [serialize].</code></td>
+                <tr class="lineCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>9</td><td><code>    final exceptionType = data[0];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>2</td><td><code>  SquadronException? deserialize(List? data) {</code></td>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code>    SquadronException? error;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>1</td><td><code>    if (data == null) {</code></td>
+                <tr class="lineNoCov" title="Line 59" id="line59">
+                    <td>59</td><td></td><td>0</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 60" id="line60">
-                    <td>60</td><td></td><td>1</td><td><code>      return null;</code></td>
+                    <td>60</td><td></td><td>13</td><td><code>      final deserializer = _deserializers[exceptionType];</code></td>
                 </tr>
-                <tr class="noop" title="Line 61" id="line61">
-                    <td>61</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 61" id="line61">
+                    <td>61</td><td></td><td>9</td><td><code>      error = deserializer?.call(data) ??</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>2</td><td><code>    final exceptionType = data[0];</code></td>
+                    <td>62</td><td></td><td>1</td><td><code>          SquadronErrorExt.create(</code></td>
                 </tr>
-                <tr class="noop" title="Line 63" id="line63">
-                    <td>63</td><td></td><td></td><td><code>    SquadronException? error;</code></td>
+                <tr class="lineCov" title="Line 63" id="line63">
+                    <td>63</td><td></td><td>2</td><td><code>              'failed to deserialize exception information: $data',</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>0</td><td><code>    try {</code></td>
+                <tr class="lineCov" title="Line 64" id="line64">
+                    <td>64</td><td></td><td>2</td><td><code>              StackTrace.current);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>3</td><td><code>      final deserializer = _deserializers[exceptionType];</code></td>
+                <tr class="lineNoCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>0</td><td><code>    } catch (ex, st) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>2</td><td><code>      error = deserializer?.call(data) ??</code></td>
+                <tr class="lineNoCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>0</td><td><code>      error = SquadronErrorExt.create(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>1</td><td><code>          SquadronErrorExt.create(</code></td>
+                <tr class="lineNoCov" title="Line 67" id="line67">
+                    <td>67</td><td></td><td>0</td><td><code>          'failed to deserialize exception information: $ex', st);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>2</td><td><code>              'failed to deserialize exception information: $data',</code></td>
+                <tr class="noop" title="Line 68" id="line68">
+                    <td>68</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>2</td><td><code>              StackTrace.current);</code></td>
+                    <td>69</td><td></td><td>5</td><td><code>    return error;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>0</td><td><code>    } catch (ex, st) {</code></td>
+                <tr class="lineCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>7</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>0</td><td><code>      error = SquadronErrorExt.create(</code></td>
-                </tr>
-                <tr class="lineNoCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>0</td><td><code>          'failed to deserialize exception information: $ex', st);</code></td>
-                </tr>
-                <tr class="noop" title="Line 73" id="line73">
-                    <td>73</td><td></td><td></td><td><code>    }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>1</td><td><code>    return error;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>1</td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 76" id="line76">
-                    <td>76</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 71" id="line71">
+                    <td>71</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

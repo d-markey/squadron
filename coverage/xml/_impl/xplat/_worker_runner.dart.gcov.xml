@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.82539684" lines-covered="52" lines-valid="63" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8888889" lines-covered="120" lines-valid="135" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
         </line>
         <line>
+            <code>import 'dart:isolate';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
-            <code>import '../../channel.dart';</code>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line>
             <code>import '../../exceptions/squadron_error.dart';</code>
@@ -17,22 +23,19 @@
             <code>import '../../exceptions/squadron_exception.dart';</code>
         </line>
         <line>
-            <code>import '../../exceptions/worker_exception.dart';</code>
-        </line>
-        <line>
             <code>import '../../local_worker/local_worker.dart';</code>
         </line>
         <line>
-            <code>import '../../squadron.dart';</code>
+            <code>import '../../tokens/_cancelation_token_ref.dart';</code>
         </line>
         <line>
-            <code>import '../../worker/worker.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code>import '../../typedefs.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_channel.dart';</code>
-        </line>
-        <line>
-            <code>import '../../worker/worker_message.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_request.dart';</code>
@@ -41,7 +44,58 @@
             <code>import '../../worker_service.dart';</code>
         </line>
         <line>
-            <code>import '_worker_monitor.dart';</code>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>class _NoLogOutput extends LogOutput {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>  @override</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  void output(OutputEvent event) {/* ignore */}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>class _EmptyLogPrinter extends LogPrinter {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>  @override</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  List&lt;String&gt; log(LogEvent event) =&gt; const [''];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>class _NoLogFilter extends LogFilter {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>  @override</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  bool shouldLog(LogEvent event) =&gt; true;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
         </line>
         <line>
             <code/>
@@ -50,11 +104,77 @@
             <code>class WorkerRunner {</code>
         </line>
         <line>
-            <code>  /// Constructs a new worker runner monitored by [monitor].</code>
+            <code>  /// Constructs a new worker runner.</code>
         </line>
-        <line hits="2">
-            <code>  WorkerRunner(WorkerMonitor monitor) : _monitor = monitor;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>  WorkerRunner(this._terminate);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  void Function(WorkerRunner) _terminate;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final logger = Logger(</code>
+        </line>
+        <line>
+            <code>    filter: _NoLogFilter(),</code>
+        </line>
+        <line>
+            <code>    printer: _EmptyLogPrinter(),</code>
+        </line>
+        <line>
+            <code>    output: _NoLogOutput(),</code>
+        </line>
+        <line>
+            <code>  );</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  Map&lt;int, CommandHandler&gt;? _operations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  ServiceInstaller? _installer;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  bool _terminationRequested = false;</code>
+        </line>
+        <line>
+            <code>  int _executing = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  Map&lt;int, SquadronCallback&gt;? _streamCancelers;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  int _streamId = 0;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  void Function(OutputEvent)? _logForwarder;</code>
         </line>
         <line>
             <code/>
@@ -62,66 +182,81 @@
         <line>
             <code>  /// Constructs a new worker runner for a [localWorker].</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  factory WorkerRunner.use(LocalWorker localWorker) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>    final runner = WorkerRunner(WorkerMonitor(Channel.noop));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    final runner = WorkerRunner((r) =&gt; LocalWorker.terminate());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>    runner._operations.addAll(localWorker.service.operations);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>    runner._operations = localWorker.service.operations;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>    return runner;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>  }</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  final _operations = &lt;int, CommandHandler&gt;{};</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  final WorkerMonitor _monitor;</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Called by the platform worker upon startup, in response to a start [WorkerRequest]. [channelInfo] is an opaque</code>
+            <code>  /// Called by the platform worker upon startup, in response to a start</code>
         </line>
         <line>
-            <code>  /// object sent back from the platform worker to the Squadron [Worker] and used to communicate with the platform</code>
+            <code>  /// [WorkerRequest]. [channelInfo] is an opaque object sent back from the</code>
         </line>
         <line>
-            <code>  /// worker. Typically, [channelInfo] would be a [SendPort] (native) or a [MessagePort] (browser). [initializer]</code>
+            <code>  /// platform worker to the Squadron [Worker] and used to communicate with the</code>
         </line>
         <line>
-            <code>  /// is called to build the [WorkerService] associated to the worker. The runner's [_operations] map will be</code>
+            <code>  /// platform worker. Typically, [channelInfo] would be a [SendPort] (native)</code>
         </line>
         <line>
-            <code>  /// populated with operations from the service.</code>
+            <code>  /// or a [MessagePort] (browser). [initializer] is called to build the</code>
         </line>
-        <line hits="1">
-            <code>  Future connect(List? startRequest, Object channelInfo,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>  /// [WorkerService] associated to the worker. The runner's [_operations] map</code>
+        </line>
+        <line>
+            <code>  /// will be set with operations from the service.</code>
+        </line>
+        <line hits="7">
+            <code>  Future&lt;void&gt; connect(WorkerRequest? startRequest, PlatformChannel channelInfo,</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      WorkerInitializer initializer) async {</code>
         </line>
-        <line hits="1">
-            <code>    startRequest?.unwrapRequestInPlace();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>    if (startRequest != null) {</code>
         </line>
-        <line hits="1">
+        <line hits="14">
+            <code>      startRequest.unwrapRequestInPlace(logger);</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="7">
             <code>    final client = startRequest?.client;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="25">
+            <code>    _logForwarder = (event) =&gt; client?.log(event.origin);</code>
+            <hit count="25" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="14">
+            <code>    Logger.addOutputListener(_logForwarder!);</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -129,13 +264,13 @@
         <line>
             <code>    if (startRequest == null) {</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      throw SquadronErrorExt.create(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>          'connection request expected', StackTrace.current);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else if (client == null) {</code>
@@ -155,9 +290,9 @@
         <line>
             <code>    try {</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      if (!startRequest.isConnection) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        throw SquadronErrorExt.create(</code>
@@ -165,9 +300,9 @@
         <line hits="0">
             <code>            'connection request expected', StackTrace.current);</code>
         </line>
-        <line hits="2">
-            <code>      } else if (_operations.isNotEmpty) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>      } else if (_operations != null) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        throw SquadronErrorExt.create('already connected', StackTrace.current);</code>
@@ -178,35 +313,16 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>      Squadron.setId(startRequest.id!);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      Squadron.setParent(client);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      Squadron.logLevel = startRequest.logLevel!;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      Squadron.debugMode = (startRequest.travelTime != null);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line>
             <code>      WorkerService service;</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      final init = initializer(startRequest);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      if (init is Future) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        service = await init;</code>
@@ -223,42 +339,38 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>      final operations = service.operations;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="42">
+            <code>      if (service.operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code>
+            <hit count="42" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>      if (operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
+        <line hits="2">
             <code>        throw SquadronErrorExt.create(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>            'invalid command identifier in service operations map; command ids must be &gt; 0',</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>            StackTrace.current);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
-        <line hits="2">
-            <code>      _operations.addAll(operations);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>      _operations = service.operations;</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>      final install = _monitor.install(service);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>      final install = _install(service);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      if (install is Future) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        await install;</code>
@@ -269,16 +381,16 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      client.connect(channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } catch (ex, st) {</code>
         </line>
-        <line hits="2">
+        <line hits="4">
             <code>      client.error(SquadronException.from(ex, st));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -290,55 +402,62 @@
             <code/>
         </line>
         <line>
-            <code>  /// [WorkerRequest] handler dispatching commands according to the [_operations] map.</code>
+            <code>  /// [WorkerRequest] handler dispatching commands according to the</code>
         </line>
-        <line hits="2">
+        <line>
+            <code>  /// [_operations] map.</code>
+        </line>
+        <line hits="8">
             <code>  void processMessage(List request) async {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    request.unwrapRequestInPlace();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="15">
+            <code>    request.unwrapRequestInPlace(logger);</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    final client = request.client;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    if (request.isTermination) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // terminate the worker</code>
         </line>
-        <line hits="2">
-            <code>      return _monitor.terminate();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      return _shutdown();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    } else if (request.isTokenCancelation) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // cancel a token</code>
         </line>
-        <line hits="3">
-            <code>      return _monitor.updateToken(request.cancelToken!);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      final token = request.cancelToken!;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
+            <code>      return _getTokenRef(token).update(token);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
             <code>    } else if (request.isStreamCancelation) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // cancel a stream</code>
         </line>
-        <line hits="4">
-            <code>      return _monitor.cancelStream(request.streamId!);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="19">
+            <code>      return _streamCancelers?[request.streamId]?.call();</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else if (client == null) {</code>
@@ -358,17 +477,17 @@
         <line>
             <code>    // start monitoring execution</code>
         </line>
-        <line hits="3">
-            <code>    final tokenRef = _monitor.begin(request);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>    final tokenRef = _begin(request);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    try {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      if (request.isConnection) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        // connection request must be handled beforehand</code>
@@ -379,15 +498,18 @@
         <line hits="0">
             <code>            'unexpected connection request: $request', StackTrace.current);</code>
         </line>
-        <line hits="3">
-            <code>      } else if (_operations.isEmpty) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>      } else if (_operations == null) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code>
         </line>
         <line hits="0">
-            <code>        throw WorkerException('worker service is not ready');</code>
+            <code>        throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0">
+            <code>            'worker service is not ready', StackTrace.current);</code>
         </line>
         <line>
             <code>      }</code>
@@ -398,30 +520,37 @@
         <line>
             <code>      // find the operation matching the request command</code>
         </line>
-        <line hits="4">
-            <code>      final op = _operations[request.command];</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="22">
+            <code>      final op = _operations![request.command];</code>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      if (op == null) {</code>
         </line>
+        <line hits="1">
+            <code>        throw SquadronErrorExt.create(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
         <line hits="3">
-            <code>        throw WorkerException('unknown command: ${request.command}');</code>
+            <code>            'unknown command: ${request.command}', StackTrace.current);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
         <line>
+            <code/>
+        </line>
+        <line>
             <code>      // process</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      dynamic result = op(request);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      if (result is Future) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        result = await result;</code>
@@ -435,20 +564,20 @@
         <line>
             <code>      // send results back with the proper reply method</code>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>      final reply = request.reply!;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="13">
             <code>      if (result is Stream &amp;&amp; client.canStream(result)) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        // result is a stream: forward data to the client</code>
         </line>
-        <line hits="3">
-            <code>        await client.pipe(result, reply, _monitor);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>        await _pipe(result, client, reply);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
@@ -456,23 +585,23 @@
         <line>
             <code>        // result is a value: send to the client</code>
         </line>
-        <line hits="2">
+        <line hits="7">
             <code>        reply(result);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
         </line>
         <line hits="1">
-            <code>    } catch (e, st) {</code>
+            <code>    } catch (ex, st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // error: send to client</code>
         </line>
-        <line hits="3">
-            <code>      client.error(SquadronException.from(e, st));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>      client.error(SquadronException.from(ex, st));</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } finally {</code>
@@ -480,9 +609,9 @@
         <line>
             <code>      // stop monitoring execution</code>
         </line>
-        <line hits="2">
-            <code>      _monitor.done(tokenRef);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>      _done(tokenRef);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -490,6 +619,413 @@
         <line hits="1">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="8">
+            <code>  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =&gt;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      (token == null)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>          ? CancelationTokenReference.noToken</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>          : _cancelTokens.putIfAbsent(</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9">
+            <code>              token.id, () =&gt; CancelationTokenReference(token.id));</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Starts monitoring execution of this [request]. If the request contains a</code>
+        </line>
+        <line>
+            <code>  /// cancelation token, it is overridden with a [CancelationTokenReference]</code>
+        </line>
+        <line>
+            <code>  /// and this reference is returned to the sender. Otherwise, returns</code>
+        </line>
+        <line>
+            <code>  /// [CancelationTokenReference.noToken].</code>
+        </line>
+        <line hits="7">
+            <code>  CancelationTokenReference _begin(WorkerRequest request) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="14">
+            <code>    _executing++;</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="15">
+            <code>    final token = _getTokenRef(request.cancelToken);</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>    token.usedBy(request);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    return token;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Stops monitoring execution and releases the [tokenRef].</code>
+        </line>
+        <line hits="7">
+            <code>  void _done(CancelationTokenReference tokenRef) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    tokenRef.release();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="14">
+            <code>    if (tokenRef.refCount == 0) {</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      _cancelTokens.remove(tokenRef.id);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="14">
+            <code>    _executing--;</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10">
+            <code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      _unmount();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Forwards stream events to client.</code>
+        </line>
+        <line hits="6">
+            <code>  Future&lt;void&gt; _pipe(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      Stream stream, WorkerChannel client, void Function(dynamic) reply) {</code>
+        </line>
+        <line hits="1">
+            <code>    StreamSubscription? subscription;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>    final done = Completer();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // stream canceler</code>
+        </line>
+        <line hits="6">
+            <code>    void onDone() {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      client.closeStream();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      subscription?.cancel();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      done.complete();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // register stream canceler callback and connect stream with client</code>
+        </line>
+        <line hits="5">
+            <code>    final streamId = _registerStreamCanceler(onDone);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>    reply(streamId);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>    // start forwarding messages to the client</code>
+        </line>
+        <line hits="6">
+            <code>    subscription = stream.listen(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>      (data) =&gt; reply(data),</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10">
+            <code>      onError: (ex, st) =&gt; client.error(SquadronException.from(ex, st)),</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      onDone: onDone,</code>
+        </line>
+        <line>
+            <code>      cancelOnError: false,</code>
+        </line>
+        <line>
+            <code>    );</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="21">
+            <code>    return done.future.whenComplete(() =&gt; _unregisterStreamCanceler(streamId));</code>
+            <hit count="21" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Assigns a stream ID to the stream canceler callback and registers the</code>
+        </line>
+        <line>
+            <code>  /// callback.</code>
+        </line>
+        <line hits="5">
+            <code>  int _registerStreamCanceler(SquadronCallback canceler) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10">
+            <code>    final streamId = ++_streamId;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16">
+            <code>    (_streamCancelers ??= &lt;int, SquadronCallback&gt;{})[streamId] = canceler;</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    return streamId;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Unregisters the stream canceled callback associated to the [streamId].</code>
+        </line>
+        <line hits="5">
+            <code>  void _unregisterStreamCanceler(int streamId) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>    final canceler = _streamCancelers?[streamId];</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    if (canceler != null) {</code>
+        </line>
+        <line hits="11">
+            <code>      _streamCancelers?.remove(streamId);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Installs the service if it implements [ServiceInstaller].</code>
+        </line>
+        <line hits="7">
+            <code>  FutureOr&lt;void&gt; _install(WorkerService service) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>    if (service is ServiceInstaller) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      _installer = service as ServiceInstaller;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>      return _installer!.install();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Terminates the worker if there is no pending execution. Otherwise, marks</code>
+        </line>
+        <line>
+            <code>  /// the worker as terminating and termination will be effective when all</code>
+        </line>
+        <line>
+            <code>  /// pending executions have completed.</code>
+        </line>
+        <line hits="6">
+            <code>  void _shutdown() {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    if (_executing == 0) {</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      _unmount();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="3">
+            <code>      _terminationRequested = true;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="6">
+            <code>  void _unmount() {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>    if (_installer != null) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      // uninstall the service if necessary</code>
+        </line>
+        <line>
+            <code>      try {</code>
+        </line>
+        <line hits="2">
+            <code>        var res = _installer!.uninstall();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>        if (res is Future) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          res</code>
+        </line>
+        <line hits="3">
+            <code>              .onError((ex, st) =&gt; {/* swallow excepions */})</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>              .whenComplete(_exit);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        } else {</code>
+        </line>
+        <line hits="0">
+            <code>          _exit();</code>
+        </line>
+        <line>
+            <code>        }</code>
+        </line>
+        <line>
+            <code>      } catch (ex) {/* swallow exceptions*/}</code>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line hits="6">
+            <code>      _exit();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="0">
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="6">
+            <code>  void _exit() {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    _terminate(this);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>    if (_logForwarder != null) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>      Logger.removeOutputListener(_logForwarder!);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="0">
+            <code>  }</code>
         </line>
         <line>
             <code>}</code>

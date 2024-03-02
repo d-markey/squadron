@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-02-11</dd>
+                    <dd>2024-03-02</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -73,7 +73,7 @@
                     <td>4</td><td></td><td></td><td><code>class WorkerStat {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 5" id="line5">
-                    <td>5</td><td></td><td>2</td><td><code>  WorkerStat._(</code></td>
+                    <td>5</td><td></td><td>8</td><td><code>  WorkerStat._(</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
                     <td>6</td><td></td><td></td><td><code>      this.workerType,</code></td>
@@ -121,10 +121,10 @@
                     <td>20</td><td></td><td></td><td><code>  /// The worker ID.</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>0</td><td><code>  String get id =&gt; _id;</code></td>
+                    <td>21</td><td></td><td>0</td><td><code>  int get id =&gt; _id;</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>  String _id;</code></td>
+                    <td>22</td><td></td><td></td><td><code>  int _id;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code></code></td>
@@ -211,10 +211,10 @@
                     <td>50</td><td></td><td></td><td><code>extension WorkerStatExt on WorkerStat {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>1</td><td><code>  WorkerStat withWorkerId(String workerId) {</code></td>
+                    <td>51</td><td></td><td>3</td><td><code>  WorkerStat withHashCode(int hashCode) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>1</td><td><code>    _id = workerId;</code></td>
+                    <td>52</td><td></td><td>3</td><td><code>    _id = hashCode;</code></td>
                 </tr>
                 <tr class="noop" title="Line 53" id="line53">
                     <td>53</td><td></td><td></td><td><code>    return this;</code></td>
@@ -226,13 +226,13 @@
                     <td>55</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>1</td><td><code>  static WorkerStat create(</code></td>
+                    <td>56</td><td></td><td>4</td><td><code>  static WorkerStat create(</code></td>
                 </tr>
                 <tr class="noop" title="Line 57" id="line57">
                     <td>57</td><td></td><td></td><td><code>          Type workerType,</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code>          String id,</code></td>
+                    <td>58</td><td></td><td></td><td><code>          int id,</code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
                     <td>59</td><td></td><td></td><td><code>          bool isStopped,</code></td>
@@ -259,7 +259,7 @@
                     <td>66</td><td></td><td></td><td><code>          Duration idleTime) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>1</td><td><code>      WorkerStat._(workerType, id, isStopped, status, workload, maxWorkload,</code></td>
+                    <td>67</td><td></td><td>4</td><td><code>      WorkerStat._(workerType, id, isStopped, status, workload, maxWorkload,</code></td>
                 </tr>
                 <tr class="noop" title="Line 68" id="line68">
                     <td>68</td><td></td><td></td><td><code>          totalWorkload, totalErrors, upTime, idleTime);</code></td>

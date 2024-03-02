@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8786127" lines-covered="152" lines-valid="173" package="/pool" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8764045" lines-covered="156" lines-valid="178" package="/pool" testname="lcov.info" version="1.5">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="152" lines-valid="173" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="152" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="156" lines-valid="178" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="156" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

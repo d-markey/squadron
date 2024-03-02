@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="23" lines-valid="23" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="16" lines-valid="16" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -17,9 +17,6 @@
             <code/>
         </line>
         <line>
-            <code>import '../squadron.dart';</code>
-        </line>
-        <line>
             <code>import '_well_known_exceptions.dart';</code>
         </line>
         <line>
@@ -35,74 +32,66 @@
             <code>abstract class SquadronException implements Exception {</code>
         </line>
         <line>
-            <code>  /// This method returns [error] if it is a [SquadronException] (enriching it with [workerId] and [command] if it</code>
+            <code>  /// This method returns [error] if it is a [SquadronException] (enriching it</code>
         </line>
         <line>
-            <code>  /// is a [WorkerException]). Otherwise, it returns a new [WorkerException] wrapping [error] and [stackTrace].</code>
+            <code>  /// with [command] if it is a [WorkerException]). Otherwise, it returns a new</code>
         </line>
-        <line hits="2">
+        <line>
+            <code>  /// [WorkerException] wrapping [error] and [stackTrace].</code>
+        </line>
+        <line hits="11">
             <code>  static SquadronException from(Object error,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>      [StackTrace? stackTrace, String? workerId, int? command]) {</code>
+            <code>      [StackTrace? stackTrace, int? command]) {</code>
         </line>
-        <line hits="2">
+        <line hits="11">
             <code>    if (error is WorkerException) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>      return error</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      return error..withCommand(command);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        ..withCommand(command)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        ..withWorkerId(workerId);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
+        <line hits="10">
             <code>    } else if (error is SquadronException) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      return error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>    } else if (error is CanceledException) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      return error.toSquadronException();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    } else if (error is TimeoutException) {</code>
+            <code>      return error.toSquadronException();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
+            <code>    } else if (error is TimeoutException) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
             <code>      return error.toSquadronException();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>      return WorkerException(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="5">
             <code>        error.toString(),</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        stackTrace: stackTrace,</code>
-        </line>
-        <line>
-            <code>        workerId: workerId,</code>
         </line>
         <line>
             <code>        command: command,</code>
@@ -113,53 +102,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  static SquadronException? fromString(String message) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    try {</code>
-        </line>
-        <line hits="1">
-            <code>      final data = jsonDecode(message);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      if (data is List) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        Squadron.debug('SquadronException.fromString is really used!');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>        return Squadron.exceptionManager?.deserialize(data);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    } catch (ex) {</code>
-        </line>
-        <line>
-            <code>      // not a String representing a SquadronException</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line>
-            <code>    return null;</code>
-        </line>
-        <line>
-            <code>  }</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -202,13 +147,13 @@
         <line>
             <code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

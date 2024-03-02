@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90178573" lines-covered="101" lines-valid="112" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9122807" lines-covered="104" lines-valid="114" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code>import 'dart:convert';</code>
         </line>
         <line>
             <code>import 'dart:isolate';</code>
@@ -14,10 +17,16 @@
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
         </line>
         <line>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
             <code>import '../../channel.dart' show Channel;</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/exception_manager.dart';</code>
         </line>
         <line>
             <code>import '../../exceptions/squadron_error.dart';</code>
@@ -29,10 +38,10 @@
             <code>import '../../exceptions/worker_exception.dart';</code>
         </line>
         <line>
-            <code>import '../../squadron.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line>
-            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
+            <code>import '../../typedefs.dart';</code>
         </line>
         <line>
             <code>import '../../worker/worker_channel.dart';</code>
@@ -56,38 +65,26 @@
             <code/>
         </line>
         <line>
-            <code>typedef EntryPoint = FutureOr&lt;void&gt; Function(List);</code>
-        </line>
-        <line>
-            <code>typedef PlatformWorker = Isolate;</code>
-        </line>
-        <line>
-            <code>typedef PlatformChannel = SendPort;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>typedef PlatformWorkerHook = FutureOr&lt;void&gt; Function(PlatformWorker);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
             <code>class _BaseVmChannel {</code>
         </line>
-        <line hits="1">
-            <code>  _BaseVmChannel._(this.workerId, this._sendPort);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>  _BaseVmChannel._(this._sendPort, this._logger);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by the worker owner. Otherwise, [SendPort]</code>
+            <code>  final Logger? _logger;</code>
         </line>
         <line>
-            <code>  /// to return values to the client.</code>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by</code>
+        </line>
+        <line>
+            <code>  /// the worker owner. Otherwise, [SendPort] to return values to the client.</code>
         </line>
         <line>
             <code>  final SendPort _sendPort;</code>
@@ -96,50 +93,41 @@
             <code/>
         </line>
         <line>
-            <code>  /// The ID of the worker attached to this [Channel].</code>
-        </line>
-        <line>
-            <code>  final String workerId;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
             <code>  /// [Channel] serialization in Native world returns the [SendPort].</code>
         </line>
-        <line hits="2">
+        <line hits="6">
             <code>  PlatformChannel serialize() =&gt; _sendPort;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void _postRequest(WorkerRequest req) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>    req.cancelToken?.ensureStarted();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    req.wrapRequestInPlace();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    try {</code>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>      _sendPort.send(req);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    } on ArgumentError catch (ex, st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>      Squadron.severe('failed to post request $req: $ex');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="1">
+            <code>      _logger?.e(() =&gt; 'failed to post request $req: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>      throw SquadronErrorExt.create(</code>
@@ -156,7 +144,7 @@
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.severe('failed to post request $req: $ex');</code>
+            <code>      _logger?.e(() =&gt; 'failed to post request $req: $ex');</code>
         </line>
         <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
@@ -170,27 +158,27 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void _postResponse(WorkerResponse res) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    res.wrapResponseInPlace();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    try {</code>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>      _sendPort.send(res);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    } on ArgumentError catch (ex, st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      Squadron.severe('failed to post response $res: $ex');</code>
+            <code>      _logger?.e(() =&gt; 'failed to post response $res: $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -208,7 +196,7 @@
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.severe('failed to post response $res: ${ex.runtimeType} $ex');</code>
+            <code>      _logger?.e(() =&gt; 'failed to post response $res: ${ex.runtimeType} $ex');</code>
         </line>
         <line hits="0">
             <code>      throw SquadronException.from(ex, st);</code>
@@ -231,9 +219,15 @@
         <line>
             <code>class _VmChannel extends _BaseVmChannel implements Channel {</code>
         </line>
-        <line hits="2">
-            <code>  _VmChannel._(super.workerId, super.sendPort) : super._();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>  _VmChannel._(super.sendPort, super.logger, this.exceptionManager) : super._();</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final ExceptionManager exceptionManager;</code>
         </line>
         <line>
             <code/>
@@ -247,9 +241,9 @@
         <line>
             <code>  /// [Channel] sharing in Native world returns the same instance.</code>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  Channel share() =&gt; this;</code>
@@ -258,26 +252,29 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a termination [WorkerRequest] to the [Isolate] and clears the [SendPort].</code>
+            <code>  /// Sends a termination [WorkerRequest] to the [Isolate] and clears the</code>
         </line>
-        <line hits="1">
+        <line>
+            <code>  /// [SendPort].</code>
+        </line>
+        <line hits="7">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  FutureOr close() {</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    if (!_closed) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>      _postRequest(WorkerRequestImpl.stop());</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      _closed = true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -289,14 +286,14 @@
             <code/>
         </line>
         <line>
-            <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a single</code>
+            <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code>
         </line>
         <line>
-            <code>  /// value from the [Isolate]</code>
+            <code>  /// [Isolate]. This method expects a single value from the [Isolate]</code>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(int command, List args,</code>
@@ -310,9 +307,9 @@
         <line>
             <code>      bool inspectResponse = false}) {</code>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    if (_closed) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);</code>
@@ -320,29 +317,37 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>    final squadronToken = wrap(token);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    final wrapper = ValueWrapper&lt;T&gt;(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>      WorkerRequestImpl.userCommand(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>          receiver.sendPort, command, args, squadronToken, inspectResponse),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
+            <code>      exceptionManager,</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>      _logger,</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
             <code>      postMethod: _postRequest,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      messages: receiver,</code>
@@ -353,9 +358,9 @@
         <line>
             <code>    );</code>
         </line>
-        <line hits="3">
+        <line hits="18">
             <code>    return wrapper.compute().whenComplete(receiver.close);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -364,14 +369,20 @@
             <code/>
         </line>
         <line>
-            <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the [Isolate]. This method expects a stream of</code>
+            <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code>
         </line>
         <line>
-            <code>  /// values from the [Isolate]. The [Isolate] must send a [WorkerResponse.endOfStream] to close the [Stream].</code>
+            <code>  /// [Isolate]. This method expects a stream of values from the [Isolate].</code>
         </line>
-        <line hits="1">
+        <line>
+            <code>  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the</code>
+        </line>
+        <line>
+            <code>  /// [Stream].</code>
+        </line>
+        <line hits="5">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(int command, List args,</code>
@@ -388,9 +399,9 @@
         <line>
             <code>      bool inspectResponse = false}) {</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    if (_closed) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);</code>
@@ -398,44 +409,52 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>    final squadronToken = SquadronCancelationToken.wrap(token);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="5">
+            <code>    final squadronToken = wrap(token);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    final wrapper = StreamWrapper&lt;T&gt;(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>      WorkerRequestImpl.userCommand(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>          receiver.sendPort, command, args, squadronToken, inspectResponse),</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
+            <code>      exceptionManager,</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      _logger,</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
             <code>      postMethod: _postRequest,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      messages: receiver,</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>      onDone: () {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>        receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>        onDone();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      },</code>
@@ -449,9 +468,9 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>    return wrapper.stream;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -468,45 +487,29 @@
         <line>
             <code>class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {</code>
         </line>
-        <line hits="2">
-            <code>  _VmWorkerChannel._(super.workerId, super.sendPort) : super._();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>  _VmWorkerChannel._(super.sendPort, super.logger) : super._();</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must be called by the [Isolate] upon</code>
+            <code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must</code>
         </line>
         <line>
-            <code>  /// startup.</code>
+            <code>  /// be called by the worker [Isolate] upon startup.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  void connect(Object channelInfo) {</code>
+            <code>  void connect(PlatformChannel channelInfo) {</code>
         </line>
-        <line hits="1">
-            <code>    if (channelInfo is ReceivePort) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      inspectAndReply(channelInfo.sendPort);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } else {</code>
-        </line>
-        <line hits="0">
-            <code>      throw WorkerException(</code>
-        </line>
-        <line hits="0">
-            <code>          'invalid channelInfo ${channelInfo.runtimeType}: ReceivePort expected');</code>
-        </line>
-        <line>
-            <code>    }</code>
+        <line hits="7">
+            <code>    inspectAndReply(channelInfo);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -515,101 +518,110 @@
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
         </line>
         <line>
-            <code>  /// [Isolate] only.</code>
+            <code>  /// This method must be called from the worker [Isolate] only.</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  void reply(dynamic data) =&gt;</code>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>      _postResponse(WorkerResponseImpl.withResult(data));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client. This method must be called from the</code>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
         </line>
         <line>
-            <code>  /// [Isolate] only. Same as [reply] on VM platforms.</code>
+            <code>  /// This method must be called from the worker [Isolate] only. On VM</code>
         </line>
-        <line hits="1">
+        <line>
+            <code>  /// platforms, this is the same as [reply] .</code>
+        </line>
+        <line hits="7">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  void inspectAndReply(dynamic data) =&gt; reply(data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>  void log(String message) =&gt; _postResponse(WorkerResponseImpl.log(message));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="12">
+            <code>  void log(LogEvent message) =&gt; _postResponse(WorkerResponseImpl.log(message));</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns `true` unless [stream] is a</code>
+            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns</code>
         </line>
         <line>
-            <code>  /// [ReceivePort].</code>
+            <code>  /// `true` unless [stream] is a [ReceivePort].</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  bool canStream(Stream stream) =&gt; stream is! ReceivePort;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method must be called from the [Isolate] only.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method</code>
         </line>
-        <line hits="1">
+        <line>
+            <code>  /// must be called from the worker [Isolate] only.</code>
+        </line>
+        <line hits="5">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="10">
             <code>  void closeStream() =&gt; _postResponse(WorkerResponseImpl.closeStream());</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends the [WorkerException] to the worker client. This method must be called from the [Isolate] only.</code>
+            <code>  /// Sends the [WorkerException] to the worker client. This method must be</code>
         </line>
-        <line hits="1">
+        <line>
+            <code>  /// called from the worker [Isolate] only.</code>
+        </line>
+        <line hits="4">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  void error(SquadronException error) {</code>
         </line>
-        <line hits="3">
-            <code>    Squadron.debug('replying with error: ${error.runtimeType} $error');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>    _logger?.t(() =&gt; 'replying with error: ${error.runtimeType} $error');</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    _postResponse(WorkerResponseImpl.withError(error));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -627,28 +639,34 @@
             <code/>
         </line>
         <line>
-            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start [WorkerRequest] with [startArguments]. The future</code>
+            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start</code>
         </line>
         <line>
-            <code>/// completes after the [Isolate]'s main program has provided the [SendPort] via [_VmWorkerChannel.connect].</code>
-        </line>
-        <line hits="1">
-            <code>Future&lt;Channel&gt; openChannel(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>/// [WorkerRequest] with [startArguments]. The future completes after the</code>
         </line>
         <line>
-            <code>    EntryPoint entryPoint, String workerId, List startArguments,</code>
+            <code>/// worker [Isolate]'s main program has provided the [SendPort] via</code>
         </line>
         <line>
-            <code>    [PlatformWorkerHook? hook]) async {</code>
+            <code>/// [_VmWorkerChannel.connect].</code>
         </line>
-        <line hits="1">
+        <line hits="7">
+            <code>Future&lt;Channel&gt; openChannel(EntryPoint entryPoint,</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    ExceptionManager exceptionManager, Logger? logger, List startArguments,</code>
+        </line>
+        <line>
+            <code>    [PlatformThreadHook? hook]) async {</code>
+        </line>
+        <line hits="7">
             <code>  final completer = Completer&lt;Channel&gt;();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  final receiver = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -656,9 +674,9 @@
         <line>
             <code>  final startRequest =</code>
         </line>
-        <line hits="2">
-            <code>      WorkerRequestImpl.start(receiver.sendPort, workerId, startArguments);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>      WorkerRequestImpl.start(receiver.sendPort, startArguments);</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -666,36 +684,36 @@
         <line>
             <code>  late final Isolate isolate;</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  final exitPort = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  final errorPort = ReceivePort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="13">
             <code>  exitPort.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>    Squadron.config('Isolate #$workerId terminated.');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>    logger?.t(() =&gt; 'Isolate terminated.');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    receiver.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    exitPort.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="6">
             <code>    errorPort.close();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  });</code>
@@ -703,35 +721,59 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>  errorPort.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    SquadronException? error;</code>
+        </line>
+        <line>
+            <code>    try {</code>
+        </line>
+        <line hits="4">
+            <code>      final data = jsonDecode(message[0]);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>    final error = SquadronException.fromString(message[0]) ??</code>
+            <code>      if (data is List) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>        WorkerException(message[0],</code>
+        <line hits="4">
+            <code>        error = exceptionManager.deserialize(data.cast&lt;String&gt;());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    } catch (ex) {</code>
+        </line>
+        <line>
+            <code>      // not a String representing a SquadronException</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
         </line>
         <line hits="0">
-            <code>            stackTrace: SquadronException.loadStackTrace(message[1]));</code>
+            <code>    error ??= WorkerException(message[0],</code>
         </line>
-        <line hits="1">
-            <code>    Squadron.warning(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="0">
+            <code>        stackTrace: SquadronException.loadStackTrace(message[1]));</code>
+        </line>
+        <line hits="0">
+            <code>    logger?.d(() =&gt; 'Unhandled error from Isolate: ${error?.message}.');</code>
         </line>
         <line hits="2">
-            <code>        'Unhandled error from Isolate #$workerId: ${error.message}.');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>    if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>      completer.completeError(error, error.stackTrace);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      completer.completeError(error, error.stackTrace);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -742,16 +784,16 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="14">
             <code>  receiver.listen((message) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    final response = message as List;</code>
         </line>
-        <line hits="1">
-            <code>    if (!response.unwrapResponseInPlace()) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="7">
+            <code>    if (!response.unwrapResponseInPlace(exceptionManager, logger)) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      return;</code>
@@ -762,43 +804,43 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    if (!completer.isCompleted) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>      final error = response.error;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      if (error != null) {</code>
         </line>
-        <line hits="1">
-            <code>        isolate.kill(priority: Isolate.immediate);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>        logger?.e(() =&gt; 'connection to Isolate failed: ${response.error}');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
-            <code>        Squadron.severe(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>            'connection to Isolate #$workerId failed: ${response.error}');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
+        <line hits="4">
             <code>        completer.completeError(error, error.stackTrace);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        isolate.kill(priority: Isolate.immediate);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
         </line>
-        <line hits="2">
-            <code>        Squadron.config('connected to Isolate #$workerId');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>        logger?.t(() =&gt; 'connected to Isolate');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>        completer.complete(_VmChannel._(workerId, response.result));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="14">
+            <code>        final channel = _VmChannel._(response.result, logger, exceptionManager);</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>        completer.complete(channel);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -807,7 +849,7 @@
             <code>    } else {</code>
         </line>
         <line hits="0">
-            <code>      Squadron.config('unexpected response: $response');</code>
+            <code>      logger?.e(() =&gt; 'unexpected response: $response');</code>
         </line>
         <line>
             <code>    }</code>
@@ -818,13 +860,13 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  startRequest.wrapRequestInPlace();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  isolate = await Isolate.spawn(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    entryPoint,</code>
@@ -835,13 +877,13 @@
         <line>
             <code>    errorsAreFatal: false,</code>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    onExit: exitPort.sendPort,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>    onError: errorPort.sendPort,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  );</code>
@@ -859,9 +901,9 @@
         <line>
             <code>  } catch (ex) {</code>
         </line>
-        <line hits="1">
-            <code>    Squadron.warning(</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>    logger?.e(() =&gt;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');</code>
@@ -873,13 +915,13 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
-            <code>  Squadron.config('created Isolate #$workerId');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4">
+            <code>  logger?.t(() =&gt; 'created Isolate');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="7">
             <code>  return completer.future;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
@@ -890,23 +932,12 @@
         <line>
             <code>/// Creates a [_VmChannel] from a [SendPort].</code>
         </line>
-        <line hits="1">
-            <code>Channel? deserializeChannel(PlatformChannel? channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    (channelInfo == null) ? null : _VmChannel._('&lt;deserialized&gt;', channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>Channel? deserializeChannel(PlatformChannel? channelInfo, Logger? logger,</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code/>
-        </line>
-        <line>
-            <code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code>
-        </line>
-        <line hits="1">
-            <code>WorkerChannel? deserializeWorkerChannel(PlatformChannel? channelInfo) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <code>        ExceptionManager exceptionManager) =&gt;</code>
         </line>
         <line>
             <code>    (channelInfo == null)</code>
@@ -914,9 +945,26 @@
         <line>
             <code>        ? null</code>
         </line>
-        <line hits="1">
-            <code>        : _VmWorkerChannel._('&lt;deserialized&gt;', channelInfo);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="3">
+            <code>        : _VmChannel._(channelInfo, logger, exceptionManager);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Creates a [_VmWorkerChannel] from a [SendPort].</code>
+        </line>
+        <line hits="7">
+            <code>WorkerChannel? deserializeWorkerChannel(</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        PlatformChannel? channelInfo, Logger? logger) =&gt;</code>
+        </line>
+        <line hits="7">
+            <code>    (channelInfo == null) ? null : _VmWorkerChannel._(channelInfo, logger);</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

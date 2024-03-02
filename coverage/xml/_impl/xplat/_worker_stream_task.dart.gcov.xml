@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-02-11" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8873239" lines-covered="63" lines-valid="71" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8873239" lines-covered="63" lines-valid="71" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -37,29 +37,29 @@
         <line>
             <code>  /// Creates a new [StreamTask].</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>  WorkerStreamTask(this._producer, PerfCounter? counter) : super(counter) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _controller = StreamController&lt;T&gt;(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        onListen: _onListen,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        onPause: _onPause,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        onResume: _onResume,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>        onCancel: _onCancel);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -73,20 +73,20 @@
         <line>
             <code>  final _streamer = Completer&lt;Stream&lt;T&gt;?&gt;();</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  late final StreamController&lt;T&gt; _controller;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -97,9 +97,9 @@
         <line>
             <code>  bool _isPaused = false;</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  StreamSubscription&lt;T&gt;? _subscription;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -194,28 +194,28 @@
         <line>
             <code/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>  FutureOr _onCancel() =&gt; _subscription?.cancel(); /*_subscription?.cancel();*/</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  void _close([SquadronException? exception]) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    _subscription?.cancel();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>    if (!_controller.isClosed) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      if (exception != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>        _controller.addError(exception, exception.stackTrace);</code>
@@ -224,9 +224,9 @@
         <line>
             <code>      }</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      _controller.close();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -237,13 +237,13 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void _done([SquadronException? exception]) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="16">
             <code>      wrapUp(() =&gt; _close(exception), (exception == null));</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -271,28 +271,28 @@
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="7">
             <code>  void _onError(ex, st) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="13">
+            <code>    _controller.addError(SquadronException.from(ex, st), st);</code>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>    _controller.addError(SquadronException.from(ex, st), st);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>  void _onData(T data) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="9">
             <code>    if (isCanceled) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      _done(canceledException);</code>
@@ -300,27 +300,27 @@
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="3">
+        <line hits="13">
             <code>      _controller.add(data);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="5">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>  void _onListen() async {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>    if (_controller.isClosed) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      return _done();</code>
@@ -328,9 +328,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>    if (isCanceled) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      return _done(canceledException);</code>
@@ -341,9 +341,9 @@
         <line hits="0">
             <code>    try {</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>      final stream = await _streamer.future;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      if (stream == null) {</code>
@@ -354,28 +354,28 @@
         <line>
             <code>      } else {</code>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        _subscription = stream.listen(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>          _onData,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>          onError: _onError,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="8">
             <code>          onDone: _done,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        );</code>
         </line>
-        <line hits="4">
+        <line hits="13">
             <code>        if (_paused &gt; 0 &amp;&amp; !_isPaused) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
             <code>          _subscription!.pause();</code>
@@ -400,32 +400,32 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="4">
-            <code>  Future&lt;void&gt; run(W worker) =&gt; super.run(worker).then((_) {</code>
+            <code>  @override</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="16">
+            <code>  Future&lt;void&gt; run(W worker) =&gt; super.run(worker).then((_) {</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20">
             <code>        _streamer.complete(_producer(worker));</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
+        <line hits="12">
             <code>        return _controller.done;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="4">
             <code>      });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>
