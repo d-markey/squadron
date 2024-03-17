@@ -203,7 +203,6 @@ class WorkerPool<W extends Worker> implements WorkerService {
   int _removeWorker(PoolWorker<W> poolWorker, bool force) {
     if (force || _workers.length > concurrencySettings.minWorkers) {
       final worker = poolWorker.worker;
-      final hashCode = poolWorker.worker.hashCode;
       worker.stop();
       _deadWorkerStats.add(worker.stats);
       _removeWorkerAndNotify(poolWorker);
