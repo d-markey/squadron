@@ -1,6 +1,5 @@
 import 'dart:html';
 
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 class Unsendable {}

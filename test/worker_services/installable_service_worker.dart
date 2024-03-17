@@ -18,12 +18,12 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 
   @override
   void install() {
-    logger?.d('$runtimeType.install');
+    channelLogger?.d('$runtimeType.install');
   }
 
   @override
   void uninstall() {
-    logger?.d('$runtimeType.uninstall');
+    channelLogger?.d('$runtimeType.uninstall');
   }
 
   @override
@@ -41,12 +41,12 @@ class InstallableWorker extends Worker implements InstallableService {
 
   @override
   void install() {
-    logger?.d('$runtimeType.install');
+    channelLogger?.d('$runtimeType.install');
   }
 
   @override
   void uninstall() {
-    logger?.d('$runtimeType.uninstall');
+    channelLogger?.d('$runtimeType.uninstall');
   }
 
   @override

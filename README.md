@@ -51,7 +51,7 @@ Offload CPU-bound and long running tasks and give your mobile and Web apps some 
 
 ## <a name="hr"></a>Highly recommended
 
-***With [squadron_builder][pub_squadron_builder], any stateless Dart class can be automatically turned into a service running on dedicated threads.***
+***With [squadron_builder][pub_squadron_builder], any Dart class can be automatically turned into a service running on dedicated threads.***
 
 Stay focus on implementing your service, and let [squadron_builder][pub_squadron_builder] generate the boilerplate code to run it on native `Isolates` as well as `Web Workers`!
 

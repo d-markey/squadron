@@ -1,6 +1,5 @@
 import 'dart:isolate';
 
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 dynamic getUnsendable() => ReceivePort();

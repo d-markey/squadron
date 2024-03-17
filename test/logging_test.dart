@@ -24,7 +24,7 @@ void execute(TestContext testContext) => testContext.run(() {
 
         setUpAll(() async {
           worker = TestWorker(testContext);
-          worker.logger = memoryLogger;
+          worker.channelLogger = memoryLogger;
           await worker.start();
         });
 

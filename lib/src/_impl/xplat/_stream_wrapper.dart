@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
-
 import '../../../squadron.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_response.dart';

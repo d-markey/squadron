@@ -9,7 +9,7 @@ environment:
 dependencies:
   cancelation_token: ^1.1.0
   http: ^1.0.0
-  meta: ^1.11.0
+  meta: ^1.10.0
   logger: ^2.0.2
 
 dev_dependencies:

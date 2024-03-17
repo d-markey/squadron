@@ -74,7 +74,7 @@ void main() async {
 
     pool = SampleWorkerPool(sample_isolate.start, localIdentityWorker,
         workerHook, concurrencySettings);
-    pool.logger = logger;
+    pool.channelLogger = logger;
     await pool.start();
     log('pool started');
 
@@ -139,7 +139,7 @@ void main() async {
 
     log('worker stats:');
     for (var stat in pool.fullStats) {
-      log('  * ${stat.id}: status=${stat.status}, workload=${stat.workload}, maxWorkload=${stat.maxWorkload}, totalWorkload=${stat.totalWorkload}, totalErrors=${stat.totalErrors}');
+      log('  * ${stat.workerHashCode}: status=${stat.status}, workload=${stat.workload}, maxWorkload=${stat.maxWorkload}, totalWorkload=${stat.totalWorkload}, totalErrors=${stat.totalErrors}');
     }
 
     monitor.cancel();

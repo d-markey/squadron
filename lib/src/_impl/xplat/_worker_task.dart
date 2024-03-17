@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import '../../exceptions/task_canceled_exception.dart';
+import '../../pool/task.dart';
 import '../../pool/worker_pool.dart';
 import '../../stats/perf_counter.dart';
 import '../../worker/worker.dart';
 import '../../worker_service.dart';
 import '_helpers.dart';
-import '_task.dart';
 
 /// [WorkerTask] registered in the [WorkerPool].
 abstract class WorkerTask<T, W extends Worker> implements Task<T> {

@@ -1,3 +1,9 @@
+export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
+export 'package:logger/logger.dart' show Logger;
+
+export 'src/annotations/serialize_with.dart';
+export 'src/annotations/squadron_method.dart';
+export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';
 export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
@@ -16,6 +22,7 @@ export 'src/marshalers/generic_marshaler.dart';
 export 'src/marshalers/identity_marshaler.dart';
 export 'src/marshalers/squadron_marshaler.dart';
 export 'src/pool/stream_task.dart';
+export 'src/pool/task.dart';
 export 'src/pool/value_task.dart';
 export 'src/pool/worker_pool.dart';
 export 'src/stats/perf_counter.dart' hide PerfCounterExt;

@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 class WorkerStat {
   WorkerStat._(
       this.workerType,
-      this._id,
+      this.workerHashCode,
       this.isStopped,
       this.status,
       this.workload,
@@ -17,9 +17,8 @@ class WorkerStat {
   /// The worker's runtime type.
   final Type workerType;
 
-  /// The worker ID.
-  int get id => _id;
-  int _id;
+  /// The worker's hashCode.
+  final int workerHashCode;
 
   /// Worker running flag.
   final bool isStopped;
@@ -48,14 +47,9 @@ class WorkerStat {
 
 @internal
 extension WorkerStatExt on WorkerStat {
-  WorkerStat withHashCode(int hashCode) {
-    _id = hashCode;
-    return this;
-  }
-
   static WorkerStat create(
           Type workerType,
-          int id,
+          int workerHashCode,
           bool isStopped,
           String status,
           int workload,
@@ -64,6 +58,6 @@ extension WorkerStatExt on WorkerStat {
           int totalErrors,
           Duration upTime,
           Duration idleTime) =>
-      WorkerStat._(workerType, id, isStopped, status, workload, maxWorkload,
-          totalWorkload, totalErrors, upTime, idleTime);
+      WorkerStat._(workerType, workerHashCode, isStopped, status, workload,
+          maxWorkload, totalWorkload, totalErrors, upTime, idleTime);
 }

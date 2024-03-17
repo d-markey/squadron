@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import '../classes/test_logger.dart';
@@ -12,7 +11,7 @@ class InstallableService implements WorkerService, ServiceInstaller {
       : _throwOnInstall = throwOnInstall,
         _throwOnUninstall = throwOnUninstall;
 
-  Logger? logger = TestLogger(TestFilter());
+  Logger? channelLogger = TestLogger(TestFilter());
 
   final bool _throwOnInstall;
   final bool _throwOnUninstall;
@@ -24,22 +23,22 @@ class InstallableService implements WorkerService, ServiceInstaller {
   FutureOr<void> install() async {
     await Future.delayed(TestService.delay);
     if (_throwOnInstall) {
-      logger?.t('intended failure on install');
+      channelLogger?.t('intended failure on install');
       throw WorkerException('this exception is reported');
     }
     _installed = true;
-    logger?.t('service installed successfully');
+    channelLogger?.t('service installed successfully');
   }
 
   @override
   FutureOr<void> uninstall() async {
     await Future.delayed(TestService.delay);
     if (_throwOnUninstall) {
-      logger?.t('intended failure on uninstall');
+      channelLogger?.t('intended failure on uninstall');
       throw WorkerException('this exception is intentionally not reported');
     }
     _uninstalled = true;
-    logger?.t('service uninstalled successfully');
+    channelLogger?.t('service uninstalled successfully');
   }
 
   Future<bool> isInstalled() async {

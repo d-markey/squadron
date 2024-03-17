@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'platform_stub.dart'

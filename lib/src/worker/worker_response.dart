@@ -127,7 +127,7 @@ extension WorkerResponseExt on WorkerResponse {
 extension LogEventSerialization on LogEvent {
   List serialize() => [
         level.value,
-        message?.toString(),
+        _stringify(message)?.toString(),
         microsecTimeStamp(time),
         error?.toString(),
         stackTrace?.toString(),
@@ -146,5 +146,17 @@ extension LogEventSerialization on LogEvent {
   static Level _getLevel(int? value) {
     if (value == null) return Level.debug;
     return Level.values.where((_) => _.value == value).first;
+  }
+
+  static String? _stringify(dynamic message) {
+    if (message is Function) {
+      try {
+        return _stringify(message());
+      } catch (ex) {
+        return 'Deferred message failed with error: $ex';
+      }
+    } else {
+      return message.toString();
+    }
   }
 }

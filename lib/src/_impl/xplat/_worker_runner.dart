@@ -12,21 +12,7 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
-
-class _NoLogOutput extends LogOutput {
-  @override
-  void output(OutputEvent event) {/* ignore */}
-}
-
-class _EmptyLogPrinter extends LogPrinter {
-  @override
-  List<String> log(LogEvent event) => const [''];
-}
-
-class _NoLogFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) => true;
-}
+import '_internal_logger.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.
@@ -34,11 +20,7 @@ class WorkerRunner {
 
   void Function(WorkerRunner) _terminate;
 
-  final logger = Logger(
-    filter: _NoLogFilter(),
-    printer: _EmptyLogPrinter(),
-    output: _NoLogOutput(),
-  );
+  final internalLogger = InternalLogger();
 
   Map<int, CommandHandler>? _operations;
   ServiceInstaller? _installer;
@@ -70,7 +52,7 @@ class WorkerRunner {
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
     if (startRequest != null) {
-      startRequest.unwrapRequestInPlace(logger);
+      startRequest.unwrapRequestInPlace(internalLogger);
     }
     final client = startRequest?.client;
 
@@ -122,7 +104,7 @@ class WorkerRunner {
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_operations] map.
   void processMessage(List request) async {
-    request.unwrapRequestInPlace(logger);
+    request.unwrapRequestInPlace(internalLogger);
     final client = request.client;
 
     if (request.isTermination) {

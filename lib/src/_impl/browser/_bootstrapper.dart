@@ -8,7 +8,7 @@ void bootstrap(WorkerInitializer initializer, List? command) {
   final com = MessageChannel();
 
   final runner = WorkerRunner((r) {
-    r.logger.t(() => 'terminating Web worker');
+    r.internalLogger.t(() => 'terminating Web worker');
     com.port1.close();
     com.port2.close();
     DedicatedWorkerGlobalScope.instance.close();

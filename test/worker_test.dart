@@ -43,7 +43,7 @@ void execute(TestContext testContext) => testContext.run(() {
 
           test('- start & stop', () async {
             final worker = TestWorker(testContext);
-            worker.logger = memoryLogger;
+            worker.channelLogger = memoryLogger;
 
             await Future.delayed(TestService.shortDelay);
             expect(worker.channel, isNull);
@@ -84,7 +84,7 @@ void execute(TestContext testContext) => testContext.run(() {
             }
 
             final worker = TestWorker(testContext, hook);
-            worker.logger = memoryLogger;
+            worker.channelLogger = memoryLogger;
 
             await Future.delayed(TestService.shortDelay);
             expect(platformTypeName, isNull);
@@ -107,7 +107,7 @@ void execute(TestContext testContext) => testContext.run(() {
             }
 
             final worker = TestWorker(testContext, hook);
-            worker.logger = memoryLogger;
+            worker.channelLogger = memoryLogger;
 
             await Future.delayed(TestService.shortDelay);
             expect(threadType, isNull);
@@ -124,7 +124,7 @@ void execute(TestContext testContext) => testContext.run(() {
           group('- Install', () {
             test('No error', () async {
               final worker = InstallableWorker(testContext);
-              worker.logger = memoryLogger;
+              worker.channelLogger = memoryLogger;
 
               await worker.start();
 
@@ -150,7 +150,7 @@ void execute(TestContext testContext) => testContext.run(() {
             test('Error on installation', () async {
               final worker =
                   InstallableWorker(testContext, throwOnInstall: true);
-              worker.logger = memoryLogger;
+              worker.channelLogger = memoryLogger;
 
               try {
                 await worker.start();
@@ -182,7 +182,7 @@ void execute(TestContext testContext) => testContext.run(() {
             test('Error on uninstallation', () async {
               final worker =
                   InstallableWorker(testContext, throwOnUninstall: true);
-              worker.logger = memoryLogger;
+              worker.channelLogger = memoryLogger;
 
               await worker.start();
               expect(logs, mentions('service installed successfully'));

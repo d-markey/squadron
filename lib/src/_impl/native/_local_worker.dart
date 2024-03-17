@@ -11,8 +11,8 @@ class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _VmLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
     _port.listen(runner.handle);
-    _channel =
-        Channel.deserialize(_port.sendPort, runner.logger, exceptionManager);
+    _channel = Channel.deserialize(
+        _port.sendPort, runner.internalLogger, exceptionManager);
   }
 
   final _port = ReceivePort();

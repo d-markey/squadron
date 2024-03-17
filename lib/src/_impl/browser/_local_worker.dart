@@ -11,8 +11,8 @@ class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _JsLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
     _port.port1.onMessage.listen(runner.handle);
-    _channel =
-        Channel.deserialize(_port.port2, runner.logger, exceptionManager);
+    _channel = Channel.deserialize(
+        _port.port2, runner.internalLogger, exceptionManager);
   }
 
   final _port = web.MessageChannel();

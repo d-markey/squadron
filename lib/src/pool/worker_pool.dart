@@ -4,7 +4,6 @@ import 'dart:collection';
 import 'package:logger/logger.dart';
 
 import '../_impl/xplat/_pool_worker.dart';
-import '../_impl/xplat/_task.dart';
 import '../_impl/xplat/_worker_stream_task.dart';
 import '../_impl/xplat/_worker_task.dart';
 import '../_impl/xplat/_worker_value_task.dart';
@@ -18,6 +17,7 @@ import '../stats/worker_stat.dart';
 import '../worker/worker.dart';
 import '../worker_service.dart';
 import 'stream_task.dart';
+import 'task.dart';
 import 'value_task.dart';
 
 typedef WorkerFactory<W> = W Function();
@@ -37,7 +37,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   final WorkerFactory<W> _workerFactory;
 
-  Logger? logger;
+  Logger? channelLogger;
 
   ExceptionManager? _exceptionManager;
 
@@ -130,7 +130,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
     for (var i = 0; i < workload; i++) {
       try {
         final worker = _workerFactory();
-        worker.logger = logger;
+        worker.channelLogger = channelLogger;
         worker.setExceptionManager(exceptionManager);
 
         final poolWorker = PoolWorker(worker, maxParallel);
@@ -157,7 +157,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       if (errors.isNotEmpty) {
         if (errors.length < tasks.length) {
           // some tasks failed: warn
-          logger?.e(() => 'Error while provisionning workers: $errors');
+          channelLogger?.e(() => 'Error while provisionning workers: $errors');
         } else {
           // all tasks failed: throw
           throw errors.firstWhere((e) => e is SquadronError,
@@ -202,9 +202,10 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   int _removeWorker(PoolWorker<W> poolWorker, bool force) {
     if (force || _workers.length > concurrencySettings.minWorkers) {
+      final worker = poolWorker.worker;
       final hashCode = poolWorker.worker.hashCode;
-      poolWorker.worker.stop();
-      _deadWorkerStats.add(poolWorker.worker.stats.withHashCode(hashCode));
+      worker.stop();
+      _deadWorkerStats.add(worker.stats);
       _removeWorkerAndNotify(poolWorker);
       return 1;
     } else {
@@ -312,7 +313,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
       _provisionWorkers(needs).then((_) {
         _dispatchTasks();
       }).catchError((ex) {
-        logger?.e(() => 'provisionning workers failed with error $ex');
+        channelLogger?.e(() => 'provisionning workers failed with error $ex');
         while (_queue.isNotEmpty) {
           _queue.removeFirst().cancel('provisionning workers failed');
         }

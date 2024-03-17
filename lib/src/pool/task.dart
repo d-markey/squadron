@@ -1,8 +1,8 @@
 import 'package:cancelation_token/cancelation_token.dart';
 
-import '../../pool/stream_task.dart';
-import '../../pool/value_task.dart';
-import '../../worker/worker.dart';
+import '../worker/worker.dart';
+import 'stream_task.dart';
+import 'value_task.dart';
 
 /// Base worker task class
 abstract class Task<T> {

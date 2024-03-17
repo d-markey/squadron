@@ -22,15 +22,15 @@ import '../worker_service.dart';
 /// [WorkerRequest]s to the worker.
 abstract class Worker<S> implements WorkerService {
   /// Creates a [Worker] with the specified entrypoint.
-  Worker(this.entryPoint,
+  Worker(this._entryPoint,
       {this.args = const [], PlatformThreadHook? threadHook})
       : _threadHook = threadHook;
 
-  /// The [Worker]'s entry point.
-  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.
-  final EntryPoint entryPoint;
+  /// The [Worker]'s entry point; typically, a top-level function in native
+  /// world or the Uri to a JavaScript file in browser world.
+  final EntryPoint _entryPoint;
 
-  Logger? logger;
+  Logger? channelLogger;
 
   ExceptionManager? _exceptionManager;
 
@@ -215,8 +215,8 @@ abstract class Worker<S> implements WorkerService {
       throw WorkerException('worker is stopped');
     }
     if (_channel == null) {
-      _openChannel ??=
-          Channel.open(exceptionManager, logger, entryPoint, args, _threadHook);
+      _openChannel ??= Channel.open(
+          exceptionManager, channelLogger, _entryPoint, args, _threadHook);
       final channel = await _openChannel!;
       if (_channel == null) {
         _channel = channel;

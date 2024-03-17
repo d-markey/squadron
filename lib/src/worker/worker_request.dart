@@ -1,7 +1,7 @@
-import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_internal_logger.dart';
 import '../channel.dart';
 import '../exceptions/squadron_error.dart';
 import '../tokens/_squadron_cancelation_token.dart';
@@ -142,7 +142,7 @@ extension WorkerRequestExt on WorkerRequest {
   static const _$inspectResponse = WorkerRequestImpl._$inspectResponse;
 
   /// In-place deserialization of a [WorkerRequest] received by the worker.
-  void unwrapRequestInPlace(Logger? logger) {
+  void unwrapRequestInPlace(InternalLogger? logger) {
     this[_$client] = WorkerChannel.deserialize(this[_$client], logger);
     this[_$token] = SquadronCancelationToken.deserialize(this[_$token]);
     this[_$inspectResponse] ??= false;

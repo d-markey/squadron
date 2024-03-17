@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../_impl/xplat/_task.dart';
+import 'task.dart';
 
 /// Class representing a [Task] returning a stream of values.
 abstract class StreamTask<T> extends Task<T> {
