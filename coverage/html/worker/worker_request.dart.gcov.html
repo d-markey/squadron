@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-03-02</dd>
+                    <dd>2024-03-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -61,16 +61,16 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'package:logger/logger.dart';</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'package:meta/meta.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code>import 'package:meta/meta.dart';</code></td>
+                    <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code></code></td>
+                    <td>3</td><td></td><td></td><td><code>import '../_impl/xplat/_helpers.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '../_impl/xplat/_helpers.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code>import '../_impl/xplat/_internal_logger.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
                     <td>5</td><td></td><td></td><td><code>import '../channel.dart';</code></td>
@@ -493,7 +493,7 @@
                     <td>144</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 145" id="line145">
-                    <td>145</td><td></td><td>7</td><td><code>  void unwrapRequestInPlace(Logger? logger) {</code></td>
+                    <td>145</td><td></td><td>7</td><td><code>  void unwrapRequestInPlace(InternalLogger? logger) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 146" id="line146">
                     <td>146</td><td></td><td>22</td><td><code>    this[_$client] = WorkerChannel.deserialize(this[_$client], logger);</code></td>

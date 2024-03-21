@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="squadron_method.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/annotations" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '../channel.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Annotation for service methods to be exposed by workers.</code>
+        </line>
+        <line>
+            <code>class SquadronMethod {</code>
+        </line>
+        <line hits="7">
+            <code>  const SquadronMethod(</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      {this.inspectRequest = false, this.inspectResponse = false});</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Indicates whether the contents of the incoming message should be inspected</code>
+        </line>
+        <line>
+            <code>  /// by Squadron before sending the request to the worker. By default, incoming</code>
+        </line>
+        <line>
+            <code>  /// messages are not inspected except for the startup message. The purpose of</code>
+        </line>
+        <line>
+            <code>  /// message inspection is to detect non-base-type data that require transfer of</code>
+        </line>
+        <line>
+            <code>  /// ownership to the target worker. E.g. if the request data include a [Channel]</code>
+        </line>
+        <line>
+            <code>  /// object, [inspectRequest] must be set to `true`.</code>
+        </line>
+        <line>
+            <code>  final bool inspectRequest;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Same as [inspectRequest] but for outgoing messages (response produced by the</code>
+        </line>
+        <line>
+            <code>  /// worker).</code>
+        </line>
+        <line>
+            <code>  final bool inspectResponse;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const squadronMethod = SquadronMethod();</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-03-02</dd>
+                    <dd>2024-03-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -133,7 +133,7 @@
                     <td>24</td><td></td><td></td><td><code>  /// Creates a [Worker] with the specified entrypoint.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>7</td><td><code>  Worker(this.entryPoint,</code></td>
+                    <td>25</td><td></td><td>7</td><td><code>  Worker(this._entryPoint,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
                     <td>26</td><td></td><td>2</td><td><code>      {this.args = const [], PlatformThreadHook? threadHook})</code></td>
@@ -145,19 +145,19 @@
                     <td>28</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>  /// The [Worker]'s entry point.</code></td>
+                    <td>29</td><td></td><td></td><td><code>  /// The [Worker]'s entry point; typically, a top-level function in native</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  /// Typically, a top-level function in native world or a JavaScript Uri in browser world.</code></td>
+                    <td>30</td><td></td><td></td><td><code>  /// world or the Uri to a JavaScript file in browser world.</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code>  final EntryPoint entryPoint;</code></td>
+                    <td>31</td><td></td><td></td><td><code>  final EntryPoint _entryPoint;</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
                     <td>32</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  Logger? logger;</code></td>
+                    <td>33</td><td></td><td></td><td><code>  Logger? channelLogger;</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
                     <td>34</td><td></td><td></td><td><code></code></td>
@@ -712,10 +712,10 @@
                     <td>217</td><td></td><td>14</td><td><code>    if (_channel == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 218" id="line218">
-                    <td>218</td><td></td><td>14</td><td><code>      _openChannel ??=</code></td>
+                    <td>218</td><td></td><td>21</td><td><code>      _openChannel ??= Channel.open(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 219" id="line219">
-                    <td>219</td><td></td><td>49</td><td><code>          Channel.open(exceptionManager, logger, entryPoint, args, _threadHook);</code></td>
+                    <td>219</td><td></td><td>42</td><td><code>          exceptionManager, channelLogger, _entryPoint, args, _threadHook);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 220" id="line220">
                     <td>220</td><td></td><td>14</td><td><code>      final channel = await _openChannel!;</code></td>

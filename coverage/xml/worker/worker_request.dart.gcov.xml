@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95" lines-covered="38" lines-valid="40" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95" lines-covered="38" lines-valid="40" package="/worker" testname="lcov.info" version="1.5">
     <lines>
-        <line>
-            <code>import 'package:logger/logger.dart';</code>
-        </line>
         <line>
             <code>import 'package:meta/meta.dart';</code>
         </line>
@@ -12,6 +9,9 @@
         </line>
         <line>
             <code>import '../_impl/xplat/_helpers.dart';</code>
+        </line>
+        <line>
+            <code>import '../_impl/xplat/_internal_logger.dart';</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>
@@ -458,7 +458,7 @@
             <code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code>
         </line>
         <line hits="7">
-            <code>  void unwrapRequestInPlace(Logger? logger) {</code>
+            <code>  void unwrapRequestInPlace(InternalLogger? logger) {</code>
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="22">

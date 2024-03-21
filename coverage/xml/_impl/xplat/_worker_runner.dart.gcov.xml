@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8888889" lines-covered="120" lines-valid="135" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.88095236" lines-covered="111" lines-valid="126" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -44,58 +44,7 @@
             <code>import '../../worker_service.dart';</code>
         </line>
         <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>class _NoLogOutput extends LogOutput {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>  @override</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  void output(OutputEvent event) {/* ignore */}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>class _EmptyLogPrinter extends LogPrinter {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>  @override</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  List&lt;String&gt; log(LogEvent event) =&gt; const [''];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>class _NoLogFilter extends LogFilter {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="7">
-            <code>  @override</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  bool shouldLog(LogEvent event) =&gt; true;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>}</code>
+            <code>import '_internal_logger.dart';</code>
         </line>
         <line>
             <code/>
@@ -120,19 +69,7 @@
             <code/>
         </line>
         <line>
-            <code>  final logger = Logger(</code>
-        </line>
-        <line>
-            <code>    filter: _NoLogFilter(),</code>
-        </line>
-        <line>
-            <code>    printer: _EmptyLogPrinter(),</code>
-        </line>
-        <line>
-            <code>    output: _NoLogOutput(),</code>
-        </line>
-        <line>
-            <code>  );</code>
+            <code>  final internalLogger = InternalLogger();</code>
         </line>
         <line>
             <code/>
@@ -237,7 +174,7 @@
             <code>    if (startRequest != null) {</code>
         </line>
         <line hits="14">
-            <code>      startRequest.unwrapRequestInPlace(logger);</code>
+            <code>      startRequest.unwrapRequestInPlace(internalLogger);</code>
             <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -412,7 +349,7 @@
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="15">
-            <code>    request.unwrapRequestInPlace(logger);</code>
+            <code>    request.unwrapRequestInPlace(internalLogger);</code>
             <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="7">

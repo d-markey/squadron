@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="serialize_with.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="1" package="/annotations" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '../marshalers/squadron_marshaler.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Annotation used to indicate the type of a serializer to be used when</code>
+        </line>
+        <line>
+            <code>/// marshaling/unmarshaling data to/from a worker service. Package</code>
+        </line>
+        <line>
+            <code>/// `squadron_builder` will generate appropriate serialization code based</code>
+        </line>
+        <line>
+            <code>/// on the provided [marshaler].</code>
+        </line>
+        <line>
+            <code>class SerializeWith {</code>
+        </line>
+        <line hits="0">
+            <code>  const SerializeWith(this.marshaler);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Type or constant instance of the marshaler to use for data serialization</code>
+        </line>
+        <line>
+            <code>  /// to/from the worker service. The type or instance type must implement</code>
+        </line>
+        <line>
+            <code>  /// [SquadronMarshaler].</code>
+        </line>
+        <line>
+            <code>  final dynamic marshaler;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

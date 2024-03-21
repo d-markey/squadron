@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-02" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8764045" lines-covered="156" lines-valid="178" package="/pool" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8764045" lines-covered="156" lines-valid="178" package="/pool" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -18,9 +18,6 @@
         </line>
         <line>
             <code>import '../_impl/xplat/_pool_worker.dart';</code>
-        </line>
-        <line>
-            <code>import '../_impl/xplat/_task.dart';</code>
         </line>
         <line>
             <code>import '../_impl/xplat/_worker_stream_task.dart';</code>
@@ -60,6 +57,9 @@
         </line>
         <line>
             <code>import 'stream_task.dart';</code>
+        </line>
+        <line>
+            <code>import 'task.dart';</code>
         </line>
         <line>
             <code>import 'value_task.dart';</code>
@@ -120,7 +120,7 @@
             <code/>
         </line>
         <line>
-            <code>  Logger? logger;</code>
+            <code>  Logger? channelLogger;</code>
         </line>
         <line>
             <code/>
@@ -422,7 +422,7 @@
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="12">
-            <code>        worker.logger = logger;</code>
+            <code>        worker.channelLogger = channelLogger;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
@@ -520,7 +520,7 @@
             <code>          // some tasks failed: warn</code>
         </line>
         <line hits="0">
-            <code>          logger?.e(() =&gt; 'Error while provisionning workers: $errors');</code>
+            <code>          channelLogger?.e(() =&gt; 'Error while provisionning workers: $errors');</code>
         </line>
         <line>
             <code>        } else {</code>
@@ -679,17 +679,17 @@
             <code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9">
-            <code>      final hashCode = poolWorker.worker.hashCode;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      final worker = poolWorker.worker;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9">
-            <code>      poolWorker.worker.stop();</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>      worker.stop();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="18">
-            <code>      _deadWorkerStats.add(poolWorker.worker.stats.withHashCode(hashCode));</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
+        <line hits="12">
+            <code>      _deadWorkerStats.add(worker.stats);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6">
             <code>      _removeWorkerAndNotify(poolWorker);</code>
@@ -1066,7 +1066,7 @@
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>        logger?.e(() =&gt; 'provisionning workers failed with error $ex');</code>
+            <code>        channelLogger?.e(() =&gt; 'provisionning workers failed with error $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
