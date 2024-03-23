@@ -43,10 +43,10 @@ Offload CPU-bound and long running tasks and give your mobile and Web apps some 
 * [Scaling Options](#scaling)
 * [Worker Cooperation](#cooperation)
   * [Local Workers](#local_worker)
-* [Task Cancellation](#cancellation)
-  * [Cancellation Tokens](#tokens)
+* [Task Cancelation](#cancelation)
+  * [Cancelation Tokens](#tokens)
 * [Monitoring](#monitoring)
-* [Logging & Debug Mode](#logging)
+* [Logging](#logging)
 * [Thanks!](#thanks)
 
 ## <a name="hr"></a>Highly recommended
@@ -65,7 +65,7 @@ Another demo including code generation is available at [GitHub: flutter_mandel_s
 
 `Worker`: a base worker class managing a platform thread (`Isolate` or `Web Worker`) and the communication between clients and  workers.
 
-`WorkerPool<W>`: a worker pool for `W` workers. The number of workers is configurable as well as the degree of concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool can be cancelled.
+`WorkerPool<W>`: a worker pool for `W` workers. The number of workers is configurable as well as the degree of concurrent workloads distributed to workers in the pool. Tasks posted to the worker pool can be canceled.
 
 ## <a name="started"></a>Getting Started
 
@@ -305,18 +305,30 @@ class ServiceWorkerPool extends WorkerPool<ServiceWorker> implements ServiceDefi
 
 Serialization/deserialization aspects can be delegated to [squadron_builder][pub_squadron_builder] in several ways:
 
-* service methods and parameters may be decorated with `@SerializeWith(marshaler)` to explicitly set the class responsible for marshaling/unmarshaling return values/arguments through platform channels. `marshaler` must be a class (with a *const* constructor) deriving from `SquadronMarshaler<T, S>` or a constant instance of such a class, where `T` is the type of the service method return value or parameter and `S` the type used for transit. For instance, data could be transported as bytes like in the following example:
+* custom types may be decorated with `@Marshaler` where `Marshaler` is the class responsible for marshaling/unmarshaling class instances through platform channels. Marshalers can also be used to annotate a method or a parameter to explicitly set another marshaler. `Marshaler` must be a class (with a *const* constructor) deriving from `SquadronMarshaler<T, S>`, or a constant instance of such a class, where `T` is the type of the service method return value or parameter and `S` the type used for transit. For instance, data could be transported as bytes like in the following example:
 
 ```dart
 @SquadronService()
 class DataService {
 
   @SquadronMethod()
-  @SerializeWith(DataMarshaler)
-  FutureOr<Data> doSomething(@SerializeWith(DataMarshaler) Data input) =>
+  // will use DataMarshaler by default
+  FutureOr<Data> doSomething(Data input) =>
+      Data(input.a + 1, !input.b, '(was $input)');
+
+  @SquadronMethod()
+  @SpecificDataMarshaler()
+  // will use DataMarshaler for the `input` parameter, and SpecificDataMarshaler for the return value
+  FutureOr<Data> doSomethingElse(Data input) =>
+      Data(input.a + 1, !input.b, '(was $input)');
+
+  @SquadronMethod()
+  // will use DataMarshaler for the return value, and SpecificDataMarshaler for the `input` parameter
+  FutureOr<Data> doAnotherThing(@SpecificDataMarshaler() Data input) =>
       Data(input.a + 1, !input.b, '(was $input)');
 }
 
+@DataMarshaler()
 class Data {
   Data(this.a, this.b, this.c);
 
@@ -359,6 +371,12 @@ class DataMarshaler extends SquadronMarshaler<Data, Uint8List> {
   static int _readInt(Uint8List buffer, int pos) =>
         (buffer[pos]<<24) | (buffer[pos+1]<<16) 
       | (buffer[pos+2]<<8) | buffer[pos+3];
+}
+
+class SpecificDataMarshaler extends SquadronMarshaler<Data, Uint8List> {
+  const SpecificDataMarshaler();
+
+  /* alternative implementation */
 }
 ```
 
@@ -701,24 +719,11 @@ Squadron 3.3 introduces `LocalWorker`, a `Woker`-like class running in the same 
 The implementation of a `LocalWorker` follows the same principles as for a `Worker`. Start by implementing a `WorkerService` with the logic you want to expose:
 
 ```dart
-// The service interface
-abstract class IdentityService implements WorkerService {
-  FutureOr<String> whoAreYou();
-
-  static const whoAreYouCommand = 1;
-}
-
-// The service implementation
-class IdentityServiceImpl extends IdentityService {
-  @override
-  String whoAreYou() {
-    return Squadron.id;
-  }
-
-  @override
-  late final Map<int, CommandHandler> operations = {
-    IdentityService.whoAreYouCommand: (req) => whoAreYou(),
-  };
+// The identity service
+@SquadronService()
+class IdentityService {
+  @squadronMethod
+  FutureOr<int> whoAreYou() => Isolate.current.hashCode;
 }
 ```
 
@@ -730,7 +735,7 @@ class IdentityClient extends LocalWorkerClient implements IdentityService {
   IdentityClient(Channel channel) : super(channel);
 
   @override
-  Future<String> whoAreYou() =>
+  Future<int> whoAreYou() =>
       send(IdentityService.whoAreYouCommand, []);
 }
 ```
@@ -738,71 +743,23 @@ class IdentityClient extends LocalWorkerClient implements IdentityService {
 Next, we have the code for the real `Worker` that will be using the `LocalWorker`. Typically, it is based on a `WorkerService`, for instance:
 
 ```dart
-abstract class MyWorkerService {
-  FutureOr<String> whoAreYouTalkingTo();
-
-  static const whoAreYouTalkingToCommand = 1;
-}
-
-class MyWorkerServiceImpl implements MyWorkerService, WorkerService {
-  MyWorkerServiceImpl(this._identityClient);
+@SquadronService()
+class MyWorkerService{
+  MyWorkerService(this._identityClient);
 
   final IdentityClient _identityClient;
 
-  @override
+  @squadronMethod
   Future<String> whoAreYouTalkingTo() async {
     // this is where the local worker is called
     final localWorkerIdentity = await _identityClient.whoAreYou();
-    return 'I am ${Squadron.id}, and I am talking to $localWorkerIdentity.';
+    return 'I am running in ${Isolate.current.hashCode}, and I am talking to $localWorkerIdentity.';
   }
-
-  @override
-  late final Map<int, CommandHandler> operations = {
-    MyWorkerService.whoAreYouTalkingToCommand: (WorkerRequest r) => whoAreYouTalkingTo()
-  };
-}
-
-class MyWorker extends Worker implements MyWorkerService {
-  MyWorker(EntryPoint entryPoint, {, List args = const []})
-      : super(entryPoint, args: args);
-
-  @override
-  Future<String> whoAreYouTalkingTo() =>
-      send(MyWorkerService.whoAreYouTalkingToCommand, []);
 }
 ```
 
 The code to fire up the workers in browser and VM worlds need to get the `Channel` from the `LocalWorker`, so we will pass the local worker to the functions that instantiate `MyWorker`. The channel is obtained by calling the `share()` method then passed on to `MyWorker` via the `args` parameter where it must be serialized to cross platform thread boundaries. This array will be received by the platform worker thread at startup via the `startRequest` argument:
 
-* VM:
-
-```dart
-MyWorker createMyWorker(LocalWorker<IdentityService> identityServer) {
-  return MyWorker(_start, args: [identityServer.channel?.share().serialize()]);
-}
-
-void _start(List command) => run((startRequest) {
-      // startRequest.args[0] contains the channel shared from the local worker
-      final channel = Channel.deserialize(startRequest.args[0])!;
-      final identityClient = IdentityClient(channel);
-      return MyWorkerServiceImpl(identityClient);
-    }, command);
-```
-
-* Browser:
-
-```dart
-MyWorker createMyWorker(LocalWorker<SizeService> identityServer) {
-  return MyWorker('/my_worker.dart.js', args: [identityServer.channel?.share().serialize()]);
-}
-
-void main() => run((startRequest) {
-      // startRequest.args[0] contains the channel shared from the local worker
-      final channel = Channel.deserialize(startRequest.args[0])!;
-      final identityClient = IdentityClient(channel);
-      return MyWorkerServiceImpl(identityClient);
-    });
-```
 
 And that's it! The final step is to bind everything together, for instance in the main program:
 
@@ -843,25 +800,25 @@ Architecture Diagram
 3: MyWorker will call into the LocalWorker running in the main thread via its LocalWorkerClient
 ```
 
-## <a name="cancellation"></a>Task Cancellation
+## <a name="cancelation"></a>Task Cancelation
 
-Tasks registered with the worker pool may be cancelled by calling `pool.cancel()`. A `CancelledException` will be raised (for value tasks: the future completes with an error) or emitted (for streaming tasks: the stream will emit an error) for each cancelled task. Tasks still pending will fail immediately; tasks already executing when the `cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
+Tasks registered with the worker pool may be canceled by calling `pool.cancel()`. A `CanceledException` will be raised (for value tasks: the future completes with an error) or emitted (for streaming tasks: the stream will emit an error) for each canceled task. Tasks still pending will fail immediately; tasks already executing when the `cancel()` method is called will either complete (value task) or emit an exception (streaming tasks).
 
-It should be noted that implementations relying on `pool.cancel()` will not notify platform workers about the cancellation. Tasks that have been assigned to a platform worker will continue executing until they complete. As a result, a value task already executing cannot be cancelled this way: it will complete and return a value. The situation is slightly different for a streaming task: while it will report cancellation in the main event loop, streaming will continue in the platform worker's event loop.
+It should be noted that implementations relying on `pool.cancel()` will not notify platform workers about the cancelation. Tasks that have been assigned to a platform worker will continue executing until they complete. As a result, a value task already executing cannot be canceled this way: it will complete and return a value. The situation is slightly different for a streaming task: while it will report cancelation in the main event loop, streaming will continue in the platform worker's event loop.
 
 ```dart
   final future = pool.execute((w) => w.computeData());
   final stream = pool.stream((w) => w.streamData());
 
   // no async suspension means Squadron did not have any chance to schedule any task
-  // as a result this cancellation request will cancel both tasks
+  // as a result this cancelation request will cancel both tasks
   pool.cancel();
 
   stream.listen(
     (value) => print('received value: $value'),   // will not be called
-    onError: (e) => print('received error: $e')); // receives a CancelledException
+    onError: (e) => print('received error: $e')); // receives a CanceledException
 
-  final result = await future; // throws a CancelledException
+  final result = await future; // throws a CanceledException
 ```
 
 ```dart
@@ -871,13 +828,13 @@ It should be noted that implementations relying on `pool.cancel()` will not noti
   // asynchronous suspension gives Squadron a chance to schedule some tasks
   Future(() => null);
 
-  // depending on concurrency settings, this cancellation request should cancel the stream task
+  // depending on concurrency settings, this cancelation request should cancel the stream task
   // however the value task should have been scheduled and should complete
   pool.cancel(); 
 
   stream.listen(
     (value) => print('received value: $value'),   // may be called for a few values
-    onError: (e) => print('received error: $e')); // will receive a CancelledException
+    onError: (e) => print('received error: $e')); // will receive a CanceledException
 
   final result = await future; // should get the task's result
 ```
@@ -893,10 +850,10 @@ It is also possible to schedule and cancel individual tasks, eg.:
   streamTask.cancel(); // or pool.cancel(streamTask)
   streamTask.stream.listen(
     (value) => print('received value: $value'),   // will not be called
-    onError: (e) => print('received error: $e')); // receives a CancelledException
+    onError: (e) => print('received error: $e')); // receives a CanceledException
 
   valueTask.cancel(); // or pool.cancel(valueTask)
-  final result = await valueTask.value; // throws a CancelledException
+  final result = await valueTask.value; // throws a CanceledException
 ```
 
 ```dart
@@ -909,40 +866,34 @@ It is also possible to schedule and cancel individual tasks, eg.:
   streamTask.cancel(); // or pool.cancel(streamTask)
   streamTask.stream.listen(
     (value) => print('received value: $value'),   // may be called for a few values
-    onError: (e) => print('received error: $e')); // will receive a CancelledException
+    onError: (e) => print('received error: $e')); // will receive a CanceledException
 
   valueTask.cancel(); // or pool.cancel(valueTask)
   final result = await valueTask.value;  // should get the task's result
 ```
 
-### <a name="tokens"></a>Cancellation Tokens
+### <a name="tokens"></a>Cancelation Tokens
 
-To notify workers of a cancellation, Squadron 3 provides the `CancellationToken` class implementing the base functionality for cancellation tokens. To ensure workers are notified of a token's cancellation, the token must be provided to the worker. Cancellation notifications are posted to workers regardless of the `maxParallel` concurrency settings. It is the responsibility of the worker service (your code) to verify the token status and abort processing when requested. To ensure the cancellation can be processed, you code must therefore be asynchronous. If the service is essentially CPU-bound, this can be achieved by awaiting a simple `Future(() {})`.
+Squadron leverages package [cancelation_token][pub_cancelation_token] for cancelation tokens. To ensure workers are notified of a token's cancelation, the token must be provided to the worker. Cancelation notifications are posted to workers regardless of the `maxParallel` concurrency settings. It is the responsibility of the worker service (your code) to verify the token status and abort processing when requested. To ensure the service method can process the cancelation request, it must be asynchronous.
 
-When a token is cancelled, all tasks associated with the token will be cancelled. A `CancelledException` will be thrown and the code that started the worker task will receive it.
-
-Squadron provides 3 kinds of cancellation tokens:
-* `CancellationToken`: a cancellation token that can be triggered programmatically by calling `CancellationToken.cancel()`.
-* `TimeOutToken`: a cancellation token that will be cancelled automatically after a given duration. Timeout countdown starts when the task is effectively posted to a worker.
-* `CompositeToken`: a cancellation token monitoring several other tokens. A `CompositeToken` will be cancelled automatically upon cancellation of one of the tokens (`CompositeMode.any`) or all of them (`CompositeMode.all`).
+When a token is canceled, all tasks associated with the token will be canceled. A `CanceledException` will be thrown and the code that started the worker task will receive it.
 
 Example:
 
 ```dart
 class SampleService implements WorkerService {
-  Future io({required int milliseconds, CancellationToken? token}) async {
-    if (token?.cancelled ?? false) throw CancelledException();
+  Future io({required int milliseconds, CancelationToken? token}) async {
+    await token.throwIfCanceled();
     await Future.delayed(Duration(milliseconds: milliseconds));
   }
 
-  Future cpu({required int milliseconds, CancellationToken? token}) async {
+  Future cpu({required int milliseconds, CancelationToken? token}) async {
     final sw = Stopwatch()..start();
     var count = 0;
     while (sw.elapsedMilliseconds < milliseconds) {
       if (count % 1000 == 0) {
         // avoid flooding the event loop with noop futures, check every 1000 iterations only
-        await Future(() {});
-        if (token?.cancelled ?? false) throw CancelledException();
+        await token.throwIfCanceled();
       }
       count++;
     }
@@ -963,23 +914,22 @@ class SampleService implements WorkerService {
 
 ```dart
   // create a token
-  final token = CancellationToken();
-  // trigger cancellation after 500 ms
+  final token = CancelableToken();
+  // trigger cancelation after 500 ms
   // in real world, token.cancel() would be called in reaction to an event such as a user action for instance
   // this is similar to a timeout token except that countdown starts immediately
   Timer(Duration(milliseconds: 500), token.cancel);
 
   // start a computation lasting 1000 ms
   // pass the token to the service + the pool
-  // a CancelledException will be thrown after 500 ms
+  // a CanceledException will be thrown after 500 ms
   await pool.execute((w) => w.cpu(milliseconds: 1000, token));
 ```
 
 Notes:
 
-* the token received by workers will not have the same runtime type as the token passed to the worker. The service code should not make any assumption on the token's runtime type and should only manipulate generic `CancellationToken` objects.
-* the same cancellation token may be used to control cancellation of several tasks.
-* when using a `TimeOutToken`, the timeout countdown will only start when the task is effectively posted to the worker for execution. If the token is shared across several tasks, the countdown starts with the first worker and applies to all workers.
+* the token received by workers will not have the same runtime type as the token passed to the worker. The service code should not make any assumption on the token's runtime type and should only manipulate generic `CancelationToken` objects.
+* the same cancelation token may be used to control cancelation of several tasks.
 
 ## <a name="monitoring"></a>Worker Monitoring
 
@@ -1011,30 +961,9 @@ All workers will be stopped as soon as all tasks registered with the pool have b
 
 The pool will not accept new tasks unless it is restarted with `pool.start()`. 
 
-## <a name="logging"></a>Logging & Debug Mode
+## <a name="logging"></a>Logging
 
-Squadron provides a minimal logging infrastructure to facilitate logging and debugging. The interface to log messages is similar to that of the [logging][pub_logging] package, including compatible log levels.
-
-To enable logging in the main application, simply set the appropriate log level and install a logger. Squadron provides two simple loggers out of the box:
-* `DevSquadronLogger` where messages are logged via `dart:developper`'s `log()` method
-* `ConsoleSquadronLogger` where messages are logged with the `print()` method
-
-For instance:
-
-```dart
-// this is your main app entry point
-void main() {
-  Squadron.logLevel = SquadronLogLevel.warning;
-  Squadron.logger = DevSquadronLogger();
-  // ... and then the rest of your code
-}
-```
-
-When your app fires up a worker, the log level will be passed on to the platform worker automatically. Squadron 4.x also automatically supports logging in workers and there is no need to initialize a logger in worker code. Log messages from workers will be sent to the main thread (depending on the worker's log level) which facilitates logging form workers in Web apps. Please note that logging impacts performance as messages must be transferred from the worker thread to the main thread.
-
-Additionally, Squadron 4.x provides a `debug` log level which is even finer than the `finest` log level. Used in combination with `Squadron.debugMode = true`, this log level allows for displaying log messages even though the current log level is above `debug`.
-
-Also, when `Squadron.debugMode` is set to `true`, the `travelTime` property of `WorkerRequest` and `WorkerResponse` will contain the time elapsed between the moment the message was serialized (on the emitting end) and deserialized (on the receiving end). This duration is expressed in microseconds and includes the time it took to transfer the message from one thread to another, as well as the delay due to the receiving thread's event loop (the message may have to wait before it is picked up by the event loop) and the delay to deliver the message when using a pool of workers (the message may have to wait for a worker to become available).
+Squadron leverages package [logger][pub_logger] for logging. `Worker` and `WorkerPool` provide a `channelLogger` field which may be set by the main program after creating a worker or a worker pool. Log messages emitted from a platform thread will be redirected to this logger if set.
 
 ## <a name="prod"></a>Releasing Your App
 
