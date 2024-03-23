@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-21" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.854336" lines-covered="1261" lines-valid="1476" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-23" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85491526" lines-covered="1261" lines-valid="1475" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="156" lines-valid="178" pathname="/pool" prefix="/home/runner/work/squadron/squadron/lib/src"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="154" lines-valid="210" pathname="/_impl/browser" prefix="/home/runner/work/squadron/squadron/lib/src"/>
@@ -12,7 +12,7 @@
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="366" lines-valid="407" pathname="/_impl/xplat" prefix="/home/runner/work/squadron/squadron/lib/src"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="13" pathname="/local_worker" prefix="/home/runner/work/squadron/squadron/lib/src"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="26" pathname="/stats" prefix="/home/runner/work/squadron/squadron/lib/src"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="7" pathname="/annotations" prefix="/home/runner/work/squadron/squadron/lib/src"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="6" pathname="/annotations" prefix="/home/runner/work/squadron/squadron/lib/src"/>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
 </coverage>
