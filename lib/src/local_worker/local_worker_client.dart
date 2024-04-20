@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cancelation_token/cancelation_token.dart';
 
 import '../channel.dart';

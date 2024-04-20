@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:logger/logger.dart';
+
 import '../_impl/native/_local_worker.dart'
     if (dart.library.js) '../_impl/browser/_local_worker.dart'
     if (dart.library.html) '../_impl/browser/_local_worker.dart';
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
+import '../iworker.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
 
@@ -22,13 +27,20 @@ import '../worker_service.dart';
 /// worker are deserialized as [WorkerRequest] and dispatched to a handler
 /// defined in the [service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
-abstract class LocalWorker<W extends WorkerService> implements WorkerService {
+abstract class LocalWorker<W extends WorkerService>
+    implements WorkerService, IWorker {
   LocalWorker(this.service);
 
   factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =>
       createLocalWorker<W>(service, exceptionManager ?? ExceptionManager());
 
-  static void terminate() {}
+  @override
+  Logger? channelLogger;
+
+  @override
+  ExceptionManager get exceptionManager =>
+      (_exceptionManager ??= ExceptionManager());
+  ExceptionManager? _exceptionManager;
 
   /// The [WorkerService] associated to this local worker.
   final W service;
@@ -40,7 +52,12 @@ abstract class LocalWorker<W extends WorkerService> implements WorkerService {
   /// invoke services from the local worker.
   Channel? get sharedChannel => channel?.share();
 
+  /// Starts the local worker.
+  @override
+  FutureOr start();
+
   /// Stops the local worker.
+  @override
   void stop();
 
   /// Local Workers do not need an [operations] map.

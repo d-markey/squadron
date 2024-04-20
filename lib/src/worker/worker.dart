@@ -9,6 +9,7 @@ import '../channel.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
+import '../iworker.dart';
 import '../stats/worker_stat.dart';
 import '../tokens/_squadron_cancelation_token.dart';
 import '../typedefs.dart';
@@ -20,22 +21,26 @@ import '../worker_service.dart';
 /// This base class takes care of creating the [Channel] and firing up the
 /// worker. Typically, derived classes should add proxy methods sending
 /// [WorkerRequest]s to the worker.
-abstract class Worker<S> implements WorkerService {
+abstract class Worker<S> implements WorkerService, IWorker {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint,
-      {this.args = const [], PlatformThreadHook? threadHook})
-      : _threadHook = threadHook;
+      {this.args = const [],
+      PlatformThreadHook? threadHook,
+      ExceptionManager? exceptionManager})
+      : _threadHook = threadHook,
+        _exceptionManager = exceptionManager;
 
   /// The [Worker]'s entry point; typically, a top-level function in native
   /// world or the Uri to a JavaScript file in browser world.
   final EntryPoint _entryPoint;
 
+  @override
   Logger? channelLogger;
 
-  ExceptionManager? _exceptionManager;
-
+  @override
   ExceptionManager get exceptionManager =>
       (_exceptionManager ??= ExceptionManager());
+  ExceptionManager? _exceptionManager;
 
   final PlatformThreadHook? _threadHook;
 
@@ -210,6 +215,7 @@ abstract class Worker<S> implements WorkerService {
   }
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
+  @override
   Future<Channel> start() async {
     if (_stopped != null) {
       throw WorkerException('worker is stopped');
@@ -228,6 +234,7 @@ abstract class Worker<S> implements WorkerService {
   }
 
   /// Stops this worker.
+  @override
   void stop() {
     if (_stopped == null) {
       _stopped = microsecTimeStamp();
@@ -245,6 +252,6 @@ abstract class Worker<S> implements WorkerService {
 @internal
 extension WorkerExt on Worker {
   void setExceptionManager(ExceptionManager exceptionManager) {
-    _exceptionManager = exceptionManager;
+    _exceptionManager ??= exceptionManager;
   }
 }

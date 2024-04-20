@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html' as web;
 
 import '../../channel.dart';
@@ -28,6 +29,14 @@ class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
     _channel?.close();
     _channel = null;
   }
+
+  @override
+  ExceptionManager get exceptionManager =>
+      (_exceptionManager ??= ExceptionManager());
+  ExceptionManager? _exceptionManager;
+
+  @override
+  FutureOr<void> start() {}
 }
 
 /// Creates a [LocalWorker] on a browser platform.

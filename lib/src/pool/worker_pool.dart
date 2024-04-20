@@ -12,6 +12,7 @@ import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/worker_exception.dart';
+import '../iworker.dart';
 import '../stats/perf_counter.dart';
 import '../stats/worker_stat.dart';
 import '../worker/worker.dart';
@@ -24,7 +25,7 @@ typedef WorkerFactory<W> = W Function();
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
-class WorkerPool<W extends Worker> implements WorkerService {
+class WorkerPool<W extends Worker> implements WorkerService, IWorker {
   /// Create a worker pool.
   ///
   /// Workers are instantiated using the provided [_workerFactory].
@@ -32,17 +33,21 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// The [ConcurrencySettings.minWorkers] and [ConcurrencySettings.maxWorkers] settings control
   /// how many workers will live in the pool. The [ConcurrencySettings.maxParallel] setting
   /// controls how many tasks can be posted to each individual worker in the pool.
-  WorkerPool(this._workerFactory, {ConcurrencySettings? concurrencySettings})
-      : concurrencySettings = concurrencySettings ?? ConcurrencySettings();
+  WorkerPool(this._workerFactory,
+      {ConcurrencySettings? concurrencySettings,
+      ExceptionManager? exceptionManager})
+      : concurrencySettings = concurrencySettings ?? ConcurrencySettings(),
+        _exceptionManager = exceptionManager ?? ExceptionManager();
 
   final WorkerFactory<W> _workerFactory;
 
+  @override
   Logger? channelLogger;
 
-  ExceptionManager? _exceptionManager;
-
+  @override
   ExceptionManager get exceptionManager =>
       (_exceptionManager ??= ExceptionManager());
+  ExceptionManager? _exceptionManager;
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
@@ -172,6 +177,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
 
   /// Ensure at least [ConcurrencySettings.minWorkers] workers are started
   /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
+  @override
   FutureOr<void> start() {
     _stopped = false;
     final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);
@@ -218,6 +224,7 @@ class WorkerPool<W extends Worker> implements WorkerService {
   /// complete pending tasks before shutting down. In the meantime, they will
   /// not receive any new workload.
   /// Returns the number of workers that have been stopped.
+  @override
   int stop([bool Function(W worker)? predicate]) {
     List<PoolWorker<W>> targets;
     bool force = (predicate == null);

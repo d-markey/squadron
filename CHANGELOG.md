@@ -2,6 +2,7 @@
 
 - /!\ BREAKING CHANGES /!\
 - Merged `worker_monitor` into `worker_runner`.
+- Removed `SerializeWith` annotation.
 - Removed custom cancelation token implementations and switched to `package:cancelation_token`.
 - Removed custom logger implementations and switched to `package:logger` for logging.
 - Eliminated the Squadron singleton.

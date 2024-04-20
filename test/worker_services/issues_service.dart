@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:squadron/squadron.dart';
 
 class IssuesService implements WorkerService {

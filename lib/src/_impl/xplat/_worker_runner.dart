@@ -37,7 +37,9 @@ class WorkerRunner {
 
   /// Constructs a new worker runner for a [localWorker].
   factory WorkerRunner.use(LocalWorker localWorker) {
-    final runner = WorkerRunner((r) => LocalWorker.terminate());
+    final runner = WorkerRunner((r) {
+      r._operations?.clear();
+    });
     runner._operations = localWorker.service.operations;
     return runner;
   }

@@ -15,6 +15,7 @@ export 'src/exceptions/squadron_exception.dart';
 export 'src/exceptions/squadron_timeout_exception.dart';
 export 'src/exceptions/task_canceled_exception.dart';
 export 'src/exceptions/worker_exception.dart' hide WorkerExceptionExt;
+export 'src/iworker.dart';
 export 'src/local_worker/local_worker.dart';
 export 'src/local_worker/local_worker_client.dart';
 export 'src/marshalers/generic_marshaler.dart';
