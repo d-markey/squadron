@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-23" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="13" lines-valid="13" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8125" lines-covered="13" lines-valid="16" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
         <line>
             <code>import 'dart:isolate';</code>
         </line>
@@ -98,6 +101,30 @@
         </line>
         <line>
             <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  ExceptionManager get exceptionManager =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      (_exceptionManager ??= ExceptionManager());</code>
+        </line>
+        <line>
+            <code>  ExceptionManager? _exceptionManager;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  FutureOr&lt;void&gt; start() {}</code>
         </line>
         <line>
             <code>}</code>

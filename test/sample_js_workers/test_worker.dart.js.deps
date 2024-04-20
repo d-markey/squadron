@@ -82,8 +82,8 @@ file:///home/runner/.pub-cache/hosted/pub.dev/logger-2.2.0/lib/src/printers/pref
 file:///home/runner/.pub-cache/hosted/pub.dev/logger-2.2.0/lib/src/printers/pretty_printer.dart
 file:///home/runner/.pub-cache/hosted/pub.dev/logger-2.2.0/lib/src/printers/simple_printer.dart
 file:///home/runner/.pub-cache/hosted/pub.dev/logger-2.2.0/lib/web.dart
-file:///home/runner/.pub-cache/hosted/pub.dev/meta-1.12.0/lib/meta.dart
-file:///home/runner/.pub-cache/hosted/pub.dev/meta-1.12.0/lib/meta_meta.dart
+file:///home/runner/.pub-cache/hosted/pub.dev/meta-1.14.0/lib/meta.dart
+file:///home/runner/.pub-cache/hosted/pub.dev/meta-1.14.0/lib/meta_meta.dart
 file:///home/runner/.pub-cache/hosted/pub.dev/path-1.9.0/lib/path.dart
 file:///home/runner/.pub-cache/hosted/pub.dev/path-1.9.0/lib/src/characters.dart
 file:///home/runner/.pub-cache/hosted/pub.dev/path-1.9.0/lib/src/context.dart
@@ -289,6 +289,7 @@ file:///home/runner/work/squadron/squadron/lib/src/exceptions/squadron_exception
 file:///home/runner/work/squadron/squadron/lib/src/exceptions/squadron_timeout_exception.dart
 file:///home/runner/work/squadron/squadron/lib/src/exceptions/task_canceled_exception.dart
 file:///home/runner/work/squadron/squadron/lib/src/exceptions/worker_exception.dart
+file:///home/runner/work/squadron/squadron/lib/src/iworker.dart
 file:///home/runner/work/squadron/squadron/lib/src/local_worker/local_worker.dart
 file:///home/runner/work/squadron/squadron/lib/src/local_worker/local_worker_client.dart
 file:///home/runner/work/squadron/squadron/lib/src/marshalers/generic_marshaler.dart

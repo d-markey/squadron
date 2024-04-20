@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-23" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.95689654" lines-covered="111" lines-valid="116" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9579832" lines-covered="114" lines-valid="119" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -35,6 +35,9 @@
             <code>import '../exceptions/worker_exception.dart';</code>
         </line>
         <line>
+            <code>import '../iworker.dart';</code>
+        </line>
+        <line>
             <code>import '../stats/worker_stat.dart';</code>
         </line>
         <line>
@@ -68,7 +71,7 @@
             <code>/// [WorkerRequest]s to the worker.</code>
         </line>
         <line>
-            <code>abstract class Worker&lt;S&gt; implements WorkerService {</code>
+            <code>abstract class Worker&lt;S&gt; implements WorkerService, IWorker {</code>
         </line>
         <line>
             <code>  /// Creates a [Worker] with the specified entrypoint.</code>
@@ -78,12 +81,21 @@
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      {this.args = const [], PlatformThreadHook? threadHook})</code>
+            <code>      {this.args = const [],</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>      PlatformThreadHook? threadHook,</code>
+        </line>
+        <line>
+            <code>      ExceptionManager? exceptionManager})</code>
+        </line>
         <line hits="1">
-            <code>      : _threadHook = threadHook;</code>
+            <code>      : _threadHook = threadHook,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        _exceptionManager = exceptionManager;</code>
         </line>
         <line>
             <code/>
@@ -101,24 +113,28 @@
             <code/>
         </line>
         <line>
+            <code>  @override</code>
+        </line>
+        <line>
             <code>  Logger? channelLogger;</code>
         </line>
         <line>
             <code/>
         </line>
-        <line>
-            <code>  ExceptionManager? _exceptionManager;</code>
+        <line hits="7">
+            <code>  @override</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="8">
+        <line hits="1">
             <code>  ExceptionManager get exceptionManager =&gt;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="21">
             <code>      (_exceptionManager ??= ExceptionManager());</code>
             <hit count="21" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  ExceptionManager? _exceptionManager;</code>
         </line>
         <line>
             <code/>
@@ -726,9 +742,13 @@
         <line>
             <code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code>
         </line>
-        <line hits="14">
+        <line hits="7">
+            <code>  @override</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
             <code>  Future&lt;Channel&gt; start() async {</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="14">
             <code>    if (_stopped != null) {</code>
@@ -793,9 +813,13 @@
         <line>
             <code>  /// Stops this worker.</code>
         </line>
-        <line hits="10">
+        <line hits="6">
+            <code>  @override</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
             <code>  void stop() {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="12">
             <code>    if (_stopped == null) {</code>
@@ -853,7 +877,7 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
-            <code>    _exceptionManager = exceptionManager;</code>
+            <code>    _exceptionManager ??= exceptionManager;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
