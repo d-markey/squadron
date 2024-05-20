@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-03-23" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9130435" lines-covered="21" lines-valid="23" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9130435" lines-covered="21" lines-valid="23" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -192,9 +192,9 @@
             <code>  void withCommand(int? command) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
+        <line hits="6">
             <code>    _command ??= command;</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>

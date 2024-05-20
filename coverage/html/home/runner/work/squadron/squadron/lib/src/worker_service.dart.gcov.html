@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-03-23</dd>
+                    <dd>2024-04-20</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>2</td><td>4</td><td class="low">50.0%</td>
+                            <th scope="row">Lines</th><td>2</td><td>5</td><td class="low">40.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -159,32 +159,38 @@
                 <tr class="noop" title="Line 33" id="line33">
                     <td>33</td><td></td><td></td><td><code>abstract class WorkerService {</code></td>
                 </tr>
-                <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code></td>
+                <tr class="lineNoCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>0</td><td><code>  WorkerService();</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  /// worker will dispatch the request to the [CommandHandler] mathing the value</code></td>
+                    <td>35</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>  /// of [WorkerRequest.command].</code></td>
+                    <td>36</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
+                    <td>37</td><td></td><td></td><td><code>  /// worker will dispatch the request to the [CommandHandler] mathing the value</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code></code></td>
+                    <td>38</td><td></td><td></td><td><code>  /// of [WorkerRequest.command].</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
+                    <td>39</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
                 </tr>
-                <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 42" id="line42">
+                    <td>42</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 43" id="line43">
+                    <td>43</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
+                </tr>
+                <tr class="noop" title="Line 44" id="line44">
+                    <td>44</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
