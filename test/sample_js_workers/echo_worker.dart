@@ -1,14 +1,8 @@
-import 'dart:html';
+import 'echo_worker.js.dart'
+    if (dart.library.js_interop) 'echo_worker.wasm.dart' as impl;
 
 // this is a regular Web worker
 
 void main() {
-  final scope = DedicatedWorkerGlobalScope.instance;
-  scope.onMessage.listen((MessageEvent e) {
-    try {
-      scope.postMessage('ECHO "${e.data}"');
-    } catch (error) {
-      scope.postMessage('Error in Web Worker main program: $error');
-    }
-  });
+  impl.main();
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 
 import '../_impl/native/_local_worker.dart'
+    if (dart.library.js_interop) '../_impl/wasm/_local_worker.dart'
     if (dart.library.js) '../_impl/browser/_local_worker.dart'
     if (dart.library.html) '../_impl/browser/_local_worker.dart';
 import '../channel.dart';
