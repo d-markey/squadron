@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-20" filename="squadron.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="/home/runner/work/squadron/squadron/lib" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'src/typedefs.dart' show platform_id;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;</code>
+        </line>
+        <line>
+            <code>export 'package:logger/logger.dart' show Logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>export 'src/annotations/squadron_method.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/annotations/squadron_service.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/bootstrapper.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/channel.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/concurrency_settings.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/exception_manager.dart'</code>
+        </line>
+        <line>
+            <code>    hide SquadronExceptionDeserializer;</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/squadron_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/squadron_canceled_exceptions.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/squadron_error.dart' hide SquadronErrorExt;</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/squadron_timeout_exception.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/task_canceled_exception.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/exceptions/worker_exception.dart' hide WorkerExceptionExt;</code>
+        </line>
+        <line>
+            <code>export 'src/iworker.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/local_worker/local_worker.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/local_worker/local_worker_client.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/marshalers/generic_marshaler.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/marshalers/identity_marshaler.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/marshalers/squadron_marshaler.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/pool/stream_task.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/pool/task.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/pool/value_task.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/pool/worker_pool.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/stats/perf_counter.dart' hide PerfCounterExt;</code>
+        </line>
+        <line>
+            <code>export 'src/stats/perf_counter_snapshot.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/stats/worker_stat.dart' hide WorkerStatExt;</code>
+        </line>
+        <line>
+            <code>export 'src/typedefs.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/worker/worker.dart' hide WorkerExt;</code>
+        </line>
+        <line>
+            <code>export 'src/worker/worker_channel.dart';</code>
+        </line>
+        <line>
+            <code>export 'src/worker/worker_message.dart' hide WorkerMessageExt;</code>
+        </line>
+        <line>
+            <code>export 'src/worker/worker_request.dart'</code>
+        </line>
+        <line>
+            <code>    hide WorkerRequestExt, CancelationTokenExt;</code>
+        </line>
+        <line>
+            <code>export 'src/worker/worker_response.dart' hide WorkerResponseExt;</code>
+        </line>
+        <line>
+            <code>export 'src/worker_service.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="29">
+            <code>final platformId = (() {</code>
+            <hit count="29" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="15">
+            <code>  print('platform_id=$platform_id');</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>  return platform_id;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="15">
+            <code>})();</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../../../../../"/>
+    <base href="../../../../../../"/>
+</coverage>

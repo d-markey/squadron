@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5714286" lines-covered="4" lines-valid="7" package="/local_worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-20" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5714286" lines-covered="4" lines-valid="7" package="/local_worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -14,13 +14,16 @@
             <code/>
         </line>
         <line>
-            <code>import '../_impl/native/_local_worker.dart'</code>
+            <code>import '../_impl/xplat/_local_worker.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.js) '../_impl/browser/_local_worker.dart'</code>
+            <code>    if (dart.library.io) '../_impl/native/_local_worker.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.html) '../_impl/browser/_local_worker.dart';</code>
+            <code>    if (dart.library.html) '../_impl/browser/_local_worker.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js_interop) '../_impl/wasm/_local_worker.dart';</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>

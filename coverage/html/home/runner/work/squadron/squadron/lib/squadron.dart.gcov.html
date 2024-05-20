@@ -2,9 +2,9 @@
 <html>
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="../../../../../../../jgenhtml.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="../../../../../../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info worker_service.dart</title>
+        <link href="../../../../../../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../../../../../jgenhtml.js"></script>
+        <title>LCOV - lcov.info squadron.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,7 +13,7 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../../../../../../index.html">top level</a> - <a href="index.html">/home/runner/work/squadron/squadron/lib/src</a> - worker_service.dart
+                        <a href="../../../../../../index.html">top level</a> - <a href="index.html">/home/runner/work/squadron/squadron/lib</a> - squadron.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>2</td><td>5</td><td class="low">40.0%</td>
+                            <th scope="row">Lines</th><td>4</td><td>4</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,136 +61,139 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'dart:async';</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'src/typedefs.dart' show platform_id;</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import 'worker/worker.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import 'worker/worker_request.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code>export 'package:logger/logger.dart' show Logger;</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code></td>
+                    <td>6</td><td></td><td></td><td><code>export 'src/annotations/squadron_method.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>    WorkerRequest startRequest);</code></td>
+                    <td>7</td><td></td><td></td><td><code>export 'src/annotations/squadron_service.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                    <td>8</td><td></td><td></td><td><code>export 'src/bootstrapper.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>typedef CommandHandler = FutureOr&lt;dynamic&gt; Function(WorkerRequest req);</code></td>
+                    <td>9</td><td></td><td></td><td><code>export 'src/channel.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                    <td>10</td><td></td><td></td><td><code>export 'src/concurrency_settings.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>typedef SquadronCallback = void Function();</code></td>
+                    <td>11</td><td></td><td></td><td><code>export 'src/exceptions/exception_manager.dart'</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>typedef SquadronAsyncCallback = FutureOr&lt;void&gt; Function();</code></td>
+                    <td>12</td><td></td><td></td><td><code>    hide SquadronExceptionDeserializer;</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>export 'src/exceptions/squadron_canceled_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>/// Extend this class or implement this interface in your worker service if it needs</code></td>
+                    <td>14</td><td></td><td></td><td><code>export 'src/exceptions/squadron_canceled_exceptions.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>/// to take action when the worker thread is started or stopped.</code></td>
+                    <td>15</td><td></td><td></td><td><code>export 'src/exceptions/squadron_error.dart' hide SquadronErrorExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>class ServiceInstaller {</code></td>
+                    <td>16</td><td></td><td></td><td><code>export 'src/exceptions/squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread initialization.</code></td>
+                    <td>17</td><td></td><td></td><td><code>export 'src/exceptions/squadron_timeout_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  /// It will be called just after the service instance has been constructed. The</code></td>
+                    <td>18</td><td></td><td></td><td><code>export 'src/exceptions/task_canceled_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>  /// future returned by [Worker.start] will not complete before this method completes</code></td>
+                    <td>19</td><td></td><td></td><td><code>export 'src/exceptions/worker_exception.dart' hide WorkerExceptionExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code>  /// whether synchronously or asynchronously. If this method throws, the future</code></td>
+                    <td>20</td><td></td><td></td><td><code>export 'src/iworker.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>  /// returned by [Worker.start] will complete with an error and the service will not</code></td>
+                    <td>21</td><td></td><td></td><td><code>export 'src/local_worker/local_worker.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>  /// be available.</code></td>
+                    <td>22</td><td></td><td></td><td><code>export 'src/local_worker/local_worker_client.dart';</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>0</td><td><code>  FutureOr&lt;void&gt; install() {}</code></td>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code>export 'src/marshalers/generic_marshaler.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code></code></td>
+                    <td>24</td><td></td><td></td><td><code>export 'src/marshalers/identity_marshaler.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread shutdown process.</code></td>
+                    <td>25</td><td></td><td></td><td><code>export 'src/marshalers/squadron_marshaler.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>  /// It will be called just before effectively closing the platform channel. If</code></td>
+                    <td>26</td><td></td><td></td><td><code>export 'src/pool/stream_task.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>  /// this method throws, the exception will not bubble up to the parent thread.</code></td>
+                    <td>27</td><td></td><td></td><td><code>export 'src/pool/task.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>  /// Also, [Worker.stop] does not wait for this method to complete.</code></td>
+                    <td>28</td><td></td><td></td><td><code>export 'src/pool/value_task.dart';</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>0</td><td><code>  FutureOr&lt;void&gt; uninstall() {}</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>export 'src/pool/worker_pool.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>}</code></td>
+                    <td>30</td><td></td><td></td><td><code>export 'src/stats/perf_counter.dart' hide PerfCounterExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code></code></td>
+                    <td>31</td><td></td><td></td><td><code>export 'src/stats/perf_counter_snapshot.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>/// Base class for a worker service.</code></td>
+                    <td>32</td><td></td><td></td><td><code>export 'src/stats/worker_stat.dart' hide WorkerStatExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>abstract class WorkerService {</code></td>
+                    <td>33</td><td></td><td></td><td><code>export 'src/typedefs.dart';</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>0</td><td><code>  WorkerService();</code></td>
+                <tr class="noop" title="Line 34" id="line34">
+                    <td>34</td><td></td><td></td><td><code>export 'src/worker/worker.dart' hide WorkerExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code></code></td>
+                    <td>35</td><td></td><td></td><td><code>export 'src/worker/worker_channel.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code></td>
+                    <td>36</td><td></td><td></td><td><code>export 'src/worker/worker_message.dart' hide WorkerMessageExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>  /// worker will dispatch the request to the [CommandHandler] mathing the value</code></td>
+                    <td>37</td><td></td><td></td><td><code>export 'src/worker/worker_request.dart'</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>  /// of [WorkerRequest.command].</code></td>
+                    <td>38</td><td></td><td></td><td><code>    hide WorkerRequestExt, CancelationTokenExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>  Map&lt;int, CommandHandler&gt; get operations;</code></td>
+                    <td>39</td><td></td><td></td><td><code>export 'src/worker/worker_response.dart' hide WorkerResponseExt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
-                    <td>40</td><td></td><td></td><td><code></code></td>
+                    <td>40</td><td></td><td></td><td><code>export 'src/worker_service.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code>  /// Empty command handlers map.</code></td>
+                    <td>41</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>3</td><td><code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code></td>
+                    <td>42</td><td></td><td>29</td><td><code>final platformId = (() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>2</td><td><code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code></td>
+                    <td>43</td><td></td><td>15</td><td><code>  print('platform_id=$platform_id');</code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>8</td><td><code>  return platform_id;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 45" id="line45">
+                    <td>45</td><td></td><td>15</td><td><code>})();</code></td>
                 </tr>
             </tbody>
         </table>

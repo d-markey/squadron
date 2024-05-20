@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="_helpers.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-20" filename="_helpers.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line hits="28">
             <code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code>
@@ -23,9 +23,9 @@
             <code>DateTime fromMicrosecTimeStamp(int microsecs) =&gt;</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="24">
+        <line hits="25">
             <code>    _latestUPDEpoch.add(Duration(microseconds: microsecs));</code>
-            <hit count="24" name="&lt;unnamed&gt;"/>
+            <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-04-20" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.69135803" lines-covered="112" lines-valid="162" package="/_impl/browser" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-20" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.69135803" lines-covered="112" lines-valid="162" package="/_impl/browser" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -1042,9 +1042,9 @@
             <code>      if (!response.unwrapResponseInPlace(exceptionManager, logger)) {</code>
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="7">
             <code>        return;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
