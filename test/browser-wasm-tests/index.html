@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Squadron Worker Tests - Browser (wasm)</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/echo_worker.dart.js">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/cache_worker.dart.js">
+  <link rel="x-web-worker" href="/sample_wasm_workers/installable_worker.dart.js">
+  <link rel="x-web-worker" href="/sample_wasm_workers/issues_worker.dart.js">
+  <link rel="x-web-worker" href="/sample_wasm_workers/local_client_worker.dart.js">
+  <link rel="x-web-worker" href="/sample_wasm_workers/prime_worker.dart.js">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/test_worker.dart.js">
+
+  <script defer src="index.dart.js"></script>
+</head>
+
+<body class="main">
+  <div id="test-list"></div>
+  <div id="button-bar"></div>
+  <p id="log-header"><b>Log</b></p>
+  <iframe id="test-runner" src="test_runner.html"></iframe>
+</body>
+
+</html>

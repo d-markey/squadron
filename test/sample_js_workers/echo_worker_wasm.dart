@@ -1,17 +1,18 @@
 import 'dart:js_interop';
 
-import 'package:web/web.dart' as web;
+import 'package:web/web.dart';
 
 // this is a regular Web worker
 
 @JS()
-external web.DedicatedWorkerGlobalScope get self;
+external DedicatedWorkerGlobalScope get self;
 
 void main() {
   final scope = self;
-  scope.onmessage = (web.MessageEvent e) {
+  scope.onmessage = (MessageEvent e) {
     try {
-      scope.postMessage('ECHO "${e.data.dartify()}"'.jsify());
+      final data = e.data?.dartify();
+      scope.postMessage('ECHO "$data"'.jsify());
     } catch (error) {
       scope.postMessage('Error in Web Worker main program: $error'.jsify());
     }

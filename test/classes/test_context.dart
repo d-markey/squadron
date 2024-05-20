@@ -4,15 +4,15 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import '../sample_vm_workers/_test_context.dart'
-    if (dart.library.js) '../sample_js_workers/_test_context.dart'
     if (dart.library.html) '../sample_js_workers/_test_context.dart'
+    if (dart.library.js_interop) '../sample_wasm_workers/_test_context.dart'
     as platform_test_context;
 
 enum TestPlatform {
   unknown,
   vm,
   js,
-  wasm, // TODO!
+  wasm,
 }
 
 class TestContext {
@@ -26,7 +26,6 @@ class TestContext {
   }
 
   void run(void Function() testSuite) {
-    // testSuite();
     group(platformName, testSuite);
   }
 

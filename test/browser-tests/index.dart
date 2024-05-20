@@ -10,7 +10,7 @@ import 'tests.dart';
 external get dartPrint;
 
 @JS()
-external set dartPrint(dynamic message);
+external set dartPrint(dynamic print);
 
 void main() async {
   final origin = window.location.origin;

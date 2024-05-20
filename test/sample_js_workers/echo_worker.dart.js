@@ -1719,7 +1719,7 @@ h1(){var s=self.self
 s.onmessage=t.g.a(A.fL(new A.cI(s)))},
 cI:function cI(a){this.a=a},
 h9(a){A.h8(new A.b8("Field '"+a+"' has been assigned during initialization."),new Error())},
-h2(){A.h1()}},B={}
+h2(){return A.h1()}},B={}
 var w=[A,J,B]
 var $={}
 A.cR.prototype={}
@@ -2619,9 +2619,11 @@ $S:4}
 A.bW.prototype={
 h(a){return"Promise was rejected with a value of `"+(this.a?"undefined":"null")+"`."}}
 A.cI.prototype={
-$1(a){var s,r,q="postMessage"
-try{A.dW(this.a,q,[A.e1('ECHO "'+A.l(A.dY(a.data))+'"')])}catch(r){s=A.Y(r)
-A.dW(this.a,q,[A.e1("Error in Web Worker main program: "+A.l(s))])}},
+$1(a){var s,r,q,p,o="postMessage"
+try{q=a.data
+s=q==null?null:A.dY(q)
+A.dW(this.a,o,[A.e1('ECHO "'+A.l(s)+'"')])}catch(p){r=A.Y(p)
+A.dW(this.a,o,[A.e1("Error in Web Worker main program: "+A.l(r))])}},
 $S:15};(function aliases(){var s=J.I.prototype
 s.ab=s.h})();(function installTearOffs(){var s=hunkHelpers._static_1,r=hunkHelpers._static_0
 s(A,"fM","eR",1)

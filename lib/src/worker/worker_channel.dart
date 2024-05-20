@@ -4,9 +4,8 @@ import 'package:logger/logger.dart';
 
 import '../_impl/xplat/_channel.dart'
     if (dart.library.io) '../_impl/native/_channel.dart'
-    if (dart.library.js_interop) '../_impl/wasm/_channel.dart'
-    if (dart.library.js) '../_impl/browser/_channel.dart'
-    if (dart.library.html) '../_impl/browser/_channel.dart';
+    if (dart.library.html) '../_impl/browser/_channel.dart'
+    if (dart.library.js_interop) '../_impl/wasm/_channel.dart';
 import '../exceptions/squadron_exception.dart';
 import '../typedefs.dart';
 import 'worker_request.dart';

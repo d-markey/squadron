@@ -1,3 +1,5 @@
+import 'src/typedefs.dart' show platform_id;
+
 export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
 export 'package:logger/logger.dart' show Logger;
 
@@ -36,3 +38,8 @@ export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;
 export 'src/worker/worker_response.dart' hide WorkerResponseExt;
 export 'src/worker_service.dart';
+
+final platformId = (() {
+  print('platform_id=$platform_id');
+  return platform_id;
+})();

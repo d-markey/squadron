@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/browser/_uri_checker.dart';
@@ -8,27 +7,20 @@ import 'package:web/web.dart' as web;
 
 import '../classes/test_context.dart';
 
-const platform = TestPlatform.js;
-String platformName = web.window.navigator.userAgent;
+const platform = TestPlatform.wasm;
+String platformName = '${web.window.navigator.userAgent} (wasm)';
 
 bool _set = false;
 
 extension EntryPointsExt on TestContext {
   Future<void> setEntryPoints(String root) async {
+    print('Test context platform = $platform // platformId = $platformId');
+
     if (!_set) {
       _set = true;
-      root = '${root}sample_js_workers';
-
-      entryPoints.inMemory =
-          'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
-  console.log("Message received from main script");
-  const workerResult = `ECHO "\${e.data}"`;
-  console.log("Posting message back to main script");
-  postMessage(workerResult);
-};'''))}';
+      root = '${root}sample_wasm_workers';
 
       entryPoints.echo = '$root/echo_worker.dart.js';
-      entryPoints.native = '$root/native_worker.js';
 
       entryPoints.cache = '$root/cache_worker.dart.js';
       entryPoints.installable = '$root/installable_worker.dart.js';
@@ -49,10 +41,18 @@ Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   final html = web.DOMParser().parseFromString(
       await web.HttpRequest.getString(web.window.location.href), 'text/html');
 
+  print('Checking ${html.documentElement!.innerHTML}');
+
   final workerLinks = html.querySelectorAll('link[rel="x-web-worker"]');
 
-  var workers = <EntryPoint>{};
   final count = workerLinks.length;
+
+  for (var i = 0; i < count; i++) {
+    final workerLink = workerLinks.item(i) as web.Element;
+    print('Checking $workerLink');
+  }
+
+  var workers = <EntryPoint>{};
   for (var i = 0; i < count; i++) {
     final workerLink = workerLinks.item(i) as web.Element;
     var path = workerLink.attributes.getNamedItem('href')?.value;

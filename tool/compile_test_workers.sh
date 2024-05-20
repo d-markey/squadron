@@ -6,7 +6,7 @@ pushd "$(dirname $0)/.."
 workers_minified=("cache_worker" "echo_worker" "installable_worker" "issues_worker" "local_client_worker" "prime_worker")
 for w in ${workers_minified[@]}
 do
-    dart compile js -m -o "./test/sample_js_workers/${w}.dart.js" "./test/sample_js_workers/${w}.dart"
+    dart compile js -O4 -o "./test/sample_js_workers/${w}.dart.js" "./test/sample_js_workers/${w}.dart"
     if [ "$compile_status" -eq 0 ]
     then
         compile_status=$?
@@ -17,6 +17,25 @@ workers_unminified=("test_worker")
 for w in ${workers_unminified[@]}
 do
     dart compile js -o "./test/sample_js_workers/${w}.dart.js" "./test/sample_js_workers/${w}.dart"
+    if [ "$compile_status" -eq 0 ]
+    then
+        compile_status=$?
+    fi
+done
+
+for w in ${workers_minified[@]}
+do
+    dart compile wasm -o "./test/sample_wasm_workers/${w}.dart.wasm" "./test/sample_js_workers/${w}.dart"
+    if [ "$compile_status" -eq 0 ]
+    then
+        compile_status=$?
+    fi
+done
+
+workers_unminified=("test_worker")
+for w in ${workers_unminified[@]}
+do
+    dart compile wasm -o "./test/sample_wasm_workers/${w}.dart.js" "./test/sample_js_workers/${w}.dart"
     if [ "$compile_status" -eq 0 ]
     then
         compile_status=$?

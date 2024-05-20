@@ -1,7 +1,7 @@
-import '_impl/native/_bootstrapper.dart'
-    if (dart.library.js_interop) '_impl/wasm/_bootstrapper.dart'
-    if (dart.library.js) '_impl/browser/_bootstrapper.dart'
-    if (dart.library.html) '_impl/browser/_bootstrapper.dart';
+import '_impl/xplat/_bootstrapper.dart'
+    if (dart.library.io) '_impl/native/_bootstrapper.dart'
+    if (dart.library.html) '_impl/browser/_bootstrapper.dart'
+    if (dart.library.js_interop) '_impl/wasm/_bootstrapper.dart';
 import 'worker_service.dart';
 
 /// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.

@@ -1,4 +1,4 @@
-platforms: 
+platforms:
   - vm
   - chrome
 

@@ -41,6 +41,7 @@ void main() async {
     dartPrint(
         'Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
     final testContext = await TestContext.init('/');
+    dartPrint('Test context platform = ${testContext.platform}');
 
     for (var executor in selectedExecutors) {
       executor.value(testContext);

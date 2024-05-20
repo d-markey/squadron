@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:squadron/squadron.dart';
+
 import '../classes/test_context.dart';
 import 'cache_worker.dart' as cache;
 import 'installable_worker.dart' as installable;
@@ -13,6 +15,8 @@ String platformName = Platform.operatingSystemVersion;
 
 extension EntryPointsExt on TestContext {
   Future<void> setEntryPoints(String root) async {
+    print('Test context platform = $platform // platformId = $platformId');
+
     entryPoints.cache = cache.start;
     entryPoints.installable = installable.start;
     entryPoints.issues = issues.start;
