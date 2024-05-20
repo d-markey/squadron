@@ -1,23 +1,25 @@
+import 'dart:js_interop';
+
 import 'package:web/web.dart';
 
 import '../classes/test_context.dart';
 import 'html_logger.dart';
 import 'tests.dart';
 
-// @JS()
-// external JSFunction get dartPrint;
+@JS()
+external JSFunction get dartPrint;
 
-// @JS()
-// external set dartPrint(JSFunction value);
+@JS()
+external set dartPrint(JSFunction value);
 
 void main() {
-  final wasmLogger =
+  final htmlLogger =
       HtmlLogger(document.querySelector('#output') as HTMLDivElement);
 
-  // dartPrint = ((JSAny? message) {
-  //   console.log(message?.toString().jsify() ?? '(null)'.jsify());
-  //   wasmLogger.print(message?.toString() ?? '(null)');
-  // }).toJS;
+  dartPrint = ((JSAny? message) {
+    console.log(message?.toString().jsify() ?? '(null)'.jsify());
+    htmlLogger.print(message?.toString() ?? '(null)');
+  }).toJS;
 
   window.onMessage.listen((m) => print('(*) ${m.data}'));
 

@@ -11,4 +11,5 @@ typedef PlatformThread = impl.PlatformThread;
 
 typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
 
+// ignore: constant_identifier_names
 const int platform_id = impl.platform_id;
