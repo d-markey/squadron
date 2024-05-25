@@ -127,21 +127,21 @@ class TestWorker extends Worker implements TestService {
 
   TestWorker(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          context.entryPoints.test,
+          context.entryPoints.test!,
           [TestService.startupOk],
           hook,
         );
 
   TestWorker.throws(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          context.entryPoints.test,
+          context.entryPoints.test!,
           [TestService.startupThrows],
           hook,
         );
 
   TestWorker.invalid(TestContext context, [PlatformThreadHook? hook])
       : this._(
-          context.entryPoints.test,
+          context.entryPoints.test!,
           [TestService.startupInvalid],
           hook,
         );
@@ -150,7 +150,7 @@ class TestWorker extends Worker implements TestService {
       (context.entryPoints.missingStartRequest == null)
           ? null
           : TestWorker._(
-              context.entryPoints.missingStartRequest,
+              context.entryPoints.missingStartRequest!,
               [TestService.startupOk],
             );
 

@@ -17,7 +17,7 @@ class IssuesWorkerPool extends WorkerPool<IssuesWorker>
 }
 
 class IssuesWorker extends Worker implements IssuesService {
-  IssuesWorker(TestContext context) : super(context.entryPoints.issues);
+  IssuesWorker(TestContext context) : super(context.entryPoints.issues!);
 
   @override
   Stream<dynamic> issue_8(List<dynamic> words) =>

@@ -7,19 +7,18 @@ import 'html_logger.dart';
 import 'tests.dart';
 
 @JS()
-external JSFunction get dartPrint;
+external JSFunction? get dartPrint;
 
 @JS()
-external set dartPrint(JSFunction value);
+external set dartPrint(JSFunction? value);
 
-void main() {
+void main(dynamic args) async {
   final htmlLogger =
       HtmlLogger(document.querySelector('#output') as HTMLDivElement);
 
-  dartPrint = ((JSAny? message) {
-    console.log(message?.toString().jsify() ?? '(null)'.jsify());
-    htmlLogger.print(message?.toString() ?? '(null)');
-  }).toJS;
+  dartPrint = (JSAny? message) {
+    htmlLogger.print('${message?.dartify() ?? '(null)'}');
+  }.toJS;
 
   window.onMessage.listen((m) => print('(*) ${m.data}'));
 
@@ -38,12 +37,13 @@ void main() {
 
   if (selectedExecutors.isNotEmpty) {
     print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
-    TestContext.init('/').then((testContext) {
-      print('Test context platform = ${testContext.platform}');
+    final testContext = await TestContext.init('/');
 
-      for (var executor in selectedExecutors) {
-        executor.value(testContext);
-      }
-    });
+    for (var executor in selectedExecutors) {
+      print('executor.value = ${executor.value}');
+      executor.value(testContext);
+    }
   }
+
+  print('Test context platform = ${TestContext.platform}');
 }

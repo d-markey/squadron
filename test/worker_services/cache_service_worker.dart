@@ -6,7 +6,7 @@ import '../classes/test_context.dart';
 import 'cache_service.dart';
 
 class CacheWorker extends Worker implements Cache {
-  CacheWorker(TestContext context) : super(context.entryPoints.cache);
+  CacheWorker(TestContext context) : super(context.entryPoints.cache!);
 
   @override
   Future<dynamic> get(dynamic key) =>

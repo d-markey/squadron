@@ -648,13 +648,15 @@ file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
 file:///C:/_Projects/github/squadron/test/browser-wasm-tests/index.dart
 file:///C:/_Projects/github/squadron/test/browser-wasm-tests/tests.dart
 file:///C:/_Projects/github/squadron/test/cancelation_test.dart
+file:///C:/_Projects/github/squadron/test/classes/_platform_browser.dart
 file:///C:/_Projects/github/squadron/test/classes/custom_exception.dart
 file:///C:/_Projects/github/squadron/test/classes/memory_logger.dart
 file:///C:/_Projects/github/squadron/test/classes/platform.dart
-file:///C:/_Projects/github/squadron/test/classes/platform_browser.dart
 file:///C:/_Projects/github/squadron/test/classes/prime_numbers.dart
 file:///C:/_Projects/github/squadron/test/classes/test_context.dart
+file:///C:/_Projects/github/squadron/test/classes/test_entry_points.dart
 file:///C:/_Projects/github/squadron/test/classes/test_logger.dart
+file:///C:/_Projects/github/squadron/test/classes/test_platform.dart
 file:///C:/_Projects/github/squadron/test/issues_test.dart
 file:///C:/_Projects/github/squadron/test/local_worker_test.dart
 file:///C:/_Projects/github/squadron/test/logging_test.dart

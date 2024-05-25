@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../classes/test_entry_points.dart';
+import '../classes/test_platform.dart';
 import 'cache_worker.dart' as cache;
 import 'installable_worker.dart' as installable;
 import 'issues_worker.dart' as issues;
@@ -13,17 +14,15 @@ import 'test_worker.dart' as test;
 const platform = TestPlatform.vm;
 String platformName = Platform.operatingSystemVersion;
 
-extension EntryPointsExt on TestContext {
-  Future<void> setEntryPoints(String root) async {
-    print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform // platformId = $platformId');
 
-    entryPoints.cache = cache.start;
-    entryPoints.installable = installable.start;
-    entryPoints.issues = issues.start;
-    entryPoints.local = local_client.start;
-    entryPoints.prime = prime.start;
+  entryPoints.cache = cache.start;
+  entryPoints.installable = installable.start;
+  entryPoints.issues = issues.start;
+  entryPoints.local = local_client.start;
+  entryPoints.prime = prime.start;
 
-    entryPoints.test = test.start;
-    entryPoints.missingStartRequest = test.startWithMissingCommand;
-  }
+  entryPoints.test = test.start;
+  entryPoints.missingStartRequest = test.startWithMissingCommand;
 }

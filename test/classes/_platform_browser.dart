@@ -1,24 +1,25 @@
-import 'dart:js_interop';
+import 'dart:html';
 
 import 'package:squadron/squadron.dart';
-import 'package:web/web.dart' as web;
 
-@JS()
-external web.DedicatedWorkerGlobalScope get self;
+// ignore: unused_element
+final _ = (() {
+  print('Imported _platform_browser.dart');
+})();
 
 class Unsendable {}
 
 dynamic getUnsendable() => Unsendable();
 
 WorkerChannel? getWorkerChannel(Logger? logger) =>
-    WorkerChannel.deserialize(web.MessageChannel().port1, logger);
+    WorkerChannel.deserialize(MessageChannel().port1, logger);
 
 String get threadId {
   dynamic object;
   try {
-    object = self;
+    object = WorkerGlobalScope.instance;
   } catch (_) {
-    object = web.window;
+    object = window;
   }
   return '0x${object.hashCode.toRadixString(8).padLeft(8, '0')}';
 }

@@ -36,7 +36,7 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 class InstallableWorker extends Worker implements InstallableService {
   InstallableWorker(TestContext context,
       {bool throwOnInstall = false, bool throwOnUninstall = false})
-      : super(context.entryPoints.installable,
+      : super(context.entryPoints.installable!,
             args: [throwOnInstall, throwOnUninstall]);
 
   @override

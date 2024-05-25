@@ -18,11 +18,10 @@ void main() async {
   final htmlLogger = HtmlLogger(querySelector('#output') as DivElement);
 
   dartPrint = allowInterop((dynamic message) {
-    window.console.log(message?.toString() ?? '(null)');
     htmlLogger.print(message?.toString() ?? '(null)');
   });
 
-  window.onMessage.listen((m) => dartPrint('(*) ${m.data}'));
+  window.onMessage.listen((m) => print('(*) ${m.data}'));
 
   final selectedExecutors = <MapEntry<String, void Function(TestContext)>>[];
 
@@ -31,20 +30,20 @@ void main() async {
     final executor =
         executors.entries.where((e) => test == getTestId(e.key)).firstOrNull;
     if (executor == null) {
-      dartPrint('No executor found for test id: $test');
+      print('No executor found for test id: $test');
     } else {
       selectedExecutors.add(executor);
     }
   }
 
   if (selectedExecutors.isNotEmpty) {
-    dartPrint(
-        'Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
+    print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
     final testContext = await TestContext.init('/');
-    dartPrint('Test context platform = ${testContext.platform}');
 
     for (var executor in selectedExecutors) {
       executor.value(testContext);
     }
   }
+
+  print('Test context platform = ${TestContext.platform}');
 }

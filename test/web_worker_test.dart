@@ -15,7 +15,7 @@ void main() async {
 void execute(TestContext testContext) => testContext.run(() {
       group("- WebWorker", () {
         test('- classic Web worker', () async {
-          final worker = web.Worker(testContext.entryPoints.echo);
+          final worker = web.Worker(testContext.entryPoints.echo!);
           expect(worker, isNotNull);
           final completer = Completer<String>();
           worker.onError.listen((error) {
@@ -35,7 +35,7 @@ void execute(TestContext testContext) => testContext.run(() {
         });
 
         test('- native Web worker', () async {
-          final worker = web.Worker(testContext.entryPoints.native);
+          final worker = web.Worker(testContext.entryPoints.native!);
           expect(worker, isNotNull);
           final completer = Completer<String>();
           worker.onError.listen((error) {
@@ -55,7 +55,7 @@ void execute(TestContext testContext) => testContext.run(() {
         });
 
         test('- in-memory Web worker', () async {
-          final worker = web.Worker(testContext.entryPoints.inMemory);
+          final worker = web.Worker(testContext.entryPoints.inMemory!);
           expect(worker, isNotNull);
           final completer = Completer<String>();
           worker.onError.listen((error) {

@@ -11358,6 +11358,24 @@
     _EventStreamSubscription_onData_closure: function _EventStreamSubscription_onData_closure(t0) {
       this.handleData = t0;
     },
+    getUnsendable() {
+      return new A.Unsendable();
+    },
+    threadId() {
+      var t1, exception, object = null;
+      try {
+        t1 = self;
+        t1.toString;
+        object = t1;
+      } catch (exception) {
+        t1 = window;
+        t1.toString;
+        object = t1;
+      }
+      return "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1(J.get$hashCode$(object), 8), 8, "0");
+    },
+    Unsendable: function Unsendable() {
+    },
     CacheStat: function CacheStat(t0, t1, t2, t3, t4) {
       var _ = this;
       _.hit = t0;
@@ -11688,7 +11706,7 @@
     main() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
-        t2, separator, clearLink, t3, t4, t5, t6, t7, n, _i, label, n0, id, origin, t1, testRunner;
+        t2, separator, clearLink, t3, t4, t5, t6, n, _i, label, n0, id, origin, t1, testRunner;
       var $async$main = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -11707,7 +11725,7 @@
               t2.appendChild(separator).toString;
               clearLink = A.AnchorElement_AnchorElement();
               B.AnchorElement_methods.set$text(clearLink, "Clear");
-              clearLink.setAttribute("href", "#");
+              B.AnchorElement_methods.set$href(clearLink, "#");
               t3 = type$._ElementEventStreamImpl_MouseEvent;
               t4 = t3._eval$1("~(1)?");
               t3 = t3._precomputed1;
@@ -11720,28 +11738,23 @@
               t6 = t1.createElement("button");
               t6.toString;
               B.ButtonElement_methods.set$text(t6, "Run selected tests");
-              t6 = t2.appendChild(t6);
-              t6.toString;
-              t7 = type$.ButtonElement;
-              A._EventStreamSubscription$(t7._as(t6), "click", t4._as(new A.main_closure1(new A.main_runTests(t2, t5, testRunner))), false, t3);
+              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_runTests(t2, t5, testRunner)), false, t3);
+              t2.appendChild(t6).toString;
               t6 = t1.createElement("button");
               t6.toString;
               B.ButtonElement_methods.set$text(t6, "Select All");
-              t6 = t2.appendChild(t6);
-              t6.toString;
-              A._EventStreamSubscription$(t7._as(t6), "click", t4._as(new A.main_closure2(new A.main_selectAll(t5))), false, t3);
+              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_selectAll(t5)), false, t3);
+              t2.appendChild(t6).toString;
               t6 = t1.createElement("button");
               t6.toString;
               B.ButtonElement_methods.set$text(t6, "Deselect All");
-              t6 = t2.appendChild(t6);
-              t6.toString;
-              A._EventStreamSubscription$(t7._as(t6), "click", t4._as(new A.main_closure3(new A.main_deselectAll(t5))), false, t3);
+              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_deselectAll(t5)), false, t3);
+              t2.appendChild(t6).toString;
               t6 = t1.createElement("button");
               t6.toString;
               B.ButtonElement_methods.set$text(t6, "Toggle");
-              t6 = t2.appendChild(t6);
-              t6.toString;
-              A._EventStreamSubscription$(t7._as(t6), "click", t4._as(new A.main_closure4(new A.main_toggle(t5))), false, t3);
+              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_toggle(t5)), false, t3);
+              t2.appendChild(t6).toString;
               for (t2 = $.$get$executorLabels(), t3 = t2.length, t4 = J.getInterceptor$x(t5), n = 0, _i = 0; _i < t2.length; t2.length === t3 || (0, A.throwConcurrentModificationError)(t2), ++_i, n = n0) {
                 label = t2[_i];
                 n0 = n + 1;
@@ -11758,8 +11771,8 @@
                 t6.htmlFor = id;
                 t5.appendChild(t6).toString;
               }
-              self.dartPrint.call$1("Ready");
-              self.dartPrint.call$1("");
+              A.print("Ready");
+              A.print("");
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -11786,18 +11799,6 @@
     },
     main_toggle: function main_toggle(t0) {
       this.testList = t0;
-    },
-    main_closure1: function main_closure1(t0) {
-      this.runTests = t0;
-    },
-    main_closure2: function main_closure2(t0) {
-      this.selectAll = t0;
-    },
-    main_closure3: function main_closure3(t0) {
-      this.deselectAll = t0;
-    },
-    main_closure4: function main_closure4(t0) {
-      this.toggle = t0;
     },
     InstallableWorker$(context, throwOnInstall, throwOnUninstall) {
       return new A.InstallableWorker(context.get$entryPoints().get$installable(), null, [throwOnInstall, throwOnUninstall]);
@@ -12156,21 +12157,6 @@
     },
     MemoryLogFilter: function MemoryLogFilter() {
       this._level = null;
-    },
-    threadId() {
-      var t1, exception, object = null;
-      try {
-        t1 = self;
-        t1.toString;
-        object = t1;
-      } catch (exception) {
-        t1 = window;
-        t1.toString;
-        object = t1;
-      }
-      return "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1(J.get$hashCode$(object), 8), 8, "0");
-    },
-    Unsendable: function Unsendable() {
     },
     PrimeWorkerPool$(context, cache, concurrencySettings) {
       var t1 = A._setArrayType([], type$.JSArray_PoolWorker_PrimeWorker),
@@ -32970,6 +32956,7 @@
     },
     $signature: 64
   };
+  A.Unsendable.prototype = {};
   A.CacheStat.prototype = {};
   A.CacheWorker.prototype = {
     getStats$0(_) {
@@ -35755,8 +35742,8 @@
               return A._asyncAwait(A.Future_Future$delayed(B.Duration_0, null, type$.dynamic), $async$call$1);
             case 2:
               // returning from await.
-              self.dartPrint.call$1("Ready");
-              self.dartPrint.call$1("");
+              A.print("Ready");
+              A.print("");
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -35766,11 +35753,11 @@
     $signature: 135
   };
   A.main_runTests.prototype = {
-    call$0() {
+    $call$body$main_runTests(_) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1, t2, t3, t4, t5, t6, testIds, t7, t8;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+      var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
         while (true)
@@ -35795,16 +35782,22 @@
               return A._asyncReturn(null, $async$completer);
           }
       });
-      return A._asyncStartSync($async$call$0, $async$completer);
+      return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 1
+    call$1(_) {
+      return this.$call$body$main_runTests(type$.nullable_MouseEvent._as(_));
+    },
+    call$0() {
+      return this.call$1(null);
+    },
+    $signature: 40
   };
   A.main_selectAll.prototype = {
-    call$0() {
+    $call$body$main_selectAll(_) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1, t2, t3;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+      var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
         while (true)
@@ -35817,16 +35810,22 @@
               return A._asyncReturn(null, $async$completer);
           }
       });
-      return A._asyncStartSync($async$call$0, $async$completer);
+      return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 1
+    call$1(_) {
+      return this.$call$body$main_selectAll(type$.nullable_MouseEvent._as(_));
+    },
+    call$0() {
+      return this.call$1(null);
+    },
+    $signature: 40
   };
   A.main_deselectAll.prototype = {
-    call$0() {
+    $call$body$main_deselectAll(_) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1, t2, t3;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+      var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
         while (true)
@@ -35839,16 +35838,22 @@
               return A._asyncReturn(null, $async$completer);
           }
       });
-      return A._asyncStartSync($async$call$0, $async$completer);
+      return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 1
+    call$1(_) {
+      return this.$call$body$main_deselectAll(type$.nullable_MouseEvent._as(_));
+    },
+    call$0() {
+      return this.call$1(null);
+    },
+    $signature: 40
   };
   A.main_toggle.prototype = {
-    call$0() {
+    $call$body$main_toggle(_) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1, t2, t3, t4, t5;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+      var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
         while (true)
@@ -35864,35 +35869,13 @@
               return A._asyncReturn(null, $async$completer);
           }
       });
-      return A._asyncStartSync($async$call$0, $async$completer);
+      return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 1
-  };
-  A.main_closure1.prototype = {
-    call$1(m) {
-      type$.MouseEvent._as(m);
-      return this.runTests.call$0();
+    call$1(_) {
+      return this.$call$body$main_toggle(type$.nullable_MouseEvent._as(_));
     },
-    $signature: 40
-  };
-  A.main_closure2.prototype = {
-    call$1(m) {
-      type$.MouseEvent._as(m);
-      return this.selectAll.call$0();
-    },
-    $signature: 40
-  };
-  A.main_closure3.prototype = {
-    call$1(m) {
-      type$.MouseEvent._as(m);
-      return this.deselectAll.call$0();
-    },
-    $signature: 40
-  };
-  A.main_closure4.prototype = {
-    call$1(m) {
-      type$.MouseEvent._as(m);
-      return this.toggle.call$0();
+    call$0() {
+      return this.call$1(null);
     },
     $signature: 40
   };
@@ -36281,7 +36264,7 @@
   };
   A.execute____closure_idGetter7.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36369,7 +36352,7 @@
   };
   A.execute____closure_idGetter6.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36446,19 +36429,18 @@
                   }
                   wid = t2[1];
                   A._expect(wid, B.C__IsNotNull, null, null, null, false);
-                  t2 = A.threadId();
+                  t2 = $.$get$threadId();
                   A._expect(wid, new A._IsNot(A.wrapMatcher(new A._StringEqualsMatcher(t2))), null, null, null, false);
-                  t2 = match._match;
-                  if (2 >= t2.length) {
-                    $async$returnValue = A.ioore(t2, 2);
+                  t3 = match._match;
+                  if (2 >= t3.length) {
+                    $async$returnValue = A.ioore(t3, 2);
                     $async$next = [1];
                     // goto finally
                     $async$goto = 4;
                     break $async$outer;
                   }
-                  t2 = t2[2];
-                  t3 = A.threadId();
-                  A._expect(t2, new A._StringEqualsMatcher(t3), null, null, null, false);
+                  t3 = t3[2];
+                  A._expect(t3, new A._StringEqualsMatcher(t2), null, null, null, false);
                   t2 = wid;
                   t2.toString;
                   J.add$1$ax(workerIds, t2);
@@ -36493,7 +36475,7 @@
   };
   A.execute____closure_idGetter5.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36576,7 +36558,7 @@
   };
   A.execute____closure_idGetter4.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36642,7 +36624,7 @@
   };
   A.execute____closure_idGetter3.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36729,7 +36711,7 @@
   };
   A.execute____closure_idGetter2.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36805,7 +36787,7 @@
   };
   A.execute____closure_idGetter1.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36874,7 +36856,7 @@
   };
   A.execute____closure_idGetter0.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -36997,7 +36979,7 @@
   };
   A.execute____closure_idGetter.prototype = {
     call$0() {
-      return 'LocalWorker running as "' + A.threadId() + '"';
+      return 'LocalWorker running as "' + $.$get$threadId() + '"';
     },
     $signature: 3
   };
@@ -37760,7 +37742,6 @@
       return $event.level.value >= t1.value;
     }
   };
-  A.Unsendable.prototype = {};
   A.PrimeWorkerPool.prototype = {
     isPrime$2(n, counter) {
       return this.execute$1$2$counter(new A.PrimeWorkerPool_isPrime_closure(n), counter, type$.bool);
@@ -41697,7 +41678,7 @@
               result = $async$result;
               A.expect(result, new A._DeepMatcher(transferable, 100), null);
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute_____closure94(t1, new A.Unsendable()), $async$self.failsWith.call$1$0(type$.SquadronError), null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.execute_____closure94(t1, A.getUnsendable()), $async$self.failsWith.call$1$0(type$.SquadronError), null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               $async$temp1 = A;
@@ -42816,7 +42797,7 @@
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(A.Object, null);
-    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.ListBase, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.MappedIterator, A.WhereIterator, A.ExpandIterator, A.TakeIterator, A.SkipIterator, A.SkipWhileIterator, A.EmptyIterator, A.FollowedByIterator, A.WhereTypeIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.Symbol, A.MapView, A.ConstantMap, A._KeysOrValuesOrElementsIterator, A.SetBase, A.JSInvocationMirror, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A._Required, A.MapBase, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A._Cell, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._SyncStarIterator, A.AsyncError, A.Stream, A._BufferingStreamSubscription, A._BroadcastStreamController, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A._StreamController, A._SyncStreamControllerDispatch, A._AsyncStreamControllerDispatch, A._StreamSinkWrapper, A._AddStreamState, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._ZoneFunction, A._ZoneSpecification, A._ZoneDelegate, A._Zone, A._HashMapKeyIterator, A._LinkedHashSetCell, A._LinkedHashSetIterator, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A._ListQueueIterator, A.Codec, A.Converter, A.ByteConversionSink, A._JsonStringifier, A._JsonPrettyPrintMixin, A._Utf8Encoder, A._Utf8Decoder, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.MapEntry, A.Null, A._StringStackTrace, A.Stopwatch, A.RuneIterator, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.Expando, A.CssStyleDeclarationBase, A.EventStreamProvider, A._EventStreamSubscription0, A._Html5NodeValidator, A.ImmutableListMixin, A.NodeValidatorBuilder, A._SimpleNodeValidator, A._SvgNodeValidator, A.FixedSizeListIterator, A._DOMWindowCrossFrame, A._SameOriginUriPolicy, A._ValidatingTreeSanitizer, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.AsyncMemoizer, A.DelegatingSink, A.FutureGroup, A.StreamGroup, A._StreamGroupState, A.All, A.CancelationToken, A.CanceledException, A.CanceledExceptions, A._QueueList_Object_ListMixin, A.UnionSetController, A._DelegatingIterableBase, A.UnmodifiableSetMixin, A.BaseClient, A.BaseRequest, A.BaseResponse, A.ClientException, A.AnsiColor, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A.Matcher, A.StringDescription, A._Mismatch, A.Context, A.Style, A.ParsedPath, A.PathException, A.Pool, A.PoolResource, A._BaseJsChannel, A.LocalWorker, A.PoolWorker, A.StreamWrapper, A.TokenId, A.ValueWrapper, A.WorkerRunner, A.WorkerTask, A.ConcurrencySettings, A.ExceptionManager, A.SquadronCanceledException, A.SquadronCanceledExceptions, A.SquadronError, A.SquadronException, A.TaskCanceledException, A.WorkerPool, A.PerfCounter, A.PerfCounterSnapshot, A.WorkerStat, A.CancelationTokenReference, A.Worker0, A.Chain, A.Frame, A.LazyChain, A.LazyTrace, A._Node, A.Trace, A.UnparsedFrame, A.TestHandle, A.OutstandingWork, A.OutsideTestException, A.ClosedException, A.Timeout, A.Declarer, A.DuplicateTestNameException, A.Group, A.Test, A.Invoker, A._AsyncCounter, A.LiveTest, A.Message, A.MessageType, A.Metadata, A.OperatingSystem, A.PlatformSelector, A.Runtime, A.StackTraceFormatter, A.State, A.Suite, A.SuitePlatform, A.TestFailure, A.Engine, A.LiveSuite, A.LiveSuiteController, A.ExpandedReporter, A.RunnerSuiteController, A.SuiteConfiguration, A._IterableSet_Object_SetMixin, A.PrintSink, A.EventStreamProvider0, A._EventStreamSubscription, A.CacheStat, A.LocalService, A.Unsendable]);
+    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.ListBase, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.MappedIterator, A.WhereIterator, A.ExpandIterator, A.TakeIterator, A.SkipIterator, A.SkipWhileIterator, A.EmptyIterator, A.FollowedByIterator, A.WhereTypeIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.Symbol, A.MapView, A.ConstantMap, A._KeysOrValuesOrElementsIterator, A.SetBase, A.JSInvocationMirror, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A._Required, A.MapBase, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A._Cell, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._SyncStarIterator, A.AsyncError, A.Stream, A._BufferingStreamSubscription, A._BroadcastStreamController, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A._StreamController, A._SyncStreamControllerDispatch, A._AsyncStreamControllerDispatch, A._StreamSinkWrapper, A._AddStreamState, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._ZoneFunction, A._ZoneSpecification, A._ZoneDelegate, A._Zone, A._HashMapKeyIterator, A._LinkedHashSetCell, A._LinkedHashSetIterator, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A._ListQueueIterator, A.Codec, A.Converter, A.ByteConversionSink, A._JsonStringifier, A._JsonPrettyPrintMixin, A._Utf8Encoder, A._Utf8Decoder, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.MapEntry, A.Null, A._StringStackTrace, A.Stopwatch, A.RuneIterator, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.Expando, A.CssStyleDeclarationBase, A.EventStreamProvider, A._EventStreamSubscription0, A._Html5NodeValidator, A.ImmutableListMixin, A.NodeValidatorBuilder, A._SimpleNodeValidator, A._SvgNodeValidator, A.FixedSizeListIterator, A._DOMWindowCrossFrame, A._SameOriginUriPolicy, A._ValidatingTreeSanitizer, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A.AsyncMemoizer, A.DelegatingSink, A.FutureGroup, A.StreamGroup, A._StreamGroupState, A.All, A.CancelationToken, A.CanceledException, A.CanceledExceptions, A._QueueList_Object_ListMixin, A.UnionSetController, A._DelegatingIterableBase, A.UnmodifiableSetMixin, A.BaseClient, A.BaseRequest, A.BaseResponse, A.ClientException, A.AnsiColor, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A.Matcher, A.StringDescription, A._Mismatch, A.Context, A.Style, A.ParsedPath, A.PathException, A.Pool, A.PoolResource, A._BaseJsChannel, A.LocalWorker, A.PoolWorker, A.StreamWrapper, A.TokenId, A.ValueWrapper, A.WorkerRunner, A.WorkerTask, A.ConcurrencySettings, A.ExceptionManager, A.SquadronCanceledException, A.SquadronCanceledExceptions, A.SquadronError, A.SquadronException, A.TaskCanceledException, A.WorkerPool, A.PerfCounter, A.PerfCounterSnapshot, A.WorkerStat, A.CancelationTokenReference, A.Worker0, A.Chain, A.Frame, A.LazyChain, A.LazyTrace, A._Node, A.Trace, A.UnparsedFrame, A.TestHandle, A.OutstandingWork, A.OutsideTestException, A.ClosedException, A.Timeout, A.Declarer, A.DuplicateTestNameException, A.Group, A.Test, A.Invoker, A._AsyncCounter, A.LiveTest, A.Message, A.MessageType, A.Metadata, A.OperatingSystem, A.PlatformSelector, A.Runtime, A.StackTraceFormatter, A.State, A.Suite, A.SuitePlatform, A.TestFailure, A.Engine, A.LiveSuite, A.LiveSuiteController, A.ExpandedReporter, A.RunnerSuiteController, A.SuiteConfiguration, A._IterableSet_Object_SetMixin, A.PrintSink, A.EventStreamProvider0, A._EventStreamSubscription, A.Unsendable, A.CacheStat, A.LocalService]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JavaScriptBigInt, J.JavaScriptSymbol, J.JSNumber, J.JSString]);
     _inheritMany(J.JavaScriptObject, [J.LegacyJavaScriptObject, J.JSArray, A.NativeByteBuffer, A.NativeTypedData, A.EventTarget, A.AccessibleNodeList, A.Blob, A.CssTransformComponent, A.CssRule, A._CssStyleDeclaration_JavaScriptObject_CssStyleDeclarationBase, A.CssStyleValue, A.DataTransferItemList, A.DomException, A.DomImplementation, A._DomRectList_JavaScriptObject_ListMixin, A.DomRectReadOnly, A._DomStringList_JavaScriptObject_ListMixin, A.DomTokenList, A.Event, A._FileList_JavaScriptObject_ListMixin, A.Gamepad, A.History, A._HtmlCollection_JavaScriptObject_ListMixin, A.ImageData, A.Location, A.MediaList, A.MessageChannel, A._MidiInputMap_JavaScriptObject_MapMixin, A._MidiOutputMap_JavaScriptObject_MapMixin, A.MimeType, A._MimeTypeArray_JavaScriptObject_ListMixin, A._NodeList_JavaScriptObject_ListMixin, A.Plugin, A._PluginArray_JavaScriptObject_ListMixin, A._RtcStatsReport_JavaScriptObject_MapMixin, A.SharedArrayBuffer, A.SpeechGrammar, A._SpeechGrammarList_JavaScriptObject_ListMixin, A.SpeechRecognitionResult, A._Storage_JavaScriptObject_MapMixin, A.StyleSheet, A._TextTrackCueList_JavaScriptObject_ListMixin, A.TimeRanges, A.Touch, A._TouchList_JavaScriptObject_ListMixin, A.TrackDefaultList, A.Url, A.__CssRuleList_JavaScriptObject_ListMixin, A.__GamepadList_JavaScriptObject_ListMixin, A.__NamedNodeMap_JavaScriptObject_ListMixin, A.__SpeechRecognitionResultList_JavaScriptObject_ListMixin, A.__StyleSheetList_JavaScriptObject_ListMixin, A.Length, A._LengthList_JavaScriptObject_ListMixin, A.Number, A._NumberList_JavaScriptObject_ListMixin, A.PointList, A._StringList_JavaScriptObject_ListMixin, A.Transform, A._TransformList_JavaScriptObject_ListMixin, A.AudioBuffer, A._AudioParamMap_JavaScriptObject_MapMixin]);
     _inheritMany(J.LegacyJavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
@@ -42825,8 +42806,8 @@
     _inheritMany(A.Error, [A.LateError, A.TypeError, A.JsNoSuchMethodError, A.UnknownJsTypeError, A._CyclicInitializationError, A.RuntimeError, A.AssertionError, A._Error, A.JsonUnsupportedObjectError, A.ArgumentError, A.NoSuchMethodError, A.UnsupportedError, A.UnimplementedError, A.StateError, A.ConcurrentModificationError]);
     _inheritMany(A.ListBase, [A.UnmodifiableListBase, A._ChildrenElementList, A._ChildNodeListLazy, A.FilteredElementList]);
     _inheritMany(A.UnmodifiableListBase, [A.CodeUnits, A.UnmodifiableListView]);
-    _inheritMany(A.Closure, [A.Closure0Args, A.Closure2Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._LinkedCustomHashMap_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure0, A._EventStreamSubscription_onData_closure0, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.FilteredElementList__iterable_closure, A.FilteredElementList__iterable_closure0, A.FilteredElementList_removeRange_closure, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.PrettyPrinter_formatStackTrace_closure, A._Contains_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A._JsChannel_sendRequest_closure, A._JsChannel_sendStreamingRequest_closure, A.openChannel_closure, A.openChannel_closure2, A.JsWorkerRunnerExt_get_handle_closure, A.StreamWrapper_closure, A.StreamWrapper_closure0, A.StreamWrapper__onListen_closure, A.ValueWrapper_closure, A.ValueWrapper_closure0, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__pipe_closure, A.WorkerStreamTask_run_closure, A.WorkerValueTask_run_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.SquadronCancelationToken$__closure, A.Worker_send_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.execute_____closure64, A.execute_____closure65, A.execute_____closure62, A.execute_____closure63, A.execute_____closure57, A.execute_____closure58, A.execute_____closure59, A.execute_____closure60, A.execute_____closure61, A.execute_____closure52, A.execute_____closure53, A.execute_____closure54, A.execute_____closure55, A.execute_____closure56, A.execute_____closure48, A.execute_____closure50, A.execute_____closure51, A.execute_____closure45, A.execute_____closure47, A.execute_____closure42, A.execute_____closure44, A.execute_____closure35, A.execute_____closure37, A.execute_____closure38, A.execute______closure2, A.execute_____closure39, A.execute______closure0, A.execute______closure1, A.execute_____closure40, A.execute______closure, A.execute_____closure41, A.execute_____closure25, A.execute_____closure27, A.execute_____closure28, A.execute_____closure29, A.execute_____closure30, A.execute_____closure31, A.execute_____closure32, A.execute_____closure33, A.execute_____closure34, A.execute_____closure15, A.execute_____closure17, A.execute_____closure18, A.execute_____closure19, A.execute_____closure20, A.execute_____closure21, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure14, A.execute_____closure13, A.execute_____closure11, A.execute_____closure9, A.execute_____closure5, A.execute_____closure7, A.main_closure, A.main_closure0, A.main_closure1, A.main_closure2, A.main_closure3, A.main_closure4, A.IssuesWorkerPool_issue_8_closure, A.execute_____closure2, A.execute_____closure4, A.execute_____closure, A.execute_____closure1, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.execute_____closure68, A.execute_____closure69, A.execute_____closure66, A.execute_____closure67, A.execute_closure_mentions, A.execute_closure_doesNotMention, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedIdentityTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.execute____closure93, A.execute____closure94, A.execute____closure91, A.execute____closure92, A.execute____closure89, A.execute____closure90, A.execute____closure87, A.execute____closure88, A.execute____closure53, A.execute____closure51, A.execute_____closure89, A.execute_____closure87, A.execute_____closure85, A.execute____closure41, A.execute_____closure80, A.execute_____closure82, A.execute_____closure83, A.execute_____closure84, A.execute_____closure79, A.execute_____closure76, A.execute_____closure77, A.execute_____closure78, A.execute_____closure72, A.execute_____closure73, A.execute_____closure74, A.execute_____closure75, A.execute_____closure70, A.execute_____closure71, A.execute__closure_mentions, A.execute__closure_doesNotMention, A.execute__closure_failsWith, A.execute____closure_hook0, A.execute____closure_hook, A.execute____closure_createTask0, A.execute____closure_createTask, A.execute_____closure92, A.execute_____closure93, A.execute_____closure91, A.execute_____closure90]);
-    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._AddStreamState_cancel_closure, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A.Logger_defaultPrinter_closure, A.Logger_defaultOutput_closure, A._expect_closure0, A._expect_closure1, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A._BaseJsChannel__postRequest_closure, A._BaseJsChannel__postRequest_closure0, A._BaseJsChannel__inspectAndPostRequest_closure, A._BaseJsChannel__inspectAndPostRequest_closure0, A._BaseJsChannel__postResponse_closure, A._BaseJsChannel__postResponse_closure0, A._BaseJsChannel__inspectAndPostResponse_closure, A._BaseJsChannel__inspectAndPostResponse_closure0, A._JsChannel_sendRequest_closure0, A._JsChannel_sendStreamingRequest_closure0, A._JsWorkerChannel_error_closure, A._JsForwardChannel__forward_closure, A.openChannel__closure2, A.openChannel__closure3, A.openChannel_closure0, A.openChannel_closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel__closure1, A.openChannel_closure3, A.PoolWorker_run_closure, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure1, A.WorkerStreamTask__done_closure, A.WorkerValueTask__completeWithError_closure, A.WorkerValueTask__completeWithResult_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker__send_closure0, A.Worker_stream_onDone, A.Worker_stream_closure, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.execute_closure0, A.execute__closure0, A.execute__closure1, A.execute__closure2, A.execute___closure0, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute____closure22, A.execute____closure23, A.execute____closure24, A.execute___closure1, A.execute____closure13, A.execute_____closure49, A.execute____closure14, A.execute_____closure46, A.execute____closure15, A.execute_____closure43, A.execute____closure16, A.execute_____closure36, A.execute____closure17, A.execute_____closure26, A.execute____closure18, A.execute_____closure16, A.execute___closure2, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute___closure3, A.execute____closure4, A.execute____closure5, A.execute____closure6, A.execute___closure4, A.execute____closure1, A.execute____closure2, A.execute____closure3, A.main_runTests, A.main_selectAll, A.main_deselectAll, A.main_toggle, A.IssuesWorkerPool_closure, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure, A.execute_____closure3, A.execute____closure0, A.execute_____closure0, A.LocalClientWorkerPool_closure, A.execute_closure3, A.execute__closure5, A.execute___closure23, A.execute___closure24, A.execute___closure25, A.execute____closure31, A.execute____closure_idGetter7, A.execute____closure32, A.execute____closure_idGetter6, A.execute____closure33, A.execute____closure_idGetter5, A.execute___closure26, A.execute____closure28, A.execute____closure_idGetter4, A.execute____closure29, A.execute____closure_idGetter3, A.execute____closure30, A.execute____closure_idGetter2, A.execute___closure27, A.execute____closure25, A.execute____closure_idGetter1, A.execute____closure26, A.execute____closure_idGetter0, A.execute____closure27, A.execute____closure_idGetter, A.execute_closure2, A.execute__closure4, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute_closure1, A.execute__closure3, A.execute___closure5, A.execute___closure6, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.PrimeWorkerPool_closure, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool_missingStartRequest_closure, A.TestWorkerPool$invalid_closure, A.execute_closure6, A.execute__closure8, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute_closure4, A.execute__closure6, A.execute___closure28, A.execute____closure52, A.execute___closure29, A.execute___closure30, A.execute____closure48, A.execute____closure49, A.execute____closure50, A.execute___closure31, A.execute____closure42, A.execute____closure43, A.execute____closure44, A.execute____closure45, A.execute____closure46, A.execute____closure47, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute___closure35, A.execute___closure36, A.execute___closure37, A.execute____closure34, A.execute_____closure81, A.execute____closure35, A.execute____closure36, A.execute____closure37, A.execute____closure38, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure39, A.execute____closure40, A.execute_closure5, A.execute__closure7, A.execute___closure38, A.execute____closure80, A.execute____closure81, A.execute____closure82, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute_____closure95, A.execute_____closure96, A.execute_____closure97, A.execute____closure86, A.execute___closure39, A.execute____closure78, A.execute_____createTask_closure0, A.execute____closure79, A.execute_____createTask_closure, A.execute___closure40, A.execute____closure75, A.execute____closure76, A.execute____closure77, A.execute___closure41, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute____closure69, A.execute____closure70, A.execute____closure71, A.execute____closure72, A.execute_____closure94, A.execute____closure73, A.execute____closure74, A.execute___closure42, A.execute____closure56, A.execute____closure57, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute____closure61, A.execute____closure62, A.execute____closure_pause0, A.execute____closure_resume0, A.execute____closure63, A.execute____closure64, A.execute___closure43, A.execute____closure54, A.execute____closure55]);
+    _inheritMany(A.Closure, [A.Closure0Args, A.Closure2Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._LinkedCustomHashMap_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure0, A._EventStreamSubscription_onData_closure0, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.FilteredElementList__iterable_closure, A.FilteredElementList__iterable_closure0, A.FilteredElementList_removeRange_closure, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.PrettyPrinter_formatStackTrace_closure, A._Contains_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A._JsChannel_sendRequest_closure, A._JsChannel_sendStreamingRequest_closure, A.openChannel_closure, A.openChannel_closure2, A.JsWorkerRunnerExt_get_handle_closure, A.StreamWrapper_closure, A.StreamWrapper_closure0, A.StreamWrapper__onListen_closure, A.ValueWrapper_closure, A.ValueWrapper_closure0, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__pipe_closure, A.WorkerStreamTask_run_closure, A.WorkerValueTask_run_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.SquadronCancelationToken$__closure, A.Worker_send_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.execute_____closure64, A.execute_____closure65, A.execute_____closure62, A.execute_____closure63, A.execute_____closure57, A.execute_____closure58, A.execute_____closure59, A.execute_____closure60, A.execute_____closure61, A.execute_____closure52, A.execute_____closure53, A.execute_____closure54, A.execute_____closure55, A.execute_____closure56, A.execute_____closure48, A.execute_____closure50, A.execute_____closure51, A.execute_____closure45, A.execute_____closure47, A.execute_____closure42, A.execute_____closure44, A.execute_____closure35, A.execute_____closure37, A.execute_____closure38, A.execute______closure2, A.execute_____closure39, A.execute______closure0, A.execute______closure1, A.execute_____closure40, A.execute______closure, A.execute_____closure41, A.execute_____closure25, A.execute_____closure27, A.execute_____closure28, A.execute_____closure29, A.execute_____closure30, A.execute_____closure31, A.execute_____closure32, A.execute_____closure33, A.execute_____closure34, A.execute_____closure15, A.execute_____closure17, A.execute_____closure18, A.execute_____closure19, A.execute_____closure20, A.execute_____closure21, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure14, A.execute_____closure13, A.execute_____closure11, A.execute_____closure9, A.execute_____closure5, A.execute_____closure7, A.main_closure, A.main_closure0, A.main_runTests, A.main_selectAll, A.main_deselectAll, A.main_toggle, A.IssuesWorkerPool_issue_8_closure, A.execute_____closure2, A.execute_____closure4, A.execute_____closure, A.execute_____closure1, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.execute_____closure68, A.execute_____closure69, A.execute_____closure66, A.execute_____closure67, A.execute_closure_mentions, A.execute_closure_doesNotMention, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedIdentityTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.execute____closure93, A.execute____closure94, A.execute____closure91, A.execute____closure92, A.execute____closure89, A.execute____closure90, A.execute____closure87, A.execute____closure88, A.execute____closure53, A.execute____closure51, A.execute_____closure89, A.execute_____closure87, A.execute_____closure85, A.execute____closure41, A.execute_____closure80, A.execute_____closure82, A.execute_____closure83, A.execute_____closure84, A.execute_____closure79, A.execute_____closure76, A.execute_____closure77, A.execute_____closure78, A.execute_____closure72, A.execute_____closure73, A.execute_____closure74, A.execute_____closure75, A.execute_____closure70, A.execute_____closure71, A.execute__closure_mentions, A.execute__closure_doesNotMention, A.execute__closure_failsWith, A.execute____closure_hook0, A.execute____closure_hook, A.execute____closure_createTask0, A.execute____closure_createTask, A.execute_____closure92, A.execute_____closure93, A.execute_____closure91, A.execute_____closure90]);
+    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._AddStreamState_cancel_closure, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A.Logger_defaultPrinter_closure, A.Logger_defaultOutput_closure, A._expect_closure0, A._expect_closure1, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A._BaseJsChannel__postRequest_closure, A._BaseJsChannel__postRequest_closure0, A._BaseJsChannel__inspectAndPostRequest_closure, A._BaseJsChannel__inspectAndPostRequest_closure0, A._BaseJsChannel__postResponse_closure, A._BaseJsChannel__postResponse_closure0, A._BaseJsChannel__inspectAndPostResponse_closure, A._BaseJsChannel__inspectAndPostResponse_closure0, A._JsChannel_sendRequest_closure0, A._JsChannel_sendStreamingRequest_closure0, A._JsWorkerChannel_error_closure, A._JsForwardChannel__forward_closure, A.openChannel__closure2, A.openChannel__closure3, A.openChannel_closure0, A.openChannel_closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel__closure1, A.openChannel_closure3, A.PoolWorker_run_closure, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure1, A.WorkerStreamTask__done_closure, A.WorkerValueTask__completeWithError_closure, A.WorkerValueTask__completeWithResult_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker__send_closure0, A.Worker_stream_onDone, A.Worker_stream_closure, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.execute_closure0, A.execute__closure0, A.execute__closure1, A.execute__closure2, A.execute___closure0, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute____closure22, A.execute____closure23, A.execute____closure24, A.execute___closure1, A.execute____closure13, A.execute_____closure49, A.execute____closure14, A.execute_____closure46, A.execute____closure15, A.execute_____closure43, A.execute____closure16, A.execute_____closure36, A.execute____closure17, A.execute_____closure26, A.execute____closure18, A.execute_____closure16, A.execute___closure2, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute___closure3, A.execute____closure4, A.execute____closure5, A.execute____closure6, A.execute___closure4, A.execute____closure1, A.execute____closure2, A.execute____closure3, A.IssuesWorkerPool_closure, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure, A.execute_____closure3, A.execute____closure0, A.execute_____closure0, A.LocalClientWorkerPool_closure, A.execute_closure3, A.execute__closure5, A.execute___closure23, A.execute___closure24, A.execute___closure25, A.execute____closure31, A.execute____closure_idGetter7, A.execute____closure32, A.execute____closure_idGetter6, A.execute____closure33, A.execute____closure_idGetter5, A.execute___closure26, A.execute____closure28, A.execute____closure_idGetter4, A.execute____closure29, A.execute____closure_idGetter3, A.execute____closure30, A.execute____closure_idGetter2, A.execute___closure27, A.execute____closure25, A.execute____closure_idGetter1, A.execute____closure26, A.execute____closure_idGetter0, A.execute____closure27, A.execute____closure_idGetter, A.execute_closure2, A.execute__closure4, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute_closure1, A.execute__closure3, A.execute___closure5, A.execute___closure6, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.PrimeWorkerPool_closure, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool_missingStartRequest_closure, A.TestWorkerPool$invalid_closure, A.execute_closure6, A.execute__closure8, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute_closure4, A.execute__closure6, A.execute___closure28, A.execute____closure52, A.execute___closure29, A.execute___closure30, A.execute____closure48, A.execute____closure49, A.execute____closure50, A.execute___closure31, A.execute____closure42, A.execute____closure43, A.execute____closure44, A.execute____closure45, A.execute____closure46, A.execute____closure47, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute___closure35, A.execute___closure36, A.execute___closure37, A.execute____closure34, A.execute_____closure81, A.execute____closure35, A.execute____closure36, A.execute____closure37, A.execute____closure38, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure39, A.execute____closure40, A.execute_closure5, A.execute__closure7, A.execute___closure38, A.execute____closure80, A.execute____closure81, A.execute____closure82, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute_____closure95, A.execute_____closure96, A.execute_____closure97, A.execute____closure86, A.execute___closure39, A.execute____closure78, A.execute_____createTask_closure0, A.execute____closure79, A.execute_____createTask_closure, A.execute___closure40, A.execute____closure75, A.execute____closure76, A.execute____closure77, A.execute___closure41, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute____closure69, A.execute____closure70, A.execute____closure71, A.execute____closure72, A.execute_____closure94, A.execute____closure73, A.execute____closure74, A.execute___closure42, A.execute____closure56, A.execute____closure57, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute____closure61, A.execute____closure62, A.execute____closure_pause0, A.execute____closure_resume0, A.execute____closure63, A.execute____closure64, A.execute___closure43, A.execute____closure54, A.execute____closure55]);
     _inheritMany(A.Iterable, [A.EfficientLengthIterable, A.MappedIterable, A.WhereIterable, A.ExpandIterable, A.TakeIterable, A.SkipIterable, A.SkipWhileIterable, A.FollowedByIterable, A.WhereTypeIterable, A._KeysOrValues, A._AllMatchesIterable, A._StringAllMatchesIterable, A._SyncStarIterable, A.Runes, A._EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin]);
     _inheritMany(A.EfficientLengthIterable, [A.ListIterable, A.EmptyIterable, A.LinkedHashMapKeyIterable, A._HashMapKeyIterable, A._MapBaseValueIterable]);
     _inheritMany(A.ListIterable, [A.SubListIterable, A.MappedListIterable, A.ReversedListIterable, A.ListQueue, A._GeneratorIterable]);
@@ -43055,7 +43036,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map"},
     mangledNames: {},
-    types: ["Future<Null>()", "~()", "Null()", "String()", "bool(String)", "~(@)", "Null(@)", "~(int)", "~(Object?)", "~(String,@)", "bool(@)", "Future<~>()", "~(TestContext)", "String(String)", "Future<int>(TestWorker)", "~(Object,StackTrace)", "bool(Object?)", "~(Description,bool)", "~(MessageEvent)", "bool(StreamTask<@>)", "~(Event)", "Trace()", "bool(ValueTask<@>)", "~(@,@)", "Frame()", "Null(int)", "bool(List<@>)", "bool(SquadronException)", "Matcher(Object?)", "Stream<int>(TestWorker)", "~(List<@>)", "Future<@>()", "@(@)", "Null(Object,StackTrace)", "Frame(String)", "Null(@,@)", "Chain()", "List<int>(List<int>)", "List<int>(Object?,StackTrace)", "TestWorker()", "~(MouseEvent)", "~(State)", "@()", "~(Object?,Object?)", "~(~())", "~(CanceledException)", "Future<Channel>()", "Trace(String)", "String(CanceledException)", "~(Timer)", "Null(JavaScriptObject)", "int(Frame)", "@(MessageEvent)", "bool(WorkerTask<@,Worker0<@>>)", "~(Object[StackTrace?])", "int(int)", "String(Frame)", "bool(Frame)", "@(Function)", "GroupEntry?(GroupEntry)", "~(Zone,ZoneDelegate,Zone,String)", "~(PlatformSelector,Metadata)", "Metadata(Metadata,Metadata)", "int(int,int)", "~(JavaScriptObject)", "bool(CanceledException)", "~(Uint8List,String,int)", "bool(int)", "bool(Node)", "~(String,String)", "bool(NodeValidator)", "int(int,WorkerStat)", "int()", "~(Worker)", "Future<@>(Duration)", "bool(Object?,Object?)", "int(Object?)", "bool(Element,String,String,_Html5NodeValidator)", "~(@,StackTrace)", "~([SquadronException?])", "Future<@>(~)", "Future<~>(~)", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "List<@>(SquadronCanceledException)", "Null(Channel)", "bool(String,String)", "Null(~)", "0&(@,@)", "bool(Level)", "int(String)", "bool(Pattern[int])", "Trace(Trace)", "bool(Trace)", "List<Frame>(Trace)", "int(Trace)", "~(Element)", "_Future<@>(@)", "~(List<int>)", "Null(~())", "Frame(String,String)", "DevelopmentFilter()", "Frame(Frame)", "GroupEntry(GroupEntry)", "PrettyPrinter()", "ConsoleOutput()", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "~(~)", "Object(@)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~(Level,bool)", "_Mismatch?(Object?,Object?,String,int)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "@(@,String)", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "String(Object?,Matcher,String?,Map<@,@>,bool)", "bool/()", "~(Symbol0,@)", "0^(0^,0^)<num>", "~(String,int)", "~(String,int?)", "@(String)", "~(bool)", "Uint8List(@,@)", "Future<~>(MouseEvent)", "String(Object?)", "IssuesWorker()", "Stream<@>(IssuesWorker)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<@>(LocalClientWorker)", "String(List<@>)", "CustomException?(List<@>)", "String(@)", "String(Match)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "String(String?)", "Future<@>(TestWorker)", "~([Object?])", "Future<bool>(TestWorker)", "Future<List<@>>()", "bool(WorkerStat)", "bool(TestWorker)", "CanceledException?(CancelationToken)", "Null(@,StackTrace)", "Matcher()<Object?>", "Future<~>([CanceledException?])", "~(int,@)", "String(Object?,int,Set<Object?>,bool)", "int(@,@)", "~(Node,Node?)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "Future<~>(Event)", "Null(CanceledException)", "~(WorkerRunner)", "0^(0^)<Object?>", "int(PoolWorker<Worker0<@>>,PoolWorker<Worker0<@>>)", "bool(PoolWorker<Worker0<@>>)", "WorkerStat(PoolWorker<Worker0<@>>)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "@(@,@)", "CancelationTokenReference()", "Element(Node)", "Stream<int>(List<@>)", "String(Trace)"],
+    types: ["Future<Null>()", "~()", "Null()", "String()", "bool(String)", "~(@)", "Null(@)", "~(int)", "~(Object?)", "~(String,@)", "bool(@)", "Future<~>()", "~(TestContext)", "String(String)", "Future<int>(TestWorker)", "~(Object,StackTrace)", "bool(Object?)", "~(Description,bool)", "~(MessageEvent)", "bool(StreamTask<@>)", "~(Event)", "Trace()", "bool(ValueTask<@>)", "~(@,@)", "Frame()", "Null(int)", "bool(List<@>)", "bool(SquadronException)", "Matcher(Object?)", "Stream<int>(TestWorker)", "~(List<@>)", "Future<@>()", "@(@)", "Null(Object,StackTrace)", "Frame(String)", "Null(@,@)", "Chain()", "List<int>(List<int>)", "List<int>(Object?,StackTrace)", "TestWorker()", "~([MouseEvent?])", "~(State)", "@()", "~(Object?,Object?)", "~(~())", "~(CanceledException)", "Future<Channel>()", "Trace(String)", "String(CanceledException)", "~(Timer)", "Null(JavaScriptObject)", "int(Frame)", "@(MessageEvent)", "bool(WorkerTask<@,Worker0<@>>)", "~(Object[StackTrace?])", "int(int)", "String(Frame)", "bool(Frame)", "@(Function)", "GroupEntry?(GroupEntry)", "~(Zone,ZoneDelegate,Zone,String)", "~(PlatformSelector,Metadata)", "Metadata(Metadata,Metadata)", "int(int,int)", "~(JavaScriptObject)", "bool(CanceledException)", "~(Uint8List,String,int)", "bool(int)", "bool(Node)", "~(String,String)", "bool(NodeValidator)", "int(int,WorkerStat)", "int()", "~(Worker)", "Future<@>(Duration)", "bool(Object?,Object?)", "int(Object?)", "bool(Element,String,String,_Html5NodeValidator)", "~(@,StackTrace)", "~([SquadronException?])", "Future<@>(~)", "Future<~>(~)", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "List<@>(SquadronCanceledException)", "Null(Channel)", "bool(String,String)", "Null(~)", "0&(@,@)", "bool(Level)", "int(String)", "bool(Pattern[int])", "Trace(Trace)", "bool(Trace)", "List<Frame>(Trace)", "int(Trace)", "~(Element)", "_Future<@>(@)", "~(List<int>)", "Null(~())", "Frame(String,String)", "DevelopmentFilter()", "Frame(Frame)", "GroupEntry(GroupEntry)", "PrettyPrinter()", "ConsoleOutput()", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "~(~)", "Object(@)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~(Level,bool)", "_Mismatch?(Object?,Object?,String,int)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "@(@,String)", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "String(Object?,Matcher,String?,Map<@,@>,bool)", "bool/()", "~(Symbol0,@)", "0^(0^,0^)<num>", "~(String,int)", "~(String,int?)", "@(String)", "~(bool)", "Uint8List(@,@)", "Future<~>(MouseEvent)", "String(Object?)", "IssuesWorker()", "Stream<@>(IssuesWorker)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<@>(LocalClientWorker)", "String(List<@>)", "CustomException?(List<@>)", "String(@)", "String(Match)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "String(String?)", "Future<@>(TestWorker)", "~([Object?])", "Future<bool>(TestWorker)", "Future<List<@>>()", "bool(WorkerStat)", "bool(TestWorker)", "CanceledException?(CancelationToken)", "Null(@,StackTrace)", "Matcher()<Object?>", "Future<~>([CanceledException?])", "~(int,@)", "String(Object?,int,Set<Object?>,bool)", "int(@,@)", "~(Node,Node?)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "Future<~>(Event)", "Null(CanceledException)", "~(WorkerRunner)", "0^(0^)<Object?>", "int(PoolWorker<Worker0<@>>,PoolWorker<Worker0<@>>)", "bool(PoolWorker<Worker0<@>>)", "WorkerStat(PoolWorker<Worker0<@>>)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "@(@,@)", "CancelationTokenReference()", "Element(Node)", "Stream<int>(List<@>)", "String(Trace)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
@@ -43397,6 +43378,7 @@
       nullable_Map_of_int_and_void_Function: findType("Map<int,~()>?"),
       nullable_Map_of_nullable_Object_and_nullable_Object: findType("Map<Object?,Object?>?"),
       nullable_MessagePort: findType("MessagePort?"),
+      nullable_MouseEvent: findType("MouseEvent?"),
       nullable_Object: findType("Object?"),
       nullable_SquadronCancelationToken: findType("SquadronCancelationToken?"),
       nullable_SquadronException: findType("SquadronException?"),
@@ -43964,6 +43946,7 @@
       return new A.SuiteConfiguration(_null, _null, _null);
     });
     _lazyFinal($, "currentOSGuess", "$get$currentOSGuess", () => new A.currentOSGuess_closure().call$0());
+    _lazyFinal($, "threadId0", "$get$threadId", () => A.threadId());
     _lazyFinal($, "executorLabels", "$get$executorLabels", () => $.executors.get$keys(0).toList$0(0));
   })();
   (function nativeSupport() {

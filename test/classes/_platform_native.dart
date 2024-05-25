@@ -2,6 +2,11 @@ import 'dart:isolate';
 
 import 'package:squadron/squadron.dart';
 
+// ignore: unused_element
+final _ = (() {
+  print('Imported _platform_native.dart');
+})();
+
 dynamic getUnsendable() => ReceivePort();
 
 WorkerChannel? getWorkerChannel(Logger? logger) =>

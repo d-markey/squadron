@@ -1,54 +1,60 @@
 import 'dart:js_interop';
 
+import 'package:web/helpers.dart';
 import 'package:web/web.dart';
 
 import 'tests.dart';
 
 @JS()
-external JSFunction get dartPrint;
+external JSFunction? get dartPrint;
 
 @JS()
-external set dartPrint(JSFunction value);
+external set dartPrint(JSFunction? value);
 
-void main() async {
+bool isCheckbox(Element? element) => (element != null &&
+    element.tagName.toLowerCase() == 'input' &&
+    (element as HTMLInputElement).type.toLowerCase() == 'checkbox');
+
+void main(dynamic args) {
   final origin = window.location.origin.jsify()!;
   final testRunner = querySelector('#test-runner') as HTMLIFrameElement;
 
   dartPrint = (JSAny? message) {
-    testRunner.contentWindow?.postMessage(message ?? '(null)'.jsify(), origin);
+    testRunner.contentWindow?.postMessage(
+      (message ?? '(null)').jsify(),
+      origin,
+    );
   }.toJS;
 
   final logHeader = querySelector('#log-header')!;
-  final separator = HTMLSpanElement()..text = ' - ';
-  logHeader.appendChild(separator);
-  final clearLink = HTMLAnchorElement()
+
+  logHeader.appendChild(document.createElement('span')..text = ' - ');
+
+  logHeader.appendChild(document.createElement('a') as HTMLAnchorElement
     ..text = 'Clear'
-    ..setAttribute('href', '#');
-  clearLink.onClick.listen((e) async {
-    testRunner.src = 'test_runner.html';
-    await Future.delayed(Duration.zero);
-    dartPrint.callAsFunction('Ready'.jsify());
-    dartPrint.callAsFunction(''.jsify());
-  });
-  logHeader.appendChild(clearLink);
+    ..href = '#'
+    ..onClick.listen((e) async {
+      testRunner.src = 'test_runner.html';
+      await Future.delayed(Duration(milliseconds: 10));
+      print('Ready');
+      print('');
+    }));
 
   final buttonBar = querySelector('#button-bar')!;
   final testList = querySelector('#test-list')!;
 
-  void runTests() async {
+  void runTests([MouseEvent? _]) {
     for (var i = 0; i < buttonBar.children.length; i++) {
       final btn = buttonBar.children.item(i);
-      if (btn is HTMLButtonElement) {
-        btn.disabled = true;
+      if (btn != null && btn.tagName == 'button') {
+        (btn as HTMLButtonElement).disabled = true;
       }
     }
 
     final testIds = <String>[];
     for (var i = 0; i < testList.children.length; i++) {
       final test = testList.children.item(i);
-      if (test is HTMLInputElement &&
-          test.type == 'checkbox' &&
-          test.checked == true) {
+      if (isCheckbox(test) && (test as HTMLInputElement).checked == true) {
         testIds.add(Uri.encodeQueryComponent(test.id));
       }
     }
@@ -56,61 +62,54 @@ void main() async {
 
     for (var i = 0; i < buttonBar.children.length; i++) {
       final btn = buttonBar.children.item(i);
-      if (btn is HTMLButtonElement) {
-        btn.disabled = false;
+      if (btn != null && btn.tagName == 'button') {
+        (btn as HTMLButtonElement).disabled = false;
       }
     }
   }
 
-  void selectAll() async {
+  void selectAll([MouseEvent? _]) {
     for (var i = 0; i < testList.children.length; i++) {
       final test = testList.children.item(i);
-      if (test is HTMLInputElement &&
-          test.type == 'checkbox' &&
-          test.checked == false) {
+      if (isCheckbox(test) && (test as HTMLInputElement).checked == false) {
         test.checked = true;
       }
     }
   }
 
-  void deselectAll() async {
+  void deselectAll([MouseEvent? _]) {
     for (var i = 0; i < testList.children.length; i++) {
       final test = testList.children.item(i);
-      if (test is HTMLInputElement &&
-          test.type == 'checkbox' &&
-          test.checked == true) {
+      if (isCheckbox(test) && (test as HTMLInputElement).checked == true) {
         test.checked = false;
       }
     }
   }
 
-  void toggle() async {
+  void toggle([MouseEvent? _]) {
     for (var i = 0; i < testList.children.length; i++) {
       final test = testList.children.item(i);
-      if (test is HTMLInputElement && test.type == 'checkbox') {
-        test.checked = !test.checked;
+      if (isCheckbox(test)) {
+        (test as HTMLInputElement).checked = !test.checked;
       }
     }
   }
 
-  final runButton =
-      buttonBar.appendChild(HTMLButtonElement()..text = 'Run selected tests')
-          as HTMLButtonElement;
-  runButton.onClick.listen((m) => runTests());
+  buttonBar.appendChild(document.createElement('button')
+    ..text = 'Run selected tests'
+    ..onClick.listen(runTests));
 
-  final allButton =
-      buttonBar.appendChild(HTMLButtonElement()..text = 'Select All')
-          as HTMLButtonElement;
-  allButton.onClick.listen((m) => selectAll());
+  buttonBar.appendChild(document.createElement('button')
+    ..text = 'Select All'
+    ..onClick.listen(selectAll));
 
-  final noneButton =
-      buttonBar.appendChild(HTMLButtonElement()..text = 'Deselect All')
-          as HTMLButtonElement;
-  noneButton.onClick.listen((m) => deselectAll());
+  buttonBar.appendChild(document.createElement('button')
+    ..text = 'Deselect All'
+    ..onClick.listen(deselectAll));
 
-  final toggleButton = buttonBar
-      .appendChild(HTMLButtonElement()..text = 'Toggle') as HTMLButtonElement;
-  toggleButton.onClick.listen((m) => toggle());
+  buttonBar.appendChild(document.createElement('button')
+    ..text = 'Toggle'
+    ..onClick.listen(toggle));
 
   var n = 0;
   for (var label in executorLabels) {
@@ -118,15 +117,15 @@ void main() async {
       testList.innerHTML += ' | ';
     }
     final id = getTestId(label);
-    testList.appendChild(HTMLInputElement()
+    testList.appendChild(document.createElement('input')
       ..id = id
-      ..type = 'checkbox'
-      ..checked = true);
-    testList.appendChild(HTMLLabelElement()
+      ..setAttribute('type', 'checkbox')
+      ..setAttribute('checked', ''));
+    testList.appendChild(document.createElement('label')
       ..text = label
-      ..htmlFor = id);
+      ..setAttribute('for', id));
   }
 
-  dartPrint.callAsFunction('Ready'.jsify());
-  dartPrint.callAsFunction(''.jsify());
+  print('Ready');
+  print('');
 }

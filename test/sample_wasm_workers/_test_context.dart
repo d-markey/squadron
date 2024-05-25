@@ -5,33 +5,32 @@ import 'package:squadron/src/_impl/browser/_uri_checker.dart';
 import 'package:web/helpers.dart' as web;
 import 'package:web/web.dart' as web;
 
-import '../classes/test_context.dart';
+import '../classes/test_entry_points.dart';
+import '../classes/test_platform.dart';
 
 const platform = TestPlatform.wasm;
 String platformName = '${web.window.navigator.userAgent} (wasm)';
 
 bool _set = false;
 
-extension EntryPointsExt on TestContext {
-  Future<void> setEntryPoints(String root) async {
-    print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform // platformId = $platformId');
 
-    if (!_set) {
-      _set = true;
-      root = '${root}sample_wasm_workers';
+  if (!_set) {
+    _set = true;
+    root = '${root}sample_wasm_workers';
 
-      entryPoints.echo = '$root/echo_worker.dart.js';
+    entryPoints.echo = '$root/echo_worker.dart.js';
 
-      entryPoints.cache = '$root/cache_worker.dart.js';
-      entryPoints.installable = '$root/installable_worker.dart.js';
-      entryPoints.issues = '$root/issues_worker.dart.js';
-      entryPoints.local = '$root/local_client_worker.dart.js';
-      entryPoints.prime = '$root/prime_worker.dart.js';
+    entryPoints.cache = '$root/cache_worker.dart.js';
+    entryPoints.installable = '$root/installable_worker.dart.js';
+    entryPoints.issues = '$root/issues_worker.dart.js';
+    entryPoints.local = '$root/local_client_worker.dart.js';
+    entryPoints.prime = '$root/prime_worker.dart.js';
 
-      entryPoints.test = '$root/test_worker.dart.js';
+    entryPoints.test = '$root/test_worker.dart.js';
 
-      await _checkWebWorkers(definedEntryPoints);
-    }
+    await _checkWebWorkers(entryPoints.defined);
   }
 }
 

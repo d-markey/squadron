@@ -1,27 +1,21 @@
-import 'dart:async';
-
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/typedefs.dart';
 import 'package:test/test.dart';
 
-import '../sample_vm_workers/_test_context.dart'
+import '_test_context_stub.dart'
+    if (dart.library.io) '../sample_vm_workers/_test_context.dart'
     if (dart.library.html) '../sample_js_workers/_test_context.dart'
     if (dart.library.js_interop) '../sample_wasm_workers/_test_context.dart'
     as platform_test_context;
-
-enum TestPlatform {
-  unknown,
-  vm,
-  js,
-  wasm,
-}
+import 'test_entry_points.dart';
+import 'test_platform.dart';
 
 class TestContext {
-  TestContext._(this.platform, this.platformName);
+  TestContext._();
 
   static Future<TestContext> init(String root) async {
-    final testContext = TestContext._(
-        platform_test_context.platform, platform_test_context.platformName);
-    await testContext.setEntryPoints(root);
+    final testContext = TestContext._();
+    await platform_test_context.setEntryPoints(root, testContext.entryPoints);
     return testContext;
   }
 
@@ -29,44 +23,14 @@ class TestContext {
     group(platformName, testSuite);
   }
 
-  final TestPlatform platform;
+  static final TestPlatform platform = platform_test_context.platform;
+  static final String platformName = platform_test_context.platformName;
+
+  final entryPoints = TestEntryPoints();
 
   bool get isVm => platform == TestPlatform.vm;
   bool get isJs => platform == TestPlatform.js;
   bool get isWasm => platform == TestPlatform.wasm;
 
-  final String platformName;
-
-  Iterable<EntryPoint> get definedEntryPoints => [
-        entryPoints.echo,
-        entryPoints.native,
-        entryPoints.cache,
-        entryPoints.installable,
-        entryPoints.issues,
-        entryPoints.local,
-        entryPoints.prime,
-        entryPoints.test,
-        // entryPoints.failedInit,
-        // entryPoints.invalidCommand,
-        entryPoints.missingStartRequest,
-      ].whereType<EntryPoint>();
-
-  final entryPoints = EntryPoints();
-}
-
-class EntryPoints {
-  dynamic echo;
-  dynamic inMemory;
-  dynamic native;
-
-  dynamic cache;
-  dynamic installable;
-  dynamic issues;
-  dynamic local;
-  dynamic prime;
-
-  dynamic test;
-  dynamic failedInit;
-  dynamic invalidCommand;
-  dynamic missingStartRequest;
+  Iterable<EntryPoint> get definedEntryPoints => entryPoints.defined;
 }

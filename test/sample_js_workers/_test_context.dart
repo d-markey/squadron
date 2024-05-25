@@ -5,42 +5,41 @@ import 'dart:html' as web;
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/browser/_uri_checker.dart';
 
-import '../classes/test_context.dart';
+import '../classes/test_entry_points.dart';
+import '../classes/test_platform.dart';
 
 const platform = TestPlatform.js;
 String platformName = '${web.window.navigator.userAgent} (js)';
 
 bool _set = false;
 
-extension EntryPointsExt on TestContext {
-  Future<void> setEntryPoints(String root) async {
-    print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform // platformId = $platformId');
 
-    if (!_set) {
-      _set = true;
-      root = '${root}sample_js_workers';
+  if (!_set) {
+    _set = true;
+    root = '${root}sample_js_workers';
 
-      entryPoints.inMemory =
-          'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
+    entryPoints.echo = '$root/echo_worker.dart.js';
+    entryPoints.native = '$root/native_worker.js';
+
+    entryPoints.cache = '$root/cache_worker.dart.js';
+    entryPoints.installable = '$root/installable_worker.dart.js';
+    entryPoints.issues = '$root/issues_worker.dart.js';
+    entryPoints.local = '$root/local_client_worker.dart.js';
+    entryPoints.prime = '$root/prime_worker.dart.js';
+
+    entryPoints.test = '$root/test_worker.dart.js';
+
+    await _checkWebWorkers(entryPoints.defined);
+
+    entryPoints.inMemory =
+        'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
   console.log("Message received from main script");
   const workerResult = `ECHO "\${e.data}"`;
   console.log("Posting message back to main script");
   postMessage(workerResult);
 };'''))}';
-
-      entryPoints.echo = '$root/echo_worker.dart.js';
-      entryPoints.native = '$root/native_worker.js';
-
-      entryPoints.cache = '$root/cache_worker.dart.js';
-      entryPoints.installable = '$root/installable_worker.dart.js';
-      entryPoints.issues = '$root/issues_worker.dart.js';
-      entryPoints.local = '$root/local_client_worker.dart.js';
-      entryPoints.prime = '$root/prime_worker.dart.js';
-
-      entryPoints.test = '$root/test_worker.dart.js';
-
-      await _checkWebWorkers(definedEntryPoints);
-    }
   }
 }
 

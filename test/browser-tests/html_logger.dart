@@ -10,6 +10,7 @@ class HtmlLogger {
   final DivElement div;
 
   void log(String message, {bool replaceLastLine = false}) {
+    window.console.log(message);
     if (message.isNotEmpty) {
       message = '[${_sw.elapsed}] $message';
     }
