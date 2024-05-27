@@ -139,7 +139,7 @@ abstract class Worker<S> implements WorkerService, IWorker {
     }
 
     // send command
-    final squadronToken = channel.wrap(token);
+    final squadronToken = token.wrap();
     return channel
         .sendRequest<T>(command, args,
             token: squadronToken,
@@ -179,7 +179,7 @@ abstract class Worker<S> implements WorkerService, IWorker {
 
     if (_channel != null) {
       // worker is up and running: return the stream directly
-      final squadronToken = _channel!.wrap(token);
+      final squadronToken = token.wrap();
       return _channel!.sendStreamingRequest<T>(
         command,
         args,
@@ -195,7 +195,7 @@ abstract class Worker<S> implements WorkerService, IWorker {
     controller = StreamController<T>(onListen: () async {
       try {
         final channel = await start();
-        final squadronToken = _channel!.wrap(token);
+        final squadronToken = token.wrap();
         await controller.addStream(channel.sendStreamingRequest<T>(
           command,
           args,

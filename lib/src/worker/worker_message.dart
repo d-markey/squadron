@@ -1,27 +1,25 @@
 import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
+import '../typedefs.dart';
 
 /// Make [WorkerMessage] a `List` to minimize serialization overhead.
-typedef WorkerMessage = List<dynamic>;
-
-extension WorkerMessageImpl on List {
-  static const _$traveltime = 0;
-
+extension type WorkerMessage(List data) {
   /// [travelTime] is set by the receiving end and measures the time (in
   /// microseconds) it took between the moment the message was serialized and
   /// the moment it was deserialized.
-  int? get travelTime => this[_$traveltime];
+  int? get travelTime => data[_$traveltime];
 }
 
-@internal
-extension WorkerMessageExt on List {
-  static const _$traveltime = WorkerMessageImpl._$traveltime;
+const _$traveltime = 0;
 
+@internal
+extension WorkerMessageExt on WorkerMessage {
   void unwrapTravelTime() {
-    final ts = this[_$traveltime];
+    dbgTrace('   unwrap travel time ${data[_$traveltime]}...');
+    final ts = data[_$traveltime];
     if (ts != null) {
-      this[_$traveltime] = microsecTimeStamp() - (ts as int);
+      data[_$traveltime] = microsecTimeStamp() - (ts as num).toInt();
     }
   }
 }

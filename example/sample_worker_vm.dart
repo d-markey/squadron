@@ -10,4 +10,4 @@ WorkerService _initializer(WorkerRequest startRequest) {
   return SampleServiceImpl(identityClient);
 }
 
-void start(List command) => run(_initializer, command);
+void start(WorkerRequest command) => run(_initializer, command);

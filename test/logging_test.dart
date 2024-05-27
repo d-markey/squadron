@@ -1,4 +1,5 @@
 @TestOn('vm || browser')
+library;
 
 import 'package:logger/logger.dart';
 import 'package:test/test.dart';

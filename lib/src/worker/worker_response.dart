@@ -6,75 +6,60 @@ import 'package:meta/meta.dart';
 import '../_impl/xplat/_helpers.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
+import '../typedefs.dart';
 import 'worker_message.dart';
 
-/// Make [WorkerResponse] a [WorkerMessage] to minimize serialization overhead.
-typedef WorkerResponse = WorkerMessage;
-
-/// Class used to communicate from a [Worker] to clients.
-/// [WorkerResponse]s are used to provide individual results to the client.
-/// [Future]-based services simply return a single [WorkerResponse] with the
-/// result. [Stream]ing services will return one [WorkerResponse]s for each
-/// stream item and mmust send a [WorkerResponseImpl.closeStream] message to
-/// indicate completion. [WorkerResponse]s can also send error messages.
-
-/// Extension methods operating on a `List` as a [WorkerResponse].
-/// [WorkerResponse] is used to provide individual results to the client.
-/// [Future]-based services simply return a single [WorkerResponse] with the
-/// result. [Stream] services return one [WorkerResponse] for each stream item
-/// and mmust send a [WorkerResponseImpl.closeStream] message to indicate
-/// completion. A [WorkerResponse] can also be used to send error messages.
-extension WorkerResponseImpl on WorkerResponse {
-  // 0 is reserved for travel time
-  static const _$result = 1;
-  static const _$error = 2;
-  static const _$endOfStream = 3;
-  static const _$log = 4;
-
+/// [WorkerResponse]s are used to communicate from [Worker]s to clients and
+/// carry a single piece of data. [Future]-based services simply return a
+/// single [WorkerResponse] with the result. [Stream]ing services will return
+/// one [WorkerResponse]s for each stream item and mmust send a
+/// [WorkerResponse.closeStream] message to indicate completion.
+/// [WorkerResponse]s can also send error messages and log events.
+extension type WorkerResponse(List data) implements WorkerMessage {
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
-  /// not a [List], it will be converted to a [List] by calling [List.toList].
-  static WorkerResponse withResult(dynamic result) => [
+  /// not a [List], it will be converted to a [List] by [wrapInPlace].
+  static WorkerResponse withResult(dynamic result) => WorkerResponse([
         microsecTimeStamp(), // 0 - travel time
         result, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
         null, // 4 - log message
-      ];
+      ]);
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
   static WorkerResponse withError(SquadronException exception,
           [StackTrace? stackTrace]) =>
-      [
+      WorkerResponse([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - result
         exception, // 2 - error
         null, // 3 - end of stream
         null, // 4 - log message
-      ];
+      ]);
 
   /// [WorkerResponse] with log event information.
-  static WorkerResponse log(LogEvent message) => [
+  static WorkerResponse log(LogEvent message) => WorkerResponse([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
         message.serialize(), // 4 - log message
-      ];
+      ]);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
-  static WorkerResponse closeStream() => [
+  static WorkerResponse closeStream() => WorkerResponse([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         true, // 3 - end of stream
         null, // 4 - log message
-      ];
+      ]);
 
   /// Flag indicating the end of the [Stream]ing operation.
-  bool get endOfStream => this[_$endOfStream];
+  bool get endOfStream => data[_$endOfStream];
 
   /// The [WorkerResponse] exception, if any.
-  dynamic get error => this[_$error];
+  dynamic get error => data[_$error];
 
   /// Retrieves the result associated to this [WorkerResponse]. If the
   /// [WorkerResponse] contains an error, an the [error] exception is thrown.
@@ -83,44 +68,52 @@ extension WorkerResponseImpl on WorkerResponse {
     if (err != null) {
       throw err;
     } else {
-      return this[_$result];
+      return data[_$result];
     }
   }
 }
 
+// 0 is reserved for travel time
+const _$result = 1;
+const _$error = 2;
+const _$endOfStream = 3;
+const _$log = 4;
+
 @internal
 extension WorkerResponseExt on WorkerResponse {
-  // 0 is reserved for travel time
-  static const _$result = WorkerResponseImpl._$result;
-  static const _$error = WorkerResponseImpl._$error;
-  static const _$endOfStream = WorkerResponseImpl._$endOfStream;
-  static const _$log = WorkerResponseImpl._$log;
-
   /// In-place deserialization of a [WorkerResponse] sent by the worker.
   /// Returns `false` if the message requires no further processing (currently
   /// used for log messages only).
-  bool unwrapResponseInPlace(
-      ExceptionManager exceptionManager, Logger? logger) {
-    final log = LogEventSerialization.deserialize(this[_$log]);
+  bool unwrapInPlace(ExceptionManager exceptionManager, Logger? logger) {
+    dbgTrace('UNWRAP RESPONSE $this...');
+    dbgTrace('   unwrap log ${data[_$log]}...');
+    final log = LogEventSerialization.deserialize(data[_$log]);
     if (log != null) {
       logger?.log(log.level, log.message,
           time: log.time, error: log.error, stackTrace: log.stackTrace);
       return false;
     } else {
-      this[_$error] = exceptionManager.deserialize(this[_$error]);
-      this[_$endOfStream] ??= false;
+      dbgTrace('   unwrap error ${data[_$error]}...');
+      data[_$error] = exceptionManager.deserialize(data[_$error]);
+      dbgTrace('   unwrap endOfStream ${data[_$endOfStream]}...');
+      data[_$endOfStream] ??= false;
       unwrapTravelTime();
     }
+    dbgTrace('   result = $this');
     return true;
   }
 
   /// In-place serialization of a [WorkerResponse].
-  void wrapResponseInPlace() {
-    final result = this[_$result];
-    if (result is! List && result is Iterable) {
-      this[_$result] = result.toList();
+  void wrapInPlace() {
+    dbgTrace('WRAP RESPONSE $this...');
+    dbgTrace('   wrap result ${data[_$result]}...');
+    final result = data[_$result];
+    if (result is Iterable && result is! List) {
+      data[_$result] = result.toList();
     }
-    this[_$error] = (this[_$error] as SquadronException?)?.serialize();
+    dbgTrace('   wrap error ${data[_$error]}...');
+    data[_$error] = (data[_$error] as SquadronException?)?.serialize();
+    dbgTrace('   result = $this');
   }
 }
 
@@ -136,16 +129,16 @@ extension LogEventSerialization on LogEvent {
   static LogEvent? deserialize(List? props) => (props == null)
       ? null
       : LogEvent(
-          _getLevel(props[0]),
+          _getLevel((props[0] as num?)?.toInt()),
           props[1],
-          time: fromMicrosecTimeStamp(props[2]),
+          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );
 
   static Level _getLevel(int? value) {
     if (value == null) return Level.debug;
-    return Level.values.where((_) => _.value == value).first;
+    return Level.values.where((l) => l.value == value).first;
   }
 
   static String? _stringify(dynamic message) {

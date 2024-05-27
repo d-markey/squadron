@@ -4,16 +4,12 @@ import 'package:cancelation_token/cancelation_token.dart';
 import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_token_id.dart';
-import '../channel.dart';
 import '../exceptions/squadron_canceled_exception.dart';
 
 class SquadronCancelationToken extends CancelationToken {
   SquadronCancelationToken._(this.token, this.id) {
-    token?.onCanceled.then((_) => _checkToken());
+    token?.onCanceled.then(_checkToken);
   }
-
-  static const _$id = 0;
-  static const _$ex = 1;
 
   List serialize() {
     _checkToken();
@@ -55,25 +51,27 @@ class SquadronCancelationToken extends CancelationToken {
   Future<CanceledException> get onCanceled => _completer.future;
   final _completer = Completer<CanceledException>();
 
-  void _checkToken() {
+  void _checkToken([dynamic _]) {
     final ex = token?.exception;
     if (ex != null) {
       _exception ??= SquadronCanceledException.from(id, ex);
       if (!_completer.isCompleted) {
-        _completer.complete(ex);
+        _completer.complete(_exception);
       }
     }
   }
 }
 
+const _$id = 0;
+const _$ex = 1;
+
 @internal
-extension SquadronCancelationTokenExt on Channel {
-  SquadronCancelationToken? wrap(CancelationToken? token) {
-    if (token == null) return null;
-    if (token is SquadronCancelationToken) return token;
-    final tok =
-        SquadronCancelationToken._(token, '${TokenId.next()}@$hashCode');
-    tok._checkToken();
-    return tok;
+extension SquadronCancelationTokenExt on CancelationToken? {
+  SquadronCancelationToken? wrap() {
+    final self = this;
+    if (self == null) return null;
+    if (self is SquadronCancelationToken) return self;
+    return SquadronCancelationToken._(self, '${TokenId.next()}@$hashCode')
+      .._checkToken();
   }
 }

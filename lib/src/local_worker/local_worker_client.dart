@@ -26,7 +26,7 @@ class LocalWorkerClient implements WorkerService {
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
       channel.sendRequest<T>(command, args,
-          token: channel.wrap(token),
+          token: token.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 
@@ -38,7 +38,7 @@ class LocalWorkerClient implements WorkerService {
           bool inspectResponse = false}) =>
       channel.sendStreamingRequest<T>(command, args,
           onDone: Channel.noop,
-          token: channel.wrap(token),
+          token: token.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 

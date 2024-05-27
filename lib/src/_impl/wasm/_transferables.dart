@@ -1,9 +1,11 @@
 import '../../exceptions/squadron_error.dart';
+import '../../worker/worker_message.dart';
 
 class Transferables {
   const Transferables._();
 
-  static Iterable<Object> get(List args) => _get(args, <Object>{});
+  static Iterable<Object> get(WorkerMessage args) =>
+      _get(args.data, <Object>{});
 
   static bool _isBaseType(Object? data) =>
       (data == null || data is String || data is num || data is bool);

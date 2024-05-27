@@ -1,8 +1,13 @@
 import 'dart:async';
 
-import '../../../squadron.dart';
+import 'package:logger/logger.dart';
+
+import '../../exceptions/exception_manager.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
+import '../../worker/worker_channel.dart';
+import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
+import '../../worker_service.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a streaming worker request.
 class StreamWrapper<T> {
@@ -12,7 +17,7 @@ class StreamWrapper<T> {
   StreamWrapper(WorkerRequest streamRequest, ExceptionManager exceptionManager,
       Logger? logger,
       {required PostRequest postMethod,
-      required Stream messages,
+      required Stream<WorkerResponse> messages,
       required SquadronCallback onDone,
       SquadronCancelationToken? token})
       : _exceptionManager = exceptionManager,
@@ -38,7 +43,7 @@ class StreamWrapper<T> {
   final ExceptionManager _exceptionManager;
   final Logger? _logger;
 
-  final Stream<dynamic> _messages;
+  final Stream<WorkerResponse> _messages;
   final WorkerRequest _streamRequest;
   final PostRequest _postRequest;
   final SquadronCancelationToken? _token;
@@ -48,7 +53,7 @@ class StreamWrapper<T> {
   int _paused = 0;
   late void Function(WorkerResponse) _handle;
 
-  void _canceler() => _postRequest(WorkerRequestImpl.cancel(_token!));
+  void _canceler() => _postRequest(WorkerRequest.cancel(_token!));
 
   List<WorkerResponse>? _buffer;
 
@@ -75,9 +80,8 @@ class StreamWrapper<T> {
 
   void _onListen() {
     _messages.listen(
-      (message) {
-        final res = message as List;
-        if (!res.unwrapResponseInPlace(_exceptionManager, _logger) ||
+      (res) {
+        if (!res.unwrapInPlace(_exceptionManager, _logger) ||
             _controller.isClosed) {
           return;
         }
@@ -110,7 +114,7 @@ class StreamWrapper<T> {
   Future _onCancel() async {
     final streamId = await _streamId.future;
     // notify the worker that the streaming operation has been canceled
-    _postRequest(WorkerRequestImpl.cancelStream(streamId));
+    _postRequest(WorkerRequest.cancelStream(streamId));
     _buffer?.clear();
     _controller.close();
   }

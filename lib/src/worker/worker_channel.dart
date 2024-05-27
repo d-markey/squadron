@@ -9,6 +9,7 @@ import '../_impl/xplat/_channel.dart'
 import '../exceptions/squadron_exception.dart';
 import '../typedefs.dart';
 import 'worker_request.dart';
+import 'worker_response.dart';
 
 typedef PostRequest = void Function(WorkerRequest req);
 
@@ -40,7 +41,7 @@ abstract class WorkerChannel {
   void log(LogEvent message);
 
   /// Checks if [stream] can be streamed back to the worker client.
-  bool canStream(Stream stream);
+  bool canStream(Stream<dynamic> stream);
 
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method
   /// must be called from the worker only.

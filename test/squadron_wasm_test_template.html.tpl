@@ -3,6 +3,7 @@
   <head>
     <title>Squadron Web Worker Tests (wasm) - {{testName}}</title>
     {{testScript}}
+    <link rel="x-web-worker" href="sample_wasm_workers/native_worker.js">
     <link rel="x-web-worker" href="sample_wasm_workers/echo_worker.dart.js">
 
     <link rel="x-web-worker" href="sample_wasm_workers/cache_worker.dart.js">

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:squadron/squadron.dart';
-
 import '../classes/test_entry_points.dart';
 import '../classes/test_platform.dart';
 import 'cache_worker.dart' as cache;
@@ -14,8 +12,13 @@ import 'test_worker.dart' as test;
 const platform = TestPlatform.vm;
 String platformName = Platform.operatingSystemVersion;
 
-Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
-  print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(
+    String root, TestPlatform platform, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform');
+
+  if (platform != TestPlatform.vm) {
+    throw UnsupportedError('Unsupported platform $platform');
+  }
 
   entryPoints.cache = cache.start;
   entryPoints.installable = installable.start;

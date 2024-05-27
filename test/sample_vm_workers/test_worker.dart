@@ -2,7 +2,7 @@ import 'package:squadron/squadron.dart';
 
 import '../worker_services/test_service.dart';
 
-void start(List command) => run(
+void start(WorkerRequest command) => run(
       (startRequest) {
         switch (startRequest.args[0]) {
           case TestService.startupThrows:

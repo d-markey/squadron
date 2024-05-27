@@ -11,11 +11,18 @@ import 'test_entry_points.dart';
 import 'test_platform.dart';
 
 class TestContext {
-  TestContext._();
+  TestContext._(this.platform, this.platformName);
 
-  static Future<TestContext> init(String root) async {
-    final testContext = TestContext._();
-    await platform_test_context.setEntryPoints(root, testContext.entryPoints);
+  static Future<TestContext> init(String root,
+      [TestPlatform? platform, String? platformName]) async {
+    platform ??= platform_test_context.platform;
+    platformName ??= platform_test_context.platformName;
+    final testContext = TestContext._(platform, platformName);
+    await platform_test_context.setEntryPoints(
+      root,
+      platform,
+      testContext.entryPoints,
+    );
     return testContext;
   }
 
@@ -23,8 +30,8 @@ class TestContext {
     group(platformName, testSuite);
   }
 
-  static final TestPlatform platform = platform_test_context.platform;
-  static final String platformName = platform_test_context.platformName;
+  final TestPlatform platform;
+  final String platformName;
 
   final entryPoints = TestEntryPoints();
 

@@ -1,4 +1,8 @@
 (async function () {
+    self.sqId = 1;
+
+    console.log(`starting echo_worker.dart.js with self = ${self} #${self.sqId}...`);
+
     let dart2wasm_runtime;
     let moduleInstance;
     try {
@@ -14,6 +18,7 @@
     if (moduleInstance) {
         try {
             await dart2wasm_runtime.invoke(moduleInstance);
+            console.log(`echo_worker.dart.js ready with self = ${self} #${self.sqId}...`);
         } catch (exception) {
             console.error(`Exception while invoking test: ${exception}`);
         }

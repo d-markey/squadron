@@ -1,4 +1,5 @@
 @TestOn('vm || browser')
+library;
 
 import 'dart:async';
 

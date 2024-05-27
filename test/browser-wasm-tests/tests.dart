@@ -3,7 +3,7 @@ import '../issues_test.dart' as issues_test;
 import '../local_worker_test.dart' as local_worker_test;
 import '../logging_test.dart' as logging_test;
 import '../marshaler_test.dart' as marshaler_test;
-import '../web_worker_test.dart' as web_worker_test;
+import '../web_worker_wasm_test.dart' as web_worker_test;
 import '../worker_pool_test.dart' as worker_pool_test;
 import '../worker_test.dart' as worker_test;
 

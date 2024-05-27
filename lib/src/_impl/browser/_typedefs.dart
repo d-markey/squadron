@@ -9,3 +9,6 @@ typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
 
 // ignore: constant_identifier_names
 const int platform_id = 2;
+
+void trace(dynamic message) =>
+    web.window.console.log(message?.toString() ?? '(null)');

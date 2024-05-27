@@ -3,6 +3,7 @@ import 'dart:js_interop';
 import 'package:web/web.dart';
 
 import '../classes/test_context.dart';
+import '../classes/test_platform.dart';
 import 'html_logger.dart';
 import 'tests.dart';
 
@@ -37,13 +38,13 @@ void main(dynamic args) async {
 
   if (selectedExecutors.isNotEmpty) {
     print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
-    final testContext = await TestContext.init('/');
+    final testContext = await TestContext.init(
+      '/',
+      TestPlatform.wasm,
+    );
 
     for (var executor in selectedExecutors) {
-      print('executor.value = ${executor.value}');
       executor.value(testContext);
     }
   }
-
-  print('Test context platform = ${TestContext.platform}');
 }

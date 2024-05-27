@@ -202,11 +202,11 @@ class TestService implements WorkerService {
   late final Map<int, CommandHandler> operations = {
     if (_invalid) invalidCommand1: (r) => null,
     if (_invalid) invalidCommand0: (r) => null,
-    setLevelCommand: (r) => setLevel(r.args[0]),
+    setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
     logCommand: (r) => log(),
-    ioCommand: (r) => io(ms: r.args[0]),
-    cpuCommand: (r) => cpu(ms: r.args[0]),
-    delayedCommand: (r) => delayed(r.args[0]),
+    ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
+    cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
+    delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
     throwExceptionCommand: (r) => throwException(),
     throwWorkerExceptionCommand: (r) => throwWorkerException(),
     throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
@@ -216,9 +216,10 @@ class TestService implements WorkerService {
     invalidResponseCommand: (r) => invalidResponse(),
     /* missingCommand */
     pingCommand: (r) => ping(),
-    finiteCommand: (r) => finite(r.args[0]),
+    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
     infiniteCommand: (r) => infinite(),
-    clockCommand: (r) => clock(frequency: r.args[0], token: r.cancelToken),
+    clockCommand: (r) =>
+        clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
     cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
     infiniteWithErrorsCommand: (r) => infiniteWithErrors(),

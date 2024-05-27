@@ -54,7 +54,7 @@ class CacheService implements Cache, WorkerService {
       _miss++;
       return null;
     } else if (entry._expires == null ||
-        entry._expires!.isBefore(DateTime.now())) {
+        entry._expires.isBefore(DateTime.now())) {
       // in cache, still valid
       _hit++;
       return entry._data;

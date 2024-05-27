@@ -1,8 +1,9 @@
 import 'dart:js_interop';
 
-import 'package:web/helpers.dart';
 import 'package:web/web.dart' as web;
 
+import '../../typedefs.dart';
+import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
@@ -10,7 +11,7 @@ import '_worker_runner.dart';
 @JS()
 external web.DedicatedWorkerGlobalScope get self;
 
-void bootstrap(WorkerInitializer initializer, List? command) {
+void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
@@ -23,6 +24,13 @@ void bootstrap(WorkerInitializer initializer, List? command) {
   com.port1.onmessage = runner.handle.toJS;
 
   self.onmessage = (web.MessageEvent event) {
-    runner.connect(event.data.dartify() as List, com.port2, initializer);
+    dbgTrace('BOOTSTRAP: received event $event [${event.runtimeType}]');
+    dbgTrace('   event.data = ${event.data} [${event.data.runtimeType}]');
+    final data = event.data.dartify();
+    dbgTrace('   event.data.dartify() = $data [${data.runtimeType}]');
+    final req = (data == null) ? null : WorkerRequest(data as List);
+    runner.connect(req, com.port2, initializer);
   }.toJS;
+
+  self.postMessage($ready.jsify());
 }

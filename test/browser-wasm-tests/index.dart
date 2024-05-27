@@ -1,6 +1,5 @@
 import 'dart:js_interop';
 
-import 'package:web/helpers.dart';
 import 'package:web/web.dart';
 
 import 'tests.dart';
@@ -17,7 +16,8 @@ bool isCheckbox(Element? element) => (element != null &&
 
 void main(dynamic args) {
   final origin = window.location.origin.jsify()!;
-  final testRunner = querySelector('#test-runner') as HTMLIFrameElement;
+  final testRunner =
+      document.querySelector('#test-runner') as HTMLIFrameElement;
 
   dartPrint = (JSAny? message) {
     testRunner.contentWindow?.postMessage(
@@ -26,7 +26,7 @@ void main(dynamic args) {
     );
   }.toJS;
 
-  final logHeader = querySelector('#log-header')!;
+  final logHeader = document.querySelector('#log-header')!;
 
   logHeader.appendChild(document.createElement('span')..text = ' - ');
 
@@ -40,8 +40,8 @@ void main(dynamic args) {
       print('');
     }));
 
-  final buttonBar = querySelector('#button-bar')!;
-  final testList = querySelector('#test-list')!;
+  final buttonBar = document.querySelector('#button-bar')!;
+  final testList = document.querySelector('#test-list')!;
 
   void runTests([MouseEvent? _]) {
     for (var i = 0; i < buttonBar.children.length; i++) {

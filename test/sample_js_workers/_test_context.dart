@@ -13,15 +13,21 @@ String platformName = '${web.window.navigator.userAgent} (js)';
 
 bool _set = false;
 
-Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
-  print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(
+    String root, TestPlatform platform, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform');
 
   if (!_set) {
     _set = true;
-    root = '${root}sample_js_workers';
+    root = (platform == TestPlatform.wasm)
+        ? '${root}sample_wasm_workers'
+        : ((platform == TestPlatform.js)
+            ? '${root}sample_js_workers'
+            : throw UnsupportedError('Unsupported platform $platform'));
+
+    entryPoints.native = '$root/native_worker.js';
 
     entryPoints.echo = '$root/echo_worker.dart.js';
-    entryPoints.native = '$root/native_worker.js';
 
     entryPoints.cache = '$root/cache_worker.dart.js';
     entryPoints.installable = '$root/installable_worker.dart.js';
@@ -55,10 +61,7 @@ Web Workers are not supported on this platform
 
   final messages = <String>[];
 
-  final html = web.DomParser().parseFromString(
-      await web.HttpRequest.getString(web.window.location.href), 'text/html');
-
-  final workerLinks = html.querySelectorAll('link[rel="x-web-worker"]');
+  final workerLinks = web.document.querySelectorAll('link[rel="x-web-worker"]');
 
   var workers = <EntryPoint>{};
   for (var workerLink in workerLinks) {
@@ -85,7 +88,7 @@ Web Workers are not supported on this platform
   }
 
   if (messages.isNotEmpty) {
-    throw Exception('''
+    print('''
 
 ============================================================================ 
 Cannot run tests because some workers are missing or invalid.

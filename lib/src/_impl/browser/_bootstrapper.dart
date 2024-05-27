@@ -1,10 +1,11 @@
 import 'dart:html' as web;
 
+import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-void bootstrap(WorkerInitializer initializer, List? command) {
+void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
@@ -17,6 +18,10 @@ void bootstrap(WorkerInitializer initializer, List? command) {
   com.port1.onMessage.listen(runner.handle);
 
   web.DedicatedWorkerGlobalScope.instance.onMessage.listen((event) {
-    runner.connect(event.data, com.port2, initializer);
+    final args = event.data as List?;
+    final req = (args == null) ? null : WorkerRequest(args);
+    runner.connect(req, com.port2, initializer);
   });
+
+  web.DedicatedWorkerGlobalScope.instance.postMessage($ready);
 }

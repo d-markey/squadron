@@ -17,22 +17,20 @@ class ValueWrapper<T> {
   ValueWrapper(
       WorkerRequest request, ExceptionManager exceptionManager, Logger? logger,
       {required PostRequest postMethod,
-      required Stream messages,
+      required Stream<WorkerResponse> messages,
       SquadronCancelationToken? token})
       : _request = request,
         _postRequest = postMethod {
     if (token != null) {
       token.onCanceled.then((_) {
-        _postRequest(WorkerRequestImpl.cancel(token));
+        _postRequest(WorkerRequest.cancel(token));
       });
     }
 
     _sub = messages.listen(
-      (message) {
-        final res = message as List;
-
+      (res) {
         if (!_completer.isCompleted) {
-          if (!res.unwrapResponseInPlace(exceptionManager, logger)) {
+          if (!res.unwrapInPlace(exceptionManager, logger)) {
             return;
           }
           final error = res.error;
@@ -42,7 +40,6 @@ class ValueWrapper<T> {
             _completer.complete(res.result);
           }
         }
-        // }
       },
       onError: (e, st) {
         if (!_completer.isCompleted) {

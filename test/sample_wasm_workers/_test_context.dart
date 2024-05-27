@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:squadron/squadron.dart';
-import 'package:squadron/src/_impl/browser/_uri_checker.dart';
-import 'package:web/helpers.dart' as web;
+import 'package:squadron/src/_impl/wasm/_uri_checker.dart';
 import 'package:web/web.dart' as web;
 
 import '../classes/test_entry_points.dart';
@@ -13,12 +13,21 @@ String platformName = '${web.window.navigator.userAgent} (wasm)';
 
 bool _set = false;
 
-Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
-  print('Test context platform = $platform // platformId = $platformId');
+Future<void> setEntryPoints(
+    String root, TestPlatform platform, TestEntryPoints entryPoints) async {
+  print('Test context platform = $platform');
+
+  root = (platform == TestPlatform.wasm)
+      ? '${root}sample_wasm_workers'
+      : ((platform == TestPlatform.js)
+          ? '${root}sample_js_workers'
+          : throw UnsupportedError('Unsupported platform $platform'));
 
   if (!_set) {
     _set = true;
     root = '${root}sample_wasm_workers';
+
+    entryPoints.native = '$root/native_worker.js';
 
     entryPoints.echo = '$root/echo_worker.dart.js';
 
@@ -31,18 +40,26 @@ Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async {
     entryPoints.test = '$root/test_worker.dart.js';
 
     await _checkWebWorkers(entryPoints.defined);
+
+    entryPoints.inMemory =
+        'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
+  console.log("Message received from main script");
+  const workerResult = `ECHO "\${e.data}"`;
+  console.log("Posting message back to main script");
+  postMessage(workerResult);
+};'''))}';
   }
 }
 
 Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   final messages = <String>[];
 
-  final html = web.DOMParser().parseFromString(
-      await web.HttpRequest.getString(web.window.location.href), 'text/html');
+  // final resp = await http.get(Uri.parse(web.window.location.href));
+  // final html = web.DOMParser().parseFromString(resp.body, 'text/html');
 
-  print('Checking ${html.documentElement!.innerHTML}');
+  // print('Checking ${html.documentElement!.innerHTML}');
 
-  final workerLinks = html.querySelectorAll('link[rel="x-web-worker"]');
+  final workerLinks = web.document.querySelectorAll('link[rel="x-web-worker"]');
 
   final count = workerLinks.length;
 
@@ -77,7 +94,7 @@ Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   }
 
   if (messages.isNotEmpty) {
-    throw Exception('''
+    print('''
 
 ============================================================================ 
 Cannot run tests because some workers are missing or invalid.

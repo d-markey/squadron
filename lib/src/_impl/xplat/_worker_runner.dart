@@ -53,29 +53,35 @@ class WorkerRunner {
   /// will be set with operations from the service.
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
-    if (startRequest != null) {
-      startRequest.unwrapRequestInPlace(internalLogger);
-    }
+    startRequest?.unwrapInPlace(internalLogger);
+    dbgTrace('CONNECTING WORKER startRequest = $startRequest');
     final client = startRequest?.client;
+    dbgTrace('   client = $client');
 
     _logForwarder = (event) => client?.log(event.origin);
     Logger.addOutputListener(_logForwarder!);
 
     if (startRequest == null) {
+      dbgTrace('   FAIL: expected a non-null startRequest');
       throw SquadronErrorExt.create(
           'connection request expected', StackTrace.current);
     } else if (client == null) {
+      dbgTrace('   FAIL: expected a non-null client');
       throw SquadronErrorExt.create(
           'missing client for connection request', StackTrace.current);
     }
 
     try {
       if (!startRequest.isConnection) {
+        dbgTrace('   FAIL: expected a connection request');
         throw SquadronErrorExt.create(
             'connection request expected', StackTrace.current);
       } else if (_operations != null) {
+        dbgTrace('   FAIL: expected a connection request');
         throw SquadronErrorExt.create('already connected', StackTrace.current);
       }
+
+      dbgTrace('   initialize worker service...');
 
       WorkerService service;
       final init = initializer(startRequest);
@@ -92,21 +98,31 @@ class WorkerRunner {
       }
       _operations = service.operations;
 
+      dbgTrace('   install worker service...');
+
       final install = _install(service);
       if (install is Future) {
         await install;
       }
 
+      dbgTrace('   connect with caller...');
+
       client.connect(channelInfo);
+
+      dbgTrace('   connected');
     } catch (ex, st) {
+      dbgTrace('   FAIL: exception $ex');
+      dbgTrace('        stacktrace $st');
       client.error(SquadronException.from(ex, st));
     }
   }
 
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_operations] map.
-  void processMessage(List request) async {
-    request.unwrapRequestInPlace(internalLogger);
+  void processMessage(WorkerRequest request) async {
+    dbgTrace('Received request $request');
+
+    request.unwrapInPlace(internalLogger);
     final client = request.client;
 
     if (request.isTermination) {
@@ -198,8 +214,8 @@ class WorkerRunner {
   }
 
   /// Forwards stream events to client.
-  Future<void> _pipe(
-      Stream stream, WorkerChannel client, void Function(dynamic) reply) {
+  Future<void> _pipe(Stream<dynamic> stream, WorkerChannel client,
+      void Function(dynamic) reply) {
     StreamSubscription? subscription;
     final done = Completer();
 

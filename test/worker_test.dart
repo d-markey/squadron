@@ -1,4 +1,5 @@
 @TestOn('vm || browser')
+library;
 
 import 'dart:async';
 
@@ -90,8 +91,12 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(platformTypeName, isNull);
 
             await worker.start();
-            expect(platformTypeName,
-                equals(testContext.isJs ? 'Worker' : 'Isolate'));
+            expect(
+              platformTypeName,
+              equals((testContext.isJs || testContext.isWasm)
+                  ? 'Worker'
+                  : 'Isolate'),
+            );
 
             worker.stop();
 
@@ -113,7 +118,12 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(threadType, isNull);
 
             await worker.start();
-            expect(threadType, equals(testContext.isJs ? 'Worker' : 'Isolate'));
+            expect(
+              threadType,
+              equals((testContext.isJs || testContext.isWasm)
+                  ? 'Worker'
+                  : 'Isolate'),
+            );
             expect(logs, mentions('intended exception'));
 
             worker.stop();

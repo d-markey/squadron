@@ -33,7 +33,7 @@ class _BaseVmChannel {
 
   void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
-    req.wrapRequestInPlace();
+    req.wrapInPlace();
     try {
       _sendPort.send(req);
     } on ArgumentError catch (ex, st) {
@@ -48,7 +48,7 @@ class _BaseVmChannel {
   }
 
   void _postResponse(WorkerResponse res) {
-    res.wrapResponseInPlace();
+    res.wrapInPlace();
     try {
       _sendPort.send(res);
     } on ArgumentError catch (ex, st) {
@@ -80,7 +80,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
   @override
   FutureOr close() {
     if (!_closed) {
-      _postRequest(WorkerRequestImpl.stop());
+      _postRequest(WorkerRequest.stop());
       _closed = true;
     }
   }
@@ -96,14 +96,14 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
     }
     final receiver = ReceivePort();
-    final squadronToken = wrap(token);
+    final squadronToken = token.wrap();
     final wrapper = ValueWrapper<T>(
-      WorkerRequestImpl.userCommand(
+      WorkerRequest.userCommand(
           receiver.sendPort, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
       postMethod: _postRequest,
-      messages: receiver,
+      messages: receiver.cast(),
       token: squadronToken,
     );
     return wrapper.compute().whenComplete(receiver.close);
@@ -123,14 +123,14 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
     }
     final receiver = ReceivePort();
-    final squadronToken = wrap(token);
+    final squadronToken = token.wrap();
     final wrapper = StreamWrapper<T>(
-      WorkerRequestImpl.userCommand(
+      WorkerRequest.userCommand(
           receiver.sendPort, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
       postMethod: _postRequest,
-      messages: receiver,
+      messages: receiver.cast(),
       onDone: () {
         receiver.close();
         onDone();
@@ -149,15 +149,12 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   /// Sends the [SendPort] to communicate with the [Isolate]. This method must
   /// be called by the worker [Isolate] upon startup.
   @override
-  void connect(PlatformChannel channelInfo) {
-    inspectAndReply(channelInfo);
-  }
+  void connect(PlatformChannel channelInfo) => inspectAndReply(channelInfo);
 
   /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the worker [Isolate] only.
   @override
-  void reply(dynamic data) =>
-      _postResponse(WorkerResponseImpl.withResult(data));
+  void reply(dynamic data) => _postResponse(WorkerResponse.withResult(data));
 
   /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the worker [Isolate] only. On VM
@@ -166,24 +163,24 @@ class _VmWorkerChannel extends _BaseVmChannel implements WorkerChannel {
   void inspectAndReply(dynamic data) => reply(data);
 
   @override
-  void log(LogEvent message) => _postResponse(WorkerResponseImpl.log(message));
+  void log(LogEvent message) => _postResponse(WorkerResponse.log(message));
 
   /// Checks if [stream] can be streamed back to the worker client. Returns
   /// `true` unless [stream] is a [ReceivePort].
   @override
-  bool canStream(Stream stream) => stream is! ReceivePort;
+  bool canStream(Stream<dynamic> stream) => stream is! ReceivePort;
 
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method
   /// must be called from the worker [Isolate] only.
   @override
-  void closeStream() => _postResponse(WorkerResponseImpl.closeStream());
+  void closeStream() => _postResponse(WorkerResponse.closeStream());
 
   /// Sends the [WorkerException] to the worker client. This method must be
   /// called from the worker [Isolate] only.
   @override
   void error(SquadronException error) {
     _logger?.t(() => 'replying with error: ${error.runtimeType} $error');
-    _postResponse(WorkerResponseImpl.withError(error));
+    _postResponse(WorkerResponse.withError(error));
   }
 }
 
@@ -199,8 +196,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
   final completer = Completer<Channel>();
   final receiver = ReceivePort();
 
-  final startRequest =
-      WorkerRequestImpl.start(receiver.sendPort, startArguments);
+  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);
 
   late final Isolate isolate;
   final exitPort = ReceivePort();
@@ -232,8 +228,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   });
 
-  receiver.listen((message) {
-    final response = message as List;
+  receiver.listen((response) {
     if (!response.unwrapResponseInPlace(exceptionManager, logger)) {
       return;
     }
@@ -254,7 +249,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   });
 
-  startRequest.wrapRequestInPlace();
+  startRequest.wrapInPlace();
   isolate = await Isolate.spawn(
     entryPoint,
     startRequest,

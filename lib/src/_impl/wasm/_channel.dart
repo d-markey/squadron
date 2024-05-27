@@ -3,10 +3,9 @@ import 'dart:js_interop';
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
-import 'package:web/helpers.dart';
 import 'package:web/web.dart' as web;
 
-import '../../channel.dart' show Channel;
+import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
@@ -36,13 +35,13 @@ class _BaseJsChannel {
 
   void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
-    req.wrapRequestInPlace();
+    req.wrapInPlace();
     try {
       final channelInfo = req.channelInfo;
       if (channelInfo == null) {
         _sendPort.postMessage(req.jsify());
       } else {
-        _sendPort.postMessage(req.jsify(), [channelInfo] as JSArray);
+        _sendPort.postMessage(req.jsify(), [channelInfo].jsify() as JSArray);
       }
     } on UnimplementedError catch (ex, st) {
       _logger?.e(() => 'failed to post request $req: $ex');
@@ -55,11 +54,11 @@ class _BaseJsChannel {
 
   void _inspectAndPostRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
-    req.wrapRequestInPlace();
+    req.wrapInPlace();
     try {
       _sendPort.postMessage(
         req.jsify(),
-        Transferables.get(req).toList() as JSArray,
+        Transferables.get(req).toList().jsify() as JSArray,
       );
     } on UnimplementedError catch (ex, st) {
       _logger?.e(() => 'failed to post request $req: $ex');
@@ -72,7 +71,7 @@ class _BaseJsChannel {
   }
 
   void _postResponse(WorkerResponse res) {
-    res.wrapResponseInPlace();
+    res.wrapInPlace();
     try {
       _sendPort.postMessage(res.jsify());
     } on UnimplementedError catch (ex, st) {
@@ -86,11 +85,11 @@ class _BaseJsChannel {
   }
 
   void _inspectAndPostResponse(WorkerResponse res) {
-    res.wrapResponseInPlace();
+    res.wrapInPlace();
     try {
       _sendPort.postMessage(
         res.jsify(),
-        Transferables.get(res).toList() as JSArray,
+        Transferables.get(res).toList().jsify() as JSArray,
       );
     } on UnimplementedError catch (ex, st) {
       _logger?.e(() => 'failed to post response $res: $ex');
@@ -120,7 +119,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
   @override
   FutureOr close() {
     if (!_closed) {
-      _postRequest(WorkerRequestImpl.stop());
+      _postRequest(WorkerRequest.stop());
       _closed = true;
     }
   }
@@ -137,14 +136,14 @@ class _JsChannel extends _BaseJsChannel implements Channel {
     }
     final com = web.MessageChannel();
 
-    final controller = StreamController<dynamic>();
+    final controller = StreamController<WorkerResponse>();
     com.port1.onmessage = (web.MessageEvent e) {
-      controller.add(e.data.dartify());
+      controller.add(WorkerResponse(e.data.dartify() as List));
     }.toJS;
 
-    final squadronToken = wrap(token);
+    final squadronToken = token.wrap();
     final wrapper = ValueWrapper<T>(
-      WorkerRequestImpl.userCommand(
+      WorkerRequest.userCommand(
           com.port2, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
@@ -173,14 +172,14 @@ class _JsChannel extends _BaseJsChannel implements Channel {
     }
     final com = web.MessageChannel();
 
-    final controller = StreamController<dynamic>();
+    final controller = StreamController<WorkerResponse>();
     com.port1.onmessage = (web.MessageEvent e) {
-      controller.add(e.data.dartify());
+      controller.add(WorkerResponse(e.data.dartify() as List));
     }.toJS;
 
-    final squadronToken = wrap(token);
+    final squadronToken = token.wrap();
     final wrapper = StreamWrapper<T>(
-      WorkerRequestImpl.userCommand(
+      WorkerRequest.userCommand(
           com.port2, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
@@ -211,35 +210,34 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// This method must be called from the [web.Worker] only. On Web patforms,
   /// this version does not check arguments for transferable objects.
   @override
-  void reply(dynamic data) =>
-      _postResponse(WorkerResponseImpl.withResult(data));
+  void reply(dynamic data) => _postResponse(WorkerResponse.withResult(data));
 
   /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the [web.Worker] only. On Web patforms,
   /// this version (tentatively) checks arguments for transferable objects.
   @override
   void inspectAndReply(dynamic data) =>
-      _inspectAndPostResponse(WorkerResponseImpl.withResult(data));
+      _inspectAndPostResponse(WorkerResponse.withResult(data));
 
   @override
-  void log(LogEvent message) => _postResponse(WorkerResponseImpl.log(message));
+  void log(LogEvent message) => _postResponse(WorkerResponse.log(message));
 
   /// Checks if [stream] can be streamed back to the worker client. Returns
   /// `true` for browser platforms.
   @override
-  bool canStream(Stream stream) => true;
+  bool canStream(Stream<dynamic> stream) => true;
 
   /// Sends a [WorkerResponse.closeStream] to the worker client. This method
   /// must be called from the [web.Worker] only.
   @override
-  void closeStream() => _postResponse(WorkerResponseImpl.closeStream());
+  void closeStream() => _postResponse(WorkerResponse.closeStream());
 
   /// Sends the [WorkerResponse] to the worker client. This method must be
   /// called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
     _logger?.t(() => 'replying with error: $error');
-    _postResponse(WorkerResponseImpl.withError(error));
+    _postResponse(WorkerResponse.withError(error));
   }
 }
 
@@ -266,11 +264,11 @@ class _JsForwardChannel extends _JsChannel {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
     }
-    final message = e.data.dartify() as List;
+    final message = WorkerRequest(e.data.dartify() as List);
     try {
       _remote.postMessage(
         message.jsify(),
-        Transferables.get(message).toList() as JSArray,
+        Transferables.get(message).toList().jsify() as JSArray,
       );
     } catch (ex, st) {
       _logger?.e(() => 'failed to forward $message: error $ex');
@@ -296,20 +294,29 @@ class _JsForwardChannel extends _JsChannel {
 /// [_JsWorkerChannel.connect].
 Future<Channel> openChannel(EntryPoint entryPoint,
     ExceptionManager exceptionManager, Logger? logger, List startArguments,
-    [PlatformThreadHook? hook]) {
+    [PlatformThreadHook? hook]) async {
   final completer = Completer<Channel>();
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
 
-  worker.onerror = (Event event) {
+  dbgTrace('Loading Web Worker $entryPoint');
+
+  final ready = Completer<void>();
+
+  worker.onerror = (JSAny? event) {
+    dbgTrace('Worker $entryPoint reported an error: $event');
+    if (!ready.isCompleted) {
+      ready.complete();
+    }
+
     UriChecker.exists(Uri.parse(entryPoint)).then((found) {
       String msg;
-      if (event is web.ErrorEvent) {
-        final error = event;
+      if (event.isA<web.ErrorEvent>()) {
+        final error = event as web.ErrorEvent;
         msg =
             '$entryPoint => ${error.runtimeType} ${error.message} [${error.filename}(${error.lineno})]';
       } else {
-        msg = '$entryPoint: ${event.runtimeType} ${event.type} / $event';
+        msg = '$entryPoint: ${event.runtimeType} $event';
       }
       if (!found) {
         msg = '!! WARNING: it seems no worker code lives at $msg';
@@ -325,6 +332,17 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     });
   }.toJS;
 
+  worker.onmessage = (JSAny? msg) {
+    if (!ready.isCompleted) {
+      ready.complete();
+    }
+  }.toJS;
+  await ready.future;
+  dbgTrace('Worker $entryPoint is now ready');
+  worker.onmessage = null;
+
+  dbgTrace('Worker $entryPoint: hook = $hook');
+
   try {
     hook?.call(worker);
   } catch (ex) {
@@ -332,13 +350,13 @@ Future<Channel> openChannel(EntryPoint entryPoint,
         'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');
   }
 
-  final startRequest = WorkerRequestImpl.start(com.port2, startArguments);
+  final startRequest = WorkerRequest.start(com.port2, startArguments);
 
   logger?.t(() => 'created Web Worker');
 
   com.port1.onmessage = (web.MessageEvent event) {
-    final response = event.data.dartify() as List;
-    if (!response.unwrapResponseInPlace(exceptionManager, logger)) {
+    final response = WorkerResponse(event.data.dartify() as List);
+    if (!response.unwrapInPlace(exceptionManager, logger)) {
       return;
     }
 
@@ -358,10 +376,13 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   }.toJS;
 
-  startRequest.wrapRequestInPlace();
+  dbgTrace('Worker $entryPoint: sending $startRequest');
+  startRequest.wrapInPlace();
   try {
-    final transfer = Transferables.get(startRequest).toList();
-    worker.postMessage(startRequest.jsify(), transfer as JSArray);
+    worker.postMessage(
+      startRequest.jsify(),
+      Transferables.get(startRequest).toList().jsify() as JSArray,
+    );
   } catch (ex, st) {
     com.port1.close();
     com.port2.close();

@@ -5,6 +5,7 @@ import 'dart:html';
 import 'package:js/js.dart';
 
 import '../classes/test_context.dart';
+import '../classes/test_platform.dart';
 import 'html_logger.dart';
 import 'tests.dart';
 
@@ -38,12 +39,10 @@ void main() async {
 
   if (selectedExecutors.isNotEmpty) {
     print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
-    final testContext = await TestContext.init('/');
+    final testContext = await TestContext.init('/', TestPlatform.js);
 
     for (var executor in selectedExecutors) {
       executor.value(testContext);
     }
   }
-
-  print('Test context platform = ${TestContext.platform}');
 }

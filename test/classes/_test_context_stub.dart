@@ -4,5 +4,6 @@ import 'test_platform.dart';
 TestPlatform get platform => throw UnsupportedError('Unsupported platform');
 String get platformName => throw UnsupportedError('Unsupported platform');
 
-Future<void> setEntryPoints(String root, TestEntryPoints entryPoints) async =>
+Future<void> setEntryPoints(String root, TestPlatform platform,
+        TestEntryPoints entryPoints) async =>
     throw UnsupportedError('Unsupported platform');

@@ -1,4 +1,5 @@
 @TestOn('vm || browser')
+library;
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
