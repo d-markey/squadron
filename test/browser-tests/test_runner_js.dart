@@ -1,4 +1,4 @@
-@JS()
+// tests_js.dart forces 'dart:html'
 
 import 'dart:html';
 
@@ -6,8 +6,8 @@ import 'package:js/js.dart';
 
 import '../classes/test_context.dart';
 import '../classes/test_platform.dart';
-import 'html_logger.dart';
-import 'tests.dart';
+import 'html_logger_js.dart';
+import 'tests_js.dart';
 
 @JS()
 external get dartPrint;
@@ -23,6 +23,8 @@ void main() async {
   });
 
   window.onMessage.listen((m) => print('(*) ${m.data}'));
+
+  print('Imported platform = $importedPlatform');
 
   final selectedExecutors = <MapEntry<String, void Function(TestContext)>>[];
 

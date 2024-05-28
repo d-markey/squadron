@@ -17,7 +17,7 @@ void start(WorkerRequest command) => run(
       command,
     );
 
-void startWithMissingCommand(List command) => run(
+void startWithMissingCommand(WorkerRequest command) => run(
       (startRequest) {
         switch (startRequest.args[0]) {
           case TestService.startupThrows:

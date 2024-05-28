@@ -1,3 +1,6 @@
+// web_worker_wasm_test.dart imports 'dart:js_interop'
+// so this test suite will execute Squadron using package web + js_interop library
+
 import '../cancelation_test.dart' as cancelation_test;
 import '../issues_test.dart' as issues_test;
 import '../local_worker_test.dart' as local_worker_test;

@@ -1,4 +1,4 @@
-@TestOn('browser')
+@TestOn('browser && dart2wasm')
 library;
 
 import 'dart:async';

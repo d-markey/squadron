@@ -133,33 +133,24 @@ const _$inspectResponse = 6;
 @internal
 extension WorkerRequestExt on WorkerRequest {
   /// In-place deserialization of a [WorkerRequest] received by the worker.
-  void unwrapInPlace(InternalLogger? logger) {
-    dbgTrace('UNWRAP REQUEST $this...');
-    dbgTrace('   unwrap command ${data[_$command]}...');
+  bool unwrapInPlace(InternalLogger? logger) {
     data[_$command] = (data[_$command] as num?)?.toInt();
-    dbgTrace('   unwrap streamId ${data[_$streamId]}...');
     data[_$streamId] = (data[_$streamId] as num?)?.toInt();
-    dbgTrace('   unwrap client ${data[_$client]}...');
     data[_$client] = WorkerChannel.deserialize(data[_$client], logger);
-    dbgTrace('   unwrap token ${data[_$token]}...');
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
-    dbgTrace('   unwrap inspectResponse ${data[_$inspectResponse]}...');
     data[_$inspectResponse] ??= false;
-    dbgTrace('   unwrap args ${data[_$args]}...');
     data[_$args] ??= const [];
     unwrapTravelTime();
-    dbgTrace('   result = $this');
+    return true;
   }
 
   /// In-place serialization of a [WorkerRequest].
-  void wrapInPlace() {
-    dbgTrace('WRAP REQUEST $this...');
-    dbgTrace('   wrap token ${data[_$token]}...');
+  List wrapInPlace() {
     final token = data[_$token];
     if (token is SquadronCancelationToken) {
       data[_$token] = token.serialize();
     }
-    dbgTrace('   result = $this');
+    return data;
   }
 }
 

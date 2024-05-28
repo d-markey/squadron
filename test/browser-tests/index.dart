@@ -1,10 +1,8 @@
-@JS()
-
 import 'dart:html';
 
 import 'package:js/js.dart';
 
-import 'tests.dart';
+import 'tests_js.dart';
 
 @JS()
 external get dartPrint;
@@ -51,7 +49,17 @@ void main() async {
         testIds.add(Uri.encodeQueryComponent(test.id));
       }
     }
-    testRunner.src = 'test_runner.html?${testIds.join('&')}';
+
+    testRunner.src = ((querySelector('#wasm-workers') as CheckboxInputElement)
+                .checked ==
+            true)
+        ? (((querySelector('#wasm-client') as CheckboxInputElement).checked ==
+                true)
+            ? 'wasm_test_runner_wasm.html?${testIds.join('&')}'
+            : 'test_runner_wasm.html?${testIds.join('&')}')
+        : 'test_runner_js.html?${testIds.join('&')}';
+
+    // wasm-client not taken into account yet
 
     for (var btn in buttonBar.children.whereType<ButtonElement>()) {
       btn.disabled = false;
@@ -91,6 +99,20 @@ void main() async {
   buttonBar.append(ButtonElement()
     ..text = 'Toggle'
     ..onClick.listen(toggle));
+
+  buttonBar.append(CheckboxInputElement()
+    ..id = 'wasm-workers'
+    ..checked = false);
+  buttonBar.append(LabelElement()
+    ..text = 'Web Assembly Workers'
+    ..htmlFor = 'wasm-workers');
+
+  buttonBar.append(CheckboxInputElement()
+    ..id = 'wasm-client'
+    ..checked = false);
+  buttonBar.append(LabelElement()
+    ..text = 'Web Assembly Client'
+    ..htmlFor = 'wasm-client');
 
   var n = 0;
   for (var label in executorLabels) {

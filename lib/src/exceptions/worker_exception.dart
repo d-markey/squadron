@@ -11,25 +11,23 @@ class WorkerException extends SquadronException {
         _command = command {
     if (_stackTrace == null) {
       try {
-        _stackTrace = _getCurrentStackTrace();
-      } catch (_) {
-        // ignore...
+        // _stackTrace = _getCurrentStackTrace();
+        _stackTrace = StackTrace.current;
+      } catch (_, st) {
+        // failed, get stack trace from this exception!
+        _stackTrace = st;
       }
     }
   }
 
   static StackTrace? _getCurrentStackTrace() {
-    // return StackTrace.current;
-
-    // StackTrace? stackTrace;
-    // try {
-    //   throw '';
-    // } catch (_, st) {
-    //   stackTrace = st;
-    // }
-    // return stackTrace;
-
-    return null;
+    StackTrace? stackTrace;
+    try {
+      throw '';
+    } catch (_, st) {
+      stackTrace = st;
+    }
+    return stackTrace;
   }
 
   static const _$type = 0;

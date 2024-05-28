@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 import '../_impl/xplat/_helpers.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
-import '../typedefs.dart';
 import 'worker_message.dart';
 
 /// [WorkerResponse]s are used to communicate from [Worker]s to clients and
@@ -85,35 +84,27 @@ extension WorkerResponseExt on WorkerResponse {
   /// Returns `false` if the message requires no further processing (currently
   /// used for log messages only).
   bool unwrapInPlace(ExceptionManager exceptionManager, Logger? logger) {
-    dbgTrace('UNWRAP RESPONSE $this...');
-    dbgTrace('   unwrap log ${data[_$log]}...');
     final log = LogEventSerialization.deserialize(data[_$log]);
     if (log != null) {
       logger?.log(log.level, log.message,
           time: log.time, error: log.error, stackTrace: log.stackTrace);
       return false;
     } else {
-      dbgTrace('   unwrap error ${data[_$error]}...');
       data[_$error] = exceptionManager.deserialize(data[_$error]);
-      dbgTrace('   unwrap endOfStream ${data[_$endOfStream]}...');
       data[_$endOfStream] ??= false;
       unwrapTravelTime();
+      return true;
     }
-    dbgTrace('   result = $this');
-    return true;
   }
 
   /// In-place serialization of a [WorkerResponse].
-  void wrapInPlace() {
-    dbgTrace('WRAP RESPONSE $this...');
-    dbgTrace('   wrap result ${data[_$result]}...');
+  List wrapInPlace() {
     final result = data[_$result];
     if (result is Iterable && result is! List) {
       data[_$result] = result.toList();
     }
-    dbgTrace('   wrap error ${data[_$error]}...');
     data[_$error] = (data[_$error] as SquadronException?)?.serialize();
-    dbgTrace('   result = $this');
+    return data;
   }
 }
 

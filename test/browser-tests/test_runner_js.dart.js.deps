@@ -118,6 +118,7 @@ file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/li
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/lib/src/media_type.dart
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/lib/src/scan.dart
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/lib/src/utils.dart
+file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.7.1/lib/js.dart
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/logger-2.3.0/lib/logger.dart
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/logger-2.3.0/lib/src/ansi_color.dart
 file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/logger-2.3.0/lib/src/filters/development_filter.dart
@@ -486,8 +487,9 @@ file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_response.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
-file:///C:/_Projects/github/squadron/test/browser-wasm-tests/index.dart
-file:///C:/_Projects/github/squadron/test/browser-wasm-tests/tests.dart
+file:///C:/_Projects/github/squadron/test/browser-tests/html_logger_js.dart
+file:///C:/_Projects/github/squadron/test/browser-tests/test_runner_js.dart
+file:///C:/_Projects/github/squadron/test/browser-tests/tests_js.dart
 file:///C:/_Projects/github/squadron/test/cancelation_test.dart
 file:///C:/_Projects/github/squadron/test/classes/_platform_browser.dart
 file:///C:/_Projects/github/squadron/test/classes/custom_exception.dart
@@ -503,7 +505,7 @@ file:///C:/_Projects/github/squadron/test/local_worker_test.dart
 file:///C:/_Projects/github/squadron/test/logging_test.dart
 file:///C:/_Projects/github/squadron/test/marshaler_test.dart
 file:///C:/_Projects/github/squadron/test/sample_js_workers/_test_context.dart
-file:///C:/_Projects/github/squadron/test/web_worker_wasm_test.dart
+file:///C:/_Projects/github/squadron/test/web_worker_js_test.dart
 file:///C:/_Projects/github/squadron/test/worker_pool_test.dart
 file:///C:/_Projects/github/squadron/test/worker_services/biging_marshaler.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service.dart

@@ -32,11 +32,11 @@ void execute(TestContext testContext) => testContext.run(() {
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: false, marshalOut: false);
             expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs) {
+            if (testContext.isJs || testContext.isWasm) {
               throw Exception('must fail');
             }
           } on SquadronError catch (ex) {
-            if (testContext.isJs) {
+            if (testContext.isJs || testContext.isWasm) {
               expect(ex.message, contains('structured clone'));
             } else {
               rethrow;
@@ -51,11 +51,11 @@ void execute(TestContext testContext) => testContext.run(() {
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: false, marshalOut: true);
             expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs) {
+            if (testContext.isJs || testContext.isWasm) {
               throw Exception('must fail');
             }
           } on SquadronError catch (ex) {
-            if (testContext.isJs) {
+            if (testContext.isJs || testContext.isWasm) {
               expect(ex.message, contains('structured clone'));
             } else {
               rethrow;
@@ -70,11 +70,11 @@ void execute(TestContext testContext) => testContext.run(() {
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: true, marshalOut: false);
             expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs) {
+            if (testContext.isJs || testContext.isWasm) {
               throw Exception('must fail');
             }
-          } on SquadronError catch (ex) {
-            if (testContext.isJs) {
+          } on WorkerException catch (ex) {
+            if (testContext.isJs || testContext.isWasm) {
               expect(ex.message, contains('structured clone'));
             } else {
               rethrow;

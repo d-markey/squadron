@@ -54,34 +54,26 @@ class WorkerRunner {
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
     startRequest?.unwrapInPlace(internalLogger);
-    dbgTrace('CONNECTING WORKER startRequest = $startRequest');
     final client = startRequest?.client;
-    dbgTrace('   client = $client');
 
     _logForwarder = (event) => client?.log(event.origin);
     Logger.addOutputListener(_logForwarder!);
 
     if (startRequest == null) {
-      dbgTrace('   FAIL: expected a non-null startRequest');
       throw SquadronErrorExt.create(
           'connection request expected', StackTrace.current);
     } else if (client == null) {
-      dbgTrace('   FAIL: expected a non-null client');
       throw SquadronErrorExt.create(
           'missing client for connection request', StackTrace.current);
     }
 
     try {
       if (!startRequest.isConnection) {
-        dbgTrace('   FAIL: expected a connection request');
         throw SquadronErrorExt.create(
             'connection request expected', StackTrace.current);
       } else if (_operations != null) {
-        dbgTrace('   FAIL: expected a connection request');
         throw SquadronErrorExt.create('already connected', StackTrace.current);
       }
-
-      dbgTrace('   initialize worker service...');
 
       WorkerService service;
       final init = initializer(startRequest);
@@ -98,21 +90,13 @@ class WorkerRunner {
       }
       _operations = service.operations;
 
-      dbgTrace('   install worker service...');
-
       final install = _install(service);
       if (install is Future) {
         await install;
       }
 
-      dbgTrace('   connect with caller...');
-
       client.connect(channelInfo);
-
-      dbgTrace('   connected');
     } catch (ex, st) {
-      dbgTrace('   FAIL: exception $ex');
-      dbgTrace('        stacktrace $st');
       client.error(SquadronException.from(ex, st));
     }
   }
@@ -120,8 +104,6 @@ class WorkerRunner {
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_operations] map.
   void processMessage(WorkerRequest request) async {
-    dbgTrace('Received request $request');
-
     request.unwrapInPlace(internalLogger);
     final client = request.client;
 

@@ -12,7 +12,6 @@ class HtmlLogger {
   final HTMLDivElement div;
 
   void log(String message, {bool replaceLastLine = false}) {
-    console.log(message.jsify());
     if (message.isNotEmpty) {
       message = '[${_sw.elapsed}] $message';
     }

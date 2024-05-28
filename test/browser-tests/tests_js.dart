@@ -1,3 +1,6 @@
+// web_worker_js_test.dart imports 'dart:html'
+// so this test suite will execute Squadron using html + js libraries
+
 import '../cancelation_test.dart' as cancelation_test;
 import '../issues_test.dart' as issues_test;
 import '../local_worker_test.dart' as local_worker_test;

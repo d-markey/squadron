@@ -2,9 +2,9 @@
     let dart2wasm_runtime;
     let moduleInstance;
     try {
-        const dartModulePromise = WebAssembly.compileStreaming(fetch('test_worker.dart.unopt.wasm'));
+        const dartModulePromise = WebAssembly.compileStreaming(fetch('wasm_test_runner_wasm.dart.wasm'));
         const imports = {};
-        dart2wasm_runtime = await import('./test_worker.dart.mjs');
+        dart2wasm_runtime = await import('./wasm_test_runner_wasm.dart.mjs');
         moduleInstance = await dart2wasm_runtime.instantiate(dartModulePromise, imports);
     } catch (exception) {
         console.error(`Failed to fetch and instantiate wasm module: ${exception}`);

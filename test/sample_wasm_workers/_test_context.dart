@@ -17,15 +17,14 @@ Future<void> setEntryPoints(
     String root, TestPlatform platform, TestEntryPoints entryPoints) async {
   print('Test context platform = $platform');
 
-  root = (platform == TestPlatform.wasm)
-      ? '${root}sample_wasm_workers'
-      : ((platform == TestPlatform.js)
-          ? '${root}sample_js_workers'
-          : throw UnsupportedError('Unsupported platform $platform'));
-
   if (!_set) {
     _set = true;
-    root = '${root}sample_wasm_workers';
+
+    root = (platform == TestPlatform.wasm)
+        ? '${root}sample_wasm_workers'
+        : ((platform == TestPlatform.js)
+            ? '${root}sample_js_workers'
+            : throw UnsupportedError('Unsupported platform $platform'));
 
     entryPoints.native = '$root/native_worker.js';
 
@@ -54,19 +53,9 @@ Future<void> setEntryPoints(
 Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   final messages = <String>[];
 
-  // final resp = await http.get(Uri.parse(web.window.location.href));
-  // final html = web.DOMParser().parseFromString(resp.body, 'text/html');
-
-  // print('Checking ${html.documentElement!.innerHTML}');
-
   final workerLinks = web.document.querySelectorAll('link[rel="x-web-worker"]');
 
   final count = workerLinks.length;
-
-  for (var i = 0; i < count; i++) {
-    final workerLink = workerLinks.item(i) as web.Element;
-    print('Checking $workerLink');
-  }
 
   var workers = <EntryPoint>{};
   for (var i = 0; i < count; i++) {

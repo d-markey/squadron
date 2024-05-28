@@ -19,6 +19,7 @@ Future<void> setEntryPoints(
 
   if (!_set) {
     _set = true;
+
     root = (platform == TestPlatform.wasm)
         ? '${root}sample_wasm_workers'
         : ((platform == TestPlatform.js)

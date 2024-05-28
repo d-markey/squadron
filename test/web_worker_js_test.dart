@@ -1,4 +1,4 @@
-@TestOn('browser')
+@TestOn('browser && dart2js')
 library;
 
 import 'dart:async';

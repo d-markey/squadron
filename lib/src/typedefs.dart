@@ -16,7 +16,8 @@ typedef DbgTrace = void Function(dynamic);
 // ignore: constant_identifier_names
 const int platform_id = impl.platform_id;
 
-void _noop(dynamic message) {}
+void noop(dynamic message) {}
+const debug = impl.trace;
 
 // ignore: dead_code
-DbgTrace dbgTrace = (true ? impl.trace : _noop);
+DbgTrace trace = (false ? debug : noop);

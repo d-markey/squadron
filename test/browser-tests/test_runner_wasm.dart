@@ -1,11 +1,13 @@
+// tests_wasm.dart forces 'dart:js_interop'
+
 import 'dart:js_interop';
 
 import 'package:web/web.dart';
 
 import '../classes/test_context.dart';
 import '../classes/test_platform.dart';
-import 'html_logger.dart';
-import 'tests.dart';
+import 'html_logger_wasm.dart';
+import 'tests_wasm.dart';
 
 @JS()
 external JSFunction? get dartPrint;
@@ -23,6 +25,8 @@ void main(dynamic args) async {
 
   window.onMessage.listen((m) => print('(*) ${m.data}'));
 
+  print('Imported platform = $importedPlatform');
+
   final selectedExecutors = <MapEntry<String, void Function(TestContext)>>[];
 
   final uri = Uri.parse(window.location.href);
@@ -38,10 +42,7 @@ void main(dynamic args) async {
 
   if (selectedExecutors.isNotEmpty) {
     print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
-    final testContext = await TestContext.init(
-      '/',
-      TestPlatform.wasm,
-    );
+    final testContext = await TestContext.init('/', TestPlatform.wasm);
 
     for (var executor in selectedExecutors) {
       executor.value(testContext);

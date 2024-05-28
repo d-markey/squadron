@@ -10,13 +10,16 @@ import '_test_context_stub.dart'
 import 'test_entry_points.dart';
 import 'test_platform.dart';
 
+final importedPlatform = platform_test_context.platform;
+final importedPlatformName = platform_test_context.platformName;
+
 class TestContext {
   TestContext._(this.platform, this.platformName);
 
   static Future<TestContext> init(String root,
       [TestPlatform? platform, String? platformName]) async {
-    platform ??= platform_test_context.platform;
-    platformName ??= platform_test_context.platformName;
+    platform ??= importedPlatform;
+    platformName ??= importedPlatformName;
     final testContext = TestContext._(platform, platformName);
     await platform_test_context.setEntryPoints(
       root,

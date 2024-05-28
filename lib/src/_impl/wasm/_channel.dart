@@ -174,6 +174,11 @@ class _JsChannel extends _BaseJsChannel implements Channel {
 
     final controller = StreamController<WorkerResponse>();
     com.port1.onmessage = (web.MessageEvent e) {
+      print('RECEIVED EVENT $e ${e.runtimeType}');
+      final data = e.data.dartify();
+      print('   data = $data');
+      final resp = WorkerResponse(data as List);
+      print('   resp = $resp');
       controller.add(WorkerResponse(e.data.dartify() as List));
     }.toJS;
 
@@ -299,12 +304,9 @@ Future<Channel> openChannel(EntryPoint entryPoint,
   final com = web.MessageChannel();
   final worker = web.Worker(entryPoint);
 
-  dbgTrace('Loading Web Worker $entryPoint');
-
   final ready = Completer<void>();
 
   worker.onerror = (JSAny? event) {
-    dbgTrace('Worker $entryPoint reported an error: $event');
     if (!ready.isCompleted) {
       ready.complete();
     }
@@ -338,10 +340,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   }.toJS;
   await ready.future;
-  dbgTrace('Worker $entryPoint is now ready');
   worker.onmessage = null;
-
-  dbgTrace('Worker $entryPoint: hook = $hook');
 
   try {
     hook?.call(worker);
@@ -376,7 +375,6 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   }.toJS;
 
-  dbgTrace('Worker $entryPoint: sending $startRequest');
   startRequest.wrapInPlace();
   try {
     worker.postMessage(

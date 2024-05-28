@@ -222,7 +222,12 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(worker.isStopped, isTrue);
             await Future.delayed(TestService.shortDelay);
 
-            await expectLater(worker.start(), failsWith<WorkerException>());
+            try {
+              final res = await worker.start();
+              throw Exception('start() completed successfully with res=$res');
+            } on WorkerException catch (ex) {
+              expect(ex.message, contains('worker is stopped'));
+            }
           });
         });
 
@@ -457,9 +462,10 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- Exception', () async {
             final errors = worker.stats.totalErrors;
             try {
-              await worker.throwException();
+              final res = await worker.throwException();
               // should never happen
-              throw Exception('throwException() completed sucessfully');
+              throw Exception(
+                  'throwException() completed sucessfully with res=$res');
             } on WorkerException catch (ex) {
               expect(ex.message, contains('intentional exception'));
               expect(ex.stackTrace?.toString(), contains('throwException'));
@@ -470,9 +476,10 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- WorkerException', () async {
             final errors = worker.stats.totalErrors;
             try {
-              await worker.throwWorkerException();
+              final res = await worker.throwWorkerException();
               // should never happen
-              throw Exception('throwWorkerException() completed sucessfully');
+              throw Exception(
+                  'throwWorkerException() completed sucessfully with res=$res');
             } on WorkerException catch (ex) {
               expect(ex.message, equals('intentional worker exception'));
               expect(
@@ -484,10 +491,10 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- TaskTimeOutException', () async {
             final errors = worker.stats.totalErrors;
             try {
-              await worker.throwTaskTimeOutException();
+              final res = await worker.throwTaskTimeOutException();
               // should never happen
               throw Exception(
-                  'throwTaskTimeOutException() completed sucessfully');
+                  'throwTaskTimeOutException() completed sucessfully with res=$res');
             } on SquadronTimeoutException catch (ex) {
               expect(ex.message, contains('intentional timeout exception'));
             }
@@ -497,9 +504,10 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- CanceledException', () async {
             final errors = worker.stats.totalErrors;
             try {
-              await worker.throwCanceledException();
+              final res = await worker.throwCanceledException();
               // should never happen
-              throw Exception('throwCanceledException() completed sucessfully');
+              throw Exception(
+                  'throwCanceledException() completed sucessfully with res=$res');
             } on SquadronCanceledException catch (ex) {
               expect(ex.message, contains('intentional canceled exception'));
             }
@@ -512,10 +520,10 @@ void execute(TestContext testContext) => testContext.run(() {
             try {
               final errors = worker.stats.totalErrors;
               try {
-                await worker.throwCustomException();
+                final res = await worker.throwCustomException();
                 // should never happen
                 throw Exception(
-                    'throwCustomException() completed successfully');
+                    'throwCustomException() completed successfully with res=$res');
               } on CustomException catch (ex) {
                 expect(ex.message, contains('intentional CUSTOM exception'));
                 expect(ex.stackTrace?.toString(),
@@ -535,8 +543,12 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(result, equals(transferable));
 
             final obj = getUnsendable();
-            await expectLater(
-                () => worker.forward(obj), failsWith<SquadronError>());
+            try {
+              final res = await worker.forward(obj);
+              throw Exception('forward() completed successfully with res=$res');
+            } on SquadronError catch (_) {
+              // expected error
+            }
 
             // ensure worker is still alive
             final status = await worker.ping();
@@ -544,8 +556,13 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- invalid response', () async {
-            await expectLater(
-                worker.invalidResponse(), failsWith<SquadronError>());
+            try {
+              final res = await worker.invalidResponse();
+              throw Exception(
+                  'invalidResponse() completed successfully with res=$res');
+            } on WorkerException catch (_) {
+              // expected error
+            }
 
             // ensure worker is still alive
             final status = await worker.ping();
@@ -553,7 +570,12 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- missing operation', () async {
-            await expectLater(worker.missing(), failsWith<SquadronError>());
+            try {
+              final res = await worker.missing();
+              throw Exception('missing() completed successfully with res=$res');
+            } on SquadronError catch (ex) {
+              expect(ex.message, contains(('unknown command')));
+            }
 
             // ensure worker is still alive
             final status = await worker.ping();

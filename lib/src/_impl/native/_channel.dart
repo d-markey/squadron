@@ -228,8 +228,9 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     }
   });
 
-  receiver.listen((response) {
-    if (!response.unwrapResponseInPlace(exceptionManager, logger)) {
+  receiver.listen((message) {
+    final response = WorkerResponse(message);
+    if (!response.unwrapInPlace(exceptionManager, logger)) {
       return;
     }
 

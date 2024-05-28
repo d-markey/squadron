@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:isolate';
 
-typedef EntryPoint = FutureOr<void> Function(List);
+import '../../worker/worker_request.dart';
+
+typedef EntryPoint = FutureOr<void> Function(WorkerRequest);
 typedef PlatformThread = Isolate;
 typedef PlatformChannel = SendPort;
 
