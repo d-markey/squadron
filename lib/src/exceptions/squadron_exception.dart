@@ -49,7 +49,7 @@ abstract class SquadronException implements Exception {
   StackTrace? _stackTrace;
 
   @override
-  String toString() => '$runtimeType: ${jsonEncode(serialize())}';
+  String toString() => jsonEncode(serialize());
 
   /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.
   List serialize();

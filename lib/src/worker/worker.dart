@@ -213,21 +213,26 @@ abstract class Worker implements WorkerService, IWorker {
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
-  Future<Channel> start() async {
+  Future<Channel> start() {
     if (_stopped != null) {
       throw WorkerException('worker is stopped');
     }
-    if (_channel == null) {
+    final channel = _channel;
+    if (channel != null) {
+      return Future.value(channel);
+    } else {
       _openChannel ??= Channel.open(
-          exceptionManager, channelLogger, _entryPoint, args, _threadHook);
-      final channel = await _openChannel!;
-      if (_channel == null) {
-        _channel = channel;
-        _started = microsecTimeStamp();
-        _idle = _started;
-      }
+              exceptionManager, channelLogger, _entryPoint, args, _threadHook)
+          .then((channel) {
+        if (_channel == null) {
+          _channel = channel;
+          _started = microsecTimeStamp();
+          _idle = _started;
+        }
+        return _channel!;
+      });
+      return _openChannel!;
     }
-    return _channel!;
   }
 
   /// Stops this worker.

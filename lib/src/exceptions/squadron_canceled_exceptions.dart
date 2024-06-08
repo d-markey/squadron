@@ -27,7 +27,7 @@ class SquadronCanceledExceptions
   StackTrace? get stackTrace => null;
 
   @override
-  String toString() => '$runtimeType: ${jsonEncode(serialize())}';
+  String toString() => jsonEncode(serialize());
 
   @override
   List serialize() => List.unmodifiable([

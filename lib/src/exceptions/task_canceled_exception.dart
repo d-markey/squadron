@@ -14,7 +14,7 @@ class TaskCanceledException implements SquadronError, CanceledException {
   StackTrace? get stackTrace => null;
 
   @override
-  String toString() => '$runtimeType: ${jsonEncode(serialize())}';
+  String toString() => jsonEncode(serialize());
 
   @override
   List serialize() => throw UnimplementedError();

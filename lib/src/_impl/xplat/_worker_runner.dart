@@ -14,7 +14,6 @@ import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
 import '_user_code.dart';
-import 'hex.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.
@@ -103,8 +102,6 @@ class WorkerRunner {
         }
       }
 
-      print(
-          'Sending connection request for ${channelInfo.runtimeType} / ${channelInfo.hashCode.hex}');
       client.connect(channelInfo);
     } catch (ex, st) {
       client.error(SquadronException.from(ex, st));

@@ -12,7 +12,7 @@ dart test -j 1 --coverage=./test/coverage
 test_status=$?
 
 # generate coverage report if tests succeed
-if [ "$test_status" -eq 0 ]
+if (( $test_status == 0 ))
 then
     dart run coverage:format_coverage --packages=./.dart_tool/package_config.json --report-on=lib --lcov -o ./test/coverage/lcov.info -i ./test/coverage
     rm -rf ./coverage
