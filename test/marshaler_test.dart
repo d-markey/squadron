@@ -13,83 +13,82 @@ void main() async {
   execute(testContext);
 }
 
-void execute(TestContext testContext) => testContext.run(() {
-      group("- Marshaler", () {
-        late TestWorker testWorker;
+void execute(TestContext testContext) {
+  testContext.run(() {
+    group("- Marshaler", () {
+      late TestWorker testWorker;
 
-        setUpAll(() async {
-          testWorker = TestWorker(testContext);
-          await testWorker.start();
-        });
+      setUpAll(() async {
+        testWorker = TestWorker(testContext);
+        await testWorker.start();
+      });
 
-        tearDownAll(() {
-          testWorker.stop();
-        });
+      tearDownAll(() {
+        testWorker.stop();
+      });
 
-        test('- unmarshaled "non-native" types work in VM, fail on Web',
-            () async {
-          try {
-            final sum = await testWorker.bigIntAdd(
-                BigInt.from(7), BigInt.from(5),
-                marshalIn: false, marshalOut: false);
-            if (testContext.workerPlatform.isJsOrWasm) {
-              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
-            } else {
-              expect(sum, equals(BigInt.from(12)));
-            }
-          } on SquadronError catch (ex) {
-            if (testContext.workerPlatform.isJsOrWasm) {
-              lowerCaseCheck(ex.message, contains('failed to post message'));
-            } else {
-              rethrow;
-            }
-          }
-        });
-
-        test('- unmarshaled "non-native" input types work in VM, fail on Web',
-            () async {
-          try {
-            final sum = await testWorker.bigIntAdd(
-                BigInt.from(7), BigInt.from(5),
-                marshalIn: false, marshalOut: true);
-            if (testContext.workerPlatform.isJsOrWasm) {
-              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
-            } else {
-              expect(sum, equals(BigInt.from(12)));
-            }
-          } on SquadronError catch (ex) {
-            if (testContext.workerPlatform.isJsOrWasm) {
-              lowerCaseCheck(ex.message, contains('failed to post message'));
-            } else {
-              rethrow;
-            }
-          }
-        });
-
-        test('- unmarshaled "non-native" output types work in VM, fail on Web',
-            () async {
-          try {
-            final sum = await testWorker.bigIntAdd(
-                BigInt.from(7), BigInt.from(5),
-                marshalIn: true, marshalOut: false);
-            if (testContext.workerPlatform.isJsOrWasm) {
-              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
-            } else {
-              expect(sum, equals(BigInt.from(12)));
-            }
-          } on SquadronError catch (ex) {
-            if (testContext.workerPlatform.isJsOrWasm) {
-              lowerCaseCheck(ex.message, contains('failed to post message'));
-            } else {
-              rethrow;
-            }
-          }
-        });
-
-        test('- marshaled "non-native" types always work', () async {
+      test('- unmarshaled "non-native" types work in VM, fail on Web',
+          () async {
+        try {
           final sum = await testWorker.bigIntAdd(BigInt.from(7), BigInt.from(5),
-              marshalIn: true, marshalOut: true);
-          expect(sum, equals(BigInt.from(12)));
-        });
+              marshalIn: false, marshalOut: false);
+          if (testContext.workerPlatform.isJsOrWasm) {
+            throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+          } else {
+            expect(sum, equals(BigInt.from(12)));
+          }
+        } on SquadronError catch (ex) {
+          if (testContext.workerPlatform.isJsOrWasm) {
+            lowerCaseCheck(ex.message, contains('failed to post message'));
+          } else {
+            rethrow;
+          }
+        }
+      });
+
+      test('- unmarshaled "non-native" input types work in VM, fail on Web',
+          () async {
+        try {
+          final sum = await testWorker.bigIntAdd(BigInt.from(7), BigInt.from(5),
+              marshalIn: false, marshalOut: true);
+          if (testContext.workerPlatform.isJsOrWasm) {
+            throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+          } else {
+            expect(sum, equals(BigInt.from(12)));
+          }
+        } on SquadronError catch (ex) {
+          if (testContext.workerPlatform.isJsOrWasm) {
+            lowerCaseCheck(ex.message, contains('failed to post message'));
+          } else {
+            rethrow;
+          }
+        }
+      });
+
+      test('- unmarshaled "non-native" output types work in VM, fail on Web',
+          () async {
+        try {
+          final sum = await testWorker.bigIntAdd(BigInt.from(7), BigInt.from(5),
+              marshalIn: true, marshalOut: false);
+          if (testContext.workerPlatform.isJsOrWasm) {
+            throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+          } else {
+            expect(sum, equals(BigInt.from(12)));
+          }
+        } on SquadronError catch (ex) {
+          if (testContext.workerPlatform.isJsOrWasm) {
+            lowerCaseCheck(ex.message, contains('failed to post message'));
+          } else {
+            rethrow;
+          }
+        }
+      });
+
+      test('- marshaled "non-native" types always work', () async {
+        final sum = await testWorker.bigIntAdd(BigInt.from(7), BigInt.from(5),
+            marshalIn: true, marshalOut: true);
+        expect(sum, equals(BigInt.from(12)));
       });
     });
+  });
+}

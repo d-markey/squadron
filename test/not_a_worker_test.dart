@@ -11,10 +11,20 @@ void main() async {
   execute(testContext);
 }
 
-void execute(TestContext testContext) => testContext.run(() {
-      test("- Not a worker", () async {
-        final worker = NotAWorkerService(testContext);
+void execute(TestContext testContext) {
+  testContext.run(() {
+    test("- Not a worker", () async {
+      final worker = NotAWorkerService(testContext);
 
-        await worker.start();
-      });
+      var started = false, expired = false;
+
+      await Future.any([
+        worker.start().then((_) => started = true),
+        Future.delayed(Duration(seconds: 5)).then((_) => expired = true),
+      ]);
+
+      expect(started, isFalse);
+      expect(expired, isTrue);
     });
+  });
+}
