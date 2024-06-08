@@ -1,8 +1,7 @@
-import 'src/typedefs.dart' show platform_id;
-
 export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
 export 'package:logger/logger.dart' show Logger;
 
+export 'src/_impl/xplat/hex.dart';
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';
@@ -10,11 +9,14 @@ export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
 export 'src/exceptions/exception_manager.dart'
     hide SquadronExceptionDeserializer;
-export 'src/exceptions/squadron_canceled_exception.dart';
-export 'src/exceptions/squadron_canceled_exceptions.dart';
+export 'src/exceptions/squadron_canceled_exception.dart'
+    hide SquadronCanceledExceptionExt;
+export 'src/exceptions/squadron_canceled_exceptions.dart'
+    hide SquadronCanceledExceptionsExt;
 export 'src/exceptions/squadron_error.dart' hide SquadronErrorExt;
-export 'src/exceptions/squadron_exception.dart';
-export 'src/exceptions/squadron_timeout_exception.dart';
+export 'src/exceptions/squadron_exception.dart' hide StackTraceExt;
+export 'src/exceptions/squadron_timeout_exception.dart'
+    hide SquadronTimeoutExceptionExt;
 export 'src/exceptions/task_canceled_exception.dart';
 export 'src/exceptions/worker_exception.dart' hide WorkerExceptionExt;
 export 'src/iworker.dart';
@@ -38,8 +40,3 @@ export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;
 export 'src/worker/worker_response.dart' hide WorkerResponseExt;
 export 'src/worker_service.dart';
-
-final platformId = (() {
-  print('platform_id=$platform_id');
-  return platform_id;
-})();

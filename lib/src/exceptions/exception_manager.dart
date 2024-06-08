@@ -17,11 +17,11 @@ class ExceptionManager {
   ExceptionManager();
 
   final _deserializers = <String, SquadronExceptionDeserializer>{
-    $canceledExceptionType: SquadronCanceledException.deserialize,
-    $timeoutExceptionType: SquadronTimeoutException.deserialize,
-    $canceledExceptionsType: SquadronCanceledExceptions.deserialize,
+    $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,
+    $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,
+    $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,
     $squadronErrorType: SquadronErrorExt.deserialize,
-    $workerExceptionType: WorkerException.deserialize,
+    $workerExceptionType: WorkerExceptionExt.deserialize,
   };
 
   /// Registers a deserializer for a custom [WorkerException]. If the deserializer is
@@ -30,8 +30,8 @@ class ExceptionManager {
       String exceptionTypeId, WorkerExceptionDeserializer deserializer) {
     if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {
       throw SquadronErrorExt.create(
-          'Invalid exception type ID: $exceptionTypeId is reserved.',
-          StackTrace.current);
+        'Invalid exception type ID: $exceptionTypeId is reserved.',
+      );
     }
     _deserializers[exceptionTypeId] = deserializer;
   }
@@ -43,15 +43,15 @@ class ExceptionManager {
   void unregister(String exceptionTypeId) {
     if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {
       throw SquadronErrorExt.create(
-          'Invalid exception type ID: $exceptionTypeId is reserved.',
-          StackTrace.current);
+        'Invalid exception type ID: $exceptionTypeId is reserved.',
+      );
     }
     _deserializers.remove(exceptionTypeId);
   }
 
   /// Deserializes a [List] that was produced by [serialize].
   SquadronException? deserialize(List? data) {
-    if (data == null) {
+    if (data == null || data.isEmpty) {
       return null;
     }
     final exceptionType = data[0];
@@ -60,11 +60,13 @@ class ExceptionManager {
       final deserializer = _deserializers[exceptionType];
       error = deserializer?.call(data) ??
           SquadronErrorExt.create(
-              'failed to deserialize exception information: $data',
-              StackTrace.current);
+            'failed to deserialize exception information: $data',
+          );
     } catch (ex, st) {
       error = SquadronErrorExt.create(
-          'failed to deserialize exception information: $ex', st);
+        'failed to deserialize exception information: $ex',
+        st,
+      );
     }
     return error;
   }

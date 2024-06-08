@@ -1,4 +1,3 @@
-// web_worker_js_test.dart imports 'dart:html'
 // so this test suite will execute Squadron using html + js libraries
 
 import '../cancelation_test.dart' as cancelation_test;
@@ -20,7 +19,3 @@ final executors = {
   'Cancelation Tokens': cancelation_test.execute,
   'GitHub Issues': issues_test.execute,
 };
-
-final executorLabels = executors.keys.toList();
-
-String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';

@@ -30,7 +30,7 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future<String> whoAreYouTalkingTo() => execute((w) => w.whoAreYouTalkingTo());
 }
 
-class SampleWorker extends Worker<SampleService> implements SampleService {
+class SampleWorker extends Worker implements SampleService {
   SampleWorker(super.entryPoint, {super.args, super.threadHook});
 
   @override

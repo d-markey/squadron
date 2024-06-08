@@ -5,10 +5,6 @@ import 'package:squadron/squadron.dart';
 
 import 'cache_service.dart';
 
-class Test {
-  Future<int> get(int i) async => i;
-}
-
 class PrimeService implements WorkerService {
   PrimeService([this._cache]);
 

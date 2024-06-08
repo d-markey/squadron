@@ -17,7 +17,7 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
   @override
   Future<T> get value => _completer.future;
 
-  void _completeWithError(Object exception, StackTrace stackTrace) {
+  void _completeWithError(Object exception, StackTrace? stackTrace) {
     final ex = (exception is SquadronException)
         ? exception
         : SquadronException.from(exception, stackTrace);
@@ -42,14 +42,17 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
     if (!isRunning && !isFinished) {
       _completeWithError(
         canceledException!,
-        canceledException?.stackTrace ?? StackTrace.current,
+        canceledException?.stackTrace,
       );
     }
   }
 
   @override
-  Future<void> run(W worker) => super
-      .run(worker)
-      .then((_) => _computer(worker).then(_completeWithResult))
-      .catchError(_completeWithError);
+  Future<void> run(W worker) => super.run(worker).then(
+        (_) => _computer(worker).then(
+          _completeWithResult,
+          onError: _completeWithError,
+        ),
+        onError: _completeWithError,
+      );
 }

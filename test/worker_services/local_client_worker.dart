@@ -4,6 +4,7 @@ import 'package:squadron/squadron.dart';
 
 import '../classes/platform.dart';
 import '../classes/test_context.dart';
+import '../classes/utils.dart';
 import 'local_workers/local_client.dart';
 import 'local_workers/local_service.dart';
 
@@ -29,11 +30,10 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
   @override
   Future<bool> checkException() async {
     try {
-      await _localClient.throwException();
-      throw Exception('throwException() completed successfully');
-    } catch (ex) {
-      return ex is WorkerException &&
-          ex.message.contains('Intentional exception');
+      final res = await _localClient.throwException();
+      throw unexpectedSuccess('throwException()', res);
+    } on WorkerException catch (ex) {
+      return ex.message.toLowerCase().contains('intentional exception');
     }
   }
 

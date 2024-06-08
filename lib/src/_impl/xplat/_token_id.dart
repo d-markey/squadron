@@ -1,3 +1,5 @@
+import 'hex.dart';
+
 /// Singleton class used to generate unique IDs for cancelation tokens.
 ///
 /// The class implements a simple counter that is incremented each time a new
@@ -7,12 +9,10 @@ class TokenId {
   TokenId._();
 
   static final _instance = TokenId._();
+  static final _instanceId = _instance.hashCode.hex;
 
   int _id = 0;
 
   /// Provides the next ID.
-  static String next() {
-    final id = ++_instance._id;
-    return '$id';
-  }
+  static String next() => '${++_instance._id}@$_instanceId';
 }

@@ -1,4 +1,3 @@
-import 'dart:isolate';
+import 'package:squadron/squadron.dart';
 
-String get threadId =>
-    '0x${Isolate.current.hashCode.toRadixString(8).padLeft(8, '0')}';
+final String threadId = Object().hashCode.hex; // unique per event loop

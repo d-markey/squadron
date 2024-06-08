@@ -13,6 +13,8 @@ import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
+import '_user_code.dart';
+import 'hex.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.
@@ -37,10 +39,8 @@ class WorkerRunner {
 
   /// Constructs a new worker runner for a [localWorker].
   factory WorkerRunner.use(LocalWorker localWorker) {
-    final runner = WorkerRunner((r) {
-      r._operations?.clear();
-    });
-    runner._operations = localWorker.service.operations;
+    final runner = WorkerRunner((r) => r._operations?.clear());
+    runner._operations = {...localWorker.service.operations};
     return runner;
   }
 
@@ -60,41 +60,51 @@ class WorkerRunner {
     Logger.addOutputListener(_logForwarder!);
 
     if (startRequest == null) {
-      throw SquadronErrorExt.create(
-          'connection request expected', StackTrace.current);
+      throw SquadronErrorExt.create('connection request expected');
     } else if (client == null) {
-      throw SquadronErrorExt.create(
-          'missing client for connection request', StackTrace.current);
+      throw SquadronErrorExt.create('missing client for connection request');
     }
 
     try {
       if (!startRequest.isConnection) {
-        throw SquadronErrorExt.create(
-            'connection request expected', StackTrace.current);
+        throw SquadronErrorExt.create('connection request expected');
       } else if (_operations != null) {
-        throw SquadronErrorExt.create('already connected', StackTrace.current);
+        throw SquadronErrorExt.create('already connected');
       }
 
-      WorkerService service;
-      final init = initializer(startRequest);
-      if (init is Future) {
-        service = await init;
-      } else {
-        service = init;
+      final init = UserCode.run(
+        internalLogger,
+        () => initializer(startRequest),
+        'service instantiation',
+      );
+      final service = (init is Future) ? await init : init;
+
+      if (service == null) {
+        throw SquadronErrorExt.create('service initializer failed');
       }
 
       if (service.operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw SquadronErrorExt.create(
-            'invalid command identifier in service operations map; command ids must be > 0',
-            StackTrace.current);
-      }
-      _operations = service.operations;
-
-      final install = _install(service);
-      if (install is Future) {
-        await install;
+          'invalid command identifier in service operations map; command ids must be > 0',
+        );
       }
 
+      _operations = {...service.operations};
+
+      if (service is ServiceInstaller) {
+        final installer = _installer = service as ServiceInstaller;
+        final install = UserCode.run(
+          internalLogger,
+          () => installer.install(),
+          'service installation',
+        );
+        if (install is Future) {
+          await install;
+        }
+      }
+
+      print(
+          'Sending connection request for ${channelInfo.runtimeType} / ${channelInfo.hashCode.hex}');
       client.connect(channelInfo);
     } catch (ex, st) {
       client.error(SquadronException.from(ex, st));
@@ -118,8 +128,7 @@ class WorkerRunner {
       // cancel a stream
       return _streamCancelers?[request.streamId]?.call();
     } else if (client == null) {
-      throw SquadronErrorExt.create(
-          'missing client for request: $request', StackTrace.current);
+      throw SquadronErrorExt.create('missing client for request: $request');
     }
 
     // start monitoring execution
@@ -128,18 +137,16 @@ class WorkerRunner {
       if (request.isConnection) {
         // connection request must be handled beforehand
         throw SquadronErrorExt.create(
-            'unexpected connection request: $request', StackTrace.current);
+            'unexpected connection request: $request');
       } else if (_operations == null) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
-        throw SquadronErrorExt.create(
-            'worker service is not ready', StackTrace.current);
+        throw SquadronErrorExt.create('worker service is not ready');
       }
 
       // find the operation matching the request command
       final op = _operations![request.command];
       if (op == null) {
-        throw SquadronErrorExt.create(
-            'unknown command: ${request.command}', StackTrace.current);
+        throw SquadronErrorExt.create('unknown command: ${request.command}');
       }
 
       // process
@@ -236,14 +243,6 @@ class WorkerRunner {
     final canceler = _streamCancelers?[streamId];
     if (canceler != null) {
       _streamCancelers?.remove(streamId);
-    }
-  }
-
-  /// Installs the service if it implements [ServiceInstaller].
-  FutureOr<void> _install(WorkerService service) {
-    if (service is ServiceInstaller) {
-      _installer = service as ServiceInstaller;
-      return _installer!.install();
     }
   }
 

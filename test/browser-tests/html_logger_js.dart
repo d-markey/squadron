@@ -1,70 +1,63 @@
 import 'dart:async';
 import 'dart:html';
+import 'dart:js';
+
+import 'console_to_html.dart';
+
+final jsobj = context['Object'];
 
 class HtmlLogger {
-  HtmlLogger(this.div) {
+  HtmlLogger(this._div) {
+    _div.onScroll.listen(_onScroll);
     _sw.start();
   }
 
-  final Stopwatch _sw = Stopwatch();
-  final DivElement div;
+  static final _formatter = ConsoleToHtml();
 
-  void log(String message, {bool replaceLastLine = false}) {
-    if (message.isNotEmpty) {
-      message = '[${_sw.elapsed}] $message';
-    }
-    final lines = (div.innerHtml ?? '').split('<br>');
-    if (lines.length == 1 && lines[0].isEmpty) {
-      lines.clear();
-    }
-    if (replaceLastLine && lines.isNotEmpty) {
-      lines[lines.length - 1] = message;
+  final Stopwatch _sw = Stopwatch();
+  final DivElement _div;
+
+  bool _scrollToEnd = true;
+  bool _forceScroll = false;
+
+  void _onScroll(Event scrollEvent) {
+    if (!_forceScroll) {
+      final prevScrollToEnd = _scrollToEnd;
+      _scrollToEnd = (_div.scrollHeight - _div.scrollTop) <= _div.clientHeight;
+      if (_scrollToEnd != prevScrollToEnd) {
+        window.console.log('_scrollToEnd = $_scrollToEnd');
+      }
     } else {
-      lines.add(message);
+      _forceScroll = false;
     }
-    div.innerHtml = lines.join('<br>');
-    div.parent?.scrollTo(0, 10000);
+  }
+
+  void _log(Duration ts, String message, {bool replaceLastLine = false}) {
+    if (message.isNotEmpty) {
+      message = '[$ts] $message';
+    }
+    if (replaceLastLine && _div.childNodes.isNotEmpty) {
+      _div.childNodes.last.remove();
+    }
+    _div.append(
+      document.createElement('SPAN')..innerHtml = '$message<BR>',
+    );
   }
 
   void print(String message) {
-    while (message.endsWith('\r') || message.endsWith('\n')) {
-      message = message.substring(0, message.length - 1);
+    final ts = _sw.elapsed;
+    for (var line in _formatter.convert(message)) {
+      _log(ts, line);
     }
-    final codeUnits = message.codeUnits;
-    final closeTags = <int>[];
-    final html = <int>[];
-    var i = 0;
-    while (i < codeUnits.length) {
-      final replacements =
-          sequences.where((s) => s.match(codeUnits, i)).toList();
-      if (replacements.length == 1) {
-        final replacement = replacements[0];
-        if (replacement == resetSeq) {
-          html.addAll(closeTags);
-          closeTags.clear();
-        } else if (replacement == cr || replacement == lf) {
-          log(String.fromCharCodes(html));
-          html.clear();
-        } else {
-          html.addAll(replacement.codeUnits);
-          closeTags.addAll(replacement.closeTag);
-        }
-        i += replacement.length;
-      } else {
-        html.add(codeUnits[i]);
-        i += 1;
-      }
-    }
-    // ensure tags are closed
-    html.addAll(closeTags);
-    closeTags.clear();
-    if (html.isNotEmpty) {
-      log(String.fromCharCodes(html));
+    if (_scrollToEnd) {
+      _forceScroll = true;
+      _div.scrollTo(0, _div.scrollHeight);
     }
   }
 
   void clear() {
-    div.innerHtml = '';
+    _div.innerHtml = '';
+    _scrollToEnd = true;
   }
 
   Future pause(String message, {required int seconds}) async {
@@ -73,60 +66,16 @@ class HtmlLogger {
     final sw = Stopwatch();
     final timer = Timer.periodic(timerPeriod, (timer) {
       final remaining = Duration(
-          microseconds: waitTime.inMicroseconds - sw.elapsedMicroseconds);
-      log(message.replaceAll('@countdown', remaining.toString()),
-          replaceLastLine: sw.isRunning);
+        microseconds: waitTime.inMicroseconds - sw.elapsedMicroseconds,
+      );
+      _log(
+        _sw.elapsed,
+        message.replaceAll('@countdown', remaining.toString()),
+        replaceLastLine: sw.isRunning,
+      );
       sw.start();
     });
     await Future.delayed(waitTime);
     timer.cancel();
-  }
-
-  static final esc = 27;
-  static final cr = SequenceReplacement('\n'.codeUnits, '');
-  static final lf = SequenceReplacement('\r'.codeUnits, '');
-  static final amp = SequenceReplacement('&'.codeUnits, '&amp;');
-  static final lt = SequenceReplacement('<'.codeUnits, '&lt;');
-  static final gt = SequenceReplacement('>'.codeUnits, '&gt;');
-  static final resetSeq = SequenceReplacement([esc, ...'[0m'.codeUnits], '');
-  static final boldSeq =
-      SequenceReplacement([esc, ...'[1m'.codeUnits], '<b>', '</b>');
-  static final redSeq = SequenceReplacement(
-      [esc, ...'[31m'.codeUnits], '<span class="red">', '</span>');
-  static final greenSeq = SequenceReplacement(
-      [esc, ...'[32m'.codeUnits], '<span class="green">', '</span>');
-
-  static final sequences = [
-    cr,
-    lf,
-    amp,
-    lt,
-    gt,
-    resetSeq,
-    boldSeq,
-    redSeq,
-    greenSeq
-  ];
-}
-
-class SequenceReplacement {
-  SequenceReplacement(this._sequence, String replacement, [String? closeTag])
-      : _codeUnits = replacement.codeUnits,
-        _closeTag = closeTag?.codeUnits;
-
-  final List<int> _sequence;
-  final List<int> _codeUnits;
-  final List<int>? _closeTag;
-
-  int get length => _sequence.length;
-  Iterable<int> get codeUnits => _codeUnits;
-  Iterable<int> get closeTag => _closeTag ?? const <int>[];
-
-  bool match(List<int> codeUnits, int index) {
-    if (index + _sequence.length > codeUnits.length) return false;
-    for (var i = 0; i < _sequence.length; i++) {
-      if (codeUnits[index + i] != _sequence[i]) return false;
-    }
-    return true;
   }
 }

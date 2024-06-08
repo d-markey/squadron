@@ -21,7 +21,7 @@ import '../worker_service.dart';
 /// This base class takes care of creating the [Channel] and firing up the
 /// worker. Typically, derived classes should add proxy methods sending
 /// [WorkerRequest]s to the worker.
-abstract class Worker<S> implements WorkerService, IWorker {
+abstract class Worker implements WorkerService, IWorker {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint,
       {this.args = const [],
@@ -120,39 +120,33 @@ abstract class Worker<S> implements WorkerService, IWorker {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    // ensure the worker is up and running
-    if (_channel != null) {
-      return _send(
-          _channel!, command, args, token, inspectRequest, inspectResponse);
-    } else {
-      return start().then((channel) => _send(
-          channel, command, args, token, inspectRequest, inspectResponse));
-    }
-  }
-
-  Future<T> _send<T>(Channel channel, int command, List args,
-      CancelationToken? token, bool inspectRequest, bool inspectResponse) {
-    // update stats
-    _workload++;
-    if (_workload > _maxWorkload) {
-      _maxWorkload = _workload;
-    }
-
-    // send command
     final squadronToken = token.wrap();
-    return channel
-        .sendRequest<T>(command, args,
-            token: squadronToken,
-            inspectRequest: inspectRequest,
-            inspectResponse: inspectResponse)
-        .catchError((e, st) {
-      _totalErrors++;
-      throw SquadronException.from(e, st, command);
-    }).whenComplete(() {
-      _workload--;
-      _totalWorkload++;
-      _idle = microsecTimeStamp();
-    });
+
+    Future<T> sendReq(Channel channel) {
+      // update stats
+      _workload++;
+      if (_workload > _maxWorkload) {
+        _maxWorkload = _workload;
+      }
+
+      // send command
+      return channel
+          .sendRequest<T>(command, args,
+              token: squadronToken,
+              inspectRequest: inspectRequest,
+              inspectResponse: inspectResponse)
+          .catchError((ex, st) {
+        _totalErrors++;
+        throw SquadronException.from(ex, st, command);
+      }).whenComplete(() {
+        _workload--;
+        _totalWorkload++;
+        _idle = microsecTimeStamp();
+      });
+    }
+
+    // ensure the worker is up and running
+    return (_channel != null) ? sendReq(_channel!) : start().then(sendReq);
   }
 
   /// Sends a streaming workload to the worker.
@@ -196,14 +190,17 @@ abstract class Worker<S> implements WorkerService, IWorker {
       try {
         final channel = await start();
         final squadronToken = token.wrap();
-        await controller.addStream(channel.sendStreamingRequest<T>(
-          command,
-          args,
-          onDone: onDone,
-          token: squadronToken,
-          inspectRequest: inspectRequest,
-          inspectResponse: inspectResponse,
-        ));
+        await controller.addStream(
+          channel.sendStreamingRequest<T>(
+            command,
+            args,
+            onDone: onDone,
+            token: squadronToken,
+            inspectRequest: inspectRequest,
+            inspectResponse: inspectResponse,
+          ),
+          cancelOnError: false,
+        );
       } catch (ex, st) {
         controller.addError(SquadronException.from(ex, st), st);
       } finally {

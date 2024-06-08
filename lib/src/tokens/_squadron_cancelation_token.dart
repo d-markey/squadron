@@ -22,7 +22,7 @@ class SquadronCancelationToken extends CancelationToken {
   static SquadronCancelationToken? deserialize(List? props) {
     if (props == null) return null;
     final id = props[_$id];
-    final ex = SquadronCanceledException.deserialize(props[_$ex]);
+    final ex = SquadronCanceledExceptionExt.deserialize(props[_$ex]);
     final token = SquadronCancelationToken._(null, id);
     if (ex != null) {
       token._exception = ex;
@@ -71,7 +71,6 @@ extension SquadronCancelationTokenExt on CancelationToken? {
     final self = this;
     if (self == null) return null;
     if (self is SquadronCancelationToken) return self;
-    return SquadronCancelationToken._(self, '${TokenId.next()}@$hashCode')
-      .._checkToken();
+    return SquadronCancelationToken._(self, TokenId.next()).._checkToken();
   }
 }

@@ -12,6 +12,7 @@ import 'classes/memory_logger.dart';
 import 'classes/platform.dart';
 import 'classes/prime_numbers.dart';
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/installable_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
@@ -24,13 +25,9 @@ void main() async {
 }
 
 void execute(TestContext testContext) => testContext.run(() {
-      group("- Worker", () {
+      group("- Squadron Worker", () {
         final logs = <String>[];
         final memoryLogger = MemoryLogger(logs, MemoryLogFilter());
-
-        Matcher mentions(Object? x) => contains(contains(x));
-        Matcher doesNotMention(Object? x) => isNot(contains(contains(x)));
-        Matcher failsWith<T>() => throwsA(isA<T>());
 
         group('- start/stop', () {
           setUp(() {
@@ -78,24 +75,26 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- hook', () async {
-            String? platformTypeName;
+            String? threadTypeName;
 
             void hook(PlatformThread pw) {
-              platformTypeName = pw.runtimeType.toString();
+              threadTypeName = pw.runtimeType.toString();
             }
 
             final worker = TestWorker(testContext, hook);
             worker.channelLogger = memoryLogger;
 
             await Future.delayed(TestService.shortDelay);
-            expect(platformTypeName, isNull);
+            expect(threadTypeName, isNull);
 
             await worker.start();
             expect(
-              platformTypeName,
-              equals((testContext.isJs || testContext.isWasm)
+              threadTypeName,
+              equals((testContext.clientPlatform.isJs)
                   ? 'Worker'
-                  : 'Isolate'),
+                  : ((testContext.clientPlatform.isWasm)
+                      ? 'JSValue'
+                      : 'Isolate')),
             );
 
             worker.stop();
@@ -104,25 +103,28 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- hook failure', () async {
-            String? threadType;
+            String? threadTypeName;
 
             void hook(PlatformThread pw) {
-              threadType = pw.runtimeType.toString();
-              throw Exception('intended exception for $threadType');
+              threadTypeName = pw.runtimeType.toString();
+              throw Exception('intended exception for $threadTypeName');
             }
 
             final worker = TestWorker(testContext, hook);
             worker.channelLogger = memoryLogger;
 
             await Future.delayed(TestService.shortDelay);
-            expect(threadType, isNull);
+            expect(threadTypeName, isNull);
 
             await worker.start();
+
             expect(
-              threadType,
-              equals((testContext.isJs || testContext.isWasm)
+              threadTypeName,
+              equals((testContext.clientPlatform.isJs)
                   ? 'Worker'
-                  : 'Isolate'),
+                  : ((testContext.clientPlatform.isWasm)
+                      ? 'JSValue'
+                      : 'Isolate')),
             );
             expect(logs, mentions('intended exception'));
 
@@ -163,19 +165,21 @@ void execute(TestContext testContext) => testContext.run(() {
               worker.channelLogger = memoryLogger;
 
               try {
-                await worker.start();
-                throw Exception('start completed successfully');
+                final res = await worker.start();
+                throw unexpectedSuccess('start()', res);
               } on WorkerException catch (ex) {
-                expect(ex.message, contains('this exception is reported'));
+                lowerCaseCheck(
+                    ex.message, contains('this exception is reported'));
                 expect(logs, mentions('intended failure on install'));
                 expect(logs, doesNotMention('service installed successfully'));
               }
 
               try {
-                await worker.isInstalled();
-                throw Exception('start completed successfully');
+                final res = await worker.isInstalled();
+                throw unexpectedSuccess('isInstalled()', res);
               } on WorkerException catch (ex) {
-                expect(ex.message, contains('this exception is reported'));
+                lowerCaseCheck(
+                    ex.message, contains('this exception is reported'));
                 expect(logs, mentions('intended failure on install'));
                 expect(logs, doesNotMention('service installed successfully'));
               }
@@ -224,9 +228,9 @@ void execute(TestContext testContext) => testContext.run(() {
 
             try {
               final res = await worker.start();
-              throw Exception('start() completed successfully with res=$res');
+              throw unexpectedSuccess('start()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('worker is stopped'));
+              lowerCaseCheck(ex.message, contains('worker is stopped'));
             }
           });
         });
@@ -246,42 +250,43 @@ void execute(TestContext testContext) => testContext.run(() {
                   .whenComplete(() => completedTasks.add(id));
             }
 
-            expect(completedTasks, isEmpty);
+            expect(completedTasks, isEmpty, reason: 'no tasks yet');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, isZero);
             expect(worker.totalWorkload, isZero);
 
-            await createTask(TestService.shortDelay); // task 1
+            await createTask(TestService.shortDelay); // task #1
 
-            expect(completedTasks, equals([1]));
+            expect(completedTasks, equals([1]), reason: '#1 has completed');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, equals(1));
             expect(worker.totalWorkload, equals(1));
 
-            var task = createTask(TestService.shortDelay * 2); // task 2
+            var task = createTask(TestService.shortDelay * 5); // task #2
 
-            expect(completedTasks, equals([1]));
+            expect(completedTasks, equals([1]), reason: '#2 pending');
             expect(worker.workload, equals(1));
             expect(worker.maxWorkload, equals(1));
             expect(worker.totalWorkload, equals(1));
 
-            await Future.delayed(TestService.shortDelay);
+            await Future.delayed(TestService.delay);
 
-            expect(completedTasks, equals([1]));
+            expect(completedTasks, equals([1]), reason: '#2 still pending');
             expect(worker.workload, equals(1));
             expect(worker.maxWorkload, equals(1));
             expect(worker.totalWorkload, equals(1));
 
             await task;
 
-            expect(completedTasks, equals([1, 2]));
+            expect(completedTasks, equals([1, 2]), reason: '#2 has completed');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, equals(1));
             expect(worker.totalWorkload, equals(2));
 
-            await createTask(TestService.shortDelay); // task 3
+            await createTask(TestService.shortDelay); // task #3
 
-            expect(completedTasks, equals([1, 2, 3]));
+            expect(completedTasks, equals([1, 2, 3]),
+                reason: '#3 has completed');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, equals(1));
             expect(worker.totalWorkload, equals(3));
@@ -309,25 +314,25 @@ void execute(TestContext testContext) => testContext.run(() {
 
             await worker.start();
 
-            expect(completedTasks, isEmpty);
+            expect(completedTasks, isEmpty, reason: 'no tasks yet');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, isZero);
             expect(worker.totalWorkload, isZero);
 
             var tasks = [
               createTask(TestService.delay), // task 1
-              createTask(TestService.delay * 2), // task 2
-              createTask(TestService.delay * 1.5), // task 3
+              createTask(TestService.delay * 5), // task 2
+              createTask(TestService.delay * 3), // task 3
             ];
 
-            expect(completedTasks, isEmpty);
+            expect(completedTasks, isEmpty, reason: 'no async suspension yet');
             expect(worker.workload, equals(3));
             expect(worker.maxWorkload, equals(3));
             expect(worker.totalWorkload, isZero);
 
             await Future.wait(tasks);
 
-            expect(completedTasks, equals([1, 3, 2]));
+            expect(completedTasks, equals([1, 3, 2]), reason: '#1, #3, #2');
             expect(worker.workload, isZero);
             expect(worker.maxWorkload, equals(3));
             expect(worker.totalWorkload, equals(3));
@@ -336,11 +341,11 @@ void execute(TestContext testContext) => testContext.run(() {
 
             /////////// time origin for next tasks ///////////
 
-            createTask(TestService.delay * 7); // #4 complete at 7 delays
-            createTask(TestService.delay * 5); // #5 complete at 5 delays
-            createTask(TestService.delay * 3); // #6 complete at 3 delays
+            createTask(TestService.delay * 11); // #4 complete at 11 delays
+            createTask(TestService.delay * 7); // #5 complete at 7 delays
+            createTask(TestService.delay * 5); // #6 complete at 5 delays
 
-            expect(completedTasks, isEmpty);
+            expect(completedTasks, isEmpty, reason: 'no async suspension yet');
             expect(worker.workload, equals(3));
             expect(worker.maxWorkload, equals(3));
             expect(worker.totalWorkload, equals(3));
@@ -348,46 +353,47 @@ void execute(TestContext testContext) => testContext.run(() {
             await Future.delayed(
                 TestService.delay * 1.5); // 1.5 delay: all tasks still pending
 
-            expect(completedTasks, isEmpty);
+            expect(completedTasks, isEmpty, reason: '1.5 delays');
             expect(worker.workload, equals(3));
             expect(worker.maxWorkload, equals(3));
             expect(worker.totalWorkload, equals(3));
 
             await Future.delayed(TestService.delay *
-                4); // 5.5 delays: tasks #6 & #5 finished, #4 still pending
+                4); // 5.5 delays: tasks #6 finished, #4 & #5 still pending
 
-            expect(completedTasks, equals([6, 5]));
-            expect(worker.workload, equals(1));
+            expect(completedTasks, equals([6]), reason: '5.5 delays');
+            expect(worker.workload, equals(2));
             expect(worker.maxWorkload, equals(3));
-            expect(worker.totalWorkload, equals(5));
+            expect(worker.totalWorkload, equals(4));
 
             createTask(TestService.delay * 5); // #7 complete at 10.5 delays
             createTask(TestService.delay * 3); // #8 complete at 8.5 delays
 
-            expect(completedTasks, equals([6, 5]));
-            expect(worker.workload, equals(3));
-            expect(worker.maxWorkload, equals(3));
-            expect(worker.totalWorkload, equals(5));
+            expect(completedTasks, equals([6]), reason: 'still 5.5 delays');
+            expect(worker.workload, equals(4));
+            expect(worker.maxWorkload, equals(4));
+            expect(worker.totalWorkload, equals(4));
 
             await Future.delayed(TestService.delay *
-                4); // 9.5 delays: tasks #4 and #8 complete, #7 still pending
+                4); // 9.5 delays: tasks #5 and #8 complete, #4 and #7 still pending
 
-            expect(completedTasks, equals([6, 5, 4, 8]));
-            expect(worker.workload, equals(1));
-            expect(worker.maxWorkload, equals(3));
-            expect(worker.totalWorkload, equals(7));
+            expect(completedTasks, equals([6, 5, 8]), reason: '9.5 delays');
+            expect(worker.workload, equals(2));
+            expect(worker.maxWorkload, equals(4));
+            expect(worker.totalWorkload, equals(6));
 
             await Future.delayed(
                 TestService.delay * 2.5); // 12 delays: all tasks finished
 
-            expect(completedTasks, equals([6, 5, 4, 8, 7]));
+            expect(completedTasks, equals([6, 5, 8, 7, 4]),
+                reason: '12 delays');
             expect(worker.workload, isZero);
-            expect(worker.maxWorkload, equals(3));
+            expect(worker.maxWorkload, equals(4));
             expect(worker.totalWorkload, equals(8));
 
             worker.stop();
             expect(worker.workload, isZero);
-            expect(worker.maxWorkload, equals(3));
+            expect(worker.maxWorkload, equals(4));
             expect(worker.totalWorkload, equals(8));
           });
         });
@@ -396,17 +402,23 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- failed init', () async {
             final worker = TestWorker.throws(testContext);
             try {
-              await worker.start();
-              throw Exception('start() returned successfully');
-            } on WorkerException catch (_) {
-              /* expected exception */
+              final res = await worker.start();
+              throw unexpectedSuccess('start()', res);
+            } on SquadronError catch (_) {
+              // expected exception
+            } catch (ex, st) {
+              trace('UNHANDLED EXCEPTION $ex at $st');
+              rethrow;
             }
 
             try {
-              await worker.ping();
-              throw Exception('ping() returned successfully');
-            } on WorkerException catch (_) {
-              /* expected exception */
+              final res = await worker.ping();
+              throw unexpectedSuccess('ping()', res);
+            } on SquadronError catch (_) {
+              // expected exception
+            } catch (ex, st) {
+              trace('UNHANDLED EXCEPTION $ex at $st');
+              rethrow;
             }
           });
 
@@ -414,17 +426,17 @@ void execute(TestContext testContext) => testContext.run(() {
             final worker = TestWorker.missingStartRequest(testContext);
             if (worker != null) {
               try {
-                await worker.start();
-                throw Exception('start() returned successfully');
+                final res = await worker.start();
+                throw unexpectedSuccess('start()', res);
               } on SquadronError catch (_) {
-                /* expected exception */
+                // expected exception
               }
 
               try {
-                await worker.ping();
-                throw Exception('ping() returned successfully');
+                final res = await worker.ping();
+                throw unexpectedSuccess('ping()', res);
               } on SquadronError catch (_) {
-                /* expected exception */
+                // expected exception
               }
             }
           });
@@ -432,17 +444,17 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- invalid command ID', () async {
             final worker = TestWorker.invalid(testContext);
             try {
-              await worker.start();
-              throw Exception('start() returned successfully');
+              final res = await worker.start();
+              throw unexpectedSuccess('start()', res);
             } on SquadronError catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             try {
-              await worker.ping();
-              throw Exception('ping() returned successfully');
+              final res = await worker.ping();
+              throw unexpectedSuccess('ping()', res);
             } on SquadronError catch (_) {
-              /* expected exception */
+              // expected exception
             }
           });
         });
@@ -463,12 +475,10 @@ void execute(TestContext testContext) => testContext.run(() {
             final errors = worker.stats.totalErrors;
             try {
               final res = await worker.throwException();
-              // should never happen
-              throw Exception(
-                  'throwException() completed sucessfully with res=$res');
+              throw unexpectedSuccess('throwException()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('intentional exception'));
-              expect(ex.stackTrace?.toString(), contains('throwException'));
+              lowerCaseCheck(ex.message, contains('intentional exception'));
+              caseCheck(ex.stackTrace, contains('throwException'));
             }
             expect(worker.stats.totalErrors, equals(errors + 1));
           });
@@ -478,12 +488,11 @@ void execute(TestContext testContext) => testContext.run(() {
             try {
               final res = await worker.throwWorkerException();
               // should never happen
-              throw Exception(
-                  'throwWorkerException() completed sucessfully with res=$res');
+              throw unexpectedSuccess('throwWorkerException()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, equals('intentional worker exception'));
-              expect(
-                  ex.stackTrace?.toString(), contains('throwWorkerException'));
+              lowerCaseCheck(
+                  ex.message, equals('intentional worker exception'));
+              caseCheck(ex.stackTrace, contains('throwWorkerException'));
             }
             expect(worker.stats.totalErrors, equals(errors + 1));
           });
@@ -492,11 +501,10 @@ void execute(TestContext testContext) => testContext.run(() {
             final errors = worker.stats.totalErrors;
             try {
               final res = await worker.throwTaskTimeOutException();
-              // should never happen
-              throw Exception(
-                  'throwTaskTimeOutException() completed sucessfully with res=$res');
+              throw unexpectedSuccess('throwTaskTimeOutException()', res);
             } on SquadronTimeoutException catch (ex) {
-              expect(ex.message, contains('intentional timeout exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional timeout exception'));
             }
             expect(worker.stats.totalErrors, equals(errors + 1));
           });
@@ -505,11 +513,10 @@ void execute(TestContext testContext) => testContext.run(() {
             final errors = worker.stats.totalErrors;
             try {
               final res = await worker.throwCanceledException();
-              // should never happen
-              throw Exception(
-                  'throwCanceledException() completed sucessfully with res=$res');
+              throw unexpectedSuccess('throwCanceledException()', res);
             } on SquadronCanceledException catch (ex) {
-              expect(ex.message, contains('intentional canceled exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional canceled exception'));
             }
             expect(worker.stats.totalErrors, equals(errors + 1));
           });
@@ -521,13 +528,11 @@ void execute(TestContext testContext) => testContext.run(() {
               final errors = worker.stats.totalErrors;
               try {
                 final res = await worker.throwCustomException();
-                // should never happen
-                throw Exception(
-                    'throwCustomException() completed successfully with res=$res');
+                throw unexpectedSuccess('throwCustomException()', res);
               } on CustomException catch (ex) {
-                expect(ex.message, contains('intentional CUSTOM exception'));
-                expect(ex.stackTrace?.toString(),
-                    contains('throwCustomException'));
+                lowerCaseCheck(
+                    ex.message, contains('intentional custom exception'));
+                caseCheck(ex.stackTrace, contains('throwCustomException'));
                 expect(ex.command,
                     equals(TestService.throwCustomExceptionCommand));
               }
@@ -545,7 +550,7 @@ void execute(TestContext testContext) => testContext.run(() {
             final obj = getUnsendable();
             try {
               final res = await worker.forward(obj);
-              throw Exception('forward() completed successfully with res=$res');
+              throw unexpectedSuccess('forward()', res);
             } on SquadronError catch (_) {
               // expected error
             }
@@ -558,9 +563,8 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- invalid response', () async {
             try {
               final res = await worker.invalidResponse();
-              throw Exception(
-                  'invalidResponse() completed successfully with res=$res');
-            } on WorkerException catch (_) {
+              throw unexpectedSuccess('invalidResponse()', res);
+            } on SquadronError catch (_) {
               // expected error
             }
 
@@ -572,9 +576,9 @@ void execute(TestContext testContext) => testContext.run(() {
           test('- missing operation', () async {
             try {
               final res = await worker.missing();
-              throw Exception('missing() completed successfully with res=$res');
+              throw unexpectedSuccess('missing()', res);
             } on SquadronError catch (ex) {
-              expect(ex.message, contains(('unknown command')));
+              lowerCaseCheck(ex.message, contains(('unknown command')));
             }
 
             // ensure worker is still alive
@@ -625,7 +629,10 @@ void execute(TestContext testContext) => testContext.run(() {
 
             expect(errors.length, equals(maxErrors));
             expect(numbers.length, greaterThan(errors.length));
-            expect(errors.every((e) => e.message.contains('error #')), isTrue);
+            expect(
+              errors.every((e) => e.message.toLowerCase().contains('error #')),
+              isTrue,
+            );
 
             pending = await worker.getPendingInfiniteWithErrors();
             expect(pending, isZero);
@@ -645,12 +652,10 @@ void execute(TestContext testContext) => testContext.run(() {
 
               pending = await worker.getPendingInfiniteWithErrors();
               expect(pending, equals(1));
-
-              await done;
-
-              throw Exception('infiniteWithErrors() completed successfully');
+              final res = await done;
+              throw unexpectedSuccess('infiniteWithErrors()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('error #'));
+              lowerCaseCheck(ex.message, contains('error #'));
             }
 
             expect(numbers, equals([0, 1, 2]));
@@ -668,9 +673,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 expect(pending, equals(1));
                 numbers.add(number);
               }
-              throw Exception('infiniteWithErrors() completed successfully');
+              throw unexpectedSuccess('infiniteWithErrors()');
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('error #'));
+              lowerCaseCheck(ex.message, contains('error #'));
             }
 
             expect(numbers, equals([0, 1, 2]));
@@ -692,9 +697,9 @@ void execute(TestContext testContext) => testContext.run(() {
                   throw WorkerException('Client-side exception');
                 }
               }
-              throw Exception('infiniteWithErrors() completed successfully');
+              throw unexpectedSuccess('infiniteWithErrors()');
             } on WorkerException catch (ex) {
-              expect(ex.message, equals('Client-side exception'));
+              caseCheck(ex.message, equals('Client-side exception'));
             }
 
             expect(numbers, equals([0]));
@@ -767,8 +772,8 @@ void execute(TestContext testContext) => testContext.run(() {
 
             expect(numbers.length, greaterThan(countNumbers));
             expect(errors.length, greaterThan(countErrors));
-            expect(
-                errors.where((e) => e.message.contains('by request')), isEmpty);
+            expect(errors.map((e) => e.message.toLowerCase()),
+                doesNotMention('by request'));
 
             await Future.delayed(TestService.delay);
 

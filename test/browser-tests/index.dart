@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
-import 'tests_js.dart';
+import 'test_runner.dart';
 
 @JS()
 external get dartPrint;
@@ -24,11 +24,27 @@ void main() async {
   final separator = Element.span()..text = ' - ';
   logHeader.append(separator);
 
+  String getTestRunnerUrl() {
+    final client =
+        ((querySelector('#wasm-client') as CheckboxInputElement).checked ==
+                true)
+            ? 'test_runner_wasm'
+            : 'test_runner_js';
+
+    final workers =
+        ((querySelector('#wasm-workers') as CheckboxInputElement).checked ==
+                true)
+            ? 'wasm'
+            : 'js';
+
+    return '${client}2$workers.html';
+  }
+
   final clearLink = Element.a() as AnchorElement
     ..text = 'Clear'
     ..href = '#'
     ..onClick.listen((e) async {
-      testRunner.src = 'test_runner.html';
+      testRunner.src = getTestRunnerUrl();
       await Future.delayed(Duration.zero);
       print('Ready');
       print('');
@@ -50,16 +66,7 @@ void main() async {
       }
     }
 
-    testRunner.src = ((querySelector('#wasm-workers') as CheckboxInputElement)
-                .checked ==
-            true)
-        ? (((querySelector('#wasm-client') as CheckboxInputElement).checked ==
-                true)
-            ? 'wasm_test_runner_wasm.html?${testIds.join('&')}'
-            : 'test_runner_wasm.html?${testIds.join('&')}')
-        : 'test_runner_js.html?${testIds.join('&')}';
-
-    // wasm-client not taken into account yet
+    testRunner.src = '${getTestRunnerUrl()}?${testIds.join('&')}';
 
     for (var btn in buttonBar.children.whereType<ButtonElement>()) {
       btn.disabled = false;
@@ -115,7 +122,7 @@ void main() async {
     ..htmlFor = 'wasm-client');
 
   var n = 0;
-  for (var label in executorLabels) {
+  for (var label in getExecutorLabels()) {
     if (n++ > 0) {
       testList.appendHtml(' | ');
     }

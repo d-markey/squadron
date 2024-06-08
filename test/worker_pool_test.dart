@@ -11,6 +11,7 @@ import 'package:test/test.dart';
 import 'classes/custom_exception.dart';
 import 'classes/prime_numbers.dart';
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 import 'worker_services/test_service.dart';
@@ -82,7 +83,7 @@ void execute(TestContext testContext) => testContext.run(() {
 
             final tasks = <Future>[];
             for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
-              tasks.add(pool.io(ms: TestService.delay.inMilliseconds * 4));
+              tasks.add(pool.io(ms: TestService.delay.inMilliseconds * 10));
             }
 
             // let the pool kick off some tasks
@@ -127,16 +128,16 @@ void execute(TestContext testContext) => testContext.run(() {
             try {
               try {
                 await pool.start();
-                throw Exception('start() returned successfully');
-              } on WorkerException catch (_) {
-                /* expected exception */
+                throw unexpectedSuccess('start()');
+              } on SquadronError catch (_) {
+                // expected exception
               }
 
               try {
-                await pool.ping();
-                throw Exception('ping() returned successfully');
+                final res = await pool.ping();
+                throw unexpectedSuccess('ping()', res);
               } on CanceledException catch (_) {
-                /* expected exception */
+                // expected exception
               }
 
               expect(pool.size, isZero);
@@ -151,16 +152,16 @@ void execute(TestContext testContext) => testContext.run(() {
               try {
                 try {
                   await pool.start();
-                  throw Exception('start() returned successfully');
+                  throw unexpectedSuccess('start()');
                 } on SquadronError catch (_) {
-                  /* expected exception */
+                  // expected exception
                 }
 
                 try {
-                  await pool.ping();
-                  throw Exception('ping() returned successfully');
+                  final res = await pool.ping();
+                  throw unexpectedSuccess('ping()', res);
                 } on CanceledException catch (_) {
-                  /* expected exception */
+                  // expected exception
                 }
 
                 expect(pool.size, isZero);
@@ -175,16 +176,16 @@ void execute(TestContext testContext) => testContext.run(() {
             try {
               try {
                 await pool.start();
-                throw Exception('start() returned successfully');
+                throw unexpectedSuccess('start()');
               } on SquadronError catch (_) {
-                /* expected exception */
+                // expected exception
               }
 
               try {
-                await pool.ping();
-                throw Exception('ping() returned successfully');
+                final res = await pool.ping();
+                throw unexpectedSuccess('ping()', res);
               } on CanceledException catch (_) {
-                /* expected exception */
+                // expected exception
               }
 
               expect(pool.size, isZero);
@@ -200,12 +201,11 @@ void execute(TestContext testContext) => testContext.run(() {
             await pool.start();
             try {
               try {
-                await pool.execute((w) => w.throwException());
-                // should never happen
-                throw Exception('throwException() completed successfully');
+                final res = await pool.execute((w) => w.throwException());
+                throw unexpectedSuccess('throwException()', res);
               } on WorkerException catch (ex) {
-                expect(ex.message, contains('intentional exception'));
-                expect(ex.stackTrace?.toString(), contains('throwException'));
+                lowerCaseCheck(ex.message, contains('intentional exception'));
+                caseCheck(ex.stackTrace, contains('throwException'));
               }
               expect(pool.stats.fold<int>(0, (p, s) => p + s.totalErrors),
                   equals(1));
@@ -219,14 +219,12 @@ void execute(TestContext testContext) => testContext.run(() {
             await pool.start();
             try {
               try {
-                await pool.execute((w) => w.throwWorkerException());
-                // should never happen
-                throw Exception(
-                    'throwWorkerException() completed successfully');
+                final res = await pool.execute((w) => w.throwWorkerException());
+                throw unexpectedSuccess('throwWorkerException()', res);
               } on WorkerException catch (ex) {
-                expect(ex.message, equals('intentional worker exception'));
-                expect(ex.stackTrace?.toString(),
-                    contains('throwWorkerException'));
+                lowerCaseCheck(
+                    ex.message, contains('intentional worker exception'));
+                caseCheck(ex.stackTrace, contains('throwWorkerException'));
               }
               expect(pool.stats.fold<int>(0, (p, s) => p + s.totalErrors),
                   equals(1));
@@ -240,11 +238,11 @@ void execute(TestContext testContext) => testContext.run(() {
             await pool.start();
             try {
               try {
-                await pool.throwTaskTimeOutException();
-                // should never happen
-                throw Exception('timeOut() completed sucessfully');
+                final res = await pool.throwTaskTimeOutException();
+                throw unexpectedSuccess('timeOut()', res);
               } on TimeoutException catch (ex) {
-                expect(ex.message, contains('intentional timeout exception'));
+                lowerCaseCheck(
+                    ex.message, contains('intentional timeout exception'));
               }
             } finally {
               pool.stop();
@@ -255,11 +253,11 @@ void execute(TestContext testContext) => testContext.run(() {
             final pool = TestWorkerPool(testContext);
 
             try {
-              await pool.throwCanceledException();
-              // should never happen
-              throw Exception('cancel() completed sucessfully');
+              final res = await pool.throwCanceledException();
+              throw unexpectedSuccess('cancel()', res);
             } on CanceledException catch (ex) {
-              expect(ex.message, contains('intentional canceled exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional canceled exception'));
             }
 
             pool.stop();
@@ -271,11 +269,11 @@ void execute(TestContext testContext) => testContext.run(() {
                 .register(CustomException.typeId, CustomException.deserialize);
 
             try {
-              await pool.throwCustomException();
-              // should never happen
-              throw Exception('cancel() completed sucessfully');
+              final res = await pool.throwCustomException();
+              throw unexpectedSuccess('cancel()', res);
             } on CustomException catch (ex) {
-              expect(ex.message, contains('intentional CUSTOM exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional custom exception'));
             }
 
             pool.stop();
@@ -288,22 +286,22 @@ void execute(TestContext testContext) => testContext.run(() {
                 .register(CustomException.typeId, CustomException.deserialize);
 
             try {
-              await pool.throwCustomException();
-              // should never happen
-              throw Exception('cancel() completed sucessfully');
+              final res = await pool.throwCustomException();
+              throw unexpectedSuccess('cancel()', res);
             } on CustomException catch (ex) {
-              expect(ex.message, contains('intentional CUSTOM exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional custom exception'));
             }
 
             pool.exceptionManager.unregister(CustomException.typeId);
 
             try {
-              await pool.throwCustomException();
-              // should never happen
-              throw Exception('cancel() completed sucessfully');
+              final res = await pool.throwCustomException();
+              throw unexpectedSuccess('cancel()', res);
             } on SquadronException catch (ex) {
               expect(ex, isNot(isA<CustomException>()));
-              expect(ex.message, contains('intentional CUSTOM exception'));
+              lowerCaseCheck(
+                  ex.message, contains('intentional custom exception'));
             }
 
             pool.stop();
@@ -388,11 +386,10 @@ void execute(TestContext testContext) => testContext.run(() {
 
           try {
             final n = await pool.delayed(-1);
-            // should never happen
-            throw Exception('received $n although the pool has been stopped');
+            throw unexpectedSuccess('delayed()', n);
           } on SquadronError catch (ex) {
-            expect(ex.message, contains('cannot accept new requests'));
-            expect(ex.message, contains('stopped'));
+            lowerCaseCheck(ex.message, contains('cannot accept new requests'));
+            lowerCaseCheck(ex.message, contains('stopped'));
           }
         });
 
@@ -413,11 +410,10 @@ void execute(TestContext testContext) => testContext.run(() {
 
           try {
             n = await pool.delayed(-1);
-            // should never happen
-            throw Exception('received $n although the pool has been stopped');
+            throw unexpectedSuccess('delayed()', n);
           } on SquadronError catch (ex) {
-            expect(ex.message, contains('cannot accept new requests'));
-            expect(ex.message, contains('stopped'));
+            lowerCaseCheck(ex.message, contains('cannot accept new requests'));
+            lowerCaseCheck(ex.message, contains('stopped'));
           }
 
           // restart
@@ -489,10 +485,13 @@ void execute(TestContext testContext) => testContext.run(() {
 
             expect(numbers.length, greaterThan(3 * 2));
             expect(errors.length, greaterThan(3));
-            expect(errors.where((e) => e.message.contains('error #')).length,
+            final lowerCaseMessages =
+                errors.map((e) => e.message.toLowerCase());
+            expect(lowerCaseMessages.where((m) => m.contains('error #')).length,
                 greaterThan(3));
-            expect(errors.where((e) => e.message == 'by request').length,
-                greaterThanOrEqualTo(1));
+            expect(
+                lowerCaseMessages.where((m) => m.contains('by request')).length,
+                equals(1));
           });
 
           test('- with multiple errors - cancelOnError: true', () async {
@@ -503,17 +502,16 @@ void execute(TestContext testContext) => testContext.run(() {
             final numbers = <int>[];
 
             try {
-              final future = testWorkerPool
+              final res = await testWorkerPool
                   .infiniteWithErrors(token)
                   .listen(
                     (number) => numbers.add(number),
                     cancelOnError: true,
                   )
                   .asFuture();
-              await future;
-              throw Exception('infiniteWithErrors() completed successfully');
+              throw unexpectedSuccess('infiniteWithErrors()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('error #'));
+              lowerCaseCheck(ex.message, contains('error #'));
             }
 
             expect(numbers, equals([0, 1, 2]));
@@ -531,9 +529,9 @@ void execute(TestContext testContext) => testContext.run(() {
                   in testWorkerPool.infiniteWithErrors(token)) {
                 numbers.add(number);
               }
-              throw Exception('infiniteWithErrors() completed successfully');
+              throw unexpectedSuccess('infiniteWithErrors()', null);
             } on WorkerException catch (e) {
-              expect(e.message, contains('error #'));
+              lowerCaseCheck(e.message, contains('error #'));
             }
 
             expect(numbers, equals([0, 1, 2]));
@@ -555,7 +553,7 @@ void execute(TestContext testContext) => testContext.run(() {
                   throw WorkerException('Client-side exception');
                 }
               }
-              throw Exception('infiniteWithErrors() completed successfully');
+              throw unexpectedSuccess('infiniteWithErrors()', null);
             } on WorkerException catch (e) {
               expect(e.message, equals('Client-side exception'));
             }
@@ -630,8 +628,7 @@ void execute(TestContext testContext) => testContext.run(() {
 
             expect(numbers.length, greaterThan(countNumbers));
             expect(errors.length, greaterThan(countErrors));
-            expect(
-                errors.where((e) => e.message.contains('by request')), isEmpty);
+            expect(errors.map((e) => e.message), doesNotMention('by request'));
           });
 
           test(

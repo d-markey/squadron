@@ -162,7 +162,7 @@ class WorkerPool<W extends Worker> implements WorkerService, IWorker {
       if (errors.isNotEmpty) {
         if (errors.length < tasks.length) {
           // some tasks failed: warn
-          channelLogger?.e(() => 'Error while provisionning workers: $errors');
+          channelLogger?.e(() => 'error while provisionning workers: $errors');
         } else {
           // all tasks failed: throw
           throw errors.firstWhere((e) => e is SquadronError,
@@ -252,8 +252,8 @@ class WorkerPool<W extends Worker> implements WorkerService, IWorker {
   WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
     if (_stopped) {
       throw SquadronErrorExt.create(
-          'the pool cannot accept new requests because it is stopped',
-          StackTrace.current);
+        'the pool cannot accept new requests because it is stopped',
+      );
     }
     _queue.addLast(task);
     _schedule();
@@ -316,14 +316,15 @@ class WorkerPool<W extends Worker> implements WorkerService, IWorker {
     // and provision more workers if possible and necessary
     final needs = _getProvisionNeeds(_queue.length);
     if (needs > 0) {
-      _provisionWorkers(needs).then((_) {
-        _dispatchTasks();
-      }).catchError((ex) {
-        channelLogger?.e(() => 'provisionning workers failed with error $ex');
-        while (_queue.isNotEmpty) {
-          _queue.removeFirst().cancel('provisionning workers failed');
-        }
-      });
+      _provisionWorkers(needs).then(
+        (_) => _dispatchTasks(),
+        onError: (ex) {
+          channelLogger?.e(() => 'provisionning workers failed with error $ex');
+          while (_queue.isNotEmpty) {
+            _queue.removeFirst().cancel('provisionning workers failed');
+          }
+        },
+      );
     }
   }
 

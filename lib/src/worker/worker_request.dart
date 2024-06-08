@@ -101,7 +101,7 @@ extension type WorkerRequest(List data) implements WorkerMessage {
   List get args => data[_$args];
 
   /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In
-  /// Web workers, ownership of these objects must be transfered across threads.
+  /// Web Workers, ownership of these objects must be transfered across threads.
   bool get inspectResponse => data[_$inspectResponse];
 
   /// flag for start requests.
@@ -158,8 +158,7 @@ extension WorkerRequestExt on WorkerRequest {
 extension CancelationTokenExt on WorkerRequest {
   void overrideCancelToken(SquadronCancelationToken token) {
     if (cancelToken == null || cancelToken!.id != token.id) {
-      throw SquadronErrorExt.create(
-          'cancelation token mismatch', StackTrace.current);
+      throw SquadronErrorExt.create('cancelation token mismatch');
     }
     data[_$token] = token;
   }

@@ -63,8 +63,7 @@ class CancelationTokenReference implements SquadronCancelationToken {
       _refCount++;
       request.overrideCancelToken(this);
     } else if (request.cancelToken != null) {
-      throw SquadronErrorExt.create(
-          'Token reference mismatch', StackTrace.current);
+      throw SquadronErrorExt.create('Token reference mismatch');
     }
   }
 

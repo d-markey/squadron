@@ -13,11 +13,22 @@ import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
+import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../../worker_service.dart';
 import '../xplat/_stream_wrapper.dart';
+import '../xplat/_user_code.dart';
 import '../xplat/_value_wrapper.dart';
+
+void _post(Logger? logger, WorkerMessage message, void Function() post) {
+  try {
+    post();
+  } catch (ex, st) {
+    logger?.e(() => 'failed to post message $message: $ex');
+    throw SquadronErrorExt.create('Failed to post message: $ex', st);
+  }
+}
 
 class _BaseVmChannel {
   _BaseVmChannel._(this._sendPort, this._logger);
@@ -34,32 +45,12 @@ class _BaseVmChannel {
   void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
     req.wrapInPlace();
-    try {
-      _sendPort.send(req);
-    } on ArgumentError catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronErrorExt.create(
-          ex.message?.toString() ?? 'message contains untransferable objects',
-          st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronException.from(ex, st);
-    }
+    _post(_logger, req, () => _sendPort.send(req));
   }
 
   void _postResponse(WorkerResponse res) {
     res.wrapInPlace();
-    try {
-      _sendPort.send(res);
-    } on ArgumentError catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: $ex');
-      throw SquadronErrorExt.create(
-          ex.message?.toString() ?? 'message contains untransferable objects',
-          st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: ${ex.runtimeType} $ex');
-      throw SquadronException.from(ex, st);
-    }
+    _post(_logger, res, () => _sendPort.send(res));
   }
 }
 
@@ -93,7 +84,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
+      throw SquadronErrorExt.create('Channel is closed');
     }
     final receiver = ReceivePort();
     final squadronToken = token.wrap();
@@ -102,7 +93,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
           receiver.sendPort, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
-      postMethod: _postRequest,
+      postRequest: _postRequest,
       messages: receiver.cast(),
       token: squadronToken,
     );
@@ -120,7 +111,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
+      throw SquadronErrorExt.create('Channel is closed');
     }
     final receiver = ReceivePort();
     final squadronToken = token.wrap();
@@ -129,7 +120,7 @@ class _VmChannel extends _BaseVmChannel implements Channel {
           receiver.sendPort, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
-      postMethod: _postRequest,
+      postRequest: _postRequest,
       messages: receiver.cast(),
       onDone: () {
         receiver.close();
@@ -203,7 +194,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
   final errorPort = ReceivePort();
 
   exitPort.listen((message) {
-    logger?.t(() => 'Isolate terminated.');
+    logger?.t('Isolate terminated.');
     receiver.close();
     exitPort.close();
     errorPort.close();
@@ -222,7 +213,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
 
     error ??= WorkerException(message[0],
         stackTrace: SquadronException.loadStackTrace(message[1]));
-    logger?.d(() => 'Unhandled error from Isolate: ${error?.message}.');
+    logger?.d(() => 'unhandled error from Isolate: ${error?.message}.');
     if (!completer.isCompleted) {
       completer.completeError(error, error.stackTrace);
     }
@@ -241,7 +232,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
         completer.completeError(error, error.stackTrace);
         isolate.kill(priority: Isolate.immediate);
       } else {
-        logger?.t(() => 'connected to Isolate');
+        logger?.t('connected to Isolate');
         final channel = _VmChannel._(response.result, logger, exceptionManager);
         completer.complete(channel);
       }
@@ -259,15 +250,22 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     onError: errorPort.sendPort,
   );
 
-  try {
-    hook?.call(isolate);
-  } catch (ex) {
-    logger?.e(() =>
-        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');
+  final channel = await completer.future;
+
+  if (hook != null) {
+    final hookRes = UserCode.run(
+      logger,
+      () => hook(isolate),
+      'PlatforWorkerHook for $entryPoint',
+    );
+    if (hookRes is Future) {
+      await hookRes;
+    }
   }
 
-  logger?.t(() => 'created Isolate');
-  return completer.future;
+  logger?.t('created Isolate');
+
+  return channel;
 }
 
 /// Creates a [_VmChannel] from a [SendPort].

@@ -4,6 +4,7 @@ class TestEntryPoints {
   EntryPoint? echo;
   EntryPoint? inMemory;
   EntryPoint? native;
+  EntryPoint? notAWorker;
 
   EntryPoint? cache;
   EntryPoint? installable;
@@ -20,6 +21,7 @@ class TestEntryPoints {
         echo,
         inMemory,
         native,
+        notAWorker,
         cache,
         installable,
         issues,

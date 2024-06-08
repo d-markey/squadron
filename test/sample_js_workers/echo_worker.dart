@@ -1,6 +1,6 @@
 import 'dart:html';
 
-// this is a regular Web worker
+// this is a regular Web Worker
 
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;
@@ -11,4 +11,6 @@ void main() {
       scope.postMessage('Error in Web Worker main program: $error');
     }
   });
+  // post a message indicating that the Web worker is up and running
+  scope.postMessage({"ready": true});
 }

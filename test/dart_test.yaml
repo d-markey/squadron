@@ -1,7 +1,0 @@
-platforms:
-  - vm
-  - chrome
-
-chain_stack_traces: true
-
-custom_html_template_path: test/squadron_js_test_template.html.tpl

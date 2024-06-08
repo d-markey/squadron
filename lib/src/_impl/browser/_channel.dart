@@ -12,13 +12,24 @@ import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
+import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../../worker_service.dart';
 import '../xplat/_stream_wrapper.dart';
+import '../xplat/_transferables.dart';
+import '../xplat/_uri_checker.dart';
+import '../xplat/_user_code.dart';
 import '../xplat/_value_wrapper.dart';
-import '_transferables.dart';
-import '_uri_checker.dart';
+
+void _post(Logger? logger, WorkerMessage message, void Function() post) {
+  try {
+    post();
+  } catch (ex, st) {
+    logger?.e(() => 'failed to post message $message: $ex');
+    throw SquadronErrorExt.create('Failed to post message: $ex', st);
+  }
+}
 
 class _BaseJsChannel {
   _BaseJsChannel._(this._sendPort, this._logger);
@@ -35,59 +46,42 @@ class _BaseJsChannel {
   void _postRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
     req.wrapInPlace();
-    try {
-      final channelInfo = req.channelInfo;
-      _sendPort.postMessage(req, (channelInfo == null) ? null : [channelInfo]);
-    } on UnimplementedError catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronErrorExt.create(ex.message ?? 'Unimplemented', st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronException.from(ex, st);
-    }
+    final transfer = Transferables.get([req.channelInfo]);
+    _post(
+      _logger,
+      req,
+      () => _sendPort.postMessage(req, transfer),
+    );
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
     req.cancelToken?.ensureStarted();
     req.wrapInPlace();
-    try {
-      _sendPort.postMessage(req, Transferables.get(req).toList());
-    } on UnimplementedError catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronErrorExt.create(
-          ex.message ?? 'message contains untransferable objects', st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post request $req: $ex');
-      throw SquadronException.from(ex, st);
-    }
+    final transfer = Transferables.get(req.data);
+    _post(
+      _logger,
+      req,
+      () => _sendPort.postMessage(req, transfer),
+    );
   }
 
   void _postResponse(WorkerResponse res) {
     res.wrapInPlace();
-    try {
-      _sendPort.postMessage(res);
-    } on UnimplementedError catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: $ex');
-      throw SquadronErrorExt.create(
-          ex.message ?? 'message contains untransferable objects', st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: $ex');
-      throw SquadronException.from(ex, st);
-    }
+    _post(
+      _logger,
+      res,
+      () => _sendPort.postMessage(res),
+    );
   }
 
   void _inspectAndPostResponse(WorkerResponse res) {
     res.wrapInPlace();
-    try {
-      _sendPort.postMessage(res, Transferables.get(res).toList());
-    } on UnimplementedError catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: $ex');
-      throw SquadronErrorExt.create(
-          ex.message ?? 'message contains untransferable objects', st);
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to post response $res: $ex');
-      throw SquadronException.from(ex, st);
-    }
+    final transfer = Transferables.get(res.data);
+    _post(
+      _logger,
+      res,
+      () => _sendPort.postMessage(res, transfer),
+    );
   }
 }
 
@@ -121,7 +115,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
+      throw SquadronErrorExt.create('Channel is closed');
     }
     final com = web.MessageChannel();
     final squadronToken = token.wrap();
@@ -130,8 +124,8 @@ class _JsChannel extends _BaseJsChannel implements Channel {
           com.port2, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
-      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
-      messages: com.port1.onMessage.map((event) => event.data),
+      postRequest: inspectRequest ? _inspectAndPostRequest : _postRequest,
+      messages: com.port1.onMessage.map((e) => e.data),
       token: squadronToken,
     );
     return wrapper.compute().whenComplete(() {
@@ -150,7 +144,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
       bool inspectRequest = false,
       bool inspectResponse = false}) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
+      throw SquadronErrorExt.create('Channel is closed');
     }
     final com = web.MessageChannel();
     final squadronToken = token.wrap();
@@ -159,7 +153,7 @@ class _JsChannel extends _BaseJsChannel implements Channel {
           com.port2, command, args, squadronToken, inspectResponse),
       exceptionManager,
       _logger,
-      postMethod: inspectRequest ? _inspectAndPostRequest : _postRequest,
+      postRequest: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: com.port1.onMessage.map((event) => event.data),
       onDone: () {
         com.port1.close();
@@ -211,7 +205,7 @@ class _JsWorkerChannel extends _BaseJsChannel implements WorkerChannel {
   /// called from the [web.Worker] only.
   @override
   void error(SquadronException error) {
-    _logger?.t(() => 'replying with error: $error');
+    _logger?.t(() => 'replying with error: ${error.runtimeType} $error');
     _postResponse(WorkerResponse.withError(error));
   }
 }
@@ -237,15 +231,15 @@ class _JsForwardChannel extends _JsChannel {
   /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed', StackTrace.current);
+      throw SquadronErrorExt.create('Channel is closed');
     }
-    final message = e.data;
-    try {
-      _remote.postMessage(message, Transferables.get(message).toList());
-    } catch (ex, st) {
-      _logger?.e(() => 'failed to forward $message: error $ex');
-      throw SquadronException.from(ex, st);
-    }
+    final message = WorkerRequest(e.data);
+    final transfer = Transferables.get(e.data);
+    _post(
+      _logger,
+      message,
+      () => _remote.postMessage(e.data, transfer),
+    );
   }
 
   /// Closes this [Channel], effectively stopping message forwarding.
@@ -290,12 +284,12 @@ Future<Channel> openChannel(EntryPoint entryPoint,
         msg = '$entryPoint: ${event.runtimeType} ${event.type} / $event';
       }
       if (!found) {
-        msg = '!! WARNING: it seems no worker code lives at $msg';
+        msg = '!! WARNING: it seems no Web Worker lives at $msg';
       }
       final error = WorkerException(msg);
-      logger?.e(() => 'Unhandled error from Web worker: ${error.message}.');
+      logger?.e(() => 'unhandled error from Web Worker: ${error.message}.');
       if (!found) {
-        logger?.e(() => 'It seems no worker code lives at $entryPoint.');
+        logger?.e(() => 'it seems no Web Worker lives at $entryPoint.');
       }
       if (!completer.isCompleted) {
         completer.completeError(error, error.stackTrace);
@@ -315,16 +309,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     signal?.cancel();
   }
 
-  try {
-    hook?.call(worker);
-  } catch (ex) {
-    logger?.e(() =>
-        'An exception occurred in PlatforWorkerHook for $entryPoint: $ex');
-  }
-
   final startRequest = WorkerRequest.start(com.port2, startArguments);
-
-  logger?.t(() => 'created Web Worker');
 
   com.port1.onMessage.listen(
     (event) {
@@ -340,7 +325,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
           completer.completeError(error, error.stackTrace);
           worker.terminate();
         } else {
-          logger?.t(() => 'connected to Web Worker');
+          logger?.t('connected to Web Worker');
           final channel =
               _JsChannel._(response.result, logger, exceptionManager);
           completer.complete(channel);
@@ -352,9 +337,13 @@ Future<Channel> openChannel(EntryPoint entryPoint,
   );
 
   startRequest.wrapInPlace();
+  final transfer = Transferables.get(startRequest.data);
   try {
-    final transfer = Transferables.get(startRequest).toList();
-    worker.postMessage(startRequest, transfer);
+    _post(
+      logger,
+      startRequest,
+      () => worker.postMessage(startRequest, transfer),
+    );
   } catch (ex, st) {
     com.port1.close();
     com.port2.close();
@@ -363,7 +352,23 @@ Future<Channel> openChannel(EntryPoint entryPoint,
         ?.e(() => 'failed to post connection request $startRequest: error $ex');
     completer.completeError(SquadronException.from(ex, st), st);
   }
-  return completer.future;
+
+  final channel = await completer.future;
+
+  if (hook != null) {
+    final hookRes = UserCode.run(
+      logger,
+      () => hook(worker),
+      'PlatforWorkerHook for $entryPoint',
+    );
+    if (hookRes is Future) {
+      await hookRes;
+    }
+  }
+
+  logger?.t('created Web Worker');
+
+  return channel;
 }
 
 /// Creates a [_JsChannel] from a [web.MessagePort].

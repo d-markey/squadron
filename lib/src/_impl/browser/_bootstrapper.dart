@@ -9,7 +9,7 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
-    r.internalLogger.t(() => 'terminating Web worker');
+    r.internalLogger.t('terminating Web Worker');
     com.port1.close();
     com.port2.close();
     web.DedicatedWorkerGlobalScope.instance.close();

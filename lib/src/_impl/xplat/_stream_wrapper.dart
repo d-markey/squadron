@@ -8,24 +8,29 @@ import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../../worker_service.dart';
+import '_castor.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a streaming worker request.
 class StreamWrapper<T> {
   /// Constructs a new stream wrapper on top of [messages] (stream of messages received from the worker). Streaming
-  /// operations will be initiated by sending the [streamRequest] to the worker using [postMethod]. This will not be
+  /// operations will be initiated by sending the [streamRequest] to the worker using [postRequest]. This will not be
   /// done before a listener is attached to this instance's [stream] property.
-  StreamWrapper(WorkerRequest streamRequest, ExceptionManager exceptionManager,
-      Logger? logger,
-      {required PostRequest postMethod,
-      required Stream<WorkerResponse> messages,
-      required SquadronCallback onDone,
-      SquadronCancelationToken? token})
-      : _exceptionManager = exceptionManager,
+  StreamWrapper(
+    WorkerRequest streamRequest,
+    ExceptionManager exceptionManager,
+    Logger? logger, {
+    required PostRequest postRequest,
+    required Stream<WorkerResponse> messages,
+    required SquadronCallback onDone,
+    SquadronCancelationToken? token,
+    Castor<T>? castor,
+  })  : _exceptionManager = exceptionManager,
         _logger = logger,
         _streamRequest = streamRequest,
-        _postRequest = postMethod,
+        _postRequest = postRequest,
         _messages = messages,
-        _token = token {
+        _token = token,
+        _castor = castor ?? Castor.identity<T>() {
     _handle = _process;
     _controller = StreamController<T>(
       onListen: _onListen,
@@ -39,6 +44,8 @@ class StreamWrapper<T> {
 
   /// The actual data stream from the worker.
   Stream<T> get stream => _controller.stream;
+
+  final Castor<T> _castor;
 
   final ExceptionManager _exceptionManager;
   final Logger? _logger;
@@ -59,8 +66,7 @@ class StreamWrapper<T> {
 
   /// Bufferize worker responses (paused stream).
   void _bufferize(WorkerResponse res) {
-    final buffer = (_buffer ??= <WorkerResponse>[]);
-    buffer.add(res);
+    (_buffer ??= <WorkerResponse>[]).add(res);
   }
 
   /// Forward worker responses (non-paused stream).
@@ -69,7 +75,7 @@ class StreamWrapper<T> {
     if (error != null) {
       _controller.addError(error, error.stackTrace);
     } else {
-      _controller.add(res.result);
+      _controller.add(_castor.cast(res.result));
     }
   }
 
@@ -100,7 +106,7 @@ class StreamWrapper<T> {
           // The first message received from the worker contains the stream ID. If the stream
           // is canceled on the client side, the stream from the worker context should also
           // be canceled by sending a WorkerRequest.cancelStream with this stream id.
-          _streamId.complete(res.result);
+          _streamId.complete((res.result as num).toInt());
         } else {
           _handle(res);
         }

@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 
 import 'classes/memory_logger.dart';
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() async {
@@ -16,9 +17,6 @@ void main() async {
 void execute(TestContext testContext) => testContext.run(() {
       final logs = <String>[];
       final memoryLogger = MemoryLogger(logs, MemoryLogFilter());
-
-      Matcher mentions(Object? x) => contains(contains(x));
-      Matcher doesNotMention(Object? x) => isNot(contains(contains(x)));
 
       group("- Logging", () {
         late TestWorker worker;

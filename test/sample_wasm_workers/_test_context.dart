@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:squadron/squadron.dart';
-import 'package:squadron/src/_impl/wasm/_uri_checker.dart';
+import 'package:squadron/src/_impl/xplat/_uri_checker.dart';
 import 'package:web/web.dart' as web;
 
 import '../classes/test_entry_points.dart';
@@ -11,36 +12,41 @@ import '../classes/test_platform.dart';
 const platform = TestPlatform.wasm;
 String platformName = '${web.window.navigator.userAgent} (wasm)';
 
-bool _set = false;
+extension TestEntryPointsExt on TestEntryPoints {
+  Future<void> set(String root, TestPlatform platform) async {
+    switch (platform) {
+      case TestPlatform.js:
+        root = '${root}sample_js_workers';
+        native = '$root/native_worker.js';
+        notAWorker = '$root/not_a_worker.dart.js';
+        echo = '$root/echo_worker.dart.js';
+        cache = '$root/cache_worker.dart.js';
+        installable = '$root/installable_worker.dart.js';
+        issues = '$root/issues_worker.dart.js';
+        local = '$root/local_client_worker.dart.js';
+        prime = '$root/prime_worker.dart.js';
+        test = '$root/test_worker.dart.js';
+        break;
+      case TestPlatform.wasm:
+        root = '${root}sample_wasm_workers';
+        final loader = '$root/squadron_wasm_worker_loader.js';
+        native = '$root/native_worker.js';
+        notAWorker = '$loader?worker=not_a_worker.dart';
+        echo = '$loader?unopt&worker=echo_worker.dart';
+        cache = '$loader?unopt&worker=cache_worker.dart';
+        installable = '$loader?unopt&worker=installable_worker.dart';
+        issues = '$loader?unopt&worker=issues_worker.dart';
+        local = '$loader?unopt&worker=local_client_worker.dart';
+        prime = '$loader?unopt&worker=prime_worker.dart';
+        test = '$loader?unopt&worker=test_worker.dart';
+        break;
+      default:
+        throw UnsupportedError('Unsupported platform $platform');
+    }
 
-Future<void> setEntryPoints(
-    String root, TestPlatform platform, TestEntryPoints entryPoints) async {
-  print('Test context platform = $platform');
+    await _checkWebWorkers(defined);
 
-  if (!_set) {
-    _set = true;
-
-    root = (platform == TestPlatform.wasm)
-        ? '${root}sample_wasm_workers'
-        : ((platform == TestPlatform.js)
-            ? '${root}sample_js_workers'
-            : throw UnsupportedError('Unsupported platform $platform'));
-
-    entryPoints.native = '$root/native_worker.js';
-
-    entryPoints.echo = '$root/echo_worker.dart.js';
-
-    entryPoints.cache = '$root/cache_worker.dart.js';
-    entryPoints.installable = '$root/installable_worker.dart.js';
-    entryPoints.issues = '$root/issues_worker.dart.js';
-    entryPoints.local = '$root/local_client_worker.dart.js';
-    entryPoints.prime = '$root/prime_worker.dart.js';
-
-    entryPoints.test = '$root/test_worker.dart.js';
-
-    await _checkWebWorkers(entryPoints.defined);
-
-    entryPoints.inMemory =
+    inMemory =
         'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
   console.log("Message received from main script");
   const workerResult = `ECHO "\${e.data}"`;
@@ -48,6 +54,11 @@ Future<void> setEntryPoints(
   postMessage(workerResult);
 };'''))}';
   }
+}
+
+void _fail(String message) {
+  web.console.error(message.jsify());
+  throw Exception(message);
 }
 
 Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
@@ -60,13 +71,15 @@ Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   var workers = <EntryPoint>{};
   for (var i = 0; i < count; i++) {
     final workerLink = workerLinks.item(i) as web.Element;
-    var path = workerLink.attributes.getNamedItem('href')?.value;
+    final path = workerLink.attributes.getNamedItem('href')?.value;
+    final scriptUri = Uri.parse(path ?? '/');
+    final scriptFileName = scriptUri.pathSegments.last;
     if (path == null) {
       messages.add('href attribute is missing for ${workerLink.outerHTML}');
-    } else if (!path.endsWith('.js')) {
+    } else if (!scriptFileName.endsWith('.js')) {
       messages.add(
           'URLs for Web Worker $path must reference a JavaScript file ending with \'.js\'');
-    } else if (!await UriChecker.exists(Uri.parse(path))) {
+    } else if (!await UriChecker.exists(scriptUri)) {
       messages.add('Web Worker $path could not be found');
     } else if (!workerUrls.contains(path)) {
       messages.add('Web Worker $path is not used');
@@ -83,7 +96,7 @@ Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   }
 
   if (messages.isNotEmpty) {
-    print('''
+    _fail('''
 
 ============================================================================ 
 Cannot run tests because some workers are missing or invalid.
@@ -91,6 +104,7 @@ Please ensure Web Workers have been compiled prior to running Browser tests.
 
 ${messages.join('\n')}
 ============================================================================ 
+
 ''');
   }
 }

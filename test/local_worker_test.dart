@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 
 import 'classes/platform.dart';
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
@@ -22,31 +23,29 @@ void execute(TestContext testContext) => testContext.run(() {
 
         group('- Identity', () {
           test('- LocalWorker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+            final localService = LocalServiceImpl();
             var id = localService.getId();
-            expect(id, equals(idGetter()));
+            expect(id, equals('LocalWorker running as "$threadId"'));
 
             final localWorker = LocalWorker.create(localService);
             try {
               final id = await localWorker.channel
                   ?.sendRequest(LocalService.getIdCommand, []);
-              expect(id, equals(idGetter()));
+              expect(id, equals('LocalWorker running as "$threadId"'));
             } finally {
               localWorker.stop();
             }
           });
 
-          test('- Worker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+          test('- Squadron Worker', () async {
+            final localService = LocalServiceImpl();
             final localWorker = LocalWorker.create(localService);
 
             try {
-              final localClientWorker = LocalClientWorker(testContext,
-                  args: [localWorker.channel?.share().serialize()]);
+              final localClientWorker = LocalClientWorker(
+                testContext,
+                args: [localWorker.channel?.share().serialize()],
+              );
               final check = await localClientWorker.checkIds();
 
               final regExp = RegExp(
@@ -60,9 +59,7 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- WorkerPool', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+            final localService = LocalServiceImpl();
             final localWorker = LocalWorker.create(localService);
 
             try {
@@ -104,33 +101,27 @@ void execute(TestContext testContext) => testContext.run(() {
 
         group('- Exception', () {
           test('- LocalWorker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+            final localService = LocalServiceImpl();
             try {
-              localService.throwException();
-              // should never happen
-              throw Exception('throwException() completed successfully');
+              final res = localService.throwException();
+              throw unexpectedSuccess('throwException()', res);
             } catch (ex) {
-              expect(ex.toString(), contains('Intentional exception'));
+              lowerCaseCheck(ex, contains('intentional exception'));
             }
 
             final localWorker = LocalWorker.create(localService);
             try {
-              await localWorker.channel
+              final res = await localWorker.channel
                   ?.sendRequest(LocalService.throwExceptionCommand, []);
-              // should never happen
-              throw Exception('throwException() completed successfully');
+              throw unexpectedSuccess('throwException()', res);
             } on WorkerException catch (ex) {
-              expect(ex.message, contains('Intentional exception'));
-              expect(ex.stackTrace.toString(), contains('throwException'));
+              lowerCaseCheck(ex.message, contains('intentional exception'));
+              caseCheck(ex.stackTrace, contains('throwException'));
             }
           });
 
-          test('- Worker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+          test('- Squadron Worker', () async {
+            final localService = LocalServiceImpl();
             final localWorker = LocalWorker.create(localService);
 
             try {
@@ -144,9 +135,7 @@ void execute(TestContext testContext) => testContext.run(() {
           });
 
           test('- WorkerPool', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final identity = LocalServiceImpl(idGetter);
+            final identity = LocalServiceImpl();
             final localIdentity = LocalWorker.create(identity);
 
             try {
@@ -179,9 +168,7 @@ void execute(TestContext testContext) => testContext.run(() {
 
         group('- Stream', () {
           test('- LocalWorker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+            final localService = LocalServiceImpl();
             var res1 = await localService.sequence(19).toList();
             expect(res1, equals(Iterable.generate(19)));
 
@@ -195,27 +182,23 @@ void execute(TestContext testContext) => testContext.run(() {
             }
           });
 
-          test('- Worker', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final localService = LocalServiceImpl(idGetter);
+          test('- Squadron Worker', () async {
+            final localService = LocalServiceImpl();
             final localWorker = LocalWorker.create(localService);
 
             try {
               final localClientWorker = LocalClientWorker(testContext,
                   args: [localWorker.channel?.share().serialize()]);
               final res = await localClientWorker.checkSequence(19).toList();
-              expect(res.map((e) => e['ok']),
-                  equals(Iterable.generate(19, (_) => true)));
+              expect(res.length, equals(19));
+              expect(res.every((e) => e['ok']), isTrue);
             } finally {
               localWorker.stop();
             }
           });
 
           test('- WorkerPool', () async {
-            String idGetter() => 'LocalWorker running as "$threadId"';
-
-            final identity = LocalServiceImpl(idGetter);
+            final identity = LocalServiceImpl();
             final localIdentity = LocalWorker.create(identity);
 
             try {
@@ -234,8 +217,7 @@ void execute(TestContext testContext) => testContext.run(() {
               final results = await Future.wait(tasks);
 
               for (var i = 0; i < results.length; i++) {
-                expect(results[i].map((e) => e['ok']),
-                    equals(Iterable.generate(i, (_) => true)));
+                expect(results[i].every((e) => e['ok']), isTrue);
               }
             } finally {
               localIdentity.stop();

@@ -5,6 +5,7 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() async {
@@ -31,13 +32,14 @@ void execute(TestContext testContext) => testContext.run(() {
             final sum = await testWorker.bigIntAdd(
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: false, marshalOut: false);
-            expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs || testContext.isWasm) {
-              throw Exception('must fail');
+            if (testContext.workerPlatform.isJsOrWasm) {
+              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+            } else {
+              expect(sum, equals(BigInt.from(12)));
             }
           } on SquadronError catch (ex) {
-            if (testContext.isJs || testContext.isWasm) {
-              expect(ex.message, contains('structured clone'));
+            if (testContext.workerPlatform.isJsOrWasm) {
+              lowerCaseCheck(ex.message, contains('failed to post message'));
             } else {
               rethrow;
             }
@@ -50,13 +52,14 @@ void execute(TestContext testContext) => testContext.run(() {
             final sum = await testWorker.bigIntAdd(
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: false, marshalOut: true);
-            expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs || testContext.isWasm) {
-              throw Exception('must fail');
+            if (testContext.workerPlatform.isJsOrWasm) {
+              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+            } else {
+              expect(sum, equals(BigInt.from(12)));
             }
           } on SquadronError catch (ex) {
-            if (testContext.isJs || testContext.isWasm) {
-              expect(ex.message, contains('structured clone'));
+            if (testContext.workerPlatform.isJsOrWasm) {
+              lowerCaseCheck(ex.message, contains('failed to post message'));
             } else {
               rethrow;
             }
@@ -69,13 +72,14 @@ void execute(TestContext testContext) => testContext.run(() {
             final sum = await testWorker.bigIntAdd(
                 BigInt.from(7), BigInt.from(5),
                 marshalIn: true, marshalOut: false);
-            expect(sum, equals(BigInt.from(12)));
-            if (testContext.isJs || testContext.isWasm) {
-              throw Exception('must fail');
+            if (testContext.workerPlatform.isJsOrWasm) {
+              throw unexpectedSuccess('unmarshalled call to bigIntAdd()', sum);
+            } else {
+              expect(sum, equals(BigInt.from(12)));
             }
-          } on WorkerException catch (ex) {
-            if (testContext.isJs || testContext.isWasm) {
-              expect(ex.message, contains('structured clone'));
+          } on SquadronError catch (ex) {
+            if (testContext.workerPlatform.isJsOrWasm) {
+              lowerCaseCheck(ex.message, contains('failed to post message'));
             } else {
               rethrow;
             }

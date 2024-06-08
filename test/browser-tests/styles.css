@@ -15,7 +15,7 @@ body.test-runner {
     margin: 0px;
     padding: 0px;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 #button-bar {
@@ -26,8 +26,8 @@ body.test-runner {
 #output {
     padding: 0px;
     margin: 0px;
-    /* height: 100%; */
-    overflow: visible;
+    height: 100%;
+    overflow: scroll;
     text-wrap: nowrap;
 }
 

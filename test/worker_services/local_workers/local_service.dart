@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
+import '../../classes/platform.dart';
+
 abstract class LocalService implements WorkerService {
   FutureOr<String> getId();
   FutureOr<bool> throwException();
@@ -13,12 +15,10 @@ abstract class LocalService implements WorkerService {
 }
 
 class LocalServiceImpl extends LocalService {
-  LocalServiceImpl(this._idGetter);
-
-  final String Function() _idGetter;
+  LocalServiceImpl();
 
   @override
-  String getId() => _idGetter();
+  String getId() => 'LocalWorker running as "$threadId"';
 
   @override
   bool throwException() => throw Exception('Intentional exception');
@@ -31,6 +31,7 @@ class LocalServiceImpl extends LocalService {
   late final Map<int, CommandHandler> operations = {
     LocalService.getIdCommand: (req) => getId(),
     LocalService.throwExceptionCommand: (req) => throwException(),
-    LocalService.sequenceCommand: (req) => sequence(req.args[0]),
+    LocalService.sequenceCommand: (req) =>
+        sequence((req.args[0] as num).toInt()).map((n) => (n as num).toInt()),
   };
 }

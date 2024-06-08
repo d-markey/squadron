@@ -8,6 +8,7 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import 'classes/test_context.dart';
+import 'classes/utils.dart';
 import 'worker_services/test_service.dart';
 import 'worker_services/test_service_worker.dart';
 
@@ -65,10 +66,9 @@ void execute(TestContext testContext) => testContext.run(() {
 
             try {
               final value = await task.value;
-              throw Exception(
-                  'delayedIdentityTask() completed with value $value');
+              throw unexpectedSuccess('delayedIdentityTask()', value);
             } on CanceledException catch (ex) {
-              expect(ex.message, equals('Immediate cancelation'));
+              lowerCaseCheck(ex.message, contains('immediate cancelation'));
             }
           });
 
@@ -78,10 +78,9 @@ void execute(TestContext testContext) => testContext.run(() {
 
             try {
               final value = await task.value;
-              throw Exception(
-                  'delayedIdentityTask() completed with value $value');
+              throw unexpectedSuccess('delayedIdentityTask()', value);
             } on CanceledException catch (ex) {
-              expect(ex.message, equals('Immediate cancelation'));
+              lowerCaseCheck(ex.message, contains('immediate cancelation'));
             }
           });
 
@@ -212,11 +211,9 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(errors.whereType<CanceledException>().length,
                 equals(2 * pool.maxConcurrency + 1));
             expect(
-                errors
-                    .whereType<CanceledException>()
-                    .map((e) => e.message)
-                    .toSet(),
-                equals(['Immediate cancelation']));
+                errors.whereType<CanceledException>().every((e) =>
+                    e.message.toLowerCase().contains('immediate cancelation')),
+                isTrue);
           });
 
           test('- immediate with pool.cancel(task)', () async {
@@ -255,8 +252,8 @@ void execute(TestContext testContext) => testContext.run(() {
             expect(digits, isEmpty);
             expect(errors.length, equals(1));
             expect(errors[0], isA<CanceledException>());
-            expect((errors[0] as CanceledException).message,
-                equals('Immediate cancelation'));
+            lowerCaseCheck((errors[0] as CanceledException).message,
+                contains('immediate cancelation'));
           });
 
           test('- with pool.cancel()', () async {
@@ -476,10 +473,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('finite() completed successfully');
+              throw unexpectedSuccess('finite()');
             } on CanceledException catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             timer.cancel();
@@ -504,10 +500,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('infinite() completed sucessfully');
+              throw unexpectedSuccess('infinite()');
             } on CanceledException catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             timer.cancel();
@@ -570,10 +565,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('finite() completed successfully');
-            } on SquadronTimeoutException catch (_) {
-              /* expected exception */
+              throw unexpectedSuccess('finite()');
+            } on TimeoutException catch (_) {
+              // expected exception
             }
 
             expect(timeout.isCanceled, isTrue);
@@ -595,10 +589,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('infinite() completed successfully');
-            } on SquadronTimeoutException catch (_) {
-              /* expected exception */
+              throw unexpectedSuccess('infinite()');
+            } on TimeoutException catch (_) {
+              // expected exception
             }
 
             expect(count, isPositive);
@@ -650,18 +643,14 @@ void execute(TestContext testContext) => testContext.run(() {
             Timer(timeout1.timeout * 0.5, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
 
-            // expect(timeout1.started, isFalse);
-
             try {
               await for (final n in worker.finite(50 * N, composite1)) {
-                // expect(timeout1.started, isTrue);
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('finite() completed successfully');
+              throw unexpectedSuccess('finite()');
             } on CanceledException catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             expect(composite1.isCanceled, isTrue);
@@ -678,18 +667,14 @@ void execute(TestContext testContext) => testContext.run(() {
             final cancelation2 = CancelableToken();
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
 
-            // expect(timeout2.started, isFalse);
-
             try {
               await for (final n in worker.finite(50 * N, composite2)) {
-                // expect(timeout2.started, isTrue);
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('finite() completed successfully');
-            } on SquadronTimeoutException catch (_) {
-              /* expected exception */
+              throw unexpectedSuccess('finite()');
+            } on TimeoutException catch (_) {
+              // expected exception
             }
 
             expect(composite2.isCanceled, isTrue);
@@ -711,18 +696,14 @@ void execute(TestContext testContext) => testContext.run(() {
             Timer(timeout1.timeout * 0.5, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
 
-            // expect(timeout1.started, isFalse);
-
             try {
               await for (final n in worker.infinite(composite1)) {
-                // expect(timeout1.started, isTrue);
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('infinite() completed successfully');
+              throw unexpectedSuccess('infinite()');
             } on CanceledException catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             expect(composite1.isCanceled, isTrue);
@@ -744,10 +725,9 @@ void execute(TestContext testContext) => testContext.run(() {
                 digits.add(n);
                 count++;
               }
-              // should never happen
-              throw Exception('infinite() completed successfully');
+              throw unexpectedSuccess('infinite()');
             } on SquadronTimeoutException catch (_) {
-              /* expected exception */
+              // expected exception
             }
 
             expect(count, isPositive);

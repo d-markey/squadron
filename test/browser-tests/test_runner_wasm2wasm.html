@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Squadron Worker Tests - Browser (Web Assembly Client and Workers)</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/native_worker.js">
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?worker=not_a_worker.dart">
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=echo_worker.dart">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=cache_worker.dart">
+  <link rel="x-web-worker"
+    href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=installable_worker.dart">
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=issues_worker.dart">
+  <link rel="x-web-worker"
+    href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=local_client_worker.dart">
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=prime_worker.dart">
+
+  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=test_worker.dart">
+
+  <script defer src="test_runner_wasm2wasm.dart.js"></script>
+</head>
+
+<body class="test-runner">
+  <div id="output"></div>
+</body>
+
+</html>

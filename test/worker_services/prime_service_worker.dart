@@ -20,7 +20,8 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 
   @override
   Stream<int> getPrimes(int min, int max, [PerfCounter? counter]) =>
-      stream((w) => w.getPrimes(min, max), counter: counter);
+      stream((w) => w.getPrimes(min, max), counter: counter)
+          .map((n) => (n as num).toInt());
 }
 
 class PrimeWorker extends Worker implements PrimeService {
@@ -34,5 +35,6 @@ class PrimeWorker extends Worker implements PrimeService {
 
   @override
   Stream<int> getPrimes(int min, int max) =>
-      stream<int>(PrimeService.getPrimesCommand, args: [min, max]);
+      stream<int>(PrimeService.getPrimesCommand, args: [min, max])
+          .map((n) => (n as num).toInt());
 }
