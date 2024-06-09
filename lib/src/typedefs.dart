@@ -10,14 +10,3 @@ typedef PlatformChannel = impl.PlatformChannel;
 typedef PlatformThread = impl.PlatformThread;
 
 typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
-
-typedef DbgTrace = void Function(dynamic);
-
-// ignore: constant_identifier_names
-const int platform_id = impl.platform_id;
-
-void noop(dynamic message) {}
-const debug = impl.trace;
-
-// ignore: dead_code
-DbgTrace trace = (false ? debug : noop);

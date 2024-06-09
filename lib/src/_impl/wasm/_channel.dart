@@ -5,6 +5,7 @@ import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
 import 'package:web/web.dart' as web;
 
+import '../../cast_helpers.dart';
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
@@ -17,7 +18,6 @@ import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../../worker_service.dart';
-import '../xplat/_castor.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../xplat/_transferables.dart';
 import '../xplat/_uri_checker.dart';
@@ -143,7 +143,7 @@ class _WasmChannel extends _BaseWasmChannel implements Channel {
       postRequest: inspectRequest ? _inspectAndPostRequest : _postRequest,
       messages: controller.stream,
       token: squadronToken,
-      castor: Castor<T>.get(),
+      cast: Cast.get<T>(),
     );
     return wrapper.compute().whenComplete(() {
       com.port1.close();
@@ -185,7 +185,7 @@ class _WasmChannel extends _BaseWasmChannel implements Channel {
         onDone();
       },
       token: squadronToken,
-      castor: Castor<T>.get(),
+      cast: Cast.get<T>(),
     );
 
     return wrapper.stream;

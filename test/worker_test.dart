@@ -255,14 +255,14 @@ void execute(TestContext testContext) {
           expect(worker.maxWorkload, isZero);
           expect(worker.totalWorkload, isZero);
 
-          await createTask(TestService.shortDelay); // task #1
+          await createTask(TestService.delay); // task #1
 
           expect(completedTasks, equals([1]), reason: '#1 has completed');
           expect(worker.workload, isZero);
           expect(worker.maxWorkload, equals(1));
           expect(worker.totalWorkload, equals(1));
 
-          var task = createTask(TestService.shortDelay * 5); // task #2
+          var task = createTask(TestService.delay * 3); // task #2
 
           expect(completedTasks, equals([1]), reason: '#2 pending');
           expect(worker.workload, equals(1));
@@ -283,7 +283,7 @@ void execute(TestContext testContext) {
           expect(worker.maxWorkload, equals(1));
           expect(worker.totalWorkload, equals(2));
 
-          await createTask(TestService.shortDelay); // task #3
+          await createTask(TestService.delay); // task #3
 
           expect(completedTasks, equals([1, 2, 3]), reason: '#3 has completed');
           expect(worker.workload, isZero);
@@ -404,9 +404,6 @@ void execute(TestContext testContext) {
             throw unexpectedSuccess('start()', res);
           } on SquadronError catch (_) {
             // expected exception
-          } catch (ex, st) {
-            trace('UNHANDLED EXCEPTION $ex at $st');
-            rethrow;
           }
 
           try {
@@ -414,9 +411,6 @@ void execute(TestContext testContext) {
             throw unexpectedSuccess('ping()', res);
           } on SquadronError catch (_) {
             // expected exception
-          } catch (ex, st) {
-            trace('UNHANDLED EXCEPTION $ex at $st');
-            rethrow;
           }
         });
 

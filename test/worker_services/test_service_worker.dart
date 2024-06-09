@@ -168,12 +168,12 @@ class TestWorker extends Worker implements TestService {
   Future cpu({required int ms}) => send(TestService.cpuCommand, args: [ms]);
 
   @override
-  Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n])
-      .then((n) => (n as num).toInt());
+  Future<int> delayed(int n) =>
+      send(TestService.delayedCommand, args: [n]).then(Cast.toInt);
 
   @override
   Future<int> throwException() =>
-      send(TestService.throwExceptionCommand).then((n) => (n as num).toInt());
+      send(TestService.throwExceptionCommand).then(Cast.toInt);
 
   @override
   Future<int> throwWorkerException() =>
@@ -181,18 +181,15 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<int> throwTaskTimeOutException() =>
-      send(TestService.throwTaskTimeOutExceptionCommand)
-          .then((n) => (n as num).toInt());
+      send(TestService.throwTaskTimeOutExceptionCommand).then(Cast.toInt);
 
   @override
   Future<int> throwCanceledException() =>
-      send(TestService.throwCanceledExceptionCommand)
-          .then((n) => (n as num).toInt());
+      send(TestService.throwCanceledExceptionCommand).then(Cast.toInt);
 
   @override
   Future<int> throwCustomException() =>
-      send(TestService.throwCustomExceptionCommand)
-          .then((n) => (n as num).toInt());
+      send(TestService.throwCustomExceptionCommand).then(Cast.toInt);
 
   @override
   Future<dynamic> forward(dynamic data) =>
@@ -210,17 +207,16 @@ class TestWorker extends Worker implements TestService {
   @override
   Stream<int> finite(int count, [CancelationToken? token]) =>
       stream(TestService.finiteCommand, args: [count], token: token)
-          .map((n) => (n as num).toInt());
+          .map(Cast.toInt);
 
   @override
   Stream<int> infinite([CancelationToken? token]) =>
-      stream(TestService.infiniteCommand, token: token)
-          .map((n) => (n as num).toInt());
+      stream(TestService.infiniteCommand, token: token).map(Cast.toInt);
 
   @override
   Stream<int> clock({int frequency = 1, CancelationToken? token}) =>
       stream(TestService.clockCommand, args: [frequency], token: token)
-          .map((n) => (n as num).toInt());
+          .map(Cast.toInt);
 
   @override
   Future cancelableInfiniteCpu(CancelationToken token) =>
@@ -228,13 +224,12 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<int> getPendingInfiniteWithErrors() =>
-      send(TestService.getPendingInfiniteWithErrorsCommand)
-          .then((n) => (n as num).toInt());
+      send(TestService.getPendingInfiniteWithErrorsCommand).then(Cast.toInt);
 
   @override
   Stream<int> infiniteWithErrors([CancelationToken? token]) =>
       stream(TestService.infiniteWithErrorsCommand, token: token)
-          .map((n) => (n as num).toInt());
+          .map(Cast.toInt);
 
   @override
   Future<BigInt> bigIntAdd(BigInt a, BigInt b,

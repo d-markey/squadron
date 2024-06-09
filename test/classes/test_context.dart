@@ -3,9 +3,9 @@ import 'package:squadron/src/typedefs.dart';
 import 'package:test/test.dart';
 
 import '_test_context_stub.dart'
-    if (dart.library.io) '../sample_vm_workers/_test_context.dart'
-    if (dart.library.html) '../sample_js_workers/_test_context.dart'
-    if (dart.library.js_interop) '../sample_wasm_workers/_test_context.dart'
+    if (dart.library.io) '../workers/vm/_test_context.dart'
+    if (dart.library.html) '../workers/js/_test_context.dart'
+    if (dart.library.js_interop) '../workers/wasm/_test_context.dart'
     as test_context;
 import 'test_entry_points.dart';
 import 'test_platform.dart';

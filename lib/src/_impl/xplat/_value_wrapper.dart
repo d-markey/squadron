@@ -8,7 +8,7 @@ import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '_castor.dart';
+import '../../cast_helpers.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a worker request.
 class ValueWrapper<T> {
@@ -20,10 +20,10 @@ class ValueWrapper<T> {
       {required PostRequest postRequest,
       required Stream<WorkerResponse> messages,
       SquadronCancelationToken? token,
-      Castor<T>? castor})
+      CastOp<T>? cast})
       : _request = request,
         _postRequest = postRequest,
-        _castor = castor ?? Castor.identity<T>() {
+        _cast = cast ?? Cast.get<T>() {
     if (token != null) {
       token.onCanceled.then((_) {
         _postRequest(WorkerRequest.cancel(token));
@@ -40,7 +40,7 @@ class ValueWrapper<T> {
           if (error != null) {
             _completer.completeError(error, error.stackTrace);
           } else {
-            _completer.complete(_castor.cast(res.result));
+            _completer.complete(_cast(res.result));
           }
         }
       },
@@ -56,7 +56,7 @@ class ValueWrapper<T> {
 
   final WorkerRequest _request;
   final PostRequest _postRequest;
-  final Castor<T> _castor;
+  final CastOp<T> _cast;
 
   final _completer = Completer<T>();
 

@@ -8,19 +8,17 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico">
 
-  <link rel="x-web-worker" href="/sample_wasm_workers/native_worker.js">
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?worker=not_a_worker.dart">
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=echo_worker.dart">
+  <link rel="x-web-worker" href="/workers/wasm/native_worker.js">
+  <link rel="x-web-worker" href="wasm_loader.js?worker=/workers/wasm/not_a_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/echo_worker.dart">
 
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=cache_worker.dart">
-  <link rel="x-web-worker"
-    href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=installable_worker.dart">
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=issues_worker.dart">
-  <link rel="x-web-worker"
-    href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=local_client_worker.dart">
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=prime_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/cache_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/installable_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/issues_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/local_client_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/prime_worker.dart">
 
-  <link rel="x-web-worker" href="/sample_wasm_workers/squadron_wasm_worker_loader.js?unopt&worker=test_worker.dart">
+  <link rel="x-web-worker" href="wasm_loader.js?unopt&worker=/workers/wasm/test_worker.dart">
 
   <script defer src="test_runner_js2wasm.dart.js"></script>
 </head>

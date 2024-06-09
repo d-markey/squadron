@@ -32,6 +32,6 @@ class LocalServiceImpl extends LocalService {
     LocalService.getIdCommand: (req) => getId(),
     LocalService.throwExceptionCommand: (req) => throwException(),
     LocalService.sequenceCommand: (req) =>
-        sequence((req.args[0] as num).toInt()).map((n) => (n as num).toInt()),
+        sequence(Cast.toInt(req.args[0])).map(Cast.toInt),
   };
 }

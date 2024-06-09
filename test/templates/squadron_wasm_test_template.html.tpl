@@ -3,17 +3,17 @@
   <head>
     <title>Squadron Web Worker Tests (wasm) - {{testName}}</title>
     {{testScript}}
-    <link rel="x-web-worker" href="sample_wasm_workers/native_worker.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/not_a_worker.dart.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/echo_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/native_worker.js">
+    <link rel="x-web-worker" href="workers/wasm/not_a_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/echo_worker.dart.js">
 
-    <link rel="x-web-worker" href="sample_wasm_workers/cache_worker.dart.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/installable_worker.dart.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/issues_worker.dart.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/local_client_worker.dart.js">
-    <link rel="x-web-worker" href="sample_wasm_workers/prime_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/cache_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/installable_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/issues_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/local_client_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/prime_worker.dart.js">
 
-    <link rel="x-web-worker" href="sample_wasm_workers/test_worker.dart.js">
+    <link rel="x-web-worker" href="workers/wasm/test_worker.dart.js">
     <script src="packages/test/dart.js"></script>
   </head>
 </html>

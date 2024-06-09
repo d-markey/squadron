@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
 import '../_impl/xplat/_internal_logger.dart';
+import '../cast_helpers.dart';
 import '../exceptions/squadron_error.dart';
 import '../tokens/_squadron_cancelation_token.dart';
 import '../typedefs.dart';
@@ -134,8 +135,8 @@ const _$inspectResponse = 6;
 extension WorkerRequestExt on WorkerRequest {
   /// In-place deserialization of a [WorkerRequest] received by the worker.
   bool unwrapInPlace(InternalLogger? logger) {
-    data[_$command] = (data[_$command] as num?)?.toInt();
-    data[_$streamId] = (data[_$streamId] as num?)?.toInt();
+    data[_$command] = Cast.toNullableInt(data[_$command]);
+    data[_$streamId] = Cast.toNullableInt(data[_$streamId]);
     data[_$client] = WorkerChannel.deserialize(data[_$client], logger);
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
     data[_$inspectResponse] ??= false;

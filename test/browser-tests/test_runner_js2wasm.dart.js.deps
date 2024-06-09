@@ -438,7 +438,6 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/browser/_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/browser/_local_worker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/browser/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/browser/_worker_runner.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_castor.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_internal_logger.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_pool_worker.dart
@@ -456,6 +455,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/hex.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_method.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_service.dart
 file:///C:/_Projects/github/squadron/lib/src/bootstrapper.dart
+file:///C:/_Projects/github/squadron/lib/src/cast_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/channel.dart
 file:///C:/_Projects/github/squadron/lib/src/concurrency_settings.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
@@ -495,7 +495,6 @@ file:///C:/_Projects/github/squadron/test/browser-tests/test_runner.dart
 file:///C:/_Projects/github/squadron/test/browser-tests/test_runner_js2wasm.dart
 file:///C:/_Projects/github/squadron/test/browser-tests/tests_wasm.dart
 file:///C:/_Projects/github/squadron/test/cancelation_test.dart
-file:///C:/_Projects/github/squadron/test/classes/_platform_browser.dart
 file:///C:/_Projects/github/squadron/test/classes/custom_exception.dart
 file:///C:/_Projects/github/squadron/test/classes/memory_logger.dart
 file:///C:/_Projects/github/squadron/test/classes/platform.dart
@@ -509,7 +508,6 @@ file:///C:/_Projects/github/squadron/test/issues_test.dart
 file:///C:/_Projects/github/squadron/test/local_worker_test.dart
 file:///C:/_Projects/github/squadron/test/logging_test.dart
 file:///C:/_Projects/github/squadron/test/marshaler_test.dart
-file:///C:/_Projects/github/squadron/test/sample_js_workers/_test_context.dart
 file:///C:/_Projects/github/squadron/test/web_worker_wasm_test.dart
 file:///C:/_Projects/github/squadron/test/worker_pool_test.dart
 file:///C:/_Projects/github/squadron/test/worker_services/biging_marshaler.dart
@@ -527,6 +525,8 @@ file:///C:/_Projects/github/squadron/test/worker_services/prime_service_worker.d
 file:///C:/_Projects/github/squadron/test/worker_services/test_service.dart
 file:///C:/_Projects/github/squadron/test/worker_services/test_service_worker.dart
 file:///C:/_Projects/github/squadron/test/worker_test.dart
+file:///C:/_Projects/github/squadron/test/workers/js/_platform.dart
+file:///C:/_Projects/github/squadron/test/workers/js/_test_context.dart
 org-dartlang-sdk:///lib/_http/crypto.dart
 org-dartlang-sdk:///lib/_http/embedder_config.dart
 org-dartlang-sdk:///lib/_http/http.dart

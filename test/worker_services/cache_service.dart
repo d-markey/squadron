@@ -97,7 +97,7 @@ class CacheService implements Cache, WorkerService {
     setOperation: (r) => set(r.args[0], r.args[1],
         timeToLive: (r.args[2] == null)
             ? null
-            : Duration(microseconds: (r.args[2] as num).toInt())),
+            : Duration(microseconds: Cast.toInt(r.args[2]))),
     statsOperation: (r) => getStats().serialize()
   };
 }
@@ -116,11 +116,11 @@ class CacheStat {
   CacheStat(this.hit, this.miss, this.expired, this.size, this.maxSize);
 
   CacheStat.deserialize(List data)
-      : hit = (data[0] as num).toInt(),
-        miss = (data[1] as num).toInt(),
-        expired = (data[2] as num).toInt(),
-        size = (data[3] as num).toInt(),
-        maxSize = (data[4] as num).toInt();
+      : hit = Cast.toInt(data[0]),
+        miss = Cast.toInt(data[1]),
+        expired = Cast.toInt(data[2]),
+        size = Cast.toInt(data[3]),
+        maxSize = Cast.toInt(data[4]);
 
   final int hit;
   final int miss;

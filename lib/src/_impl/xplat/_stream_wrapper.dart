@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:logger/logger.dart';
 
+import '../../cast_helpers.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../../worker_service.dart';
-import '_castor.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a streaming worker request.
 class StreamWrapper<T> {
@@ -23,14 +23,14 @@ class StreamWrapper<T> {
     required Stream<WorkerResponse> messages,
     required SquadronCallback onDone,
     SquadronCancelationToken? token,
-    Castor<T>? castor,
+    CastOp<T>? cast,
   })  : _exceptionManager = exceptionManager,
         _logger = logger,
         _streamRequest = streamRequest,
         _postRequest = postRequest,
         _messages = messages,
         _token = token,
-        _castor = castor ?? Castor.identity<T>() {
+        _cast = cast ?? Cast.get<T>() {
     _handle = _process;
     _controller = StreamController<T>(
       onListen: _onListen,
@@ -45,7 +45,7 @@ class StreamWrapper<T> {
   /// The actual data stream from the worker.
   Stream<T> get stream => _controller.stream;
 
-  final Castor<T> _castor;
+  final CastOp<T> _cast;
 
   final ExceptionManager _exceptionManager;
   final Logger? _logger;
@@ -75,7 +75,7 @@ class StreamWrapper<T> {
     if (error != null) {
       _controller.addError(error, error.stackTrace);
     } else {
-      _controller.add(_castor.cast(res.result));
+      _controller.add(_cast(res.result));
     }
   }
 
@@ -106,7 +106,7 @@ class StreamWrapper<T> {
           // The first message received from the worker contains the stream ID. If the stream
           // is canceled on the client side, the stream from the worker context should also
           // be canceled by sending a WorkerRequest.cancelStream with this stream id.
-          _streamId.complete((res.result as num).toInt());
+          _streamId.complete(Cast.toInt(res.result));
         } else {
           _handle(res);
         }

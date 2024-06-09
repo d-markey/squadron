@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
+import '../../squadron.dart';
 import '../_impl/xplat/_helpers.dart';
-import '../exceptions/exception_manager.dart';
-import '../exceptions/squadron_exception.dart';
 import 'worker_message.dart';
 
 /// [WorkerResponse]s are used to communicate from [Worker]s to clients and
@@ -111,7 +110,7 @@ extension WorkerResponseExt on WorkerResponse {
 extension LogEventSerialization on LogEvent {
   List serialize() => [
         level.value,
-        _stringify(message)?.toString(),
+        _stringify(message),
         microsecTimeStamp(time),
         error?.toString(),
         stackTrace?.toString(),
@@ -120,9 +119,9 @@ extension LogEventSerialization on LogEvent {
   static LogEvent? deserialize(List? props) => (props == null)
       ? null
       : LogEvent(
-          _getLevel((props[0] as num?)?.toInt()),
+          _getLevel(Cast.toNullableInt(props[0])),
           props[1],
-          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),
+          time: fromMicrosecTimeStamp(Cast.toNullableInt(props[2])),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );

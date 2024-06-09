@@ -31,9 +31,9 @@ class PrimeService implements WorkerService {
 
   @override
   late final Map<int, CommandHandler> operations = {
-    isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
+    isPrimeCommand: (r) => isPrime(Cast.toInt(r.args[0])),
     getPrimesCommand: (r) =>
-        getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),
+        getPrimes(Cast.toInt(r.args[0]), Cast.toInt(r.args[1])),
   };
 
   static Iterable<int> _getPrimeCandidates(int min, int max) sync* {

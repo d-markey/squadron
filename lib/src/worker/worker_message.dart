@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
+import '../cast_helpers.dart';
 
 /// Make [WorkerMessage] a `List` to minimize serialization overhead.
 extension type WorkerMessage(List data) {
@@ -17,7 +18,7 @@ extension WorkerMessageExt on WorkerMessage {
   void unwrapTravelTime() {
     final ts = data[_$traveltime];
     if (ts != null) {
-      data[_$traveltime] = microsecTimeStamp() - (ts as num).toInt();
+      data[_$traveltime] = microsecTimeStamp() - Cast.toInt(ts);
     }
   }
 }

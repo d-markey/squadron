@@ -51,7 +51,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
     LocalClientService.checkIdsCommand: (req) => checkIds(),
     LocalClientService.checkExceptionCommand: (req) => checkException(),
     LocalClientService.checkSequenceCommand: (req) =>
-        checkSequence((req.args[0] as num).toInt()),
+        checkSequence(Cast.toInt(req.args[0])),
   };
 }
 

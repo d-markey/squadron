@@ -5,6 +5,7 @@ export 'src/_impl/xplat/hex.dart';
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';
+export 'src/cast_helpers.dart';
 export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
 export 'src/exceptions/exception_manager.dart'
