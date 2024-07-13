@@ -220,7 +220,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
   });
 
   receiver.listen((message) {
-    final response = WorkerResponse(message);
+    final response = WorkerResponseExt.from(message);
     if (!response.unwrapInPlace(exceptionManager, logger)) {
       return;
     }

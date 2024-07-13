@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../pool/stream_task.dart';
 import '../../stats/perf_counter.dart';
@@ -19,7 +18,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   final Stream<T> Function(W worker) _producer;
-  final _streamer = Completer<Stream<T>?>();
+  final _streamer = Completer<Stream<T>>();
   late final StreamController<T> _controller;
 
   @override
@@ -56,14 +55,13 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
 
   FutureOr _onCancel() => _subscription?.cancel(); /*_subscription?.cancel();*/
 
-  void _close([SquadronException? exception]) {
+  Future _close([SquadronException? exception]) {
     _subscription?.cancel();
-    if (!_controller.isClosed) {
-      if (exception != null) {
-        _controller.addError(exception, exception.stackTrace);
-      }
-      _controller.close();
+    if (_controller.isClosed) return _controller.done;
+    if (exception != null) {
+      _onError(exception, exception.stackTrace);
     }
+    return _controller.close();
   }
 
   void _done([SquadronException? exception]) =>
@@ -76,12 +74,16 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   void _onError(ex, st) {
-    _controller.addError(SquadronException.from(ex, st), st);
+    if (!_controller.isClosed) {
+      _controller.addError(SquadronException.from(ex, st), st);
+    }
   }
 
   void _onData(T data) {
     if (isCanceled) {
       _done(canceledException);
+    } else if (_controller.isClosed) {
+      _done();
     } else {
       _controller.add(data);
     }
@@ -96,18 +98,14 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
     }
     try {
       final stream = await _streamer.future;
-      if (stream == null) {
-        _done(SquadronErrorExt.create('Stream is null'));
-      } else {
-        _subscription = stream.listen(
-          _onData,
-          onError: _onError,
-          onDone: _done,
-        );
-        if (_paused > 0 && !_isPaused) {
-          _subscription!.pause();
-          _isPaused = true;
-        }
+      _subscription = stream.listen(
+        _onData,
+        onError: _onError,
+        onDone: _done,
+      );
+      if (_paused > 0 && !_isPaused) {
+        _subscription!.pause();
+        _isPaused = true;
       }
     } catch (ex, st) {
       _done(SquadronException.from(ex, st));

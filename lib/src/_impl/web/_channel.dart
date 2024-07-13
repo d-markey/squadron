@@ -1,40 +1,34 @@
 import 'dart:async';
 import 'dart:js_interop';
 
-import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
+import 'package:meta/meta.dart';
 import 'package:web/web.dart' as web;
 
-import '../../cast_helpers.dart';
-import '../../channel.dart';
-import '../../exceptions/exception_manager.dart';
+import '../../../squadron.dart';
 import '../../exceptions/squadron_error.dart';
-import '../../exceptions/squadron_exception.dart';
-import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../typedefs.dart';
-import '../../worker/worker_channel.dart';
-import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker_service.dart';
 import '../xplat/_stream_wrapper.dart';
 import '../xplat/_transferables.dart';
 import '../xplat/_uri_checker.dart';
 import '../xplat/_user_code.dart';
 import '../xplat/_value_wrapper.dart';
+import '_patch.dart';
 
 void _post(Logger? logger, WorkerMessage message, void Function() post) {
   try {
     post();
   } catch (ex, st) {
+    print('failed to post message $message: $ex');
     logger?.e(() => 'failed to post message $message: $ex');
     throw SquadronErrorExt.create('Failed to post message: $ex', st);
   }
 }
 
-class _BaseWasmChannel {
-  _BaseWasmChannel._(this._sendPort, this._logger);
+class _BaseWebChannel {
+  _BaseWebChannel._(this._sendPort, this._logger);
 
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
   /// [web.MessagePort] to return values to the client.
@@ -95,17 +89,17 @@ class _BaseWasmChannel {
 }
 
 /// [Channel] implementation for the JavaScript world.
-class _WasmChannel extends _BaseWasmChannel implements Channel {
-  _WasmChannel._(super.sendPort, super.logger, this.exceptionManager)
+class _WebChannel extends _BaseWebChannel implements Channel {
+  _WebChannel._(super.sendPort, super.logger, this.exceptionManager)
       : super._();
 
   bool _closed = false;
 
   final ExceptionManager exceptionManager;
 
-  /// [Channel] sharing in JavaScript world returns a [_WasmForwardChannel].
+  /// [Channel] sharing in JavaScript world returns a [_WebForwardChannel].
   @override
-  Channel share() => _WasmForwardChannel._(
+  Channel share() => _WebForwardChannel._(
       _sendPort, web.MessageChannel(), _logger, exceptionManager);
 
   /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].
@@ -127,11 +121,17 @@ class _WasmChannel extends _BaseWasmChannel implements Channel {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed');
     }
-    final com = web.MessageChannel();
 
     final controller = StreamController<WorkerResponse>();
+
+    final com = web.MessageChannel();
+    com.port1.onmessageerror = (web.ErrorEvent e) {
+      final msg = getErrorEventMessage('com.port1.onmessageerror', e);
+      controller.addError(SquadronErrorExt.create(msg));
+    }.toJS;
     com.port1.onmessage = (web.MessageEvent e) {
-      controller.add(WorkerResponse(e.data.dartify() as List));
+      final data = getMessageEventData('com.port1.onmessage', e);
+      controller.add(WorkerResponseExt.from(data));
     }.toJS;
 
     final squadronToken = token.wrap();
@@ -164,11 +164,16 @@ class _WasmChannel extends _BaseWasmChannel implements Channel {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed');
     }
-    final com = web.MessageChannel();
 
     final controller = StreamController<WorkerResponse>();
+
+    final com = web.MessageChannel();
+    com.port1.onmessageerror = (web.ErrorEvent e) {
+      getErrorEventError('com.port1.onmessageerror', e);
+    }.toJS;
     com.port1.onmessage = (web.MessageEvent e) {
-      controller.add(WorkerResponse(e.data.dartify() as List));
+      final msg = getMessageEventData('com.port1.onmessage', e);
+      controller.add(WorkerResponseExt.from(msg));
     }.toJS;
 
     final squadronToken = token.wrap();
@@ -193,8 +198,8 @@ class _WasmChannel extends _BaseWasmChannel implements Channel {
 }
 
 /// [WorkerChannel] implementation for the JavaScript world.
-class _WasmWorkerChannel extends _BaseWasmChannel implements WorkerChannel {
-  _WasmWorkerChannel._(super.sendPort, super.logger) : super._();
+class _WebWorkerChannel extends _BaseWebChannel implements WorkerChannel {
+  _WebWorkerChannel._(super.sendPort, super.logger) : super._();
 
   /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This
   /// method must be called by the [web.Worker] upon startup.
@@ -239,12 +244,15 @@ class _WasmWorkerChannel extends _BaseWasmChannel implements WorkerChannel {
 /// [Channel] used to communicate between [web.Worker]s. Creates a
 /// [web.MessageChannel] to receive commands on
 /// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].
-class _WasmForwardChannel extends _WasmChannel {
+class _WebForwardChannel extends _WebChannel {
   /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate
   /// message channel
-  _WasmForwardChannel._(this._remote, this._com, Logger? logger,
+  _WebForwardChannel._(this._remote, this._com, Logger? logger,
       ExceptionManager exceptionManager)
       : super._(_com.port2, logger, exceptionManager) {
+    _com.port1.onmessageerror = (err) {
+      getErrorEventError('_com.port1.onmessageerror', err);
+    }.toJS;
     _com.port1.onmessage = _forward.toJS;
   }
 
@@ -259,14 +267,19 @@ class _WasmForwardChannel extends _WasmChannel {
     if (_closed) {
       throw SquadronErrorExt.create('Channel is closed');
     }
-    final message = WorkerRequest(e.data.dartify() as List);
-    final transfer = Transferables.get(message.data)?.jsify();
-    _post(
-        _logger,
-        message,
-        () => (transfer == null)
-            ? _remote.postMessage(e.data)
-            : _sendPort.postMessage(e.data, transfer as JSArray));
+    try {
+      final msg = getMessageEventData('_forward', e);
+      final message = WorkerRequestExt.from(msg);
+      final transfer = Transferables.get(msg)?.jsify();
+      _post(
+          _logger,
+          message,
+          () => (transfer == null)
+              ? _remote.postMessage(e.data)
+              : _sendPort.postMessage(e.data, transfer as JSArray));
+    } catch (ex, st) {
+      print('FORWARD FAILED: $ex / $st');
+    }
   }
 
   /// Closes this [Channel], effectively stopping message forwarding.
@@ -284,122 +297,222 @@ class _WasmForwardChannel extends _WasmChannel {
 /// Starts a [web.Worker] using the [entryPoint] and sends a start
 /// [WorkerRequest] with [startArguments]. The future completes after the
 /// [web.Worker]'s main program has provided the [web.MessagePort] via
-/// [_WasmWorkerChannel.connect].
+/// [_WebWorkerChannel.connect].
 Future<Channel> openChannel(EntryPoint entryPoint,
     ExceptionManager exceptionManager, Logger? logger, List startArguments,
     [PlatformThreadHook? hook]) async {
   final completer = Completer<Channel>();
-  final com = web.MessageChannel();
-  final worker = web.Worker(entryPoint);
-
   final ready = Completer<void>();
 
-  worker.onerror = (JSAny? event) {
+  final com = web.MessageChannel();
+  final webEntryPoint = getEntryPointUrl(entryPoint);
+  late web.Worker worker;
+
+  void fail(SquadronException ex) {
+    if (!ready.isCompleted) ready.completeError(ex);
+    if (!completer.isCompleted) completer.completeError(ex);
+  }
+
+  void success(Channel channel) {
     if (!ready.isCompleted) {
-      ready.complete();
+      throw SquadronErrorExt.create('Invalid state: worker is not ready');
     }
+    // REVIEW HERE
+    if (!completer.isCompleted) completer.complete(channel);
+  }
 
-    UriChecker.exists(Uri.parse(entryPoint)).then((found) {
-      String msg;
-      if (event.isA<web.ErrorEvent>()) {
-        final error = event as web.ErrorEvent;
-        msg =
-            '$entryPoint => ${error.runtimeType} ${error.message} [${error.filename}(${error.lineno})]';
-      } else {
-        msg = '$entryPoint: ${event.runtimeType} $event';
-      }
-      if (!found) {
-        msg = '!! WARNING: it seems no Web Worker lives at $msg';
-      }
-      final error = WorkerException(msg);
-      logger?.e(() => 'unhandled error from Web Worker: ${error.message}.');
-      if (!found) {
-        logger?.e(() => 'it seems no Web Worker lives at $entryPoint.');
-      }
-      if (!completer.isCompleted) {
-        completer.completeError(error, error.stackTrace);
-      }
-    });
-  }.toJS;
-
-  worker.onmessage = (JSAny? msg) {
-    if (!ready.isCompleted) {
-      ready.complete();
-    }
-  }.toJS;
-  await ready.future;
-  worker.onmessage = null;
-
-  final startRequest = WorkerRequest.start(com.port2, startArguments);
-
-  com.port1.onmessage = (web.MessageEvent event) {
-    final response = WorkerResponse(event.data.dartify() as List);
-    if (!response.unwrapInPlace(exceptionManager, logger)) {
-      return;
-    }
-
-    if (!completer.isCompleted) {
-      final error = response.error;
-      if (error != null) {
-        logger?.e(() => 'connection to Web Worker failed: ${response.error}');
-        completer.completeError(error, error.stackTrace);
-        worker.terminate();
-      } else {
-        logger?.t('connected to Web Worker');
-        final channel =
-            _WasmChannel._(response.result, logger, exceptionManager);
-        completer.complete(channel);
-      }
-    } else {
-      logger?.d(() => 'unexpected response: $response');
-    }
-  }.toJS;
-
-  startRequest.wrapInPlace();
-  final msg = startRequest.jsify();
-  final transfer = Transferables.get(startRequest.data)?.jsify();
   try {
+    worker = web.Worker(webEntryPoint.url);
+    setDbgId(worker, '${webEntryPoint.url}#');
+
+    worker.onerror = (web.ErrorEvent? e) {
+      final errr = getErrorEventError('worker.onerror', e);
+
+      var err = e?.error?.dartify() ?? errr;
+      if (err is List) {
+        err = exceptionManager.deserialize(err);
+      }
+      final error = (err != null)
+          ? SquadronException.from(err)
+          : SquadronErrorExt.create('Unexpected error');
+      logger?.e(() => 'connection to Web Worker failed: $error');
+      fail(error);
+
+      UriChecker.exists(entryPoint).then((found) {
+        String msg;
+        if (e != null) {
+          msg =
+              '$entryPoint => ${e.runtimeType} $e [${e.filename}(${e.lineno})]';
+        } else {
+          msg = '$entryPoint: ${e.runtimeType} $e';
+        }
+        if (!found) {
+          msg = '!! WARNING: it seems no Web Worker lives at $msg';
+        }
+        logger?.e(() => 'unhandled error from Web Worker: $msg.');
+        if (!found) {
+          logger?.e(() => 'it seems no Web Worker lives at $entryPoint.');
+        }
+      });
+    }.toJS;
+    worker.onmessageerror = worker.onerror;
+
+    worker.onmessage = (web.MessageEvent? e) {
+      try {
+        final msg = getMessageEventData('worker.onmessage', e);
+        final response = WorkerResponseExt.from(msg);
+        if (!response.unwrapInPlace(exceptionManager, logger)) {
+          return;
+        }
+
+        final error = response.error;
+        if (error != null) {
+          logger?.e(() => 'connection to Web Worker failed: $error');
+          return fail(error);
+        } else if (!ready.isCompleted) {
+          ready.complete();
+        }
+      } catch (ex, st) {
+        return fail(SquadronErrorExt.create(ex.toString(), st));
+      }
+    }.toJS;
+
+    await ready.future;
+
+    final startRequest = WorkerRequest.start(com.port2, startArguments);
+
+    com.port1.onmessageerror = (web.ErrorEvent e) {
+      getErrorEventError('com.port1.onmessageerror', e);
+    }.toJS;
+    com.port1.onmessage = (web.MessageEvent e) {
+      final msg = getMessageEventData('com.port1.onmessage', e);
+      final response = WorkerResponseExt.from(msg);
+      if (!response.unwrapInPlace(exceptionManager, logger)) {
+        return;
+      }
+
+      if (!completer.isCompleted) {
+        final error = response.error;
+        if (error != null) {
+          logger?.e(() => 'connection to Web Worker failed: $error');
+          fail(error);
+        } else {
+          logger?.t('connected to Web Worker');
+          final channel =
+              _WebChannel._(response.result, logger, exceptionManager);
+          // REVIEW HERE
+          success(channel);
+        }
+      } else {
+        logger?.d(() => 'unexpected response: $response');
+      }
+    }.toJS;
+
+    startRequest.wrapInPlace();
+    final msg = startRequest.jsify();
+    final transfer = Transferables.get(startRequest.data)?.jsify();
+    // try {
     _post(
         logger,
         startRequest,
         () => (transfer == null)
             ? worker.postMessage(msg)
             : worker.postMessage(msg, transfer as JSArray));
-  } catch (ex, st) {
+    // } catch (ex, st) {
+    //   com.port1.close();
+    //   com.port2.close();
+    //   logger?.e(
+    //       () => 'failed to post connection request $startRequest: error $ex');
+    //   fail(SquadronException.from(ex, st));
+    // }
+
+    final channel = await completer.future;
+
+    if (hook != null) {
+      final hookRes = UserCode.run(
+        logger,
+        () => hook(worker),
+        'PlatforWorkerHook for $entryPoint',
+      );
+      if (hookRes is Future) {
+        await hookRes;
+      }
+    }
+
+    logger?.t('created Web Worker for $entryPoint');
+
+    return channel;
+  } catch (_) {
+    logger?.t('failed to create Web Worker for $entryPoint');
     com.port1.close();
     com.port2.close();
     worker.terminate();
-    logger
-        ?.e(() => 'failed to post connection request $startRequest: error $ex');
-    completer.completeError(SquadronException.from(ex, st), st);
-  }
-
-  final channel = await completer.future;
-
-  if (hook != null) {
-    final hookRes = UserCode.run(
-      logger,
-      () => hook(worker),
-      'PlatforWorkerHook for $entryPoint',
-    );
-    if (hookRes is Future) {
-      await hookRes;
+    rethrow;
+  } finally {
+    if (webEntryPoint.revoke) {
+      web.URL.revokeObjectURL(webEntryPoint.url);
     }
   }
-
-  logger?.t('created Web Worker');
-
-  return channel;
 }
 
-/// Creates a [_WasmChannel] from a [web.MessagePort].
+/// Creates a [_WebChannel] from a [web.MessagePort].
 Channel? deserializeChannel(PlatformChannel? channelInfo, Logger? logger,
         ExceptionManager exceptionManager) =>
     (channelInfo == null)
         ? null
-        : _WasmChannel._(channelInfo, logger, exceptionManager);
+        : _WebChannel._(channelInfo, logger, exceptionManager);
 
-/// Creates a [_WasmWorkerChannel] from a [web.MessagePort].
+/// Creates a [_WebWorkerChannel] from a [web.MessagePort].
 WorkerChannel? deserializeWorkerChannel(
         PlatformChannel? channelInfo, Logger? logger) =>
-    (channelInfo == null) ? null : _WasmWorkerChannel._(channelInfo, logger);
+    (channelInfo == null) ? null : _WebWorkerChannel._(channelInfo, logger);
+
+@internal
+({String url, bool revoke}) getEntryPointUrl(Uri workerEntrypoint) {
+  final fileName =
+      workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ?? '';
+  if (fileName.endsWith('.js') || fileName.endsWith('.mjs')) {
+    // a JavaScript worker
+    return (url: workerEntrypoint.toString(), revoke: false);
+  } else if (fileName.endsWith('.wasm')) {
+    // blob containing the JavaScript code to load and invoke the Web Assembly worker
+    final blob = web.Blob(
+      [_wasmLoaderScript(workerEntrypoint.toString()).toJS].toJS,
+      web.BlobPropertyBag(type: 'application/javascript'),
+    );
+    return (url: web.URL.createObjectURL(blob), revoke: true);
+  } else if (workerEntrypoint.isScheme('data') ||
+      workerEntrypoint.isScheme('javascript')) {
+    // something else, eg. inline JavaScript
+    return (url: workerEntrypoint.toString(), revoke: false);
+  } else {
+    throw SquadronErrorExt.create('Invalid entry point URI');
+  }
+}
+
+String _wasmLoaderScript(String url) => '''(async function() {
+  try {
+    let dart2wasm_runtime; let moduleInstance;
+    const workerUri = new URL("$url", self.location.origin).href;
+    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');
+    try {
+      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));
+      dart2wasm_runtime = await import(runtimeUri);
+      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});
+    } catch (exception) {
+      console.error(`Failed to fetch and instantiate wasm module \${workerUri}: \${exception}`);
+      console.error('See https://dart.dev/web/wasm for more information.');
+      throw new Error(`Worker \${workerUri}: \${exception.message ?? 'Unknown error when instantiating worker module'}`);
+    }
+    try {
+      await dart2wasm_runtime.invoke(moduleInstance);
+      console.log(`Succesfully loaded and invoked \${workerUri}`);
+    } catch (exception) {
+      console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
+      throw new Error(`Worker \${workerUri}: \${exception.message ?? 'Unknown error when invoking worker module'}`);
+    }
+  } catch (ex) {
+    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;
+    postMessage([ts, null, ["\$sqdrn", `Unexpected error: \${ex}`, null], null, null]);
+  }
+})()''';

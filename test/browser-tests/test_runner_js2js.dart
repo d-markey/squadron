@@ -4,6 +4,7 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
+import '../classes/test_context.dart';
 import '../classes/test_platform.dart';
 import 'html_logger_js.dart';
 import 'test_runner.dart';
@@ -21,9 +22,17 @@ void main() async {
     htmlLogger.print(message?.toString() ?? '(null)');
   });
 
-  window.onMessage.listen((m) => print('(*) ${m.data}'));
+  TestContext? context;
 
-  run(
+  window.onMessage.listen((m) {
+    if (m.data == TestContext.cancelled) {
+      context?.cancel();
+    } else {
+      print('(*) ${m.data}');
+    }
+  });
+
+  context = await run(
     Uri.parse(window.location.href).queryParameters.keys,
     TestPlatform.js,
   );

@@ -14,22 +14,24 @@ void main() async {
   execute(testContext);
 }
 
-void execute(TestContext testContext) {
-  testContext.run(() {
+String testScript = 'logging_test.dart';
+
+void execute(TestContext tc) {
+  tc.run(() {
     final logs = <String>[];
     final memoryLogger = MemoryLogger(logs, MemoryLogFilter());
 
-    group("- Logging", () {
+    tc.group("- Logging", () {
       late TestWorker worker;
 
       setUpAll(() async {
-        worker = TestWorker(testContext);
+        worker = TestWorker(tc);
         worker.channelLogger = memoryLogger;
         await worker.start();
       });
 
       tearDownAll(() async {
-        worker.stop();
+        worker.release();
       });
 
       setUp(() {
@@ -41,7 +43,7 @@ void execute(TestContext testContext) {
         memoryLogger.clear();
       });
 
-      test('off', () async {
+      tc.test('off', () async {
         await worker.setLevel(Level.off.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -54,7 +56,7 @@ void execute(TestContext testContext) {
         expect(logs, doesNotMention('fatal'));
       });
 
-      test('>= fatal', () async {
+      tc.test('>= fatal', () async {
         await worker.setLevel(Level.fatal.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -67,7 +69,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('>= error', () async {
+      tc.test('>= error', () async {
         await worker.setLevel(Level.error.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -80,7 +82,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('>= warning', () async {
+      tc.test('>= warning', () async {
         await worker.setLevel(Level.warning.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -93,7 +95,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('>= info', () async {
+      tc.test('>= info', () async {
         await worker.setLevel(Level.info.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -106,7 +108,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('>= debug', () async {
+      tc.test('>= debug', () async {
         await worker.setLevel(Level.debug.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -119,7 +121,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('>= trace', () async {
+      tc.test('>= trace', () async {
         await worker.setLevel(Level.trace.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
@@ -132,7 +134,7 @@ void execute(TestContext testContext) {
         expect(logs, mentions('fatal'));
       });
 
-      test('all', () async {
+      tc.test('all', () async {
         await worker.setLevel(Level.all.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive

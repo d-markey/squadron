@@ -10,9 +10,12 @@ import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
-  _JsLocalWorker._(super.service, ExceptionManager exceptionManager) {
+class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
+  _WebLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
+    _port.port1.onmessageerror = (err) {
+      print('[$runtimeType] onmessageerror ${err.runtimeType} $err');
+    }.toJS;
     _port.port1.onmessage = runner.handle.toJS;
     _channel = Channel.deserialize(
         _port.port2, runner.internalLogger, exceptionManager);
@@ -44,4 +47,4 @@ class _JsLocalWorker<W extends WorkerService> extends LocalWorker<W> {
 /// Creates a [LocalWorker] on a browser platform.
 LocalWorker<W> createLocalWorker<W extends WorkerService>(
         W service, ExceptionManager exceptionManager) =>
-    _JsLocalWorker._(service, exceptionManager);
+    _WebLocalWorker._(service, exceptionManager);

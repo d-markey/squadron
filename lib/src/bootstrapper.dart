@@ -1,7 +1,7 @@
 import '_impl/xplat/_bootstrapper.dart'
     if (dart.library.io) '_impl/native/_bootstrapper.dart'
-    if (dart.library.html) '_impl/browser/_bootstrapper.dart'
-    if (dart.library.js_interop) '_impl/wasm/_bootstrapper.dart';
+    if (dart.library.html) '_impl/web/_bootstrapper.dart'
+    if (dart.library.js_interop) '_impl/web/_bootstrapper.dart' as impl;
 import 'worker/worker_request.dart';
 import 'worker_service.dart';
 
@@ -9,4 +9,4 @@ import 'worker_service.dart';
 /// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument *must
 /// be* set to the [Isolate]'s startup parameter.
 void run(WorkerInitializer initializer, [WorkerRequest? command]) =>
-    bootstrap(initializer, command);
+    impl.bootstrap(initializer, command);

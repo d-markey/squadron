@@ -4,6 +4,7 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart';
 
+import '../classes/test_context.dart';
 import '../classes/test_platform.dart';
 import 'html_logger_wasm.dart';
 import 'test_runner.dart';
@@ -22,9 +23,17 @@ void main(dynamic args) async {
     htmlLogger.print('${message?.dartify() ?? '(null)'}');
   }.toJS;
 
-  window.onMessage.listen((m) => print('(*) ${m.data}'));
+  TestContext? context;
 
-  run(
+  window.onMessage.listen((m) {
+    if (m.data.dartify() == TestContext.cancelled) {
+      context?.cancel();
+    } else {
+      print('(*) ${m.data}');
+    }
+  });
+
+  context = await run(
     Uri.parse(window.location.href).queryParameters.keys,
     TestPlatform.wasm,
   );

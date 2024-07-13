@@ -1,38 +1,51 @@
+import 'dart:async';
+
 import '../classes/test_context.dart';
 import '../classes/test_platform.dart';
-import 'tests_js.dart' if (dart.library.js_interop) 'tests_wasm.dart';
-
-Iterable<String> getExecutorLabels() => executors.keys;
+import 'tests_wasm.dart' if (dart.library.html) 'tests_js.dart';
 
 String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
 
-Future<void> run(Iterable<String> testLabels, TestPlatform platform) async {
-  final selectedExecutors = <MapEntry<String, void Function(TestContext)>>[];
+Iterable<String> get testGroups => TestContext.rootGroups;
 
-  for (var testLabel in testLabels) {
-    final executor = executors.entries
-        .where((e) => testLabel == getTestId(e.key))
-        .firstOrNull;
-    if (executor == null) {
-      print('No executor found for test "$testLabel"');
-    } else {
-      selectedExecutors.add(executor);
-    }
-  }
-
-  if (selectedExecutors.isNotEmpty) {
+Future<TestContext?> run(
+    Iterable<String> testLabels, TestPlatform platform) async {
+  if (testLabels.isNotEmpty) {
     final testContext = await TestContext.init('/', platform);
 
-    print('Selected tests: ${selectedExecutors.map((e) => e.key).join(',')}');
+    for (var testLabel in testLabels) {
+      testContext.onlyTests.add(
+        RegExp('${RegExp.escape(testLabel)}.*', caseSensitive: false),
+      );
+    }
+
+    print(
+        'Selected tests: ${testContext.onlyTests.map((r) => r.display()).join(', ')}');
     print('Running on platform ${testContext.clientPlatformName}');
 
-    for (var executor in selectedExecutors) {
-      try {
-        executor.value(testContext);
-      } catch (ex, st) {
-        print('Test "${executor.key}" failed with $ex');
-        print(st);
-      }
+    for (var executor in executors.entries) {
+      print('Run from script ${executor.value.script}');
+      executor.value.runner(testContext);
+      reportStatus('${testContext.pending} tests pending...');
     }
+
+    Timer.periodic(Duration(milliseconds: 100), (t) {
+      if (testContext.pending == 0) {
+        t.cancel();
+      } else {
+        reportStatus('${testContext.pending} tests pending...');
+      }
+    });
+
+    testContext.done
+        .then((canceled) => reportStatus(canceled ? 'Cancelled' : 'Done'));
+
+    return testContext;
+  } else {
+    return null;
   }
+}
+
+extension _DisplayExt on Pattern {
+  String display() => (this is RegExp) ? (this as RegExp).pattern : toString();
 }

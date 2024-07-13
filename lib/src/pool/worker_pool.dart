@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:logger/logger.dart';
+import 'package:using/using.dart';
 
 import '../_impl/xplat/_pool_worker.dart';
 import '../_impl/xplat/_worker_stream_task.dart';
@@ -25,7 +26,9 @@ typedef WorkerFactory<W> = W Function();
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
-class WorkerPool<W extends Worker> implements WorkerService, IWorker {
+class WorkerPool<W extends Worker>
+    with Releasable
+    implements WorkerService, IWorker {
   /// Create a worker pool.
   ///
   /// Workers are instantiated using the provided [_workerFactory].
@@ -38,6 +41,12 @@ class WorkerPool<W extends Worker> implements WorkerService, IWorker {
       ExceptionManager? exceptionManager})
       : concurrencySettings = concurrencySettings ?? ConcurrencySettings(),
         _exceptionManager = exceptionManager ?? ExceptionManager();
+
+  @override
+  void release() {
+    stop();
+    super.release();
+  }
 
   final WorkerFactory<W> _workerFactory;
 

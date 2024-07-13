@@ -8,6 +8,7 @@ import '../classes/custom_exception.dart';
 import '../classes/platform.dart';
 import '../classes/test_logger.dart';
 import 'biging_marshaler.dart';
+import 'delays.dart';
 
 class TestService implements WorkerService {
   static const startupOk = 0;
@@ -41,7 +42,7 @@ class TestService implements WorkerService {
   }
 
   Future<int> delayed(int n) async {
-    await Future.delayed(delay);
+    await Future.delayed(TestDelays.delay);
     return n;
   }
 
@@ -69,7 +70,7 @@ class TestService implements WorkerService {
 
   Stream<int> finite(int count) async* {
     for (var i = 0; i <= count; i++) {
-      await Future.delayed(delay);
+      await Future.delayed(TestDelays.shortDelay);
       yield i;
     }
   }
@@ -77,7 +78,7 @@ class TestService implements WorkerService {
   Stream<int> infinite() async* {
     int i = 0;
     while (true) {
-      await Future.delayed(delay);
+      await Future.delayed(TestDelays.shortDelay);
       yield i;
       i++;
     }
@@ -132,7 +133,7 @@ class TestService implements WorkerService {
           controller.addError(WorkerException('error #$i'));
         }
         i++;
-        await Future.delayed(delay);
+        await Future.delayed(TestDelays.shortDelay);
       }
     }
 
@@ -169,9 +170,6 @@ class TestService implements WorkerService {
       a + b;
 
   final bool _invalid;
-
-  static const shortDelay = Duration(milliseconds: 10);
-  static const delay = Duration(milliseconds: 50);
 
   static const invalidCommand1 = -1; // command IDs must be > 0
   static const invalidCommand0 = 0; // command IDs must be > 0

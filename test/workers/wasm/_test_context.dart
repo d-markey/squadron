@@ -14,45 +14,42 @@ String platformName = '${web.window.navigator.userAgent} (wasm)';
 
 extension TestEntryPointsExt on TestEntryPoints {
   Future<void> set(String root, TestPlatform platform) async {
+    String ext;
     switch (platform) {
       case TestPlatform.js:
         root = '${root}workers/js';
-        native = '$root/native_worker.js';
-        notAWorker = '$root/not_a_worker.dart.js';
-        echo = '$root/echo_worker.dart.js';
-        cache = '$root/cache_worker.dart.js';
-        installable = '$root/installable_worker.dart.js';
-        issues = '$root/issues_worker.dart.js';
-        local = '$root/local_client_worker.dart.js';
-        prime = '$root/prime_worker.dart.js';
-        test = '$root/test_worker.dart.js';
+        ext = 'js';
         break;
       case TestPlatform.wasm:
-        final loader = 'wasm_loader.js';
         root = '${root}workers/wasm';
-        native = '$root/native_worker.js';
-        notAWorker = '$loader?worker=$root/not_a_worker.dart';
-        echo = '$loader?unopt&worker=$root/echo_worker.dart';
-        cache = '$loader?unopt&worker=$root/cache_worker.dart';
-        installable = '$loader?unopt&worker=$root/installable_worker.dart';
-        issues = '$loader?unopt&worker=$root/issues_worker.dart';
-        local = '$loader?unopt&worker=$root/local_client_worker.dart';
-        prime = '$loader?unopt&worker=$root/prime_worker.dart';
-        test = '$loader?unopt&worker=$root/test_worker.dart';
+        ext = 'unopt.wasm';
         break;
       default:
         throw UnsupportedError('Unsupported platform $platform');
     }
 
-    await _checkWebWorkers(defined);
+    native = Uri.parse('$root/native_worker.js');
 
-    inMemory =
+    notAWorker = Uri.parse('$root/not_a_worker.dart.$ext');
+    echo = Uri.parse('$root/echo_worker.dart.$ext');
+    cache = Uri.parse('$root/cache_worker.dart.$ext');
+    installable = Uri.parse('$root/installable_worker.dart.$ext');
+    issues = Uri.parse('$root/issues_worker.dart.$ext');
+    local = Uri.parse('$root/local_client_worker.dart.$ext');
+    prime = Uri.parse('$root/prime_worker.dart.$ext');
+    test = Uri.parse('$root/test_worker.dart.$ext');
+
+    inMemory = Uri.parse(
         'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
   console.log("Message received from main script");
   const workerResult = `ECHO "\${e.data}"`;
   console.log("Posting message back to main script");
   postMessage(workerResult);
-};'''))}';
+};'''))}');
+
+    await _checkWebWorkers(defined);
+
+    missingWorker = Uri.parse('$root/missing_worker.dart.$ext');
   }
 }
 
@@ -72,24 +69,28 @@ Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   for (var i = 0; i < count; i++) {
     final workerLink = workerLinks.item(i) as web.Element;
     final path = workerLink.attributes.getNamedItem('href')?.value;
-    final scriptUri = Uri.parse(path ?? '/');
-    final scriptFileName = scriptUri.pathSegments.last;
+    final uri = Uri.parse(path ?? '/');
+    final fileName = uri.pathSegments.last;
     if (path == null) {
       messages.add('href attribute is missing for ${workerLink.outerHTML}');
-    } else if (!scriptFileName.endsWith('.js')) {
+    } else if (!fileName.endsWith('.js') &&
+        !fileName.endsWith('.mjs') &&
+        !fileName.endsWith('.wasm')) {
       messages.add(
-          'URLs for Web Worker $path must reference a JavaScript file ending with \'.js\'');
-    } else if (!await UriChecker.exists(scriptUri)) {
+          'URLs for Web Worker $path must reference a JavaScript file ending with \'.js\' or a WebAssembly file ending with \'.wasm\'');
+    } else if (!await UriChecker.exists(uri)) {
       messages.add('Web Worker $path could not be found');
-    } else if (!workerUrls.contains(path)) {
+    } else if (workerUrls
+        .every((u) => u.normalizePath().toString() != uri.toString())) {
       messages.add('Web Worker $path is not used');
     } else {
-      workers.add(path);
+      workers.add(uri);
     }
   }
 
-  for (var workerUrl in workerUrls) {
-    if (!workers.contains(workerUrl)) {
+  for (var workerUrl in workerUrls.where((u) => u.scheme != 'data')) {
+    if (workers
+        .every((u) => u.toString() != workerUrl.normalizePath().toString())) {
       messages.add(
           'Worker $workerUrl is not referenced from the test HTML template file. It should be referenced with:\n   <link rel="x-web-worker" href="$workerUrl">');
     }

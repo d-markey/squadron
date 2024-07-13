@@ -18,7 +18,7 @@ class LocalServiceImpl extends LocalService {
   LocalServiceImpl();
 
   @override
-  String getId() => 'LocalWorker running as "$threadId"';
+  String getId() => 'LocalService running as "$threadId"';
 
   @override
   bool throwException() => throw Exception('Intentional exception');

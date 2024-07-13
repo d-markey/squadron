@@ -57,6 +57,21 @@ class StreamWrapper<T> {
 
   late final StreamController<T> _controller;
 
+  void _add(T value) {
+    if (!_controller.isClosed) {
+      _controller.add(value);
+    }
+  }
+
+  void _addError(Object error, [StackTrace? st]) {
+    if (!_controller.isClosed) {
+      _controller.addError(error, st);
+    }
+  }
+
+  Future _close() =>
+      (_controller.isClosed) ? _controller.done : _controller.close();
+
   int _paused = 0;
   late void Function(WorkerResponse) _handle;
 
@@ -73,9 +88,9 @@ class StreamWrapper<T> {
   void _process(WorkerResponse res) {
     final error = res.error;
     if (error != null) {
-      _controller.addError(error, error.stackTrace);
+      _addError(error, error.stackTrace);
     } else {
-      _controller.add(_cast(res.result));
+      _add(_cast(res.result));
     }
   }
 
@@ -97,11 +112,11 @@ class StreamWrapper<T> {
           if (!_streamId.isCompleted) {
             _streamId.complete(-1);
           }
-          _controller.addError(cancelException, cancelException.stackTrace);
+          _addError(cancelException, cancelException.stackTrace);
           _buffer?.clear();
-          _controller.close();
+          _close();
         } else if (res.endOfStream) {
-          _controller.close();
+          _close();
         } else if (!_streamId.isCompleted) {
           // The first message received from the worker contains the stream ID. If the stream
           // is canceled on the client side, the stream from the worker context should also
@@ -122,7 +137,7 @@ class StreamWrapper<T> {
     // notify the worker that the streaming operation has been canceled
     _postRequest(WorkerRequest.cancelStream(streamId));
     _buffer?.clear();
-    _controller.close();
+    _close();
   }
 
   void _onPause() {

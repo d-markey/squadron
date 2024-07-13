@@ -4,8 +4,8 @@ import 'package:logger/logger.dart';
 
 import '../_impl/xplat/_channel.dart'
     if (dart.library.io) '../_impl/native/_channel.dart'
-    if (dart.library.html) '../_impl/browser/_channel.dart'
-    if (dart.library.js_interop) '../_impl/wasm/_channel.dart';
+    if (dart.library.html) '../_impl/web/_channel.dart'
+    if (dart.library.js_interop) '../_impl/web/_channel.dart' as impl;
 import '../exceptions/squadron_exception.dart';
 import '../typedefs.dart';
 import 'worker_request.dart';
@@ -54,5 +54,5 @@ abstract class WorkerChannel {
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static WorkerChannel? deserialize(
           PlatformChannel? channelInfo, Logger? logger) =>
-      deserializeWorkerChannel(channelInfo, logger);
+      impl.deserializeWorkerChannel(channelInfo, logger);
 }

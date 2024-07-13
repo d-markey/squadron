@@ -20,11 +20,11 @@ import 'worker_message.dart';
 /// according to Dart's documentation of [SendPort.send]. [WorkerRequestImpl]
 /// also implements specific requests used for worker startup, stream/token
 /// cancelation, worker termination...
-extension type WorkerRequest(List data) implements WorkerMessage {
+extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new request with the specified [command] ID and optional arguments.
   static WorkerRequest userCommand(PlatformChannel channelInfo, int command,
           List args, SquadronCancelationToken? token, bool inspectResponse) =>
-      WorkerRequest([
+      WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
         channelInfo, // 1 - client
         command, // 2 - command
@@ -36,7 +36,7 @@ extension type WorkerRequest(List data) implements WorkerMessage {
 
   /// Creates a new start request.
   static WorkerRequest start(PlatformChannel channelInfo, List args) =>
-      WorkerRequest([
+      WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
         channelInfo, // 1 - client
         _connectCommand, // 2 - command
@@ -47,7 +47,7 @@ extension type WorkerRequest(List data) implements WorkerMessage {
       ]);
 
   /// Creates a new stream cancelation request.
-  static WorkerRequest cancelStream(int streamId) => WorkerRequest([
+  static WorkerRequest cancelStream(int streamId) => WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - client
         _cancelStreamCommand, // 2 - command
@@ -58,7 +58,8 @@ extension type WorkerRequest(List data) implements WorkerMessage {
       ]);
 
   /// Creates a new cancelation request.
-  static WorkerRequest cancel(SquadronCancelationToken token) => WorkerRequest([
+  static WorkerRequest cancel(SquadronCancelationToken token) =>
+      WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - client
         _cancelTokenCommand, // 2 - command
@@ -69,7 +70,7 @@ extension type WorkerRequest(List data) implements WorkerMessage {
       ]);
 
   /// Creates a new termination request.
-  static WorkerRequest stop() => WorkerRequest([
+  static WorkerRequest stop() => WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - client
         _terminateCommand, // 2 - command
@@ -135,13 +136,13 @@ const _$inspectResponse = 6;
 extension WorkerRequestExt on WorkerRequest {
   /// In-place deserialization of a [WorkerRequest] received by the worker.
   bool unwrapInPlace(InternalLogger? logger) {
+    unwrapTravelTime();
     data[_$command] = Cast.toNullableInt(data[_$command]);
     data[_$streamId] = Cast.toNullableInt(data[_$streamId]);
     data[_$client] = WorkerChannel.deserialize(data[_$client], logger);
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
     data[_$inspectResponse] ??= false;
     data[_$args] ??= const [];
-    unwrapTravelTime();
     return true;
   }
 
@@ -152,6 +153,13 @@ extension WorkerRequestExt on WorkerRequest {
       data[_$token] = token.serialize();
     }
     return data;
+  }
+
+  static WorkerRequest from(List data) {
+    if (data.length != 7) {
+      throw SquadronErrorExt.create('Invalid worker request');
+    }
+    return WorkerRequest._(data);
   }
 }
 

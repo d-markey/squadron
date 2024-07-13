@@ -5,6 +5,7 @@ class TestEntryPoints {
   EntryPoint? inMemory;
   EntryPoint? native;
   EntryPoint? notAWorker;
+  EntryPoint? missingWorker;
 
   EntryPoint? cache;
   EntryPoint? installable;

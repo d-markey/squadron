@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:logger/logger.dart';
 
+import '../../cast_helpers.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../cast_helpers.dart';
 
 /// Wraps a stream of messages coming in from a worker in response to a worker request.
 class ValueWrapper<T> {

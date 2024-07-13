@@ -111,6 +111,8 @@ _2595: (x0,x1) => x0.onmessage = x1,
 _2597: (x0,x1) => x0.onmessageerror = x1,
 _12704: () => globalThis.console,
 _12728: v => stringToDartString(v.toString()),
+_12739: Date.now,
+_12741: s => new Date(s * 1000).getTimezoneOffset() * 60 ,
 _12743: () => {
           let stackString = new Error().stack.toString();
           let frames = stackString.split('\n');
@@ -206,6 +208,7 @@ _12914: (o, p) => o[p],
 _12915: (o, p, v) => o[p] = v,
 _12916: (o, m, a) => o[m].apply(o, a),
 _12918: o => String(o),
+_12937: (o, p) => p in o,
 _12938: (o, p) => o[p]
     };
 

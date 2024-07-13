@@ -4,8 +4,8 @@ import 'package:logger/logger.dart';
 
 import '_impl/xplat/_channel.dart'
     if (dart.library.io) '_impl/native/_channel.dart'
-    if (dart.library.html) '_impl/browser/_channel.dart'
-    if (dart.library.js_interop) '_impl/wasm/_channel.dart';
+    if (dart.library.html) '_impl/web/_channel.dart'
+    if (dart.library.js_interop) '_impl/web/_channel.dart' as impl;
 import 'exceptions/exception_manager.dart';
 import 'tokens/_squadron_cancelation_token.dart';
 import 'typedefs.dart';
@@ -55,11 +55,12 @@ abstract class Channel {
   static Future<Channel> open(ExceptionManager exceptionManager, Logger? logger,
           EntryPoint entryPoint, List startArguments,
           [PlatformThreadHook? hook]) =>
-      openChannel(entryPoint, exceptionManager, logger, startArguments, hook);
+      impl.openChannel(
+          entryPoint, exceptionManager, logger, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
           [ExceptionManager? exceptionManager]) =>
-      deserializeChannel(
+      impl.deserializeChannel(
           channelInfo, logger, exceptionManager ?? ExceptionManager());
 }

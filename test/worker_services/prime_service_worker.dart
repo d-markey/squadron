@@ -16,7 +16,7 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 
   @override
   Future<bool> isPrime(int n, [PerfCounter? counter]) =>
-      execute((w) => w.isPrime(n), counter: counter);
+      execute((w) async => await w.isPrime(n), counter: counter);
 
   @override
   Stream<int> getPrimes(int min, int max, [PerfCounter? counter]) =>
@@ -29,7 +29,7 @@ class PrimeWorker extends Worker implements PrimeService {
             args: [cache?.channel!.share().serialize()]);
 
   @override
-  Future<bool> isPrime(int n) =>
+  FutureOr<bool> isPrime(int n) =>
       send<bool>(PrimeService.isPrimeCommand, args: [n]);
 
   @override

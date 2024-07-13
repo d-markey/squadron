@@ -1,7 +1,7 @@
 import 'package:squadron/squadron.dart';
 
-class Unsendable {}
+void unsendable() {}
 
-dynamic getUnsendable() => Unsendable();
+dynamic getUnsendable() => unsendable;
 
 final String threadId = Object().hashCode.hex; // unique per event loop

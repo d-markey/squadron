@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
+import 'package:using/using.dart';
 
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
@@ -15,22 +16,26 @@ void main() async {
   execute(testContext);
 }
 
-void execute(TestContext testContext) {
-  testContext.run(() {
-    group("- GitHub Issues", () {
-      group('- #8 - Exceptions from Streams must come through onError', () {
-        test('- Squadron Worker', () async {
-          final worker = IssuesWorker(testContext);
-          await worker.start();
-          try {
+String testScript = 'issues_test.dart';
+
+void execute(TestContext tc) {
+  tc.run(() {
+    tc.group("- GitHub Issues", () {
+      tc.group('- #8 - Exceptions from Streams must come through onError', () {
+        tc.test('- Squadron Worker', () async {
+          await IssuesWorker(
+            tc,
+          ).useAsync((worker) async {
+            await worker.start();
+
             final stream = worker.issue_8([0, 1, 2, 3, 4]);
 
             final completer = Completer();
             final results = [], errors = [];
             stream.listen(
-              (value) => results.add(value),
-              onError: (err) => errors.add(err),
-              onDone: () => completer.complete(),
+              results.add,
+              onError: errors.add,
+              onDone: completer.complete,
             );
 
             await completer.future;
@@ -40,23 +45,23 @@ void execute(TestContext testContext) {
             expect(errors[0], isA<WorkerException>());
             lowerCaseCheck((errors[0] as WorkerException).message,
                 equals('issue 8 error message'));
-          } finally {
-            worker.stop();
-          }
+          });
         });
 
-        test('- Worker Pool', () async {
-          final pool = IssuesWorkerPool(testContext);
-          await pool.start();
-          try {
+        tc.test('- Worker Pool', () async {
+          await IssuesWorkerPool(
+            tc,
+          ).useAsync((pool) async {
+            await pool.start();
+
             final stream = pool.issue_8([0, 1, 2, 3, 4]);
 
             final completer = Completer();
             final results = [], errors = [];
             stream.listen(
-              (value) => results.add(value),
-              onError: (err) => errors.add(err),
-              onDone: () => completer.complete(),
+              results.add,
+              onError: errors.add,
+              onDone: completer.complete,
             );
 
             await completer.future;
@@ -66,9 +71,7 @@ void execute(TestContext testContext) {
             expect(errors[0], isA<WorkerException>());
             lowerCaseCheck((errors[0] as WorkerException).message,
                 equals('issue 8 error message'));
-          } finally {
-            pool.stop();
-          }
+          });
         });
       });
     });

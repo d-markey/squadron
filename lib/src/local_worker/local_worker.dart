@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:logger/logger.dart';
+import 'package:using/using.dart';
 
 import '../_impl/xplat/_local_worker.dart'
     if (dart.library.io) '../_impl/native/_local_worker.dart'
-    if (dart.library.html) '../_impl/browser/_local_worker.dart'
-    if (dart.library.js_interop) '../_impl/wasm/_local_worker.dart';
+    if (dart.library.html) '../_impl/web/_local_worker.dart'
+    if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
 import '../iworker.dart';
@@ -29,11 +30,19 @@ import '../worker_service.dart';
 /// defined in the [service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
 abstract class LocalWorker<W extends WorkerService>
+    with Releasable
     implements WorkerService, IWorker {
   LocalWorker(this.service);
 
   factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =>
-      createLocalWorker<W>(service, exceptionManager ?? ExceptionManager());
+      impl.createLocalWorker<W>(
+          service, exceptionManager ?? ExceptionManager());
+
+  @override
+  void release() {
+    stop();
+    super.release();
+  }
 
   @override
   Logger? channelLogger;

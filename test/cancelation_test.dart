@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
-import 'worker_services/test_service.dart';
+import 'worker_services/delays.dart';
 import 'worker_services/test_service_worker.dart';
 
 const concurrencySettings_222 =
@@ -20,26 +20,28 @@ void main() async {
   execute(testContext);
 }
 
-void execute(TestContext testContext) {
-  testContext.run(() {
+String testScript = 'cancelation_test.dart';
+
+void execute(TestContext tc) {
+  tc.run(() {
     late TestWorkerPool pool;
     late TestWorker worker;
 
     setUpAll(() async {
-      pool = TestWorkerPool(testContext, concurrencySettings_222);
+      pool = TestWorkerPool(tc, concurrencySettings_222);
       await pool.start();
-      worker = TestWorker(testContext);
+      worker = TestWorker(tc);
       await worker.start();
     });
 
     tearDownAll(() {
-      pool.stop();
-      worker.stop();
+      pool.release();
+      worker.release();
     });
 
-    group("- Cancelation", () {
-      group('- ValueTask', () {
-        test('- immediate with pool.cancel()', () async {
+    tc.group("- Cancelation", () {
+      tc.group('- ValueTask', () {
+        tc.test('- immediate with pool.cancel()', () async {
           final digits = <int>[];
           int errors = 0;
 
@@ -61,7 +63,7 @@ void execute(TestContext testContext) {
           expect(digits.length + errors, equals(2 * pool.maxConcurrency + 1));
         });
 
-        test('- immediate with pool.cancel(task)', () async {
+        tc.test('- immediate with pool.cancel(task)', () async {
           final task = pool.delayedIdentityTask(3);
           pool.cancel(task, 'Immediate cancelation');
 
@@ -73,7 +75,7 @@ void execute(TestContext testContext) {
           }
         });
 
-        test('- immediate with task.cancel()', () async {
+        tc.test('- immediate with task.cancel()', () async {
           final task = pool.delayedIdentityTask(3)
             ..cancel('Immediate cancelation');
 
@@ -85,7 +87,7 @@ void execute(TestContext testContext) {
           }
         });
 
-        test('- with pool.cancel()', () async {
+        tc.test('- with pool.cancel()', () async {
           final digits = <int>[];
           int errors = 0;
 
@@ -98,7 +100,7 @@ void execute(TestContext testContext) {
             }));
           }
 
-          await Future.delayed(TestService.delay * 2.5);
+          await Future.delayed(TestDelays.delay * 2.5);
           pool.cancel();
 
           await Future.wait(tasks);
@@ -108,7 +110,7 @@ void execute(TestContext testContext) {
           expect(digits.length + errors, equals(2 * pool.maxConcurrency + 1));
         });
 
-        test('- with pool.cancel(task)', () async {
+        tc.test('- with pool.cancel(task)', () async {
           final digits = <int>[];
           int errors = 0;
 
@@ -131,7 +133,7 @@ void execute(TestContext testContext) {
           expect(firstTask.isRunning, isFalse);
           expect(firstTask.isFinished, isFalse);
 
-          await Future.delayed(TestService.delay * 1.8);
+          await Future.delayed(TestDelays.delay * 1.8);
           final lastTask = tasks[3 * pool.maxConcurrency];
           pool.cancel(lastTask);
           expect(lastTask.isCanceled, isTrue);
@@ -151,7 +153,7 @@ void execute(TestContext testContext) {
           expect(digits.length + errors, equals(tasks.length));
         });
 
-        test('- with task.cancel()', () async {
+        tc.test('- with task.cancel()', () async {
           final digits = <int>[];
           int errors = 0;
 
@@ -171,7 +173,7 @@ void execute(TestContext testContext) {
           tasks[0].cancel();
           expect(tasks[0].isCanceled, isTrue);
 
-          await Future.delayed(TestService.delay * 1.5);
+          await Future.delayed(TestDelays.delay * 1.5);
           tasks[3 * pool.maxConcurrency].cancel();
           expect(tasks[3 * pool.maxConcurrency].isCanceled, isTrue);
 
@@ -188,8 +190,8 @@ void execute(TestContext testContext) {
         });
       });
 
-      group('- StreamTask', () {
-        test('- immediate with pool.cancel()', () async {
+      tc.group('- StreamTask', () {
+        tc.test('- immediate with pool.cancel()', () async {
           final digits = <int>[];
           final errors = <Exception>[];
 
@@ -199,8 +201,11 @@ void execute(TestContext testContext) {
             final done = Completer();
             futures.add(done.future);
             final task = pool.finiteTask(100);
-            task.stream.listen((n) => digits.add(n),
-                onError: (ex) => errors.add(ex), onDone: () => done.complete());
+            task.stream.listen(
+              digits.add,
+              onError: errors.add,
+              onDone: done.complete,
+            );
           }
           pool.cancel(null, 'Immediate cancelation');
 
@@ -216,15 +221,18 @@ void execute(TestContext testContext) {
               isTrue);
         });
 
-        test('- immediate with pool.cancel(task)', () async {
+        tc.test('- immediate with pool.cancel(task)', () async {
           final digits = <int>[];
           final errors = <Exception>[];
 
           final done = Completer();
 
           final task = pool.finiteTask(100);
-          task.stream.listen((n) => digits.add(n),
-              onError: (ex) => errors.add(ex), onDone: () => done.complete());
+          task.stream.listen(
+            digits.add,
+            onError: errors.add,
+            onDone: done.complete,
+          );
           pool.cancel(task, 'Immediate cancelation');
 
           await done.future;
@@ -236,15 +244,18 @@ void execute(TestContext testContext) {
               equals('Immediate cancelation'));
         });
 
-        test('- immediate with task.cancel()', () async {
+        tc.test('- immediate with task.cancel()', () async {
           final digits = <int>[];
           final errors = <Exception>[];
 
           final done = Completer();
 
           final task = pool.finiteTask(100);
-          task.stream.listen((n) => digits.add(n),
-              onError: (ex) => errors.add(ex), onDone: () => done.complete());
+          task.stream.listen(
+            digits.add,
+            onError: errors.add,
+            onDone: done.complete,
+          );
           task.cancel('Immediate cancelation');
 
           await done.future;
@@ -256,26 +267,31 @@ void execute(TestContext testContext) {
               contains('immediate cancelation'));
         });
 
-        test('- with pool.cancel()', () async {
-          final results = <int, List<dynamic>>{};
+        tc.test('- with pool.cancel()', () async {
+          final results = <int, List>{};
 
           final tasks = <Future>[];
           for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
             final completer = Completer();
             tasks.add(completer.future);
-            pool.finite(i + 1).listen((value) {
-              (results[i] ??= []).add(value);
-            }, onError: (error) {
-              (results[i] ??= []).add(error);
-            }, onDone: () {
-              completer.complete();
-            });
+            pool.finite(2 * i + 1).listen(
+                  (results[i] ??= []).add,
+                  onError: (results[i] ??= []).add,
+                  onDone: completer.complete,
+                );
           }
 
           expect(tasks.length, equals(2 * pool.maxConcurrency + 1));
-          expect(results, isEmpty);
+          expect(
+              results,
+              equals(
+                Map<int, List>.fromIterables(
+                  Iterable.generate(tasks.length),
+                  Iterable.generate(tasks.length, (_) => []),
+                ),
+              ));
 
-          await Future.delayed(TestService.delay * 5);
+          await Future.delayed(TestDelays.shortDelay * 5);
           pool.cancel();
 
           await Future.wait(tasks);
@@ -297,15 +313,15 @@ void execute(TestContext testContext) {
               .where((r) => r.whereType<CanceledException>().length > 1)
               .length;
 
-          expect(fullExecution, isPositive);
-          expect(partialExecution, isPositive);
-          expect(fullCancelation, isPositive);
-          expect(severalErrors, isZero);
+          expect(fullExecution, isPositive, reason: 'full exec');
+          expect(partialExecution, isPositive, reason: 'partial');
+          expect(fullCancelation, isPositive, reason: 'full cancel');
+          expect(severalErrors, isZero, reason: 'multiple errors');
           expect(fullExecution + partialExecution + fullCancelation,
               equals(tasks.length));
         });
 
-        test('- with pool.cancel(task)', () async {
+        tc.test('- with pool.cancel(task)', () async {
           final status = <int, String>{};
           int errors = 0;
 
@@ -338,7 +354,7 @@ void execute(TestContext testContext) {
           pool.cancel(tasks[0]);
           expect(tasks[0].isCanceled, isTrue);
 
-          await Future.delayed(TestService.delay * 2);
+          await Future.delayed(TestDelays.delay * 2);
           pool.cancel(tasks[2 * pool.maxConcurrency]); // will be canceled
           expect(tasks[2 * pool.maxConcurrency].isCanceled, isTrue);
 
@@ -358,7 +374,7 @@ void execute(TestContext testContext) {
               equals(2 * pool.maxConcurrency + 1 - errors));
         });
 
-        test('- with task.cancel()', () async {
+        tc.test('- with task.cancel()', () async {
           final status = <int, String>{};
           final firstTaskStarted = Completer();
           int errors = 0;
@@ -391,7 +407,7 @@ void execute(TestContext testContext) {
           tasks[0].cancel();
           expect(tasks[0].isCanceled, isTrue);
 
-          await Future.delayed(TestService.delay * 2.5);
+          await Future.delayed(TestDelays.delay * 2.5);
           tasks[2 * pool.maxConcurrency].cancel();
           expect(tasks[2 * pool.maxConcurrency].isCanceled, isTrue);
 
@@ -412,55 +428,15 @@ void execute(TestContext testContext) {
         });
       });
 
-      group('- CancelationToken', () {
-        test('- gets canceled', () async {
-          final cancelation = CancelableToken();
-
-          await Future.delayed(Duration(milliseconds: 5));
-          expect(cancelation.isCanceled, isFalse);
-
-          cancelation.cancel();
-
-          expect(cancelation.isCanceled, isTrue);
-        });
-
-        test('- notifies listeners', () async {
-          final cancelation = CancelableToken();
-
-          var notified = false;
-          cancelation.onCanceled.then((_) => notified = true);
-          await cancelation.cancel();
-
-          expect(cancelation.isCanceled, isTrue);
-          expect(notified, isTrue);
-        });
-
-        test('- notifies listeners when already canceled', () async {
-          final cancelation = CancelableToken();
-
-          var notified = false;
-
-          cancelation.cancel();
-          expect(cancelation.isCanceled, isTrue);
-          expect(notified, isFalse);
-
-          cancelation.onCanceled.then((_) => notified = true);
-
-          // needs an async call to execute the future continuation
-          await Future.delayed(Duration.zero);
-
-          expect(cancelation.isCanceled, isTrue);
-          expect(notified, isTrue);
-        });
-
-        test('- finite() worker', () async {
+      tc.group('- CancelationToken', () {
+        tc.test('- finite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 20;
 
           final cancelation = CancelableToken();
-          final timer = Timer(TestService.delay * N, cancelation.cancel);
+          final timer = Timer(TestDelays.shortDelay * N, cancelation.cancel);
 
           expect(cancelation.isCanceled, isFalse);
 
@@ -482,14 +458,14 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- infinite() worker', () async {
+        tc.test('- infinite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 20;
 
           final cancelation = CancelableToken();
-          final timer = Timer(TestService.delay * N, cancelation.cancel);
+          final timer = Timer(TestDelays.shortDelay * N, cancelation.cancel);
 
           try {
             await for (final n in worker.infinite(cancelation)) {
@@ -509,11 +485,11 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- finite() pool', () async {
+        tc.test('- finite() pool', () async {
           final L = 20;
 
           final cancelation = CancelableToken();
-          Future.delayed(TestService.delay * L * 1.5, cancelation.cancel);
+          Future.delayed(TestDelays.shortDelay * L * 1.5, cancelation.cancel);
 
           int success = 0;
           int errors = 0;
@@ -532,7 +508,7 @@ void execute(TestContext testContext) {
           expect(success, isZero);
           expect(errors, isZero);
 
-          await Future.delayed(TestService.delay);
+          await Future.delayed(TestDelays.delay);
 
           expect(pool.pendingWorkload, isPositive);
 
@@ -547,14 +523,14 @@ void execute(TestContext testContext) {
         });
       });
 
-      group('- TimeoutToken', () {
-        test('- finite() worker', () async {
+      tc.group('- TimeoutToken', () {
+        tc.test('- finite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 10;
 
-          final timeout = TimeoutToken(TestService.delay * N);
+          final timeout = TimeoutToken(TestDelays.shortDelay * N);
 
           try {
             await for (final n in worker.finite(50 * N, timeout)) {
@@ -572,13 +548,13 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- infinite() worker', () async {
+        tc.test('- infinite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 20;
 
-          final timeout = TimeoutToken(TestService.delay * N);
+          final timeout = TimeoutToken(TestDelays.shortDelay * N);
 
           try {
             await for (final n in worker.infinite(timeout)) {
@@ -595,10 +571,10 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- finite() pool', () async {
+        tc.test('- finite() pool', () async {
           final L = 10;
 
-          final timeout = TimeoutToken(TestService.delay * L * 1.75);
+          final timeout = TimeoutToken(TestDelays.shortDelay * L * 1.75);
 
           int success = 0;
           int errors = 0;
@@ -627,14 +603,14 @@ void execute(TestContext testContext) {
         });
       });
 
-      group('- CompositeToken', () {
-        test('- finite() worker', () async {
+      tc.group('- CompositeToken', () {
+        tc.test('- finite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 20;
 
-          final timeout1 = TimeoutToken(TestService.delay * N);
+          final timeout1 = TimeoutToken(TestDelays.shortDelay * N);
           final cancelation1 = CancelableToken();
           Timer(timeout1.timeout * 0.5, cancelation1.cancel);
           final composite1 = CompositeToken.any([timeout1, cancelation1]);
@@ -659,7 +635,7 @@ void execute(TestContext testContext) {
           digits.clear();
           count = 0;
 
-          final timeout2 = TimeoutToken(TestService.delay * N);
+          final timeout2 = TimeoutToken(TestDelays.shortDelay * N);
           final cancelation2 = CancelableToken();
           final composite2 = CompositeToken.any([timeout2, cancelation2]);
 
@@ -681,13 +657,13 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- infinite() worker', () async {
+        tc.test('- infinite() worker', () async {
           final digits = <int>[];
           int count = 0;
 
           final N = 20;
 
-          final timeout1 = TimeoutToken(TestService.delay * N);
+          final timeout1 = TimeoutToken(TestDelays.shortDelay * N);
           final cancelation1 = CancelableToken();
           Timer(timeout1.timeout * 0.5, cancelation1.cancel);
           final composite1 = CompositeToken.any([timeout1, cancelation1]);
@@ -712,7 +688,7 @@ void execute(TestContext testContext) {
           digits.clear();
           count = 0;
 
-          final timeout2 = TimeoutToken(TestService.delay * N);
+          final timeout2 = TimeoutToken(TestDelays.shortDelay * N);
           final cancelation2 = CancelableToken();
           final composite2 = CompositeToken.any([timeout2, cancelation2]);
 
@@ -731,10 +707,10 @@ void execute(TestContext testContext) {
           expect(digits, equals(Iterable.generate(count)));
         });
 
-        test('- finite() pool', () async {
+        tc.test('- finite() pool', () async {
           final L = 20;
 
-          final timeout1 = TimeoutToken(TestService.delay * L * 1.5);
+          final timeout1 = TimeoutToken(TestDelays.shortDelay * L * 1.5);
           final cancelation1 = CancelableToken();
           final composite1 = CompositeToken.any([timeout1, cancelation1]);
 
@@ -766,7 +742,7 @@ void execute(TestContext testContext) {
           expect(success + errors, equals(tasks.length));
 
           final timeout2 =
-              TimeoutToken(TestService.delay * 2 * pool.maxConcurrency * L);
+              TimeoutToken(TestDelays.shortDelay * 2 * pool.maxConcurrency * L);
           final token2 = CancelableToken();
           final composite2 = CompositeToken.any([timeout2, token2]);
 
@@ -788,7 +764,7 @@ void execute(TestContext testContext) {
           expect(success, isZero);
           expect(errors, isZero);
 
-          Timer(TestService.delay * L * 1.5, token2.cancel);
+          Timer(TestDelays.shortDelay * L * 1.5, token2.cancel);
 
           // wait for completion
           await Future.wait(tasks);

@@ -6,17 +6,25 @@ import 'package:squadron/squadron.dart';
 import 'cache_service.dart';
 
 class PrimeService implements WorkerService {
-  PrimeService([this._cache]);
+  PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache);
 
-  final Cache? _cache;
-
-  Future<bool> isPrime(int n) async {
-    bool? res = await _cache?.get(n);
-    if (res == true) return true;
-    res = _isPrime(n);
-    _cache?.set(n, res);
-    return res;
+  static FutureOr<bool> Function(int) _checkWith(Cache? cache) {
+    if (cache == null) {
+      return _isPrime;
+    } else {
+      return (int n) async {
+        bool? res = await cache.get(n);
+        if (res == true) return true;
+        res = _isPrime(n);
+        cache.set(n, res);
+        return res;
+      };
+    }
   }
+
+  final FutureOr<bool> Function(int n) _primeChecker;
+
+  FutureOr<bool> isPrime(int n) => _primeChecker(n);
 
   Stream<int> getPrimes(int min, int max) async* {
     for (var n in _getPrimeCandidates(min, max)) {

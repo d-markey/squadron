@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
+import 'package:using/using.dart';
 
 import '../_impl/xplat/_helpers.dart';
 import '../channel.dart';
@@ -21,7 +22,7 @@ import '../worker_service.dart';
 /// This base class takes care of creating the [Channel] and firing up the
 /// worker. Typically, derived classes should add proxy methods sending
 /// [WorkerRequest]s to the worker.
-abstract class Worker implements WorkerService, IWorker {
+abstract class Worker with Releasable implements WorkerService, IWorker {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint,
       {this.args = const [],
@@ -29,6 +30,12 @@ abstract class Worker implements WorkerService, IWorker {
       ExceptionManager? exceptionManager})
       : _threadHook = threadHook,
         _exceptionManager = exceptionManager;
+
+  @override
+  void release() {
+    stop();
+    super.release();
+  }
 
   /// The [Worker]'s entry point; typically, a top-level function in native
   /// world or the Uri to a JavaScript file in browser world.

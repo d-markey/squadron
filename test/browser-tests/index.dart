@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 
-import 'test_runner.dart';
+import '../classes/test_context.dart';
 
 @JS()
 external get dartPrint;
@@ -18,6 +18,14 @@ void main() async {
     testRunner.contentWindow
         ?.postMessage(message?.toString() ?? '(null)', origin);
   });
+
+  final logStatus = querySelector('#log-status')!;
+
+  void setStatus(String status) {
+    logStatus.innerText = ' - $status';
+  }
+
+  window.onMessage.listen((m) => setStatus(m.data?.toString() ?? '(null)'));
 
   final logHeader = querySelector('#log-header')!;
 
@@ -55,10 +63,6 @@ void main() async {
   final testList = querySelector('#test-list')!;
 
   void runTests([MouseEvent? _]) async {
-    for (var btn in buttonBar.children.whereType<ButtonElement>()) {
-      btn.disabled = true;
-    }
-
     final testIds = <String>[];
     for (var test in testList.children.whereType<CheckboxInputElement>()) {
       if (test.checked == true) {
@@ -67,10 +71,6 @@ void main() async {
     }
 
     testRunner.src = '${getTestRunnerUrl()}?${testIds.join('&')}';
-
-    for (var btn in buttonBar.children.whereType<ButtonElement>()) {
-      btn.disabled = false;
-    }
   }
 
   void selectAll([MouseEvent? _]) async {
@@ -91,6 +91,10 @@ void main() async {
     }
   }
 
+  void cancel([MouseEvent? _]) {
+    testRunner.contentWindow?.postMessage(TestContext.cancelled, origin);
+  }
+
   buttonBar.append(ButtonElement()
     ..text = 'Run selected tests'
     ..onClick.listen(runTests));
@@ -107,6 +111,10 @@ void main() async {
     ..text = 'Toggle'
     ..onClick.listen(toggle));
 
+  buttonBar.append(ButtonElement()
+    ..text = 'Cancel'
+    ..onClick.listen(cancel));
+
   buttonBar.append(CheckboxInputElement()
     ..id = 'wasm-workers'
     ..checked = false);
@@ -122,19 +130,19 @@ void main() async {
     ..htmlFor = 'wasm-client');
 
   var n = 0;
-  for (var label in getExecutorLabels()) {
+  for (var label in TestContext.rootGroups) {
     if (n++ > 0) {
       testList.appendHtml(' | ');
     }
-    final id = getTestId(label);
     testList.append(CheckboxInputElement()
-      ..id = id
+      ..id = label
       ..checked = true);
     testList.append(LabelElement()
       ..text = label
-      ..htmlFor = id);
+      ..htmlFor = label);
   }
 
+  setStatus('Ready');
   print('Ready');
   print('');
 }
