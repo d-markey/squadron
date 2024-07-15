@@ -24,9 +24,9 @@ void execute(TestContext tc) {
     final regExp = RegExp(
         'Worker running as "(0x[0-9A-Fa-f]+)", LocalService running as "(0x[0-9A-Fa-f]+)"');
 
-    tc.group("- LocalWorker", () {
+    tc.group("- Local Worker", () {
       tc.group('- Identity', () {
-        tc.test('- LocalWorker', () async {
+        tc.test('- Local', () async {
           var id = localService.getId();
           expect(id, equals('LocalService running as "$threadId"'));
 
@@ -39,7 +39,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
+        tc.test('- Squadron', () async {
           await LocalWorker.create(
             localService,
           ).useAsync((localWorker) async {
@@ -56,7 +56,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- WorkerPool', () async {
+        tc.test('- Pool', () async {
           await LocalWorker.create(
             localService,
           ).useAsync((localWorker) async {
@@ -89,7 +89,7 @@ void execute(TestContext tc) {
       });
 
       tc.group('- Exception', () {
-        tc.test('- LocalWorker', () async {
+        tc.test('- Local', () async {
           try {
             final res = localService.throwException();
             throw unexpectedSuccess('throwException()', res);
@@ -111,7 +111,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
+        tc.test('- Squadron', () async {
           final localWorker = LocalWorker.create(localService);
 
           await LocalClientWorker(
@@ -123,7 +123,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- WorkerPool', () async {
+        tc.test('- Pool', () async {
           await LocalWorker.create(
             localService,
           ).useAsync((localWorker) async {
@@ -149,7 +149,7 @@ void execute(TestContext tc) {
       });
 
       tc.group('- Stream', () {
-        tc.test('- LocalWorker', () async {
+        tc.test('- Local', () async {
           var res1 = await localService.sequence(19).toList();
           expect(res1, equals(Iterable.generate(19)));
 
@@ -162,7 +162,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
+        tc.test('- Squadron', () async {
           await LocalWorker.create(
             localService,
           ).useAsync((localWorker) async {
@@ -177,7 +177,7 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- WorkerPool', () async {
+        tc.test('- Pool', () async {
           await LocalWorker.create(
             localService,
           ).useAsync((localWorker) async {

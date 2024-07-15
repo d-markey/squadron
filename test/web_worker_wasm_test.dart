@@ -4,6 +4,7 @@ library;
 import 'dart:async';
 import 'dart:js_interop';
 
+import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_channel.dart';
 import 'package:squadron/src/_impl/web/_patch.dart';
 import 'package:squadron/src/worker/worker_response.dart';
@@ -76,10 +77,10 @@ void execute(TestContext tc) {
           final ready = Completer<bool>();
           final completer = Completer<String>();
 
-          final errorHandler = (JSAny? event) {
-            final err = _errorFromEvent(event);
-            completer.completeError(err);
+          final errorHandler = (JSAny? e) {
+            final err = _errorFromEvent(e);
             ready.completeError(err);
+            completer.completeError(err);
           }.toJS;
 
           worker.onerror = errorHandler;
@@ -87,13 +88,8 @@ void execute(TestContext tc) {
 
           // instal handler waiting for ready signal
           worker.onmessage = (MessageEvent e) {
-            final msg = getMessageEventData('worker.onmessage', e);
-            final resp = WorkerResponseExt.from(msg);
-            try {
-              ready.complete(resp.result);
-            } catch (error) {
-              ready.completeError(error);
-            }
+            final status = WorkerResponseExt.from(e.data.dartify() as List);
+            ready.complete(status.result);
           }.toJS;
 
           final ok = await ready.future;
@@ -101,12 +97,7 @@ void execute(TestContext tc) {
 
           // ready: now instal message handler
           worker.onmessage = (MessageEvent e) {
-            getMessageEventData('worker.onmessage', e);
-            try {
-              completer.complete(e.data.dartify()?.toString() ?? '');
-            } catch (error) {
-              completer.completeError(error);
-            }
+            completer.complete(e.data.dartify()?.toString() ?? '');
           }.toJS;
 
           // everything is setup: worker can be used from now on
@@ -137,12 +128,7 @@ void execute(TestContext tc) {
           worker.onmessageerror = errorHandler;
 
           worker.onmessage = (MessageEvent e) {
-            getMessageEventData('worker.onmessage', e);
-            try {
-              completer.complete(e.data?.dartify().toString());
-            } catch (error) {
-              completer.completeError(error);
-            }
+            completer.complete(e.data?.dartify().toString());
           }.toJS;
 
           worker.postMessage('Hello'.toJS);
@@ -163,7 +149,6 @@ void execute(TestContext tc) {
           final completer = Completer<String>();
 
           final errorHandler = (ErrorEvent event) {
-            getErrorEventError('errorHandler', event);
             final err = _errorFromEvent(event);
             completer.completeError(err);
           }.toJS;
@@ -172,17 +157,14 @@ void execute(TestContext tc) {
           worker.onmessageerror = errorHandler;
 
           worker.onmessage = (MessageEvent e) {
-            try {
-              final msg = e.data.dartify();
-              if (msg is List && !connected) {
-                final err = WorkerResponseExt.from(msg).error;
-                if (err != null) throw err;
-                connected = true;
-                return;
-              }
-              completer.complete(msg.toString());
-            } catch (error) {
-              completer.completeError(error);
+            final data = getMessageEventData('worker.onmessage', e);
+            print('processing $data');
+            final res = WorkerResponseExt.from(data);
+            if (!res.unwrapInPlace(ExceptionManager(), null)) return;
+            if (res.error != null) {
+              completer.completeError(res.error!);
+            } else {
+              completer.complete('processed message with result ${res.result}');
             }
           }.toJS;
 
@@ -216,7 +198,6 @@ void execute(TestContext tc) {
           final completer = Completer<String>();
 
           final errorHandler = (ErrorEvent event) {
-            getErrorEventError('errorHandler', event);
             final err = _errorFromEvent(event);
             completer.completeError(err);
           }.toJS;
@@ -225,18 +206,14 @@ void execute(TestContext tc) {
           worker.onmessageerror = errorHandler;
 
           worker.onmessage = (MessageEvent e) {
-            getMessageEventData('worker.onmessage', e);
-            try {
-              final msg = e.data.dartify();
-              if (msg is List && !connected) {
-                final err = WorkerResponseExt.from(msg).error;
-                if (err != null) throw err;
-                connected = true;
-                return;
-              }
-              completer.complete(msg.toString());
-            } catch (error) {
-              completer.completeError(error);
+            final data = getMessageEventData('worker.onmessage', e);
+            print('processing $data');
+            final res = WorkerResponseExt.from(data);
+            if (!res.unwrapInPlace(ExceptionManager(), null)) return;
+            if (res.error != null) {
+              completer.completeError(res.error!);
+            } else {
+              completer.complete('processed message with result ${res.result}');
             }
           }.toJS;
 

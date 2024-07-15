@@ -40,12 +40,9 @@ extension TestEntryPointsExt on TestEntryPoints {
     test = Uri.parse('$root/test_worker.dart.$ext');
 
     inMemory = Uri.parse(
-        'data:application/javascript;base64,${base64Encode(utf8.encode('''onmessage = (e) => {
-  console.log("Message received from main script");
-  const workerResult = `ECHO "\${e.data}"`;
-  console.log("Posting message back to main script");
-  postMessage(workerResult);
-};'''))}');
+        'data:application/javascript;base64,${base64Encode(utf8.encode('''
+onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };
+'''))}');
 
     await _checkWebWorkers(defined);
 

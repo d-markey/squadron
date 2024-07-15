@@ -410,21 +410,13 @@ Future<Channel> openChannel(EntryPoint entryPoint,
 
     startRequest.wrapInPlace();
     final msg = startRequest.jsify();
-    final transfer = Transferables.get(startRequest.data)?.jsify();
-    // try {
-    _post(
-        logger,
-        startRequest,
-        () => (transfer == null)
-            ? worker.postMessage(msg)
-            : worker.postMessage(msg, transfer as JSArray));
-    // } catch (ex, st) {
-    //   com.port1.close();
-    //   com.port2.close();
-    //   logger?.e(
-    //       () => 'failed to post connection request $startRequest: error $ex');
-    //   fail(SquadronException.from(ex, st));
-    // }
+    final transfer = Transferables.get(startRequest.data);
+    if (transfer == null || transfer.isEmpty) {
+      _post(logger, startRequest, () => worker.postMessage(msg));
+    } else {
+      final jsTransfer = transfer.jsify() as JSArray;
+      _post(logger, startRequest, () => worker.postMessage(msg, jsTransfer));
+    }
 
     final channel = await completer.future;
 

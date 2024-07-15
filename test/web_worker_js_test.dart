@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:html' as web show Worker;
 import 'dart:html' hide Worker;
 
+import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_channel.dart';
 import 'package:squadron/src/worker/worker_response.dart';
 import 'package:test/test.dart';
@@ -40,23 +41,56 @@ void execute(TestContext tc) {
           worker.onError.listen((e) {
             final err = _errorFromEvent(e);
             completer.completeError(err);
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
           });
 
           worker.onMessage.listen((e) {
-            print('[worker.onMessage] received $e ${e.runtimeType} ${e.data}');
-            try {
-              completer.complete(e.data);
-            } catch (ex) {
-              completer.complete(ex.toString());
-            }
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
+            completer.complete(e.data);
           });
 
           worker.postMessage('Hello');
           var res = await completer.future;
+          expect(res, equals('ECHO "Hello"'));
+        } finally {
+          if (ep.revoke) {
+            Url.revokeObjectUrl(ep.url);
+          }
+          worker.terminate();
+        }
+      });
+
+      tc.test('- classic Web Worker', () async {
+        final ep = getEntryPointUrl(tc.entryPoints.echo!);
+        final worker = web.Worker(ep.url);
+        expect(worker, isNotNull);
+
+        try {
+          final ready = Completer<bool>();
+          final completer = Completer<String>();
+
+          worker.onError.listen((e) {
+            final err = _errorFromEvent(e);
+            ready.completeError(err);
+            completer.completeError(err);
+          });
+
+          // instal listener waiting for ready signal
+          StreamSubscription? readySub;
+          readySub = worker.onMessage.listen((MessageEvent e) {
+            readySub!.cancel();
+            final status = WorkerResponseExt.from(e.data as List);
+            ready.complete(status.result);
+          });
+          final ok = await ready.future;
+          expect(ok, isTrue);
+
+          // ready: now instal message handler
+          worker.onMessage.listen((MessageEvent e) {
+            completer.complete(e.data?.toString() ?? '');
+          });
+
+          // everything is setup: worker can be used from now on
+          worker.postMessage('Hello');
+          final res = await completer.future;
           expect(res, equals('ECHO "Hello"'));
         } finally {
           if (ep.revoke) {
@@ -75,73 +109,16 @@ void execute(TestContext tc) {
           worker.onError.listen((event) {
             final err = _errorFromEvent(event);
             completer.completeError(err);
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
           });
 
           worker.onMessage.listen((MessageEvent e) {
-            try {
-              completer.complete(e.data);
-            } catch (error) {
-              completer.completeError(error);
-            }
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
+            completer.complete(e.data);
           });
 
           worker.postMessage('Hello');
           var res = await completer.future;
           expect(res, equals('ECHO "Hello"'));
         } finally {
-          worker.terminate();
-        }
-      });
-
-      tc.test('- classic Web Worker', () async {
-        final ep = getEntryPointUrl(tc.entryPoints.echo!);
-        final worker = web.Worker(ep.url);
-        expect(worker, isNotNull);
-
-        try {
-          final ready = Completer<bool>();
-          final completer = Completer<String>();
-          worker.onError.listen((event) {
-            final err = _errorFromEvent(event);
-            ready.completeError(err);
-            completer.completeError(err);
-          });
-
-          // instal listener waiting for ready signal
-          StreamSubscription? readySub;
-          readySub = worker.onMessage.listen((MessageEvent e) {
-            try {
-              readySub!.cancel();
-              final status = (e.data as List)[1];
-              ready.complete(status);
-            } catch (error) {
-              ready.completeError(error);
-            }
-          });
-          final ok = await ready.future;
-          expect(ok, isTrue);
-
-          // ready: now instal message handler
-          worker.onMessage.listen((MessageEvent e) {
-            try {
-              completer.complete(e.data?.toString() ?? '');
-            } catch (error) {
-              completer.completeError(error);
-            }
-          });
-
-          // everything is setup: worker can be used from now on
-          worker.postMessage('Hello');
-          final res = await completer.future;
-          expect(res, equals('ECHO "Hello"'));
-        } finally {
-          if (ep.revoke) {
-            Url.revokeObjectUrl(ep.url);
-          }
           worker.terminate();
         }
       });
@@ -156,29 +133,20 @@ void execute(TestContext tc) {
           final completer = Completer<String>();
 
           worker.onError.listen((event) {
-            print('worker.onError');
             final err = _errorFromEvent(event);
             completer.completeError(err);
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
           });
 
           worker.onMessage.listen((MessageEvent e) {
-            print('worker.onMessage');
-            try {
-              final msg = e.data;
-              if (msg is List && !connected) {
-                final err = WorkerResponseExt.from(msg).error;
-                if (err != null) throw err;
-                connected = true;
-                return;
-              }
-              completer.complete(msg.toString());
-            } catch (error) {
-              completer.completeError(error);
+            final data = e.data;
+            print('processing $data');
+            final res = WorkerResponseExt.from(data);
+            if (!res.unwrapInPlace(ExceptionManager(), null)) return;
+            if (res.error != null) {
+              completer.completeError(res.error!);
+            } else {
+              completer.complete('processed message with result ${res.result}');
             }
-          }, onError: (ex, st) {
-            completer.completeError(ex, st);
           });
 
           var success = false;
@@ -216,17 +184,14 @@ void execute(TestContext tc) {
           });
 
           worker.onMessage.listen((e) {
-            try {
-              final msg = e.data;
-              if (msg is List && !connected) {
-                final err = WorkerResponseExt.from(msg).error;
-                if (err != null) throw err;
-                connected = true;
-                return;
-              }
-              completer.complete(msg.toString());
-            } catch (error) {
-              completer.completeError(error);
+            final data = e.data;
+            print('processing $data');
+            final res = WorkerResponseExt.from(data);
+            if (!res.unwrapInPlace(ExceptionManager(), null)) return;
+            if (res.error != null) {
+              completer.completeError(res.error!);
+            } else {
+              completer.complete('processed message with result ${res.result}');
             }
           });
 

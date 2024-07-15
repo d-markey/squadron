@@ -65,6 +65,17 @@ class TestContext {
 
   String _testPath = '';
 
+  void skip(String label, dynamic Function() body, {bool skip = false}) {
+    final savedPath = _testPath;
+    if (_testPath.isNotEmpty) _testPath += ' ';
+    _testPath += label;
+    if (!_knownTests.contains(_testPath)) {
+      print('Unregistered test $_testPath');
+    }
+    print('Skip test $_testPath');
+    _testPath = savedPath;
+  }
+
   void test(String label, dynamic Function() body, {bool skip = false}) {
     final savedPath = _testPath;
     if (_testPath.isNotEmpty) _testPath += ' ';
@@ -114,14 +125,18 @@ class TestContext {
     _testPath = savedPath;
   }
 
-  void group(String label, dynamic Function() body) {
+  void group(String label, dynamic Function() body, {bool skip = false}) {
     final savedPath = _testPath;
     if (_testPath.isNotEmpty) _testPath += ' ';
     _testPath += label;
     if (!_knownGroups.contains(_testPath)) {
       print('Unregistered group $_testPath');
     }
-    env.group(label, body);
+    if (!skip) {
+      env.group(label, body);
+    } else {
+      // print('Ignored test: "$label"');
+    }
     _testPath = savedPath;
   }
 
@@ -184,15 +199,15 @@ class TestContext {
     '- WorkerPool - Streaming - with multiple errors - pause/resume',
     '- WorkerPool - Streaming - with multiple errors - pause/resume/cancel - using a StreamTask',
     '- WorkerPool - Streaming - with multiple errors - immediate cancelation',
-    '- LocalWorker - Identity - LocalWorker',
-    '- LocalWorker - Identity - Squadron Worker',
-    '- LocalWorker - Identity - WorkerPool',
-    '- LocalWorker - Exception - LocalWorker',
-    '- LocalWorker - Exception - Squadron Worker',
-    '- LocalWorker - Exception - WorkerPool',
-    '- LocalWorker - Stream - LocalWorker',
-    '- LocalWorker - Stream - Squadron Worker',
-    '- LocalWorker - Stream - WorkerPool',
+    '- Local Worker - Identity - Local',
+    '- Local Worker - Identity - Squadron',
+    '- Local Worker - Identity - Pool',
+    '- Local Worker - Exception - Local',
+    '- Local Worker - Exception - Squadron',
+    '- Local Worker - Exception - Pool',
+    '- Local Worker - Stream - Local',
+    '- Local Worker - Stream - Squadron',
+    '- Local Worker - Stream - Pool',
     '- Logging off',
     '- Logging >= fatal',
     '- Logging >= error',
@@ -244,10 +259,10 @@ class TestContext {
     '- WorkerPool - initialization error',
     '- WorkerPool - error handling',
     '- WorkerPool - Streaming',
-    '- LocalWorker',
-    '- LocalWorker - Identity',
-    '- LocalWorker - Exception',
-    '- LocalWorker - Stream',
+    '- Local Worker',
+    '- Local Worker - Identity',
+    '- Local Worker - Exception',
+    '- Local Worker - Stream',
     '- Logging',
     '- Marshaler',
     '- Cancelation',

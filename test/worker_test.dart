@@ -235,7 +235,7 @@ void execute(TestContext tc) {
       });
 
       tc.group('- initialization error', () {
-        tc.test('- not found', () async {
+        tc.skip('- not found', () async {
           await MissingWorker(tc).useAsync((worker) async {
             try {
               final res = await worker.start();

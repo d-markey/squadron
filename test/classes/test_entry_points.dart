@@ -32,5 +32,5 @@ class TestEntryPoints {
         failedInit,
         invalidCommand,
         missingStartRequest,
-      ].where((e) => e != null).cast<EntryPoint>();
+      ].nonNulls;
 }
