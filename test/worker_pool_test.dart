@@ -381,6 +381,8 @@ void execute(TestContext tc) {
           final n = await pool.delayed(-1);
           expect(n, equals(-1));
 
+          pool.stop();
+
           try {
             final n = await pool.delayed(-1);
             throw unexpectedSuccess('delayed()', n);

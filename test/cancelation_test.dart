@@ -489,12 +489,12 @@ void execute(TestContext tc) {
           final L = 20;
 
           final cancelation = CancelableToken();
-          Future.delayed(TestDelays.shortDelay * L * 1.5, cancelation.cancel);
+          Future.delayed(TestDelays.shortDelay * L * 1.8, cancelation.cancel);
 
           int success = 0;
           int errors = 0;
 
-          final tasks = <Future>[];
+          final tasks = <Future<List<int>>>[];
           for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
             tasks.add(pool.finite(L, cancelation).toList().then((list) {
               success++;
@@ -572,14 +572,14 @@ void execute(TestContext tc) {
         });
 
         tc.test('- finite() pool', () async {
-          final L = 10;
+          final L = 20;
 
-          final timeout = TimeoutToken(TestDelays.shortDelay * L * 1.75);
+          final timeout = TimeoutToken(TestDelays.shortDelay * L * 1.8);
 
           int success = 0;
           int errors = 0;
 
-          final tasks = <Future>[];
+          final tasks = <Future<List<int>>>[];
           for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
             tasks.add(pool.finite(L, timeout).toList().then((list) {
               success++;
@@ -592,6 +592,10 @@ void execute(TestContext tc) {
 
           expect(success, isZero);
           expect(errors, isZero);
+
+          await Future.delayed(TestDelays.delay);
+
+          expect(pool.pendingWorkload, isPositive);
 
           await Future.wait(tasks);
 
@@ -710,7 +714,7 @@ void execute(TestContext tc) {
         tc.test('- finite() pool', () async {
           final L = 20;
 
-          final timeout1 = TimeoutToken(TestDelays.shortDelay * L * 1.5);
+          final timeout1 = TimeoutToken(TestDelays.shortDelay * L * 1.8);
           final cancelation1 = CancelableToken();
           final composite1 = CompositeToken.any([timeout1, cancelation1]);
 
@@ -718,7 +722,7 @@ void execute(TestContext tc) {
           int errors = 0;
 
           // launch 2 * pool.maxConcurrency + 1 tasks of length L ==> one task executes in ~ L * delay
-          final tasks = <Future>[];
+          final tasks = <Future<List<int>>>[];
           for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
             tasks.add(pool.finite(L, composite1).toList().then((list) {
               success++;
@@ -732,10 +736,14 @@ void execute(TestContext tc) {
           expect(success, isZero);
           expect(errors, isZero);
 
+          await Future.delayed(TestDelays.delay);
+
+          expect(pool.pendingWorkload, isPositive);
+
           // wait for completion
           await Future.wait(tasks);
 
-          // timeout set to 1.5 * L * delay ==> only pool.maxConcurrency task should have completed
+          // timeout set to 1.8 * L * delay ==> only pool.maxConcurrency task should have completed
           expect(timeout1.isCanceled, isTrue);
           expect(cancelation1.isCanceled, isFalse);
           expect(success, equals(pool.maxConcurrency));
@@ -764,12 +772,12 @@ void execute(TestContext tc) {
           expect(success, isZero);
           expect(errors, isZero);
 
-          Timer(TestDelays.shortDelay * L * 1.5, token2.cancel);
+          Timer(TestDelays.shortDelay * L * 1.8, token2.cancel);
 
           // wait for completion
           await Future.wait(tasks);
 
-          // token2 was canceled after 1.5 * L * delay ==> only pool.maxConcurrency task should have completed
+          // token2 was canceled after 1.8 * L * delay ==> only pool.maxConcurrency task should have completed
           expect(timeout2.isCanceled, isFalse);
           expect(token2.isCanceled, isTrue);
           expect(success, equals(pool.maxConcurrency));
