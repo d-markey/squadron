@@ -13,9 +13,6 @@ import '_worker_runner.dart';
 class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _WebLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
-    _port.port1.onmessageerror = (err) {
-      print('[$runtimeType] onmessageerror ${err.runtimeType} $err');
-    }.toJS;
     _port.port1.onmessage = runner.handle.toJS;
     _channel = Channel.deserialize(
         _port.port2, runner.internalLogger, exceptionManager);

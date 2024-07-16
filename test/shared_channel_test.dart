@@ -18,7 +18,7 @@ String testScript = 'shared_channel_test.dart';
 void execute(TestContext tc) {
   tc.run(() {
     tc.group("- Shared Channel", () {
-      tc.skip('- cache worker', () async {
+      tc.test('- cache worker', () async {
         final cache = CacheWorker(tc);
 
         expect(await cache.get(1), isNull);

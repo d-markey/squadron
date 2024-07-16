@@ -17,16 +17,6 @@ import '../xplat/_user_code.dart';
 import '../xplat/_value_wrapper.dart';
 import '_patch.dart';
 
-void _post(Logger? logger, WorkerMessage message, void Function() post) {
-  try {
-    post();
-  } catch (ex, st) {
-    print('failed to post message $message: $ex');
-    logger?.e(() => 'failed to post message $message: $ex');
-    throw SquadronErrorExt.create('Failed to post message: $ex', st);
-  }
-}
-
 class _BaseWebChannel {
   _BaseWebChannel._(this._sendPort, this._logger);
 
@@ -40,51 +30,67 @@ class _BaseWebChannel {
   PlatformChannel serialize() => _sendPort;
 
   void _postRequest(WorkerRequest req) {
-    req.cancelToken?.ensureStarted();
-    req.wrapInPlace();
-    final msg = req.jsify();
-    final transfer = Transferables.get([req.channelInfo])?.jsify();
-    _post(
-        _logger,
-        req,
-        () => (transfer == null)
-            ? _sendPort.postMessage(msg)
-            : _sendPort.postMessage(msg, transfer as JSArray));
+    try {
+      req.cancelToken?.ensureStarted();
+      final data = req.wrapInPlace();
+      final msg = data.jsify();
+      final transfer = Transferables.get([req.channelInfo]);
+      if (transfer == null || transfer.isEmpty) {
+        _sendPort.postMessage(msg);
+      } else {
+        final jsTransfer = transfer.jsify() as JSArray;
+        _sendPort.postMessage(msg, jsTransfer);
+      }
+    } catch (ex, st) {
+      _logger?.e(() => 'failed to post message $req: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
+    }
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
-    req.cancelToken?.ensureStarted();
-    req.wrapInPlace();
-    final msg = req.jsify();
-    final transfer = Transferables.get(req.data)?.jsify();
-    _post(
-        _logger,
-        req,
-        () => (transfer == null)
-            ? _sendPort.postMessage(msg)
-            : _sendPort.postMessage(msg, transfer as JSArray));
+    try {
+      req.cancelToken?.ensureStarted();
+      final data = req.wrapInPlace();
+      final msg = data.jsify();
+      final transfer = Transferables.get(data);
+      if (transfer == null || transfer.isEmpty) {
+        _sendPort.postMessage(msg);
+      } else {
+        final jsTransfer = transfer.jsify() as JSArray;
+        _sendPort.postMessage(msg, jsTransfer);
+      }
+    } catch (ex, st) {
+      _logger?.e(() => 'failed to post message $req: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
+    }
   }
 
   void _postResponse(WorkerResponse res) {
-    res.wrapInPlace();
-    final msg = res.jsify();
-    _post(
-      _logger,
-      res,
-      () => _sendPort.postMessage(msg),
-    );
+    try {
+      final data = res.wrapInPlace();
+      final msg = data.jsify();
+      _sendPort.postMessage(msg);
+    } catch (ex, st) {
+      _logger?.e(() => 'failed to post message $res: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
+    }
   }
 
   void _inspectAndPostResponse(WorkerResponse res) {
-    res.wrapInPlace();
-    final msg = res.jsify();
-    final transfer = Transferables.get(res.data)?.jsify();
-    _post(
-        _logger,
-        res,
-        () => (transfer == null)
-            ? _sendPort.postMessage(msg)
-            : _sendPort.postMessage(msg, transfer as JSArray));
+    try {
+      final data = res.wrapInPlace();
+      final msg = data.jsify();
+      final transfer = Transferables.get(data);
+      if (transfer == null || transfer.isEmpty) {
+        _sendPort.postMessage(msg);
+      } else {
+        final jsTransfer = transfer.jsify() as JSArray;
+        _sendPort.postMessage(msg, jsTransfer);
+      }
+    } catch (ex, st) {
+      _logger?.e(() => 'failed to post message $res: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
+    }
   }
 }
 
@@ -126,11 +132,12 @@ class _WebChannel extends _BaseWebChannel implements Channel {
 
     final com = web.MessageChannel();
     com.port1.onmessageerror = (web.ErrorEvent e) {
-      final msg = getErrorEventMessage('com.port1.onmessageerror', e);
-      controller.addError(SquadronErrorExt.create(msg));
+      var err = getErrorEventError(e);
+      err = SquadronErrorExt.create(err?.toString() ?? getErrorEventMessage(e));
+      controller.addError(err);
     }.toJS;
     com.port1.onmessage = (web.MessageEvent e) {
-      final data = getMessageEventData('com.port1.onmessage', e);
+      final data = getMessageEventData(e) as List;
       controller.add(WorkerResponseExt.from(data));
     }.toJS;
 
@@ -168,11 +175,8 @@ class _WebChannel extends _BaseWebChannel implements Channel {
     final controller = StreamController<WorkerResponse>();
 
     final com = web.MessageChannel();
-    com.port1.onmessageerror = (web.ErrorEvent e) {
-      getErrorEventError('com.port1.onmessageerror', e);
-    }.toJS;
     com.port1.onmessage = (web.MessageEvent e) {
-      final msg = getMessageEventData('com.port1.onmessage', e);
+      final msg = getMessageEventData(e) as List;
       controller.add(WorkerResponseExt.from(msg));
     }.toJS;
 
@@ -250,9 +254,6 @@ class _WebForwardChannel extends _WebChannel {
   _WebForwardChannel._(this._remote, this._com, Logger? logger,
       ExceptionManager exceptionManager)
       : super._(_com.port2, logger, exceptionManager) {
-    _com.port1.onmessageerror = (err) {
-      getErrorEventError('_com.port1.onmessageerror', err);
-    }.toJS;
     _com.port1.onmessage = _forward.toJS;
   }
 
@@ -268,17 +269,17 @@ class _WebForwardChannel extends _WebChannel {
       throw SquadronErrorExt.create('Channel is closed');
     }
     try {
-      final msg = getMessageEventData('_forward', e);
-      final message = WorkerRequestExt.from(msg);
-      final transfer = Transferables.get(msg)?.jsify();
-      _post(
-          _logger,
-          message,
-          () => (transfer == null)
-              ? _remote.postMessage(e.data)
-              : _sendPort.postMessage(e.data, transfer as JSArray));
+      final data = getMessageEventData(e) as List;
+      final transfer = Transferables.get(data);
+      if (transfer == null || transfer.isEmpty) {
+        _remote.postMessage(e.data);
+      } else {
+        final jsTransfer = transfer.jsify() as JSArray;
+        _remote.postMessage(e.data, jsTransfer);
+      }
     } catch (ex, st) {
-      print('FORWARD FAILED: $ex / $st');
+      _logger?.e(() => 'failed to post message $e: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
     }
   }
 
@@ -317,7 +318,6 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     if (!ready.isCompleted) {
       throw SquadronErrorExt.create('Invalid state: worker is not ready');
     }
-    // REVIEW HERE
     if (!completer.isCompleted) completer.complete(channel);
   }
 
@@ -326,9 +326,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
     setDbgId(worker, '${webEntryPoint.url}#');
 
     worker.onerror = (web.ErrorEvent? e) {
-      final errr = getErrorEventError('worker.onerror', e);
-
-      var err = e?.error?.dartify() ?? errr;
+      var err = getErrorEventError(e);
       if (err is List) {
         err = exceptionManager.deserialize(err);
       }
@@ -359,7 +357,7 @@ Future<Channel> openChannel(EntryPoint entryPoint,
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
-        final msg = getMessageEventData('worker.onmessage', e);
+        final msg = getMessageEventData(e) as List;
         final response = WorkerResponseExt.from(msg);
         if (!response.unwrapInPlace(exceptionManager, logger)) {
           return;
@@ -381,11 +379,8 @@ Future<Channel> openChannel(EntryPoint entryPoint,
 
     final startRequest = WorkerRequest.start(com.port2, startArguments);
 
-    com.port1.onmessageerror = (web.ErrorEvent e) {
-      getErrorEventError('com.port1.onmessageerror', e);
-    }.toJS;
     com.port1.onmessage = (web.MessageEvent e) {
-      final msg = getMessageEventData('com.port1.onmessage', e);
+      final msg = getMessageEventData(e) as List;
       final response = WorkerResponseExt.from(msg);
       if (!response.unwrapInPlace(exceptionManager, logger)) {
         return;
@@ -400,7 +395,6 @@ Future<Channel> openChannel(EntryPoint entryPoint,
           logger?.t('connected to Web Worker');
           final channel =
               _WebChannel._(response.result, logger, exceptionManager);
-          // REVIEW HERE
           success(channel);
         }
       } else {
@@ -408,14 +402,19 @@ Future<Channel> openChannel(EntryPoint entryPoint,
       }
     }.toJS;
 
-    startRequest.wrapInPlace();
-    final msg = startRequest.jsify();
-    final transfer = Transferables.get(startRequest.data);
-    if (transfer == null || transfer.isEmpty) {
-      _post(logger, startRequest, () => worker.postMessage(msg));
-    } else {
-      final jsTransfer = transfer.jsify() as JSArray;
-      _post(logger, startRequest, () => worker.postMessage(msg, jsTransfer));
+    try {
+      final data = startRequest.wrapInPlace();
+      final msg = data.jsify();
+      final transfer = Transferables.get(data);
+      if (transfer == null || transfer.isEmpty) {
+        worker.postMessage(msg);
+      } else {
+        final jsTransfer = transfer.jsify() as JSArray;
+        worker.postMessage(msg, jsTransfer);
+      }
+    } catch (ex, st) {
+      logger?.e(() => 'failed to post message $startRequest: $ex');
+      throw SquadronErrorExt.create('Failed to post message: $ex', st);
     }
 
     final channel = await completer.future;

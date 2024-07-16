@@ -157,8 +157,7 @@ void execute(TestContext tc) {
           worker.onmessageerror = errorHandler;
 
           worker.onmessage = (MessageEvent e) {
-            final data = getMessageEventData('worker.onmessage', e);
-            print('processing $data');
+            final data = getMessageEventData(e) as List;
             final res = WorkerResponseExt.from(data);
             if (!res.unwrapInPlace(ExceptionManager(), null)) return;
             if (res.error != null) {
@@ -206,8 +205,7 @@ void execute(TestContext tc) {
           worker.onmessageerror = errorHandler;
 
           worker.onmessage = (MessageEvent e) {
-            final data = getMessageEventData('worker.onmessage', e);
-            print('processing $data');
+            final data = getMessageEventData(e) as List;
             final res = WorkerResponseExt.from(data);
             if (!res.unwrapInPlace(ExceptionManager(), null)) return;
             if (res.error != null) {

@@ -13,48 +13,27 @@ String getDbgId(JSObject obj) {
       : '($_dbgIdProp not set)';
 }
 
-String getErrorEventMessage(String tracer, JSObject? obj,
-    [String message = 'Unknown error']) {
-  String msg;
+String getErrorEventMessage(JSObject? obj, [String message = 'Unknown error']) {
   if (obj != null && obj.has('message')) {
-    msg = obj['message']?.toString() ?? message;
+    return obj['message']?.toString() ?? message;
   } else {
-    msg = message;
+    return message;
   }
-  Object? err;
-  if (obj != null && obj.has('error')) {
-    err = obj['error'].dartify();
-  } else {
-    err = null;
-  }
-  print('[$tracer] ERROR MESSAGE ${obj.runtimeType} $obj $msg / $err');
-  return msg;
 }
 
-Object? getErrorEventError(String tracer, JSObject? obj) {
-  String msg;
-  if (obj != null && obj.has('message')) {
-    msg = obj['message']?.toString() ?? '???';
-  } else {
-    msg = '???';
-  }
-  Object? err;
+Object? getErrorEventError(JSObject? obj) {
   if (obj != null && obj.has('error')) {
-    err = obj['error'].dartify();
+    return obj['error'].dartify();
   } else {
-    err = null;
+    return null;
   }
-  print('[$tracer] ERROR ${obj.runtimeType} $obj $err / $msg');
-  return err;
 }
 
-List getMessageEventData(String tracer, JSObject? obj) {
-  Object? data;
+List? getMessageEventData(JSObject? obj) {
   if (obj != null && obj.has('data')) {
-    data = (obj['data'].dartify() ?? const []);
+    final data = obj['data'].dartify();
+    return (data == null) ? null : (data as List);
   } else {
-    data = const [];
+    return null;
   }
-  print('[$tracer] MESSAGE ${obj.runtimeType} $obj $data');
-  return data as List;
 }

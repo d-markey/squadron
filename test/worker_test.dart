@@ -242,7 +242,6 @@ void execute(TestContext tc) {
               throw unexpectedSuccess('start()', res);
             } on SquadronError {
               // expected exception
-              print('OK!');
             }
           });
         }, skip: tc.entryPoints.missingWorker == null);
@@ -559,8 +558,9 @@ void execute(TestContext tc) {
             try {
               final res = await worker.forward(obj);
               throw unexpectedSuccess('forward()', res);
-            } on SquadronError catch (_) {
+            } on SquadronError catch (ex) {
               // expected error
+              expect(ex.toString(), contains('Failed to post'));
             }
 
             // ensure worker is still alive
@@ -572,8 +572,9 @@ void execute(TestContext tc) {
             try {
               final res = await worker.invalidResponse();
               throw unexpectedSuccess('invalidResponse()', res);
-            } on SquadronError catch (_) {
+            } on SquadronError catch (ex) {
               // expected error
+              expect(ex.toString(), contains('Failed to post'));
             }
 
             // ensure worker is still alive

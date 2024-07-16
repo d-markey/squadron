@@ -139,7 +139,6 @@ void execute(TestContext tc) {
 
           worker.onMessage.listen((MessageEvent e) {
             final data = e.data;
-            print('processing $data');
             final res = WorkerResponseExt.from(data);
             if (!res.unwrapInPlace(ExceptionManager(), null)) return;
             if (res.error != null) {
@@ -185,7 +184,6 @@ void execute(TestContext tc) {
 
           worker.onMessage.listen((e) {
             final data = e.data;
-            print('processing $data');
             final res = WorkerResponseExt.from(data);
             if (!res.unwrapInPlace(ExceptionManager(), null)) return;
             if (res.error != null) {

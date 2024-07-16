@@ -11,14 +11,4 @@ class MissingWorker extends Worker {
           context.entryPoints.missingWorker!,
           hook,
         );
-
-  @override
-  void release() {
-    print('RELEASING...');
-    try {
-      super.release();
-    } catch (ex) {
-      print('EXCEPTION in release(): ${ex.runtimeType} $ex');
-    }
-  }
 }

@@ -9850,31 +9850,13 @@
       this._pool = t0;
       this._released = false;
     },
-    _post(logger, message, post) {
-      var ex, st, exception;
-      try {
-        post.call$0();
-      } catch (exception) {
-        ex = A.unwrapException(exception);
-        st = A.getTraceFromException(exception);
-        A.print("failed to post message " + A.S(message) + ": " + A.S(ex));
-        if (logger != null)
-          logger.e$1(0, new A._post_closure(message, ex));
-        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
-      }
-    },
-    _WebForwardChannel$_(_remote, _com, logger, exceptionManager) {
-      var t1 = new A._WebForwardChannel(_remote, _com, exceptionManager, type$.JSObject._as(_com.port2), logger);
-      t1._WebForwardChannel$_$4(_remote, _com, logger, exceptionManager);
-      return t1;
-    },
     openChannel(entryPoint, exceptionManager, logger, startArguments, hook) {
       return A.openChannel$body(entryPoint, exceptionManager, logger, startArguments, hook);
     },
     openChannel$body(entryPoint, exceptionManager, logger, startArguments, hook) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Channel),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], com, webEntryPoint, worker, fail, success, startRequest, msg, transfer, jsTransfer, channel, hookRes, t2, t3, t4, t5, exception, t1, completer, ready, $async$exception;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], com, webEntryPoint, worker, fail, success, startRequest, data, msg, transfer, jsTransfer, ex, st, channel, hookRes, t2, t3, t4, t5, exception, t1, completer, ready, $async$exception;
       var $async$openChannel = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -9908,16 +9890,26 @@
               // returning from await.
               t5 = t2._as(com.port2);
               startRequest = [A.microsecTimeStamp(), t5, -1, startArguments, null, null, true];
-              t2._as(com.port1).onmessageerror = t4._as(A.allowInterop(new A.openChannel_closure1(), t3));
-              t2._as(com.port1).onmessage = t4._as(A.allowInterop(new A.openChannel_closure2(exceptionManager, logger, completer, fail, success), t3));
-              A.WorkerRequestExt_wrapInPlace(startRequest);
-              msg = A.jsify(startRequest);
-              transfer = A.Transferables_get(startRequest);
-              if (transfer == null || J.get$length$asx(transfer) === 0)
-                A._post(logger, startRequest, new A.openChannel_closure3(worker, msg));
-              else {
-                jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
-                A._post(logger, startRequest, new A.openChannel_closure4(worker, msg, jsTransfer));
+              t2._as(com.port1).onmessage = t4._as(A.allowInterop(new A.openChannel_closure1(exceptionManager, logger, completer, fail, success), t3));
+              try {
+                data = A.WorkerRequestExt_wrapInPlace(startRequest);
+                msg = A.jsify(data);
+                transfer = A.Transferables_get(data);
+                t3 = transfer == null || J.get$length$asx(transfer) === 0;
+                t4 = type$.void;
+                if (t3)
+                  A.callMethod(worker._readLocal$0(), "postMessage", [msg], t4);
+                else {
+                  jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
+                  A.callMethod(worker._readLocal$0(), "postMessage", [msg, jsTransfer], t4);
+                }
+              } catch (exception) {
+                ex = A.unwrapException(exception);
+                st = A.getTraceFromException(exception);
+                if (logger != null)
+                  logger.e$1(0, new A.openChannel_closure2(startRequest, ex));
+                t3 = A.SquadronError$_("Failed to post message: " + A.S(ex), st);
+                throw A.wrapException(t3);
               }
               $async$goto = 8;
               return A._asyncAwait(completer.future, $async$openChannel);
@@ -9928,7 +9920,7 @@
               break;
             case 9:
               // then
-              hookRes = A.UserCode_run(logger, new A.openChannel_closure5(hook, worker), "PlatforWorkerHook for " + entryPoint.toString$0(0), type$.void);
+              hookRes = A.UserCode_run(logger, new A.openChannel_closure3(hook, worker), "PlatforWorkerHook for " + entryPoint.toString$0(0), type$.void);
               $async$goto = hookRes instanceof A._Future ? 11 : 12;
               break;
             case 11:
@@ -10006,30 +9998,23 @@
       else
         throw A.wrapException(A.SquadronError$_("Invalid entry point URI", null));
     },
-    _post_closure: function _post_closure(t0, t1) {
-      this.message = t0;
-      this.ex = t1;
-    },
     _BaseWebChannel: function _BaseWebChannel() {
     },
-    _BaseWebChannel__postRequest_closure: function _BaseWebChannel__postRequest_closure(t0, t1, t2) {
-      this.$this = t0;
-      this.transfer = t1;
-      this.msg = t2;
+    _BaseWebChannel__postRequest_closure: function _BaseWebChannel__postRequest_closure(t0, t1) {
+      this.req = t0;
+      this.ex = t1;
     },
-    _BaseWebChannel__inspectAndPostRequest_closure: function _BaseWebChannel__inspectAndPostRequest_closure(t0, t1, t2) {
-      this.$this = t0;
-      this.transfer = t1;
-      this.msg = t2;
+    _BaseWebChannel__inspectAndPostRequest_closure: function _BaseWebChannel__inspectAndPostRequest_closure(t0, t1) {
+      this.req = t0;
+      this.ex = t1;
     },
     _BaseWebChannel__postResponse_closure: function _BaseWebChannel__postResponse_closure(t0, t1) {
-      this.$this = t0;
-      this.msg = t1;
+      this.res = t0;
+      this.ex = t1;
     },
-    _BaseWebChannel__inspectAndPostResponse_closure: function _BaseWebChannel__inspectAndPostResponse_closure(t0, t1, t2) {
-      this.$this = t0;
-      this.transfer = t1;
-      this.msg = t2;
+    _BaseWebChannel__inspectAndPostResponse_closure: function _BaseWebChannel__inspectAndPostResponse_closure(t0, t1) {
+      this.res = t0;
+      this.ex = t1;
     },
     _WebChannel: function _WebChannel(t0, t1, t2) {
       var _ = this;
@@ -10048,12 +10033,10 @@
       this.com = t0;
       this.controller = t1;
     },
-    _WebChannel_sendStreamingRequest_closure: function _WebChannel_sendStreamingRequest_closure() {
-    },
-    _WebChannel_sendStreamingRequest_closure0: function _WebChannel_sendStreamingRequest_closure0(t0) {
+    _WebChannel_sendStreamingRequest_closure: function _WebChannel_sendStreamingRequest_closure(t0) {
       this.controller = t0;
     },
-    _WebChannel_sendStreamingRequest_closure1: function _WebChannel_sendStreamingRequest_closure1(t0, t1, t2) {
+    _WebChannel_sendStreamingRequest_closure0: function _WebChannel_sendStreamingRequest_closure0(t0, t1, t2) {
       this.com = t0;
       this.controller = t1;
       this.onDone = t2;
@@ -10074,12 +10057,9 @@
       _._sendPort = t3;
       _._logger = t4;
     },
-    _WebForwardChannel$__closure: function _WebForwardChannel$__closure() {
-    },
-    _WebForwardChannel__forward_closure: function _WebForwardChannel__forward_closure(t0, t1, t2) {
-      this.$this = t0;
-      this.transfer = t1;
-      this.e = t2;
+    _WebForwardChannel__forward_closure: function _WebForwardChannel__forward_closure(t0, t1) {
+      this.e = t0;
+      this.ex = t1;
     },
     openChannel_fail: function openChannel_fail(t0, t1) {
       this.ready = t0;
@@ -10120,9 +10100,7 @@
     openChannel__closure1: function openChannel__closure1(t0) {
       this.error = t0;
     },
-    openChannel_closure1: function openChannel_closure1() {
-    },
-    openChannel_closure2: function openChannel_closure2(t0, t1, t2, t3, t4) {
+    openChannel_closure1: function openChannel_closure1(t0, t1, t2, t3, t4) {
       var _ = this;
       _.exceptionManager = t0;
       _.logger = t1;
@@ -10136,23 +10114,13 @@
     openChannel__closure0: function openChannel__closure0(t0) {
       this.response = t0;
     },
+    openChannel_closure2: function openChannel_closure2(t0, t1) {
+      this.startRequest = t0;
+      this.ex = t1;
+    },
     openChannel_closure3: function openChannel_closure3(t0, t1) {
-      this.worker = t0;
-      this.msg = t1;
-    },
-    openChannel_closure4: function openChannel_closure4(t0, t1, t2) {
-      this.worker = t0;
-      this.msg = t1;
-      this.jsTransfer = t2;
-    },
-    openChannel_closure5: function openChannel_closure5(t0, t1) {
       this.hook = t0;
       this.worker = t1;
-    },
-    _WebLocalWorker$_(service, exceptionManager, $W) {
-      var t1 = new A._WebLocalWorker(type$.JSObject._as(new self.MessageChannel()), service, $.$get$WorkerService_noOperations(), false, new A.Object(), $W._eval$1("_WebLocalWorker<0>"));
-      t1._WebLocalWorker$_$2(service, exceptionManager, $W);
-      return t1;
     },
     _WebLocalWorker: function _WebLocalWorker(t0, t1, t2, t3, t4, t5) {
       var _ = this;
@@ -10163,9 +10131,6 @@
       _.Releasable__released = t3;
       _.Releasable__token = t4;
       _.$ti = t5;
-    },
-    _WebLocalWorker$__closure: function _WebLocalWorker$__closure(t0) {
-      this.$this = t0;
     },
     JsWorkerRunnerExt_get_handle(_this) {
       return new A.JsWorkerRunnerExt_get_handle_closure(_this);
@@ -10559,8 +10524,15 @@
       this._squadron_exception$_stackTrace = t2;
     },
     LocalWorker_LocalWorker$create(service, $W) {
-      var t1 = A.ExceptionManager$();
-      return A._WebLocalWorker$_(service, t1, $W);
+      var t1 = A.ExceptionManager$(),
+        t2 = type$.JSObject,
+        t3 = t2._as(new self.MessageChannel()),
+        t4 = new A._WebLocalWorker(t3, service, $.$get$WorkerService_noOperations(), false, new A.Object(), $W._eval$1("_WebLocalWorker<0>")),
+        runner = A.WorkerRunner_WorkerRunner$use(t4);
+      t2._as(t3.port1).onmessage = type$.JavaScriptFunction._as(A.allowInterop(A.JsWorkerRunnerExt_get_handle(runner), type$.Function));
+      t3 = t2._as(t3.port2);
+      t4.___WebLocalWorker__channel_A = t3 == null ? null : new A._WebChannel(t1, t3, runner.internalLogger);
+      return t4;
     },
     LocalWorker: function LocalWorker() {
     },
@@ -13633,30 +13605,29 @@
         return _null;
       return index + 3;
     },
-    getErrorEventError(tracer, obj) {
-      var t2, msg, err,
-        t1 = obj != null;
-      if (t1 && "message" in obj) {
-        t2 = obj.message;
-        msg = t2 == null ? null : J.toString$0$(t2);
-        if (msg == null)
-          msg = "???";
+    getErrorEventMessage(obj) {
+      var t1,
+        _s13_ = "Unknown error";
+      if ("message" in obj) {
+        t1 = obj.message;
+        t1 = t1 == null ? null : J.toString$0$(t1);
+        return t1 == null ? _s13_ : t1;
       } else
-        msg = "???";
-      err = t1 && "error" in obj ? A.dartify(obj.error) : null;
-      A.print("[" + tracer + "] ERROR " + J.get$runtimeType$(obj).toString$0(0) + " " + A.S(obj) + " " + A.S(err) + " / " + msg);
-      return err;
+        return _s13_;
     },
-    getMessageEventData(tracer, obj) {
+    getErrorEventError(obj) {
+      if (obj != null && "error" in obj)
+        return A.dartify(obj.error);
+      else
+        return null;
+    },
+    getMessageEventData(obj) {
       var data;
       if (obj != null && "data" in obj) {
         data = A.dartify(obj.data);
-        if (data == null)
-          data = B.List_empty0;
+        return data == null ? null : type$.List_dynamic._as(data);
       } else
-        data = B.List_empty0;
-      A.print("[" + tracer + "] MESSAGE " + J.get$runtimeType$(obj).toString$0(0) + " " + A.S(obj) + " " + A.S(data));
-      return type$.List_dynamic._as(data);
+        return null;
     },
     microsecTimeStamp() {
       var t1 = Date.now();
@@ -13934,11 +13905,6 @@
       if (type$.SquadronCancelationToken._is(token))
         t1.$indexSet(_this, 4, token.serialize$0());
       return _this;
-    },
-    WorkerRequestExt_from(data) {
-      if (J.get$length$asx(data) !== 7)
-        throw A.wrapException(A.SquadronError$_("Invalid worker request", null));
-      return data;
     },
     pluralize($name, number) {
       if (number === 1)
@@ -15882,7 +15848,7 @@
       B.JSArray_methods.add$1(this.$arguments, argument);
       ++t1.argumentCount;
     },
-    $signature: 9
+    $signature: 10
   };
   A.TypeErrorDecoder.prototype = {
     matchTypeError$1(message) {
@@ -16888,7 +16854,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 4
+    $signature: 6
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -16996,7 +16962,7 @@
     call$1(result) {
       return this.bodyFunction.call$2(0, result);
     },
-    $signature: 6
+    $signature: 5
   };
   A._awaitOnObject_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -17488,7 +17454,7 @@
         _this._future._completeError$2(t2, t1);
       }
     },
-    $signature: 23
+    $signature: 22
   };
   A.Future_wait_closure.prototype = {
     call$1(value) {
@@ -17908,7 +17874,7 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 4
+    $signature: 6
   };
   A._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -20093,7 +20059,7 @@
     call$1(v) {
       return this.K._is(v);
     },
-    $signature: 8
+    $signature: 9
   };
   A._LinkedHashSet.prototype = {
     _newSet$0() {
@@ -24092,13 +24058,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 9
+    $signature: 10
   };
   A.MidiInputMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 9
+    $signature: 10
   };
   A.MidiOutputMap.prototype = {
     containsKey$1(receiver, key) {
@@ -24160,13 +24126,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 9
+    $signature: 10
   };
   A.MidiOutputMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 9
+    $signature: 10
   };
   A.MimeType.prototype = {$isMimeType: 1};
   A.MimeTypeArray.prototype = {
@@ -24425,13 +24391,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 9
+    $signature: 10
   };
   A.RtcStatsReport_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 9
+    $signature: 10
   };
   A.SelectElement.prototype = {
     get$length(receiver) {
@@ -25863,7 +25829,7 @@
     call$1(r) {
       return this.completer.complete$1(0, this.T._eval$1("0/?")._as(r));
     },
-    $signature: 6
+    $signature: 5
   };
   A.promiseToFuture_closure0.prototype = {
     call$1(e) {
@@ -25871,7 +25837,7 @@
         return this.completer.completeError$1(new A.NullRejectionException(e === undefined));
       return this.completer.completeError$1(e);
     },
-    $signature: 6
+    $signature: 5
   };
   A.dartify_convert.prototype = {
     call$1(o) {
@@ -26173,13 +26139,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 9
+    $signature: 10
   };
   A.AudioParamMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 9
+    $signature: 10
   };
   A.AudioTrackList.prototype = {
     get$length(receiver) {
@@ -26363,7 +26329,7 @@
   A.StreamGroup__onListen_closure.prototype = {
     call$1(_) {
     },
-    $signature: 4
+    $signature: 6
   };
   A.StreamGroup__onCancel_closure.prototype = {
     call$1(entry) {
@@ -27088,14 +27054,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       _this.completer.complete$1(0, t2);
     },
-    $signature: 16
+    $signature: 24
   };
   A.BrowserClient_send_closure0.prototype = {
     call$1(_) {
       type$.JSObject._as(_);
       this.completer.completeError$2(new A.ClientException("XMLHttpRequest error.", this.request.url), A.StackTrace_current());
     },
-    $signature: 16
+    $signature: 24
   };
   A.ByteStream.prototype = {
     toBytes$0() {
@@ -27575,7 +27541,7 @@
     call$1(e) {
       return this.expected.matches$2(0, e, this.matchState);
     },
-    $signature: 8
+    $signature: 9
   };
   A._Predicate.prototype = {
     typedMatches$2(item, matchState) {
@@ -27811,14 +27777,14 @@
       var _this = this;
       return _this.matcher.call$4(_this.expectedElement, actualElement, _this.location, _this.depth) != null;
     },
-    $signature: 8
+    $signature: 9
   };
   A._DeepMatcher__compareSets_closure0.prototype = {
     call$2(description, verbose) {
       description._out._contents += "does not contain ";
       return description.addDescriptionOf$1(this.expectedElement);
     },
-    $signature: 21
+    $signature: 20
   };
   A._DeepMatcher__recursiveMatch_closure.prototype = {
     call$2(description, verbose) {
@@ -27832,34 +27798,34 @@
         t3.describe$1(description);
       }
     },
-    $signature: 21
+    $signature: 20
   };
   A._DeepMatcher__recursiveMatch_closure0.prototype = {
     call$2(description, verbose) {
       description._out._contents += "== threw ";
       return description.addDescriptionOf$1(this.e);
     },
-    $signature: 21
+    $signature: 20
   };
   A._DeepMatcher__recursiveMatch_closure1.prototype = {
     call$2(description, verbose) {
       description._out._contents += this.err + "is missing map key ";
       return description.addDescriptionOf$1(this.key);
     },
-    $signature: 21
+    $signature: 20
   };
   A._DeepMatcher__recursiveMatch_closure2.prototype = {
     call$2(description, verbose) {
       description._out._contents += this.err + "has extra map key ";
       return description.addDescriptionOf$1(this.key);
     },
-    $signature: 21
+    $signature: 20
   };
   A._DeepMatcher__recursiveMatch_closure3.prototype = {
     call$2(description, verbose) {
       return description.addDescriptionOf$1(this.expected);
     },
-    $signature: 21
+    $signature: 20
   };
   A._Mismatch.prototype = {};
   A._Mismatch$simple_closure.prototype = {
@@ -27867,7 +27833,7 @@
       description._out._contents += this.problem;
       return description;
     },
-    $signature: 21
+    $signature: 20
   };
   A._expect_closure0.prototype = {
     call$5(actual, matcher, reason, matchState, verbose) {
@@ -28068,7 +28034,7 @@
     call$1(a) {
       return A._asBool(this.valueOrMatcher.call$1(a));
     },
-    $signature: 19
+    $signature: 18
   };
   A.escape_closure.prototype = {
     call$1(match) {
@@ -28850,7 +28816,7 @@
       var t1 = this.$this;
       J.complete$1$z(t1._onReleaseCompleters.removeFirst$0(), new A.PoolResource(t1));
     },
-    $signature: 4
+    $signature: 6
   };
   A.Pool__runOnRelease_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -28861,93 +28827,138 @@
     $signature: 28
   };
   A.PoolResource.prototype = {};
-  A._post_closure.prototype = {
-    call$0() {
-      return "failed to post message " + A.S(this.message) + ": " + A.S(this.ex);
-    },
-    $signature: 11
-  };
   A._BaseWebChannel.prototype = {
     _postRequest$1(req) {
-      var t1, t2, msg, transfer;
+      var data, msg, transfer, jsTransfer, ex, st, t1, t2, t3, exception,
+        _s11_ = "postMessage";
       type$.List_dynamic._as(req);
-      t1 = J.getInterceptor$asx(req);
-      t2 = type$.nullable_SquadronCancelationToken._as(t1.$index(req, 4));
-      if (t2 != null)
-        t2.ensureStarted$0();
-      A.WorkerRequestExt_wrapInPlace(req);
-      msg = A.jsify(req);
-      t1 = A.Transferables_get([type$.nullable_JSObject._as(t1.$index(req, 1))]);
-      transfer = t1 == null ? null : A.jsify(t1);
-      A._post(this._logger, req, new A._BaseWebChannel__postRequest_closure(this, transfer, msg));
+      try {
+        t1 = J.getInterceptor$asx(req);
+        t2 = type$.nullable_SquadronCancelationToken._as(t1.$index(req, 4));
+        if (t2 != null)
+          t2.ensureStarted$0();
+        data = A.WorkerRequestExt_wrapInPlace(req);
+        msg = A.jsify(data);
+        transfer = A.Transferables_get([type$.nullable_JSObject._as(t1.$index(req, 1))]);
+        t1 = transfer == null || J.get$length$asx(transfer) === 0;
+        t2 = type$.void;
+        t3 = this._sendPort;
+        if (t1)
+          A.callMethod(t3, _s11_, [msg], t2);
+        else {
+          jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
+          A.callMethod(t3, _s11_, [msg, jsTransfer], t2);
+        }
+      } catch (exception) {
+        ex = A.unwrapException(exception);
+        st = A.getTraceFromException(exception);
+        t1 = this._logger;
+        if (t1 != null)
+          t1.e$1(0, new A._BaseWebChannel__postRequest_closure(req, ex));
+        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
+      }
     },
     _inspectAndPostRequest$1(req) {
-      var t1, msg, transfer;
+      var data, msg, transfer, jsTransfer, ex, st, t1, t2, t3, exception,
+        _s11_ = "postMessage";
       type$.List_dynamic._as(req);
-      t1 = type$.nullable_SquadronCancelationToken._as(J.$index$asx(req, 4));
-      if (t1 != null)
-        t1.ensureStarted$0();
-      A.WorkerRequestExt_wrapInPlace(req);
-      msg = A.jsify(req);
-      t1 = A.Transferables_get(req);
-      transfer = t1 == null ? null : A.jsify(t1);
-      A._post(this._logger, req, new A._BaseWebChannel__inspectAndPostRequest_closure(this, transfer, msg));
+      try {
+        t1 = type$.nullable_SquadronCancelationToken._as(J.$index$asx(req, 4));
+        if (t1 != null)
+          t1.ensureStarted$0();
+        data = A.WorkerRequestExt_wrapInPlace(req);
+        msg = A.jsify(data);
+        transfer = A.Transferables_get(data);
+        t1 = transfer == null || J.get$length$asx(transfer) === 0;
+        t2 = type$.void;
+        t3 = this._sendPort;
+        if (t1)
+          A.callMethod(t3, _s11_, [msg], t2);
+        else {
+          jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
+          A.callMethod(t3, _s11_, [msg, jsTransfer], t2);
+        }
+      } catch (exception) {
+        ex = A.unwrapException(exception);
+        st = A.getTraceFromException(exception);
+        t1 = this._logger;
+        if (t1 != null)
+          t1.e$1(0, new A._BaseWebChannel__inspectAndPostRequest_closure(req, ex));
+        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
+      }
     },
     _postResponse$1(res) {
-      A.WorkerResponseExt_wrapInPlace(res);
-      A._post(this._logger, res, new A._BaseWebChannel__postResponse_closure(this, A.jsify(res)));
+      var data, msg, ex, st, exception, t1;
+      try {
+        data = A.WorkerResponseExt_wrapInPlace(res);
+        msg = A.jsify(data);
+        A.callMethod(this._sendPort, "postMessage", [msg], type$.void);
+      } catch (exception) {
+        ex = A.unwrapException(exception);
+        st = A.getTraceFromException(exception);
+        t1 = this._logger;
+        if (t1 != null)
+          t1.e$1(0, new A._BaseWebChannel__postResponse_closure(res, ex));
+        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
+      }
     },
     _inspectAndPostResponse$1(res) {
-      var msg, t1, transfer;
-      A.WorkerResponseExt_wrapInPlace(res);
-      msg = A.jsify(res);
-      t1 = A.Transferables_get(res);
-      transfer = t1 == null ? null : A.jsify(t1);
-      A._post(this._logger, res, new A._BaseWebChannel__inspectAndPostResponse_closure(this, transfer, msg));
+      var data, msg, transfer, jsTransfer, ex, st, t1, t2, t3, exception,
+        _s11_ = "postMessage";
+      try {
+        data = A.WorkerResponseExt_wrapInPlace(res);
+        msg = A.jsify(data);
+        transfer = A.Transferables_get(data);
+        t1 = transfer == null || J.get$length$asx(transfer) === 0;
+        t2 = type$.void;
+        t3 = this._sendPort;
+        if (t1)
+          A.callMethod(t3, _s11_, [msg], t2);
+        else {
+          jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
+          A.callMethod(t3, _s11_, [msg, jsTransfer], t2);
+        }
+      } catch (exception) {
+        ex = A.unwrapException(exception);
+        st = A.getTraceFromException(exception);
+        t1 = this._logger;
+        if (t1 != null)
+          t1.e$1(0, new A._BaseWebChannel__inspectAndPostResponse_closure(res, ex));
+        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
+      }
     }
   };
   A._BaseWebChannel__postRequest_closure.prototype = {
     call$0() {
-      var _s11_ = "postMessage",
-        t1 = this.transfer,
-        t2 = this.msg,
-        t3 = type$.void,
-        t4 = this.$this._sendPort;
-      return t1 == null ? A.callMethod(t4, _s11_, [t2], t3) : A.callMethod(t4, _s11_, [t2, type$.JSArray_nullable_Object._as(t1)], t3);
+      return "failed to post message " + A.S(this.req) + ": " + A.S(this.ex);
     },
-    $signature: 1
+    $signature: 8
   };
   A._BaseWebChannel__inspectAndPostRequest_closure.prototype = {
     call$0() {
-      var _s11_ = "postMessage",
-        t1 = this.transfer,
-        t2 = this.msg,
-        t3 = type$.void,
-        t4 = this.$this._sendPort;
-      return t1 == null ? A.callMethod(t4, _s11_, [t2], t3) : A.callMethod(t4, _s11_, [t2, type$.JSArray_nullable_Object._as(t1)], t3);
+      return "failed to post message " + A.S(this.req) + ": " + A.S(this.ex);
     },
-    $signature: 1
+    $signature: 8
   };
   A._BaseWebChannel__postResponse_closure.prototype = {
     call$0() {
-      return A.callMethod(this.$this._sendPort, "postMessage", [this.msg], type$.void);
+      return "failed to post message " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 1
+    $signature: 8
   };
   A._BaseWebChannel__inspectAndPostResponse_closure.prototype = {
     call$0() {
-      var _s11_ = "postMessage",
-        t1 = this.transfer,
-        t2 = this.msg,
-        t3 = type$.void,
-        t4 = this.$this._sendPort;
-      return t1 == null ? A.callMethod(t4, _s11_, [t2], t3) : A.callMethod(t4, _s11_, [t2, type$.JSArray_nullable_Object._as(t1)], t3);
+      return "failed to post message " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 1
+    $signature: 8
   };
   A._WebChannel.prototype = {
     share$0(_) {
-      return A._WebForwardChannel$_(this._sendPort, type$.JSObject._as(new self.MessageChannel()), this._logger, this.exceptionManager);
+      var t1 = type$.JSObject,
+        t2 = t1._as(new self.MessageChannel()),
+        t3 = new A._WebForwardChannel(this._sendPort, t2, this.exceptionManager, t1._as(t2.port2), this._logger);
+      t1._as(t2.port1).onmessage = type$.JavaScriptFunction._as(A.allowInterop(t3.get$_forward(), type$.Function));
+      return t3;
     },
     close$0(_) {
       if (!this.__channel$_closed) {
@@ -28980,21 +28991,18 @@
       return this.sendRequest$1$5$inspectRequest$inspectResponse$token(command, args, false, false, null, $T);
     },
     sendStreamingRequest$1$6$inspectRequest$inspectResponse$onDone$token(command, args, inspectRequest, inspectResponse, onDone, token, $T) {
-      var controller, t1, com, t2, t3, squadronToken, _this = this, _null = null;
+      var controller, t1, com, squadronToken, t2, _this = this, _null = null;
       type$.void_Function._as(onDone);
       if (_this.__channel$_closed)
         throw A.wrapException(A.SquadronError$_("Channel is closed", _null));
       controller = A.StreamController_StreamController(_null, _null, _null, _null, type$.List_dynamic);
       t1 = type$.JSObject;
       com = t1._as(new self.MessageChannel());
-      t2 = type$.Function;
-      t3 = type$.JavaScriptFunction;
-      t1._as(com.port1).onmessageerror = t3._as(A.allowInterop(new A._WebChannel_sendStreamingRequest_closure(), t2));
-      t1._as(com.port1).onmessage = t3._as(A.allowInterop(new A._WebChannel_sendStreamingRequest_closure0(controller), t2));
+      t1._as(com.port1).onmessage = type$.JavaScriptFunction._as(A.allowInterop(new A._WebChannel_sendStreamingRequest_closure(controller), type$.Function));
       squadronToken = A.SquadronCancelationTokenExt_wrap(token);
       t1 = t1._as(com.port2);
       t2 = A.microsecTimeStamp();
-      t1 = A.StreamWrapper$([t2, t1, command, args, squadronToken, null, false], _this.exceptionManager, _this._logger, A.Cast_get($T), new A._ControllerStream(controller, A._instanceType(controller)._eval$1("_ControllerStream<1>")), new A._WebChannel_sendStreamingRequest_closure1(com, controller, onDone), _this.get$_postRequest(), squadronToken, $T).__StreamWrapper__controller_F;
+      t1 = A.StreamWrapper$([t2, t1, command, args, squadronToken, null, false], _this.exceptionManager, _this._logger, A.Cast_get($T), new A._ControllerStream(controller, A._instanceType(controller)._eval$1("_ControllerStream<1>")), new A._WebChannel_sendStreamingRequest_closure0(com, controller, onDone), _this.get$_postRequest(), squadronToken, $T).__StreamWrapper__controller_F;
       t1 === $ && A.throwLateFieldNI("_controller");
       return new A._ControllerStream(t1, A._instanceType(t1)._eval$1("_ControllerStream<1>"));
     },
@@ -29005,27 +29013,20 @@
   };
   A._WebChannel_sendRequest_closure.prototype = {
     call$1(e) {
-      var t1, msg, err,
-        _s13_ = "Unknown error";
+      var err, t1;
       type$.JSObject._as(e);
-      if ("message" in e) {
-        t1 = e.message;
-        msg = t1 == null ? null : J.toString$0$(t1);
-        if (msg == null)
-          msg = _s13_;
-      } else
-        msg = _s13_;
-      err = "error" in e ? A.dartify(e.error) : null;
-      A.print("[com.port1.onmessageerror] ERROR MESSAGE " + J.get$runtimeType$(e).toString$0(0) + " " + A.S(e) + " " + msg + " / " + A.S(err));
-      this.controller.addError$1(A.SquadronError$_(msg, null));
+      err = A.getErrorEventError(e);
+      t1 = err == null ? null : J.toString$0$(err);
+      this.controller.addError$1(A.SquadronError$_(t1 == null ? A.getErrorEventMessage(e) : t1, null));
     },
-    $signature: 16
+    $signature: 24
   };
   A._WebChannel_sendRequest_closure0.prototype = {
     call$1(e) {
-      this.controller.add$1(0, A.WorkerResponseExt_from(A.getMessageEventData("com.port1.onmessage", type$.JSObject._as(e))));
+      var data = A.getMessageEventData(type$.JSObject._as(e));
+      this.controller.add$1(0, A.WorkerResponseExt_from(data == null ? type$.List_dynamic._as(data) : data));
     },
-    $signature: 16
+    $signature: 24
   };
   A._WebChannel_sendRequest_closure1.prototype = {
     call$0() {
@@ -29039,17 +29040,12 @@
   };
   A._WebChannel_sendStreamingRequest_closure.prototype = {
     call$1(e) {
-      A.getErrorEventError("com.port1.onmessageerror", type$.JSObject._as(e));
+      var msg = A.getMessageEventData(type$.JSObject._as(e));
+      this.controller.add$1(0, A.WorkerResponseExt_from(msg == null ? type$.List_dynamic._as(msg) : msg));
     },
-    $signature: 16
+    $signature: 24
   };
   A._WebChannel_sendStreamingRequest_closure0.prototype = {
-    call$1(e) {
-      this.controller.add$1(0, A.WorkerResponseExt_from(A.getMessageEventData("com.port1.onmessage", type$.JSObject._as(e))));
-    },
-    $signature: 16
-  };
-  A._WebChannel_sendStreamingRequest_closure1.prototype = {
     call$0() {
       type$.JSObject._as(this.com.port1).close();
       this.controller.close$0(0);
@@ -29077,32 +29073,35 @@
       var t1 = this.error;
       return "replying with error: " + A.getRuntimeTypeOfDartObject(t1).toString$0(0) + " " + t1.toString$0(0);
     },
-    $signature: 11
+    $signature: 8
   };
   A._WebForwardChannel.prototype = {
-    _WebForwardChannel$_$4(_remote, _com, logger, exceptionManager) {
-      var t1 = this._com,
-        t2 = type$.JSObject,
-        t3 = type$.Function,
-        t4 = type$.JavaScriptFunction;
-      t2._as(t1.port1).onmessageerror = t4._as(A.allowInterop(new A._WebForwardChannel$__closure(), t3));
-      t2._as(t1.port1).onmessage = t4._as(A.allowInterop(this.get$_forward(), t3));
-    },
     _forward$1(e) {
-      var msg, message, transfer, ex, st, t1, exception;
+      var data, transfer, jsTransfer, ex, st, data0, t1, t2, t3, exception,
+        _s11_ = "postMessage";
       type$.JSObject._as(e);
       if (this.__channel$_closed)
         throw A.wrapException(A.SquadronError$_("Channel is closed", null));
       try {
-        msg = A.getMessageEventData("_forward", e);
-        message = A.WorkerRequestExt_from(msg);
-        t1 = A.Transferables_get(msg);
-        transfer = t1 == null ? null : A.jsify(t1);
-        A._post(this._logger, message, new A._WebForwardChannel__forward_closure(this, transfer, e));
+        data0 = A.getMessageEventData(e);
+        data = data0 == null ? type$.List_dynamic._as(data0) : data0;
+        transfer = A.Transferables_get(data);
+        t1 = transfer == null || J.get$length$asx(transfer) === 0;
+        t2 = type$.void;
+        t3 = this._remote;
+        if (t1)
+          A.callMethod(t3, _s11_, [e.data], t2);
+        else {
+          jsTransfer = type$.JSArray_nullable_Object._as(A.jsify(transfer));
+          A.callMethod(t3, _s11_, [e.data, jsTransfer], t2);
+        }
       } catch (exception) {
         ex = A.unwrapException(exception);
         st = A.getTraceFromException(exception);
-        A.print("FORWARD FAILED: " + A.S(ex) + " / " + A.S(st));
+        t1 = this._logger;
+        if (t1 != null)
+          t1.e$1(0, new A._WebForwardChannel__forward_closure(e, ex));
+        throw A.wrapException(A.SquadronError$_("Failed to post message: " + A.S(ex), st));
       }
     },
     close$0(_) {
@@ -29112,22 +29111,11 @@
       }
     }
   };
-  A._WebForwardChannel$__closure.prototype = {
-    call$1(err) {
-      A.getErrorEventError("_com.port1.onmessageerror", type$.nullable_JSObject._as(err));
-    },
-    $signature: 4
-  };
   A._WebForwardChannel__forward_closure.prototype = {
     call$0() {
-      var _s11_ = "postMessage",
-        t1 = this.transfer,
-        t2 = this.$this,
-        t3 = this.e,
-        t4 = type$.void;
-      return t1 == null ? A.callMethod(t2._remote, _s11_, [t3.data], t4) : A.callMethod(t2._sendPort, _s11_, [t3.data, type$.JSArray_nullable_Object._as(t1)], t4);
+      return "failed to post message " + A.S(this.e) + ": " + A.S(this.ex);
     },
-    $signature: 1
+    $signature: 8
   };
   A.openChannel_fail.prototype = {
     call$1(ex) {
@@ -29153,20 +29141,12 @@
   };
   A.openChannel_closure.prototype = {
     call$1(e) {
-      var errr, err, error, err0, t1, t2, _this = this, _null = null;
+      var err, error, t1, t2, _this = this;
       type$.nullable_JSObject._as(e);
-      errr = A.getErrorEventError("worker.onerror", e);
-      if (e == null)
-        err0 = _null;
-      else {
-        t1 = e.error;
-        t1 = t1 == null ? _null : A.dartify(t1);
-        err0 = t1;
-      }
-      err = err0 == null ? errr : err0;
+      err = A.getErrorEventError(e);
       if (type$.List_dynamic._is(err))
         err = _this.exceptionManager.deserialize$1(err);
-      error = err != null ? A.SquadronException_from(err, _null, _null) : A.SquadronError$_("Unexpected error", _null);
+      error = err != null ? A.SquadronException_from(err, null, null) : A.SquadronError$_("Unexpected error", null);
       t1 = _this.logger;
       if (t1 != null)
         t1.e$1(0, new A.openChannel__closure2(error));
@@ -29180,7 +29160,7 @@
     call$0() {
       return "connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 11
+    $signature: 8
   };
   A.openChannel__closure3.prototype = {
     call$1(found) {
@@ -29208,20 +29188,21 @@
     call$0() {
       return "unhandled error from Web Worker: " + this._box_0.msg + ".";
     },
-    $signature: 11
+    $signature: 8
   };
   A.openChannel___closure0.prototype = {
     call$0() {
       return "it seems no Web Worker lives at " + this.entryPoint.toString$0(0) + ".";
     },
-    $signature: 11
+    $signature: 8
   };
   A.openChannel_closure0.prototype = {
     call$1(e) {
-      var msg, response, error, ex, st, t1, exception, _this = this;
+      var msg, response, error, ex, st, msg0, t1, exception, _this = this;
       type$.nullable_JSObject._as(e);
       try {
-        msg = A.getMessageEventData("worker.onmessage", e);
+        msg0 = A.getMessageEventData(e);
+        msg = msg0 == null ? type$.List_dynamic._as(msg0) : msg0;
         response = A.WorkerResponseExt_from(msg);
         t1 = _this.logger;
         if (!A.WorkerResponseExt_unwrapInPlace(response, _this.exceptionManager, t1))
@@ -29250,19 +29231,14 @@
     call$0() {
       return "connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 11
+    $signature: 8
   };
   A.openChannel_closure1.prototype = {
     call$1(e) {
-      A.getErrorEventError("com.port1.onmessageerror", type$.JSObject._as(e));
-    },
-    $signature: 16
-  };
-  A.openChannel_closure2.prototype = {
-    call$1(e) {
       var error, channel, _this = this,
         t1 = type$.JSObject,
-        msg = A.getMessageEventData("com.port1.onmessage", t1._as(e)),
+        msg0 = A.getMessageEventData(t1._as(e)),
+        msg = msg0 == null ? type$.List_dynamic._as(msg0) : msg0,
         response = A.WorkerResponseExt_from(msg),
         t2 = _this.exceptionManager,
         t3 = _this.logger;
@@ -29283,61 +29259,41 @@
       } else if (t3 != null)
         t3.d$1(0, new A.openChannel__closure0(response));
     },
-    $signature: 16
+    $signature: 24
   };
   A.openChannel__closure.prototype = {
     call$0() {
       return "connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 11
+    $signature: 8
   };
   A.openChannel__closure0.prototype = {
     call$0() {
       return "unexpected response: " + A.S(this.response);
     },
-    $signature: 11
+    $signature: 8
+  };
+  A.openChannel_closure2.prototype = {
+    call$0() {
+      return "failed to post message " + A.S(this.startRequest) + ": " + A.S(this.ex);
+    },
+    $signature: 8
   };
   A.openChannel_closure3.prototype = {
-    call$0() {
-      return A.callMethod(this.worker._readLocal$0(), "postMessage", [this.msg], type$.void);
-    },
-    $signature: 1
-  };
-  A.openChannel_closure4.prototype = {
-    call$0() {
-      return A.callMethod(this.worker._readLocal$0(), "postMessage", [this.msg, this.jsTransfer], type$.void);
-    },
-    $signature: 1
-  };
-  A.openChannel_closure5.prototype = {
     call$0() {
       return this.hook.call$1(this.worker._readLocal$0());
     },
     $signature: 1
   };
-  A._WebLocalWorker.prototype = {
-    _WebLocalWorker$_$2(service, exceptionManager, $W) {
-      var _this = this,
-        runner = A.WorkerRunner_WorkerRunner$use(_this),
-        t1 = _this.__local_worker$_port,
-        t2 = type$.JSObject,
-        t3 = type$.Function,
-        t4 = type$.JavaScriptFunction;
-      t2._as(t1.port1).onmessageerror = t4._as(A.allowInterop(new A._WebLocalWorker$__closure(_this), t3));
-      t2._as(t1.port1).onmessage = t4._as(A.allowInterop(A.JsWorkerRunnerExt_get_handle(runner), t3));
-      t1 = t2._as(t1.port2);
-      _this.___WebLocalWorker__channel_A = t1 == null ? null : new A._WebChannel(exceptionManager, t1, runner.internalLogger);
-    }
-  };
-  A._WebLocalWorker$__closure.prototype = {
-    call$1(err) {
-      A.print("[" + A.getRuntimeTypeOfDartObject(this.$this).toString$0(0) + "] onmessageerror " + J.get$runtimeType$(err).toString$0(0) + " " + A.S(err));
-    },
-    $signature: 4
-  };
+  A._WebLocalWorker.prototype = {};
   A.JsWorkerRunnerExt_get_handle_closure.prototype = {
     call$1($event) {
-      this._this.processMessage$1(A.WorkerRequestExt_from(A.getMessageEventData("handle", type$.JSObject._as($event))));
+      var msg = A.getMessageEventData(type$.JSObject._as($event));
+      if (msg == null)
+        msg = type$.List_dynamic._as(msg);
+      if (J.get$length$asx(msg) !== 7)
+        A.throwExpression(A.SquadronError$_("Invalid worker request", null));
+      this._this.processMessage$1(msg);
       return null;
     },
     $signature: 26
@@ -29510,7 +29466,7 @@
     call$1(_) {
       return this.onDone.call$0();
     },
-    $signature: 6
+    $signature: 5
   };
   A.StreamWrapper__onListen_closure.prototype = {
     call$1(res) {
@@ -29553,7 +29509,7 @@
     call$1(ex) {
       return A.UserCode__log(this.logger, this.logContext, ex);
     },
-    $signature: 6
+    $signature: 5
   };
   A.ValueWrapper.prototype = {
     ValueWrapper$7$cast$messages$postRequest$token(request, exceptionManager, logger, cast, messages, postRequest, token, $T) {
@@ -29850,7 +29806,7 @@
     call$1(data) {
       return this.reply.call$1(data);
     },
-    $signature: 6
+    $signature: 5
   };
   A.WorkerRunner__pipe_closure0.prototype = {
     call$2(ex, st) {
@@ -30619,7 +30575,7 @@
     call$1(e) {
       return type$.SquadronError._is(e);
     },
-    $signature: 8
+    $signature: 9
   };
   A.WorkerPool__provisionWorkers__closure0.prototype = {
     call$0() {
@@ -30631,7 +30587,7 @@
     call$1(e) {
       return e instanceof A.WorkerException;
     },
-    $signature: 8
+    $signature: 9
   };
   A.WorkerPool__provisionWorkers__closure2.prototype = {
     call$0() {
@@ -30668,7 +30624,7 @@
       for (t1 = this.$this._worker_pool$_queue; !t1.get$isEmpty(0);)
         J.cancel$1$z(t1.removeFirst$0(), "provisionning workers failed");
     },
-    $signature: 4
+    $signature: 6
   };
   A.WorkerPool__dispatchTasks_closure.prototype = {
     call$0() {
@@ -32126,7 +32082,7 @@
       message = "Test timed out after " + (t2.charCodeAt(0) == 0 ? t2 : t2) + ".";
       return t1 === 30000000 ? message + " See https://pub.dev/packages/test#timeouts" : message;
     },
-    $signature: 11
+    $signature: 8
   };
   A.Invoker_heartbeat_closure.prototype = {
     call$0() {
@@ -33864,7 +33820,7 @@
     call$1(e) {
       ++this._box_0.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute____closure17.prototype = {
     call$0() {
@@ -34052,7 +34008,7 @@
     call$1(e) {
       ++this._box_1.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute____closure20.prototype = {
     call$0() {
@@ -34172,25 +34128,25 @@
     call$1(e) {
       ++this._box_2.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute_____closure42.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute_____closure43.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).__worker_task$_canceled != null;
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute_____closure44.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isFinished();
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute____closure21.prototype = {
     call$0() {
@@ -34303,25 +34259,25 @@
     call$1(e) {
       ++this._box_3.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute_____closure37.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).__worker_task$_canceled != null;
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute_____closure38.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute_____closure39.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isFinished();
     },
-    $signature: 22
+    $signature: 21
   };
   A.execute___closure1.prototype = {
     call$0() {
@@ -34648,7 +34604,7 @@
     call$1(e) {
       return A._isInt(e);
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute_____closure31.prototype = {
     call$1(r) {
@@ -34663,13 +34619,13 @@
     call$1(e) {
       return A._isInt(e);
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute______closure1.prototype = {
     call$1(e) {
       return type$.CanceledException._is(e);
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute_____closure32.prototype = {
     call$1(r) {
@@ -34681,7 +34637,7 @@
     call$1(e) {
       return type$.CanceledException._is(e);
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute_____closure33.prototype = {
     call$1(r) {
@@ -34838,7 +34794,7 @@
       if ((t1.future._state & 30) === 0)
         t1.complete$0(0);
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure21.prototype = {
     call$1(e) {
@@ -34847,7 +34803,7 @@
       t1.$indexSet(0, t2, t1.$index(0, t2) === "started" ? "interrupted" : "canceled");
       ++this._box_4.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute_____closure20.prototype = {
     call$0() {
@@ -35042,7 +34998,7 @@
       if (t1 === 0)
         this.firstTaskStarted.complete$0(0);
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure11.prototype = {
     call$1(e) {
@@ -35051,7 +35007,7 @@
       t1.$indexSet(0, t2, t1.$index(0, t2) === "started" ? "interrupted" : "canceled");
       ++this._box_5.errors;
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute_____closure10.prototype = {
     call$0() {
@@ -36875,7 +36831,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute____closure29.prototype = {
     call$0() {
@@ -36929,7 +36885,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute______closure7.prototype = {
     call$1(localClientWorker) {
@@ -37028,7 +36984,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute______closure6.prototype = {
     call$1(workerPool) {
@@ -37202,7 +37158,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute____closure26.prototype = {
     call$0() {
@@ -37309,7 +37265,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute______closure5.prototype = {
     call$1(pool) {
@@ -37429,7 +37385,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute____closure23.prototype = {
     call$0() {
@@ -37483,7 +37439,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute______closure4.prototype = {
     call$1(localClientWorker) {
@@ -37521,7 +37477,7 @@
     call$1(e) {
       return A._asBool(J.$index$asx(e, "ok"));
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute____closure24.prototype = {
     call$0() {
@@ -37572,7 +37528,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 17
+    $signature: 16
   };
   A.execute______closure3.prototype = {
     call$1(pool) {
@@ -37611,7 +37567,7 @@
     call$1(e) {
       return A._asBool(J.$index$asx(e, "ok"));
     },
-    $signature: 8
+    $signature: 9
   };
   A.execute_closure2.prototype = {
     call$0() {
@@ -38352,18 +38308,7 @@
       return $event.level.value >= t1.value;
     }
   };
-  A.MissingWorker.prototype = {
-    release$0(_) {
-      var ex, exception;
-      A.print("RELEASING...");
-      try {
-        this.super$Worker$release(0);
-      } catch (exception) {
-        ex = A.unwrapException(exception);
-        A.print("EXCEPTION in release(): " + J.get$runtimeType$(ex).toString$0(0) + " " + A.S(ex));
-      }
-    }
-  };
+  A.MissingWorker.prototype = {};
   A.PrimeWorkerPool.prototype = {
     isPrime$2(n, counter) {
       return this.execute$1$2$counter(new A.PrimeWorkerPool_isPrime_closure(n), counter, type$.bool);
@@ -38436,7 +38381,7 @@
   A.execute__closure6.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.skip$2(0, "- cache worker", new A.execute___closure26(t1));
+      t1.test$2("- cache worker", new A.execute___closure26(t1));
       t1.test$2("- prime worker with cache", new A.execute___closure27(t1));
     },
     $signature: 2
@@ -38640,20 +38585,6 @@
       }
       A.group(_this.workerPlatform.label + " workers / JavaScript test client", testSuite);
     },
-    skip$3$skip(_, label, body, skip) {
-      var savedPath, t1, _this = this;
-      type$.dynamic_Function._as(body);
-      savedPath = _this._testPath;
-      t1 = (savedPath.length !== 0 ? _this._testPath = savedPath + " " : savedPath) + label;
-      _this._testPath = t1;
-      if (!$.$get$TestContext__knownTests().contains$1(0, t1))
-        A.print("Unregistered test " + _this._testPath);
-      A.print("Skip test " + _this._testPath);
-      _this._testPath = savedPath;
-    },
-    skip$2(_, label, body) {
-      return this.skip$3$skip(0, label, body, false);
-    },
     test$2(label, body) {
       var savedPath, t1, _this = this;
       type$.dynamic_Function._as(body);
@@ -38849,7 +38780,7 @@
         t1 = "(null)";
       this.htmlLogger.print$1(0, t1);
     },
-    $signature: 4
+    $signature: 6
   };
   A.main_closure0.prototype = {
     call$1(m) {
@@ -38868,7 +38799,7 @@
       } else
         A.print("(*) " + A.S(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(m.data, true)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.TestWorkerPool.prototype = {
     io$1$ms(ms) {
@@ -39142,7 +39073,7 @@
     call$1(e) {
       this.completer.complete$1(0, type$.nullable_FutureOr_String._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute___closure43.prototype = {
     call$0() {
@@ -39238,7 +39169,7 @@
       $status = A.WorkerResponseExt_from(type$.List_dynamic._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(e.data, true)));
       this.ready.complete$1(0, type$.nullable_FutureOr_bool._as(A.WorkerResponse_get_result($status)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute____closure85.prototype = {
     call$1(e) {
@@ -39248,7 +39179,7 @@
         t1 = "";
       this.completer.complete$1(0, t1);
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute___closure44.prototype = {
     call$0() {
@@ -39318,7 +39249,7 @@
     call$1(e) {
       this.completer.complete$1(0, type$.nullable_FutureOr_String._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute___closure45.prototype = {
     call$0() {
@@ -39415,10 +39346,9 @@
   };
   A.execute____closure80.prototype = {
     call$1(e) {
-      var res, t1, t2,
-        data = new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true);
-      A.print("processing " + A.S(data));
-      res = A.WorkerResponseExt_from(type$.List_dynamic._as(data));
+      var t1, t2,
+        data = new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true),
+        res = A.WorkerResponseExt_from(type$.List_dynamic._as(data));
       if (!A.WorkerResponseExt_unwrapInPlace(res, A.ExceptionManager$(), null))
         return;
       t1 = type$.nullable_SquadronException;
@@ -39430,7 +39360,7 @@
       } else
         t2.complete$1(0, "processed message with result " + A.S(A.WorkerResponse_get_result(res)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute___closure46.prototype = {
     call$0() {
@@ -39527,10 +39457,9 @@
   };
   A.execute____closure78.prototype = {
     call$1(e) {
-      var res, t1, t2,
-        data = new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true);
-      A.print("processing " + A.S(data));
-      res = A.WorkerResponseExt_from(type$.List_dynamic._as(data));
+      var t1, t2,
+        data = new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true),
+        res = A.WorkerResponseExt_from(type$.List_dynamic._as(data));
       if (!A.WorkerResponseExt_unwrapInPlace(res, A.ExceptionManager$(), null))
         return;
       t1 = type$.nullable_SquadronException;
@@ -39542,7 +39471,7 @@
       } else
         t2.complete$1(0, "processed message with result " + A.S(A.WorkerResponse_get_result(res)));
     },
-    $signature: 20
+    $signature: 19
   };
   A.execute_closure5.prototype = {
     call$0() {
@@ -41263,7 +41192,7 @@
       if (t1.length > 3)
         this.token.cancel$1(0, new A.CanceledException("by request"));
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute______closure9.prototype = {
     call$1(e) {
@@ -41351,7 +41280,7 @@
     call$1(number) {
       return B.JSArray_methods.add$1(this.numbers, A._asInt(number));
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute____closure33.prototype = {
     call$0() {
@@ -41626,13 +41555,13 @@
     call$1(number) {
       return B.JSArray_methods.add$1(this.numbers, A._asInt(number));
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure65.prototype = {
     call$1(ex) {
       return B.JSArray_methods.add$1(this.errors, type$.SquadronException._as(ex));
     },
-    $signature: 6
+    $signature: 5
   };
   A.execute____closure_pause.prototype = {
     call$0() {
@@ -41790,25 +41719,25 @@
     call$1(number) {
       return B.JSArray_methods.add$1(this.numbers0, A._asInt(number));
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure61.prototype = {
     call$1(ex) {
       return B.JSArray_methods.add$1(this.errors0, type$.SquadronException._as(ex));
     },
-    $signature: 6
+    $signature: 5
   };
   A.execute_____closure62.prototype = {
     call$1(number) {
       return B.JSArray_methods.add$1(this.numbers1, A._asInt(number));
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure63.prototype = {
     call$1(ex) {
       return B.JSArray_methods.add$1(this.errors1, type$.SquadronException._as(ex));
     },
-    $signature: 6
+    $signature: 5
   };
   A.execute____closure37.prototype = {
     call$0() {
@@ -41850,13 +41779,13 @@
     call$1(number) {
       return B.JSArray_methods.add$1(this.numbers, A._asInt(number));
     },
-    $signature: 18
+    $signature: 17
   };
   A.execute_____closure59.prototype = {
     call$1(ex) {
       return B.JSArray_methods.add$1(this.errors, type$.SquadronException._as(ex));
     },
-    $signature: 6
+    $signature: 5
   };
   A.execute_closure6.prototype = {
     call$0() {
@@ -41996,7 +41925,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute____closure73.prototype = {
     call$0() {
@@ -42067,7 +41996,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute____closure74.prototype = {
     call$0() {
@@ -42140,7 +42069,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute____closure75.prototype = {
     call$0() {
@@ -42534,12 +42463,20 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute___closure39.prototype = {
     call$0() {
-      var t1 = this.tc;
-      t1.skip$3$skip(0, "- not found", new A.execute____closure66(t1), t1.entryPoints.missingWorker == null);
+      var savedPath, t2,
+        t1 = this.tc;
+      type$.dynamic_Function._as(new A.execute____closure66(t1));
+      savedPath = t1._testPath;
+      t2 = (savedPath.length !== 0 ? t1._testPath = savedPath + " " : savedPath) + "- not found";
+      t1._testPath = t2;
+      if (!$.$get$TestContext__knownTests().contains$1(0, t2))
+        A.print("Unregistered test " + t1._testPath);
+      A.print("Skip test " + t1._testPath);
+      t1._testPath = savedPath;
       t1.test$2("- failed init", new A.execute____closure67(t1));
       t1.test$2("- missing start request", new A.execute____closure68(t1));
       t1.test$2("- invalid command ID", new A.execute____closure69(t1));
@@ -42605,9 +42542,7 @@
               // catch
               $async$handler = 2;
               $async$exception = $async$currentError;
-              if (type$.SquadronError._is(A.unwrapException($async$exception)))
-                A.print("OK!");
-              else
+              if (!type$.SquadronError._is(A.unwrapException($async$exception)))
                 throw $async$exception;
               // goto after finally
               $async$goto = 5;
@@ -43009,7 +42944,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute_____closure_createTask0.prototype = {
     call$1(duration) {
@@ -43174,7 +43109,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 24
+    $signature: 23
   };
   A.execute_____closure_createTask.prototype = {
     call$1(duration) {
@@ -43562,7 +43497,7 @@
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$handler = 1, $async$currentError, $async$self = this, obj, res, exception, transferable, t1, t2, result, $async$exception, $async$temp1;
+        $async$handler = 1, $async$currentError, $async$self = this, obj, res, ex, exception, transferable, t1, t2, result, $async$exception, $async$temp1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -43598,7 +43533,11 @@
               // catch
               $async$handler = 3;
               $async$exception = $async$currentError;
-              if (!type$.SquadronError._is(A.unwrapException($async$exception)))
+              t2 = A.unwrapException($async$exception);
+              if (type$.SquadronError._is(t2)) {
+                ex = t2;
+                A.expect(J.toString$0$(ex), new A._Contains("Failed to post"), null);
+              } else
                 throw $async$exception;
               // goto after finally
               $async$goto = 6;
@@ -43631,7 +43570,7 @@
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$handler = 1, $async$currentError, $async$self = this, res, t1, exception, $async$exception, $async$temp1;
+        $async$handler = 1, $async$currentError, $async$self = this, res, ex, t1, exception, $async$exception, $async$temp1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -43657,7 +43596,11 @@
               // catch
               $async$handler = 2;
               $async$exception = $async$currentError;
-              if (!type$.SquadronError._is(A.unwrapException($async$exception)))
+              t1 = A.unwrapException($async$exception);
+              if (type$.SquadronError._is(t1)) {
+                ex = t1;
+                A.expect(J.toString$0$(ex), new A._Contains("Failed to post"), null);
+              } else
                 throw $async$exception;
               // goto after finally
               $async$goto = 5;
@@ -43846,7 +43789,7 @@
         _this.done.complete$0(0);
       }
     },
-    $signature: 4
+    $signature: 6
   };
   A.execute_____closure84.prototype = {
     call$1(e) {
@@ -44403,7 +44346,7 @@
       A._asInt(n);
       ++this._box_5.counter;
     },
-    $signature: 18
+    $signature: 17
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -44441,8 +44384,6 @@
     _ = A.WorkerTask.prototype;
     _.super$WorkerTask$cancel = _.cancel$1;
     _.super$WorkerTask$run = _.run$1;
-    _ = A.Worker0.prototype;
-    _.super$Worker$release = _.release$0;
     _ = A.Releasable.prototype;
     _.super$Releasable$release = _.release$0;
   })();
@@ -44458,18 +44399,18 @@
       _instance_2_u = hunkHelpers._instance_2u,
       _instance_1_u = hunkHelpers._instance_1u;
     _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 177);
-    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 5);
+    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 4);
     _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 110, 0, 0);
-    _instance_1_i(A.FixedLengthListMixin.prototype, "get$add", "add$1", 5);
-    _instance_1_i(A.UnmodifiableListMixin.prototype, "get$add", "add$1", 5);
+    _instance_1_i(A.FixedLengthListMixin.prototype, "get$add", "add$1", 4);
+    _instance_1_i(A.UnmodifiableListMixin.prototype, "get$add", "add$1", 4);
     _static_0(A, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 78);
     _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 47);
     _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 47);
     _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 47);
-    _static_1(A, "async_Future__kTrue$closure", "Future__kTrue", 19);
+    _static_1(A, "async_Future__kTrue$closure", "Future__kTrue", 18);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 1);
-    _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 6);
-    _static_2(A, "async___nullErrorHandler$closure", "_nullErrorHandler", 23);
+    _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 5);
+    _static_2(A, "async___nullErrorHandler$closure", "_nullErrorHandler", 22);
     _static_0(A, "async___nullDoneHandler$closure", "_nullDoneHandler", 1);
     _static(A, "async___rootHandleUncaughtError$closure", 5, null, ["call$5"], ["_rootHandleUncaughtError"], 179, 0);
     _static(A, "async___rootRun$closure", 4, null, ["call$1$4", "call$4"], ["_rootRun", function($self, $parent, zone, f) {
@@ -44504,13 +44445,13 @@
     var _;
     _instance_0_u(_ = A._BroadcastSubscription.prototype, "get$_onPause", "_onPause$0", 1);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 5);
+    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 4);
     _instance(_, "get$addError", 0, 1, function() {
       return [null];
     }, ["call$2", "call$1"], ["addError$2", "addError$1"], 71, 0, 0);
     _instance_0_i(_, "get$close", "close$0", 12);
-    _instance_1_i(_, "get$_async$_add", "_async$_add$1", 5);
-    _instance_2_u(_, "get$_addError", "_addError$2", 23);
+    _instance_1_i(_, "get$_async$_add", "_async$_add$1", 4);
+    _instance_2_u(_, "get$_addError", "_addError$2", 22);
     _instance_0_u(_, "get$_async$_close", "_async$_close$0", 1);
     _instance(A._Completer.prototype, "get$completeError", 0, 1, function() {
       return [null];
@@ -44518,9 +44459,9 @@
     _instance(A._AsyncCompleter.prototype, "get$complete", 1, 0, function() {
       return [null];
     }, ["call$1", "call$0"], ["complete$1", "complete$0"], 121, 0, 0);
-    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 23);
-    _instance_1_i(_ = A._StreamController.prototype, "get$_async$_add", "_async$_add$1", 5);
-    _instance_2_u(_, "get$_addError", "_addError$2", 23);
+    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 22);
+    _instance_1_i(_ = A._StreamController.prototype, "get$_async$_add", "_async$_add$1", 4);
+    _instance_2_u(_, "get$_addError", "_addError$2", 22);
     _instance_0_u(_, "get$_async$_close", "_async$_close$0", 1);
     _instance_0_u(_ = A._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 1);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
@@ -44529,30 +44470,30 @@
     _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
     _instance_0_i(_ = A._DoneStreamSubscription.prototype, "get$cancel", "cancel$0", 37);
     _instance_0_u(_, "get$_onMicrotask", "_onMicrotask$0", 1);
-    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 5);
-    _instance_2_u(_, "get$_onError", "_onError$2", 23);
+    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 4);
+    _instance_2_u(_, "get$_onError", "_onError$2", 22);
     _instance_0_u(_, "get$_async$_onDone", "_async$_onDone$0", 1);
     _instance_0_u(_ = A._ForwardingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 1);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance_1_u(_, "get$_handleData", "_handleData$1", 5);
+    _instance_1_u(_, "get$_handleData", "_handleData$1", 4);
     _instance_2_u(_, "get$_async$_handleError", "_async$_handleError$2", 98);
     _instance_0_u(_, "get$_handleDone", "_handleDone$0", 1);
     _static_2(A, "collection___defaultEquals$closure", "_defaultEquals", 75);
     _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 76);
-    _instance_1_i(A._LinkedHashSet.prototype, "get$contains", "contains$1", 19);
-    _instance_1_i(A.ListBase.prototype, "get$add", "add$1", 5);
+    _instance_1_i(A._LinkedHashSet.prototype, "get$contains", "contains$1", 18);
+    _instance_1_i(A.ListBase.prototype, "get$add", "add$1", 4);
     _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 74);
-    _instance_1_i(_ = A._ByteCallbackSink.prototype, "get$add", "add$1", 5);
+    _instance_1_i(_ = A._ByteCallbackSink.prototype, "get$add", "add$1", 4);
     _instance_0_i(_, "get$close", "close$0", 1);
     _static_1(A, "core__identityHashCode$closure", "identityHashCode", 76);
     _static_2(A, "core__identical$closure", "identical", 75);
     _static_1(A, "core__GeneratorIterable__id$closure", "_GeneratorIterable__id", 67);
-    _static_1(A, "core__print$closure", "print", 5);
+    _static_1(A, "core__print$closure", "print", 4);
     _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 14);
     _static(A, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 77, 0);
     _static(A, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 77, 0);
-    _instance_1_i(A._ChildNodeListLazy.prototype, "get$add", "add$1", 5);
-    _instance_1_i(A.ImmutableListMixin.prototype, "get$add", "add$1", 5);
+    _instance_1_i(A._ChildNodeListLazy.prototype, "get$add", "add$1", 4);
+    _instance_1_i(A.ImmutableListMixin.prototype, "get$add", "add$1", 4);
     _instance_0_u(_ = A.StreamGroup.prototype, "get$_onListen", "_onListen$0", 1);
     _instance_0_u(_, "get$_onCancelBroadcast", "_onCancelBroadcast$0", 1);
     _static(A, "canceled_exceptions___self$closure", 1, null, ["call$1$1", "call$1"], ["_self", function(x) {
@@ -44561,16 +44502,16 @@
     _instance(A.CancelableToken.prototype, "get$cancel", 1, 0, function() {
       return [null];
     }, ["call$1", "call$0"], ["cancel$1", "cancel$0"], 114, 0, 0);
-    _instance_1_i(A.QueueList.prototype, "get$add", "add$1", 5);
-    _instance_1_i(A._DelegatingIterableBase.prototype, "get$contains", "contains$1", 19);
+    _instance_1_i(A.QueueList.prototype, "get$add", "add$1", 4);
+    _instance_1_i(A._DelegatingIterableBase.prototype, "get$contains", "contains$1", 18);
     _instance_1_u(A.PrettyPrinter.prototype, "get$toEncodableFallback", "toEncodableFallback$1", 151);
     _instance(A._DeepMatcher.prototype, "get$_recursiveMatch", 0, 4, null, ["call$4"], ["_recursiveMatch$4"], 159, 0, 0);
     _static_1(A, "pretty_print___escapeString$closure", "_escapeString", 14);
     _static_1(A, "util___getHexLiteral$closure", "_getHexLiteral", 14);
     _instance_1_u(_ = A._BaseWebChannel.prototype, "get$_postRequest", "_postRequest$1", 25);
     _instance_1_u(_, "get$_inspectAndPostRequest", "_inspectAndPostRequest$1", 25);
-    _instance_1_i(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 6);
-    _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 6);
+    _instance_1_i(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 5);
+    _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 5);
     _instance_1_u(A._WebForwardChannel.prototype, "get$_forward", "_forward$1", 26);
     _static_2(A, "_pool_worker_PoolWorker_compareCapacityDesc$closure", "PoolWorker_compareCapacityDesc", 196);
     _static_1(A, "_pool_worker_PoolWorker_isStopped$closure", "PoolWorker_isStopped", 197);
@@ -44581,7 +44522,7 @@
     _instance_0_u(_, "get$__stream_wrapper$_onCancel", "__stream_wrapper$_onCancel$0", 37);
     _instance_0_u(_, "get$__stream_wrapper$_onPause", "__stream_wrapper$_onPause$0", 1);
     _instance_0_u(_, "get$__stream_wrapper$_onResume", "__stream_wrapper$_onResume$0", 1);
-    _static_1(A, "_user_code_UserCode__noop$closure", "UserCode__noop", 6);
+    _static_1(A, "_user_code_UserCode__noop$closure", "UserCode__noop", 5);
     _instance_0_u(_ = A.WorkerStreamTask.prototype, "get$__worker_stream_task$_onPause", "__worker_stream_task$_onPause$0", 1);
     _instance_0_u(_, "get$__worker_stream_task$_onResume", "__worker_stream_task$_onResume$0", 1);
     _instance_0_u(_, "get$__worker_stream_task$_onCancel", "__worker_stream_task$_onCancel$0", 43);
@@ -44589,16 +44530,16 @@
       return [null];
     }, ["call$1", "call$0"], ["_done$1", "_done$0"], 83, 0, 0);
     _instance_2_u(_, "get$__worker_stream_task$_onError", "__worker_stream_task$_onError$2", 29);
-    _instance_1_u(_, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 5);
+    _instance_1_u(_, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 4);
     _instance_0_u(_, "get$__worker_stream_task$_onListen", "__worker_stream_task$_onListen$0", 1);
     _instance_2_u(_ = A.WorkerValueTask.prototype, "get$_completeWithError", "_completeWithError$2", 85);
-    _instance_1_u(_, "get$_completeWithResult", "_completeWithResult$1", 6);
+    _instance_1_u(_, "get$_completeWithResult", "_completeWithResult$1", 5);
     _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 199);
     _static_1(A, "squadron_canceled_exceptions__SquadronCanceledExceptionsExt_deserialize$closure", "SquadronCanceledExceptionsExt_deserialize", 200);
     _static_1(A, "squadron_error__SquadronErrorExt_deserialize$closure", "SquadronErrorExt_deserialize", 201);
     _static_1(A, "squadron_timeout_exception__SquadronTimeoutExceptionExt_deserialize$closure", "SquadronTimeoutExceptionExt_deserialize", 202);
     _static_1(A, "worker_exception__WorkerExceptionExt_deserialize$closure", "WorkerExceptionExt_deserialize", 203);
-    _instance_1_u(_ = A.WorkerPool.prototype, "get$_removeWorkerAndNotify", "_removeWorkerAndNotify$1", 5);
+    _instance_1_u(_ = A.WorkerPool.prototype, "get$_removeWorkerAndNotify", "_removeWorkerAndNotify$1", 4);
     _instance_0_u(_, "get$_schedule", "_schedule$0", 1);
     _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, function() {
       return [null];
@@ -44616,24 +44557,24 @@
     _instance_0_u(A.Engine.prototype, "get$run", "run$0", 115);
     _instance_1_u(_ = A.ExpandedReporter.prototype, "get$_onTestStarted", "_onTestStarted$1", 122);
     _instance_1_u(_, "get$_onDone", "_onDone$1", 123);
-    _static_1(A, "cancelation_test__execute$closure", "execute", 10);
+    _static_1(A, "cancelation_test__execute$closure", "execute", 11);
     _static_1(A, "custom_exception_CustomException_deserialize$closure", "CustomException_deserialize", 207);
     _instance_1_u(A.HtmlLogger.prototype, "get$_onScroll", "_onScroll$1", 13);
-    _static_1(A, "issues_test__execute$closure", "execute0", 10);
-    _static_1(A, "local_worker_test__execute$closure", "execute1", 10);
-    _static_1(A, "logging_test__execute$closure", "execute2", 10);
-    _static_1(A, "marshaler_test__execute$closure", "execute3", 10);
-    _static_1(A, "shared_channel_test__execute$closure", "execute4", 10);
-    _static_1(A, "web_worker_js_test__execute$closure", "execute5", 10);
-    _static_1(A, "worker_pool_test__execute$closure", "execute6", 10);
-    _static_1(A, "worker_test__execute$closure", "execute7", 10);
+    _static_1(A, "issues_test__execute$closure", "execute0", 11);
+    _static_1(A, "local_worker_test__execute$closure", "execute1", 11);
+    _static_1(A, "logging_test__execute$closure", "execute2", 11);
+    _static_1(A, "marshaler_test__execute$closure", "execute3", 11);
+    _static_1(A, "shared_channel_test__execute$closure", "execute4", 11);
+    _static_1(A, "web_worker_js_test__execute$closure", "execute5", 11);
+    _static_1(A, "worker_pool_test__execute$closure", "execute6", 11);
+    _static_1(A, "worker_test__execute$closure", "execute7", 11);
     _static(A, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return A.max(a, b, type$.num);
     }], 208, 1);
     _static_0(A, "channel_Channel_noop$closure", "Channel_noop", 1);
-    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 19);
-    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 19);
-    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 19);
+    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 18);
+    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 18);
+    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 18);
     _static_1(A, "cast_helpers_Cast_toInt$closure", "Cast_toInt", 209);
     _static_1(A, "cast_helpers_Cast_toDbl$closure", "Cast_toDbl", 210);
     _static(A, "cast_helpers_Cast_identity$closure", 1, null, ["call$1$1", "call$1"], ["Cast_identity", function(value) {
@@ -44655,8 +44596,8 @@
     _inheritMany(A.Error, [A.LateError, A.TypeError, A.JsNoSuchMethodError, A.UnknownJsTypeError, A._CyclicInitializationError, A.RuntimeError, A.AssertionError, A._Error, A.JsonUnsupportedObjectError, A.ArgumentError, A.NoSuchMethodError, A.UnsupportedError, A.UnimplementedError, A.StateError, A.ConcurrentModificationError]);
     _inheritMany(A.ListBase, [A.UnmodifiableListBase, A._FrozenElementList, A._ChildNodeListLazy]);
     _inheritMany(A.UnmodifiableListBase, [A.CodeUnits, A.UnmodifiableListView]);
-    _inheritMany(A.Closure, [A.Closure0Args, A.Closure2Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._LinkedCustomHashMap_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure0, A._EventStreamSubscription_onData_closure0, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A.head_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.PrettyPrinter_formatStackTrace_closure, A._Contains_matches_closure, A._DeepMatcher__compareSets_closure, A._expect_closure0, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A._WebChannel_sendRequest_closure, A._WebChannel_sendRequest_closure0, A._WebChannel_sendStreamingRequest_closure, A._WebChannel_sendStreamingRequest_closure0, A._WebForwardChannel$__closure, A.openChannel_fail, A.openChannel_success, A.openChannel_closure, A.openChannel__closure3, A.openChannel_closure0, A.openChannel_closure1, A.openChannel_closure2, A._WebLocalWorker$__closure, A.JsWorkerRunnerExt_get_handle_closure, A.StreamWrapper_closure, A.StreamWrapper_closure0, A.StreamWrapper__onListen_closure, A.UserCode_run_closure, A.ValueWrapper_closure, A.ValueWrapper_closure0, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__pipe_closure, A.WorkerStreamTask_run_closure, A.WorkerValueTask_run_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.Worker_send_sendReq, A.Worker_start_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A._checkWebWorkers_closure, A._checkWebWorkers_closure0, A._checkWebWorkers_closure1, A.execute_____closure47, A.execute_____closure48, A.execute_____closure45, A.execute_____closure46, A.execute_____closure40, A.execute_____closure41, A.execute_____closure42, A.execute_____closure43, A.execute_____closure44, A.execute_____closure35, A.execute_____closure36, A.execute_____closure37, A.execute_____closure38, A.execute_____closure39, A.execute_____closure34, A.execute_____closure29, A.execute_____closure30, A.execute______closure2, A.execute_____closure31, A.execute______closure0, A.execute______closure1, A.execute_____closure32, A.execute______closure, A.execute_____closure33, A.execute_____closure19, A.execute_____closure21, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure25, A.execute_____closure26, A.execute_____closure27, A.execute_____closure28, A.execute_____closure9, A.execute_____closure11, A.execute_____closure12, A.execute_____closure13, A.execute_____closure14, A.execute_____closure15, A.execute_____closure16, A.execute_____closure17, A.execute_____closure18, A.execute_____closure7, A.execute_____closure5, A.execute_____closure1, A.execute_____closure3, A.ConsoleToHtml_convert_closure, A.IssuesWorkerPool_issue_8_closure, A.execute_____closure0, A.execute_____closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.execute_____closure57, A.execute_____closure56, A.execute______closure7, A.execute_____closure55, A.execute______closure6, A.execute_____closure54, A.execute_____closure53, A.execute_____closure52, A.execute______closure5, A.execute_____closure51, A.execute_____closure50, A.execute______closure4, A.execute_______closure0, A.execute_____closure49, A.execute______closure3, A.execute_______closure, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestContext_done_closure, A.TestContext_test_closure, A.run_closure, A.run_closure0, A.run_closure1, A.main_closure, A.main_closure0, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedIdentityTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.execute____closure86, A.execute____closure87, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute____closure81, A.execute____closure82, A.execute____closure79, A.execute____closure80, A.execute____closure77, A.execute____closure78, A.execute____closure53, A.execute_____closure80, A.execute______closure18, A.execute____closure52, A.execute_____closure79, A.execute______closure16, A.execute_____closure78, A.execute_____closure77, A.execute_____closure76, A.execute_____closure75, A.execute______closure14, A.execute_____closure74, A.execute______closure12, A.execute_____closure73, A.execute_____closure72, A.execute_____closure71, A.execute_____closure70, A.execute____closure42, A.execute____closure41, A.execute____closure40, A.execute____closure39, A.execute____closure38, A.execute_____closure69, A.execute_____closure68, A.execute______closure8, A.execute______closure9, A.execute______closure10, A.execute______closure11, A.execute_____closure67, A.execute_____closure64, A.execute_____closure65, A.execute_____closure66, A.execute_____closure60, A.execute_____closure61, A.execute_____closure62, A.execute_____closure63, A.execute_____closure58, A.execute_____closure59, A.execute_____closure104, A.execute____closure_hook0, A.execute_____closure103, A.execute____closure_hook, A.execute_____closure102, A.execute______closure21, A.execute______closure20, A.execute______closure19, A.execute_____closure98, A.execute_____closure97, A.execute_____closure96, A.execute_____closure_createTask0, A.execute_____closure95, A.execute_____closure_createTask, A.execute_____closure83, A.execute_____closure84, A.execute_____closure82, A.execute_____closure81]);
-    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._AddStreamState_cancel_closure, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A.Logger_defaultPrinter_closure, A.Logger_defaultOutput_closure, A._expect_closure, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A._post_closure, A._BaseWebChannel__postRequest_closure, A._BaseWebChannel__inspectAndPostRequest_closure, A._BaseWebChannel__postResponse_closure, A._BaseWebChannel__inspectAndPostResponse_closure, A._WebChannel_sendRequest_closure1, A._WebChannel_sendStreamingRequest_closure1, A._WebWorkerChannel_error_closure, A._WebForwardChannel__forward_closure, A.openChannel__closure2, A.openChannel___closure, A.openChannel___closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure3, A.openChannel_closure4, A.openChannel_closure5, A.PoolWorker_run_closure, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure1, A.WorkerStreamTask__done_closure, A.WorkerValueTask__completeWithError_closure, A.WorkerValueTask__completeWithResult_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_send_sendReq_closure0, A.Worker_stream_onDone, A.Worker_stream_closure, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure0, A.execute__closure0, A.execute__closure1, A.execute__closure2, A.execute___closure0, A.execute____closure16, A.execute____closure17, A.execute____closure18, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute___closure1, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute____closure14, A.execute_____closure20, A.execute____closure15, A.execute_____closure10, A.execute___closure2, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute___closure3, A.execute____closure4, A.execute____closure5, A.execute____closure6, A.execute___closure4, A.execute____closure1, A.execute____closure2, A.execute____closure3, A.IssuesWorkerPool_closure, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure, A.execute____closure0, A.LocalClientWorkerPool_closure, A.execute_closure3, A.execute__closure5, A.execute___closure23, A.execute____closure28, A.execute____closure29, A.execute____closure30, A.execute___closure24, A.execute____closure25, A.execute____closure26, A.execute____closure27, A.execute___closure25, A.execute____closure22, A.execute____closure23, A.execute____closure24, A.execute_closure2, A.execute__closure4, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute_closure1, A.execute__closure3, A.execute___closure5, A.execute___closure6, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.PrimeWorkerPool_closure, A.execute_closure4, A.execute__closure6, A.execute___closure26, A.execute___closure27, A.TestContext_test_closure1, A.TestContext_test_closure0, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$invalid_closure, A.execute_closure7, A.execute__closure9, A.execute___closure42, A.execute___closure43, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute_closure5, A.execute__closure7, A.execute___closure28, A.execute______closure17, A.execute___closure29, A.execute___closure30, A.execute____closure49, A.execute____closure50, A.execute____closure51, A.execute___closure31, A.execute____closure43, A.execute____closure44, A.execute____closure45, A.execute____closure46, A.execute____closure47, A.execute____closure48, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute___closure35, A.execute___closure36, A.execute___closure37, A.execute____closure31, A.execute____closure32, A.execute____closure33, A.execute____closure34, A.execute____closure35, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure36, A.execute____closure37, A.execute_closure6, A.execute__closure8, A.execute___closure38, A.execute____closure70, A.execute____closure71, A.execute____closure72, A.execute____closure73, A.execute____closure74, A.execute____closure75, A.execute_____closure99, A.execute_____closure100, A.execute_____closure101, A.execute____closure76, A.execute___closure39, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute____closure69, A.execute___closure40, A.execute____closure63, A.execute______createTask_closure0, A.execute____closure64, A.execute______createTask_closure, A.execute____closure65, A.execute_____closure85, A.execute_____closure86, A.execute_____closure87, A.execute_____closure88, A.execute_____closure89, A.execute_____closure90, A.execute_____closure91, A.execute_____closure92, A.execute_____closure93, A.execute_____closure94, A.execute___closure41, A.execute____closure54, A.execute____closure55, A.execute____closure56, A.execute____closure57, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute____closure_pause0, A.execute____closure_resume0, A.execute____closure61, A.execute____closure62]);
+    _inheritMany(A.Closure, [A.Closure0Args, A.Closure2Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._LinkedCustomHashMap_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure0, A._EventStreamSubscription_onData_closure0, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A.head_closure, A.BaseRequest_closure0, A.BrowserClient_send_closure, A.BrowserClient_send_closure0, A.ByteStream_toBytes_closure, A.PrettyPrinter_formatStackTrace_closure, A._Contains_matches_closure, A._DeepMatcher__compareSets_closure, A._expect_closure0, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A._WebChannel_sendRequest_closure, A._WebChannel_sendRequest_closure0, A._WebChannel_sendStreamingRequest_closure, A.openChannel_fail, A.openChannel_success, A.openChannel_closure, A.openChannel__closure3, A.openChannel_closure0, A.openChannel_closure1, A.JsWorkerRunnerExt_get_handle_closure, A.StreamWrapper_closure, A.StreamWrapper_closure0, A.StreamWrapper__onListen_closure, A.UserCode_run_closure, A.ValueWrapper_closure, A.ValueWrapper_closure0, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__pipe_closure, A.WorkerStreamTask_run_closure, A.WorkerValueTask_run_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.Worker_send_sendReq, A.Worker_start_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A._checkWebWorkers_closure, A._checkWebWorkers_closure0, A._checkWebWorkers_closure1, A.execute_____closure47, A.execute_____closure48, A.execute_____closure45, A.execute_____closure46, A.execute_____closure40, A.execute_____closure41, A.execute_____closure42, A.execute_____closure43, A.execute_____closure44, A.execute_____closure35, A.execute_____closure36, A.execute_____closure37, A.execute_____closure38, A.execute_____closure39, A.execute_____closure34, A.execute_____closure29, A.execute_____closure30, A.execute______closure2, A.execute_____closure31, A.execute______closure0, A.execute______closure1, A.execute_____closure32, A.execute______closure, A.execute_____closure33, A.execute_____closure19, A.execute_____closure21, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure25, A.execute_____closure26, A.execute_____closure27, A.execute_____closure28, A.execute_____closure9, A.execute_____closure11, A.execute_____closure12, A.execute_____closure13, A.execute_____closure14, A.execute_____closure15, A.execute_____closure16, A.execute_____closure17, A.execute_____closure18, A.execute_____closure7, A.execute_____closure5, A.execute_____closure1, A.execute_____closure3, A.ConsoleToHtml_convert_closure, A.IssuesWorkerPool_issue_8_closure, A.execute_____closure0, A.execute_____closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.execute_____closure57, A.execute_____closure56, A.execute______closure7, A.execute_____closure55, A.execute______closure6, A.execute_____closure54, A.execute_____closure53, A.execute_____closure52, A.execute______closure5, A.execute_____closure51, A.execute_____closure50, A.execute______closure4, A.execute_______closure0, A.execute_____closure49, A.execute______closure3, A.execute_______closure, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestContext_done_closure, A.TestContext_test_closure, A.run_closure, A.run_closure0, A.run_closure1, A.main_closure, A.main_closure0, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedIdentityTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.execute____closure86, A.execute____closure87, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute____closure81, A.execute____closure82, A.execute____closure79, A.execute____closure80, A.execute____closure77, A.execute____closure78, A.execute____closure53, A.execute_____closure80, A.execute______closure18, A.execute____closure52, A.execute_____closure79, A.execute______closure16, A.execute_____closure78, A.execute_____closure77, A.execute_____closure76, A.execute_____closure75, A.execute______closure14, A.execute_____closure74, A.execute______closure12, A.execute_____closure73, A.execute_____closure72, A.execute_____closure71, A.execute_____closure70, A.execute____closure42, A.execute____closure41, A.execute____closure40, A.execute____closure39, A.execute____closure38, A.execute_____closure69, A.execute_____closure68, A.execute______closure8, A.execute______closure9, A.execute______closure10, A.execute______closure11, A.execute_____closure67, A.execute_____closure64, A.execute_____closure65, A.execute_____closure66, A.execute_____closure60, A.execute_____closure61, A.execute_____closure62, A.execute_____closure63, A.execute_____closure58, A.execute_____closure59, A.execute_____closure104, A.execute____closure_hook0, A.execute_____closure103, A.execute____closure_hook, A.execute_____closure102, A.execute______closure21, A.execute______closure20, A.execute______closure19, A.execute_____closure98, A.execute_____closure97, A.execute_____closure96, A.execute_____closure_createTask0, A.execute_____closure95, A.execute_____closure_createTask, A.execute_____closure83, A.execute_____closure84, A.execute_____closure82, A.execute_____closure81]);
+    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._AddStreamState_cancel_closure, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A.Logger_defaultPrinter_closure, A.Logger_defaultOutput_closure, A._expect_closure, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A._BaseWebChannel__postRequest_closure, A._BaseWebChannel__inspectAndPostRequest_closure, A._BaseWebChannel__postResponse_closure, A._BaseWebChannel__inspectAndPostResponse_closure, A._WebChannel_sendRequest_closure1, A._WebChannel_sendStreamingRequest_closure0, A._WebWorkerChannel_error_closure, A._WebForwardChannel__forward_closure, A.openChannel__closure2, A.openChannel___closure, A.openChannel___closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure2, A.openChannel_closure3, A.PoolWorker_run_closure, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure1, A.WorkerStreamTask__done_closure, A.WorkerValueTask__completeWithError_closure, A.WorkerValueTask__completeWithResult_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_send_sendReq_closure0, A.Worker_stream_onDone, A.Worker_stream_closure, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure0, A.execute__closure0, A.execute__closure1, A.execute__closure2, A.execute___closure0, A.execute____closure16, A.execute____closure17, A.execute____closure18, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute___closure1, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute____closure14, A.execute_____closure20, A.execute____closure15, A.execute_____closure10, A.execute___closure2, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute___closure3, A.execute____closure4, A.execute____closure5, A.execute____closure6, A.execute___closure4, A.execute____closure1, A.execute____closure2, A.execute____closure3, A.IssuesWorkerPool_closure, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure, A.execute____closure0, A.LocalClientWorkerPool_closure, A.execute_closure3, A.execute__closure5, A.execute___closure23, A.execute____closure28, A.execute____closure29, A.execute____closure30, A.execute___closure24, A.execute____closure25, A.execute____closure26, A.execute____closure27, A.execute___closure25, A.execute____closure22, A.execute____closure23, A.execute____closure24, A.execute_closure2, A.execute__closure4, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute_closure1, A.execute__closure3, A.execute___closure5, A.execute___closure6, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.PrimeWorkerPool_closure, A.execute_closure4, A.execute__closure6, A.execute___closure26, A.execute___closure27, A.TestContext_test_closure1, A.TestContext_test_closure0, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$invalid_closure, A.execute_closure7, A.execute__closure9, A.execute___closure42, A.execute___closure43, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute_closure5, A.execute__closure7, A.execute___closure28, A.execute______closure17, A.execute___closure29, A.execute___closure30, A.execute____closure49, A.execute____closure50, A.execute____closure51, A.execute___closure31, A.execute____closure43, A.execute____closure44, A.execute____closure45, A.execute____closure46, A.execute____closure47, A.execute____closure48, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute___closure35, A.execute___closure36, A.execute___closure37, A.execute____closure31, A.execute____closure32, A.execute____closure33, A.execute____closure34, A.execute____closure35, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure36, A.execute____closure37, A.execute_closure6, A.execute__closure8, A.execute___closure38, A.execute____closure70, A.execute____closure71, A.execute____closure72, A.execute____closure73, A.execute____closure74, A.execute____closure75, A.execute_____closure99, A.execute_____closure100, A.execute_____closure101, A.execute____closure76, A.execute___closure39, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute____closure69, A.execute___closure40, A.execute____closure63, A.execute______createTask_closure0, A.execute____closure64, A.execute______createTask_closure, A.execute____closure65, A.execute_____closure85, A.execute_____closure86, A.execute_____closure87, A.execute_____closure88, A.execute_____closure89, A.execute_____closure90, A.execute_____closure91, A.execute_____closure92, A.execute_____closure93, A.execute_____closure94, A.execute___closure41, A.execute____closure54, A.execute____closure55, A.execute____closure56, A.execute____closure57, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute____closure_pause0, A.execute____closure_resume0, A.execute____closure61, A.execute____closure62]);
     _inheritMany(A.Iterable, [A.EfficientLengthIterable, A.MappedIterable, A.WhereIterable, A.ExpandIterable, A.TakeIterable, A.SkipIterable, A.SkipWhileIterable, A.FollowedByIterable, A.WhereTypeIterable, A.NonNullsIterable, A._KeysOrValues, A._AllMatchesIterable, A._StringAllMatchesIterable, A._SyncStarIterable, A.Runes, A._EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin]);
     _inheritMany(A.EfficientLengthIterable, [A.ListIterable, A.EmptyIterable, A.LinkedHashMapKeyIterable, A._HashMapKeyIterable, A._MapBaseValueIterable]);
     _inheritMany(A.ListIterable, [A.SubListIterable, A.MappedListIterable, A.ReversedListIterable, A.ListQueue, A._GeneratorIterable]);
@@ -44892,7 +44833,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map"},
     mangledNames: {},
-    types: ["Future<Null>()", "~()", "Null()", "bool(String)", "Null(@)", "~(Object?)", "~(@)", "Future<Null>(TestWorkerPool)", "bool(@)", "~(String,@)", "~(TestContext)", "String()", "Future<~>()", "~(Event)", "String(String)", "Future<int>(TestWorker)", "Null(JSObject)", "Future<Null>(LocalWorker<LocalServiceImpl>)", "~(int)", "bool(Object?)", "~(MessageEvent)", "~(Description,bool)", "bool(ValueTask<@>)", "~(Object,StackTrace)", "Future<Null>(TestWorker)", "~(List<@>)", "~(JSObject)", "bool(StreamTask<@>)", "Null(Object,StackTrace)", "~(@,@)", "Null(int)", "Trace()", "Frame()", "bool(List<@>)", "Frame(String)", "Null(@,@)", "Stream<int>(TestWorker)", "Future<@>()", "List<int>(Object?,StackTrace)", "List<int>(List<int>)", "Future<Null>(LocalClientWorkerPool)", "~(Timer)", "~(Object?,Object?)", "@()", "String(SquadronException)", "Future<Null>(LocalClientWorker)", "Chain()", "~(~())", "TestWorker()", "Future<Null>(InstallableWorker)", "~(State)", "bool(Uri)", "Future<Null>(PrimeWorkerPool)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "~(Zone,ZoneDelegate,Zone,String)", "GroupEntry?(GroupEntry)", "@(Function)", "String(Frame)", "int(Frame)", "bool(WorkerTask<@,Worker0>)", "~(CanceledException)", "Object?(Object?)", "bool(NodeValidator)", "~(String,String)", "~(Uint8List,String,int)", "~(~)", "int(int)", "int(int,WorkerStat)", "int(int,int)", "~(bool)", "~(Object[StackTrace?])", "Future<@>(Duration)", "Future<Channel>()", "@(@)", "bool(Object?,Object?)", "int(Object?)", "bool(Element,String,String,_Html5NodeValidator)", "int()", "Trace(String)", "String(String?)", "~(WorkerRunner)", "CancelationTokenReference()", "~([SquadronException?])", "Future<@>(~)", "~(Object,StackTrace?)", "Future<~>(~)", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "List<@>(SquadronCanceledException)", "Null(Channel)", "Uint8List(@,@)", "Null(~())", "~([@])", "0&(@,@)", "Channel(Channel)", "bool(Level)", "bool(Node)", "~(@,StackTrace)", "List<Frame>(Trace)", "int(Trace)", "@(@,String)", "String(Trace)", "@(String)", "bool/()", "Frame(String,String)", "GroupEntry(GroupEntry)", "~(Node,Node?)", "@(@,@)", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "bool(Pattern[int])", "Metadata()", "Metadata(Metadata,BooleanSelector)", "String(CanceledException)", "Future<~>([CanceledException?])", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "~([Object?])", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "CanceledException?(CancelationToken)", "Null(@,StackTrace)", "Future<Response>(Client0)", "bool(CanceledException)", "List<@>(int)", "bool(String,String)", "int(String)", "_Future<@>(@)", "~(List<int>)", "DevelopmentFilter()", "bool(SequenceReplacement)", "IssuesWorker()", "0^(@)<Object?>", "Future<Null>(IssuesWorker)", "Future<Null>(IssuesWorkerPool)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<@>(LocalClientWorker)", "String(List<@>)", "Stream<int>(List<@>)", "PrettyPrinter()", "ConsoleOutput()", "Object(@)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "bool(~)", "bool(Pattern)", "String(Pattern)", "~(Level,bool)", "_Mismatch?(Object?,Object?,String,int)", "Future<@>(TestWorker)", "~(Symbol0,@)", "Future<bool>(TestWorker)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "Future<Null>(CacheWorker)", "String(Object?,int,Set<Object?>,bool)", "bool(WorkerStat)", "String(Object?)", "bool(TestWorker)", "String(@)", "String(Match)", "Map<String,String>(Map<String,String>,String)", "Future<List<@>>()", "Future<Null>(MissingWorker)", "~(String,int)", "~(String,int?)", "bool(SquadronException)", "int(@,@)", "~(int,@)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "~(SquadronException)", "~(Channel)", "Null(JSObject?)", "0^(0^)<Object?>", "int(PoolWorker<Worker0>,PoolWorker<Worker0>)", "bool(PoolWorker<Worker0>)", "WorkerStat(PoolWorker<Worker0>)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "Null(bool)", "~(JSObject?)", "Null(CanceledException)", "CustomException?(List<@>)", "0^(0^,0^)<num>", "int(@)", "double(@)", "Stream<@>(IssuesWorker)"],
+    types: ["Future<Null>()", "~()", "Null()", "bool(String)", "~(Object?)", "~(@)", "Null(@)", "Future<Null>(TestWorkerPool)", "String()", "bool(@)", "~(String,@)", "~(TestContext)", "Future<~>()", "~(Event)", "String(String)", "Future<int>(TestWorker)", "Future<Null>(LocalWorker<LocalServiceImpl>)", "~(int)", "bool(Object?)", "~(MessageEvent)", "~(Description,bool)", "bool(ValueTask<@>)", "~(Object,StackTrace)", "Future<Null>(TestWorker)", "Null(JSObject)", "~(List<@>)", "~(JSObject)", "bool(StreamTask<@>)", "Null(Object,StackTrace)", "~(@,@)", "Null(int)", "Trace()", "Frame()", "bool(List<@>)", "Frame(String)", "Null(@,@)", "Stream<int>(TestWorker)", "Future<@>()", "List<int>(Object?,StackTrace)", "List<int>(List<int>)", "Future<Null>(LocalClientWorkerPool)", "~(Timer)", "~(Object?,Object?)", "@()", "String(SquadronException)", "Future<Null>(LocalClientWorker)", "Chain()", "~(~())", "TestWorker()", "Future<Null>(InstallableWorker)", "~(State)", "bool(Uri)", "Future<Null>(PrimeWorkerPool)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "~(Zone,ZoneDelegate,Zone,String)", "GroupEntry?(GroupEntry)", "@(Function)", "String(Frame)", "int(Frame)", "bool(WorkerTask<@,Worker0>)", "~(CanceledException)", "Object?(Object?)", "bool(NodeValidator)", "~(String,String)", "~(Uint8List,String,int)", "~(~)", "int(int)", "int(int,WorkerStat)", "int(int,int)", "~(bool)", "~(Object[StackTrace?])", "Future<@>(Duration)", "Future<Channel>()", "@(@)", "bool(Object?,Object?)", "int(Object?)", "bool(Element,String,String,_Html5NodeValidator)", "int()", "Trace(String)", "String(String?)", "~(WorkerRunner)", "CancelationTokenReference()", "~([SquadronException?])", "Future<@>(~)", "~(Object,StackTrace?)", "Future<~>(~)", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "List<@>(SquadronCanceledException)", "Null(Channel)", "Uint8List(@,@)", "Null(~())", "~([@])", "0&(@,@)", "Channel(Channel)", "bool(Level)", "bool(Node)", "~(@,StackTrace)", "List<Frame>(Trace)", "int(Trace)", "@(@,String)", "String(Trace)", "@(String)", "bool/()", "Frame(String,String)", "GroupEntry(GroupEntry)", "~(Node,Node?)", "@(@,@)", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "bool(Pattern[int])", "Metadata()", "Metadata(Metadata,BooleanSelector)", "String(CanceledException)", "Future<~>([CanceledException?])", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "~([Object?])", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "CanceledException?(CancelationToken)", "Null(@,StackTrace)", "Future<Response>(Client0)", "bool(CanceledException)", "List<@>(int)", "bool(String,String)", "int(String)", "_Future<@>(@)", "~(List<int>)", "DevelopmentFilter()", "bool(SequenceReplacement)", "IssuesWorker()", "0^(@)<Object?>", "Future<Null>(IssuesWorker)", "Future<Null>(IssuesWorkerPool)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<@>(LocalClientWorker)", "String(List<@>)", "Stream<int>(List<@>)", "PrettyPrinter()", "ConsoleOutput()", "Object(@)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "bool(~)", "bool(Pattern)", "String(Pattern)", "~(Level,bool)", "_Mismatch?(Object?,Object?,String,int)", "Future<@>(TestWorker)", "~(Symbol0,@)", "Future<bool>(TestWorker)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "Future<Null>(CacheWorker)", "String(Object?,int,Set<Object?>,bool)", "bool(WorkerStat)", "String(Object?)", "bool(TestWorker)", "String(@)", "String(Match)", "Map<String,String>(Map<String,String>,String)", "Future<List<@>>()", "Future<Null>(MissingWorker)", "~(String,int)", "~(String,int?)", "bool(SquadronException)", "int(@,@)", "~(int,@)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "~(SquadronException)", "~(Channel)", "Null(JSObject?)", "0^(0^)<Object?>", "int(PoolWorker<Worker0>,PoolWorker<Worker0>)", "bool(PoolWorker<Worker0>)", "WorkerStat(PoolWorker<Worker0>)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "Null(bool)", "~(JSObject?)", "Null(CanceledException)", "CustomException?(List<@>)", "0^(0^,0^)<num>", "int(@)", "double(@)", "Stream<@>(IssuesWorker)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti"),

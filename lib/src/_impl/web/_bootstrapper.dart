@@ -15,7 +15,6 @@ external web.DedicatedWorkerGlobalScope get self;
 void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final url = self.location.href;
 
-  print('[$url] initializing worker...');
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
@@ -27,22 +26,11 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
 
   com.port1.onmessage = runner.handle.toJS;
 
-  self.onmessageerror = (web.ErrorEvent e) {
-    getErrorEventError('$url/self.onmessageerror', e);
-  }.toJS;
-
   self.onmessage = (web.MessageEvent e) {
-    final msg = getMessageEventData('$url/self.onmessage', e);
-    runner
-        .connect(WorkerRequestExt.from(msg), com.port2, initializer)
-        .then((_) {
-      print('[$url] connected...');
-    }).catchError((ex, st) {
-      print('[$url] connection failed: $ex / $st');
-    });
+    final msg = getMessageEventData(e) as List;
+    runner.connect(WorkerRequestExt.from(msg), com.port2, initializer);
   }.toJS;
 
   // initial message indicating the worker is up and running
   self.postMessage(WorkerResponse.ready().wrapInPlace().jsify());
-  print('[$url] worker ready, waiting for connection...');
 }
