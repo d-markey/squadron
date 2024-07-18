@@ -29,6 +29,14 @@ class TestContext {
 
   int get pending => _pending;
 
+  void _checkDone() {
+    _pending -= 1;
+    if (_pending == 0 && _completer?.isCompleted == false) {
+      _completer!.complete();
+      _completer = null;
+    }
+  }
+
   Future<bool> get done =>
       _completer?.future.then((_) => _canceled) ?? Future.value(_canceled);
 
@@ -88,13 +96,7 @@ class TestContext {
             onlyTests.any((t) => t.allMatches(_testPath).isNotEmpty))) {
       _pending += 1;
       final currentTest = _testPath;
-      final timeout = Timer(Duration(seconds: 30), () {
-        _pending -= 1;
-        if (_pending == 0 && _completer?.isCompleted == false) {
-          _completer!.complete();
-          _completer = null;
-        }
-      });
+      final timeout = Timer(const Duration(seconds: 30), _checkDone);
       env.test(label, () async {
         try {
           if (_canceled) {
@@ -111,11 +113,9 @@ class TestContext {
           testResults[currentTest] = TestResult.error(ex, st);
           rethrow;
         } finally {
-          timeout.cancel();
-          _pending -= 1;
-          if (_pending == 0 && _completer?.isCompleted == false) {
-            _completer!.complete();
-            _completer = null;
+          if (timeout.isActive) {
+            timeout.cancel();
+            _checkDone();
           }
         }
       });
@@ -243,6 +243,7 @@ class TestContext {
     '- Cancelation - CompositeToken - finite() pool',
     '- GitHub Issues - #8 - Exceptions from Streams must come through onError - Squadron Worker',
     '- GitHub Issues - #8 - Exceptions from Streams must come through onError - Worker Pool',
+    '- Not a worker',
   };
 
   static final _knownGroups = <String>{

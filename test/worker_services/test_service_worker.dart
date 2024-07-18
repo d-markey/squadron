@@ -22,12 +22,10 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       [ConcurrencySettings? concurrencySettings])
       : this._(() => TestWorker.throws(context), concurrencySettings);
 
-  static TestWorkerPool? missingStartRequest(TestContext context,
-          [ConcurrencySettings? concurrencySettings]) =>
-      (context.entryPoints.missingStartRequest == null)
-          ? null
-          : TestWorkerPool._(() => TestWorker.missingStartRequest(context)!,
-              concurrencySettings);
+  TestWorkerPool.missingStartRequest(TestContext context,
+      [ConcurrencySettings? concurrencySettings])
+      : this._(
+            () => TestWorker.missingStartRequest(context), concurrencySettings);
 
   TestWorkerPool.invalid(TestContext context,
       [ConcurrencySettings? concurrencySettings])
@@ -146,13 +144,11 @@ class TestWorker extends Worker implements TestService {
           hook,
         );
 
-  static TestWorker? missingStartRequest(TestContext context) =>
-      (context.entryPoints.missingStartRequest == null)
-          ? null
-          : TestWorker._(
-              context.entryPoints.missingStartRequest!,
-              [TestService.startupOk],
-            );
+  TestWorker.missingStartRequest(TestContext context)
+      : this._(
+          context.entryPoints.missingStartRequest!,
+          [TestService.startupOk],
+        );
 
   @override
   Future setLevel(int level) =>

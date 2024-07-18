@@ -144,27 +144,26 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- missing command', () async {
-          await TestWorkerPool.missingStartRequest(
-            tc,
-          )?.useAsync((pool) async {
-            try {
-              await pool.start();
-              throw unexpectedSuccess('start()');
-            } on SquadronError catch (_) {
-              // expected exception
-            }
+        tc.test(
+            '- missing command',
+            () => TestWorkerPool.missingStartRequest(tc).useAsync((pool) async {
+                  try {
+                    await pool.start();
+                    throw unexpectedSuccess('start()');
+                  } on SquadronError {
+                    // expected exception
+                  }
 
-            try {
-              final res = await pool.ping();
-              throw unexpectedSuccess('ping()', res);
-            } on CanceledException catch (_) {
-              // expected exception
-            }
+                  try {
+                    final res = await pool.ping();
+                    throw unexpectedSuccess('ping()', res);
+                  } on CanceledException {
+                    // expected exception
+                  }
 
-            expect(pool.size, isZero);
-          });
-        });
+                  expect(pool.size, isZero);
+                }),
+            skip: tc.entryPoints.missingStartRequest == null);
 
         tc.test('- invalid command ID', () async {
           await TestWorkerPool.invalid(

@@ -1,3 +1,9 @@
-# exclude coverage and from language stats
-coverage/** linguist-vendored
+# exclude coverage and generated files from language stats
+coverage/** linguist-generated
 tool/jgenhtml/** linguist-vendored
+*.dart.js linguist-generated
+*.dart.js.deps linguist-generated
+*.dart.js.map linguist-generated
+*.dart.mjs linguist-generated
+*.dart.wasm linguist-generated
+*.dart.unopt.wasm linguist-generated

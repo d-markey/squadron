@@ -48,7 +48,7 @@ void execute(TestContext tc) {
           });
 
           worker.postMessage('Hello');
-          var res = await completer.future;
+          final res = await completer.future;
           expect(res, equals('ECHO "Hello"'));
         } finally {
           if (ep.revoke) {
@@ -116,7 +116,7 @@ void execute(TestContext tc) {
           });
 
           worker.postMessage('Hello');
-          var res = await completer.future;
+          final res = await completer.future;
           expect(res, equals('ECHO "Hello"'));
         } finally {
           worker.terminate();
@@ -155,6 +155,7 @@ void execute(TestContext tc) {
             success = true;
             throw unexpectedSuccess('message processed by missing worker', res);
           } catch (ex) {
+            print('success = $success, ex = ${ex.runtimeType} $ex');
             if (success) {
               rethrow;
             }
@@ -200,6 +201,7 @@ void execute(TestContext tc) {
             success = true;
             throw unexpectedSuccess('message processed by missing worker', res);
           } catch (ex) {
+            print('success = $success, ex = ${ex.runtimeType} $ex');
             if (success) {
               rethrow;
             }
