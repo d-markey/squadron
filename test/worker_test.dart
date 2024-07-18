@@ -235,15 +235,20 @@ void execute(TestContext tc) {
       });
 
       tc.group('- initialization error', () {
-        tc.skip('- not found', () async {
-          await MissingWorker(tc).useAsync((worker) async {
-            try {
-              final res = await worker.start();
-              throw unexpectedSuccess('start()', res);
-            } on SquadronError {
-              // expected exception
-            }
-          });
+        tc.test('- not found', () async {
+          final worker = MissingWorker(tc);
+          try {
+            final res = await worker.start();
+            throw unexpectedSuccess('start()', res);
+          } on SquadronError catch (ex) {
+            // expected exception
+            print('EXPECTED ${ex.runtimeType}');
+          } catch (ex, st) {
+            // expected exception
+            print('UNEXPECTED ${ex.runtimeType}\nex = $ex\nst = $st');
+          } finally {
+            worker.release();
+          }
         }, skip: tc.entryPoints.missingWorker == null);
 
         tc.test('- failed init', () async {

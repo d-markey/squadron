@@ -381,7 +381,7 @@ void execute(TestContext tc) {
 
           final tasks = <StreamTask>[];
           final futures = <Future>[];
-          for (var i = 0; i < 2 * pool.maxConcurrency + 1; i++) {
+          for (var i = 0; i < 3 * pool.maxConcurrency + 1; i++) {
             final task = pool.finiteTask(i + 2);
             tasks.add(task);
             final completer = Completer();
@@ -408,15 +408,15 @@ void execute(TestContext tc) {
           expect(tasks[0].isCanceled, isTrue);
 
           await Future.delayed(TestDelays.delay * 2.5);
-          tasks[2 * pool.maxConcurrency].cancel();
-          expect(tasks[2 * pool.maxConcurrency].isCanceled, isTrue);
+          tasks[3 * pool.maxConcurrency].cancel();
+          expect(tasks[3 * pool.maxConcurrency].isCanceled, isTrue);
 
           await Future.wait(futures);
 
           expect(tasks.where((t) => t.isCanceled).length, equals(2));
           expect(tasks.where((t) => t.isRunning), isEmpty);
           expect(tasks.where((t) => t.isFinished).length,
-              equals(2 * pool.maxConcurrency - 1));
+              equals(3 * pool.maxConcurrency - 1));
 
           expect(errors, equals(2));
           expect(status.values.where((s) => s == 'started'), isEmpty);
@@ -424,7 +424,7 @@ void execute(TestContext tc) {
               status.values.where((s) => s == 'interrupted').length, equals(1));
           expect(status.values.where((s) => s == 'canceled').length, equals(1));
           expect(status.values.where((s) => s == 'completed').length,
-              equals(2 * pool.maxConcurrency + 1 - errors));
+              equals(3 * pool.maxConcurrency + 1 - errors));
         });
       });
 
@@ -572,7 +572,7 @@ void execute(TestContext tc) {
         });
 
         tc.test('- finite() pool', () async {
-          final L = 20;
+          final L = 40;
 
           final timeout = TimeoutToken(TestDelays.shortDelay * L * 1.8);
 
@@ -584,9 +584,9 @@ void execute(TestContext tc) {
             tasks.add(pool.finite(L, timeout).toList().then((list) {
               success++;
               return list;
-            }).onError((ex, st) {
+            }, onError: (ex, st) {
               errors++;
-              return []; /* swallow errors */
+              return <int>[]; /* swallow errors */
             }));
           }
 
