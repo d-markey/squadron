@@ -19,7 +19,7 @@ class TestService implements WorkerService {
       : _invalid = invalid,
         super();
 
-  final _logger = TestLogger(TestFilter());
+  final _logger = TestLogger(ProductionFilter());
 
   void setLevel(int level) {
     _logger.level = Level.values.where((l) => l.value == level).first;

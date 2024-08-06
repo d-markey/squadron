@@ -24,6 +24,9 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   @override
   Stream<T> get stream => _controller.stream;
 
+  @override
+  Future<void> get done => _controller.done;
+
   int _paused = 0;
   bool _isPaused = false;
   StreamSubscription<T>? _subscription;
@@ -75,7 +78,7 @@ class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
 
   void _onError(ex, st) {
     if (!_controller.isClosed) {
-      _controller.addError(SquadronException.from(ex, st), st);
+      _controller.addError(SquadronException.from(ex, st));
     }
   }
 

@@ -171,7 +171,7 @@ class WorkerPool<W extends Worker>
       if (errors.isNotEmpty) {
         if (errors.length < tasks.length) {
           // some tasks failed: warn
-          channelLogger?.e(() => 'error while provisionning workers: $errors');
+          channelLogger?.e(() => 'Error while provisionning workers: $errors');
         } else {
           // all tasks failed: throw
           throw errors.firstWhere((e) => e is SquadronError,
@@ -261,7 +261,7 @@ class WorkerPool<W extends Worker>
   WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
     if (_stopped) {
       throw SquadronErrorExt.create(
-        'the pool cannot accept new requests because it is stopped',
+        'The pool cannot accept new requests because it is stopped',
       );
     }
     _queue.addLast(task);
@@ -273,23 +273,23 @@ class WorkerPool<W extends Worker>
   /// Returns a future that completes with the task's value.
   Future<T> execute<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      scheduleTask(task, counter: counter).value;
+      scheduleValueTask(task, counter: counter).value;
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a stream containing the task's values.
   Stream<T> stream<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
-      scheduleStream(task, counter: counter).stream;
+      scheduleStreamTask(task, counter: counter).stream;
 
   /// Registers and schedules a [task] that returns a single value.
   /// Returns a [ValueTask]<T>.
-  ValueTask<T> scheduleTask<T>(Future<T> Function(W worker) task,
+  ValueTask<T> scheduleValueTask<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerValueTask<T, W>(task, counter)) as ValueTask<T>;
 
   /// Registers and schedules a [task] that returns a stream of values.
   /// Returns a [StreamTask]<T>.
-  StreamTask<T> scheduleStream<T>(Stream<T> Function(W worker) task,
+  StreamTask<T> scheduleStreamTask<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
@@ -328,9 +328,9 @@ class WorkerPool<W extends Worker>
       _provisionWorkers(needs).then(
         (_) => _dispatchTasks(),
         onError: (ex) {
-          channelLogger?.e(() => 'provisionning workers failed with error $ex');
+          channelLogger?.e(() => 'Provisionning workers failed with error $ex');
           while (_queue.isNotEmpty) {
-            _queue.removeFirst().cancel('provisionning workers failed');
+            _queue.removeFirst().cancel('Provisionning workers failed');
           }
         },
       );

@@ -54,18 +54,15 @@ class ExceptionManager {
     if (data == null || data.isEmpty) {
       return null;
     }
-    final exceptionType = data[0];
     try {
+      final exceptionType = data[0];
       final deserializer = _deserializers[exceptionType];
       return deserializer?.call(data) ??
           SquadronErrorExt.create(
-            'failed to deserialize exception information: $data',
+            'Failed to deserialize exception information for $exceptionType: $data',
           );
     } catch (ex, st) {
-      return SquadronErrorExt.create(
-        'failed to deserialize exception information: $ex',
-        st,
-      );
+      return SquadronException.from(ex, st);
     }
   }
 }

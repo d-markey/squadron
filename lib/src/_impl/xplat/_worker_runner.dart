@@ -4,7 +4,6 @@ import 'dart:isolate';
 import 'package:logger/logger.dart';
 
 import '../../exceptions/squadron_error.dart';
-import '../../exceptions/squadron_exception.dart';
 import '../../local_worker/local_worker.dart';
 import '../../tokens/_cancelation_token_ref.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
@@ -13,7 +12,6 @@ import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
-import '_user_code.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.
@@ -31,7 +29,7 @@ class WorkerRunner {
   bool _terminationRequested = false;
   int _executing = 0;
 
-  Map<int, SquadronCallback>? _streamCancelers;
+  final _streamCancelers = <int, SquadronCallback>{};
   int _streamId = 0;
 
   void Function(OutputEvent)? _logForwarder;
@@ -52,121 +50,126 @@ class WorkerRunner {
   /// will be set with operations from the service.
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
-    startRequest?.unwrapInPlace(internalLogger);
-    final client = startRequest?.client;
-
-    _logForwarder = (event) => client?.log(event.origin);
-    Logger.addOutputListener(_logForwarder!);
-
-    if (startRequest == null) {
-      throw SquadronErrorExt.create('connection request expected');
-    } else if (client == null) {
-      throw SquadronErrorExt.create('missing client for connection request');
-    }
-
+    WorkerChannel? client;
     try {
+      startRequest?.unwrapInPlace(internalLogger);
+      client = startRequest?.client;
+
+      if (startRequest == null) {
+        throw SquadronErrorExt.create('Missing connection request');
+      } else if (client == null) {
+        throw SquadronErrorExt.create('Missing client for connection request');
+      }
+
+      if (_logForwarder == null) {
+        final logger = client.log;
+        _logForwarder = (event) => logger(event.origin);
+        Logger.addOutputListener(_logForwarder!);
+      }
+
       if (!startRequest.isConnection) {
-        throw SquadronErrorExt.create('connection request expected');
+        throw SquadronErrorExt.create('Connection request expected');
       } else if (_operations != null) {
-        throw SquadronErrorExt.create('already connected');
+        throw SquadronErrorExt.create('Already connected');
       }
 
-      final init = UserCode.run(
-        internalLogger,
-        () => initializer(startRequest),
-        'service instantiation',
-      );
-      final service = (init is Future) ? await init : init;
-
-      if (service == null) {
-        throw SquadronErrorExt.create('service initializer failed');
-      }
-
+      final service = await initializer(startRequest);
       if (service.operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw SquadronErrorExt.create(
-          'invalid command identifier in service operations map; command ids must be > 0',
+          'Invalid command identifier in service operations map; command ids must be > 0',
         );
       }
 
       _operations = {...service.operations};
 
       if (service is ServiceInstaller) {
-        final installer = _installer = service as ServiceInstaller;
-        final install = UserCode.run(
-          internalLogger,
-          () => installer.install(),
-          'service installation',
-        );
-        if (install is Future) {
-          await install;
-        }
+        _installer = service as ServiceInstaller;
+        await _installer!.install();
       }
 
       client.connect(channelInfo);
     } catch (ex, st) {
-      client.error(SquadronException.from(ex, st));
+      internalLogger.e(() => 'Connection failed: $ex');
+      client?.error(ex, st);
+      _exit();
     }
   }
 
   /// [WorkerRequest] handler dispatching commands according to the
-  /// [_operations] map.
-  void processMessage(WorkerRequest request) async {
-    request.unwrapInPlace(internalLogger);
-    final client = request.client;
-
-    if (request.isTermination) {
-      // terminate the worker
-      return _shutdown();
-    } else if (request.isTokenCancelation) {
-      // cancel a token
-      final token = request.cancelToken!;
-      return _getTokenRef(token).update(token);
-    } else if (request.isStreamCancelation) {
-      // cancel a stream
-      return _streamCancelers?[request.streamId]?.call();
-    } else if (client == null) {
-      throw SquadronErrorExt.create('missing client for request: $request');
-    }
-
-    // start monitoring execution
-    final tokenRef = _begin(request);
+  /// [_operations] map. Make sure this method doesn't throw.
+  void processRequest(WorkerRequest request) async {
+    WorkerChannel? client;
     try {
+      request.unwrapInPlace(internalLogger);
+      client = request.client;
+
+      // ==== these requests do not send a response ====
+
+      if (request.isTermination) {
+        // terminate the worker
+        return _shutdown();
+      } else if (request.isTokenCancelation) {
+        // cancel a token
+        final token = request.cancelToken!;
+        return _getTokenRef(token).update(token);
+      } else if (request.isStreamCancelation) {
+        // cancel a stream
+        return _streamCancelers[request.streamId]?.call();
+      }
+
+      // make sure the worker is connected
+
       if (request.isConnection) {
-        // connection request must be handled beforehand
+        // connection requests are handled by connect().
         throw SquadronErrorExt.create(
-            'unexpected connection request: $request');
+            'Unexpected connection request: $request');
       } else if (_operations == null) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
-        throw SquadronErrorExt.create('worker service is not ready');
+        throw SquadronErrorExt.create('Worker service is not ready');
       }
 
-      // find the operation matching the request command
-      final op = _operations![request.command];
-      if (op == null) {
-        throw SquadronErrorExt.create('unknown command: ${request.command}');
+      // ==== other requests require a client to send the response ====
+
+      if (client == null) {
+        throw SquadronErrorExt.create('Missing client for request: $request');
       }
 
-      // process
-      dynamic result = op(request);
-      if (result is Future) {
-        result = await result;
-      }
+      request.cancelToken?.throwIfCanceled();
 
-      // send results back with the proper reply method
-      final reply = request.reply!;
-      if (result is Stream && client.canStream(result)) {
-        // result is a stream: forward data to the client
-        await _pipe(result, client, reply);
-      } else {
-        // result is a value: send to the client
-        reply(result);
+      // start monitoring execution
+      final tokenRef = _begin(request);
+      try {
+        // find the operation matching the request command
+        final op = _operations![request.command];
+        if (op == null) {
+          throw SquadronErrorExt.create('Unknown command: ${request.command}');
+        }
+
+        // process
+        var result = op(request);
+        if (result is Future) {
+          result = await result;
+        }
+
+        // send results back with the proper reply method
+        final reply = request.reply!;
+        if (result is Stream && client.canStream(result)) {
+          // result is a stream: forward data to the client
+          await _pipe(result, client, reply, request.command);
+        } else {
+          // result is a value: send to the client
+          reply(result);
+        }
+      } finally {
+        // stop monitoring execution
+        _done(tokenRef);
       }
     } catch (ex, st) {
-      // error: send to client
-      client.error(SquadronException.from(ex, st));
-    } finally {
-      // stop monitoring execution
-      _done(tokenRef);
+      if (client != null) {
+        client.error(ex, st, request.command);
+      } else {
+        internalLogger.e('Unhandled error: $ex');
+      }
     }
   }
 
@@ -201,14 +204,14 @@ class WorkerRunner {
 
   /// Forwards stream events to client.
   Future<void> _pipe(Stream<dynamic> stream, WorkerChannel client,
-      void Function(dynamic) reply) {
+      void Function(dynamic) reply, int command) {
     StreamSubscription? subscription;
     final done = Completer();
 
     // stream canceler
-    void onDone() {
+    Future<void> onDone() async {
       client.closeStream();
-      subscription?.cancel();
+      await subscription?.cancel();
       done.complete();
     }
 
@@ -218,8 +221,8 @@ class WorkerRunner {
 
     // start forwarding messages to the client
     subscription = stream.listen(
-      (data) => reply(data),
-      onError: (ex, st) => client.error(SquadronException.from(ex, st)),
+      reply,
+      onError: (ex, st) => client.error(ex, st, command),
       onDone: onDone,
       cancelOnError: false,
     );
@@ -231,49 +234,44 @@ class WorkerRunner {
   /// callback.
   int _registerStreamCanceler(SquadronCallback canceler) {
     final streamId = ++_streamId;
-    (_streamCancelers ??= <int, SquadronCallback>{})[streamId] = canceler;
+    _streamCancelers[streamId] = canceler;
     return streamId;
   }
 
   /// Unregisters the stream canceled callback associated to the [streamId].
   void _unregisterStreamCanceler(int streamId) {
-    final canceler = _streamCancelers?[streamId];
-    if (canceler != null) {
-      _streamCancelers?.remove(streamId);
-    }
+    _streamCancelers.remove(streamId);
   }
 
   /// Terminates the worker if there is no pending execution. Otherwise, marks
   /// the worker as terminating and termination will be effective when all
   /// pending executions have completed.
   void _shutdown() {
+    _terminationRequested = true;
     if (_executing == 0) {
       _unmount();
-    } else {
-      _terminationRequested = true;
     }
   }
 
-  void _unmount() {
-    if (_installer != null) {
+  // should not throw
+  void _unmount() async {
+    try {
       // uninstall the service if necessary
-      try {
-        var res = _installer!.uninstall();
-        if (res is Future) {
-          res
-              .onError((ex, st) => {/* swallow excepions */})
-              .whenComplete(_exit);
-        } else {
-          _exit();
-        }
-      } catch (ex) {/* swallow exceptions*/}
-    } else {
+      await _installer?.uninstall();
+    } catch (ex) {
+      internalLogger.e('Service uninstallation failed with error: $ex');
+    } finally {
       _exit();
     }
   }
 
+  // should not throw
   void _exit() {
-    _terminate(this);
+    try {
+      _terminate(this);
+    } catch (ex) {
+      internalLogger.e('Worker termination failed with error: $ex');
+    }
     if (_logForwarder != null) {
       Logger.removeOutputListener(_logForwarder!);
     }

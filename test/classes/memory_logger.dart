@@ -1,18 +1,19 @@
 import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 
 import 'test_logger.dart';
 
 class MemoryLogger extends Logger {
-  MemoryLogger(List<String> logs, MemoryLogFilter filter)
+  MemoryLogger(List<String> logs, [LogFilter? filter])
       : _logs = logs,
-        _filter = filter,
+        _filter = filter ?? ProductionFilter(),
         super(
             filter: filter,
             output: NoOutput(),
             printer: EmptyPrinter(),
             level: Level.all);
 
-  final MemoryLogFilter _filter;
+  final LogFilter _filter;
 
   Level get level => _filter.level!;
   set level(Level value) => _filter.level = value;
@@ -36,9 +37,4 @@ class MemoryLogger extends Logger {
       stackTrace: stackTrace,
     );
   }
-}
-
-class MemoryLogFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) => event.level.value >= level!.value;
 }

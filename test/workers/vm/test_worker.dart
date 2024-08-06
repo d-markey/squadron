@@ -6,7 +6,7 @@ void start(WorkerRequest command) => run(
       (startRequest) {
         switch (startRequest.args[0]) {
           case TestService.startupThrows:
-            throw Exception('Intentional failure');
+            throw Exception('Intended failure');
           case TestService.startupInvalid:
             return TestService(invalid: true);
           case TestService.startupOk:
@@ -21,7 +21,7 @@ void startWithMissingCommand(WorkerRequest command) => run(
       (startRequest) {
         switch (startRequest.args[0]) {
           case TestService.startupThrows:
-            throw Exception('Intentional failure');
+            throw Exception('Intended failure');
           case TestService.startupInvalid:
             return TestService(invalid: true);
           case TestService.startupOk:

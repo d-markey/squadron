@@ -13,21 +13,18 @@ import '_worker_runner.dart';
 external web.DedicatedWorkerGlobalScope get self;
 
 void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
-  final url = self.location.href;
-
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
-    r.internalLogger.t('$url/terminating Web Worker');
+    r.internalLogger.t('Terminating Web Worker');
     com.port1.close();
     com.port2.close();
     self.close();
   });
 
-  com.port1.onmessage = runner.handle.toJS;
-
   self.onmessage = (web.MessageEvent e) {
     final msg = getMessageEventData(e) as List;
+    com.port1.onmessage = runner.handle.toJS;
     runner.connect(WorkerRequestExt.from(msg), com.port2, initializer);
   }.toJS;
 

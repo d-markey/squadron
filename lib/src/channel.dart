@@ -61,6 +61,6 @@ abstract class Channel {
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
           [ExceptionManager? exceptionManager]) =>
-      impl.deserializeChannel(
+      impl.deserialize(
           channelInfo, logger, exceptionManager ?? ExceptionManager());
 }

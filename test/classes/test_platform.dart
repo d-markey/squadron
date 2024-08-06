@@ -11,5 +11,5 @@ enum TestPlatform {
   bool get isVm => this == vm;
   bool get isJs => this == js;
   bool get isWasm => this == wasm;
-  bool get isJsOrWasm => isJs || isWasm;
+  bool get isWeb => isJs || isWasm;
 }

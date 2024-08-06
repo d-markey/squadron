@@ -39,7 +39,7 @@ class HtmlLogger {
       _div.removeChild(_div.childNodes.item(_div.childNodes.length - 1)!);
     }
     _div.appendChild(
-      document.createElement('SPAN')..innerHTML = '$message<BR>',
+      document.createElement('SPAN')..innerHTML = '$message<BR>'.toJS,
     );
   }
 
@@ -55,7 +55,7 @@ class HtmlLogger {
   }
 
   void clear() {
-    _div.innerHTML = '';
+    _div.innerHTML = ''.toJS;
     _scrollToEnd = true;
   }
 

@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:logger/logger.dart';
 
-import '../_impl/xplat/_channel.dart'
-    if (dart.library.io) '../_impl/native/_channel.dart'
-    if (dart.library.html) '../_impl/web/_channel.dart'
-    if (dart.library.js_interop) '../_impl/web/_channel.dart' as impl;
-import '../exceptions/squadron_exception.dart';
+import '../_impl/xplat/_worker_channel.dart'
+    if (dart.library.io) '../_impl/native/_worker_channel.dart'
+    if (dart.library.html) '../_impl/web/_worker_channel.dart'
+    if (dart.library.js_interop) '../_impl/web/_worker_channel.dart' as impl;
+import '../channel.dart';
 import '../typedefs.dart';
+import 'worker.dart';
 import 'worker_request.dart';
 import 'worker_response.dart';
 
@@ -17,10 +18,6 @@ typedef PostRequest = void Function(WorkerRequest req);
 /// client that posted the [WorkerRequest]. It is used to send [WorkerResponse]
 /// back to the client.
 abstract class WorkerChannel {
-  /// [WorkerChannel] serialization. Returns an opaque object that can be
-  /// transfered from the client to the worker.
-  PlatformChannel serialize();
-
   /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an
   /// opaque object than can be deserialized as a [Channel]. This method must
   /// be called by the worker upon startup.
@@ -33,26 +30,24 @@ abstract class WorkerChannel {
 
   /// Sends a [WorkerResponse] with the specified data to the worker client.
   /// This method must be called from the worker only. On Web patforms, this
-  /// version must check arguments for transferable objects.
+  /// version checks arguments for transferable objects.
   void inspectAndReply(dynamic data);
 
   /// Sends a [WorkerResponse.log] with the specified data to the worker
-  /// client. This method must be called from the worker only.
+  /// client.
   void log(LogEvent message);
 
   /// Checks if [stream] can be streamed back to the worker client.
   bool canStream(Stream<dynamic> stream);
 
-  /// Sends a [WorkerResponse.closeStream] to the worker client. This method
-  /// must be called from the worker only.
+  /// Sends a [WorkerResponse.closeStream] to the worker client.
   void closeStream();
 
   /// Sends a [WorkerResponse] with the specified error to the worker client.
-  /// This method must be called from the worker only.
-  void error(SquadronException error);
+  void error(Object err, [StackTrace? stacktrace, int? command]);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
   static WorkerChannel? deserialize(
           PlatformChannel? channelInfo, Logger? logger) =>
-      impl.deserializeWorkerChannel(channelInfo, logger);
+      impl.deserialize(channelInfo, logger);
 }

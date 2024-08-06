@@ -22,11 +22,11 @@ class LocalWorkerClient implements WorkerService {
   /// Sends a command to the [LocalWorker].
   Future<T> send<T>(int command,
           {List args = const [],
-          CancelationToken? token,
+          SquadronCancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
       channel.sendRequest<T>(command, args,
-          token: token.wrap(),
+          token: token?.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 
@@ -38,7 +38,7 @@ class LocalWorkerClient implements WorkerService {
           bool inspectResponse = false}) =>
       channel.sendStreamingRequest<T>(command, args,
           onDone: Channel.noop,
-          token: token.wrap(),
+          token: token?.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 

@@ -10,7 +10,7 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
       bool throwOnUninstall = false,
       ConcurrencySettings? concurrencySettings})
       : super(
-            () => InstallableWorker(context,
+            () => InstallableWorker._(context,
                 throwOnInstall: throwOnInstall,
                 throwOnUninstall: throwOnUninstall),
             concurrencySettings:
@@ -34,10 +34,18 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 }
 
 class InstallableWorker extends Worker implements InstallableService {
-  InstallableWorker(TestContext context,
+  InstallableWorker._(TestContext context,
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : super(context.entryPoints.installable!,
             args: [throwOnInstall, throwOnUninstall]);
+
+  InstallableWorker(TestContext context) : this._(context);
+
+  InstallableWorker.throwOnInstall(TestContext context)
+      : this._(context, throwOnInstall: true);
+
+  InstallableWorker.throwOnUninstall(TestContext context)
+      : this._(context, throwOnUninstall: true);
 
   @override
   void install() {

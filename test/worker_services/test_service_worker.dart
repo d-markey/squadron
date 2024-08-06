@@ -109,14 +109,13 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       execute((w) =>
           w.bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut));
 
-  ValueTask<int> delayedIdentityTask(int n) =>
-      scheduleTask((w) => w.delayed(n));
+  ValueTask<int> delayedTask(int n) => scheduleValueTask((w) => w.delayed(n));
 
   StreamTask<int> finiteTask(int n, [CancelationToken? token]) =>
-      scheduleStream((w) => w.finite(n, token));
+      scheduleStreamTask((w) => w.finite(n, token));
 
   StreamTask<int> infiniteWithErrorsTask([CancelationToken? token]) =>
-      scheduleStream((w) => w.infiniteWithErrors(token));
+      scheduleStreamTask((w) => w.infiniteWithErrors(token));
 }
 
 class TestWorker extends Worker implements TestService {

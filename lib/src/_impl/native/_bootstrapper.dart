@@ -5,15 +5,15 @@ import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-void bootstrap(WorkerInitializer initializer, WorkerRequest? command) async {
+void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final workerPort = ReceivePort();
 
   final runner = WorkerRunner((r) {
-    r.internalLogger.t('terminating Isolate');
+    r.internalLogger.t('Terminating Isolate');
     workerPort.close();
-    Isolate.current.kill();
+    Isolate.current.kill(priority: Isolate.beforeNextEvent);
   });
 
   workerPort.listen(runner.handle);
-  await runner.connect(command, workerPort.sendPort, initializer);
+  runner.connect(command, workerPort.sendPort, initializer);
 }

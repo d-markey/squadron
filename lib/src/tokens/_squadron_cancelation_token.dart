@@ -66,11 +66,12 @@ const _$id = 0;
 const _$ex = 1;
 
 @internal
-extension SquadronCancelationTokenExt on CancelationToken? {
-  SquadronCancelationToken? wrap() {
+extension SquadronCancelationTokenExt on CancelationToken {
+  SquadronCancelationToken wrap() {
     final self = this;
-    if (self == null) return null;
     if (self is SquadronCancelationToken) return self;
-    return SquadronCancelationToken._(self, TokenId.next()).._checkToken();
+    final token = SquadronCancelationToken._(self, TokenId.next());
+    token._checkToken();
+    return token;
   }
 }

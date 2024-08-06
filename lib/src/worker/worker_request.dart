@@ -135,7 +135,7 @@ const _$inspectResponse = 6;
 @internal
 extension WorkerRequestExt on WorkerRequest {
   /// In-place deserialization of a [WorkerRequest] received by the worker.
-  bool unwrapInPlace(InternalLogger? logger) {
+  void unwrapInPlace(InternalLogger? logger) {
     unwrapTravelTime();
     data[_$command] = Cast.toNullableInt(data[_$command]);
     data[_$streamId] = Cast.toNullableInt(data[_$streamId]);
@@ -143,7 +143,6 @@ extension WorkerRequestExt on WorkerRequest {
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
     data[_$inspectResponse] ??= false;
     data[_$args] ??= const [];
-    return true;
   }
 
   /// In-place serialization of a [WorkerRequest].
@@ -167,7 +166,7 @@ extension WorkerRequestExt on WorkerRequest {
 extension CancelationTokenExt on WorkerRequest {
   void overrideCancelToken(SquadronCancelationToken token) {
     if (cancelToken == null || cancelToken!.id != token.id) {
-      throw SquadronErrorExt.create('cancelation token mismatch');
+      throw SquadronErrorExt.create('Cancelation token mismatch');
     }
     data[_$token] = token;
   }

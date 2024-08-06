@@ -31,7 +31,9 @@ const _$command = 3;
 @internal
 extension WorkerExceptionExt on WorkerException {
   void withCommand(int? command) {
-    _command ??= command;
+    if (command != null) {
+      _command ??= command;
+    }
   }
 
   void withStackTrace(StackTrace? stackTrace) {

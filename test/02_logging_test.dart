@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 @TestOn('vm || browser')
 library;
 
@@ -14,24 +16,23 @@ void main() async {
   execute(testContext);
 }
 
-String testScript = 'logging_test.dart';
+String testScript = '02_logging_test.dart';
 
 void execute(TestContext tc) {
   tc.run(() {
-    final logs = <String>[];
-    final memoryLogger = MemoryLogger(logs, MemoryLogFilter());
-
     tc.group("- Logging", () {
+      final logs = <String>[];
+      final memoryLogger = MemoryLogger(logs);
       late TestWorker worker;
 
-      setUpAll(() async {
+      setUpAll(() {
         worker = TestWorker(tc);
         worker.channelLogger = memoryLogger;
-        await worker.start();
+        return worker.start();
       });
 
-      tearDownAll(() async {
-        worker.release();
+      tearDownAll(() {
+        worker.stop();
       });
 
       setUp(() {
@@ -47,7 +48,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.off.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, doesNotMention('debug'));
         expect(logs, doesNotMention('info'));
@@ -60,7 +61,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.fatal.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, doesNotMention('debug'));
         expect(logs, doesNotMention('info'));
@@ -73,7 +74,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.error.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, doesNotMention('debug'));
         expect(logs, doesNotMention('info'));
@@ -86,7 +87,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.warning.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, doesNotMention('debug'));
         expect(logs, doesNotMention('info'));
@@ -99,7 +100,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.info.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, doesNotMention('debug'));
         expect(logs, mentions('info'));
@@ -112,7 +113,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.debug.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, doesNotMention('trace'));
         expect(logs, mentions('debug'));
         expect(logs, mentions('info'));
@@ -125,7 +126,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.trace.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, mentions('trace'));
         expect(logs, mentions('debug'));
         expect(logs, mentions('info'));
@@ -138,7 +139,7 @@ void execute(TestContext tc) {
         await worker.setLevel(Level.all.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await Future.delayed(Duration.zero);
+        await pumpEventQueue();
         expect(logs, mentions('trace'));
         expect(logs, mentions('debug'));
         expect(logs, mentions('info'));

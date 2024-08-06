@@ -18,9 +18,7 @@ class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
   Future<T> get value => _completer.future;
 
   void _completeWithError(Object exception, StackTrace? stackTrace) {
-    final ex = (exception is SquadronException)
-        ? exception
-        : SquadronException.from(exception, stackTrace);
+    final ex = SquadronException.from(exception, stackTrace);
     wrapUp(() {
       if (!_completer.isCompleted) {
         _completer.completeError(ex, ex.stackTrace);

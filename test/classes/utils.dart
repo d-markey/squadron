@@ -1,16 +1,46 @@
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-Exception unexpectedSuccess(String process, [dynamic res]) =>
-    Exception('$process completed successfully with res=$res');
+class UnexpectedSuccessException implements Exception {
+  UnexpectedSuccessException(this.message);
 
-Matcher mentions(Object? x) => contains(contains(x));
-Matcher doesNotMention(Object? x) => isNot(contains(contains(x)));
+  final String message;
+}
 
-void caseCheck(dynamic object, Matcher matcher) =>
-    expect(object.toString(), matcher);
+UnexpectedSuccessException unexpectedSuccess(String process, [dynamic res]) =>
+    UnexpectedSuccessException('$process completed successfully with res=$res');
 
-void lowerCaseCheck(dynamic object, Matcher matcher) =>
-    expect(object.toString().toLowerCase(), matcher);
+Matcher isNotA<T>() => isNot(isA<T>());
 
-void upperCaseCheck(dynamic object, Matcher matcher) =>
-    expect(object.toString().toUpperCase(), matcher);
+// for lists of strings
+Matcher mentions(Pattern re) => contains(matches(re));
+Matcher doesNotMention(Pattern re) => isNot(mentions(re));
+
+// for stack traces
+Matcher hasCalled(dynamic matcher) =>
+    Called(matcher is String ? matches(matcher) : matcher);
+Matcher hasNotCalled(dynamic matcher) => isNot(hasCalled(matcher));
+
+class Called extends CustomMatcher {
+  Called(Matcher matcher)
+      : super('Stack trace that called', 'stack trace', matcher);
+
+  @override
+  Object? featureValueOf(dynamic actual) =>
+      (actual is StackTrace) ? actual.toString() : null;
+}
+
+// for errors
+Matcher reports(dynamic matcher) =>
+    Reported(matcher is String ? matches(matcher) : matcher);
+Matcher doesNotReport(dynamic matcher) => isNot(reports(matcher));
+
+Matcher failsWith<E>() => throwsA(isA<E>());
+
+class Reported extends CustomMatcher {
+  Reported(Matcher matcher) : super('Error that reported', 'message', matcher);
+
+  @override
+  Object? featureValueOf(dynamic actual) =>
+      (actual is SquadronException) ? actual.message : actual.toString();
+}

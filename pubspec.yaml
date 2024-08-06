@@ -12,7 +12,7 @@ dependencies:
   meta: ^1.10.0
   logger: ^2.0.2
   using: ^1.0.4
-  web: ^0.5.1
+  web: ^1.0.0
 
 dev_dependencies:
   build_runner: ^2.4.11

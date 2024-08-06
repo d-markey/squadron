@@ -103,21 +103,35 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
 
   /// [Worker] statistics.
   WorkerStat get stats => WorkerStatExt.create(
-      runtimeType,
-      hashCode,
-      isStopped,
-      status,
-      workload,
-      maxWorkload,
-      totalWorkload,
-      totalErrors,
-      upTime,
-      idleTime);
+        runtimeType,
+        hashCode,
+        isStopped,
+        status,
+        workload,
+        maxWorkload,
+        totalWorkload,
+        totalErrors,
+        upTime,
+        idleTime,
+      );
 
   /// [Channel] to communicate with the worker.
   Channel? get channel => _channel;
   Channel? _channel;
   Future<Channel>? _openChannel;
+
+  void _enter() {
+    _workload++;
+    if (_workload > _maxWorkload) {
+      _maxWorkload = _workload;
+    }
+  }
+
+  void _leave() {
+    _workload--;
+    _totalWorkload++;
+    _idle = microsecTimeStamp();
+  }
 
   /// Sends a workload to the worker.
   Future<T> send<T>(
@@ -126,61 +140,52 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     CancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
-  }) {
-    final squadronToken = token.wrap();
+  }) async {
+    token?.throwIfCanceled();
 
-    Future<T> sendReq(Channel channel) {
-      // update stats
-      _workload++;
-      if (_workload > _maxWorkload) {
-        _maxWorkload = _workload;
-      }
-
-      // send command
-      return channel
-          .sendRequest<T>(command, args,
-              token: squadronToken,
-              inspectRequest: inspectRequest,
-              inspectResponse: inspectResponse)
-          .catchError((ex, st) {
-        _totalErrors++;
-        throw SquadronException.from(ex, st, command);
-      }).whenComplete(() {
-        _workload--;
-        _totalWorkload++;
-        _idle = microsecTimeStamp();
-      });
+    // get the channel, start the worker if necessary
+    final channel = _channel ?? await start();
+    _enter();
+    try {
+      return await channel.sendRequest<T>(
+        command,
+        args,
+        token: token?.wrap(),
+        inspectRequest: inspectRequest,
+        inspectResponse: inspectResponse,
+      );
+    } catch (_) {
+      _totalErrors++;
+      rethrow;
+    } finally {
+      _leave();
     }
-
-    // ensure the worker is up and running
-    return (_channel != null) ? sendReq(_channel!) : start().then(sendReq);
   }
 
   /// Sends a streaming workload to the worker.
-  Stream<T> stream<T>(int command,
-      {List args = const [],
-      CancelationToken? token,
-      bool inspectRequest = false,
-      bool inspectResponse = false}) {
+  Stream<T> stream<T>(
+    int command, {
+    List args = const [],
+    CancelationToken? token,
+    bool inspectRequest = false,
+    bool inspectResponse = false,
+  }) {
+    token?.throwIfCanceled();
+
     // update stats
-    _workload++;
-    if (_workload > _maxWorkload) {
-      _maxWorkload = _workload;
-    }
+    _enter();
 
     bool done = false;
     void onDone() {
       if (!done) {
         done = true;
-        _workload--;
-        _totalWorkload++;
-        _idle = microsecTimeStamp();
+        _leave();
       }
     }
 
     if (_channel != null) {
       // worker is up and running: return the stream directly
-      final squadronToken = token.wrap();
+      final squadronToken = token?.wrap();
       return _channel!.sendStreamingRequest<T>(
         command,
         args,
@@ -195,8 +200,8 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     late final StreamController<T> controller;
     controller = StreamController<T>(onListen: () async {
       try {
-        final channel = await start();
-        final squadronToken = token.wrap();
+        final channel = _channel ?? await start();
+        final squadronToken = token?.wrap();
         await controller.addStream(
           channel.sendStreamingRequest<T>(
             command,
@@ -211,7 +216,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
       } catch (ex, st) {
         controller.addError(SquadronException.from(ex, st), st);
       } finally {
-        controller.close();
+        await controller.close();
         onDone();
       }
     });
@@ -220,26 +225,19 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
-  Future<Channel> start() {
+  Future<Channel> start() async {
     if (_stopped != null) {
-      throw WorkerException('worker is stopped');
+      throw WorkerException('Invalid state: worker is stopped');
     }
-    final channel = _channel;
-    if (channel != null) {
-      return Future.value(channel);
-    } else {
-      _openChannel ??= Channel.open(
-              exceptionManager, channelLogger, _entryPoint, args, _threadHook)
-          .then((channel) {
-        if (_channel == null) {
-          _channel = channel;
-          _started = microsecTimeStamp();
-          _idle = _started;
-        }
-        return _channel!;
-      });
-      return _openChannel!;
+    _openChannel ??= Channel.open(
+        exceptionManager, channelLogger, _entryPoint, args, _threadHook);
+    final channel = _channel ?? await _openChannel;
+    if (_channel == null) {
+      _channel = channel;
+      _started = microsecTimeStamp();
+      _idle = _started;
     }
+    return _channel!;
   }
 
   /// Stops this worker.
