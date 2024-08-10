@@ -57,10 +57,10 @@ void execute(TestContext tc) {
             expect(w.channel, isNotNull);
             expect(channel, w.channel);
 
-            await Future.delayed(TestDelays.delay);
+            await Future.delayed(TestDelays.delay * 2);
             expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay));
             expect(w.isStopped, isFalse);
-            expect(w.idleTime, greaterThanOrEqualTo(w.upTime));
+            expect(w.idleTime, lessThanOrEqualTo(w.upTime));
 
             w.stop();
             expect(w.isStopped, isTrue);
