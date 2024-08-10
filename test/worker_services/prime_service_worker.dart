@@ -26,7 +26,7 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 class PrimeWorker extends Worker implements PrimeService {
   PrimeWorker(TestContext context, CacheWorker? cache)
       : super(context.entryPoints.prime!,
-            args: [cache?.channel!.share().serialize()]);
+            args: [cache?.getSharedChannel()!.serialize()]);
 
   @override
   FutureOr<bool> isPrime(int n) =>

@@ -48,14 +48,14 @@ void execute(TestContext tc) {
           await TestWorker(tc).useAsync((w) async {
             w.channelLogger = memoryLogger;
 
-            expect(w.channel, isNull);
+            expect(w.isConnected, isFalse);
             expect(w.upTime, Duration.zero);
             expect(w.idleTime, Duration.zero);
             expect(w.isStopped, isFalse);
 
             final channel = await w.start();
-            expect(w.channel, isNotNull);
-            expect(channel, w.channel);
+            expect(channel, isNotNull);
+            expect(w.isConnected, isTrue);
 
             await Future.delayed(TestDelays.delay * 2);
             expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay));
@@ -65,7 +65,7 @@ void execute(TestContext tc) {
             w.stop();
             expect(w.isStopped, isTrue);
             final upTime = w.upTime;
-            expect(w.channel, isNull);
+            expect(w.isConnected, isFalse);
             expect(w.upTime, greaterThan(Duration.zero));
 
             await Future.delayed(TestDelays.delay);

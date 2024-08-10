@@ -117,8 +117,13 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
         idleTime,
       );
 
-  /// [Channel] to communicate with the worker.
-  Channel? get channel => _channel;
+  /// Returns true if the [Worker] is connected i.e., it has a valid [Channel].
+  /// Returns false otherwise.
+  bool get isConnected => _channel != null;
+
+  /// Shared [Channel] that can be used to communicate with the worker.
+  Channel? getSharedChannel() => _channel?.share();
+
   Channel? _channel;
   Future<Channel>? _openChannel;
 
