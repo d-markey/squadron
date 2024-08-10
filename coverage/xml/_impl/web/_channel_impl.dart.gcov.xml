@@ -62,9 +62,9 @@
         <line>
             <code>  @override</code>
         </line>
-        <line hits="3">
+        <line hits="1">
             <code>  PlatformChannel serialize() =&gt; _sendPort;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

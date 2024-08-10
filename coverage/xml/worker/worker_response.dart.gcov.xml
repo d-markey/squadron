@@ -313,9 +313,9 @@
             <code>  bool unwrapInPlace(Channel channel) {</code>
             <hit count="19" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10">
+        <line hits="11">
             <code>    unwrapTravelTime();</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="28">
             <code>    final log = LogEventSerialization.deserialize(data[_$log]);</code>
