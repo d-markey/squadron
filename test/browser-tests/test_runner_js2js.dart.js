@@ -13257,9 +13257,16 @@
       return new A.PrimeWorkerPool(new A.PrimeWorkerPool_closure(context, cache), t5, concurrencySettings, t1, t2, A.LinkedHashMap_LinkedHashMap$_empty(type$.Object, type$.void_Function_PrimeWorker_bool), t4, A.LinkedHashSet_LinkedHashSet$_empty(t3), false, new A.Object());
     },
     PrimeWorker$(context, cache) {
-      var t1 = context.entryPoints.prime;
+      var t2,
+        t1 = context.entryPoints.prime;
       t1.toString;
-      return new A.PrimeWorker(t1, null, [cache == null ? null : cache._channel.share$0(0)._sendPort], false, new A.Object());
+      if (cache == null)
+        t2 = null;
+      else {
+        t2 = cache._channel;
+        t2 = (t2 == null ? null : t2.share$0(0))._sendPort;
+      }
+      return new A.PrimeWorker(t1, null, [t2], false, new A.Object());
     },
     PrimeWorkerPool: function PrimeWorkerPool(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9) {
       var _ = this;
@@ -35814,7 +35821,7 @@
     $call$body$execute_____closure39(w) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, channel, t1, upTime;
+        $async$self = this, t1, upTime, $async$temp1;
       var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -35823,29 +35830,29 @@
             case 0:
               // Function start
               w.channelLogger = $async$self.memoryLogger;
-              A.expect(w._channel, B.C__IsNull, null);
+              A.expect(w._channel != null, B.C__IsFalse, null);
               A.expect(w.get$upTime(), B.Duration_0, null);
               A.expect(w.get$idleTime(), B.Duration_0, null);
               A.expect(w._stopped != null, B.C__IsFalse, null);
+              $async$temp1 = A;
               $async$goto = 2;
               return A._asyncAwait(w.start$0(0), $async$call$1);
             case 2:
               // returning from await.
-              channel = $async$result;
-              A.expect(w._channel, B.C__IsNotNull, null);
-              A.expect(channel, w._channel, null);
+              $async$temp1.expect($async$result, B.C__IsNotNull, null);
+              A.expect(w._channel != null, B.C__IsTrue, null);
               t1 = type$.dynamic;
               $async$goto = 3;
-              return A._asyncAwait(A.Future_Future$delayed(B.Duration_80000, t1), $async$call$1);
+              return A._asyncAwait(A.Future_Future$delayed(new A.Duration(160000), t1), $async$call$1);
             case 3:
               // returning from await.
               A.expect(w.get$upTime(), new A._OrderingMatcher(B.Duration_80000, true, false, true, "a value greater than or equal to", true), null);
               A.expect(w._stopped != null, B.C__IsFalse, null);
-              A.expect(w.get$idleTime(), new A._OrderingMatcher(w.get$upTime(), true, false, true, "a value greater than or equal to", true), null);
+              A.expect(w.get$idleTime(), new A._OrderingMatcher(w.get$upTime(), true, true, false, "a value less than or equal to", true), null);
               w.stop$0(0);
               A.expect(w._stopped != null, B.C__IsTrue, null);
               upTime = w.get$upTime();
-              A.expect(w._channel, B.C__IsNull, null);
+              A.expect(w._channel != null, B.C__IsFalse, null);
               A.expect(w.get$upTime(), new A._OrderingMatcher(B.Duration_0, false, false, true, "a value greater than", true), null);
               $async$goto = 4;
               return A._asyncAwait(A.Future_Future$delayed(B.Duration_80000, t1), $async$call$1);
