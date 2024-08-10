@@ -4,4 +4,3 @@ import '_platform_stub.dart'
     if (dart.library.js_interop) '../workers/wasm/_platform.dart' as impl;
 
 final getUnsendable = impl.getUnsendable;
-final threadId = impl.threadId;

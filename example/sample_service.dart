@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
-import 'thread_id.dart';
 
 abstract class SampleService {
   Future io({required int milliseconds});

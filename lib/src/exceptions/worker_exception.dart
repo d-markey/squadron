@@ -6,9 +6,9 @@ import 'squadron_exception.dart';
 /// Exception to keep track of errors encountered in a worker.
 class WorkerException extends SquadronException {
   /// Creates a new [WorkerException] to capture error context.
-  WorkerException(String message, {StackTrace? stackTrace, int? command})
+  WorkerException(super.message, [super.stackTrace, int? command])
       : _command = command,
-        super.init(message, stackTrace);
+        super.init();
 
   @override
   List serialize() => List.unmodifiable([
@@ -30,24 +30,16 @@ const _$command = 3;
 
 @internal
 extension WorkerExceptionExt on WorkerException {
-  void withCommand(int? command) {
-    if (command != null) {
-      _command ??= command;
-    }
-  }
-
-  void withStackTrace(StackTrace? stackTrace) {
-    if (stackTrace != null) {
-      forceStackTrace(stackTrace);
-    }
+  void setCommand(int command) {
+    _command = command;
   }
 
   static WorkerException? deserialize(List data) =>
       (data[_$type] == $workerExceptionType)
           ? WorkerException(
               data[_$message],
-              stackTrace: SquadronException.loadStackTrace(data[_$stackTrace]),
-              command: data[_$command],
+              SquadronException.loadStackTrace(data[_$stackTrace]),
+              data[_$command],
             )
           : null;
 }

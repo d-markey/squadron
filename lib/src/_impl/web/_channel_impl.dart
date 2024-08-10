@@ -2,13 +2,17 @@ part of '_channel.dart';
 
 /// [Channel] implementation for the JavaScript world.
 class _WebChannel implements Channel {
-  _WebChannel._(this._sendPort, this._logger, this.exceptionManager);
+  _WebChannel._(this._sendPort, this.logger, this.exceptionManager);
 
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
   /// [web.MessagePort] to return values to the client.
   final web.MessagePort _sendPort;
+
+  @override
   final ExceptionManager exceptionManager;
-  final Logger? _logger;
+
+  @override
+  final Logger? logger;
 
   bool _closed = false;
 
@@ -19,9 +23,12 @@ class _WebChannel implements Channel {
   /// [Channel] sharing in JavaScript world returns a [_WebForwardChannel].
   @override
   Channel share() => _WebForwardChannel._(
-      _sendPort, web.MessageChannel(), _logger, exceptionManager);
+      _sendPort, web.MessageChannel(), logger, exceptionManager);
 
   void _postRequest(WorkerRequest req) {
+    if (_closed) {
+      throw SquadronErrorExt.create('Channel is closed');
+    }
     try {
       req.cancelToken?.ensureStarted();
       final data = req.wrapInPlace();
@@ -34,14 +41,18 @@ class _WebChannel implements Channel {
         _sendPort.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {
-      _logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronException.from('Failed to post request: $ex', st);
+      logger?.e(() => 'Failed to post request $req: $ex');
+      throw SquadronErrorExt.create('Failed to post request: $ex', st);
     }
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
+    if (_closed) {
+      throw SquadronErrorExt.create('Channel is closed');
+    }
+    req.cancelToken?.ensureStarted();
+    req.cancelToken?.throwIfCanceled();
     try {
-      req.cancelToken?.ensureStarted();
       final data = req.wrapInPlace();
       final msg = data.jsify();
       final transfer = Transferables.get(data);
@@ -52,12 +63,12 @@ class _WebChannel implements Channel {
         _sendPort.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {
-      _logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronException.from('Failed to post request: $ex', st);
+      logger?.e(() => 'Failed to post request $req: $ex');
+      throw SquadronErrorExt.create('Failed to post request: $ex', st);
     }
   }
 
-  /// Sends a termination [WorkerRequest] to the [web.Worker] and clears the [web.MessagePort].
+  /// Sends a termination [WorkerRequest] to the [web.Worker].
   @override
   FutureOr close() {
     if (!_closed) {
@@ -66,81 +77,114 @@ class _WebChannel implements Channel {
     }
   }
 
-  Stream<T> _buildResponseStream<T>(web.MessageChannel com,
-      {required bool streaming}) {
-    final cast = Cast.get<T>();
-    late final StreamController<T> controller;
-
-    final streamIdCompleter = Completer<int?>();
-    if (!streaming) streamIdCompleter.complete(null);
-
-    Future<void> close() async {
-      print('CLOSE');
-      com.port1.close();
-      com.port2.close();
-      await controller.close();
+  /// Sends a close stream [WorkerRequest] to the [web.Worker].
+  @override
+  FutureOr cancelStream(int streamId) {
+    if (!_closed) {
+      _postRequest(WorkerRequest.cancelStream(streamId));
     }
+  }
 
-    void onData(WorkerResponse res) {
-      if (!res.unwrapInPlace(exceptionManager, _logger)) {
-        print('DATA: $res --> nothing to do');
-        return;
+  /// Sends a cancel token [WorkerRequest] to the [web.Worker].
+  @override
+  FutureOr cancelToken(SquadronCancelationToken? token) {
+    if (token != null && !_closed) {
+      _postRequest(WorkerRequest.cancel(token));
+    }
+  }
+
+  Stream<T> _getResponseStream<T>(
+    web.MessageChannel com,
+    WorkerRequest req,
+    void Function(WorkerRequest) post, {
+    required bool streaming,
+  }) {
+    final command = req.command;
+
+    // return a stream of responses
+    Stream<WorkerResponse> $sendRequest() {
+      late final StreamController<WorkerResponse> controller;
+
+      void $forwardMessage(WorkerResponse msg) {
+        if (!controller.isClosed) controller.add(msg);
       }
 
-      final error = res.error;
-      if (error != null) {
-        print('DATA: $res --> error $error');
-        controller.addError(SquadronException.from(error));
-      } else if (!streamIdCompleter.isCompleted) {
-        // in streaming mode, the first response is the stream id
-        print('DATA: $res --> streamId ${res.result}');
-        streamIdCompleter.complete(Cast.toInt(res.result));
-      } else if (streaming && res.endOfStream) {
-        print('DATA: $res --> end of stream');
-        if (!streamIdCompleter.isCompleted) {
-          _logger?.e(() => 'Invalid state: null streamId');
-          streamIdCompleter.complete(null);
+      void $forwardError(Object error, StackTrace? st) {
+        if (!controller.isClosed) {
+          controller.addError(SquadronException.from(error, st, command));
         }
-        close();
-      } else {
-        print('DATA: $res --> data ${res.result}');
-        controller.add(cast(res.result));
       }
-    }
 
-    void onError(Object error, [StackTrace? stackTrace]) {
-      print('ERROR: $error');
-      controller.addError(SquadronException.from(error, stackTrace));
-    }
-
-    Future<void> onCancel() async {
-      final streamId = await streamIdCompleter.future;
-      if (streamId != null) {
-        print('CANCEL STREAM $streamId');
-        _postRequest(WorkerRequest.cancelStream(streamId));
+      void $processBufferedItem(BufferedItem<WorkerResponse> item) {
+        if (item.item != null) {
+          $forwardMessage(item.item!);
+        } else {
+          $forwardError(item.err!, item.st);
+        }
       }
-      print('CANCEL SUBSCRIPTION');
-      await close();
+
+      final buffer = EventBuffer($processBufferedItem);
+
+      Future<void> $close() async {
+        com.port1.close();
+        com.port2.close();
+        if (!controller.isClosed) {
+          controller.close();
+        }
+      }
+
+      controller = StreamController(
+        onListen: () {
+          // do nothing if the controller is closed already
+          if (controller.isClosed) return;
+
+          // bind the controller
+          com.port1.onmessageerror = (web.ErrorEvent e) {
+            final err = getErrorEventError(e);
+            final ex = (err != null)
+                ? SquadronException.from(err, null, command)
+                : SquadronException.from(getErrorEventMessage(e));
+            if (buffer.isActive) {
+              buffer.addError(ex, null);
+            } else {
+              $forwardError(ex, null);
+            }
+          }.toJS;
+
+          com.port1.onmessage = (web.MessageEvent e) {
+            final res = WorkerResponseExt.from(getMessageEventData(e) as List);
+            if (buffer.isActive) {
+              buffer.add(res);
+            } else {
+              $forwardMessage(res);
+            }
+          }.toJS;
+
+          // send the request
+          try {
+            post(req);
+          } catch (ex, st) {
+            if (buffer.isActive) {
+              buffer.addError(ex, st);
+              // TODO: since this instance is paused, the controller should probably
+              // not be closed straight away
+              $close();
+            } else {
+              $forwardError(ex, st);
+              $close();
+            }
+          }
+        },
+        onPause: buffer.pause,
+        onResume: buffer.resume,
+        onCancel: $close,
+      );
+
+      return controller.stream;
     }
 
-    controller = StreamController(
-      onListen: () {
-        com.port1.onmessageerror = (web.ErrorEvent e) {
-          onError(getErrorEventError(e) ??
-              SquadronException.from(getErrorEventMessage(e)));
-        }.toJS;
-
-        com.port1.onmessage = (web.MessageEvent e) {
-          final msg = WorkerResponseExt.from(getMessageEventData(e) as List);
-          print('ONMESSAGE $msg');
-          onData(msg);
-        }.toJS;
-      },
-      // TODO: pause/resume support
-      onCancel: onCancel,
-    );
-
-    return controller.stream;
+    // return a stream of decoded responses
+    return ResultStream<T>(this, req, $sendRequest, streaming).stream;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
@@ -153,23 +197,11 @@ class _WebChannel implements Channel {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
-    }
-
     final com = web.MessageChannel();
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
-
-    final stream = _buildResponseStream<T>(com, streaming: false);
-
-    if (inspectRequest) {
-      _inspectAndPostRequest(req);
-    } else {
-      _postRequest(req);
-    }
-
-    return stream.first;
+    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
+    return _getResponseStream<T>(com, req, post, streaming: false).first;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
@@ -179,28 +211,15 @@ class _WebChannel implements Channel {
   Stream<T> sendStreamingRequest<T>(
     int command,
     List args, {
-    SquadronCallback onDone = Channel.noop,
     SquadronCancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
-    }
-
     final com = web.MessageChannel();
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
-
-    final stream = _buildResponseStream<T>(com, streaming: true);
-
-    if (inspectRequest) {
-      _inspectAndPostRequest(req);
-    } else {
-      _postRequest(req);
-    }
-
-    return stream;
+    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
+    return _getResponseStream<T>(com, req, post, streaming: true);
   }
 }
 
@@ -237,8 +256,8 @@ class _WebForwardChannel extends _WebChannel {
         _remote.postMessage(e.data, jsTransfer);
       }
     } catch (ex, st) {
-      _logger?.e(() => 'Failed to post request $e: $ex');
-      throw SquadronException.from('Failed to post request: $ex', st);
+      logger?.e(() => 'Failed to post request $e: $ex');
+      throw SquadronErrorExt.create('Failed to post request: $ex', st);
     }
   }
 

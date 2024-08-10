@@ -24,8 +24,8 @@ void execute(TestContext tc) {
   tc.run(() {
     tc.group("- GitHub Issues", () {
       tc.group('- #8 - Exceptions from Streams must come through onError', () {
-        tc.test('- Squadron Worker', () {
-          return IssuesWorker(tc).useAsync((w) async {
+        tc.test('- Squadron Worker', () async {
+          await IssuesWorker(tc).useAsync((w) async {
             final completer = Completer(), results = [], errors = [];
             w.issue_8([0, 1, 2, 3, 4]).listen(
               results.add,
@@ -43,8 +43,8 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Worker Pool', () {
-          return IssuesWorkerPool(tc).useAsync((p) async {
+        tc.test('- Worker Pool', () async {
+          await IssuesWorkerPool(tc).useAsync((p) async {
             final completer = Completer(), results = [], errors = [];
             p.issue_8([0, 1, 2, 3, 4]).listen(
               results.add,

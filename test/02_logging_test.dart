@@ -25,10 +25,10 @@ void execute(TestContext tc) {
       final memoryLogger = MemoryLogger(logs);
       late TestWorker worker;
 
-      setUpAll(() {
+      setUpAll(() async {
         worker = TestWorker(tc);
         worker.channelLogger = memoryLogger;
-        return worker.start();
+        await worker.start();
       });
 
       tearDownAll(() {

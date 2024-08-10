@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cancelation_token/cancelation_token.dart';
 
 import '../worker/worker.dart';
@@ -6,6 +8,9 @@ import 'value_task.dart';
 
 /// Base worker task class
 abstract class Task<T> {
+  /// Returns a future that will complete when the task has run.
+  Future<void> get done;
+
   /// Flag indicating whether the task is still pending.
   bool get isPending;
 

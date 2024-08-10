@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
 import '../cast_helpers.dart';
-import '../exceptions/exception_manager.dart';
+import '../channel.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';
 import 'worker_message.dart';
@@ -95,15 +95,15 @@ extension WorkerResponseExt on WorkerResponse {
   /// In-place deserialization of a [WorkerResponse] sent by the worker.
   /// Returns `false` if the message requires no further processing (currently
   /// used for log messages only).
-  bool unwrapInPlace(ExceptionManager exceptionManager, Logger? logger) {
+  bool unwrapInPlace(Channel channel) {
     unwrapTravelTime();
     final log = LogEventSerialization.deserialize(data[_$log]);
     if (log != null) {
-      logger?.log(log.level, log.message,
+      channel.logger?.log(log.level, log.message,
           time: log.time, error: log.error, stackTrace: log.stackTrace);
       return false;
     } else {
-      data[_$error] = exceptionManager.deserialize(data[_$error]);
+      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);
       data[_$endOfStream] ??= false;
       return true;
     }

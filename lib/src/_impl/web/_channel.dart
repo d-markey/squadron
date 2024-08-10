@@ -4,7 +4,6 @@ import 'dart:js_interop';
 import 'package:logger/logger.dart';
 import 'package:web/web.dart' as web;
 
-import '../../cast_helpers.dart';
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
@@ -14,10 +13,12 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker_service.dart';
+import '../xplat/_connection_channel.dart';
+import '../xplat/_result_stream.dart';
 import '../xplat/_transferables.dart';
-import '../xplat/_uri_checker.dart';
+import '_event_buffer.dart';
 import '_patch.dart';
+import '_uri_checker.dart';
 import 'entry_point_uri.dart';
 
 part '_channel_impl.dart';
@@ -87,10 +88,12 @@ Future<Channel> openChannel(
     }.toJS;
     worker.onmessageerror = worker.onerror;
 
+    final disconnected = ConnectionChannel(exceptionManager, logger);
+
     worker.onmessage = (web.MessageEvent? e) {
       try {
         final response = WorkerResponseExt.from(getMessageEventData(e) as List);
-        if (!response.unwrapInPlace(exceptionManager, logger)) {
+        if (!response.unwrapInPlace(disconnected)) {
           return;
         }
 
@@ -116,7 +119,7 @@ Future<Channel> openChannel(
 
     com.port1.onmessage = (web.MessageEvent e) {
       final response = WorkerResponseExt.from(getMessageEventData(e) as List);
-      if (!response.unwrapInPlace(exceptionManager, logger)) {
+      if (!response.unwrapInPlace(disconnected)) {
         return;
       }
 
@@ -143,8 +146,9 @@ Future<Channel> openChannel(
         worker.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {
-      logger?.e(() => 'Failed to post request $startRequest: $ex');
-      throw SquadronException.from('Failed to post request: $ex', st);
+      logger?.e(() => 'Failed to post connection request $startRequest: $ex');
+      throw SquadronErrorExt.create(
+          'Failed to post connection request: $ex', st);
     }
 
     final channel = await completer.future;

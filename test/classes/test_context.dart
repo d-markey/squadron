@@ -103,10 +103,7 @@ class TestContext {
             print('Test "$currentTest" cancelled');
             testResults[currentTest] = TestResult.cancelled();
           } else {
-            final res = body();
-            if (res is Future) {
-              await res;
-            }
+            await body();
             testResults[currentTest] = TestResult.success();
           }
         } catch (ex, st) {
@@ -247,7 +244,8 @@ class TestContext {
     '- Cancelation - CompositeToken - infinite() pool',
     '- GitHub Issues - #8 - Exceptions from Streams must come through onError - Squadron Worker',
     '- GitHub Issues - #8 - Exceptions from Streams must come through onError - Worker Pool',
-    '- Not a worker',
+    '- Not a worker (native platform)',
+    '- Not a worker (Web platforms)',
   };
 
   static final _knownGroups = <String>{

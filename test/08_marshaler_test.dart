@@ -22,9 +22,9 @@ void execute(TestContext tc) {
     tc.group("- Marshaler", () {
       late TestWorker testWorker;
 
-      setUpAll(() {
+      setUpAll(() async {
         testWorker = TestWorker(tc);
-        return testWorker.start();
+        await testWorker.start();
       });
 
       tearDownAll(() {

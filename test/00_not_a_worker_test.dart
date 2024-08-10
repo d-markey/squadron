@@ -19,8 +19,8 @@ String testScript = '00_not_a_worker_test.dart';
 
 void execute(TestContext tc) {
   tc.run(() {
-    tc.test("- Not a worker", () {
-      return NotAWorker(tc).useAsync((w) async {
+    tc.test("- Not a worker (native platform)", () async {
+      await NotAWorker(tc).useAsync((w) async {
         var started = false, expired = false;
         Object? error;
 
@@ -36,6 +36,20 @@ void execute(TestContext tc) {
         expect(started, isFalse);
         expect(error, isA<SquadronError>());
       });
-    });
+    }, skip: tc.clientPlatform.isWeb);
+
+    tc.test("- Not a worker (Web platforms)", () async {
+      await NotAWorker(tc).useAsync((w) async {
+        var started = false, expired = false;
+
+        await Future.any([
+          w.start().then((_) => started = true),
+          Future.delayed(Duration(seconds: 1)).then((_) => expired = true),
+        ]);
+
+        expect(expired, isTrue);
+        expect(started, isFalse);
+      });
+    }, skip: tc.clientPlatform.isVm);
   });
 }

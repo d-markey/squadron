@@ -9,10 +9,9 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import '09_worker_pool_test.dart';
-import 'classes/platform.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
+import 'const_concurrency_settings.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
@@ -36,16 +35,16 @@ void execute(TestContext tc) {
           expect(id, 'LocalService running as "$threadId"');
           await LocalWorker.create(localService).useAsync((lw) async {
             expect(
-              await lw.channel?.sendRequest(LocalService.getIdCommand, []),
+              await lw.channel!.sendRequest(LocalService.getIdCommand, []),
               'LocalService running as "$threadId"',
             );
           });
         });
 
-        tc.test('- Squadron', () {
-          return LocalWorker.create(localService).useAsync((lw) {
-            final shared = lw.channel?.share();
-            return LocalClientWorker(tc, args: [shared?.serialize()])
+        tc.test('- Squadron', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
+            final shared = lw.channel!.share();
+            await LocalClientWorker(tc, args: [shared.serialize()])
                 .useAsync((w) async {
               final check = await w.checkIds();
               final match = regExp.firstMatch(check)!;
@@ -54,9 +53,9 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Pool', () {
-          return LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorkerPool(tc, lw, concurrencySettings_253)
+        tc.test('- Pool', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
+            await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {
               final tasks = <Future<String>>[];
               for (var i = 0; i < p.maxConcurrency; i++) {
@@ -77,7 +76,7 @@ void execute(TestContext tc) {
       });
 
       tc.group('- Exception', () {
-        tc.test('- Local', () {
+        tc.test('- Local', () async {
           try {
             final res = localService.throwException();
             throw unexpectedSuccess('throwException()', res);
@@ -85,10 +84,10 @@ void execute(TestContext tc) {
             expect(ex, reports('Intentional exception'));
           }
 
-          return LocalWorker.create(localService).useAsync((lw) async {
+          await LocalWorker.create(localService).useAsync((lw) async {
             try {
-              final res = await lw.channel
-                  ?.sendRequest(LocalService.throwExceptionCommand, []);
+              final res = await lw.channel!
+                  .sendRequest(LocalService.throwExceptionCommand, []);
               throw unexpectedSuccess('throwException()', res);
             } on WorkerException catch (ex) {
               expect(ex, reports('Intentional exception'));
@@ -97,19 +96,19 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Squadron', () {
-          return LocalWorker.create(localService).useAsync((lw) {
-            final shared = lw.channel?.share();
-            return LocalClientWorker(tc, args: [shared?.serialize()])
+        tc.test('- Squadron', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
+            final shared = lw.channel!.share();
+            await LocalClientWorker(tc, args: [shared.serialize()])
                 .useAsync((w) async {
               expect(await w.checkException(), isTrue);
             });
           });
         });
 
-        tc.test('- Pool', () {
-          return LocalWorker.create(localService).useAsync((lw) {
-            return LocalClientWorkerPool(tc, lw, concurrencySettings_253)
+        tc.test('- Pool', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
+            await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {
               final tasks = <Future<bool>>[];
               for (var i = 0; i < p.maxConcurrency; i++) {
@@ -130,18 +129,16 @@ void execute(TestContext tc) {
           await LocalWorker.create(localService).useAsync((lw) async {
             expect(
               await lw.channel!.sendStreamingRequest(
-                LocalService.sequenceCommand,
-                [19],
-              ).toList(),
+                  LocalService.sequenceCommand, [19]).toList(),
               list,
             );
           });
         });
 
-        tc.test('- Squadron', () {
-          return LocalWorker.create(localService).useAsync((lw) {
+        tc.test('- Squadron', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
             final shared = lw.channel?.share();
-            return LocalClientWorker(tc, args: [shared?.serialize()])
+            await LocalClientWorker(tc, args: [shared?.serialize()])
                 .useAsync((w) async {
               final res = await w.checkSequence(19).toList();
               expect(res, hasLength(19));
@@ -150,9 +147,9 @@ void execute(TestContext tc) {
           });
         });
 
-        tc.test('- Pool', () {
-          return LocalWorker.create(localService).useAsync((lw) async {
-            return LocalClientWorkerPool(tc, lw, concurrencySettings_253)
+        tc.test('- Pool', () async {
+          await LocalWorker.create(localService).useAsync((lw) async {
+            await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {
               final tasks = <Future<List<dynamic>>>[];
               for (var i = 0; i < p.maxConcurrency; i++) {

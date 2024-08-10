@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cancelation_token/cancelation_token.dart';
-import 'package:meta/meta.dart';
 
 import '_well_known_exceptions.dart';
 import 'worker_exception.dart';
@@ -26,7 +25,8 @@ abstract class SquadronException implements Exception {
   static SquadronException from(Object error,
       [StackTrace? stackTrace, int? command]) {
     if (error is WorkerException) {
-      return error..withCommand(command);
+      if (command != null) error.setCommand(command);
+      return error;
     } else if (error is SquadronException) {
       return error;
     } else if (error is CanceledException) {
@@ -34,11 +34,7 @@ abstract class SquadronException implements Exception {
     } else if (error is TimeoutException) {
       return error.toSquadronException();
     } else {
-      return WorkerException(
-        error.toString(),
-        stackTrace: stackTrace,
-        command: command,
-      );
+      return WorkerException(error.toString(), stackTrace, command);
     }
   }
 
@@ -57,11 +53,4 @@ abstract class SquadronException implements Exception {
   /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.
   static StackTrace? loadStackTrace(String? stackTrace) =>
       (stackTrace == null) ? null : StackTrace.fromString(stackTrace);
-}
-
-@internal
-extension StackTraceExt on SquadronException {
-  void forceStackTrace(StackTrace st) {
-    _stackTrace = st;
-  }
 }

@@ -26,7 +26,7 @@ import '../worker_service.dart';
 /// features.
 ///
 /// Local workers wrap around a [WorkerService]. Messages sent to the local
-/// worker are deserialized as [WorkerRequest] and dispatched to a handler
+/// worker are deserialized as [WorkerRequest]s and dispatched to a handler
 /// defined in the [service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
 abstract class LocalWorker<W extends WorkerService>
@@ -37,6 +37,8 @@ abstract class LocalWorker<W extends WorkerService>
   factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =>
       impl.createLocalWorker<W>(
           service, exceptionManager ?? ExceptionManager());
+
+  final W service;
 
   @override
   void release() {
@@ -52,14 +54,11 @@ abstract class LocalWorker<W extends WorkerService>
       (_exceptionManager ??= ExceptionManager());
   ExceptionManager? _exceptionManager;
 
-  /// The [WorkerService] associated to this local worker.
-  final W service;
-
   /// The local worker's [Channel].
   Channel? get channel;
 
-  /// A [Channel] to communicate with this local worker. This channel should be provided to clients so they can
-  /// invoke services from the local worker.
+  /// A [Channel] to communicate with this local worker. This channel should be
+  /// provided to clients so they can invoke services from the local worker.
   Channel? get sharedChannel => channel?.share();
 
   /// Starts the local worker.

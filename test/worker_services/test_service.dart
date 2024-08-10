@@ -60,7 +60,7 @@ class TestService implements WorkerService {
   FutureOr throwCustomException() =>
       throw CustomException('intentional CUSTOM exception');
 
-  FutureOr<dynamic> forward(dynamic data) => data;
+  FutureOr<dynamic> sendBack(dynamic data) => data;
 
   FutureOr missing() {}
 
@@ -69,7 +69,7 @@ class TestService implements WorkerService {
   FutureOr<bool> ping() => true;
 
   Stream<int> finite(int count) async* {
-    for (var i = 0; i <= count; i++) {
+    for (var i = 0; i < count; i++) {
       await Future.delayed(TestDelays.shortDelay);
       yield i;
     }
@@ -157,10 +157,11 @@ class TestService implements WorkerService {
     }
 
     controller = StreamController(
-        onListen: onListen,
-        onPause: onPause,
-        onResume: onResume,
-        onCancel: onCancel);
+      onListen: onListen,
+      onPause: onPause,
+      onResume: onResume,
+      onCancel: onCancel,
+    );
 
     return controller.stream;
   }
@@ -184,7 +185,7 @@ class TestService implements WorkerService {
   static const throwTaskTimeOutExceptionCommand = 23;
   static const throwCanceledExceptionCommand = 24;
   static const throwCustomExceptionCommand = 25;
-  static const forwardCommand = 31;
+  static const sendBackCommand = 31;
   static const missingCommand = 32;
   static const invalidResponseCommand = 33;
   static const pingCommand = 34;
@@ -210,7 +211,7 @@ class TestService implements WorkerService {
     throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
     throwCanceledExceptionCommand: (r) => throwCanceledException(),
     throwCustomExceptionCommand: (r) => throwCustomException(),
-    forwardCommand: (r) => forward(r.args[0]),
+    sendBackCommand: (r) => sendBack(r.args[0]),
     invalidResponseCommand: (r) => invalidResponse(),
     /* missingCommand */
     pingCommand: (r) => ping(),

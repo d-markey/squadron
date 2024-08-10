@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../../classes/platform.dart';
-
 abstract class LocalService implements WorkerService {
   FutureOr<String> getId();
   FutureOr<bool> throwException();

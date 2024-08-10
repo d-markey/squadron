@@ -58,8 +58,8 @@ class ExceptionManager {
       final exceptionType = data[0];
       final deserializer = _deserializers[exceptionType];
       return deserializer?.call(data) ??
-          SquadronErrorExt.create(
-            'Failed to deserialize exception information for $exceptionType: $data',
+          WorkerException(
+            'Failed to deserialize exception information for $exceptionType',
           );
     } catch (ex, st) {
       return SquadronException.from(ex, st);

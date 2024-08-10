@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:html' as web;
 
 import 'package:squadron/squadron.dart';
-import 'package:squadron/src/_impl/xplat/_uri_checker.dart';
+import 'package:squadron/src/_impl/web/_uri_checker.dart';
 
 import '../../classes/test_entry_points.dart';
 import '../../classes/test_platform.dart';

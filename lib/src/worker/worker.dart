@@ -5,6 +5,8 @@ import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:using/using.dart';
 
+import '../_impl/xplat/_forward_completer.dart';
+import '../_impl/xplat/_forward_stream_controller.dart';
 import '../_impl/xplat/_helpers.dart';
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
@@ -145,21 +147,33 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
 
     // get the channel, start the worker if necessary
     final channel = _channel ?? await start();
+
+    final completer = ForwardCompleter<T>();
+
+    final squadronToken = token?.wrap();
+    squadronToken?.onCanceled.then((ex) {
+      _channel?.cancelToken(squadronToken);
+      completer.failure(SquadronException.from(ex, null, command));
+    });
+
     _enter();
     try {
-      return await channel.sendRequest<T>(
+      final res = await channel.sendRequest<T>(
         command,
         args,
-        token: token?.wrap(),
+        token: squadronToken,
         inspectRequest: inspectRequest,
         inspectResponse: inspectResponse,
       );
-    } catch (_) {
+      completer.success(res);
+    } catch (ex, st) {
       _totalErrors++;
-      rethrow;
+      completer.failure(SquadronException.from(ex, st, command));
     } finally {
       _leave();
     }
+
+    return completer.future;
   }
 
   /// Sends a streaming workload to the worker.
@@ -170,56 +184,49 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    token?.throwIfCanceled();
+    final squadronToken = token?.wrap();
 
-    // update stats
-    _enter();
+    late final ForwardStreamController<T> controller;
 
-    bool done = false;
-    void onDone() {
-      if (!done) {
-        done = true;
-        _leave();
+    squadronToken?.onCanceled.then((ex) {
+      if (!controller.isClosed) {
+        controller.subscription?.cancel();
+        controller.addError(SquadronException.from(ex, null, command));
+        controller.close();
       }
-    }
+      _channel?.cancelToken(squadronToken);
+    });
 
-    if (_channel != null) {
-      // worker is up and running: return the stream directly
-      final squadronToken = token?.wrap();
-      return _channel!.sendStreamingRequest<T>(
-        command,
-        args,
-        onDone: onDone,
-        token: squadronToken,
-        inspectRequest: inspectRequest,
-        inspectResponse: inspectResponse,
-      );
-    }
-
-    // worker has not started yet: start it and forward the stream via a StreamController
-    late final StreamController<T> controller;
-    controller = StreamController<T>(onListen: () async {
+    controller = ForwardStreamController(onListen: () async {
       try {
+        if (controller.isClosed) return;
+        squadronToken?.throwIfCanceled();
         final channel = _channel ?? await start();
-        final squadronToken = token?.wrap();
-        await controller.addStream(
-          channel.sendStreamingRequest<T>(
-            command,
-            args,
-            onDone: onDone,
-            token: squadronToken,
-            inspectRequest: inspectRequest,
-            inspectResponse: inspectResponse,
-          ),
-          cancelOnError: false,
-        );
+        if (controller.isClosed) return;
+        _enter();
+        controller.attachSubscription(channel
+            .sendStreamingRequest<T>(
+              command,
+              args,
+              token: squadronToken,
+              inspectRequest: inspectRequest,
+              inspectResponse: inspectResponse,
+            )
+            .listen(
+              controller.add,
+              onError: (ex, st) =>
+                  controller.addError(SquadronException.from(ex, st, command)),
+              onDone: controller.close,
+              cancelOnError: false,
+            ));
+        controller.done.whenComplete(_leave);
       } catch (ex, st) {
-        controller.addError(SquadronException.from(ex, st), st);
-      } finally {
-        await controller.close();
-        onDone();
+        _totalErrors++;
+        controller.addError(SquadronException.from(ex, st, command));
+        controller.close();
       }
     });
+
     return controller.stream;
   }
 

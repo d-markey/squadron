@@ -13,7 +13,7 @@ class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
     final runner = WorkerRunner.use(this);
     _port.listen(runner.handle);
     _channel = Channel.deserialize(
-        _port.sendPort, runner.internalLogger, exceptionManager);
+        _port.sendPort, runner.internalLogger, exceptionManager)!;
   }
 
   final _port = ReceivePort();
@@ -23,16 +23,16 @@ class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   Channel? get channel => _channel;
 
   @override
+  ExceptionManager get exceptionManager =>
+      (_exceptionManager ??= ExceptionManager());
+  ExceptionManager? _exceptionManager;
+
+  @override
   void stop() {
     _port.close();
     _channel?.close();
     _channel = null;
   }
-
-  @override
-  ExceptionManager get exceptionManager =>
-      (_exceptionManager ??= ExceptionManager());
-  ExceptionManager? _exceptionManager;
 
   @override
   FutureOr<void> start() {}

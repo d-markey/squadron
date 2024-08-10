@@ -15,7 +15,7 @@ export 'src/exceptions/squadron_canceled_exception.dart'
 export 'src/exceptions/squadron_canceled_exceptions.dart'
     hide SquadronCanceledExceptionsExt;
 export 'src/exceptions/squadron_error.dart' hide SquadronErrorExt;
-export 'src/exceptions/squadron_exception.dart' hide StackTraceExt;
+export 'src/exceptions/squadron_exception.dart';
 export 'src/exceptions/squadron_timeout_exception.dart'
     hide SquadronTimeoutExceptionExt;
 export 'src/exceptions/task_canceled_exception.dart';

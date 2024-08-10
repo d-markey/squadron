@@ -26,7 +26,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
           List args, SquadronCancelationToken? token, bool inspectResponse) =>
       WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
-        channelInfo, // 1 - client
+        channelInfo, // 1 - channel
         command, // 2 - command
         args, // 3 - args
         token, // 4 - cancelation token
@@ -38,7 +38,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   static WorkerRequest start(PlatformChannel channelInfo, List args) =>
       WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
-        channelInfo, // 1 - client
+        channelInfo, // 1 - channel
         _connectCommand, // 2 - command
         args, // 3 - args
         null, // 4 - cancelation token
@@ -49,7 +49,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new stream cancelation request.
   static WorkerRequest cancelStream(int streamId) => WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
-        null, // 1 - client
+        null, // 1 - channel
         _cancelStreamCommand, // 2 - command
         null, // 3 - args
         null, // 4 - cancelation token
@@ -61,7 +61,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   static WorkerRequest cancel(SquadronCancelationToken token) =>
       WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
-        null, // 1 - client
+        null, // 1 - channel
         _cancelTokenCommand, // 2 - command
         null, // 3 - args
         token, // 4 - cancelation token
@@ -72,7 +72,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new termination request.
   static WorkerRequest stop() => WorkerRequest._([
         microsecTimeStamp(), // 0 - travel time
-        null, // 1 - client
+        null, // 1 - channel
         _terminateCommand, // 2 - command
         null, // 3 - args
         null, // 4 - cancelation token
@@ -81,14 +81,14 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
       ]);
 
   /// The client's [WorkerChannel]. Only valid on the receiving end.
-  WorkerChannel? get client => data[_$client];
+  WorkerChannel? get channel => data[_$channel];
 
   /// The channel method to be used for sending data back.
   void Function(dynamic)? get reply =>
-      inspectResponse ? client?.inspectAndReply : client?.reply;
+      inspectResponse ? channel?.inspectAndReply : channel?.reply;
 
   /// The client's channel info.
-  PlatformChannel? get channelInfo => data[_$client];
+  PlatformChannel? get channelInfo => data[_$channel];
 
   /// Cancelation token.
   SquadronCancelationToken? get cancelToken => data[_$token];
@@ -125,7 +125,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
 }
 
 // 0 is reserved for travel time
-const _$client = 1;
+const _$channel = 1;
 const _$command = 2;
 const _$args = 3;
 const _$token = 4;
@@ -139,7 +139,7 @@ extension WorkerRequestExt on WorkerRequest {
     unwrapTravelTime();
     data[_$command] = Cast.toNullableInt(data[_$command]);
     data[_$streamId] = Cast.toNullableInt(data[_$streamId]);
-    data[_$client] = WorkerChannel.deserialize(data[_$client], logger);
+    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
     data[_$inspectResponse] ??= false;
     data[_$args] ??= const [];

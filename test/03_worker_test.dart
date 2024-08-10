@@ -44,8 +44,8 @@ void execute(TestContext tc) {
           memoryLogger.clear();
         });
 
-        tc.test('- start & stop', () {
-          return TestWorker(tc).useAsync((w) async {
+        tc.test('- start & stop', () async {
+          await TestWorker(tc).useAsync((w) async {
             w.channelLogger = memoryLogger;
 
             expect(w.channel, isNull);
@@ -225,8 +225,6 @@ void execute(TestContext tc) {
       tc.group('- workloads', () {
         tc.test('- sequential', () async {
           await TestWorker(tc).useAsync((w) async {
-            await w.start();
-
             int taskId = 0;
             final completedTasks = <int>[];
             Future createTask(Duration duration) {
@@ -382,9 +380,9 @@ void execute(TestContext tc) {
         tc.group('- error handling', () {
           late final TestWorker worker;
 
-          setUpAll(() {
+          setUpAll(() async {
             worker = TestWorker(tc);
-            return worker.start();
+            await worker.start();
           });
 
           tearDownAll(() {
@@ -444,7 +442,8 @@ void execute(TestContext tc) {
               throw unexpectedSuccess('throwCustomException()', res);
             } on WorkerException catch (ex) {
               expect(ex, isNotA<CustomException>());
-              expect(ex, reports('Missing deserializer for CUSTOM'));
+              expect(ex, reports('Failed to deserialize'));
+              expect(ex, reports('CUSTOM'));
             }
             expect(worker.stats.totalErrors, errors + 1);
           });
@@ -471,13 +470,12 @@ void execute(TestContext tc) {
           });
 
           tc.test('- invalid request', () async {
-            final list = [1];
-            expect(await worker.forward(list), list);
+            expect(await worker.sendBack([1]), [1]);
 
             try {
-              final res = await worker.forward(getUnsendable());
+              final res = await worker.sendBack(getUnsendable());
               throw unexpectedSuccess('forward()', res);
-            } on WorkerException catch (ex) {
+            } on SquadronError catch (ex) {
               expect(ex, reports('Failed to post request'));
             }
 

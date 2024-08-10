@@ -27,9 +27,9 @@ void execute(TestContext tc) {
       tc.group('- streaming', () {
         late TestWorker worker;
 
-        setUpAll(() {
+        setUpAll(() async {
           worker = TestWorker(tc);
-          return worker.start();
+          await worker.start();
         });
 
         tearDownAll(() {
@@ -63,8 +63,8 @@ void execute(TestContext tc) {
 
           await done.future;
 
-          expect(errors.length, maxErrors);
-          expect(numbers.length, greaterThan(errors.length));
+          expect(errors, hasLength(maxErrors));
+          expect(numbers, hasLength(greaterThan(maxErrors)));
           expect(errors, everyElement(reports('error #\\d+')));
 
           pending = await worker.getPendingInfiniteWithErrors();

@@ -7,7 +7,6 @@ import 'identity_service.dart';
 import 'sample_service.dart';
 import 'sample_service_worker_pool.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
-import 'thread_id.dart';
 
 void main() async {
   final sw = Stopwatch()..start();

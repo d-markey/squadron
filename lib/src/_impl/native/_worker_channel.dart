@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
+import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../exceptions/worker_exception.dart';
 import '../../typedefs.dart';
@@ -26,7 +27,7 @@ class _VmWorkerChannel implements WorkerChannel {
       _sendPort.send(data);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronException.from('Failed to post response: $ex', st);
+      throw SquadronErrorExt.create('Failed to post response: $ex', st);
     }
   }
 

@@ -4,7 +4,6 @@ import 'dart:isolate' as vm;
 
 import 'package:logger/logger.dart';
 
-import '../../cast_helpers.dart';
 import '../../channel.dart' show Channel;
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
@@ -15,8 +14,9 @@ import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker_service.dart';
-import '../xplat/_pause_handler.dart';
+import '../xplat/_connection_channel.dart';
+import '../xplat/_forward_stream_controller.dart';
+import '../xplat/_result_stream.dart';
 
 part '_channel_impl.dart';
 
@@ -72,16 +72,18 @@ Future<Channel> openChannel(
 
     error ??= WorkerException(
       message[0],
-      stackTrace: SquadronException.loadStackTrace(message[1]),
+      SquadronException.loadStackTrace(message[1]),
     );
 
     logger?.d(() => 'Unhandled error from Isolate: ${error?.message}.');
     failure(error);
   });
 
+  final disconnected = ConnectionChannel(exceptionManager, logger);
+
   receiver.listen((message) {
     final response = WorkerResponseExt.from(message);
-    if (!response.unwrapInPlace(exceptionManager, logger)) {
+    if (!response.unwrapInPlace(disconnected)) {
       return;
     }
 

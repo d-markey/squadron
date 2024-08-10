@@ -21,8 +21,8 @@ String testScript = '06_shared_channel_test.dart';
 void execute(TestContext tc) {
   tc.run(() {
     tc.group("- Shared Channel", () {
-      tc.test('- cache worker', () {
-        return CacheWorker(tc).useAsync((cache) async {
+      tc.test('- cache worker', () async {
+        await CacheWorker(tc).useAsync((cache) async {
           expect(await cache.get(1), isNull);
           expect(await cache.containsKey(1), isFalse);
           await cache.set(1, 'in cache');
@@ -31,8 +31,8 @@ void execute(TestContext tc) {
         });
       });
 
-      tc.test('- prime worker with cache', () {
-        return CacheWorker(tc).useAsync((cache) async {
+      tc.test('- prime worker with cache', () async {
+        await CacheWorker(tc).useAsync((cache) async {
           await cache.start();
 
           var cacheStats = await cache.getStats();

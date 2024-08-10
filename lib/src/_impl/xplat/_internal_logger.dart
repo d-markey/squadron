@@ -7,23 +7,6 @@ class InternalLogger extends Logger {
           printer: _DummyPrinter(),
           output: _NoLogOutput(),
         );
-
-  final _debug = true;
-
-  @override
-  void log(
-    Level level,
-    dynamic message, {
-    DateTime? time,
-    Object? error,
-    StackTrace? stackTrace,
-  }) {
-    if (_debug) {
-      final msg = (message is Function) ? message() : message;
-      print('[$level] $msg');
-    }
-    super.log(level, message, time: time, error: error, stackTrace: stackTrace);
-  }
 }
 
 class _NoLogOutput extends LogOutput {

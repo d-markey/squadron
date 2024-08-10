@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/platform.dart';
 import '../classes/test_context.dart';
 import '../classes/utils.dart';
 import 'local_workers/local_client.dart';

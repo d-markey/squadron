@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'thread_id.dart';
-
 // The service interface
 abstract class IdentityService implements WorkerService {
   FutureOr<String> whoAreYou();

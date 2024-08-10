@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:web/web.dart' as web;
 
+import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
@@ -28,7 +29,7 @@ class _WebWorkerChannel implements WorkerChannel {
       _sendPort.postMessage(msg);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronException.from('Failed to post response: $ex', st);
+      throw SquadronErrorExt.create('Failed to post response: $ex', st);
     }
   }
 
@@ -45,7 +46,7 @@ class _WebWorkerChannel implements WorkerChannel {
       }
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronException.from('Failed to post response: $ex', st);
+      throw SquadronErrorExt.create('Failed to post response: $ex', st);
     }
   }
 

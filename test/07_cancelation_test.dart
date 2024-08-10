@@ -29,10 +29,10 @@ void execute(TestContext tc) {
     late TestWorkerPool pool;
     late TestWorker worker;
 
-    setUpAll(() {
+    setUpAll(() async {
       pool = TestWorkerPool(tc, concurrencySettings_222);
       worker = TestWorker(tc);
-      return Future.wait([pool.start(), worker.start()].whereType<Future>());
+      await Future.wait([pool.start(), worker.start()].whereType<Future>());
     });
 
     tearDownAll(() {
@@ -252,6 +252,7 @@ void execute(TestContext tc) {
                 .finite(2 * i + 1)
                 .listen(res.add, onError: res.add, onDone: completer.complete);
           }
+
           await Future.delayed(TestDelays.delay);
           pool.cancel();
 
@@ -285,10 +286,10 @@ void execute(TestContext tc) {
           final status = List.filled(count, 'not started');
           int errors = 0;
           for (var i = 0; i < count; i++) {
-            final task = pool.finiteTask((i + 1) * 2);
-            tasks.add(task);
             final start = Completer();
             started.add(start.future);
+            final task = pool.finiteTask((i + 1) * 2);
+            tasks.add(task);
             task.stream.listen((event) {
               if (!start.isCompleted) {
                 start.complete();
@@ -420,6 +421,7 @@ void execute(TestContext tc) {
         expect(errors, isZero);
 
         await Future.delayed(TestDelays.delay);
+
         expect(pool.pendingWorkload, isPositive);
 
         await Future.wait(tasks);

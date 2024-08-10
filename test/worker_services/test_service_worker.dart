@@ -66,7 +66,7 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       execute((w) => w.throwCustomException());
 
   @override
-  Future<dynamic> forward(dynamic data) => execute((w) => w.forward(data));
+  Future<dynamic> sendBack(dynamic data) => execute((w) => w.sendBack(data));
 
   @override
   Future missing() => execute((w) => w.missing());
@@ -187,8 +187,8 @@ class TestWorker extends Worker implements TestService {
       send(TestService.throwCustomExceptionCommand).then(Cast.toInt);
 
   @override
-  Future<dynamic> forward(dynamic data) =>
-      send(TestService.forwardCommand, args: [data]);
+  Future<dynamic> sendBack(dynamic data) =>
+      send(TestService.sendBackCommand, args: [data]);
 
   @override
   Future missing() => send(TestService.missingCommand);

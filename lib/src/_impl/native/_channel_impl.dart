@@ -2,14 +2,17 @@ part of '_channel.dart';
 
 /// [Channel] implementation for the Native world.
 class _VmChannel implements Channel {
-  _VmChannel._(this._sendPort, this._logger, this.exceptionManager);
+  _VmChannel._(this._sendPort, this.logger, this.exceptionManager);
 
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by
   /// the worker owner. Otherwise, [SendPort] to return values to the client.
   final vm.SendPort _sendPort;
 
+  @override
   final ExceptionManager exceptionManager;
-  final Logger? _logger;
+
+  @override
+  final Logger? logger;
 
   bool _closed = false;
 
@@ -17,23 +20,24 @@ class _VmChannel implements Channel {
   @override
   PlatformChannel serialize() => _sendPort;
 
-  void _postRequest(WorkerRequest req) {
-    try {
-      req.cancelToken?.ensureStarted();
-      final data = req.wrapInPlace();
-      _sendPort.send(data);
-    } catch (ex, st) {
-      _logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronException.from('Failed to post request: $ex', st);
-    }
-  }
-
   /// [Channel] sharing in Native world returns the same instance.
   @override
   Channel share() => this;
 
-  /// Sends a termination [WorkerRequest] to the [Isolate] and clears the
-  /// [SendPort].
+  void _postRequest(WorkerRequest req) {
+    if (_closed) {
+      throw SquadronErrorExt.create('Channel is closed');
+    }
+    try {
+      req.cancelToken?.ensureStarted();
+      _sendPort.send(req.wrapInPlace());
+    } catch (ex, st) {
+      logger?.e(() => 'Failed to post request $req: $ex');
+      throw SquadronErrorExt.create('Failed to post request: $ex', st);
+    }
+  }
+
+  /// Sends a termination [WorkerRequest] to the [vm.Isolate].
   @override
   FutureOr close() {
     if (!_closed) {
@@ -42,78 +46,69 @@ class _VmChannel implements Channel {
     }
   }
 
-  Stream<T> _getStreamOfResponses<T>(vm.ReceivePort port,
-      {required bool streaming}) {
-    final cast = Cast.get<T>();
-    late final StreamController<T> controller;
-    late final PauseHandler pauseHandler;
-    StreamSubscription<WorkerResponse>? sub;
-
-    final streamIdCompleter = Completer<int?>();
-    if (!streaming) streamIdCompleter.complete(null);
-
-    Future<void> close() async {
-      print('CLOSE');
-      await sub?.cancel();
-      await controller.close();
+  /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
+  @override
+  FutureOr cancelStream(int streamId) {
+    if (!_closed) {
+      _postRequest(WorkerRequest.cancelStream(streamId));
     }
+  }
 
-    void onData(WorkerResponse res) {
-      if (!res.unwrapInPlace(exceptionManager, _logger)) {
-        print('DATA: $res --> nothing to do');
-        return;
+  /// Sends a cancel token [WorkerRequest] to the [vm.Isolate].
+  @override
+  FutureOr cancelToken(SquadronCancelationToken? token) {
+    if (token != null && !_closed) {
+      _postRequest(WorkerRequest.cancel(token));
+    }
+  }
+
+  Stream<T> _getResponseStream<T>(
+    vm.ReceivePort port,
+    WorkerRequest req,
+    void Function(WorkerRequest) post, {
+    required bool streaming,
+  }) {
+    final command = req.command;
+
+    // send the request, return a stream of responses
+    Stream<WorkerResponse> $sendRequest() {
+      late final ForwardStreamController<WorkerResponse> controller;
+
+      void $forwardMessage(WorkerResponse msg) {
+        if (!controller.isClosed) controller.add(msg);
       }
 
-      final error = res.error;
-      if (error != null) {
-        print('DATA: $res --> error $error');
-        controller.addError(SquadronException.from(error));
-      } else if (!streamIdCompleter.isCompleted) {
-        // in streaming mode, the first response is the stream id
-        print('DATA: $res --> streamId ${res.result}');
-        streamIdCompleter.complete(Cast.toInt(res.result));
-      } else if (streaming && res.endOfStream) {
-        print('DATA: $res --> end of stream');
-        if (!streamIdCompleter.isCompleted) {
-          _logger?.e(() => 'Invalid state: null streamId');
-          streamIdCompleter.complete(null);
+      void $forwardError(Object error, StackTrace? st) {
+        if (!controller.isClosed) {
+          controller.addError(SquadronException.from(error, st, command));
         }
-        close();
-      } else {
-        print('DATA: $res --> data ${res.result}');
-        controller.add(cast(res.result));
       }
-    }
 
-    void onError(Object error, [StackTrace? stackTrace]) {
-      print('ERROR: $error');
-      controller.addError(SquadronException.from(error, stackTrace));
-    }
+      controller = ForwardStreamController(onListen: () {
+        // do nothing if the controller is closed already
+        if (controller.isClosed) return;
 
-    Future<void> onCancel() async {
-      final streamId = await streamIdCompleter.future;
-      if (streamId != null) {
-        print('CANCEL STREAM $streamId');
-        _postRequest(WorkerRequest.cancelStream(streamId));
-      }
-      print('CANCEL SUBSCRIPTION');
-      await close();
-    }
-
-    controller = StreamController(
-      onListen: () {
-        sub = port.cast<WorkerResponse>().listen(
-              onData,
-              onError: onError,
-              onDone: close,
+        // bind the controller
+        controller.attachSubscription(port.cast<WorkerResponse>().listen(
+              $forwardMessage,
+              onError: $forwardError,
+              onDone: controller.close,
               cancelOnError: false,
-            );
-        pauseHandler.overrideWith(sub!);
-      },
-      onCancel: onCancel,
-    );
-    pauseHandler = PauseHandler(controller);
-    return controller.stream;
+            ));
+
+        // send the request
+        try {
+          post(req);
+        } catch (ex, st) {
+          $forwardError(ex, st);
+          controller.close();
+        }
+      });
+      return controller.stream;
+    }
+
+    // return a stream of decoded responses
+    return ResultStream<T>(this, req, $sendRequest, streaming).stream;
   }
 
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the
@@ -126,18 +121,11 @@ class _VmChannel implements Channel {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
-    }
-
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-
-    final stream = _getStreamOfResponses<T>(receiver, streaming: false);
-
-    _postRequest(req);
-    return stream.first;
+    return _getResponseStream<T>(receiver, req, _postRequest, streaming: false)
+        .first;
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the
@@ -148,22 +136,13 @@ class _VmChannel implements Channel {
   Stream<T> sendStreamingRequest<T>(
     int command,
     List args, {
-    SquadronCallback onDone = Channel.noop,
     SquadronCancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
-    }
-
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-
-    final stream = _getStreamOfResponses<T>(receiver, streaming: true);
-
-    _postRequest(req);
-    return stream;
+    return _getResponseStream<T>(receiver, req, _postRequest, streaming: true);
   }
 }

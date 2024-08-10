@@ -50,19 +50,19 @@ class WorkerRunner {
   /// will be set with operations from the service.
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
-    WorkerChannel? client;
+    WorkerChannel? channel;
     try {
       startRequest?.unwrapInPlace(internalLogger);
-      client = startRequest?.client;
+      channel = startRequest?.channel;
 
       if (startRequest == null) {
         throw SquadronErrorExt.create('Missing connection request');
-      } else if (client == null) {
+      } else if (channel == null) {
         throw SquadronErrorExt.create('Missing client for connection request');
       }
 
       if (_logForwarder == null) {
-        final logger = client.log;
+        final logger = channel.log;
         _logForwarder = (event) => logger(event.origin);
         Logger.addOutputListener(_logForwarder!);
       }
@@ -87,10 +87,10 @@ class WorkerRunner {
         await _installer!.install();
       }
 
-      client.connect(channelInfo);
+      channel.connect(channelInfo);
     } catch (ex, st) {
       internalLogger.e(() => 'Connection failed: $ex');
-      client?.error(ex, st);
+      channel?.error(ex, st);
       _exit();
     }
   }
@@ -98,10 +98,10 @@ class WorkerRunner {
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_operations] map. Make sure this method doesn't throw.
   void processRequest(WorkerRequest request) async {
-    WorkerChannel? client;
+    WorkerChannel? channel;
     try {
       request.unwrapInPlace(internalLogger);
-      client = request.client;
+      channel = request.channel;
 
       // ==== these requests do not send a response ====
 
@@ -114,7 +114,8 @@ class WorkerRunner {
         return _getTokenRef(token).update(token);
       } else if (request.isStreamCancelation) {
         // cancel a stream
-        return _streamCancelers[request.streamId]?.call();
+        final canceler = _streamCancelers[request.streamId];
+        return canceler?.call();
       }
 
       // make sure the worker is connected
@@ -130,19 +131,20 @@ class WorkerRunner {
 
       // ==== other requests require a client to send the response ====
 
-      if (client == null) {
+      if (channel == null) {
         throw SquadronErrorExt.create('Missing client for request: $request');
       }
 
-      request.cancelToken?.throwIfCanceled();
+      final token = request.cancelToken;
+      token?.throwIfCanceled();
 
       // start monitoring execution
       final tokenRef = _begin(request);
       try {
         // find the operation matching the request command
-        final op = _operations![request.command];
+        final cmd = request.command, op = _operations![cmd];
         if (op == null) {
-          throw SquadronErrorExt.create('Unknown command: ${request.command}');
+          throw SquadronErrorExt.create('Unknown command: $cmd');
         }
 
         // process
@@ -151,11 +153,23 @@ class WorkerRunner {
           result = await result;
         }
 
-        // send results back with the proper reply method
         final reply = request.reply!;
-        if (result is Stream && client.canStream(result)) {
+        if (result is Stream && channel.canStream(result)) {
           // result is a stream: forward data to the client
-          await _pipe(result, client, reply, request.command);
+          final replyWithError = channel.error;
+          void postError(Object exception, [StackTrace? stackTrace]) {
+            replyWithError(exception, stackTrace, cmd);
+          }
+
+          void post(data) {
+            try {
+              reply(data);
+            } catch (ex, st) {
+              postError(ex, st);
+            }
+          }
+
+          await _pipe(result, channel, post, postError, token);
         } else {
           // result is a value: send to the client
           reply(result);
@@ -165,8 +179,8 @@ class WorkerRunner {
         _done(tokenRef);
       }
     } catch (ex, st) {
-      if (client != null) {
-        client.error(ex, st, request.command);
+      if (channel != null) {
+        channel.error(ex, st, request.command);
       } else {
         internalLogger.e('Unhandled error: $ex');
       }
@@ -203,31 +217,58 @@ class WorkerRunner {
   }
 
   /// Forwards stream events to client.
-  Future<void> _pipe(Stream<dynamic> stream, WorkerChannel client,
-      void Function(dynamic) reply, int command) {
-    StreamSubscription? subscription;
+  Future<void> _pipe(
+    Stream<dynamic> stream,
+    WorkerChannel channel,
+    void Function(dynamic) post,
+    void Function(Object exception, [StackTrace? stackTrace]) postError,
+    SquadronCancelationToken? token,
+  ) {
+    late final StreamSubscription subscription;
     final done = Completer();
 
-    // stream canceler
+    late final int streamId;
+
+    // send endOfStream to client
     Future<void> onDone() async {
-      client.closeStream();
-      await subscription?.cancel();
+      _unregisterStreamCanceler(streamId);
+      channel.closeStream();
+      await subscription.cancel();
       done.complete();
     }
 
+    final bool Function() checkToken;
+    if (token == null) {
+      checkToken = () => true;
+    } else {
+      checkToken = () {
+        final ex = token.exception;
+        if (ex != null) {
+          postError(ex);
+          onDone();
+        }
+        return (ex == null);
+      };
+    }
+
     // register stream canceler callback and connect stream with client
-    final streamId = _registerStreamCanceler(onDone);
-    reply(streamId);
+    streamId = _registerStreamCanceler(onDone);
+    post(streamId);
+    if (checkToken()) {
+      // start forwarding messages to the client
+      subscription = stream.listen(
+        (data) {
+          if (checkToken()) post(data);
+        },
+        onError: (ex, st) {
+          if (checkToken()) postError(ex, st);
+        },
+        onDone: onDone,
+        cancelOnError: false,
+      );
+    }
 
-    // start forwarding messages to the client
-    subscription = stream.listen(
-      reply,
-      onError: (ex, st) => client.error(ex, st, command),
-      onDone: onDone,
-      cancelOnError: false,
-    );
-
-    return done.future.whenComplete(() => _unregisterStreamCanceler(streamId));
+    return done.future;
   }
 
   /// Assigns a stream ID to the stream canceler callback and registers the

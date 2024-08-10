@@ -16,6 +16,12 @@ import 'worker_service.dart';
 /// A [Channel] supports communication from a client to a platform worker. It
 /// is used to send a [WorkerRequest] to a platform worker.
 abstract class Channel {
+  /// The [ExceptionManager] attached to this channel.
+  ExceptionManager get exceptionManager;
+
+  /// The [Logger] attached to this channel.
+  Logger? get logger;
+
   /// [Channel] serialization. Returns an opaque object that can be transfered
   /// from the client to the worker.
   PlatformChannel serialize();
@@ -28,6 +34,12 @@ abstract class Channel {
   /// release any resource related to the worker and should not be used after
   /// this method has been called.
   FutureOr<void> close();
+
+  /// Sends a close stream [WorkerRequest] to the worker.
+  FutureOr<void> cancelStream(int streamId);
+
+  /// Sends a cancel token [WorkerRequest] to the worker.
+  FutureOr<void> cancelToken(SquadronCancelationToken? token);
 
   /// Static method that does nothing. Useful when a [SquadronCallback] is
   /// required but there is nothing to do.
@@ -44,8 +56,7 @@ abstract class Channel {
   /// a stream of values from the worker. The worker must send a
   /// [WorkerResponse.closeStream] message to close the [Stream].
   Stream<T> sendStreamingRequest<T>(int command, List args,
-      {SquadronCallback onDone = Channel.noop,
-      SquadronCancelationToken? token,
+      {SquadronCancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false});
 
