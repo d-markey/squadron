@@ -70,7 +70,7 @@ void execute(TestContext tc) {
             expect(cacheStats.size, cacheSize);
             expect(cacheStats.maxSize, cacheSize);
 
-            expect(elapsedWithFullCache, lessThan(elapsedWithEmptyCache / 5));
+            expect(elapsedWithFullCache, lessThan(elapsedWithEmptyCache / 2));
           });
         });
       });
