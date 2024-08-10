@@ -8,8 +8,9 @@ import '../../exceptions/squadron_error.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 
-class ConnectionChannel implements Channel {
-  ConnectionChannel(this.exceptionManager, this.logger);
+class DisconnectedChannel implements Channel {
+  DisconnectedChannel([ExceptionManager? exceptionManager, this.logger])
+      : exceptionManager = exceptionManager ?? ExceptionManager();
 
   @override
   final ExceptionManager exceptionManager;

@@ -138,9 +138,9 @@ class TestContext {
   }
 
   static final _knownTests = <String>{
-    '- WebWorker - classic Web Worker',
-    '- WebWorker - native Web Worker',
-    '- WebWorker - in-memory Web Worker',
+    '- WebWorker - plain Web Worker',
+    '- WebWorker - plain Web Worker (in-memory)',
+    '- WebWorker - regular Web Worker',
     '- WebWorker - missing Web Worker (JavaScript)',
     '- WebWorker - missing Web Worker (WebAssembly)',
     '- Squadron Worker - start/stop - start & stop',

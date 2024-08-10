@@ -8,6 +8,7 @@ import 'dart:html' as web show Worker;
 import 'dart:html' hide Worker;
 
 import 'package:squadron/src/_impl/web/entry_point_uri.dart';
+import 'package:squadron/src/_impl/xplat/_disconnected_channel.dart';
 import 'package:squadron/src/exceptions/squadron_error.dart';
 import 'package:squadron/src/worker/worker_response.dart';
 import 'package:test/test.dart';
@@ -111,12 +112,32 @@ void execute(TestContext tc) {
         final w = web.Worker(ep.uri);
 
         try {
-          final res = Completer<String>();
-          w.onError.listen((e) => res.completeError(_errorFromEvent(e)));
-          w.onMessage.listen((e) => res.complete('handled $e'));
+          final completer = Completer<String>();
+          w.onError.listen((e) => completer.completeError(_errorFromEvent(e)));
+          w.onMessage.listen((e) {
+            try {
+              final res = WorkerResponseExt.from(e.data);
+              if (res.unwrapInPlace(DisconnectedChannel())) {
+                final error = res.error;
+                if (error != null) {
+                  completer.completeError(error);
+                } else {
+                  completer.complete(res.result.toString());
+                }
+              }
+            } catch (ex) {
+              completer.completeError(Exception('Unexpected: $ex'));
+            }
+          });
 
           w.postMessage('Hello');
-          await expectLater(res.future, failsWith<SquadronError>());
+          try {
+            final res = await completer.future;
+            throw unexpectedSuccess('postMessage', res);
+          } on SquadronError catch (ex) {
+            expect(ex, reports('Failed to load Web Worker'));
+            expect(ex, reports('not_found.wasm'));
+          }
         } finally {
           ep.release();
           w.terminate();

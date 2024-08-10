@@ -36,6 +36,28 @@ extension ControllerTrackerExt on StreamController {
   static int get pendingControllers => _busyControllers.length;
 }
 
+final _busyFutures = <({Future future, StackTrace st})>[];
+
+@internal
+extension FutureTrackerExt on Future {
+  void track() {
+    final prev = _busyFutures.length;
+    _busyFutures.add((future: this, st: StackTrace.current));
+    whenComplete(_untrack);
+    final cur = _busyFutures.length;
+    $log('Started tracking $objectId: $prev > $cur');
+  }
+
+  void _untrack() {
+    final prev = _busyFutures.length;
+    _busyFutures.removeWhere((e) => e.future == this);
+    final cur = _busyFutures.length;
+    $log('Stopped tracking $objectId: $prev > $cur');
+  }
+
+  static int get pendingControllers => _busyControllers.length;
+}
+
 final _busyTasks = <({Task task, StackTrace st})>[];
 
 @internal

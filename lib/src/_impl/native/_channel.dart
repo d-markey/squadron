@@ -14,7 +14,7 @@ import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../xplat/_connection_channel.dart';
+import '../xplat/_disconnected_channel.dart';
 import '../xplat/_forward_stream_controller.dart';
 import '../xplat/_result_stream.dart';
 
@@ -79,7 +79,7 @@ Future<Channel> openChannel(
     failure(error);
   });
 
-  final disconnected = ConnectionChannel(exceptionManager, logger);
+  final disconnected = DisconnectedChannel(exceptionManager, logger);
 
   receiver.listen((message) {
     final response = WorkerResponseExt.from(message);

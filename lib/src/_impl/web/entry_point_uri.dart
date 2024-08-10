@@ -43,9 +43,9 @@ class EntryPointUri with Releasable {
   }
 
   static String wasmLoaderScript(String url) => '''(async function() {
+  const workerUri = new URL("${url.replaceAll('"', '\\"')}", self.location.origin).href;
   try {
     let dart2wasm_runtime; let moduleInstance;
-    const workerUri = new URL("$url", self.location.origin).href;
     const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');
     try {
       const dartModule = WebAssembly.compileStreaming(fetch(workerUri));
@@ -54,18 +54,18 @@ class EntryPointUri with Releasable {
     } catch (exception) {
       console.error(`Failed to fetch and instantiate wasm module \${workerUri}: \${exception}`);
       console.error('See https://dart.dev/web/wasm for more information.');
-      throw new Error(`Worker \${workerUri}: \${exception.message ?? 'Unknown error when instantiating worker module'}`);
+      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');
     }
     try {
       await dart2wasm_runtime.invoke(moduleInstance);
       console.log(`Succesfully loaded and invoked \${workerUri}`);
     } catch (exception) {
       console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
-      throw new Error(`Worker \${workerUri}: \${exception.message ?? 'Unknown error when invoking worker module'}`);
+      throw new Error(exception.message ?? 'Unknown error when invoking worker module');
     }
   } catch (ex) {
     const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;
-    postMessage([ts, null, ["\$sqdrn", `Unexpected error: \${ex}`, null], null, null]);
+    postMessage([ts, null, ["\$sqdrn", `Failed to load Web Worker from \${workerUri}: \${ex}`, null], null, null]);
   }
 })()''';
 }

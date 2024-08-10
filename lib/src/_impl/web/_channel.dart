@@ -13,7 +13,7 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../xplat/_connection_channel.dart';
+import '../xplat/_disconnected_channel.dart';
 import '../xplat/_result_stream.dart';
 import '../xplat/_transferables.dart';
 import '_event_buffer.dart';
@@ -88,7 +88,7 @@ Future<Channel> openChannel(
     }.toJS;
     worker.onmessageerror = worker.onerror;
 
-    final disconnected = ConnectionChannel(exceptionManager, logger);
+    final disconnected = DisconnectedChannel(exceptionManager, logger);
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
@@ -100,7 +100,7 @@ Future<Channel> openChannel(
         final error = response.error;
         if (error != null) {
           logger?.e(() => 'Connection to Web Worker failed: $error');
-          return fail(error);
+          fail(error);
         } else if (!ready.isCompleted) {
           logger?.t('Web Worker is ready');
           ready.complete(response.result);
@@ -157,6 +157,8 @@ Future<Channel> openChannel(
     logger?.t('Created Web Worker for $entryPoint');
     return channel;
   } catch (ex, st) {
+    ready.future.ignore();
+    completer.future.ignore();
     logger?.t('Failed to create Web Worker for $entryPoint');
     com.port1.close();
     com.port2.close();

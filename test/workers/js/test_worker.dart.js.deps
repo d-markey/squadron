@@ -337,7 +337,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/web/_uri_checker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_runner.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/entry_point_uri.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_connection_channel.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_disconnected_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_completer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_stream_controller.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_helpers.dart

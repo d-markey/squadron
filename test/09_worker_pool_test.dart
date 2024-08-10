@@ -66,7 +66,7 @@ void execute(TestContext tc) {
 
           final tasks = <Future>[];
           for (var i = 0; i < count; i++) {
-            tasks.add(p.io(ms: TestDelays.delay.inMilliseconds * 10));
+            tasks.add(p.io(ms: TestDelays.delay.inMilliseconds * 5));
           }
 
           // let the pool kick off some tasks: it must be running at full speed
@@ -596,7 +596,7 @@ void execute(TestContext tc) {
             expect(task.isCanceled, isFalse);
             expect(task.isFinished, isFalse);
 
-            await Future.delayed(TestDelays.delay);
+            await Future.delayed(TestDelays.delay * 2);
 
             expect(task.isPending, isFalse);
             expect(task.isRunning, isFalse);
