@@ -617,6 +617,7 @@ org-dartlang-sdk:///lib/_internal/js_runtime/lib/synced/invocation_mirror_consta
 org-dartlang-sdk:///lib/_internal/js_runtime/lib/synced/load_library_priority.dart
 org-dartlang-sdk:///lib/_internal/js_runtime/lib/typed_data_patch.dart
 org-dartlang-sdk:///lib/_internal/js_shared/lib/convert_utf_patch.dart
+org-dartlang-sdk:///lib/_internal/js_shared/lib/date_time_patch.dart
 org-dartlang-sdk:///lib/_internal/js_shared/lib/js_interop_patch.dart
 org-dartlang-sdk:///lib/_internal/js_shared/lib/js_interop_unsafe_patch.dart
 org-dartlang-sdk:///lib/_internal/js_shared/lib/js_types.dart
@@ -775,6 +776,5 @@ org-dartlang-sdk:///lib/math/random.dart
 org-dartlang-sdk:///lib/math/rectangle.dart
 org-dartlang-sdk:///lib/svg/dart2js/svg_dart2js.dart
 org-dartlang-sdk:///lib/typed_data/typed_data.dart
-org-dartlang-sdk:///lib/typed_data/unmodifiable_typed_data.dart
 org-dartlang-sdk:///lib/web_audio/dart2js/web_audio_dart2js.dart
 org-dartlang-sdk:///lib/web_gl/dart2js/web_gl_dart2js.dart

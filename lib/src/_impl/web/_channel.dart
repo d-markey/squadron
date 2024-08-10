@@ -60,29 +60,35 @@ Future<Channel> openChannel(
     setDbgId(worker, '${webEntryPoint.uri}#');
 
     worker.onerror = (web.ErrorEvent? e) {
-      var err = getErrorEventError(e);
+      dynamic err = getErrorEventError(e);
       SquadronException? error;
       if (err is List) {
         error = exceptionManager.deserialize(err);
+      } else {
+        error = SquadronException.from(err);
       }
       error ??= SquadronErrorExt.create('Unexpected error');
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 
       UriChecker.exists(entryPoint).then((found) {
-        String msg;
-        if (e != null) {
-          msg =
-              '$entryPoint => ${e.runtimeType} $e [${e.filename}(${e.lineno})]';
-        } else {
-          msg = '$entryPoint: ${e.runtimeType} $e';
-        }
-        if (!found) {
-          msg = '!! WARNING: it seems no Web Worker lives at $msg';
-        }
-        logger?.e(() => 'Unhandled error from Web Worker: $msg.');
-        if (!found) {
-          logger?.e(() => 'It seems no Web Worker lives at $entryPoint.');
+        try {
+          String msg;
+          if (err != null) {
+            msg =
+                '$entryPoint => ${err.runtimeType} $err [${err.filename}(${err.lineno})]';
+          } else {
+            msg = '$entryPoint: ${err.runtimeType} $err';
+          }
+          if (!found) {
+            msg = '!! WARNING: it seems no Web Worker lives at $msg';
+          }
+          logger?.e(() => 'Unhandled error from Web Worker: $msg.');
+          if (!found) {
+            logger?.e(() => 'It seems no Web Worker lives at $entryPoint.');
+          }
+        } catch (_) {
+          logger?.e(() => 'Unhandled error from Web Worker: $error.');
         }
       });
     }.toJS;

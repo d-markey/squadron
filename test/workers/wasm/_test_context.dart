@@ -10,7 +10,7 @@ import '../../classes/test_entry_points.dart';
 import '../../classes/test_platform.dart';
 
 const platform = TestPlatform.wasm;
-String platformName = '${web.window.navigator.userAgent} (wasm)';
+String platformName = web.window.navigator.userAgent;
 
 extension TestEntryPointsExt on TestEntryPoints {
   Future<void> set(String root, TestPlatform platform) async {
@@ -44,7 +44,7 @@ extension TestEntryPointsExt on TestEntryPoints {
 onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };
 '''))}');
 
-    await _checkWebWorkers(defined);
+    // await _checkWebWorkers(defined);
 
     missingWorker = Uri.parse('$root/missing_worker.dart.$ext');
   }

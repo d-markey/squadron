@@ -60,10 +60,13 @@ class TestContext {
     );
   }
 
-  final TestPlatform workerPlatform;
-
   TestPlatform get clientPlatform => impl.platform;
-  String get clientPlatformName => impl.platformName;
+  String get clientPlatformName =>
+      '${impl.platformName} (${clientPlatform.label})';
+
+  final TestPlatform workerPlatform;
+  String get workerPlatformName =>
+      '${impl.platformName} (${workerPlatform.label})';
 
   final entryPoints = TestEntryPoints();
 
@@ -96,24 +99,28 @@ class TestContext {
             onlyTests.any((t) => t.allMatches(_testPath).isNotEmpty))) {
       _pending += 1;
       final currentTest = _testPath;
-      final timeout = Timer(const Duration(seconds: 30), _checkDone);
       env.test(label, () async {
         try {
           if (_canceled) {
             print('Test "$currentTest" cancelled');
             testResults[currentTest] = TestResult.cancelled();
           } else {
-            await body();
+            await Future.any([
+              body(),
+              Future.delayed(Duration(seconds: 27), () {
+                throw TestCancelledException('Test timed out');
+              })
+            ].whereType<Future>());
             testResults[currentTest] = TestResult.success();
           }
+        } on TestCancelledException catch (ex, st) {
+          testResults[currentTest] = TestResult.error(ex, st);
+          print(ex.message);
         } catch (ex, st) {
           testResults[currentTest] = TestResult.error(ex, st);
           rethrow;
         } finally {
-          if (timeout.isActive) {
-            timeout.cancel();
-            _checkDone();
-          }
+          _checkDone();
         }
       });
     } else {
@@ -289,7 +296,14 @@ class TestContext {
   }
 }
 
-class TestCancelledException implements Exception {}
+class TestCancelledException implements Exception {
+  TestCancelledException([this.message = 'Cancelled']);
+
+  final String message;
+
+  @override
+  String toString() => '$runtimeType: $message';
+}
 
 class TestResult {
   TestResult._(this.success, this.error, this.stackTrace);

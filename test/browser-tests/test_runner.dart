@@ -21,7 +21,12 @@ Future<TestContext?> run(
 
     print(
         'Selected tests: ${testContext.onlyTests.map((r) => r.display()).join(', ')}');
-    print('Running on platform ${testContext.clientPlatformName}');
+    print('Test client running on ${testContext.clientPlatformName}');
+    print('Workers running on ${testContext.workerPlatformName}');
+
+    for (var entryPoint in testContext.entryPoints.defined) {
+      print('Worker $entryPoint');
+    }
 
     for (var executor in executors.entries) {
       print('Run from script ${executor.value.script}');

@@ -5157,14 +5157,15 @@
       return t1;
     },
     SquadronTimeoutExceptionExt_deserialize(props) {
-      var microSecs, t2, t3, t4, _null = null,
+      var t2, microSecs, t3, t4, _null = null,
         t1 = J.getInterceptor$ax(props);
       if (!J.$eq$(t1.$index(props, 0), "$tmt"))
         return _null;
-      microSecs = t1.$index(props, 4);
+      t2 = A._asNumQ(t1.$index(props, 4));
+      microSecs = t2 == null ? _null : B.JSNumber_methods.toInt$0(t2);
       t2 = A._asString(t1.$index(props, 1));
       t3 = A._asString(t1.$index(props, 2));
-      t4 = microSecs == null ? _null : A.Duration$(A._asInt(microSecs), 0);
+      t4 = microSecs == null ? _null : A.Duration$(microSecs, 0);
       t1 = A._asStringQ(t1.$index(props, 3));
       return A.SquadronTimeoutException$(t2, t3, t4, t1 == null ? _null : new A._StringStackTrace(t1));
     },
