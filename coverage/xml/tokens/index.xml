@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.73417723" lines-covered="58" lines-valid="79" package="/tokens" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6962025" lines-covered="55" lines-valid="79" package="/tokens" testname="lcov.info" version="1.5">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="_squadron_cancelation_token.dart" functions-hit="0" functions-valid="0" lines-hit="38" lines-valid="41" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="38" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_squadron_cancelation_token.dart" functions-hit="0" functions-valid="0" lines-hit="36" lines-valid="40" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="36" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_cancelation_token_ref.dart" functions-hit="0" functions-valid="0" lines-hit="20" lines-valid="38" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="20" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_cancelation_token_ref.dart" functions-hit="0" functions-valid="0" lines-hit="19" lines-valid="39" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="19" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

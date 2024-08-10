@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-05-25</dd>
+                    <dd>2024-08-10</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -106,7 +106,7 @@
                     <td>15</td><td></td><td>2</td><td><code>    _channel = Channel.deserialize(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>3</td><td><code>        _port.sendPort, runner.internalLogger, exceptionManager);</code></td>
+                    <td>16</td><td></td><td>3</td><td><code>        _port.sendPort, runner.internalLogger, exceptionManager)!;</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
                     <td>17</td><td></td><td></td><td><code>  }</code></td>
@@ -132,38 +132,38 @@
                 <tr class="noop" title="Line 24" id="line24">
                     <td>24</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="lineNoCov" title="Line 25" id="line25">
+                    <td>25</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>  void stop() {</code></td>
+                    <td>26</td><td></td><td></td><td><code>  ExceptionManager get exceptionManager =&gt;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>2</td><td><code>    _port.close();</code></td>
+                <tr class="lineNoCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>0</td><td><code>      (_exceptionManager ??= ExceptionManager());</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>2</td><td><code>    _channel?.close();</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code>  ExceptionManager? _exceptionManager;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>1</td><td><code>    _channel = null;</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 30" id="line30">
+                    <td>30</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code></code></td>
+                    <td>31</td><td></td><td></td><td><code>  void stop() {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="lineCov" title="Line 32" id="line32">
+                    <td>32</td><td></td><td>2</td><td><code>    _port.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  ExceptionManager get exceptionManager =&gt;</code></td>
+                <tr class="lineCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>2</td><td><code>    _channel?.close();</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>0</td><td><code>      (_exceptionManager ??= ExceptionManager());</code></td>
+                <tr class="lineCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>1</td><td><code>    _channel = null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  ExceptionManager? _exceptionManager;</code></td>
+                    <td>35</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
                     <td>36</td><td></td><td></td><td><code></code></td>

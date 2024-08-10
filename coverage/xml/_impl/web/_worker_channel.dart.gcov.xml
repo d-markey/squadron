@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.4074074" lines-covered="11" lines-valid="27" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code>import 'dart:js_interop';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line>
+            <code>import 'package:web/web.dart' as web;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/squadron_exception.dart';</code>
+        </line>
+        <line>
+            <code>import '../../typedefs.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker/worker_response.dart';</code>
+        </line>
+        <line>
+            <code>import '../xplat/_transferables.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// [WorkerChannel] implementation for the JavaScript world.</code>
+        </line>
+        <line>
+            <code>class _WebWorkerChannel implements WorkerChannel {</code>
+        </line>
+        <line>
+            <code>  _WebWorkerChannel._(this._sendPort, this._logger);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,</code>
+        </line>
+        <line>
+            <code>  /// [web.MessagePort] to return values to the client.</code>
+        </line>
+        <line>
+            <code>  final web.MessagePort _sendPort;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final Logger? _logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  void _postResponse(WorkerResponse res) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      final data = res.wrapInPlace();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      final msg = data.jsify();</code>
+        </line>
+        <line hits="1">
+            <code>      _sendPort.postMessage(msg);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="1">
+            <code>      _logger?.e(() =&gt; 'Failed to post response $res: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create('Failed to post response: $ex', st);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  void _inspectAndPostResponse(WorkerResponse res) {</code>
+        </line>
+        <line hits="0">
+            <code>    try {</code>
+        </line>
+        <line hits="0">
+            <code>      final data = res.wrapInPlace();</code>
+        </line>
+        <line>
+            <code>      final msg = data.jsify();</code>
+        </line>
+        <line hits="0">
+            <code>      final transfer = Transferables.get(data);</code>
+        </line>
+        <line hits="0">
+            <code>      if (transfer == null || transfer.isEmpty) {</code>
+        </line>
+        <line hits="0">
+            <code>        _sendPort.postMessage(msg);</code>
+        </line>
+        <line>
+            <code>      } else {</code>
+        </line>
+        <line hits="0">
+            <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
+        </line>
+        <line>
+            <code>        _sendPort.postMessage(msg, jsTransfer);</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="0">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="1">
+            <code>      _logger?.e(() =&gt; 'Failed to post response $res: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      throw SquadronErrorExt.create('Failed to post response: $ex', st);</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="0">
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends the [web.MessagePort] to communicate with the [web.Worker]. This</code>
+        </line>
+        <line>
+            <code>  /// method must be called by the [web.Worker] upon startup.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  void connect(PlatformChannel channelInfo) =&gt; inspectAndReply(channelInfo);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line>
+            <code>  /// This method must be called from the [web.Worker] only. On Web patforms,</code>
+        </line>
+        <line>
+            <code>  /// this version does not check arguments for transferable objects.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="1">
+            <code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse.withResult(data));</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line>
+            <code>  /// This method must be called from the [web.Worker] only. On Web patforms,</code>
+        </line>
+        <line>
+            <code>  /// this version (tentatively) checks arguments for transferable objects.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  void inspectAndReply(dynamic data) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      _inspectAndPostResponse(WorkerResponse.withResult(data));</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  void log(LogEvent message) =&gt; _postResponse(WorkerResponse.log(message));</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns</code>
+        </line>
+        <line>
+            <code>  /// `true` for browser platforms.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  bool canStream(Stream&lt;dynamic&gt; stream) =&gt; true;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method</code>
+        </line>
+        <line>
+            <code>  /// must be called from the [web.Worker] only.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="1">
+            <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream());</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  /// Sends the [WorkerResponse] to the worker client. This method must be</code>
+        </line>
+        <line>
+            <code>  /// called from the [web.Worker] only.</code>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  void error(Object err, [StackTrace? stackTrace, int? command]) {</code>
+        </line>
+        <line hits="1">
+            <code>    final ex = SquadronException.from(err, stackTrace, command);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    _postResponse(WorkerResponse.withError(ex));</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>  }</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>/// Creates a [WorkerChannel] from a [web.MessagePort].</code>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>WorkerChannel? deserialize(PlatformChannel? channelInfo, Logger? logger) =&gt;</code>
+        </line>
+        <line>
+            <code>    (channelInfo == null) ? null : _WebWorkerChannel._(channelInfo, logger);</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

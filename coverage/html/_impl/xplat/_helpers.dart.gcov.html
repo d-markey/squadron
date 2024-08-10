@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-05-25</dd>
+                    <dd>2024-08-10</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>5</td><td>6</td><td class="med">83.3%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,25 +61,58 @@
             </thead>
             <tbody>
                 <tr class="lineCov" title="Line 1" id="line1">
-                    <td>1</td><td></td><td>28</td><td><code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code></td>
+                    <td>1</td><td></td><td>41</td><td><code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 3" id="line3">
-                    <td>3</td><td></td><td>14</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
+                    <td>3</td><td></td><td>20</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 4" id="line4">
-                    <td>4</td><td></td><td>42</td><td><code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code></td>
+                    <td>4</td><td></td><td>61</td><td><code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 6" id="line6">
-                    <td>6</td><td></td><td>6</td><td><code>DateTime fromMicrosecTimeStamp(int microsecs) =&gt;</code></td>
+                    <td>6</td><td></td><td>9</td><td><code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt; (microsecs == null)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 7" id="line7">
-                    <td>7</td><td></td><td>25</td><td><code>    _latestUPDEpoch.add(Duration(microseconds: microsecs));</code></td>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>    ? null</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 8" id="line8">
+                    <td>8</td><td></td><td>35</td><td><code>    : _latestUPDEpoch.add(Duration(microseconds: microsecs));</code></td>
+                </tr>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code>extension FutureExt on Future {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>0</td><td><code>  Future&lt;void&gt; ignore() async {</code></td>
+                </tr>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code>    try {</code></td>
+                </tr>
+                <tr class="noop" title="Line 13" id="line13">
+                    <td>13</td><td></td><td></td><td><code>      final _ = await this;</code></td>
+                </tr>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code>    } catch (_) {</code></td>
+                </tr>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code>      /* ignore */</code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

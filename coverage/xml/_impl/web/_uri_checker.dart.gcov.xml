@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_uri_checker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'package:http/http.dart' as http;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class UriChecker {</code>
+        </line>
+        <line>
+            <code>  UriChecker._();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="11">
+            <code>  static Future&lt;bool&gt; exists(Uri url) async {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>    if (url.isScheme('data')) return true;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    try {</code>
+        </line>
+        <line hits="11">
+            <code>      final status = (await http.head(url)).statusCode;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>      return (200 &lt;= status) &amp;&amp; (status &lt; 300);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    } catch (_) {</code>
+        </line>
+        <line hits="0">
+            <code>      return false;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="11">
+            <code>  }</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>
