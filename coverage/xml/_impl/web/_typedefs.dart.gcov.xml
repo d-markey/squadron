@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code>import 'dart:js_interop';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:web/web.dart' as web;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../xplat/hex.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@JS()</code>
+        </line>
+        <line>
+            <code>external web.EventTarget get self;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="3">
+            <code>final threadId = () {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  final global = self.dartify();</code>
+        </line>
+        <line hits="3">
+            <code>  return global.hashCode.hex;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>}();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef EntryPoint = Uri;</code>
+        </line>
+        <line>
+            <code>typedef PlatformThread = web.Worker;</code>
+        </line>
+        <line>
+            <code>typedef PlatformChannel = web.MessagePort;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef PlatformThreadHook = FutureOr&lt;void&gt; Function(PlatformThread);</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

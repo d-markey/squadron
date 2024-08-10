@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -11,25 +11,16 @@
             <code>import '../_impl/xplat/_helpers.dart';</code>
         </line>
         <line>
+            <code>import '../cast_helpers.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
             <code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code>
         </line>
         <line>
-            <code>typedef WorkerMessage = List&lt;dynamic&gt;;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>extension WorkerMessageImpl on List {</code>
-        </line>
-        <line>
-            <code>  static const _$traveltime = 0;</code>
-        </line>
-        <line>
-            <code/>
+            <code>extension type WorkerMessage(List data) {</code>
         </line>
         <line>
             <code>  /// [travelTime] is set by the receiving end and measures the time (in</code>
@@ -41,7 +32,7 @@
             <code>  /// the moment it was deserialized.</code>
         </line>
         <line hits="0">
-            <code>  int? get travelTime =&gt; this[_$traveltime];</code>
+            <code>  int? get travelTime =&gt; data[_$traveltime];</code>
         </line>
         <line>
             <code>}</code>
@@ -50,32 +41,32 @@
             <code/>
         </line>
         <line>
-            <code>@internal</code>
-        </line>
-        <line>
-            <code>extension WorkerMessageExt on List {</code>
-        </line>
-        <line>
-            <code>  static const _$traveltime = WorkerMessageImpl._$traveltime;</code>
+            <code>const _$traveltime = 0;</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="8">
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension WorkerMessageExt on WorkerMessage {</code>
+        </line>
+        <line hits="10">
             <code>  void unwrapTravelTime() {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14">
-            <code>    final ts = this[_$traveltime];</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+        <line hits="19">
+            <code>    final ts = data[_$traveltime];</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
+        <line hits="10">
             <code>    if (ts != null) {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="28">
-            <code>      this[_$traveltime] = microsecTimeStamp() - (ts as int);</code>
-            <hit count="28" name="&lt;unnamed&gt;"/>
+        <line hits="46">
+            <code>      data[_$traveltime] = microsecTimeStamp() - Cast.toInt(ts);</code>
+            <hit count="46" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

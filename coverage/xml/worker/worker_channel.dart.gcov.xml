@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -14,25 +14,31 @@
             <code/>
         </line>
         <line>
-            <code>import '../_impl/xplat/_channel.dart'</code>
+            <code>import '../_impl/xplat/_worker_channel.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.io) '../_impl/native/_channel.dart'</code>
+            <code>    if (dart.library.io) '../_impl/native/_worker_channel.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.html) '../_impl/browser/_channel.dart'</code>
+            <code>    if (dart.library.html) '../_impl/web/_worker_channel.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.js_interop) '../_impl/wasm/_channel.dart';</code>
+            <code>    if (dart.library.js_interop) '../_impl/web/_worker_channel.dart' as impl;</code>
         </line>
         <line>
-            <code>import '../exceptions/squadron_exception.dart';</code>
+            <code>import '../channel.dart';</code>
         </line>
         <line>
             <code>import '../typedefs.dart';</code>
         </line>
         <line>
+            <code>import 'worker.dart';</code>
+        </line>
+        <line>
             <code>import 'worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import 'worker_response.dart';</code>
         </line>
         <line>
             <code/>
@@ -54,18 +60,6 @@
         </line>
         <line>
             <code>abstract class WorkerChannel {</code>
-        </line>
-        <line>
-            <code>  /// [WorkerChannel] serialization. Returns an opaque object that can be</code>
-        </line>
-        <line>
-            <code>  /// transfered from the client to the worker.</code>
-        </line>
-        <line>
-            <code>  PlatformChannel serialize();</code>
-        </line>
-        <line>
-            <code/>
         </line>
         <line>
             <code>  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an</code>
@@ -104,7 +98,7 @@
             <code>  /// This method must be called from the worker only. On Web patforms, this</code>
         </line>
         <line>
-            <code>  /// version must check arguments for transferable objects.</code>
+            <code>  /// version checks arguments for transferable objects.</code>
         </line>
         <line>
             <code>  void inspectAndReply(dynamic data);</code>
@@ -116,7 +110,7 @@
             <code>  /// Sends a [WorkerResponse.log] with the specified data to the worker</code>
         </line>
         <line>
-            <code>  /// client. This method must be called from the worker only.</code>
+            <code>  /// client.</code>
         </line>
         <line>
             <code>  void log(LogEvent message);</code>
@@ -128,16 +122,13 @@
             <code>  /// Checks if [stream] can be streamed back to the worker client.</code>
         </line>
         <line>
-            <code>  bool canStream(Stream stream);</code>
+            <code>  bool canStream(Stream&lt;dynamic&gt; stream);</code>
         </line>
         <line>
             <code/>
         </line>
         <line>
-            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method</code>
-        </line>
-        <line>
-            <code>  /// must be called from the worker only.</code>
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client.</code>
         </line>
         <line>
             <code>  void closeStream();</code>
@@ -149,10 +140,7 @@
             <code>  /// Sends a [WorkerResponse] with the specified error to the worker client.</code>
         </line>
         <line>
-            <code>  /// This method must be called from the worker only.</code>
-        </line>
-        <line>
-            <code>  void error(SquadronException error);</code>
+            <code>  void error(Object err, [StackTrace? stacktrace, int? command]);</code>
         </line>
         <line>
             <code/>
@@ -160,16 +148,16 @@
         <line>
             <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
         </line>
-        <line hits="7">
+        <line hits="9">
             <code>  static WorkerChannel? deserialize(</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>          PlatformChannel? channelInfo, Logger? logger) =&gt;</code>
         </line>
-        <line hits="7">
-            <code>      deserializeWorkerChannel(channelInfo, logger);</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line hits="9">
+            <code>      impl.deserialize(channelInfo, logger);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-05-25</dd>
+                    <dd>2024-08-10</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>54</td><td>57</td><td class="high">94.7%</td>
+                            <th scope="row">Lines</th><td>59</td><td>65</td><td class="high">90.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -79,472 +79,481 @@
                     <td>6</td><td></td><td></td><td><code>import '../_impl/xplat/_helpers.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>import '../exceptions/exception_manager.dart';</code></td>
+                    <td>7</td><td></td><td></td><td><code>import '../cast_helpers.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>import '../exceptions/squadron_exception.dart';</code></td>
+                    <td>8</td><td></td><td></td><td><code>import '../channel.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>import 'worker_message.dart';</code></td>
+                    <td>9</td><td></td><td></td><td><code>import '../exceptions/squadron_error.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                    <td>10</td><td></td><td></td><td><code>import '../exceptions/squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>/// Make [WorkerResponse] a [WorkerMessage] to minimize serialization overhead.</code></td>
+                    <td>11</td><td></td><td></td><td><code>import 'worker_message.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>typedef WorkerResponse = WorkerMessage;</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                    <td>13</td><td></td><td></td><td><code>/// [WorkerResponse]s are used to communicate from [Worker]s to clients and</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>/// Class used to communicate from a [Worker] to clients.</code></td>
+                    <td>14</td><td></td><td></td><td><code>/// carry a single piece of data. [Future]-based services simply return a</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>/// [WorkerResponse]s are used to provide individual results to the client.</code></td>
+                    <td>15</td><td></td><td></td><td><code>/// single [WorkerResponse] with the result. [Stream]ing services will return</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>/// [Future]-based services simply return a single [WorkerResponse] with the</code></td>
+                    <td>16</td><td></td><td></td><td><code>/// one [WorkerResponse]s for each stream item and mmust send a</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>/// result. [Stream]ing services will return one [WorkerResponse]s for each</code></td>
+                    <td>17</td><td></td><td></td><td><code>/// [WorkerResponse.closeStream] message to indicate completion.</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>/// stream item and mmust send a [WorkerResponseImpl.closeStream] message to</code></td>
+                    <td>18</td><td></td><td></td><td><code>/// [WorkerResponse]s can also send error messages and log events.</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>/// indicate completion. [WorkerResponse]s can also send error messages.</code></td>
+                    <td>19</td><td></td><td></td><td><code>extension type WorkerResponse._(List data) implements WorkerMessage {</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code></code></td>
+                    <td>20</td><td></td><td></td><td><code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>/// Extension methods operating on a `List` as a [WorkerResponse].</code></td>
+                    <td>21</td><td></td><td></td><td><code>  /// not a [List], it will be converted to a [List] by [wrapInPlace].</code></td>
                 </tr>
-                <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>/// [WorkerResponse] is used to provide individual results to the client.</code></td>
+                <tr class="lineNoCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>0</td><td><code>  static WorkerResponse ready([bool status = true]) =&gt; WorkerResponse._([</code></td>
                 </tr>
-                <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>/// [Future]-based services simply return a single [WorkerResponse] with the</code></td>
+                <tr class="lineNoCov" title="Line 23" id="line23">
+                    <td>23</td><td></td><td>0</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>/// result. [Stream] services return one [WorkerResponse] for each stream item</code></td>
+                    <td>24</td><td></td><td></td><td><code>        status, // 1 - ready</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>/// and mmust send a [WorkerResponseImpl.closeStream] message to indicate</code></td>
+                    <td>25</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>/// completion. A [WorkerResponse] can also be used to send error messages.</code></td>
+                    <td>26</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>extension WorkerResponseImpl on WorkerResponse {</code></td>
+                    <td>27</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>  // 0 is reserved for travel time</code></td>
+                    <td>28</td><td></td><td></td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>  static const _$result = 1;</code></td>
+                    <td>29</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  static const _$error = 2;</code></td>
+                    <td>30</td><td></td><td></td><td><code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code>  static const _$endOfStream = 3;</code></td>
+                    <td>31</td><td></td><td></td><td><code>  /// not a [List], it will be converted to a [List] by [wrapInPlace].</code></td>
                 </tr>
-                <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  static const _$log = 4;</code></td>
+                <tr class="lineCov" title="Line 32" id="line32">
+                    <td>32</td><td></td><td>27</td><td><code>  static WorkerResponse withResult(dynamic result) =&gt; WorkerResponse._([</code></td>
                 </tr>
-                <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>10</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code></td>
+                    <td>34</td><td></td><td></td><td><code>        result, // 1 - result</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  /// not a [List], it will be converted to a [List] by calling [List.toList].</code></td>
+                    <td>35</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>14</td><td><code>  static WorkerResponse withResult(dynamic result) =&gt; [</code></td>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>8</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>        result, // 1 - result</code></td>
+                    <td>38</td><td></td><td></td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
+                    <td>39</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
-                    <td>40</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
+                    <td>40</td><td></td><td></td><td><code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code></td>
                 </tr>
-                <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
+                <tr class="lineCov" title="Line 41" id="line41">
+                    <td>41</td><td></td><td>5</td><td><code>  static WorkerResponse withError(SquadronException exception,</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>      ];</code></td>
+                    <td>42</td><td></td><td></td><td><code>          [StackTrace? stackTrace]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 43" id="line43">
+                    <td>43</td><td></td><td>10</td><td><code>      WorkerResponse._([</code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code></td>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>6</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>4</td><td><code>  static WorkerResponse withError(SquadronException exception,</code></td>
+                <tr class="noop" title="Line 45" id="line45">
+                    <td>45</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code>          [StackTrace? stackTrace]) =&gt;</code></td>
+                    <td>46</td><td></td><td></td><td><code>        exception, // 2 - error</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>4</td><td><code>      [</code></td>
+                <tr class="noop" title="Line 47" id="line47">
+                    <td>47</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>5</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                <tr class="noop" title="Line 48" id="line48">
+                    <td>48</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
-                    <td>49</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
+                    <td>49</td><td></td><td></td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 50" id="line50">
-                    <td>50</td><td></td><td></td><td><code>        exception, // 2 - error</code></td>
+                    <td>50</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
+                    <td>51</td><td></td><td></td><td><code>  /// [WorkerResponse] with log event information.</code></td>
                 </tr>
-                <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
+                <tr class="lineCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>27</td><td><code>  static WorkerResponse log(LogEvent message) =&gt; WorkerResponse._([</code></td>
                 </tr>
-                <tr class="noop" title="Line 53" id="line53">
-                    <td>53</td><td></td><td></td><td><code>      ];</code></td>
+                <tr class="lineCov" title="Line 53" id="line53">
+                    <td>53</td><td></td><td>9</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
-                    <td>54</td><td></td><td></td><td><code></code></td>
+                    <td>54</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
                 </tr>
                 <tr class="noop" title="Line 55" id="line55">
-                    <td>55</td><td></td><td></td><td><code>  /// [WorkerResponse] with log event information.</code></td>
+                    <td>55</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>12</td><td><code>  static WorkerResponse log(LogEvent message) =&gt; [</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>6</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>57</td><td></td><td>9</td><td><code>        message.serialize(), // 4 - log message</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
+                    <td>58</td><td></td><td></td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
-                    <td>59</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
+                    <td>59</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>        null, // 3 - end of stream</code></td>
+                    <td>60</td><td></td><td></td><td><code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>6</td><td><code>        message.serialize(), // 4 - log message</code></td>
+                    <td>61</td><td></td><td>15</td><td><code>  static WorkerResponse closeStream() =&gt; WorkerResponse._([</code></td>
                 </tr>
-                <tr class="noop" title="Line 62" id="line62">
-                    <td>62</td><td></td><td></td><td><code>      ];</code></td>
+                <tr class="lineCov" title="Line 62" id="line62">
+                    <td>62</td><td></td><td>6</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
-                    <td>63</td><td></td><td></td><td><code></code></td>
+                    <td>63</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
                 </tr>
                 <tr class="noop" title="Line 64" id="line64">
-                    <td>64</td><td></td><td></td><td><code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code></td>
+                    <td>64</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>10</td><td><code>  static WorkerResponse closeStream() =&gt; [</code></td>
+                <tr class="noop" title="Line 65" id="line65">
+                    <td>65</td><td></td><td></td><td><code>        true, // 3 - end of stream</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>6</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                <tr class="noop" title="Line 66" id="line66">
+                    <td>66</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
                 </tr>
                 <tr class="noop" title="Line 67" id="line67">
-                    <td>67</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
+                    <td>67</td><td></td><td></td><td><code>      ]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 68" id="line68">
-                    <td>68</td><td></td><td></td><td><code>        null, // 2 - error</code></td>
+                    <td>68</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 69" id="line69">
-                    <td>69</td><td></td><td></td><td><code>        true, // 3 - end of stream</code></td>
+                    <td>69</td><td></td><td></td><td><code>  /// Flag indicating the end of the [Stream]ing operation.</code></td>
                 </tr>
-                <tr class="noop" title="Line 70" id="line70">
-                    <td>70</td><td></td><td></td><td><code>        null, // 4 - log message</code></td>
+                <tr class="lineCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>15</td><td><code>  bool get endOfStream =&gt; data[_$endOfStream];</code></td>
                 </tr>
                 <tr class="noop" title="Line 71" id="line71">
-                    <td>71</td><td></td><td></td><td><code>      ];</code></td>
+                    <td>71</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 72" id="line72">
-                    <td>72</td><td></td><td></td><td><code></code></td>
+                    <td>72</td><td></td><td></td><td><code>  /// The [WorkerResponse] exception, if any.</code></td>
                 </tr>
-                <tr class="noop" title="Line 73" id="line73">
-                    <td>73</td><td></td><td></td><td><code>  /// Flag indicating the end of the [Stream]ing operation.</code></td>
+                <tr class="lineCov" title="Line 73" id="line73">
+                    <td>73</td><td></td><td>28</td><td><code>  SquadronException? get error =&gt; data[_$error];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>15</td><td><code>  bool get endOfStream =&gt; this[_$endOfStream];</code></td>
+                <tr class="noop" title="Line 74" id="line74">
+                    <td>74</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 75" id="line75">
-                    <td>75</td><td></td><td></td><td><code></code></td>
+                    <td>75</td><td></td><td></td><td><code>  /// Retrieves the result associated to this [WorkerResponse]. If the</code></td>
                 </tr>
                 <tr class="noop" title="Line 76" id="line76">
-                    <td>76</td><td></td><td></td><td><code>  /// The [WorkerResponse] exception, if any.</code></td>
+                    <td>76</td><td></td><td></td><td><code>  /// [WorkerResponse] contains an error, an the [error] exception is thrown.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>21</td><td><code>  dynamic get error =&gt; this[_$error];</code></td>
+                    <td>77</td><td></td><td>19</td><td><code>  dynamic get result {</code></td>
                 </tr>
-                <tr class="noop" title="Line 78" id="line78">
-                    <td>78</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 78" id="line78">
+                    <td>78</td><td></td><td>9</td><td><code>    final err = error;</code></td>
                 </tr>
-                <tr class="noop" title="Line 79" id="line79">
-                    <td>79</td><td></td><td></td><td><code>  /// Retrieves the result associated to this [WorkerResponse]. If the</code></td>
+                <tr class="lineCov" title="Line 79" id="line79">
+                    <td>79</td><td></td><td>10</td><td><code>    if (err != null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 80" id="line80">
-                    <td>80</td><td></td><td></td><td><code>  /// [WorkerResponse] contains an error, an the [error] exception is thrown.</code></td>
+                <tr class="lineNoCov" title="Line 80" id="line80">
+                    <td>80</td><td></td><td>0</td><td><code>      throw err;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 81" id="line81">
-                    <td>81</td><td></td><td>14</td><td><code>  dynamic get result {</code></td>
+                <tr class="noop" title="Line 81" id="line81">
+                    <td>81</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 82" id="line82">
-                    <td>82</td><td></td><td>7</td><td><code>    final err = error;</code></td>
+                    <td>82</td><td></td><td>19</td><td><code>      return data[_$result];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>7</td><td><code>    if (err != null) {</code></td>
+                <tr class="noop" title="Line 83" id="line83">
+                    <td>83</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>0</td><td><code>      throw err;</code></td>
+                <tr class="lineCov" title="Line 84" id="line84">
+                    <td>84</td><td></td><td>10</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 85" id="line85">
-                    <td>85</td><td></td><td></td><td><code>    } else {</code></td>
+                    <td>85</td><td></td><td></td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>14</td><td><code>      return this[_$result];</code></td>
+                <tr class="noop" title="Line 86" id="line86">
+                    <td>86</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
-                    <td>87</td><td></td><td></td><td><code>    }</code></td>
+                    <td>87</td><td></td><td></td><td><code>// 0 is reserved for travel time</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>7</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 88" id="line88">
+                    <td>88</td><td></td><td></td><td><code>const _$result = 1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 89" id="line89">
-                    <td>89</td><td></td><td></td><td><code>}</code></td>
+                    <td>89</td><td></td><td></td><td><code>const _$error = 2;</code></td>
                 </tr>
                 <tr class="noop" title="Line 90" id="line90">
-                    <td>90</td><td></td><td></td><td><code></code></td>
+                    <td>90</td><td></td><td></td><td><code>const _$endOfStream = 3;</code></td>
                 </tr>
                 <tr class="noop" title="Line 91" id="line91">
-                    <td>91</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>91</td><td></td><td></td><td><code>const _$log = 4;</code></td>
                 </tr>
                 <tr class="noop" title="Line 92" id="line92">
-                    <td>92</td><td></td><td></td><td><code>extension WorkerResponseExt on WorkerResponse {</code></td>
+                    <td>92</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 93" id="line93">
-                    <td>93</td><td></td><td></td><td><code>  // 0 is reserved for travel time</code></td>
+                    <td>93</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 94" id="line94">
-                    <td>94</td><td></td><td></td><td><code>  static const _$result = WorkerResponseImpl._$result;</code></td>
+                    <td>94</td><td></td><td></td><td><code>extension WorkerResponseExt on WorkerResponse {</code></td>
                 </tr>
                 <tr class="noop" title="Line 95" id="line95">
-                    <td>95</td><td></td><td></td><td><code>  static const _$error = WorkerResponseImpl._$error;</code></td>
+                    <td>95</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerResponse] sent by the worker.</code></td>
                 </tr>
                 <tr class="noop" title="Line 96" id="line96">
-                    <td>96</td><td></td><td></td><td><code>  static const _$endOfStream = WorkerResponseImpl._$endOfStream;</code></td>
+                    <td>96</td><td></td><td></td><td><code>  /// Returns `false` if the message requires no further processing (currently</code></td>
                 </tr>
                 <tr class="noop" title="Line 97" id="line97">
-                    <td>97</td><td></td><td></td><td><code>  static const _$log = WorkerResponseImpl._$log;</code></td>
+                    <td>97</td><td></td><td></td><td><code>  /// used for log messages only).</code></td>
                 </tr>
-                <tr class="noop" title="Line 98" id="line98">
-                    <td>98</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 98" id="line98">
+                    <td>98</td><td></td><td>19</td><td><code>  bool unwrapInPlace(Channel channel) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 99" id="line99">
-                    <td>99</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerResponse] sent by the worker.</code></td>
+                <tr class="lineCov" title="Line 99" id="line99">
+                    <td>99</td><td></td><td>10</td><td><code>    unwrapTravelTime();</code></td>
                 </tr>
-                <tr class="noop" title="Line 100" id="line100">
-                    <td>100</td><td></td><td></td><td><code>  /// Returns `false` if the message requires no further processing (currently</code></td>
+                <tr class="lineCov" title="Line 100" id="line100">
+                    <td>100</td><td></td><td>28</td><td><code>    final log = LogEventSerialization.deserialize(data[_$log]);</code></td>
                 </tr>
-                <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code>  /// used for log messages only).</code></td>
+                <tr class="lineCov" title="Line 101" id="line101">
+                    <td>101</td><td></td><td>10</td><td><code>    if (log != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>14</td><td><code>  bool unwrapResponseInPlace(</code></td>
+                    <td>102</td><td></td><td>23</td><td><code>      channel.logger?.log(log.level, log.message,</code></td>
                 </tr>
-                <tr class="noop" title="Line 103" id="line103">
-                    <td>103</td><td></td><td></td><td><code>      ExceptionManager exceptionManager, Logger? logger) {</code></td>
+                <tr class="lineCov" title="Line 103" id="line103">
+                    <td>103</td><td></td><td>8</td><td><code>          time: log.time, error: log.error, stackTrace: log.stackTrace);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 104" id="line104">
-                    <td>104</td><td></td><td>21</td><td><code>    final log = LogEventSerialization.deserialize(this[_$log]);</code></td>
+                    <td>104</td><td></td><td>8</td><td><code>      return false;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 105" id="line105">
-                    <td>105</td><td></td><td>7</td><td><code>    if (log != null) {</code></td>
+                <tr class="noop" title="Line 105" id="line105">
+                    <td>105</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>8</td><td><code>      logger?.log(log.level, log.message,</code></td>
+                    <td>106</td><td></td><td>46</td><td><code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>8</td><td><code>          time: log.time, error: log.error, stackTrace: log.stackTrace);</code></td>
+                    <td>107</td><td></td><td>19</td><td><code>      data[_$endOfStream] ??= false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 108" id="line108">
-                    <td>108</td><td></td><td>7</td><td><code>      return false;</code></td>
+                    <td>108</td><td></td><td>10</td><td><code>      return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 109" id="line109">
-                    <td>109</td><td></td><td></td><td><code>    } else {</code></td>
+                    <td>109</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>28</td><td><code>      this[_$error] = exceptionManager.deserialize(this[_$error]);</code></td>
+                    <td>110</td><td></td><td>10</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 111" id="line111">
-                    <td>111</td><td></td><td>14</td><td><code>      this[_$endOfStream] ??= false;</code></td>
+                <tr class="noop" title="Line 111" id="line111">
+                    <td>111</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>8</td><td><code>      unwrapTravelTime();</code></td>
+                <tr class="noop" title="Line 112" id="line112">
+                    <td>112</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerResponse].</code></td>
                 </tr>
-                <tr class="noop" title="Line 113" id="line113">
-                    <td>113</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 113" id="line113">
+                    <td>113</td><td></td><td>10</td><td><code>  List wrapInPlace() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 114" id="line114">
-                    <td>114</td><td></td><td>7</td><td><code>    return true;</code></td>
+                    <td>114</td><td></td><td>10</td><td><code>    final result = data[_$result];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 115" id="line115">
-                    <td>115</td><td></td><td>7</td><td><code>  }</code></td>
+                    <td>115</td><td></td><td>12</td><td><code>    if (result is Iterable &amp;&amp; result is! List) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 116" id="line116">
-                    <td>116</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 116" id="line116">
+                    <td>116</td><td></td><td>0</td><td><code>      data[_$result] = result.toList();</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
-                    <td>117</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerResponse].</code></td>
+                    <td>117</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>8</td><td><code>  void wrapResponseInPlace() {</code></td>
+                    <td>118</td><td></td><td>24</td><td><code>    data[_$error] = (data[_$error] as SquadronException?)?.serialize();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>8</td><td><code>    final result = this[_$result];</code></td>
+                    <td>119</td><td></td><td>1</td><td><code>    return data;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 120" id="line120">
-                    <td>120</td><td></td><td>15</td><td><code>    if (result is! List &amp;&amp; result is Iterable) {</code></td>
+                    <td>120</td><td></td><td>1</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>0</td><td><code>      this[_$result] = result.toList();</code></td>
+                <tr class="noop" title="Line 121" id="line121">
+                    <td>121</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 122" id="line122">
-                    <td>122</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 122" id="line122">
+                    <td>122</td><td></td><td>19</td><td><code>  static WorkerResponse from(List data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 123" id="line123">
-                    <td>123</td><td></td><td>19</td><td><code>    this[_$error] = (this[_$error] as SquadronException?)?.serialize();</code></td>
+                    <td>123</td><td></td><td>28</td><td><code>    if (data.length != 5) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="lineNoCov" title="Line 124" id="line124">
+                    <td>124</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Invalid worker response');</code></td>
                 </tr>
                 <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code>}</code></td>
+                    <td>125</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 126" id="line126">
-                    <td>126</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 126" id="line126">
+                    <td>126</td><td></td><td>19</td><td><code>    return WorkerResponse._(data);</code></td>
                 </tr>
-                <tr class="noop" title="Line 127" id="line127">
-                    <td>127</td><td></td><td></td><td><code>extension LogEventSerialization on LogEvent {</code></td>
+                <tr class="lineCov" title="Line 127" id="line127">
+                    <td>127</td><td></td><td>10</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>12</td><td><code>  List serialize() =&gt; [</code></td>
+                <tr class="noop" title="Line 128" id="line128">
+                    <td>128</td><td></td><td></td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>12</td><td><code>        level.value,</code></td>
+                <tr class="noop" title="Line 129" id="line129">
+                    <td>129</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 130" id="line130">
-                    <td>130</td><td></td><td>18</td><td><code>        _stringify(message)?.toString(),</code></td>
+                <tr class="noop" title="Line 130" id="line130">
+                    <td>130</td><td></td><td></td><td><code>extension LogEventSerialization on LogEvent {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>12</td><td><code>        microsecTimeStamp(time),</code></td>
+                    <td>131</td><td></td><td>18</td><td><code>  List serialize() =&gt; [</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 132" id="line132">
-                    <td>132</td><td></td><td>6</td><td><code>        error?.toString(),</code></td>
+                    <td>132</td><td></td><td>18</td><td><code>        level.value,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>6</td><td><code>        stackTrace?.toString(),</code></td>
+                    <td>133</td><td></td><td>18</td><td><code>        _stringify(message),</code></td>
                 </tr>
-                <tr class="noop" title="Line 134" id="line134">
-                    <td>134</td><td></td><td></td><td><code>      ];</code></td>
+                <tr class="lineCov" title="Line 134" id="line134">
+                    <td>134</td><td></td><td>18</td><td><code>        microsecTimeStamp(time),</code></td>
                 </tr>
-                <tr class="noop" title="Line 135" id="line135">
-                    <td>135</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 135" id="line135">
+                    <td>135</td><td></td><td>9</td><td><code>        error?.toString(),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 136" id="line136">
-                    <td>136</td><td></td><td>7</td><td><code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code></td>
+                    <td>136</td><td></td><td>9</td><td><code>        stackTrace?.toString(),</code></td>
                 </tr>
                 <tr class="noop" title="Line 137" id="line137">
-                    <td>137</td><td></td><td></td><td><code>      ? null</code></td>
+                    <td>137</td><td></td><td></td><td><code>      ];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>6</td><td><code>      : LogEvent(</code></td>
+                <tr class="noop" title="Line 138" id="line138">
+                    <td>138</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>19</td><td><code>          _getLevel(props[0]),</code></td>
+                    <td>139</td><td></td><td>9</td><td><code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>13</td><td><code>          props[1],</code></td>
+                <tr class="noop" title="Line 140" id="line140">
+                    <td>140</td><td></td><td></td><td><code>      ? null</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>19</td><td><code>          time: fromMicrosecTimeStamp(props[2]),</code></td>
+                    <td>141</td><td></td><td>9</td><td><code>      : LogEvent(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>13</td><td><code>          error: props[3],</code></td>
+                    <td>142</td><td></td><td>35</td><td><code>          _getLevel(Cast.toNullableInt(props[0])),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 143" id="line143">
-                    <td>143</td><td></td><td>19</td><td><code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code></td>
+                    <td>143</td><td></td><td>17</td><td><code>          props[1],</code></td>
                 </tr>
-                <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code>        );</code></td>
+                <tr class="lineCov" title="Line 144" id="line144">
+                    <td>144</td><td></td><td>35</td><td><code>          time: fromMicrosecTimeStamp(Cast.toNullableInt(props[2])),</code></td>
                 </tr>
-                <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 145" id="line145">
+                    <td>145</td><td></td><td>17</td><td><code>          error: props[3],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 146" id="line146">
-                    <td>146</td><td></td><td>13</td><td><code>  static Level _getLevel(int? value) {</code></td>
+                    <td>146</td><td></td><td>26</td><td><code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>7</td><td><code>    if (value == null) return Level.debug;</code></td>
+                <tr class="noop" title="Line 147" id="line147">
+                    <td>147</td><td></td><td></td><td><code>        );</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>37</td><td><code>    return Level.values.where((_) =&gt; _.value == value).first;</code></td>
+                <tr class="noop" title="Line 148" id="line148">
+                    <td>148</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>7</td><td><code>  }</code></td>
+                    <td>149</td><td></td><td>17</td><td><code>  static Level _getLevel(int? value) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 150" id="line150">
-                    <td>150</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 150" id="line150">
+                    <td>150</td><td></td><td>8</td><td><code>    if (value == null) return Level.debug;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 151" id="line151">
-                    <td>151</td><td></td><td>6</td><td><code>  static String? _stringify(dynamic message) {</code></td>
+                    <td>151</td><td></td><td>56</td><td><code>    return Level.values.where((l) =&gt; l.value == value).first;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 152" id="line152">
-                    <td>152</td><td></td><td>6</td><td><code>    if (message is Function) {</code></td>
+                    <td>152</td><td></td><td>8</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 153" id="line153">
-                    <td>153</td><td></td><td></td><td><code>      try {</code></td>
+                    <td>153</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 154" id="line154">
-                    <td>154</td><td></td><td>12</td><td><code>        return _stringify(message());</code></td>
+                    <td>154</td><td></td><td>9</td><td><code>  static String? _stringify(dynamic message) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>      } catch (ex) {</code></td>
+                <tr class="lineCov" title="Line 155" id="line155">
+                    <td>155</td><td></td><td>9</td><td><code>    if (message is Function) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>0</td><td><code>        return 'Deferred message failed with error: $ex';</code></td>
+                <tr class="noop" title="Line 156" id="line156">
+                    <td>156</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
-                <tr class="noop" title="Line 157" id="line157">
-                    <td>157</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 157" id="line157">
+                    <td>157</td><td></td><td>4</td><td><code>        return _stringify(message());</code></td>
                 </tr>
                 <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>    } else {</code></td>
+                    <td>158</td><td></td><td></td><td><code>      } catch (ex) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 159" id="line159">
-                    <td>159</td><td></td><td>6</td><td><code>      return message.toString();</code></td>
+                <tr class="lineNoCov" title="Line 159" id="line159">
+                    <td>159</td><td></td><td>0</td><td><code>        return 'Deferred message failed with error: $ex';</code></td>
                 </tr>
                 <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code>    }</code></td>
+                    <td>160</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 161" id="line161">
-                    <td>161</td><td></td><td></td><td><code>  }</code></td>
+                    <td>161</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 162" id="line162">
-                    <td>162</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 162" id="line162">
+                    <td>162</td><td></td><td>9</td><td><code>      return message.toString();</code></td>
+                </tr>
+                <tr class="noop" title="Line 163" id="line163">
+                    <td>163</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="noop" title="Line 164" id="line164">
+                    <td>164</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 165" id="line165">
+                    <td>165</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

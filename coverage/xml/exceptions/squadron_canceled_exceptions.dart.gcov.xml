@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="11" lines-valid="22" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
+            <code>import 'dart:convert';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line>
             <code/>
@@ -22,14 +31,16 @@
         <line>
             <code>    implements SquadronCanceledException, CanceledExceptions {</code>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>  SquadronCanceledExceptions(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      this.tokenId, Iterable&lt;SquadronCanceledException&gt; exceptions)</code>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>      : _exceptions = exceptions.toList();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -76,57 +87,83 @@
         <line>
             <code/>
         </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$tokenId = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$innerExceptions = 2;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line hits="0">
             <code>  @override</code>
         </line>
         <line hits="0">
-            <code>  List serialize() =&gt; List.unmodifiable([</code>
-        </line>
-        <line>
-            <code>        $canceledExceptionsType,</code>
-        </line>
-        <line hits="0">
-            <code>        tokenId,</code>
-        </line>
-        <line hits="7">
-            <code>        _exceptions.map((e) =&gt; e.serialize()),</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      ]);</code>
+            <code>  String toString() =&gt; jsonEncode(serialize());</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="0">
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        $canceledExceptionsType,</code>
+        </line>
+        <line hits="2">
+            <code>        tokenId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="13">
+            <code>        _exceptions.map((e) =&gt; e.serialize()),</code>
+            <hit count="13" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const _$type = 0;</code>
+        </line>
+        <line>
+            <code>const _$tokenId = 1;</code>
+        </line>
+        <line>
+            <code>const _$innerExceptions = 2;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension SquadronCanceledExceptionsExt on SquadronCanceledExceptions {</code>
+        </line>
+        <line hits="1">
             <code>  static SquadronCanceledExceptions? deserialize(List? props) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>    if (props == null) return null;</code>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>    if (props[_$type] != $canceledExceptionsType) return null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>    return SquadronCanceledExceptions(</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>      props[_$tokenId],</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>      props[_$innerExceptions].map(SquadronCanceledException.deserialize),</code>
+        <line hits="2">
+            <code>      props[_$innerExceptions].map(SquadronCanceledExceptionExt.deserialize),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    );</code>

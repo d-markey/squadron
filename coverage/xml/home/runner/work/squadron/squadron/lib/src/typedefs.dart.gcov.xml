@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '_impl/xplat/_typedefs.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.io) '_impl/native/_typedefs.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.html) '_impl/web/_typedefs.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js_interop) '_impl/web/_typedefs.dart' as impl;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="12">
+            <code>final threadId = impl.threadId;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef EntryPoint = impl.EntryPoint;</code>
+        </line>
+        <line>
+            <code>typedef PlatformChannel = impl.PlatformChannel;</code>
+        </line>
+        <line>
+            <code>typedef PlatformThread = impl.PlatformThread;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>typedef PlatformThreadHook = FutureOr&lt;void&gt; Function(PlatformThread);</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../../../../../../"/>
+    <base href="../../../../../../../"/>
+</coverage>

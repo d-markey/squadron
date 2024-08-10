@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.53333336" lines-covered="8" lines-valid="15" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:js_interop';</code>
+        </line>
+        <line>
+            <code>import 'dart:js_interop_unsafe';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const _dbgIdProp = '@@dbgid';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>void setDbgId(JSObject obj, String id) {</code>
+        </line>
+        <line>
+            <code>  obj[_dbgIdProp] = id.toJS;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>String getDbgId(JSObject obj) {</code>
+        </line>
+        <line>
+            <code>  return obj.has(_dbgIdProp)</code>
+        </line>
+        <line>
+            <code>      ? obj[_dbgIdProp].dartify().toString()</code>
+        </line>
+        <line>
+            <code>      : '($_dbgIdProp not set)';</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>String getErrorEventMessage(JSObject? obj, [String message = 'Unknown error']) {</code>
+        </line>
+        <line hits="0">
+            <code>  if (obj != null &amp;&amp; obj.has('message')) {</code>
+        </line>
+        <line hits="0">
+            <code>    return obj['message']?.toString() ?? message;</code>
+        </line>
+        <line>
+            <code>  } else {</code>
+        </line>
+        <line hits="0">
+            <code>    return message;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line hits="0">
+            <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>Object? getErrorEventError(JSObject? obj) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  if (obj != null &amp;&amp; obj.has('error')) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>    return obj['error'].dartify();</code>
+        </line>
+        <line>
+            <code>  } else {</code>
+        </line>
+        <line hits="1">
+            <code>    return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line hits="1">
+            <code>}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="9">
+            <code>List? getMessageEventData(JSObject? obj) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9">
+            <code>  if (obj != null &amp;&amp; obj.has('data')) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    final data = obj['data'].dartify();</code>
+        </line>
+        <line hits="9">
+            <code>    return (data == null) ? null : (data as List);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>  } else {</code>
+        </line>
+        <line hits="0">
+            <code>    return null;</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line hits="9">
+            <code>}</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

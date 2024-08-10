@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="_well_known_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_well_known_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="6" lines-valid="6" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -9,6 +9,9 @@
         </line>
         <line>
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line>
             <code/>
@@ -68,15 +71,33 @@
             <code/>
         </line>
         <line>
-            <code>extension CanceledConversion on CanceledException {</code>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension CanceledConversionExt on CanceledException {</code>
         </line>
         <line hits="2">
-            <code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code>
+            <code>  SquadronException toSquadronException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
+        <line>
+            <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
+        </line>
         <line hits="2">
-            <code>      SquadronCanceledException.from(tokenId ?? '', this);</code>
+            <code>      SquadronCanceledException.from(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        tokenId ?? '',</code>
+        </line>
+        <line>
+            <code>        this,</code>
+        </line>
+        <line>
+            <code>        stackTrace,</code>
+        </line>
+        <line>
+            <code>      );</code>
         </line>
         <line>
             <code>}</code>
@@ -85,19 +106,38 @@
             <code/>
         </line>
         <line>
-            <code>extension TimeoutConversion on TimeoutException {</code>
+            <code>@internal</code>
+        </line>
+        <line>
+            <code>extension TimeoutConversionExt on TimeoutException {</code>
         </line>
         <line hits="2">
-            <code>  SquadronException toSquadronException([String? tokenId]) =&gt;</code>
+            <code>  SquadronException toSquadronException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
         </line>
         <line hits="2">
             <code>      SquadronTimeoutException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
-            <code>          tokenId ?? '', message ?? 'Operation timeout', duration, null);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>        tokenId ?? '',</code>
+        </line>
+        <line hits="2">
+            <code>        message ?? 'Operation timeout',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>        duration,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        stackTrace,</code>
+        </line>
+        <line>
+            <code>      );</code>
         </line>
         <line>
             <code>}</code>

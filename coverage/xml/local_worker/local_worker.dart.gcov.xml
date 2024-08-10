@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5714286" lines-covered="4" lines-valid="7" package="/local_worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7692308" lines-covered="10" lines-valid="13" package="/local_worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -11,6 +11,9 @@
             <code>import 'package:logger/logger.dart';</code>
         </line>
         <line>
+            <code>import 'package:using/using.dart';</code>
+        </line>
+        <line>
             <code/>
         </line>
         <line>
@@ -20,10 +23,10 @@
             <code>    if (dart.library.io) '../_impl/native/_local_worker.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.html) '../_impl/browser/_local_worker.dart'</code>
+            <code>    if (dart.library.html) '../_impl/web/_local_worker.dart'</code>
         </line>
         <line>
-            <code>    if (dart.library.js_interop) '../_impl/wasm/_local_worker.dart';</code>
+            <code>    if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>
@@ -83,7 +86,7 @@
             <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local</code>
         </line>
         <line>
-            <code>/// worker are deserialized as [WorkerRequest] and dispatched to a handler</code>
+            <code>/// worker are deserialized as [WorkerRequest]s and dispatched to a handler</code>
         </line>
         <line>
             <code>/// defined in the [service]'s [WorkerService.operations] map according to the</code>
@@ -93,6 +96,9 @@
         </line>
         <line>
             <code>abstract class LocalWorker&lt;W extends WorkerService&gt;</code>
+        </line>
+        <line>
+            <code>    with Releasable</code>
         </line>
         <line>
             <code>    implements WorkerService, IWorker {</code>
@@ -108,9 +114,42 @@
             <code>  factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3">
-            <code>      createLocalWorker&lt;W&gt;(service, exceptionManager ?? ExceptionManager());</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2">
+            <code>      impl.createLocalWorker&lt;W&gt;(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>          service, exceptionManager ?? ExceptionManager());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final W service;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  void release() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>    stop();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    super.release();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -140,15 +179,6 @@
             <code/>
         </line>
         <line>
-            <code>  /// The [WorkerService] associated to this local worker.</code>
-        </line>
-        <line>
-            <code>  final W service;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
             <code>  /// The local worker's [Channel].</code>
         </line>
         <line>
@@ -158,10 +188,10 @@
             <code/>
         </line>
         <line>
-            <code>  /// A [Channel] to communicate with this local worker. This channel should be provided to clients so they can</code>
+            <code>  /// A [Channel] to communicate with this local worker. This channel should be</code>
         </line>
         <line>
-            <code>  /// invoke services from the local worker.</code>
+            <code>  /// provided to clients so they can invoke services from the local worker.</code>
         </line>
         <line hits="0">
             <code>  Channel? get sharedChannel =&gt; channel?.share();</code>

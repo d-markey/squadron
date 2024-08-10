@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-05-25</dd>
+                    <dd>2024-08-10</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>1</td><td>1</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>2</td><td>2</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,19 +61,25 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import '../xplat/_worker_runner.dart';</code></td>
+                    <td>1</td><td></td><td></td><td><code>import '../../worker/worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code></code></td>
+                    <td>2</td><td></td><td></td><td><code>import '../xplat/_worker_runner.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>extension VmWorkerRunnerExt on WorkerRunner {</code></td>
+                    <td>3</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 4" id="line4">
-                    <td>4</td><td></td><td>21</td><td><code>  void handle(dynamic message) =&gt; processMessage(message);</code></td>
+                <tr class="noop" title="Line 4" id="line4">
+                    <td>4</td><td></td><td></td><td><code>extension VmWorkerRunnerExt on WorkerRunner {</code></td>
                 </tr>
-                <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 5" id="line5">
+                    <td>5</td><td></td><td>18</td><td><code>  void handle(dynamic message) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 6" id="line6">
+                    <td>6</td><td></td><td>18</td><td><code>      processRequest(WorkerRequestExt.from(message));</code></td>
+                </tr>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

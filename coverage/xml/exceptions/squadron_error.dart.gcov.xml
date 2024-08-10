@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="20" lines-valid="22" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="squadron_error.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9285714" lines-covered="13" lines-valid="14" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
-        <line>
-            <code>import 'dart:convert';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line>
             <code>import 'package:meta/meta.dart';</code>
         </line>
@@ -26,61 +20,11 @@
             <code>/// Squadron Error</code>
         </line>
         <line>
-            <code>class SquadronError implements SquadronException {</code>
+            <code>class SquadronError extends SquadronException {</code>
         </line>
-        <line hits="5">
-            <code>  SquadronError._(this.message, [this._stackTrace]) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>    if (_stackTrace == null) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      try {</code>
-        </line>
-        <line hits="0">
-            <code>        _stackTrace = StackTrace.current;</code>
-        </line>
-        <line>
-            <code>      } catch (_) {</code>
-        </line>
-        <line>
-            <code>        // ignore...</code>
-        </line>
-        <line>
-            <code>      }</code>
-        </line>
-        <line>
-            <code>    }</code>
-        </line>
-        <line hits="3">
-            <code>  }</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  /// Message (or string representation of the exception).</code>
-        </line>
-        <line>
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  final String message;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>  static const _$type = 0;</code>
-        </line>
-        <line>
-            <code>  static const _$message = 1;</code>
-        </line>
-        <line>
-            <code>  static const _$stackTrace = 2;</code>
+        <line hits="24">
+            <code>  SquadronError._(super.message, [super.stackTrace]) : super.init();</code>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -101,39 +45,26 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>        _stackTrace?.toString(),</code>
+            <code>        stackTrace?.toString(),</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      ]);</code>
         </line>
         <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5">
-            <code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  StackTrace? _stackTrace;</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>  String toString() =&gt; jsonEncode(serialize());</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
             <code>}</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>const _$type = 0;</code>
+        </line>
+        <line>
+            <code>const _$message = 1;</code>
+        </line>
+        <line>
+            <code>const _$stackTrace = 2;</code>
         </line>
         <line>
             <code/>
@@ -144,44 +75,43 @@
         <line>
             <code>extension SquadronErrorExt on SquadronError {</code>
         </line>
-        <line hits="2">
-            <code>  static SquadronError create(String message, StackTrace stackTrace) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="10">
+            <code>  static SquadronError create(String message, [StackTrace? stackTrace]) =&gt;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9">
+        <line hits="15">
             <code>      SquadronError._(message, stackTrace);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="5">
+        <line hits="6">
             <code>  static SquadronException? deserialize(List exceptionInfo) =&gt;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
-            <code>      (exceptionInfo[SquadronError._$type] == $squadronErrorType)</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>      (exceptionInfo[_$type] == $squadronErrorType)</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
+        <line hits="6">
             <code>          ? SquadronError._(</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>              exceptionInfo[SquadronError._$message],</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="6">
+            <code>              exceptionInfo[_$message],</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
-            <code>              SquadronException.loadStackTrace(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="8">
+            <code>              SquadronException.loadStackTrace(exceptionInfo[_$stackTrace]),</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5">
-            <code>                  exceptionInfo[SquadronError._$stackTrace]))</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line>
+            <code>            )</code>
         </line>
-        <line hits="3">
+        <line hits="4">
             <code>          : null;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

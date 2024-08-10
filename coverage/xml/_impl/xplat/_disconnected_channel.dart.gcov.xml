@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_disconnected_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0952381" lines-covered="2" lines-valid="21" package="/_impl/xplat" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import 'dart:async';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import '../../channel.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/exception_manager.dart';</code>
+        </line>
+        <line>
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
+        </line>
+        <line>
+            <code>import '../../typedefs.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class DisconnectedChannel implements Channel {</code>
+        </line>
+        <line hits="11">
+            <code>  DisconnectedChannel([ExceptionManager? exceptionManager, this.logger])</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      : exceptionManager = exceptionManager ?? ExceptionManager();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final ExceptionManager exceptionManager;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  @override</code>
+        </line>
+        <line>
+            <code>  final Logger? logger;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  Never _disconnectedError() =&gt;</code>
+        </line>
+        <line hits="10">
+            <code>      throw SquadronErrorExt.create('Channel is not connected');</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  FutureOr&lt;void&gt; cancelStream(int streamId) =&gt; _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  FutureOr&lt;void&gt; close() =&gt; _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Future&lt;T&gt; sendRequest&lt;T&gt;(</code>
+        </line>
+        <line>
+            <code>    int command,</code>
+        </line>
+        <line>
+            <code>    List args, {</code>
+        </line>
+        <line>
+            <code>    SquadronCancelationToken? token,</code>
+        </line>
+        <line>
+            <code>    bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>    bool inspectResponse = false,</code>
+        </line>
+        <line>
+            <code>  }) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(</code>
+        </line>
+        <line>
+            <code>    int command,</code>
+        </line>
+        <line>
+            <code>    List args, {</code>
+        </line>
+        <line>
+            <code>    SquadronCancelationToken? token,</code>
+        </line>
+        <line>
+            <code>    bool inspectRequest = false,</code>
+        </line>
+        <line>
+            <code>    bool inspectResponse = false,</code>
+        </line>
+        <line>
+            <code>  }) =&gt;</code>
+        </line>
+        <line hits="0">
+            <code>      _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  PlatformChannel serialize() =&gt; _disconnectedError();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="0">
+            <code>  @override</code>
+        </line>
+        <line hits="0">
+            <code>  Channel share() =&gt; _disconnectedError();</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

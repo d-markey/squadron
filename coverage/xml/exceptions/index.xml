@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.78409094" lines-covered="138" lines-valid="176" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8313953" lines-covered="143" lines-valid="172" package="/exceptions" testname="lcov.info" version="1.5">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="_well_known_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_well_known_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="6" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="27" lines-valid="31" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="27" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="31" lines-valid="32" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="31" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="exception_manager.dart" functions-hit="0" functions-valid="0" lines-hit="25" lines-valid="35" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="25" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="exception_manager.dart" functions-hit="0" functions-valid="0" lines-hit="23" lines-valid="30" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="23" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="squadron_timeout_exception.dart" functions-hit="0" functions-valid="0" lines-hit="19" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="19" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="20" lines-valid="22" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="20" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="13" lines-valid="14" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="13" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_exception.dart" functions-hit="0" functions-valid="0" lines-hit="21" lines-valid="23" prefix="/home/runner/work/squadron/squadron/lib/src">
+        <source branches-hit="0" branches-valid="0" filename="worker_exception.dart" functions-hit="0" functions-valid="0" lines-hit="18" lines-valid="18" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="18" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_exception.dart" functions-hit="0" functions-valid="0" lines-hit="21" lines-valid="24" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="21" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_exception.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="16" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="16" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="22" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="11" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="20" prefix="/home/runner/work/squadron/squadron/lib/src">
+        <source branches-hit="0" branches-valid="0" filename="task_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="7" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="1" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="task_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="4" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/src">
-            <testCase branch-hit="0" function-hit="0" line-hit="4" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-05-25" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="8" lines-valid="8" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="8" lines-valid="8" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:isolate';</code>
@@ -8,7 +8,10 @@
             <code/>
         </line>
         <line>
-            <code>import '../../../squadron.dart';</code>
+            <code>import '../../worker/worker_request.dart';</code>
+        </line>
+        <line>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line>
             <code>import '../xplat/_worker_runner.dart';</code>
@@ -19,32 +22,32 @@
         <line>
             <code/>
         </line>
-        <line hits="7">
-            <code>void bootstrap(WorkerInitializer initializer, WorkerRequest? command) async {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+        <line hits="9">
+            <code>void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
+        <line hits="9">
             <code>  final workerPort = ReceivePort();</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="13">
-            <code>  final runner = WorkerRunner((r) {</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="18">
-            <code>    r.internalLogger.t(() =&gt; 'terminating Isolate');</code>
+            <code>  final runner = WorkerRunner((r) {</code>
             <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
-            <code>    workerPort.close();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+        <line hits="18">
+            <code>    r.internalLogger.t('Terminating Isolate');</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12">
-            <code>    Isolate.current.kill();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+        <line hits="9">
+            <code>    workerPort.close();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18">
+            <code>    Isolate.current.kill(priority: Isolate.beforeNextEvent);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  });</code>
@@ -52,13 +55,13 @@
         <line>
             <code/>
         </line>
-        <line hits="14">
+        <line hits="18">
             <code>  workerPort.listen(runner.handle);</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14">
-            <code>  await runner.connect(command, workerPort.sendPort, initializer);</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+        <line hits="18">
+            <code>  runner.connect(command, workerPort.sendPort, initializer);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

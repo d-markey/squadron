@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-05-25</dd>
+                    <dd>2024-08-10</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -67,31 +67,34 @@
                     <td>2</td><td></td><td></td><td><code>    if (dart.library.io) '_impl/native/_bootstrapper.dart'</code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>    if (dart.library.html) '_impl/browser/_bootstrapper.dart'</code></td>
+                    <td>3</td><td></td><td></td><td><code>    if (dart.library.html) '_impl/web/_bootstrapper.dart'</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>    if (dart.library.js_interop) '_impl/wasm/_bootstrapper.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code>    if (dart.library.js_interop) '_impl/web/_bootstrapper.dart' as impl;</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import 'worker_service.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import 'worker/worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code></code></td>
+                    <td>6</td><td></td><td></td><td><code>import 'worker_service.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>/// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.</code></td>
+                    <td>7</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>/// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument *must</code></td>
+                    <td>8</td><td></td><td></td><td><code>/// Instantiates a [WorkerService] via the [initializer] and installs the service in a platform worker.</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>/// be* set to the [Isolate]'s startup parameter.</code></td>
+                    <td>9</td><td></td><td></td><td><code>/// The [command] argument is ignored on Web platforms. On native platforms, the [command] argument *must</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>7</td><td><code>void run(WorkerInitializer initializer, [List? command]) =&gt;</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code>/// be* set to the [Isolate]'s startup parameter.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>7</td><td><code>    bootstrap(initializer, command);</code></td>
+                    <td>11</td><td></td><td>9</td><td><code>void run(WorkerInitializer initializer, [WorkerRequest? command]) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>9</td><td><code>    impl.bootstrap(initializer, command);</code></td>
                 </tr>
             </tbody>
         </table>
