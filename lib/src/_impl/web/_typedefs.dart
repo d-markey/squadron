@@ -1,17 +1,11 @@
 import 'dart:async';
-import 'dart:js_interop';
+import 'dart:math';
 
 import 'package:web/web.dart' as web;
 
 import '../xplat/hex.dart';
 
-@JS()
-external web.EventTarget get self;
-
-final threadId = () {
-  final global = self.dartify();
-  return global.hashCode.hex;
-}();
+final threadId = Random.secure().nextInt(0x100000000).hex;
 
 typedef EntryPoint = Uri;
 typedef PlatformThread = web.Worker;

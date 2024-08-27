@@ -41,6 +41,12 @@ class ResultStream<T> {
         streamIdCompleter.complete(Cast.toInt(res.result));
       } else if (error != null) {
         _controller.addError(error);
+        if (!hasStreamId) {
+          // if any error comes before the stream ID, somethind bad happened
+          streamIdCompleter.complete(null);
+          _controller.close();
+          return;
+        }
       } else {
         try {
           _controller.add(cast(res.result));
