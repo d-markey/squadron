@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>101</td><td>121</td><td class="med">83.5%</td>
+                            <th scope="row">Lines</th><td>102</td><td>122</td><td class="med">83.6%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -346,7 +346,7 @@
                     <td>95</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>9</td><td><code>  Stream&lt;T&gt; _getResponseStream&lt;T&gt;(</code></td>
+                    <td>96</td><td></td><td>9</td><td><code>  Stream _getResponseStream(</code></td>
                 </tr>
                 <tr class="noop" title="Line 97" id="line97">
                     <td>97</td><td></td><td></td><td><code>    web.MessageChannel com,</code></td>
@@ -619,7 +619,7 @@
                     <td>186</td><td></td><td></td><td><code>    // return a stream of decoded responses</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 187" id="line187">
-                    <td>187</td><td></td><td>9</td><td><code>    return ResultStream&lt;T&gt;(this, req, $sendRequest, streaming).stream;</code></td>
+                    <td>187</td><td></td><td>9</td><td><code>    return ResultStream(this, req, $sendRequest, streaming).stream;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 188" id="line188">
                     <td>188</td><td></td><td>9</td><td><code>  }</code></td>
@@ -670,211 +670,220 @@
                     <td>203</td><td></td><td>8</td><td><code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 204" id="line204">
-                    <td>204</td><td></td><td>8</td><td><code>    return _getResponseStream&lt;T&gt;(com, req, post, streaming: false).first;</code></td>
+                    <td>204</td><td></td><td>8</td><td><code>    return _getResponseStream(com, req, post, streaming: false)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 205" id="line205">
-                    <td>205</td><td></td><td>8</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 205" id="line205">
+                    <td>205</td><td></td><td></td><td><code>        .cast&lt;T&gt;()</code></td>
                 </tr>
-                <tr class="noop" title="Line 206" id="line206">
-                    <td>206</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 206" id="line206">
+                    <td>206</td><td></td><td>8</td><td><code>        .first; // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List&lt;List&gt;, Map&lt;K, List&gt;...)</code></td>
                 </tr>
-                <tr class="noop" title="Line 207" id="line207">
-                    <td>207</td><td></td><td></td><td><code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code></td>
+                <tr class="lineCov" title="Line 207" id="line207">
+                    <td>207</td><td></td><td>8</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 208" id="line208">
-                    <td>208</td><td></td><td></td><td><code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code></td>
+                    <td>208</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 209" id="line209">
-                    <td>209</td><td></td><td></td><td><code>  /// the [Stream].</code></td>
+                    <td>209</td><td></td><td></td><td><code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code></td>
                 </tr>
                 <tr class="noop" title="Line 210" id="line210">
-                    <td>210</td><td></td><td></td><td><code>  @override</code></td>
+                    <td>210</td><td></td><td></td><td><code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 211" id="line211">
-                    <td>211</td><td></td><td>5</td><td><code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(</code></td>
+                <tr class="noop" title="Line 211" id="line211">
+                    <td>211</td><td></td><td></td><td><code>  /// the [Stream].</code></td>
                 </tr>
                 <tr class="noop" title="Line 212" id="line212">
-                    <td>212</td><td></td><td></td><td><code>    int command,</code></td>
+                    <td>212</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 213" id="line213">
-                    <td>213</td><td></td><td></td><td><code>    List args, {</code></td>
+                <tr class="lineCov" title="Line 213" id="line213">
+                    <td>213</td><td></td><td>5</td><td><code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(</code></td>
                 </tr>
                 <tr class="noop" title="Line 214" id="line214">
-                    <td>214</td><td></td><td></td><td><code>    SquadronCancelationToken? token,</code></td>
+                    <td>214</td><td></td><td></td><td><code>    int command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 215" id="line215">
-                    <td>215</td><td></td><td></td><td><code>    bool inspectRequest = false,</code></td>
+                    <td>215</td><td></td><td></td><td><code>    List args, {</code></td>
                 </tr>
                 <tr class="noop" title="Line 216" id="line216">
-                    <td>216</td><td></td><td></td><td><code>    bool inspectResponse = false,</code></td>
+                    <td>216</td><td></td><td></td><td><code>    SquadronCancelationToken? token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 217" id="line217">
-                    <td>217</td><td></td><td></td><td><code>  }) {</code></td>
+                    <td>217</td><td></td><td></td><td><code>    bool inspectRequest = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 218" id="line218">
-                    <td>218</td><td></td><td></td><td><code>    final com = web.MessageChannel();</code></td>
+                    <td>218</td><td></td><td></td><td><code>    bool inspectResponse = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 219" id="line219">
-                    <td>219</td><td></td><td></td><td><code>    final req = WorkerRequest.userCommand(</code></td>
+                    <td>219</td><td></td><td></td><td><code>  }) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 220" id="line220">
-                    <td>220</td><td></td><td></td><td><code>        com.port2, command, args, token, inspectResponse);</code></td>
+                    <td>220</td><td></td><td></td><td><code>    final com = web.MessageChannel();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 221" id="line221">
-                    <td>221</td><td></td><td>5</td><td><code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code></td>
+                <tr class="noop" title="Line 221" id="line221">
+                    <td>221</td><td></td><td></td><td><code>    final req = WorkerRequest.userCommand(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 222" id="line222">
-                    <td>222</td><td></td><td>5</td><td><code>    return _getResponseStream&lt;T&gt;(com, req, post, streaming: true);</code></td>
+                <tr class="noop" title="Line 222" id="line222">
+                    <td>222</td><td></td><td></td><td><code>        com.port2, command, args, token, inspectResponse);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 223" id="line223">
-                    <td>223</td><td></td><td>5</td><td><code>  }</code></td>
+                    <td>223</td><td></td><td>5</td><td><code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code></td>
                 </tr>
-                <tr class="noop" title="Line 224" id="line224">
-                    <td>224</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 224" id="line224">
+                    <td>224</td><td></td><td>5</td><td><code>    return _getResponseStream(com, req, post, streaming: true).cast&lt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 225" id="line225">
-                    <td>225</td><td></td><td></td><td><code></code></td>
+                    <td>225</td><td></td><td></td><td><code>        T&gt;(); // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List&lt;List&gt;, Map&lt;K, List&gt;...)</code></td>
                 </tr>
-                <tr class="noop" title="Line 226" id="line226">
-                    <td>226</td><td></td><td></td><td><code>/// [Channel] used to communicate between [web.Worker]s. Creates a</code></td>
+                <tr class="lineCov" title="Line 226" id="line226">
+                    <td>226</td><td></td><td>5</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 227" id="line227">
-                    <td>227</td><td></td><td></td><td><code>/// [web.MessageChannel] to receive commands on</code></td>
+                    <td>227</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 228" id="line228">
-                    <td>228</td><td></td><td></td><td><code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code></td>
+                    <td>228</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 229" id="line229">
-                    <td>229</td><td></td><td></td><td><code>class _WebForwardChannel extends _WebChannel {</code></td>
+                    <td>229</td><td></td><td></td><td><code>/// [Channel] used to communicate between [web.Worker]s. Creates a</code></td>
                 </tr>
                 <tr class="noop" title="Line 230" id="line230">
-                    <td>230</td><td></td><td></td><td><code>  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate</code></td>
+                    <td>230</td><td></td><td></td><td><code>/// [web.MessageChannel] to receive commands on</code></td>
                 </tr>
                 <tr class="noop" title="Line 231" id="line231">
-                    <td>231</td><td></td><td></td><td><code>  /// message channel</code></td>
+                    <td>231</td><td></td><td></td><td><code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 232" id="line232">
-                    <td>232</td><td></td><td>3</td><td><code>  _WebForwardChannel._(this._remote, this._com, Logger? logger,</code></td>
+                <tr class="noop" title="Line 232" id="line232">
+                    <td>232</td><td></td><td></td><td><code>class _WebForwardChannel extends _WebChannel {</code></td>
                 </tr>
                 <tr class="noop" title="Line 233" id="line233">
-                    <td>233</td><td></td><td></td><td><code>      ExceptionManager exceptionManager)</code></td>
+                    <td>233</td><td></td><td></td><td><code>  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate</code></td>
                 </tr>
                 <tr class="noop" title="Line 234" id="line234">
-                    <td>234</td><td></td><td></td><td><code>      : super._(_com.port2, logger, exceptionManager) {</code></td>
+                    <td>234</td><td></td><td></td><td><code>  /// message channel</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 235" id="line235">
-                    <td>235</td><td></td><td>3</td><td><code>    _com.port1.onmessage = _forward.toJS;</code></td>
+                    <td>235</td><td></td><td>3</td><td><code>  _WebForwardChannel._(this._remote, this._com, Logger? logger,</code></td>
                 </tr>
                 <tr class="noop" title="Line 236" id="line236">
-                    <td>236</td><td></td><td></td><td><code>  }</code></td>
+                    <td>236</td><td></td><td></td><td><code>      ExceptionManager exceptionManager)</code></td>
                 </tr>
                 <tr class="noop" title="Line 237" id="line237">
-                    <td>237</td><td></td><td></td><td><code></code></td>
+                    <td>237</td><td></td><td></td><td><code>      : super._(_com.port2, logger, exceptionManager) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 238" id="line238">
-                    <td>238</td><td></td><td></td><td><code>  /// [web.MessagePort] to the worker.</code></td>
+                <tr class="lineCov" title="Line 238" id="line238">
+                    <td>238</td><td></td><td>3</td><td><code>    _com.port1.onmessage = _forward.toJS;</code></td>
                 </tr>
                 <tr class="noop" title="Line 239" id="line239">
-                    <td>239</td><td></td><td></td><td><code>  final web.MessagePort _remote;</code></td>
+                    <td>239</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 240" id="line240">
                     <td>240</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 241" id="line241">
-                    <td>241</td><td></td><td></td><td><code>  /// [web.MessageChannel] used for forwarding messages.</code></td>
+                    <td>241</td><td></td><td></td><td><code>  /// [web.MessagePort] to the worker.</code></td>
                 </tr>
                 <tr class="noop" title="Line 242" id="line242">
-                    <td>242</td><td></td><td></td><td><code>  final web.MessageChannel _com;</code></td>
+                    <td>242</td><td></td><td></td><td><code>  final web.MessagePort _remote;</code></td>
                 </tr>
                 <tr class="noop" title="Line 243" id="line243">
                     <td>243</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 244" id="line244">
-                    <td>244</td><td></td><td></td><td><code>  /// Forwards [web.MessageEvent.data] to the worker.</code></td>
+                    <td>244</td><td></td><td></td><td><code>  /// [web.MessageChannel] used for forwarding messages.</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 245" id="line245">
-                    <td>245</td><td></td><td>3</td><td><code>  void _forward(web.MessageEvent e) {</code></td>
+                <tr class="noop" title="Line 245" id="line245">
+                    <td>245</td><td></td><td></td><td><code>  final web.MessageChannel _com;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 246" id="line246">
-                    <td>246</td><td></td><td>3</td><td><code>    if (_closed) {</code></td>
+                <tr class="noop" title="Line 246" id="line246">
+                    <td>246</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 247" id="line247">
-                    <td>247</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Channel is closed');</code></td>
+                <tr class="noop" title="Line 247" id="line247">
+                    <td>247</td><td></td><td></td><td><code>  /// Forwards [web.MessageEvent.data] to the worker.</code></td>
                 </tr>
-                <tr class="noop" title="Line 248" id="line248">
-                    <td>248</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 248" id="line248">
+                    <td>248</td><td></td><td>3</td><td><code>  void _forward(web.MessageEvent e) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 249" id="line249">
-                    <td>249</td><td></td><td>0</td><td><code>    try {</code></td>
+                <tr class="lineCov" title="Line 249" id="line249">
+                    <td>249</td><td></td><td>3</td><td><code>    if (_closed) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 250" id="line250">
-                    <td>250</td><td></td><td>3</td><td><code>      final data = getMessageEventData(e) as List;</code></td>
+                <tr class="lineNoCov" title="Line 250" id="line250">
+                    <td>250</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Channel is closed');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 251" id="line251">
-                    <td>251</td><td></td><td>3</td><td><code>      final transfer = Transferables.get(data);</code></td>
+                <tr class="noop" title="Line 251" id="line251">
+                    <td>251</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 252" id="line252">
-                    <td>252</td><td></td><td>3</td><td><code>      if (transfer == null || transfer.isEmpty) {</code></td>
+                <tr class="lineNoCov" title="Line 252" id="line252">
+                    <td>252</td><td></td><td>0</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 253" id="line253">
-                    <td>253</td><td></td><td>3</td><td><code>        _remote.postMessage(e.data);</code></td>
+                    <td>253</td><td></td><td>3</td><td><code>      final data = getMessageEventData(e) as List;</code></td>
                 </tr>
-                <tr class="noop" title="Line 254" id="line254">
-                    <td>254</td><td></td><td></td><td><code>      } else {</code></td>
+                <tr class="lineCov" title="Line 254" id="line254">
+                    <td>254</td><td></td><td>3</td><td><code>      final transfer = Transferables.get(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 255" id="line255">
-                    <td>255</td><td></td><td>3</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
+                    <td>255</td><td></td><td>3</td><td><code>      if (transfer == null || transfer.isEmpty) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 256" id="line256">
-                    <td>256</td><td></td><td></td><td><code>        _remote.postMessage(e.data, jsTransfer);</code></td>
+                <tr class="lineCov" title="Line 256" id="line256">
+                    <td>256</td><td></td><td>3</td><td><code>        _remote.postMessage(e.data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 257" id="line257">
-                    <td>257</td><td></td><td></td><td><code>      }</code></td>
+                    <td>257</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 258" id="line258">
-                    <td>258</td><td></td><td>0</td><td><code>    } catch (ex, st) {</code></td>
+                <tr class="lineCov" title="Line 258" id="line258">
+                    <td>258</td><td></td><td>3</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 259" id="line259">
-                    <td>259</td><td></td><td>1</td><td><code>      logger?.e(() =&gt; 'Failed to post request $e: $ex');</code></td>
+                <tr class="noop" title="Line 259" id="line259">
+                    <td>259</td><td></td><td></td><td><code>        _remote.postMessage(e.data, jsTransfer);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 260" id="line260">
-                    <td>260</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Failed to post request: $ex', st);</code></td>
+                <tr class="noop" title="Line 260" id="line260">
+                    <td>260</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="noop" title="Line 261" id="line261">
-                    <td>261</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineNoCov" title="Line 261" id="line261">
+                    <td>261</td><td></td><td>0</td><td><code>    } catch (ex, st) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 262" id="line262">
-                    <td>262</td><td></td><td>3</td><td><code>  }</code></td>
+                    <td>262</td><td></td><td>1</td><td><code>      logger?.e(() =&gt; 'Failed to post request $e: $ex');</code></td>
                 </tr>
-                <tr class="noop" title="Line 263" id="line263">
-                    <td>263</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 263" id="line263">
+                    <td>263</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Failed to post request: $ex', st);</code></td>
                 </tr>
                 <tr class="noop" title="Line 264" id="line264">
-                    <td>264</td><td></td><td></td><td><code>  /// Closes this [Channel], effectively stopping message forwarding.</code></td>
+                    <td>264</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 265" id="line265">
-                    <td>265</td><td></td><td></td><td><code>  @override</code></td>
+                <tr class="lineCov" title="Line 265" id="line265">
+                    <td>265</td><td></td><td>3</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 266" id="line266">
-                    <td>266</td><td></td><td>0</td><td><code>  void close() {</code></td>
+                <tr class="noop" title="Line 266" id="line266">
+                    <td>266</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 267" id="line267">
-                    <td>267</td><td></td><td>0</td><td><code>    if (!_closed) {</code></td>
+                <tr class="noop" title="Line 267" id="line267">
+                    <td>267</td><td></td><td></td><td><code>  /// Closes this [Channel], effectively stopping message forwarding.</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 268" id="line268">
-                    <td>268</td><td></td><td>0</td><td><code>      _com.port1.close();</code></td>
+                <tr class="noop" title="Line 268" id="line268">
+                    <td>268</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 269" id="line269">
-                    <td>269</td><td></td><td>0</td><td><code>      _closed = true;</code></td>
+                    <td>269</td><td></td><td>0</td><td><code>  void close() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 270" id="line270">
-                    <td>270</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineNoCov" title="Line 270" id="line270">
+                    <td>270</td><td></td><td>0</td><td><code>    if (!_closed) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 271" id="line271">
-                    <td>271</td><td></td><td>0</td><td><code>  }</code></td>
+                    <td>271</td><td></td><td>0</td><td><code>      _com.port1.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 272" id="line272">
-                    <td>272</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 272" id="line272">
+                    <td>272</td><td></td><td>0</td><td><code>      _closed = true;</code></td>
+                </tr>
+                <tr class="noop" title="Line 273" id="line273">
+                    <td>273</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 274" id="line274">
+                    <td>274</td><td></td><td>0</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 275" id="line275">
+                    <td>275</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

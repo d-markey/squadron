@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_cast_helpers.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '../../cast_helpers.dart' show CastOp;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class Cast {</code>
+        </line>
+        <line>
+            <code>  static CastOp&lt;T&gt; toValue&lt;T&gt;() {</code>
+        </line>
+        <line>
+            <code>    if (T == int) {</code>
+        </line>
+        <line>
+            <code>      return toInt as CastOp&lt;T&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == double) {</code>
+        </line>
+        <line>
+            <code>      return toDbl as CastOp&lt;T&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == bool) {</code>
+        </line>
+        <line>
+            <code>      return toBool as CastOp&lt;T&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == String) {</code>
+        </line>
+        <line>
+            <code>      return toStr as CastOp&lt;T&gt;;</code>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line>
+            <code>      return identity&lt;T&gt;;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static CastOp&lt;T?&gt; toNullableValue&lt;T&gt;() {</code>
+        </line>
+        <line>
+            <code>    if (T == int) {</code>
+        </line>
+        <line>
+            <code>      return toNullableInt as CastOp&lt;T?&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == double) {</code>
+        </line>
+        <line>
+            <code>      return toNullableDbl as CastOp&lt;T?&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == bool) {</code>
+        </line>
+        <line>
+            <code>      return toNullableBool as CastOp&lt;T?&gt;;</code>
+        </line>
+        <line>
+            <code>    } else if (T == String) {</code>
+        </line>
+        <line>
+            <code>      return toNullableStr as CastOp&lt;T?&gt;;</code>
+        </line>
+        <line>
+            <code>    } else {</code>
+        </line>
+        <line>
+            <code>      return identity&lt;T?&gt;;</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line>
+            <code>  }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static CastOp&lt;List&lt;T&gt;&gt; toList&lt;T&gt;([CastOp&lt;T&gt;? op]) =&gt;</code>
+        </line>
+        <line>
+            <code>      _toList(op ?? toValue&lt;T&gt;());</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static CastOp&lt;Map&lt;K, V&gt;&gt; toMap&lt;K, V&gt;([CastOp&lt;K&gt;? key, CastOp&lt;V&gt;? value]) =&gt;</code>
+        </line>
+        <line>
+            <code>      _toMap(key ?? toValue&lt;K&gt;(), value ?? toValue&lt;V&gt;());</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static bool toBool(dynamic value) =&gt; value as bool;</code>
+        </line>
+        <line>
+            <code>  static bool? toNullableBool(dynamic value) =&gt; value as bool?;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="10">
+            <code>  static int toInt(dynamic value) =&gt; (value as num).toInt();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9">
+            <code>  static int? toNullableInt(dynamic value) =&gt; (value as num?)?.toInt();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static double toDbl(dynamic value) =&gt; (value as num).toDouble();</code>
+        </line>
+        <line>
+            <code>  static double? toNullableDbl(dynamic value) =&gt; (value as num?)?.toDouble();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static String toStr(dynamic value) =&gt; value as String;</code>
+        </line>
+        <line>
+            <code>  static String? toNullableStr(dynamic value) =&gt; value as String?;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static List&lt;T&gt; Function(dynamic) _toList&lt;T&gt;(CastOp&lt;T&gt; op) =&gt;</code>
+        </line>
+        <line>
+            <code>      (x) =&gt; (x as List).map(op).toList();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static Map&lt;K, V&gt; Function(dynamic) _toMap&lt;K, V&gt;(</code>
+        </line>
+        <line>
+            <code>          CastOp&lt;K&gt; kop, CastOp&lt;V&gt; vop) =&gt;</code>
+        </line>
+        <line>
+            <code>      (x) =&gt; Map&lt;K, V&gt;.fromEntries(</code>
+        </line>
+        <line>
+            <code>          (x as Map).entries.map((e) =&gt; MapEntry(kop(e.key), vop(e.value))));</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  static T identity&lt;T&gt;(dynamic value) =&gt; value as T;</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

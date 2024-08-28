@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.72289157" lines-covered="60" lines-valid="83" package="/_impl/xplat" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7195122" lines-covered="59" lines-valid="82" package="/_impl/xplat" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -32,7 +32,7 @@
             <code/>
         </line>
         <line>
-            <code>class ResultStream&lt;T&gt; {</code>
+            <code>class ResultStream {</code>
         </line>
         <line hits="18">
             <code>  ResultStream(</code>
@@ -52,10 +52,6 @@
         </line>
         <line>
             <code>  ) {</code>
-        </line>
-        <line hits="18">
-            <code>    final cast = Cast.get&lt;T&gt;();</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
             <code>    final streamIdCompleter = streaming ? Completer&lt;int?&gt;() : null;</code>
@@ -171,9 +167,9 @@
         <line hits="0">
             <code>        try {</code>
         </line>
-        <line hits="25">
-            <code>          _controller.add(cast(res.result));</code>
-            <hit count="25" name="&lt;unnamed&gt;"/>
+        <line hits="20">
+            <code>          _controller.add(res.result);</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        } catch (ex, st) {</code>
@@ -243,9 +239,9 @@
         <line hits="0">
             <code>        try {</code>
         </line>
-        <line hits="40">
-            <code>          _controller.add(cast(res.result));</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+        <line hits="32">
+            <code>          _controller.add(res.result);</code>
+            <hit count="32" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>        } catch (ex, st) {</code>
@@ -466,7 +462,7 @@
             <code/>
         </line>
         <line hits="23">
-            <code>    _controller = ForwardStreamController&lt;T&gt;(</code>
+            <code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code>
             <hit count="23" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -486,14 +482,14 @@
             <code/>
         </line>
         <line hits="9">
-            <code>  late final ForwardStreamController&lt;T&gt; _controller;</code>
+            <code>  late final ForwardStreamController&lt;dynamic&gt; _controller;</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
         <line hits="27">
-            <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
+            <code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code>
             <hit count="27" name="&lt;unnamed&gt;"/>
         </line>
         <line>

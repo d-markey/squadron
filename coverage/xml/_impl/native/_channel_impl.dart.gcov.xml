@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.97959185" lines-covered="48" lines-valid="49" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.98" lines-covered="49" lines-valid="50" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>part of '_channel.dart';</code>
@@ -214,7 +214,7 @@
             <code/>
         </line>
         <line hits="9">
-            <code>  Stream&lt;T&gt; _getResponseStream&lt;T&gt;(</code>
+            <code>  Stream&lt;dynamic&gt; _getResponseStream(</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -368,7 +368,7 @@
             <code>    // return a stream of decoded responses</code>
         </line>
         <line hits="18">
-            <code>    return ResultStream&lt;T&gt;(this, req, $sendRequest, streaming).stream;</code>
+            <code>    return ResultStream(this, req, $sendRequest, streaming).stream;</code>
             <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -421,11 +421,15 @@
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="16">
-            <code>    return _getResponseStream&lt;T&gt;(receiver, req, _postRequest, streaming: false)</code>
+            <code>    return _getResponseStream(receiver, req, _postRequest, streaming: false)</code>
             <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
-            <code>        .first;</code>
+            <code>        .cast&lt;T&gt;()</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>        .first; // should work on native, as long as T can be sent across Isolates</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -483,9 +487,12 @@
             <code>        receiver.sendPort, command, args, token, inspectResponse);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10">
-            <code>    return _getResponseStream&lt;T&gt;(receiver, req, _postRequest, streaming: true);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="15">
+            <code>    return _getResponseStream(receiver, req, _postRequest, streaming: true).cast&lt;</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>        T&gt;(); // should work on native, as long as T can be sent across Isolates</code>
         </line>
         <line>
             <code>  }</code>
