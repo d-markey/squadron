@@ -16,14 +16,16 @@ import 'package:test/test.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '01_web_worker_js_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.group("- WebWorker", () {
       tc.test('- plain Web Worker', () async {

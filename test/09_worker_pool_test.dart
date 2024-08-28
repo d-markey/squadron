@@ -21,14 +21,16 @@ import 'worker_services/prime_service_worker.dart';
 import 'worker_services/test_service.dart';
 import 'worker_services/test_service_worker.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '09_worker_pool_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.group("- Worker Pool", () {
       tc.test('- prime worker pool with cache', () async {

@@ -1,5 +1,5 @@
+import 'test_context.dart' show TestPlatform;
 import 'test_entry_points.dart';
-import 'test_platform.dart';
 
 TestPlatform get platform => throw UnsupportedError('Unsupported platform');
 String get platformName => throw UnsupportedError('Unsupported platform');

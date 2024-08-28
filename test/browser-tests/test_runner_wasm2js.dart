@@ -5,7 +5,6 @@ import 'dart:js_interop';
 import 'package:web/web.dart';
 
 import '../classes/test_context.dart';
-import '../classes/test_platform.dart';
 import 'html_logger_wasm.dart';
 import 'test_runner.dart';
 

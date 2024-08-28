@@ -10,14 +10,16 @@ import 'classes/test_context.dart';
 import 'classes/utils.dart';
 import 'worker_services/test_service_worker.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '08_marshaler_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.group("- Marshaler", () {
       late TestWorker testWorker;

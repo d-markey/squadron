@@ -10,14 +10,16 @@ import 'package:using/using.dart';
 import 'classes/test_context.dart';
 import 'worker_services/not_a_worker_service.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '00_not_a_worker_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.test("- Not a worker (native platform)", () async {
       await NotAWorker(tc).useAsync((w) async {

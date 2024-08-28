@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../classes/test_context.dart';
-import '../classes/test_platform.dart';
 import 'tests_wasm.dart' if (dart.library.html) 'tests_js.dart';
 
 String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
@@ -12,6 +11,9 @@ Future<TestContext?> run(
     Iterable<String> testLabels, TestPlatform platform) async {
   if (testLabels.isNotEmpty) {
     final testContext = await TestContext.init('/', platform);
+    if (testContext == null) {
+      throw UnsupportedError('Unsupported platform ${platform.label}');
+    }
 
     for (var testLabel in testLabels) {
       testContext.onlyTests.add(

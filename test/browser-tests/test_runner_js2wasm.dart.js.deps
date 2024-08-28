@@ -501,6 +501,7 @@ file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0/lib/web.da
 file:///C:/_Projects/github/squadron/.dart_tool/package_config.json
 file:///C:/_Projects/github/squadron/lib/squadron.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_bootstrapper.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/web/_cast_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_channel_impl.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_event_buffer.dart
@@ -585,7 +586,6 @@ file:///C:/_Projects/github/squadron/test/classes/prime_numbers.dart
 file:///C:/_Projects/github/squadron/test/classes/test_context.dart
 file:///C:/_Projects/github/squadron/test/classes/test_entry_points.dart
 file:///C:/_Projects/github/squadron/test/classes/test_logger.dart
-file:///C:/_Projects/github/squadron/test/classes/test_platform.dart
 file:///C:/_Projects/github/squadron/test/classes/utils.dart
 file:///C:/_Projects/github/squadron/test/const_concurrency_settings.dart
 file:///C:/_Projects/github/squadron/test/worker_services/biging_marshaler.dart

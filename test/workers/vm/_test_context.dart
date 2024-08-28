@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import '../../classes/test_context.dart' show TestPlatform;
 import '../../classes/test_entry_points.dart';
-import '../../classes/test_platform.dart';
 import 'cache_worker.dart' as entrypoint_cache;
 import 'installable_worker.dart' as entrypoint_installable;
 import 'issues_worker.dart' as entrypoint_issues;

@@ -93,7 +93,7 @@ class _WebChannel implements Channel {
     }
   }
 
-  Stream<T> _getResponseStream<T>(
+  Stream _getResponseStream(
     web.MessageChannel com,
     WorkerRequest req,
     void Function(WorkerRequest) post, {
@@ -184,7 +184,7 @@ class _WebChannel implements Channel {
     }
 
     // return a stream of decoded responses
-    return ResultStream<T>(this, req, $sendRequest, streaming).stream;
+    return ResultStream(this, req, $sendRequest, streaming).stream;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
@@ -201,7 +201,9 @@ class _WebChannel implements Channel {
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
-    return _getResponseStream<T>(com, req, post, streaming: false).first;
+    return _getResponseStream(com, req, post, streaming: false)
+        .cast<T>()
+        .first; // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
@@ -219,7 +221,8 @@ class _WebChannel implements Channel {
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
-    return _getResponseStream<T>(com, req, post, streaming: true);
+    return _getResponseStream(com, req, post, streaming: true).cast<
+        T>(); // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
   }
 }
 

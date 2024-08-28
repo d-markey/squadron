@@ -6,8 +6,8 @@ import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_uri_checker.dart';
 import 'package:web/web.dart' as web;
 
+import '../../classes/test_context.dart' show TestPlatform;
 import '../../classes/test_entry_points.dart';
-import '../../classes/test_platform.dart';
 
 const platform = TestPlatform.wasm;
 String platformName = web.window.navigator.userAgent;
@@ -55,6 +55,7 @@ void _fail(String message) {
   throw Exception(message);
 }
 
+// ignore: unused_element
 Future _checkWebWorkers(Iterable<EntryPoint> workerUrls) async {
   final messages = <String>[];
 

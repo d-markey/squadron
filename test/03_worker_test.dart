@@ -21,14 +21,16 @@ import 'worker_services/missing_worker_service.dart';
 import 'worker_services/test_service.dart';
 import 'worker_services/test_service_worker.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '03_worker_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.group("- Squadron Worker", () {
       tc.group('- start/stop', () {

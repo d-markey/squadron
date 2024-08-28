@@ -1,21 +1,8 @@
+import '_impl/xplat/_cast_helpers.dart'
+    if (dart.library.io) '_impl/native/_cast_helpers.dart'
+    if (dart.library.html) '_impl/web/_cast_helpers.dart'
+    if (dart.library.js_interop) '_impl/web/_cast_helpers.dart' as impl;
+
 typedef CastOp<T> = T Function(dynamic);
 
-class Cast {
-  static CastOp<T> get<T>() {
-    if (T == int) {
-      return toInt as CastOp<T>;
-    } else if (T == double) {
-      return toDbl as CastOp<T>;
-    } else {
-      return identity<T>;
-    }
-  }
-
-  static int toInt(dynamic value) => (value as num).toInt();
-  static int? toNullableInt(dynamic value) => (value as num?)?.toInt();
-
-  static double toDbl(dynamic value) => (value as num).toDouble();
-  static double? toNullableDbl(dynamic value) => (value as num?)?.toDouble();
-
-  static T identity<T>(dynamic value) => value as T;
-}
+typedef Cast = impl.Cast;

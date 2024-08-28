@@ -62,7 +62,7 @@ class _VmChannel implements Channel {
     }
   }
 
-  Stream<T> _getResponseStream<T>(
+  Stream<dynamic> _getResponseStream(
     vm.ReceivePort port,
     WorkerRequest req,
     void Function(WorkerRequest) post, {
@@ -108,7 +108,7 @@ class _VmChannel implements Channel {
     }
 
     // return a stream of decoded responses
-    return ResultStream<T>(this, req, $sendRequest, streaming).stream;
+    return ResultStream(this, req, $sendRequest, streaming).stream;
   }
 
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the
@@ -124,8 +124,9 @@ class _VmChannel implements Channel {
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-    return _getResponseStream<T>(receiver, req, _postRequest, streaming: false)
-        .first;
+    return _getResponseStream(receiver, req, _postRequest, streaming: false)
+        .cast<T>()
+        .first; // should work on native, as long as T can be sent across Isolates
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the
@@ -143,6 +144,7 @@ class _VmChannel implements Channel {
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-    return _getResponseStream<T>(receiver, req, _postRequest, streaming: true);
+    return _getResponseStream(receiver, req, _postRequest, streaming: true).cast<
+        T>(); // should work on native, as long as T can be sent across Isolates
   }
 }

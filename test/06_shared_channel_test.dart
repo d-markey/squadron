@@ -11,14 +11,16 @@ import 'classes/test_context.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '06_shared_channel_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     tc.group("- Shared Channel", () {
       tc.test('- cache worker', () async {

@@ -17,14 +17,16 @@ import 'worker_services/test_service_worker.dart';
 const concurrencySettings_222 =
     ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 2);
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '07_cancelation_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     late TestWorkerPool pool;
     late TestWorker worker;

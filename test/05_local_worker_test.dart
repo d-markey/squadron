@@ -15,14 +15,16 @@ import 'const_concurrency_settings.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
-void main() async {
-  final testContext = await TestContext.init('');
-  execute(testContext);
+void main() {
+  TestContext.init('').then(execute);
+  // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
 String testScript = '05_local_worker_test.dart';
 
-void execute(TestContext tc) {
+void execute(TestContext? tc) {
+  if (tc == null) return;
+
   tc.run(() {
     final localService = LocalServiceImpl();
     final regExp = RegExp(

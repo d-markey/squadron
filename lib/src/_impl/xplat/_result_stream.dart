@@ -8,14 +8,13 @@ import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '_forward_stream_controller.dart';
 
-class ResultStream<T> {
+class ResultStream {
   ResultStream(
     Channel channel,
     WorkerRequest req,
     Stream<WorkerResponse> Function() sendRequest,
     bool streaming,
   ) {
-    final cast = Cast.get<T>();
     final streamIdCompleter = streaming ? Completer<int?>() : null;
     final command = req.command, token = req.cancelToken;
 
@@ -49,7 +48,7 @@ class ResultStream<T> {
         }
       } else {
         try {
-          _controller.add(cast(res.result));
+          _controller.add(res.result);
         } catch (ex, st) {
           _controller.addError(SquadronException.from(ex, st, command));
         }
@@ -70,7 +69,7 @@ class ResultStream<T> {
         _controller.addError(error);
       } else {
         try {
-          _controller.add(cast(res.result));
+          _controller.add(res.result);
         } catch (ex, st) {
           _controller.addError(SquadronException.from(ex, st, command));
         }
@@ -134,15 +133,15 @@ class ResultStream<T> {
       }
     }
 
-    _controller = ForwardStreamController<T>(
+    _controller = ForwardStreamController<dynamic>(
       onListen: $onListen,
       onCancel: $onCancel,
     );
   }
 
-  late final ForwardStreamController<T> _controller;
+  late final ForwardStreamController<dynamic> _controller;
 
-  Stream<T> get stream => _controller.stream;
+  Stream<dynamic> get stream => _controller.stream;
 
   Future<void> get done => _controller.done;
 }

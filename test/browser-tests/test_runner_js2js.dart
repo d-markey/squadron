@@ -5,7 +5,6 @@ import 'dart:html';
 import 'package:js/js.dart';
 
 import '../classes/test_context.dart';
-import '../classes/test_platform.dart';
 import 'html_logger_js.dart';
 import 'test_runner.dart';
 

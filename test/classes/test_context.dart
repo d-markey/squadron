@@ -7,17 +7,20 @@ import '_test_context_stub.dart'
     if (dart.library.html) '../workers/js/_test_context.dart'
     if (dart.library.js_interop) '../workers/wasm/_test_context.dart' as impl;
 import 'test_entry_points.dart';
-import 'test_platform.dart';
 
 class TestContext {
   TestContext._(this.workerPlatform);
 
-  static Future<TestContext> init(String root,
+  static Future<TestContext?> init(String root,
       [TestPlatform? workerPlatform]) async {
     workerPlatform ??= impl.platform;
     final testContext = TestContext._(workerPlatform);
-    await testContext.entryPoints.set(root, workerPlatform);
-    return testContext;
+    try {
+      await testContext.entryPoints.set(root, workerPlatform);
+      return testContext;
+    } catch (_) {
+      return null;
+    }
   }
 
   static const cancelled = '@@CANCELLED@@';
@@ -318,4 +321,20 @@ class TestResult {
   final bool success;
   final Object? error;
   final StackTrace? stackTrace;
+}
+
+enum TestPlatform {
+  unknown('Unknown'),
+  vm('Native'),
+  js('JavaScript'),
+  wasm('WebAssembly');
+
+  const TestPlatform(this.label);
+
+  final String label;
+
+  bool get isVm => this == vm;
+  bool get isJs => this == js;
+  bool get isWasm => this == wasm;
+  bool get isWeb => isJs || isWasm;
 }
