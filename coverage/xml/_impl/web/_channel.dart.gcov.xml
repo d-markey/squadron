@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-10" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.81707317" lines-covered="67" lines-valid="82" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84705883" lines-covered="72" lines-valid="85" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -204,7 +204,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      var err = getErrorEventError(e);</code>
+            <code>      dynamic err = getErrorEventError(e);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -216,6 +216,13 @@
         </line>
         <line hits="0">
             <code>        error = exceptionManager.deserialize(err);</code>
+        </line>
+        <line hits="1">
+            <code>      } else if (err != null) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>        error = SquadronException.from(err);</code>
         </line>
         <line>
             <code>      }</code>
@@ -240,48 +247,64 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>        String msg;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>        if (e != null) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>          msg =</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>              '$entryPoint =&gt; ${e.runtimeType} $e [${e.filename}(${e.lineno})]';</code>
+            <code>        try {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        } else {</code>
-        </line>
-        <line hits="0">
-            <code>          msg = '$entryPoint: ${e.runtimeType} $e';</code>
-        </line>
-        <line>
-            <code>        }</code>
+            <code>          String msg;</code>
         </line>
         <line hits="1">
-            <code>        if (!found) {</code>
+            <code>          if (err != null) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>          msg = '!! WARNING: it seems no Web Worker lives at $msg';</code>
+            <code>            msg =</code>
+        </line>
+        <line hits="1">
+            <code>                '$entryPoint =&gt; ${err.runtimeType} $err [${err.filename}(${err.lineno})]';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        }</code>
+            <code>          } else {</code>
         </line>
-        <line hits="0">
-            <code>        logger?.e(() =&gt; 'Unhandled error from Web Worker: $msg.');</code>
+        <line hits="1">
+            <code>            msg = '$entryPoint: ${err.runtimeType} $err';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>        if (!found) {</code>
+        <line>
+            <code>          }</code>
+        </line>
+        <line hits="1">
+            <code>          if (!found) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>            msg = '!! WARNING: it seems no Web Worker lives at $msg';</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          }</code>
+        </line>
+        <line hits="1">
+            <code>          logger?.e(() =&gt; 'Unhandled error from Web Worker: $msg.');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1">
+            <code>          if (!found) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>          logger?.e(() =&gt; 'It seems no Web Worker lives at $entryPoint.');</code>
+            <code>            logger?.e(() =&gt; 'It seems no Web Worker lives at $entryPoint.');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>          }</code>
+        </line>
+        <line>
+            <code>        } catch (_) {</code>
+        </line>
+        <line hits="2">
+            <code>          logger?.e(() =&gt; 'Unhandled error from Web Worker: $error.');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
