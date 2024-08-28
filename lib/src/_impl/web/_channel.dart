@@ -64,7 +64,7 @@ Future<Channel> openChannel(
       SquadronException? error;
       if (err is List) {
         error = exceptionManager.deserialize(err);
-      } else {
+      } else if (err != null) {
         error = SquadronException.from(err);
       }
       error ??= SquadronErrorExt.create('Unexpected error');
