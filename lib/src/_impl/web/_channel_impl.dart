@@ -140,10 +140,13 @@ class _WebChannel implements Channel {
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
-            final err = getErrorEventError(e);
-            final ex = (err != null)
-                ? SquadronException.from(err, null, command)
-                : SquadronException.from(getErrorEventMessage(e));
+            final ex = SquadronException.from(
+              getErrorEventError(e) ??
+                  getErrorEventMessage(e) ??
+                  'Unknown error',
+              null,
+              command,
+            );
             if (buffer.isActive) {
               buffer.addError(ex, null);
             } else {
@@ -197,13 +200,35 @@ class _WebChannel implements Channel {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
+    final completer = Completer<T>();
+    late final StreamSubscription<T> sub;
+
+    void $success(T data) async {
+      await sub.cancel();
+      if (!completer.isCompleted) completer.complete(data);
+    }
+
+    void $fail(Object ex, [StackTrace? st]) async {
+      await sub.cancel();
+      if (!completer.isCompleted) completer.completeError(ex, st);
+    }
+
+    void $done() async {
+      await sub.cancel();
+      if (!completer.isCompleted) {
+        $fail(WorkerException('No response from worker', null, command));
+      }
+    }
+
     final com = web.MessageChannel();
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
-    return _getResponseStream(com, req, post, streaming: false)
-        .cast<T>()
-        .first; // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
+    sub = _getResponseStream(com, req, post, streaming: false)
+        .cast<
+            T>() // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
+        .listen($success, onError: $fail, onDone: $done);
+    return completer.future;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a

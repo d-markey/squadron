@@ -8,6 +8,7 @@ import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
@@ -16,10 +17,10 @@ import '../../worker/worker_response.dart';
 import '../xplat/_disconnected_channel.dart';
 import '../xplat/_result_stream.dart';
 import '../xplat/_transferables.dart';
+import '_entry_point_uri.dart';
 import '_event_buffer.dart';
 import '_patch.dart';
 import '_uri_checker.dart';
-import 'entry_point_uri.dart';
 
 part '_channel_impl.dart';
 
@@ -59,40 +60,32 @@ Future<Channel> openChannel(
     worker = web.Worker(webEntryPoint.uri.toJS);
     setDbgId(worker, '${webEntryPoint.uri}#');
 
-    worker.onerror = (web.ErrorEvent? e) {
-      dynamic err = getErrorEventError(e);
-      SquadronException? error;
-      if (err is List) {
-        error = exceptionManager.deserialize(err);
-      } else if (err != null) {
-        error = SquadronException.from(err);
-      }
-      error ??= SquadronErrorExt.create('Unexpected error');
+    void $errorHandler(web.ErrorEvent? e) {
+      final err = getErrorEventError(e)?.toString() ??
+          getErrorEventMessage(e) ??
+          'Unknown error';
+      var error = SquadronErrorExt.create(err);
+
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 
       UriChecker.exists(entryPoint).then((found) {
         try {
-          String msg;
-          if (err != null) {
-            msg =
-                '$entryPoint => ${err.runtimeType} $err [${err.filename}(${err.lineno})]';
-          } else {
-            msg = '$entryPoint: ${err.runtimeType} $err';
-          }
-          if (!found) {
-            msg = '!! WARNING: it seems no Web Worker lives at $msg';
-          }
+          final msg = (e != null)
+              ? '$entryPoint => ${err.runtimeType} $err [${e.filename}(${e.lineno})]'
+              : '$entryPoint => ${err.runtimeType} $err';
           logger?.e(() => 'Unhandled error from Web Worker: $msg.');
           if (!found) {
             logger?.e(() => 'It seems no Web Worker lives at $entryPoint.');
           }
         } catch (_) {
-          logger?.e(() => 'Unhandled error from Web Worker: $error.');
+          // ignore
         }
       });
-    }.toJS;
-    worker.onmessageerror = worker.onerror;
+    }
+
+    worker.onerror = $errorHandler.toJS;
+    worker.onmessageerror = $errorHandler.toJS;
 
     final disconnected = DisconnectedChannel(exceptionManager, logger);
 

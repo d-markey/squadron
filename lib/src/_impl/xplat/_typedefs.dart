@@ -1,6 +1,6 @@
 import 'dart:async';
 
-final threadId = '<stub>';
+final threadId = '<abstract>';
 
 typedef EntryPoint = dynamic;
 typedef PlatformThread = dynamic;

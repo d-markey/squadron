@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   cancelation_token: ^1.1.0
-  http: ^1.2.1
   meta: ^1.10.0
   logger: ^2.0.2
   using: ^1.0.4

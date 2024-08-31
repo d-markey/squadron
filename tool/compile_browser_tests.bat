@@ -1,4 +1,6 @@
-@echo off
+@ECHO OFF
+ECHO.Compiling custom browser test console to JavaScript and Web Assembly... 
+
 PUSHD "%~dp0..\test"
 
 CALL dart compile js -o .\browser-tests\index.dart.js .\browser-tests\index.dart

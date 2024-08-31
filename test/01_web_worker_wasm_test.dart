@@ -6,7 +6,7 @@ library;
 import 'dart:async';
 import 'dart:js_interop';
 
-import 'package:squadron/src/_impl/web/entry_point_uri.dart';
+import 'package:squadron/src/_impl/web/_entry_point_uri.dart';
 import 'package:squadron/src/_impl/xplat/_disconnected_channel.dart';
 import 'package:squadron/src/exceptions/squadron_error.dart';
 import 'package:squadron/src/worker/worker_response.dart';

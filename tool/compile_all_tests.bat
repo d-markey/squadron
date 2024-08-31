@@ -1,4 +1,4 @@
-@echo off
+@ECHO OFF
 PUSHD "%~dp0"
 
 CALL compile_browser_tests.bat

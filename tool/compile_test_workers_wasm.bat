@@ -1,4 +1,5 @@
-@echo off
+@ECHO OFF
+ECHO.Compiling test workers to Web Assembly... 
 
 PUSHD "%~dp0..\test"
 

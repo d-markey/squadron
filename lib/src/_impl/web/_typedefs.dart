@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:web/web.dart' as web;
 
-import '../xplat/hex.dart';
+import '../../typedefs.dart' show HexExt;
 
 final threadId = Random.secure().nextInt(0x100000000).hex;
 

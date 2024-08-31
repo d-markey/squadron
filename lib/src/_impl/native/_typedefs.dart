@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import '../../typedefs.dart' show HexExt;
 import '../../worker/worker_request.dart';
-import '../xplat/hex.dart';
 
 final threadId = Isolate.current.hashCode.hex;
 

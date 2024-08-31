@@ -1,6 +1,9 @@
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
+@JS()
+external JSAny? get location;
+
 const _dbgIdProp = '@@dbgid';
 
 void setDbgId(JSObject obj, String id) {
@@ -13,11 +16,11 @@ String getDbgId(JSObject obj) {
       : '($_dbgIdProp not set)';
 }
 
-String getErrorEventMessage(JSObject? obj, [String message = 'Unknown error']) {
+String? getErrorEventMessage(JSObject? obj) {
   if (obj != null && obj.has('message')) {
-    return obj['message']?.toString() ?? message;
+    return obj['message']?.toString();
   } else {
-    return message;
+    return null;
   }
 }
 

@@ -9,26 +9,36 @@ PUSHD "%~dp0.."
 IF "%~1"=="" GOTO endparse
 REM code coverage flag
 IF "%~1"=="/cov" (
-    set __COV__=1
+    SET __COV__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="--cov" (
-    set __COV__=1
+    SET __COV__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="-c" (
-    set __COV__=1
+    SET __COV__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="/c" (
-    set __COV__=1
+    SET __COV__=1
+    GOTO nextarg
 ) 
 REM rebuild flag
 IF "%~1"=="/rebuild" (
-    set __REBUILD__=1
+    SET __REBUILD__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="--rebuild" (
-    set __REBUILD__=1
+    SET __REBUILD__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="-b" (
-    set __REBUILD__=1
+    SET __REBUILD__=1
+    GOTO nextarg
 ) ELSE IF "%~1"=="/b" (
-    set __REBUILD__=1
-) ELSE (
-    set __ARGS__=%__ARGS__% "%~1"
+    SET __REBUILD__=1
+    GOTO nextarg
 )
+REM arg for dart test
+SET __ARGS__=%__ARGS__% "%~1"
+
+:nextarg
 SHIFT
 GOTO parse
 :endparse

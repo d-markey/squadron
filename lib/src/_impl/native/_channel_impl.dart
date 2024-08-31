@@ -121,12 +121,34 @@ class _VmChannel implements Channel {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
+    final completer = Completer<T>();
+    late final StreamSubscription<T> sub;
+
+    void $success(T data) async {
+      await sub.cancel();
+      if (!completer.isCompleted) completer.complete(data);
+    }
+
+    void $fail(Object ex, [StackTrace? st]) async {
+      await sub.cancel();
+      if (!completer.isCompleted) completer.completeError(ex, st);
+    }
+
+    void $done() async {
+      await sub.cancel();
+      if (!completer.isCompleted) {
+        $fail(WorkerException('No response from worker', null, command));
+      }
+    }
+
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-    return _getResponseStream(receiver, req, _postRequest, streaming: false)
-        .cast<T>()
-        .first; // should work on native, as long as T can be sent across Isolates
+    sub = _getResponseStream(receiver, req, _postRequest, streaming: false)
+        .cast<
+            T>() // should work on native, as long as T can be sent across Isolates
+        .listen($success, onError: $fail, onDone: $done);
+    return completer.future;
   }
 
   /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the

@@ -12,3 +12,7 @@ typedef PlatformChannel = impl.PlatformChannel;
 typedef PlatformThread = impl.PlatformThread;
 
 typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
+
+extension HexExt on int {
+  String get hex => '0x${toRadixString(16).padLeft(8, '0')}';
+}

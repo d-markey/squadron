@@ -14,7 +14,7 @@ class EntryPointUri with Releasable {
   @override
   void release() {
     if (_revoke) {
-      web.URL.revokeObjectURL(uri);
+      // web.URL.revokeObjectURL(uri);
     }
     super.release();
   }

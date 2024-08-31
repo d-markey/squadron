@@ -11,6 +11,14 @@ import 'test_entry_points.dart';
 class TestContext {
   TestContext._(this.workerPlatform);
 
+  bool get hasImageCodecs => impl.hasImageCodecs;
+
+  bool get hasChromiumBreakIterators => impl.hasChromiumBreakIterators;
+
+  bool get supportsWasmGC => impl.supportsWasmGc;
+
+  bool get isCrossOriginIsolated => impl.isCrossOriginIsolated;
+
   static Future<TestContext?> init(String root,
       [TestPlatform? workerPlatform]) async {
     workerPlatform ??= impl.platform;

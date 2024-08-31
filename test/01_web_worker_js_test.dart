@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:html' as web show Worker;
 import 'dart:html' hide Worker;
 
-import 'package:squadron/src/_impl/web/entry_point_uri.dart';
+import 'package:squadron/src/_impl/web/_entry_point_uri.dart';
 import 'package:squadron/src/_impl/xplat/_disconnected_channel.dart';
 import 'package:squadron/src/exceptions/squadron_error.dart';
 import 'package:squadron/src/worker/worker_response.dart';

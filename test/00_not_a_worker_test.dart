@@ -20,6 +20,12 @@ String testScript = '00_not_a_worker_test.dart';
 void execute(TestContext? tc) {
   if (tc == null) return;
 
+  // print('worker platform = ${tc.workerPlatform.label}');
+  // print('hasImageCodecs = ${tc.hasImageCodecs}');
+  // print('hasChromiumBreakIterators = ${tc.hasChromiumBreakIterators}');
+  // print('supportsWasmGC = ${tc.supportsWasmGC}');
+  // print('crossOriginIsolated = ${tc.isCrossOriginIsolated}');
+
   tc.run(() {
     tc.test("- Not a worker (native platform)", () async {
       await NotAWorker(tc).useAsync((w) async {

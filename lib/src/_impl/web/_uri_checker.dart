@@ -1,4 +1,9 @@
-import 'package:http/http.dart' as http;
+import 'dart:js_interop';
+
+import 'package:web/web.dart' as web;
+
+@JS()
+external JSPromise<web.Response> fetch(JSAny resource, [JSAny? options]);
 
 class UriChecker {
   UriChecker._();
@@ -6,8 +11,9 @@ class UriChecker {
   static Future<bool> exists(Uri url) async {
     if (url.isScheme('data')) return true;
     try {
-      final status = (await http.head(url)).statusCode;
-      return (200 <= status) && (status < 300);
+      final res =
+          await fetch(url.toString().toJS, {'method': 'HEAD'}.jsify()).toDart;
+      return res.ok && (200 <= res.status) && (res.status < 300);
     } catch (_) {
       return false;
     }

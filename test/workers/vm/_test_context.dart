@@ -13,6 +13,14 @@ import 'test_worker.dart' as entrypoint_test;
 const platform = TestPlatform.vm;
 String platformName = Platform.operatingSystemVersion;
 
+const hasImageCodecs = false;
+
+const hasChromiumBreakIterators = false;
+
+const supportsWasmGc = false;
+
+const isCrossOriginIsolated = false;
+
 extension TestEntryPointsExt on TestEntryPoints {
   Future<void> set(String root, TestPlatform platform) async {
     if (platform != TestPlatform.vm) {

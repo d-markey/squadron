@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+import 'dart:typed_data';
 
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_uri_checker.dart';
@@ -11,6 +13,26 @@ import '../../classes/test_entry_points.dart';
 
 const platform = TestPlatform.wasm;
 String platformName = web.window.navigator.userAgent;
+
+final hasImageCodecs = globalContext
+    .callMethod(
+        'eval'.toJS,
+        'typeof ImageDecoder > "u" ? !1 : navigator.vendor==="Google Inc."||navigator.agent==="Edg/"'
+            .toJS)
+    .dartify() as bool;
+
+final hasChromiumBreakIterators = globalContext
+    .callMethod('eval'.toJS,
+        'typeof Intl.v8BreakIterator < "u" && typeof Intl.Segmenter < "u"'.toJS)
+    .dartify() as bool;
+
+final supportsWasmGc = (() {
+  final s =
+      Uint8List.fromList([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 95, 1, 120, 0]);
+  return web.WebAssembly.validate(s.toJS);
+})();
+
+final isCrossOriginIsolated = web.window.crossOriginIsolated;
 
 extension TestEntryPointsExt on TestEntryPoints {
   Future<void> set(String root, TestPlatform platform) async {
