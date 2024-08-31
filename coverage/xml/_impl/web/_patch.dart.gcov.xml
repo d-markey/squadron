@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.53333336" lines-covered="8" lines-valid="15" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="12" lines-valid="15" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:js_interop';</code>
         </line>
         <line>
             <code>import 'dart:js_interop_unsafe';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@JS()</code>
+        </line>
+        <line>
+            <code>external JSAny? get location;</code>
         </line>
         <line>
             <code/>
@@ -46,26 +55,30 @@
         <line>
             <code/>
         </line>
-        <line hits="0">
-            <code>String getErrorEventMessage(JSObject? obj, [String message = 'Unknown error']) {</code>
+        <line hits="1">
+            <code>String? getErrorEventMessage(JSObject? obj) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  if (obj != null &amp;&amp; obj.has('message')) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>    return obj['message']?.toString() ?? message;</code>
+            <code>    return obj['message']?.toString();</code>
         </line>
         <line>
             <code>  } else {</code>
         </line>
-        <line hits="0">
-            <code>    return message;</code>
+        <line hits="1">
+            <code>    return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-28</dd>
+                    <dd>2024-08-31</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -61,49 +61,67 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'package:http/http.dart' as http;</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'dart:js_interop';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>class UriChecker {</code></td>
+                    <td>3</td><td></td><td></td><td><code>import 'package:web/web.dart' as web;</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>  UriChecker._();</code></td>
+                    <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code></code></td>
+                    <td>5</td><td></td><td></td><td><code>@JS()</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 6" id="line6">
-                    <td>6</td><td></td><td>1</td><td><code>  static Future&lt;bool&gt; exists(Uri url) async {</code></td>
+                <tr class="noop" title="Line 6" id="line6">
+                    <td>6</td><td></td><td></td><td><code>external JSPromise&lt;web.Response&gt; fetch(JSAny resource, [JSAny? options]);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 7" id="line7">
-                    <td>7</td><td></td><td>1</td><td><code>    if (url.isScheme('data')) return true;</code></td>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>    try {</code></td>
+                    <td>8</td><td></td><td></td><td><code>class UriChecker {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>1</td><td><code>      final status = (await http.head(url)).statusCode;</code></td>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code>  UriChecker._();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>1</td><td><code>      return (200 &lt;= status) &amp;&amp; (status &lt; 300);</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>    } catch (_) {</code></td>
+                <tr class="lineCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>1</td><td><code>  static Future&lt;bool&gt; exists(Uri url) async {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>0</td><td><code>      return false;</code></td>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>1</td><td><code>    if (url.isScheme('data')) return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>    }</code></td>
+                    <td>13</td><td></td><td></td><td><code>    try {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code>      final res =</code></td>
                 </tr>
-                <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 15" id="line15">
+                    <td>15</td><td></td><td>1</td><td><code>          await fetch(url.toString().toJS, {'method': 'HEAD'}.jsify()).toDart;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 16" id="line16">
+                    <td>16</td><td></td><td>1</td><td><code>      return res.ok &amp;&amp; (200 &lt;= res.status) &amp;&amp; (res.status &lt; 300);</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>    } catch (_) {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>0</td><td><code>      return false;</code></td>
+                </tr>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_uri_checker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_uri_checker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
-            <code>import 'package:http/http.dart' as http;</code>
+            <code>import 'dart:js_interop';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>import 'package:web/web.dart' as web;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>@JS()</code>
+        </line>
+        <line>
+            <code>external JSPromise&lt;web.Response&gt; fetch(JSAny resource, [JSAny? options]);</code>
         </line>
         <line>
             <code/>
@@ -27,12 +42,15 @@
         <line>
             <code>    try {</code>
         </line>
+        <line>
+            <code>      final res =</code>
+        </line>
         <line hits="1">
-            <code>      final status = (await http.head(url)).statusCode;</code>
+            <code>          await fetch(url.toString().toJS, {'method': 'HEAD'}.jsify()).toDart;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
-            <code>      return (200 &lt;= status) &amp;&amp; (status &lt; 300);</code>
+            <code>      return res.ok &amp;&amp; (200 &lt;= res.status) &amp;&amp; (res.status &lt; 300);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>

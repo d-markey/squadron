@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8360656" lines-covered="102" lines-valid="122" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.81294966" lines-covered="113" lines-valid="139" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>part of '_channel.dart';</code>
@@ -491,16 +491,25 @@
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
-            <code>            final err = getErrorEventError(e);</code>
+            <code>            final ex = SquadronException.from(</code>
+        </line>
+        <line hits="0">
+            <code>              getErrorEventError(e) ??</code>
+        </line>
+        <line hits="0">
+            <code>                  getErrorEventMessage(e) ??</code>
+        </line>
+        <line hits="0">
+            <code>                  'Unknown error',</code>
         </line>
         <line>
-            <code>            final ex = (err != null)</code>
+            <code>              null,</code>
         </line>
         <line hits="0">
-            <code>                ? SquadronException.from(err, null, command)</code>
+            <code>              command,</code>
         </line>
-        <line hits="0">
-            <code>                : SquadronException.from(getErrorEventMessage(e));</code>
+        <line>
+            <code>            );</code>
         </line>
         <line hits="0">
             <code>            if (buffer.isActive) {</code>
@@ -682,6 +691,76 @@
             <code>  }) {</code>
         </line>
         <line>
+            <code>    final completer = Completer&lt;T&gt;();</code>
+        </line>
+        <line hits="8">
+            <code>    late final StreamSubscription&lt;T&gt; sub;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="8">
+            <code>    void $success(T data) async {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>      await sub.cancel();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>      if (!completer.isCompleted) completer.complete(data);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    }</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="8">
+            <code>    void $fail(Object ex, [StackTrace? st]) async {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      await sub.cancel();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      if (!completer.isCompleted) completer.completeError(ex, st);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>    }</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="8">
+            <code>    void $done() async {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>      await sub.cancel();</code>
+        </line>
+        <line hits="0">
+            <code>      if (!completer.isCompleted) {</code>
+        </line>
+        <line hits="0">
+            <code>        $fail(WorkerException('No response from worker', null, command));</code>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line hits="0">
+            <code>    }</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
             <code>    final com = web.MessageChannel();</code>
         </line>
         <line>
@@ -695,14 +774,21 @@
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
-            <code>    return _getResponseStream(com, req, post, streaming: false)</code>
+            <code>    sub = _getResponseStream(com, req, post, streaming: false)</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>        .cast&lt;T&gt;()</code>
+            <code>        .cast&lt;</code>
+        </line>
+        <line>
+            <code>            T&gt;() // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List&lt;List&gt;, Map&lt;K, List&gt;...)</code>
         </line>
         <line hits="8">
-            <code>        .first; // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List&lt;List&gt;, Map&lt;K, List&gt;...)</code>
+            <code>        .listen($success, onError: $fail, onDone: $done);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8">
+            <code>    return completer.future;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">

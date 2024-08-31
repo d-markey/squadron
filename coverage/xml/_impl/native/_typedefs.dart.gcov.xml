@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="_typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -11,10 +11,10 @@
             <code/>
         </line>
         <line>
-            <code>import '../../worker/worker_request.dart';</code>
+            <code>import '../../typedefs.dart' show HexExt;</code>
         </line>
         <line>
-            <code>import '../xplat/hex.dart';</code>
+            <code>import '../../worker/worker_request.dart';</code>
         </line>
         <line>
             <code/>

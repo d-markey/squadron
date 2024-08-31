@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-28" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.54545456" lines-covered="12" lines-valid="22" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5652174" lines-covered="13" lines-valid="23" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="concurrency_settings.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="6">
             <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
@@ -13,8 +13,8 @@
         <source branches-hit="0" branches-valid="0" filename="channel.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="6">
             <testCase branch-hit="0" function-hit="0" line-hit="5" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="typedefs.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1">
-            <testCase branch-hit="0" function-hit="0" line-hit="1" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="typedefs.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2">
+            <testCase branch-hit="0" function-hit="0" line-hit="2" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="iworker.dart" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="2"/>
     </sources>
