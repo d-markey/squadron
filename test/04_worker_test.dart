@@ -26,7 +26,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '03_worker_test.dart';
+String testScript = '04_worker_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
@@ -499,8 +499,8 @@ void execute(TestContext? tc) {
 
           tc.test('- missing operation', () async {
             try {
-              final res = await worker.missing();
-              throw unexpectedSuccess('missing()', res);
+              await worker.missing();
+              throw unexpectedSuccess('missing()', null);
             } on SquadronError catch (ex) {
               expect(ex, reports(('Unknown command')));
             }

@@ -47,7 +47,7 @@ abstract class Channel {
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects
   /// a single value from the worker.
-  Future<T> sendRequest<T>(int command, List args,
+  Future<dynamic> sendRequest(int command, List args,
       {SquadronCancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false});
@@ -55,7 +55,7 @@ abstract class Channel {
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects
   /// a stream of values from the worker. The worker must send a
   /// [WorkerResponse.closeStream] message to close the [Stream].
-  Stream<T> sendStreamingRequest<T>(int command, List args,
+  Stream<dynamic> sendStreamingRequest(int command, List args,
       {SquadronCancelationToken? token,
       bool inspectRequest = false,
       bool inspectResponse = false});
@@ -70,8 +70,7 @@ abstract class Channel {
           entryPoint, exceptionManager, logger, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
-          [ExceptionManager? exceptionManager]) =>
-      impl.deserialize(
-          channelInfo, logger, exceptionManager ?? ExceptionManager());
+  static Channel? deserialize(PlatformChannel? channelInfo,
+          [Logger? logger, ExceptionManager? exceptionManager]) =>
+      impl.deserialize(channelInfo, logger, exceptionManager);
 }

@@ -1,15 +1,16 @@
 import 'package:squadron/squadron.dart';
 
 import '../../worker_services/test_service.dart';
+import '_platform.dart';
 
 void start(WorkerRequest command) => run(
-      (startRequest) {
-        switch (startRequest.args[0]) {
+      (startReq) {
+        setConverter(startReq);
+        switch (startReq.args[1]) {
           case TestService.startupThrows:
             throw Exception('Intended failure');
           case TestService.startupInvalid:
             return TestService(invalid: true);
-          case TestService.startupOk:
           default:
             return TestService();
         }
@@ -18,13 +19,13 @@ void start(WorkerRequest command) => run(
     );
 
 void startWithMissingCommand(WorkerRequest command) => run(
-      (startRequest) {
-        switch (startRequest.args[0]) {
+      (startReq) {
+        setConverter(startReq);
+        switch (startReq.args[1]) {
           case TestService.startupThrows:
             throw Exception('Intended failure');
           case TestService.startupInvalid:
             return TestService(invalid: true);
-          case TestService.startupOk:
           default:
             return TestService();
         }

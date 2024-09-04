@@ -62,7 +62,7 @@ void main() async {
   final buttonBar = querySelector('#button-bar')!;
   final testList = querySelector('#test-list')!;
 
-  void runTests([MouseEvent? _]) async {
+  void executeTests([MouseEvent? _]) async {
     final testIds = <String>[];
     for (var test in testList.children.whereType<CheckboxInputElement>()) {
       if (test.checked == true) {
@@ -97,7 +97,7 @@ void main() async {
 
   buttonBar.append(ButtonElement()
     ..text = 'Run selected tests'
-    ..onClick.listen(runTests));
+    ..onClick.listen(executeTests));
 
   buttonBar.append(ButtonElement()
     ..text = 'Select All'

@@ -6,7 +6,11 @@ import '../classes/test_context.dart';
 import 'cache_service.dart';
 
 class CacheWorker extends Worker implements Cache {
-  CacheWorker(TestContext context) : super(context.entryPoints.cache!);
+  CacheWorker(TestContext context)
+      : super(
+          context.entryPoints.cache!,
+          args: [context.useNumConverter],
+        );
 
   @override
   Future<dynamic> get(dynamic key) =>
@@ -14,10 +18,11 @@ class CacheWorker extends Worker implements Cache {
 
   @override
   Future<bool> containsKey(dynamic key) =>
-      send<bool>(CacheService.containsOperation, args: [key]);
+      send(CacheService.containsOperation, args: [key])
+          .then(platformConverter.v<bool>());
 
   @override
-  Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
+  Future<dynamic> set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
     return send(CacheService.setOperation,
         args: [key, value, timeToLive?.inMicroseconds]);

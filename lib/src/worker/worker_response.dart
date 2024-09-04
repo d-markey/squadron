@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_helpers.dart';
-import '../cast_helpers.dart';
 import '../channel.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';
@@ -139,9 +138,9 @@ extension LogEventSerialization on LogEvent {
   static LogEvent? deserialize(List? props) => (props == null)
       ? null
       : LogEvent(
-          _getLevel(Cast.toNullableInt(props[0])),
+          _getLevel((props[0] as num?)?.toInt()),
           props[1],
-          time: fromMicrosecTimeStamp(Cast.toNullableInt(props[2])),
+          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );

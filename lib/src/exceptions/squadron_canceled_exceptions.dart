@@ -33,7 +33,7 @@ class SquadronCanceledExceptions
   List serialize() => List.unmodifiable([
         $canceledExceptionsType,
         tokenId,
-        _exceptions.map((e) => e.serialize()),
+        _exceptions.map((e) => e.serialize()).toList(),
       ]);
 }
 

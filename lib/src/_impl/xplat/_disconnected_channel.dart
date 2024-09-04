@@ -32,7 +32,7 @@ class DisconnectedChannel implements Channel {
   FutureOr<void> close() => _disconnectedError();
 
   @override
-  Future<T> sendRequest<T>(
+  Future<dynamic> sendRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,
@@ -42,7 +42,7 @@ class DisconnectedChannel implements Channel {
       _disconnectedError();
 
   @override
-  Stream<T> sendStreamingRequest<T>(
+  Stream<dynamic> sendStreamingRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart' as env;
 
 import '_test_context_stub.dart'
@@ -9,7 +10,10 @@ import '_test_context_stub.dart'
 import 'test_entry_points.dart';
 
 class TestContext {
-  TestContext._(this.workerPlatform);
+  TestContext._(this.workerPlatform) {
+    platformConverter =
+        useNumConverter ? NumConverter.instance : CastConverter.instance;
+  }
 
   bool get hasImageCodecs => impl.hasImageCodecs;
 
@@ -18,6 +22,8 @@ class TestContext {
   bool get supportsWasmGC => impl.supportsWasmGc;
 
   bool get isCrossOriginIsolated => impl.isCrossOriginIsolated;
+
+  bool get useNumConverter => workerPlatform.isWasm || clientPlatform.isWasm;
 
   static Future<TestContext?> init(String root,
       [TestPlatform? workerPlatform]) async {

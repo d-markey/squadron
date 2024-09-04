@@ -67,11 +67,8 @@ _65: () => {
 _85: s => JSON.stringify(s),
 _86: s => printToConsole(s),
 _87: a => a.join(''),
-_88: (o, a, b) => o.replace(a, b),
-_90: (s, t) => s.split(t),
 _91: s => s.toLowerCase(),
 _97: (s, p, i) => s.indexOf(p, i),
-_99: (s) => s.replace(/\$/g, "$$$$"),
 _100: Object.is,
 _102: s => s.toLowerCase(),
 _103: (a, i) => a.push(i),
@@ -128,16 +125,6 @@ _198: (x0,x1) => x0.postMessage(x1),
 _216: o => Object.keys(o),
 _221: (c) =>
               queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
-_258: (s, m) => {
-          try {
-            return new RegExp(s, m);
-          } catch (e) {
-            return String(e);
-          }
-        },
-_261: (x0,x1) => x0.exec(x1),
-_262: (x0,x1) => x0.exec(x1),
-_263: x0 => x0.pop(),
 _269: o => o === undefined,
 _270: o => typeof o === 'boolean',
 _271: o => typeof o === 'number',
@@ -159,7 +146,6 @@ _290: o => {
             const proto = Object.getPrototypeOf(o);
             return proto === Object.prototype || proto === null;
           },
-_291: o => o instanceof RegExp,
 _292: (l, r) => l === r,
 _293: o => o,
 _294: o => o,
@@ -298,15 +284,6 @@ _322: (o, p) => o[p],
 _323: (o, p, v) => o[p] = v,
 _324: (o, m, a) => o[m].apply(o, a),
 _326: o => String(o),
-_331: x0 => x0.index,
-_333: x0 => x0.length,
-_335: (x0,x1) => x0[x1],
-_338: x0 => x0.flags,
-_339: x0 => x0.multiline,
-_340: x0 => x0.ignoreCase,
-_341: x0 => x0.unicode,
-_342: x0 => x0.dotAll,
-_343: (x0,x1) => x0.lastIndex = x1,
 _344: (o, p) => p in o,
 _345: (o, p) => o[p],
 _2745: x0 => x0.port1,

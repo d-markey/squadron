@@ -1,3 +1,5 @@
+import 'dart:async';
+
 typedef BufferedItem<T> = ({T? item, Object? err, StackTrace? st});
 
 class EventBuffer<T> {
@@ -19,17 +21,20 @@ class EventBuffer<T> {
     _buffer.add((item: null, err: err, st: st));
   }
 
-  void pause() {
+  void activate() {
     _pauses++;
   }
 
-  void resume() {
+  void deactivate() {
     if (_pauses == 1) {
       _buffer.forEach(_process);
       _buffer.clear();
+      onDeactivate?.call();
     }
     if (_pauses > 0) {
       _pauses--;
     }
   }
+
+  FutureOr<void> Function()? onDeactivate;
 }

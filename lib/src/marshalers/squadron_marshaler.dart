@@ -1,3 +1,5 @@
+import '../../squadron.dart';
+
 /// Base class to serialize/deserialize data of type [T] to a transferable type [S].
 abstract class SquadronMarshaler<T, S> {
   const SquadronMarshaler();
@@ -11,4 +13,12 @@ abstract class SquadronMarshaler<T, S> {
   /// `unmarshal(marshal(data))` must produce an instance of [T] that is equivalent to
   /// original instance [data].
   T unmarshal(S data);
+}
+
+extension SquadronMarshalerExt<T, S> on SquadronMarshaler<T, S> {
+  Cast<S> marshaler([Cast<T>? cast]) =>
+      (x) => marshal((cast ?? platformConverter.v<T>())(x));
+
+  Cast<T> unmarshaler([Cast<S>? cast]) =>
+      (x) => unmarshal((cast ?? platformConverter.v<S>())(x));
 }

@@ -71,5 +71,5 @@ class _VmWorkerChannel implements WorkerChannel {
 
 /// Creates a [WorkerChannel] from a [SendPort].
 @internal
-WorkerChannel? deserialize(PlatformChannel? channelInfo, Logger? logger) =>
+WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
     (channelInfo == null) ? null : _VmWorkerChannel._(channelInfo, logger);

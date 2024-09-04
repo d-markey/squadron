@@ -12,6 +12,6 @@ Future<Channel> openChannel(EntryPoint entryPoint,
         [PlatformThreadHook? hook]) =>
     throw SquadronErrorExt.create('Platform not supported');
 
-Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
-        ExceptionManager exceptionManager) =>
+Channel? deserialize(PlatformChannel? channelInfo,
+        [Logger? logger, ExceptionManager? exceptionManager]) =>
     throw SquadronErrorExt.create('Platform not supported');

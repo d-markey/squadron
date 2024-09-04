@@ -1,12 +1,15 @@
+import 'src/converters/cast_converter.dart';
+
 export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
 export 'package:logger/logger.dart' show Logger;
 
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';
-export 'src/cast_helpers.dart';
 export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
+export 'src/converters/cast_converter.dart';
+export 'src/converters/num_converter.dart';
 export 'src/exceptions/exception_manager.dart'
     hide SquadronExceptionDeserializer;
 export 'src/exceptions/squadron_canceled_exception.dart'
@@ -40,3 +43,5 @@ export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;
 export 'src/worker/worker_response.dart' hide WorkerResponseExt;
 export 'src/worker_service.dart';
+
+CastConverter platformConverter = CastConverter.instance;

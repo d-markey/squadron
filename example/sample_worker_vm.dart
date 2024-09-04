@@ -4,8 +4,7 @@ import 'identity_service.dart';
 import 'sample_service.dart';
 
 WorkerService _initializer(WorkerRequest startRequest) {
-  final logger = Logger();
-  final channel = Channel.deserialize(startRequest.args[0], logger)!;
+  final channel = Channel.deserialize(startRequest.args[0])!;
   final identityClient = IdentityClient(channel);
   return SampleServiceImpl(identityClient);
 }

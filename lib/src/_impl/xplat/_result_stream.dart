@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../../cast_helpers.dart';
 import '../../channel.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
@@ -37,7 +36,7 @@ class ResultStream {
       final error = res.error;
       if (error == null && !hasStreamId) {
         // the first result from a streaming operation is the stream ID
-        streamIdCompleter.complete(Cast.toInt(res.result));
+        streamIdCompleter.complete((res.result as num).toInt());
       } else if (error != null) {
         _controller.addError(error);
         if (!hasStreamId) {

@@ -43,5 +43,5 @@ class SampleWorker extends Worker implements SampleService {
 
   @override
   Future<String> whoAreYouTalkingTo() =>
-      send(SampleService.whoAreYouTalkingToCommand);
+      send(SampleService.whoAreYouTalkingToCommand).then((x) => x as String);
 }

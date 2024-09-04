@@ -32,44 +32,44 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       : this._(() => TestWorker.invalid(context), concurrencySettings);
 
   @override
-  Future setLevel(int level) => execute((w) => w.setLevel(level));
+  Future<void> setLevel(int level) => execute((w) => w.setLevel(level));
 
   @override
-  Future log() => execute((w) => w.log());
+  Future<void> log() => execute((w) => w.log());
 
   @override
-  Future io({required int ms}) => execute((w) => w.io(ms: ms));
+  Future<void> io({required int ms}) => execute((w) => w.io(ms: ms));
 
   @override
-  Future cpu({required int ms}) => execute((w) => w.cpu(ms: ms));
+  Future<void> cpu({required int ms}) => execute((w) => w.cpu(ms: ms));
 
   @override
   Future<int> delayed(int n) => execute((w) => w.delayed(n));
 
   @override
-  Future<int> throwException() => execute((w) => w.throwException());
+  Future<void> throwException() => execute((w) => w.throwException());
 
   @override
-  Future<int> throwWorkerException() =>
+  Future<void> throwWorkerException() =>
       execute((w) => w.throwWorkerException());
 
   @override
-  Future<int> throwTaskTimeOutException() =>
+  Future<void> throwTaskTimeOutException() =>
       execute((w) => w.throwTaskTimeOutException());
 
   @override
-  Future<int> throwCanceledException() =>
+  Future<void> throwCanceledException() =>
       execute((w) => w.throwCanceledException());
 
   @override
-  Future<int> throwCustomException() =>
+  Future<void> throwCustomException() =>
       execute((w) => w.throwCustomException());
 
   @override
   Future<dynamic> sendBack(dynamic data) => execute((w) => w.sendBack(data));
 
   @override
-  Future missing() => execute((w) => w.missing());
+  Future<void> missing() => execute((w) => w.missing());
 
   @override
   Future<dynamic> invalidResponse() => execute((w) => w.invalidResponse());
@@ -90,7 +90,7 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       stream((w) => w.clock(frequency: frequency, token: token));
 
   @override
-  Future cancelableInfiniteCpu(CancelationToken token) =>
+  Future<int> cancelableInfiniteCpu(CancelationToken token) =>
       execute((w) => w.cancelableInfiniteCpu(token));
 
   @override
@@ -125,119 +125,131 @@ class TestWorker extends Worker implements TestService {
   TestWorker(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [TestService.startupOk],
+          [context.useNumConverter, TestService.startupOk],
           hook,
         );
 
   TestWorker.throws(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [TestService.startupThrows],
+          [context.useNumConverter, TestService.startupThrows],
           hook,
         );
 
   TestWorker.invalid(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [TestService.startupInvalid],
+          [context.useNumConverter, TestService.startupInvalid],
           hook,
         );
 
   TestWorker.missingStartRequest(TestContext context)
       : this._(
           context.entryPoints.missingStartRequest!,
-          [TestService.startupOk],
+          [context.useNumConverter, TestService.startupOk],
         );
 
   @override
-  Future setLevel(int level) =>
+  Future<void> setLevel(int level) =>
       send(TestService.setLevelCommand, args: [level]);
 
   @override
-  Future log() => send(TestService.logCommand);
+  Future<void> log() => send(TestService.logCommand);
 
   @override
-  Future io({required int ms}) => send(TestService.ioCommand, args: [ms]);
+  Future<void> io({required int ms}) => send(TestService.ioCommand, args: [ms]);
 
   @override
-  Future cpu({required int ms}) => send(TestService.cpuCommand, args: [ms]);
+  Future<void> cpu({required int ms}) =>
+      send(TestService.cpuCommand, args: [ms]);
 
   @override
-  Future<int> delayed(int n) =>
-      send(TestService.delayedCommand, args: [n]).then(Cast.toInt);
+  Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n])
+      .then(platformConverter.v<int>());
 
   @override
   Future<int> throwException() =>
-      send(TestService.throwExceptionCommand).then(Cast.toInt);
+      send(TestService.throwExceptionCommand).then(platformConverter.v<int>());
 
   @override
   Future<int> throwWorkerException() =>
-      send(TestService.throwWorkerExceptionCommand);
+      send(TestService.throwWorkerExceptionCommand)
+          .then(platformConverter.v<int>());
 
   @override
   Future<int> throwTaskTimeOutException() =>
-      send(TestService.throwTaskTimeOutExceptionCommand).then(Cast.toInt);
+      send(TestService.throwTaskTimeOutExceptionCommand)
+          .then(platformConverter.v<int>());
 
   @override
   Future<int> throwCanceledException() =>
-      send(TestService.throwCanceledExceptionCommand).then(Cast.toInt);
+      send(TestService.throwCanceledExceptionCommand)
+          .then(platformConverter.v<int>());
 
   @override
   Future<int> throwCustomException() =>
-      send(TestService.throwCustomExceptionCommand).then(Cast.toInt);
+      send(TestService.throwCustomExceptionCommand)
+          .then(platformConverter.v<int>());
 
   @override
   Future<dynamic> sendBack(dynamic data) =>
       send(TestService.sendBackCommand, args: [data]);
 
   @override
-  Future missing() => send(TestService.missingCommand);
+  Future<void> missing() => send(TestService.missingCommand);
 
   @override
   Future<dynamic> invalidResponse() => send(TestService.invalidResponseCommand);
 
   @override
-  Future<bool> ping() => send(TestService.pingCommand);
+  Future<bool> ping() =>
+      send(TestService.pingCommand).then(platformConverter.v<bool>());
 
   @override
   Stream<int> finite(int count, [CancelationToken? token]) =>
       stream(TestService.finiteCommand, args: [count], token: token)
-          .map(Cast.toInt);
+          .map(platformConverter.v<int>());
 
   @override
   Stream<int> infinite([CancelationToken? token]) =>
-      stream(TestService.infiniteCommand, token: token).map(Cast.toInt);
+      stream(TestService.infiniteCommand, token: token)
+          .map(platformConverter.v<int>());
 
   @override
   Stream<int> clock({int frequency = 1, CancelationToken? token}) =>
       stream(TestService.clockCommand, args: [frequency], token: token)
-          .map(Cast.toInt);
+          .map(platformConverter.v<int>());
 
   @override
-  Future cancelableInfiniteCpu(CancelationToken token) =>
-      send(TestService.cancelableInfiniteCpuCommand, token: token);
+  Future<int> cancelableInfiniteCpu(CancelationToken token) =>
+      send(TestService.cancelableInfiniteCpuCommand, token: token)
+          .then(platformConverter.v<int>());
 
   @override
   Future<int> getPendingInfiniteWithErrors() =>
-      send(TestService.getPendingInfiniteWithErrorsCommand).then(Cast.toInt);
+      send(TestService.getPendingInfiniteWithErrorsCommand)
+          .then(platformConverter.v<int>());
 
   @override
   Stream<int> infiniteWithErrors([CancelationToken? token]) =>
       stream(TestService.infiniteWithErrorsCommand, token: token)
-          .map(Cast.toInt);
+          .map(platformConverter.v<int>());
 
   @override
   Future<BigInt> bigIntAdd(BigInt a, BigInt b,
-      {required bool marshalIn, required bool marshalOut}) async {
+      {required bool marshalIn, required bool marshalOut}) {
     final bigIntMarshaler = BigIntMarshaler();
-    final $a = marshalIn ? bigIntMarshaler.marshal(a) : a;
-    final $b = marshalIn ? bigIntMarshaler.marshal(b) : b;
-    final res = await send(
+    final marshal =
+        marshalIn ? bigIntMarshaler.marshaler() : platformConverter.v<BigInt>();
+    return send(
       TestService.bigIntAddCommand,
-      args: [$a, $b, marshalIn, marshalOut],
+      args: [marshal(a), marshal(b), marshalIn, marshalOut],
       inspectRequest: true,
       inspectResponse: true,
+    ).then(
+      marshalOut
+          ? bigIntMarshaler.unmarshaler()
+          : platformConverter.v<BigInt>(),
     );
-    return marshalOut ? bigIntMarshaler.unmarshal(res) : res;
   }
 }

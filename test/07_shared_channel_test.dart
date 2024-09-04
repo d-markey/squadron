@@ -16,7 +16,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '06_shared_channel_test.dart';
+String testScript = '07_shared_channel_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;

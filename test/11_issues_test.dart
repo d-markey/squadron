@@ -18,7 +18,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '10_issues_test.dart';
+String testScript = '11_issues_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
@@ -38,7 +38,10 @@ void execute(TestContext? tc) {
 
             await completer.future;
 
-            expect(results, [0, 1]);
+            expect(results, [
+              {'id': 1, 'num': 0},
+              {'id': 2, 'num': 1}
+            ]);
             expect(errors, hasLength(1));
             expect(errors.first, isA<WorkerException>());
             expect(errors.first, reports('issue 8 error message'));
@@ -56,7 +59,10 @@ void execute(TestContext? tc) {
 
             await completer.future;
 
-            expect(results, [0, 1]);
+            expect(results, [
+              {'id': 1, 'num': 0},
+              {'id': 2, 'num': 1}
+            ]);
             expect(errors, hasLength((1)));
             expect(errors.first, isA<WorkerException>());
             expect(errors.first, reports('issue 8 error message'));

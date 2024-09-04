@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 class IssuesService implements WorkerService {
-  Stream<dynamic> issue_8(List<dynamic> words) async* {
+  Stream<Map<String, int>> issue_8(List<int> nums) async* {
     int id = 0;
-    for (var word in words) {
+    for (var n in nums) {
       await Future.delayed(Duration.zero);
       if (id == 2) throw 'issue 8 error message';
       id++;
-      yield word;
+      yield {'id': id, 'num': n};
     }
   }
 
@@ -19,6 +19,6 @@ class IssuesService implements WorkerService {
   // command IDs --> command implementations
   @override
   Map<int, CommandHandler> get operations => {
-        cmdIssue_8: (r) => issue_8(r.args[0]),
+        cmdIssue_8: (r) => issue_8(platformConverter.l<int>()(r.args[0])),
       };
 }

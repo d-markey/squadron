@@ -20,23 +20,23 @@ class LocalWorkerClient implements WorkerService {
   final Channel channel;
 
   /// Sends a command to the [LocalWorker].
-  Future<T> send<T>(int command,
+  Future<dynamic> send(int command,
           {List args = const [],
           SquadronCancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
-      channel.sendRequest<T>(command, args,
+      channel.sendRequest(command, args,
           token: token?.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 
   /// Sends a streaming command to the [LocalWorker].
-  Stream<T> stream<T>(int command,
+  Stream<dynamic> stream(int command,
           {List args = const [],
           CancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
-      channel.sendStreamingRequest<T>(command, args,
+      channel.sendStreamingRequest(command, args,
           token: token?.wrap(),
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);

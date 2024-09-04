@@ -469,7 +469,6 @@ file:///C:/Users/DMA/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0/lib/web.da
 file:///C:/_Projects/github/squadron/.dart_tool/package_config.json
 file:///C:/_Projects/github/squadron/lib/squadron.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_bootstrapper.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/web/_cast_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_channel_impl.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_entry_point_uri.dart
@@ -492,9 +491,10 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_worker_runner.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_method.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_service.dart
 file:///C:/_Projects/github/squadron/lib/src/bootstrapper.dart
-file:///C:/_Projects/github/squadron/lib/src/cast_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/channel.dart
 file:///C:/_Projects/github/squadron/lib/src/concurrency_settings.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/squadron_canceled_exception.dart

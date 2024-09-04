@@ -169,8 +169,12 @@ Future<Channel> openChannel(
 }
 
 /// Creates a [_WebChannel] from a [web.MessagePort].
-Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
-        ExceptionManager exceptionManager) =>
+Channel? deserialize(PlatformChannel? channelInfo,
+        [Logger? logger, ExceptionManager? exceptionManager]) =>
     (channelInfo == null)
         ? null
-        : _WebChannel._(channelInfo, logger, exceptionManager);
+        : _WebChannel._(
+            channelInfo,
+            logger,
+            exceptionManager ?? ExceptionManager(),
+          );

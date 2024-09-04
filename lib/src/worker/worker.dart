@@ -141,7 +141,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// Sends a workload to the worker.
-  Future<T> send<T>(
+  Future<dynamic> send(
     int command, {
     List args = const [],
     CancelationToken? token,
@@ -153,7 +153,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     // get the channel, start the worker if necessary
     final channel = _channel ?? await start();
 
-    final completer = ForwardCompleter<T>();
+    final completer = ForwardCompleter();
 
     final squadronToken = token?.wrap();
     squadronToken?.onCanceled.then((ex) {
@@ -163,7 +163,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
 
     _enter();
     try {
-      final res = await channel.sendRequest<T>(
+      final res = await channel.sendRequest(
         command,
         args,
         token: squadronToken,
@@ -182,7 +182,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// Sends a streaming workload to the worker.
-  Stream<T> stream<T>(
+  Stream<dynamic> stream(
     int command, {
     List args = const [],
     CancelationToken? token,
@@ -191,7 +191,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }) {
     final squadronToken = token?.wrap();
 
-    late final ForwardStreamController<T> controller;
+    late final ForwardStreamController controller;
 
     squadronToken?.onCanceled.then((ex) {
       if (!controller.isClosed) {
@@ -210,7 +210,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
         if (controller.isClosed) return;
         _enter();
         controller.attachSubscription(channel
-            .sendStreamingRequest<T>(
+            .sendStreamingRequest(
               command,
               args,
               token: squadronToken,

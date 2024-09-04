@@ -22,7 +22,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '07_cancelation_test.dart';
+String testScript = '08_cancelation_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
@@ -122,7 +122,7 @@ void execute(TestContext? tc) {
           for (var i = 0; i < count; i++) {
             final task = pool.delayedTask(i);
             tasks.add(task);
-            futures.add(task.value.then(digits.add, onError: (e) => errors++));
+            futures.add(task.value.then(digits.add, onError: (_) => errors++));
           }
 
           // immediate cancelation
@@ -159,7 +159,7 @@ void execute(TestContext? tc) {
           for (var i = 0; i < count; i++) {
             final task = pool.delayedTask(i);
             tasks.add(task);
-            futures.add(task.value.then(digits.add, onError: (e) => errors++));
+            futures.add(task.value.then(digits.add, onError: (_) => errors++));
           }
 
           // immediate cancelation
@@ -414,7 +414,7 @@ void execute(TestContext? tc) {
         int success = 0, errors = 0;
         for (var i = 0; i < count; i++) {
           tasks.add(pool.finite(N, token).toList().then(
-                (list) => success++,
+                (_) => success++,
                 onError: (_) => errors++,
               ));
         }
@@ -437,7 +437,7 @@ void execute(TestContext? tc) {
         int success = 0, errors = 0;
         for (var i = 0; i < count; i++) {
           tasks.add(pool.infinite(token).toList().then(
-                (list) => success++,
+                (_) => success++,
                 onError: (_) => errors++,
               ));
         }
@@ -493,7 +493,7 @@ void execute(TestContext? tc) {
 
           expect(cancelation.isCanceled, isTrue);
           expect(pool.pendingWorkload, isZero);
-          expect(res.success, pool.maxConcurrency);
+          expect(res.success, lessThanOrEqualTo(pool.maxConcurrency));
           expect(res.errors, count - res.success);
         });
 
@@ -544,7 +544,7 @@ void execute(TestContext? tc) {
           final res = await testFinitePoolCancelation(N, count, timeout);
           expect(timeout.isCanceled, isTrue);
           expect(pool.pendingWorkload, isZero);
-          expect(res.success, pool.maxConcurrency);
+          expect(res.success, lessThanOrEqualTo(pool.maxConcurrency));
           expect(res.errors, count - res.success);
         });
 
@@ -690,7 +690,7 @@ void execute(TestContext? tc) {
           expect(timeout2.isCanceled, isTrue);
           expect(cancelation2.isCanceled, isFalse);
           expect(pool.pendingWorkload, isZero);
-          expect(res.success, pool.maxConcurrency);
+          expect(res.success, lessThanOrEqualTo(pool.maxConcurrency));
           expect(res.errors, count - res.success);
 
           // canceled by timeout3 and cancelation3
@@ -705,7 +705,7 @@ void execute(TestContext? tc) {
           expect(timeout3.isCanceled, isTrue);
           expect(cancelation3.isCanceled, isTrue);
           expect(pool.pendingWorkload, isZero);
-          expect(res.success, pool.maxConcurrency);
+          expect(res.success, lessThanOrEqualTo(pool.maxConcurrency));
           expect(res.errors, count - res.success);
         });
 

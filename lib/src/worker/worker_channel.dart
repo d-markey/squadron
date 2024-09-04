@@ -47,7 +47,7 @@ abstract class WorkerChannel {
   void error(Object err, [StackTrace? stacktrace, int? command]);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static WorkerChannel? deserialize(
-          PlatformChannel? channelInfo, Logger? logger) =>
+  static WorkerChannel? deserialize(PlatformChannel? channelInfo,
+          [Logger? logger]) =>
       impl.deserialize(channelInfo, logger);
 }

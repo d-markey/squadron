@@ -31,7 +31,7 @@ void main() async {
     }
   });
 
-  context = await run(
+  context = await runTests(
     Uri.parse(window.location.href).queryParameters.keys,
     TestPlatform.js,
   );

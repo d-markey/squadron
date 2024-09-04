@@ -8,7 +8,9 @@ class UnexpectedSuccessException implements Exception {
 }
 
 UnexpectedSuccessException unexpectedSuccess(String process, [dynamic res]) =>
-    UnexpectedSuccessException('$process completed successfully with res=$res');
+    UnexpectedSuccessException((res == null)
+        ? 'Unexpected: $process completed successfully'
+        : 'Unexpected: $process completed successfully with res=$res');
 
 Matcher isNotA<T>() => isNot(isA<T>());
 

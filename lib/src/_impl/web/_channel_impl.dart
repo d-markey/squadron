@@ -129,7 +129,7 @@ class _WebChannel implements Channel {
         com.port1.close();
         com.port2.close();
         if (!controller.isClosed) {
-          controller.close();
+          await controller.close();
         }
       }
 
@@ -169,17 +169,15 @@ class _WebChannel implements Channel {
           } catch (ex, st) {
             if (buffer.isActive) {
               buffer.addError(ex, st);
-              // TODO: since this instance is paused, the controller should probably
-              // not be closed straight away
-              $close();
+              buffer.onDeactivate = $close;
             } else {
               $forwardError(ex, st);
               $close();
             }
           }
         },
-        onPause: buffer.pause,
-        onResume: buffer.resume,
+        onPause: buffer.activate,
+        onResume: buffer.deactivate,
         onCancel: $close,
       );
 
@@ -193,17 +191,17 @@ class _WebChannel implements Channel {
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
   /// single value from the [web.Worker].
   @override
-  Future<T> sendRequest<T>(
+  Future<dynamic> sendRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    final completer = Completer<T>();
-    late final StreamSubscription<T> sub;
+    final completer = Completer();
+    late final StreamSubscription sub;
 
-    void $success(T data) async {
+    void $success(dynamic data) async {
       await sub.cancel();
       if (!completer.isCompleted) completer.complete(data);
     }
@@ -225,8 +223,6 @@ class _WebChannel implements Channel {
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
     sub = _getResponseStream(com, req, post, streaming: false)
-        .cast<
-            T>() // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
         .listen($success, onError: $fail, onDone: $done);
     return completer.future;
   }
@@ -235,7 +231,7 @@ class _WebChannel implements Channel {
   /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close
   /// the [Stream].
   @override
-  Stream<T> sendStreamingRequest<T>(
+  Stream<dynamic> sendStreamingRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,
@@ -246,8 +242,7 @@ class _WebChannel implements Channel {
     final req = WorkerRequest.userCommand(
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
-    return _getResponseStream(com, req, post, streaming: true).cast<
-        T>(); // TODO channel operations should return dynamic because T maybe a user-type (not transferable), or too complex (eg List<List>, Map<K, List>...)
+    return _getResponseStream(com, req, post, streaming: true);
   }
 }
 

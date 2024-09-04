@@ -10,7 +10,7 @@ import 'local_workers/local_service.dart';
 abstract class LocalClientService {
   FutureOr<String> checkIds();
   FutureOr<bool> checkException();
-  Stream<dynamic> checkSequence(int count);
+  Stream<Map<String, dynamic>> checkSequence(int count);
 
   static const checkIdsCommand = 1;
   static const checkExceptionCommand = 2;
@@ -37,7 +37,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
   }
 
   @override
-  Stream<dynamic> checkSequence(int count) async* {
+  Stream<Map<String, dynamic>> checkSequence(int count) async* {
     var cur = 0;
     await for (var i in _localClient.sequence(count)) {
       yield {'i': i, 'cur': cur, 'ok': (i == cur)};
@@ -50,7 +50,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
     LocalClientService.checkIdsCommand: (req) => checkIds(),
     LocalClientService.checkExceptionCommand: (req) => checkException(),
     LocalClientService.checkSequenceCommand: (req) =>
-        checkSequence(Cast.toInt(req.args[0])),
+        checkSequence(platformConverter.v<int>()(req.args[0])),
   };
 }
 
@@ -61,8 +61,10 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
       LocalWorker<LocalService> localService,
       ConcurrencySettings? concurrencySettings)
       : super(
-            () => LocalClientWorker(context,
-                args: [localService.channel?.share().serialize()]),
+            () => LocalClientWorker(context, args: [
+                  context.useNumConverter,
+                  localService.channel?.share().serialize(),
+                ]),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
@@ -73,7 +75,7 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
   Future<bool> checkException() => execute((w) => w.checkException());
 
   @override
-  Stream<dynamic> checkSequence(int count) =>
+  Stream<Map<String, dynamic>> checkSequence(int count) =>
       stream((w) => w.checkSequence(count));
 }
 
@@ -82,13 +84,16 @@ class LocalClientWorker extends Worker implements LocalClientService {
       : super(context.entryPoints.local!, args: args);
 
   @override
-  Future<String> checkIds() => send(LocalClientService.checkIdsCommand);
+  Future<String> checkIds() => send(LocalClientService.checkIdsCommand)
+      .then(platformConverter.v<String>());
 
   @override
   Future<bool> checkException() =>
-      send(LocalClientService.checkExceptionCommand);
+      send(LocalClientService.checkExceptionCommand)
+          .then(platformConverter.v<bool>());
 
   @override
-  Stream<dynamic> checkSequence(int count) =>
-      stream(LocalClientService.checkSequenceCommand, args: [count]);
+  Stream<Map<String, dynamic>> checkSequence(int count) =>
+      stream(LocalClientService.checkSequenceCommand, args: [count])
+          .map(platformConverter.m<String, dynamic>());
 }

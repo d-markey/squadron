@@ -4911,7 +4911,7 @@
               t6 = t1.createElement("button");
               t6.toString;
               B.ButtonElement_methods.set$text(t6, "Run selected tests");
-              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_runTests(t5, testRunner, getTestRunnerUrl)), false, t3);
+              A._EventStreamSubscription$(t6, "click", t4._as(new A.main_executeTests(t5, testRunner, getTestRunnerUrl)), false, t3);
               t2.appendChild(t6).toString;
               t6 = t1.createElement("button");
               t6.toString;
@@ -4993,7 +4993,7 @@
       this.testRunner = t0;
       this.getTestRunnerUrl = t1;
     },
-    main_runTests: function main_runTests(t0, t1, t2) {
+    main_executeTests: function main_executeTests(t0, t1, t2) {
       this.testList = t0;
       this.testRunner = t1;
       this.getTestRunnerUrl = t2;
@@ -9737,8 +9737,8 @@
     },
     $signature: 32
   };
-  A.main_runTests.prototype = {
-    $call$body$main_runTests(_) {
+  A.main_executeTests.prototype = {
+    $call$body$main_executeTests(_) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
         $async$self = this, t1, t2, t3, t4, testIds;
@@ -9766,7 +9766,7 @@
       return A._asyncStartSync($async$call$1, $async$completer);
     },
     call$1(_) {
-      return this.$call$body$main_runTests(type$.nullable_MouseEvent._as(_));
+      return this.$call$body$main_executeTests(type$.nullable_MouseEvent._as(_));
     },
     call$0() {
       return this.call$1(null);
@@ -9924,7 +9924,7 @@
     _inherit(A.UnmodifiableMapView, A._UnmodifiableMapView_MapView__UnmodifiableMapMixin);
     _inherit(A.ConstantMapView, A.UnmodifiableMapView);
     _inherit(A.ConstantStringMap, A.ConstantMap);
-    _inheritMany(A.Closure, [A.Closure2Args, A.Closure0Args, A.TearOffClosure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_length_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A.Element_Element$html_closure, A._EventStreamSubscription_closure, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.FilteredElementList__iterable_closure, A.FilteredElementList__iterable_closure0, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.main_closure, A.main_setStatus, A.main_closure0, A.main_closure1, A.main_runTests, A.main_selectAll, A.main_deselectAll, A.main_toggle, A.main_cancel, A.TestContext_rootGroups_closure]);
+    _inheritMany(A.Closure, [A.Closure2Args, A.Closure0Args, A.TearOffClosure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_length_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A.Element_Element$html_closure, A._EventStreamSubscription_closure, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.FilteredElementList__iterable_closure, A.FilteredElementList__iterable_closure0, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.main_closure, A.main_setStatus, A.main_closure0, A.main_closure1, A.main_executeTests, A.main_selectAll, A.main_deselectAll, A.main_toggle, A.main_cancel, A.TestContext_rootGroups_closure]);
     _inheritMany(A.Closure2Args, [A.Primitives_functionNoSuchMethod_closure, A.initHooks_closure0, A._awaitOnObject_closure0, A._wrapJsFunctionForAsync_closure, A._Future__chainForeignFuture_closure0, A.MapBase_mapToString_closure, A.NoSuchMethodError_toString_closure, A.MidiInputMap_keys_closure, A.MidiOutputMap_keys_closure, A.RtcStatsReport_keys_closure, A.Storage_keys_closure, A._ValidatingTreeSanitizer_sanitizeTree_walk, A._StructuredClone_walk_closure, A._StructuredClone_walk_closure0, A._AcceptStructuredClone_walk_closure, A.AudioParamMap_keys_closure]);
     _inherit(A.NullError, A.TypeError);
     _inheritMany(A.TearOffClosure, [A.StaticClosure, A.BoundClosure]);

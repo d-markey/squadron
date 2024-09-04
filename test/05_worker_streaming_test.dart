@@ -19,7 +19,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '04_worker_streaming_test.dart';
+String testScript = '05_worker_streaming_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;

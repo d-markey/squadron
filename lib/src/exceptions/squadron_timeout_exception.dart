@@ -1,7 +1,6 @@
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:meta/meta.dart';
 
-import '../cast_helpers.dart';
 import '_well_known_exceptions.dart';
 import 'squadron_canceled_exception.dart';
 import 'squadron_exception.dart';
@@ -36,7 +35,7 @@ extension SquadronTimeoutExceptionExt on SquadronTimeoutException {
   static SquadronTimeoutException? deserialize(List? props) {
     if (props == null) return null;
     if (props[_$type] != $timeoutExceptionType) return null;
-    final microSecs = Cast.toNullableInt(props[_$duration]);
+    final microSecs = (props[_$duration] as num?)?.toInt();
     return SquadronTimeoutException(
       props[_$tokenId],
       props[_$message],

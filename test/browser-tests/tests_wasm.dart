@@ -7,14 +7,14 @@ import 'package:web/web.dart';
 import '../00_not_a_worker_test.dart' as not_a_worker_test;
 import '../01_web_worker_wasm_test.dart' as web_worker_test;
 import '../02_logging_test.dart' as logging_test;
-import '../03_worker_test.dart' as worker_test;
-import '../04_worker_streaming_test.dart' as streaming_test;
-import '../05_local_worker_test.dart' as local_worker_test;
-import '../06_shared_channel_test.dart' as shared_channel_test;
-import '../07_cancelation_test.dart' as cancelation_test;
-import '../08_marshaler_test.dart' as marshaler_test;
-import '../09_worker_pool_test.dart' as worker_pool_test;
-import '../10_issues_test.dart' as issues_test;
+import '../04_worker_test.dart' as worker_test;
+import '../05_worker_streaming_test.dart' as streaming_test;
+import '../06_local_worker_test.dart' as local_worker_test;
+import '../07_shared_channel_test.dart' as shared_channel_test;
+import '../08_cancelation_test.dart' as cancelation_test;
+import '../09_marshaler_test.dart' as marshaler_test;
+import '../10_worker_pool_test.dart' as worker_pool_test;
+import '../11_issues_test.dart' as issues_test;
 
 final executors = {
   'Classic Web Workers': (

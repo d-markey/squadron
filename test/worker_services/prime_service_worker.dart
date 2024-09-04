@@ -16,24 +16,26 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 
   @override
   Future<bool> isPrime(int n, [PerfCounter? counter]) =>
-      execute((w) async => await w.isPrime(n), counter: counter);
+      execute((w) async => w.isPrime(n), counter: counter);
 
   @override
   Stream<int> getPrimes(int min, int max, [PerfCounter? counter]) =>
-      stream((w) => w.getPrimes(min, max), counter: counter).map(Cast.toInt);
+      stream((w) => w.getPrimes(min, max), counter: counter);
 }
 
 class PrimeWorker extends Worker implements PrimeService {
   PrimeWorker(TestContext context, CacheWorker? cache)
-      : super(context.entryPoints.prime!,
-            args: [cache?.getSharedChannel()!.serialize()]);
+      : super(context.entryPoints.prime!, args: [
+          context.useNumConverter,
+          cache?.getSharedChannel()!.serialize(),
+        ]);
 
   @override
-  FutureOr<bool> isPrime(int n) =>
-      send<bool>(PrimeService.isPrimeCommand, args: [n]);
+  FutureOr<bool> isPrime(int n) => send(PrimeService.isPrimeCommand, args: [n])
+      .then(platformConverter.v<bool>());
 
   @override
   Stream<int> getPrimes(int min, int max) =>
-      stream<int>(PrimeService.getPrimesCommand, args: [min, max])
-          .map(Cast.toInt);
+      stream(PrimeService.getPrimesCommand, args: [min, max])
+          .map(platformConverter.v<int>());
 }

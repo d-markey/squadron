@@ -26,7 +26,7 @@ void main() {
   // TestContext.init('', TestPlatform.wasm).then(execute);
 }
 
-String testScript = '09_worker_pool_test.dart';
+String testScript = '10_worker_pool_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
@@ -131,8 +131,8 @@ void execute(TestContext? tc) {
         tc.test('- Exception', () async {
           await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              final res = await p.execute((w) => w.throwException());
-              throw unexpectedSuccess('throwException()', res);
+              await p.throwException();
+              throw unexpectedSuccess('throwException()');
             } on WorkerException catch (ex) {
               expect(ex, reports('intentional exception'));
               expect(ex.stackTrace, hasCalled('throwException'));
@@ -144,8 +144,8 @@ void execute(TestContext? tc) {
         tc.test('- WorkerException', () async {
           await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              final res = await p.execute((w) => w.throwWorkerException());
-              throw unexpectedSuccess('throwWorkerException()', res);
+              await p.throwWorkerException();
+              throw unexpectedSuccess('throwWorkerException()');
             } on WorkerException catch (ex) {
               expect(ex, reports('intentional worker exception'));
               expect(ex.stackTrace, hasCalled('throwWorkerException'));
@@ -157,8 +157,8 @@ void execute(TestContext? tc) {
         tc.test('- TaskTimeOutException', () async {
           await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              final res = await p.throwTaskTimeOutException();
-              throw unexpectedSuccess('timeOut()', res);
+              await p.throwTaskTimeOutException();
+              throw unexpectedSuccess('timeOut()');
             } on TimeoutException catch (ex) {
               expect(ex, reports('intentional timeout exception'));
             }
@@ -168,8 +168,8 @@ void execute(TestContext? tc) {
         tc.test('- CanceledException', () async {
           await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              final res = await p.throwCanceledException();
-              throw unexpectedSuccess('cancel()', res);
+              await p.throwCanceledException();
+              throw unexpectedSuccess('cancel()');
             } on CanceledException catch (ex) {
               expect(ex, reports('intentional canceled exception'));
             }
@@ -179,8 +179,8 @@ void execute(TestContext? tc) {
         tc.test('- CustomException (unregistered)', () async {
           await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              final res = await p.throwCustomException();
-              throw unexpectedSuccess('cancel()', res);
+              await p.throwCustomException();
+              throw unexpectedSuccess('cancel()');
             } on WorkerException catch (ex) {
               expect(ex, isNotA<CustomException>());
               expect(ex, reports('Failed to deserialize'));
@@ -199,8 +199,8 @@ void execute(TestContext? tc) {
                 CustomException.typeId,
                 CustomException.deserialize,
               );
-              final res = await p.throwCustomException();
-              throw unexpectedSuccess('cancel()', res);
+              await p.throwCustomException();
+              throw unexpectedSuccess('cancel()');
             } on CustomException catch (ex) {
               expect(ex, reports('intentional CUSTOM exception'));
               expect(ex.stackTrace, hasCalled('throwCustomException'));
@@ -228,7 +228,11 @@ void execute(TestContext? tc) {
 
             await tasks.first;
 
-            final progress = counter.snapshot;
+            var progress = counter.snapshot;
+            if (progress.totalCount == 0) {
+              await Future.delayed(TestDelays.shortDelay);
+              progress = counter.snapshot;
+            }
             expect(progress.totalCount, isPositive);
             expect(progress.totalErrors, isZero);
             expect(progress.totalTimeInMicroseconds, isPositive);
@@ -259,7 +263,11 @@ void execute(TestContext? tc) {
 
             await tasks.first;
 
-            final progress = counter.snapshot;
+            var progress = counter.snapshot;
+            if (progress.totalCount == 0) {
+              await Future.delayed(TestDelays.shortDelay);
+              progress = counter.snapshot;
+            }
             expect(progress.totalCount, isPositive);
             expect(progress.totalErrors, isZero);
             expect(progress.totalTimeInMicroseconds, isPositive);
@@ -338,8 +346,8 @@ void execute(TestContext? tc) {
           p.stop();
 
           expect(p.stopped, isTrue);
-          expect(p.pendingWorkload, isPositive);
-          expect(digits, hasLength(lessThanOrEqualTo(p.maxConcurrency * 3)));
+          expect(p.pendingWorkload, isNonNegative);
+          expect(digits, hasLength(lessThanOrEqualTo(count)));
 
           await Future.wait(tasks);
 

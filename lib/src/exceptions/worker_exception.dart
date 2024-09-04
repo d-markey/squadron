@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 
-import '../cast_helpers.dart';
 import '_well_known_exceptions.dart';
 import 'squadron_exception.dart';
 
@@ -40,7 +39,7 @@ extension WorkerExceptionExt on WorkerException {
           ? WorkerException(
               data[_$message],
               SquadronException.loadStackTrace(data[_$stackTrace]),
-              Cast.toNullableInt(data[_$command]),
+              (data[_$command] as num?)?.toInt(),
             )
           : null;
 }

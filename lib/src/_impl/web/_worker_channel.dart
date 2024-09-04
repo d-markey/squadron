@@ -92,5 +92,5 @@ class _WebWorkerChannel implements WorkerChannel {
 
 /// Creates a [WorkerChannel] from a [web.MessagePort].
 @internal
-WorkerChannel? deserialize(PlatformChannel? channelInfo, Logger? logger) =>
+WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
     (channelInfo == null) ? null : _WebWorkerChannel._(channelInfo, logger);

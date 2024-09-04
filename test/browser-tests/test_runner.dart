@@ -7,7 +7,7 @@ String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
 
 Iterable<String> get testGroups => TestContext.rootGroups;
 
-Future<TestContext?> run(
+Future<TestContext?> runTests(
     Iterable<String> testLabels, TestPlatform platform) async {
   if (testLabels.isNotEmpty) {
     final testContext = await TestContext.init('/', platform);

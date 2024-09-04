@@ -122,8 +122,12 @@ Future<Channel> openChannel(
 }
 
 /// Creates a [_VmChannel] from a [SendPort].
-Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,
-        ExceptionManager exceptionManager) =>
+Channel? deserialize(PlatformChannel? channelInfo,
+        [Logger? logger, ExceptionManager? exceptionManager]) =>
     (channelInfo == null)
         ? null
-        : _VmChannel._(channelInfo, logger, exceptionManager);
+        : _VmChannel._(
+            channelInfo,
+            logger,
+            exceptionManager ?? ExceptionManager(),
+          );

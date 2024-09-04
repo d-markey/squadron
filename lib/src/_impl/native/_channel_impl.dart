@@ -114,17 +114,17 @@ class _VmChannel implements Channel {
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the
   /// [Isolate]. This method expects a single value from the [Isolate]
   @override
-  Future<T> sendRequest<T>(
+  Future<dynamic> sendRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    final completer = Completer<T>();
-    late final StreamSubscription<T> sub;
+    final completer = Completer();
+    late final StreamSubscription sub;
 
-    void $success(T data) async {
+    void $success(dynamic data) async {
       await sub.cancel();
       if (!completer.isCompleted) completer.complete(data);
     }
@@ -145,8 +145,6 @@ class _VmChannel implements Channel {
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
     sub = _getResponseStream(receiver, req, _postRequest, streaming: false)
-        .cast<
-            T>() // should work on native, as long as T can be sent across Isolates
         .listen($success, onError: $fail, onDone: $done);
     return completer.future;
   }
@@ -156,7 +154,7 @@ class _VmChannel implements Channel {
   /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the
   /// [Stream].
   @override
-  Stream<T> sendStreamingRequest<T>(
+  Stream<dynamic> sendStreamingRequest(
     int command,
     List args, {
     SquadronCancelationToken? token,
@@ -166,7 +164,6 @@ class _VmChannel implements Channel {
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
-    return _getResponseStream(receiver, req, _postRequest, streaming: true).cast<
-        T>(); // should work on native, as long as T can be sent across Isolates
+    return _getResponseStream(receiver, req, _postRequest, streaming: true);
   }
 }

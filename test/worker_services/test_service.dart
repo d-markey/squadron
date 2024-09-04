@@ -25,7 +25,7 @@ class TestService implements WorkerService {
     _logger.level = Level.values.where((l) => l.value == level).first;
   }
 
-  void log() async {
+  void log() {
     _logger.t('trace test in worker');
     _logger.d('debug test in worker');
     _logger.i('info test in worker');
@@ -34,7 +34,8 @@ class TestService implements WorkerService {
     _logger.f('fatal test in worker');
   }
 
-  Future io({required int ms}) => Future.delayed(Duration(milliseconds: ms));
+  Future<void> io({required int ms}) =>
+      Future.delayed(Duration(milliseconds: ms));
 
   void cpu({required int ms}) {
     final sw = Stopwatch()..start();
@@ -46,23 +47,23 @@ class TestService implements WorkerService {
     return n;
   }
 
-  FutureOr throwException() => throw Exception('intentional exception');
+  void throwException() => throw Exception('intentional exception');
 
-  FutureOr throwWorkerException() =>
+  void throwWorkerException() =>
       throw WorkerException('intentional worker exception');
 
-  Future<int> throwTaskTimeOutException() =>
+  void throwTaskTimeOutException() =>
       throw TimeoutException('intentional timeout exception');
 
-  Future<int> throwCanceledException() =>
+  void throwCanceledException() =>
       throw CanceledException('intentional canceled exception');
 
-  FutureOr throwCustomException() =>
+  void throwCustomException() =>
       throw CustomException('intentional CUSTOM exception');
 
   FutureOr<dynamic> sendBack(dynamic data) => data;
 
-  FutureOr missing() {}
+  void missing() {}
 
   FutureOr<dynamic> invalidResponse() => getUnsendable();
 
@@ -99,11 +100,12 @@ class TestService implements WorkerService {
     }
   }
 
-  Future cancelableInfiniteCpu(CancelationToken token) async {
+  Future<void> cancelableInfiniteCpu(CancelationToken token) async {
     bool stop = false;
     token.onCanceled.then((_) => stop = true);
     while (!stop) {
-      await Future.delayed(Duration.zero);
+      await Future.delayed(Duration
+          .zero); // necessary for the cancelation notification to come through
       for (var i = 0; i < 10000; i++) {/* cpu */}
     }
   }
@@ -201,11 +203,11 @@ class TestService implements WorkerService {
   late final Map<int, CommandHandler> operations = {
     if (_invalid) invalidCommand1: (r) => null,
     if (_invalid) invalidCommand0: (r) => null,
-    setLevelCommand: (r) => setLevel(Cast.toInt(r.args[0])),
+    setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
     logCommand: (r) => log(),
-    ioCommand: (r) => io(ms: Cast.toInt(r.args[0])),
-    cpuCommand: (r) => cpu(ms: Cast.toInt(r.args[0])),
-    delayedCommand: (r) => delayed(Cast.toInt(r.args[0])),
+    ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
+    cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
+    delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
     throwExceptionCommand: (r) => throwException(),
     throwWorkerExceptionCommand: (r) => throwWorkerException(),
     throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
@@ -215,10 +217,10 @@ class TestService implements WorkerService {
     invalidResponseCommand: (r) => invalidResponse(),
     /* missingCommand */
     pingCommand: (r) => ping(),
-    finiteCommand: (r) => finite(Cast.toInt(r.args[0])),
+    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
     infiniteCommand: (r) => infinite(),
     clockCommand: (r) =>
-        clock(frequency: Cast.toInt(r.args[0]), token: r.cancelToken),
+        clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
     cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
     infiniteWithErrorsCommand: (r) => infiniteWithErrors(),

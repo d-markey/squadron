@@ -36,8 +36,11 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
 class InstallableWorker extends Worker implements InstallableService {
   InstallableWorker._(TestContext context,
       {bool throwOnInstall = false, bool throwOnUninstall = false})
-      : super(context.entryPoints.installable!,
-            args: [throwOnInstall, throwOnUninstall]);
+      : super(context.entryPoints.installable!, args: [
+          context.useNumConverter,
+          throwOnInstall,
+          throwOnUninstall,
+        ]);
 
   InstallableWorker(TestContext context) : this._(context);
 
@@ -58,8 +61,10 @@ class InstallableWorker extends Worker implements InstallableService {
   }
 
   @override
-  Future<bool> isInstalled() => send(InstallableService.cmdIsInstalled);
+  Future<bool> isInstalled() =>
+      send(InstallableService.cmdIsInstalled).then(platformConverter.v<bool>());
 
   @override
-  Future<bool> isUninstalled() => send(InstallableService.cmdIsUninstalled);
+  Future<bool> isUninstalled() => send(InstallableService.cmdIsUninstalled)
+      .then(platformConverter.v<bool>());
 }

@@ -12,14 +12,19 @@ class IssuesWorkerPool extends WorkerPool<IssuesWorker>
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
   @override
-  Stream<dynamic> issue_8(List<dynamic> words) =>
-      stream((w) => w.issue_8(words));
+  Stream<Map<String, int>> issue_8(List<int> nums) =>
+      stream((w) => w.issue_8(nums));
 }
 
 class IssuesWorker extends Worker implements IssuesService {
-  IssuesWorker(TestContext context) : super(context.entryPoints.issues!);
+  IssuesWorker(TestContext context)
+      : super(
+          context.entryPoints.issues!,
+          args: [context.useNumConverter],
+        );
 
   @override
-  Stream<dynamic> issue_8(List<dynamic> words) =>
-      stream(IssuesService.cmdIssue_8, args: [words]);
+  Stream<Map<String, int>> issue_8(List<int> nums) =>
+      stream(IssuesService.cmdIssue_8, args: [nums])
+          .map(platformConverter.m<String, int>());
 }
