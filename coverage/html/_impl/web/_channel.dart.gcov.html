@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>67</td><td>79</td><td class="med">84.8%</td>
+                            <th scope="row">Lines</th><td>68</td><td>79</td><td class="med">86.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -363,8 +363,8 @@
                 <tr class="lineCov" title="Line 101" id="line101">
                     <td>101</td><td></td><td>2</td><td><code>          logger?.e(() =&gt; 'Connection to Web Worker failed: $error');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>0</td><td><code>          fail(error);</code></td>
+                <tr class="lineCov" title="Line 102" id="line102">
+                    <td>102</td><td></td><td>1</td><td><code>          fail(error);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 103" id="line103">
                     <td>103</td><td></td><td>9</td><td><code>        } else if (!ready.isCompleted) {</code></td>
@@ -424,7 +424,7 @@
                     <td>121</td><td></td><td>9</td><td><code>      if (!response.unwrapInPlace(disconnected)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>8</td><td><code>        return;</code></td>
+                    <td>122</td><td></td><td>9</td><td><code>        return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 123" id="line123">
                     <td>123</td><td></td><td></td><td><code>      }</code></td>
@@ -574,10 +574,10 @@
                     <td>171</td><td></td><td></td><td><code>/// Creates a [_WebChannel] from a [web.MessagePort].</code></td>
                 </tr>
                 <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code>Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,</code></td>
+                    <td>172</td><td></td><td></td><td><code>Channel? deserialize(PlatformChannel? channelInfo,</code></td>
                 </tr>
                 <tr class="noop" title="Line 173" id="line173">
-                    <td>173</td><td></td><td></td><td><code>        ExceptionManager exceptionManager) =&gt;</code></td>
+                    <td>173</td><td></td><td></td><td><code>        [Logger? logger, ExceptionManager? exceptionManager]) =&gt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 174" id="line174">
                     <td>174</td><td></td><td></td><td><code>    (channelInfo == null)</code></td>
@@ -586,7 +586,19 @@
                     <td>175</td><td></td><td></td><td><code>        ? null</code></td>
                 </tr>
                 <tr class="noop" title="Line 176" id="line176">
-                    <td>176</td><td></td><td></td><td><code>        : _WebChannel._(channelInfo, logger, exceptionManager);</code></td>
+                    <td>176</td><td></td><td></td><td><code>        : _WebChannel._(</code></td>
+                </tr>
+                <tr class="noop" title="Line 177" id="line177">
+                    <td>177</td><td></td><td></td><td><code>            channelInfo,</code></td>
+                </tr>
+                <tr class="noop" title="Line 178" id="line178">
+                    <td>178</td><td></td><td></td><td><code>            logger,</code></td>
+                </tr>
+                <tr class="noop" title="Line 179" id="line179">
+                    <td>179</td><td></td><td></td><td><code>            exceptionManager ?? ExceptionManager(),</code></td>
+                </tr>
+                <tr class="noop" title="Line 180" id="line180">
+                    <td>180</td><td></td><td></td><td><code>          );</code></td>
                 </tr>
             </tbody>
         </table>

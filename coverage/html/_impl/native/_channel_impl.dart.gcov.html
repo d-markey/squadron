@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>57</td><td>62</td><td class="high">91.9%</td>
+                            <th scope="row">Lines</th><td>56</td><td>61</td><td class="high">91.8%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -409,7 +409,7 @@
                     <td>116</td><td></td><td>8</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
-                    <td>117</td><td></td><td></td><td><code>  Future&lt;T&gt; sendRequest&lt;T&gt;(</code></td>
+                    <td>117</td><td></td><td></td><td><code>  Future&lt;dynamic&gt; sendRequest(</code></td>
                 </tr>
                 <tr class="noop" title="Line 118" id="line118">
                     <td>118</td><td></td><td></td><td><code>    int command,</code></td>
@@ -430,16 +430,16 @@
                     <td>123</td><td></td><td></td><td><code>  }) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>8</td><td><code>    final completer = Completer&lt;T&gt;();</code></td>
+                    <td>124</td><td></td><td>8</td><td><code>    final completer = Completer();</code></td>
                 </tr>
                 <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code>    late final StreamSubscription&lt;T&gt; sub;</code></td>
+                    <td>125</td><td></td><td></td><td><code>    late final StreamSubscription sub;</code></td>
                 </tr>
                 <tr class="noop" title="Line 126" id="line126">
                     <td>126</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>8</td><td><code>    void $success(T data) async {</code></td>
+                    <td>127</td><td></td><td>8</td><td><code>    void $success(dynamic data) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
                     <td>128</td><td></td><td>8</td><td><code>      await sub.cancel();</code></td>
@@ -502,79 +502,70 @@
                     <td>147</td><td></td><td>16</td><td><code>    sub = _getResponseStream(receiver, req, _postRequest, streaming: false)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>8</td><td><code>        .cast&lt;</code></td>
+                    <td>148</td><td></td><td>8</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
                 </tr>
-                <tr class="noop" title="Line 149" id="line149">
-                    <td>149</td><td></td><td></td><td><code>            T&gt;() // should work on native, as long as T can be sent across Isolates</code></td>
+                <tr class="lineCov" title="Line 149" id="line149">
+                    <td>149</td><td></td><td>8</td><td><code>    return completer.future;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>8</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
+                <tr class="noop" title="Line 150" id="line150">
+                    <td>150</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 151" id="line151">
-                    <td>151</td><td></td><td>8</td><td><code>    return completer.future;</code></td>
+                <tr class="noop" title="Line 151" id="line151">
+                    <td>151</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 152" id="line152">
-                    <td>152</td><td></td><td></td><td><code>  }</code></td>
+                    <td>152</td><td></td><td></td><td><code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code></td>
                 </tr>
                 <tr class="noop" title="Line 153" id="line153">
-                    <td>153</td><td></td><td></td><td><code></code></td>
+                    <td>153</td><td></td><td></td><td><code>  /// [Isolate]. This method expects a stream of values from the [Isolate].</code></td>
                 </tr>
                 <tr class="noop" title="Line 154" id="line154">
-                    <td>154</td><td></td><td></td><td><code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code></td>
+                    <td>154</td><td></td><td></td><td><code>  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the</code></td>
                 </tr>
                 <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>  /// [Isolate]. This method expects a stream of values from the [Isolate].</code></td>
+                    <td>155</td><td></td><td></td><td><code>  /// [Stream].</code></td>
                 </tr>
-                <tr class="noop" title="Line 156" id="line156">
-                    <td>156</td><td></td><td></td><td><code>  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the</code></td>
+                <tr class="lineCov" title="Line 156" id="line156">
+                    <td>156</td><td></td><td>5</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 157" id="line157">
-                    <td>157</td><td></td><td></td><td><code>  /// [Stream].</code></td>
+                    <td>157</td><td></td><td></td><td><code>  Stream&lt;dynamic&gt; sendStreamingRequest(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 158" id="line158">
-                    <td>158</td><td></td><td>5</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 158" id="line158">
+                    <td>158</td><td></td><td></td><td><code>    int command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 159" id="line159">
-                    <td>159</td><td></td><td></td><td><code>  Stream&lt;T&gt; sendStreamingRequest&lt;T&gt;(</code></td>
+                    <td>159</td><td></td><td></td><td><code>    List args, {</code></td>
                 </tr>
                 <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code>    int command,</code></td>
+                    <td>160</td><td></td><td></td><td><code>    SquadronCancelationToken? token,</code></td>
                 </tr>
                 <tr class="noop" title="Line 161" id="line161">
-                    <td>161</td><td></td><td></td><td><code>    List args, {</code></td>
+                    <td>161</td><td></td><td></td><td><code>    bool inspectRequest = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 162" id="line162">
-                    <td>162</td><td></td><td></td><td><code>    SquadronCancelationToken? token,</code></td>
+                    <td>162</td><td></td><td></td><td><code>    bool inspectResponse = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 163" id="line163">
-                    <td>163</td><td></td><td></td><td><code>    bool inspectRequest = false,</code></td>
+                    <td>163</td><td></td><td></td><td><code>  }) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 164" id="line164">
-                    <td>164</td><td></td><td></td><td><code>    bool inspectResponse = false,</code></td>
+                <tr class="lineCov" title="Line 164" id="line164">
+                    <td>164</td><td></td><td>5</td><td><code>    final receiver = vm.ReceivePort();</code></td>
                 </tr>
-                <tr class="noop" title="Line 165" id="line165">
-                    <td>165</td><td></td><td></td><td><code>  }) {</code></td>
+                <tr class="lineCov" title="Line 165" id="line165">
+                    <td>165</td><td></td><td>5</td><td><code>    final req = WorkerRequest.userCommand(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>5</td><td><code>    final receiver = vm.ReceivePort();</code></td>
+                    <td>166</td><td></td><td>5</td><td><code>        receiver.sendPort, command, args, token, inspectResponse);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 167" id="line167">
-                    <td>167</td><td></td><td>5</td><td><code>    final req = WorkerRequest.userCommand(</code></td>
+                    <td>167</td><td></td><td>10</td><td><code>    return _getResponseStream(receiver, req, _postRequest, streaming: true);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>5</td><td><code>        receiver.sendPort, command, args, token, inspectResponse);</code></td>
+                <tr class="noop" title="Line 168" id="line168">
+                    <td>168</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 169" id="line169">
-                    <td>169</td><td></td><td>15</td><td><code>    return _getResponseStream(receiver, req, _postRequest, streaming: true).cast&lt;</code></td>
-                </tr>
-                <tr class="noop" title="Line 170" id="line170">
-                    <td>170</td><td></td><td></td><td><code>        T&gt;(); // should work on native, as long as T can be sent across Isolates</code></td>
-                </tr>
-                <tr class="noop" title="Line 171" id="line171">
-                    <td>171</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 169" id="line169">
+                    <td>169</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

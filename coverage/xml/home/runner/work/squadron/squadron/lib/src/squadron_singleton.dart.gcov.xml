@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '_impl/xplat/_platform.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.io) '_impl/native/_platform.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.html) '_impl/web/_platform.dart'</code>
+        </line>
+        <line>
+            <code>    if (dart.library.js_interop) '_impl/web/_platform.dart' as impl;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>class Squadron {</code>
+        </line>
+        <line hits="32">
+            <code>  static final converter = impl.getPlatformConverter();</code>
+            <hit count="32" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>  static final platformType = impl.getPlatformType();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../../../../../../"/>
+    <base href="../../../../../../../"/>
+</coverage>

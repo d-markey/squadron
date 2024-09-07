@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -127,7 +127,7 @@
                     <td>22</td><td></td><td></td><td><code>  /// Sends a command to the [LocalWorker].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>1</td><td><code>  Future&lt;T&gt; send&lt;T&gt;(int command,</code></td>
+                    <td>23</td><td></td><td>1</td><td><code>  Future&lt;dynamic&gt; send(int command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
                     <td>24</td><td></td><td></td><td><code>          {List args = const [],</code></td>
@@ -142,7 +142,7 @@
                     <td>27</td><td></td><td></td><td><code>          bool inspectResponse = false}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>2</td><td><code>      channel.sendRequest&lt;T&gt;(command, args,</code></td>
+                    <td>28</td><td></td><td>2</td><td><code>      channel.sendRequest(command, args,</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 29" id="line29">
                     <td>29</td><td></td><td>0</td><td><code>          token: token?.wrap(),</code></td>
@@ -160,7 +160,7 @@
                     <td>33</td><td></td><td></td><td><code>  /// Sends a streaming command to the [LocalWorker].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>1</td><td><code>  Stream&lt;T&gt; stream&lt;T&gt;(int command,</code></td>
+                    <td>34</td><td></td><td>1</td><td><code>  Stream&lt;dynamic&gt; stream(int command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code>          {List args = const [],</code></td>
@@ -175,7 +175,7 @@
                     <td>38</td><td></td><td></td><td><code>          bool inspectResponse = false}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>2</td><td><code>      channel.sendStreamingRequest&lt;T&gt;(command, args,</code></td>
+                    <td>39</td><td></td><td>2</td><td><code>      channel.sendStreamingRequest(command, args,</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 40" id="line40">
                     <td>40</td><td></td><td>0</td><td><code>          token: token?.wrap(),</code></td>

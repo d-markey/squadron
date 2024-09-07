@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="squadron_platform_type.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.73333335" lines-covered="11" lines-valid="15" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+    <lines>
+        <line hits="0">
+            <code>enum SquadronPlatformType {</code>
+        </line>
+        <line>
+            <code>  unknown('Unknown'),</code>
+        </line>
+        <line>
+            <code>  vm('Dart VM'),</code>
+        </line>
+        <line>
+            <code>  js('JavaScript'),</code>
+        </line>
+        <line>
+            <code>  wasm('Web Assembly');</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  const SquadronPlatformType(this.label);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  final String label;</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="4">
+            <code>  bool get isVm =&gt; this == vm;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7">
+            <code>  bool get isJs =&gt; this == js;</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>  bool get isWasm =&gt; this == wasm;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6">
+            <code>  bool get isWeb =&gt; isJs || isWasm;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="2">
+            <code>  static SquadronPlatformType? tryParse(String label) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (label == js.label) return js;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3">
+            <code>    if (label == wasm.label) return wasm;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2">
+            <code>    if (label == vm.label) return vm;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>    if (label == unknown.label) return unknown;</code>
+        </line>
+        <line hits="0">
+            <code>    return null;</code>
+        </line>
+        <line hits="1">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="10">
+            <code>  @override</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10">
+            <code>  String toString() =&gt; label;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../../../../../../"/>
+    <base href="../../../../../../../"/>
+</coverage>

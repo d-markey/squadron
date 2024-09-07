@@ -1,0 +1,280 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../jgenhtml.js"></script>
+        <title>LCOV - lcov.info num_converter.dart</title>
+    </head>
+    <body class="noscript nolegend">
+        <h1>LCOV - code coverage report</h1>
+        <div class="header">
+            <div class="row">
+                <dl class="pageView">
+                    <dt>Current view</dt>
+                    <dd>
+                        <a href="../index.html">top level</a> - <a href="index.html">/converters</a> - num_converter.dart
+                    </dd>
+                    <dt>Test</dt>
+                    <dd>lcov.info</dd>
+                    <dt>Date</dt>
+                    <dd>2024-09-07</dd>
+                    <dt class="legend">Legend</dt>
+                    <dd class="legend">
+                        <dl class="legend">
+                            <dt>Lines</dt>
+                            <dd class="lineCov">hit</dd>
+                            <dd class="lineNoCov">not hit</dd>
+                            <dt>Branches</dt>
+                            <dd class="taken"> taken</dd>
+                            <dd class="noTaken"> not taken</dd>
+                            <dd class="lineNoCov"># not executed</dd>
+                        </dl>
+                    </dd>
+                </dl>
+                <table class="stats">
+                    <thead>
+                        <tr>
+                            <td></td><th scope="col">Hit</th><th scope="col">Total</th><th scope="col">Coverage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Lines</th><td>21</td><td>38</td><td class="low">55.3%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Branches</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <table class="coverage" title="Each row represents a line of source code">
+            <caption>Each row represents a line of source code</caption>
+            <thead>
+                <tr>
+                    <th>Line</th><th>Branch</th><th>Hits</th><th>Source code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="noop" title="Line 1" id="line1">
+                    <td>1</td><td></td><td></td><td><code>import 'cast_converter.dart';</code></td>
+                </tr>
+                <tr class="noop" title="Line 2" id="line2">
+                    <td>2</td><td></td><td></td><td><code>import 'converter.dart';</code></td>
+                </tr>
+                <tr class="noop" title="Line 3" id="line3">
+                    <td>3</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 4" id="line4">
+                    <td>4</td><td></td><td></td><td><code>class NumConverter extends CastConverter {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 5" id="line5">
+                    <td>5</td><td></td><td>11</td><td><code>  const NumConverter();</code></td>
+                </tr>
+                <tr class="noop" title="Line 6" id="line6">
+                    <td>6</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>  static const instance = NumConverter();</code></td>
+                </tr>
+                <tr class="noop" title="Line 8" id="line8">
+                    <td>8</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 9" id="line9">
+                    <td>9</td><td></td><td>2</td><td><code>  static int _toInt(dynamic x) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 10" id="line10">
+                    <td>10</td><td></td><td>3</td><td><code>    if (x is int &amp;&amp; x.isFinite) return x;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>2</td><td><code>    final y = (x as num).toDouble();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>2</td><td><code>    if (!y.isFinite) return double.minPositive as int; // intended type error</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>3</td><td><code>    final z = y.toInt(), d = y - z;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 14" id="line14">
+                    <td>14</td><td></td><td>2</td><td><code>    if (d != 0) return double.minPositive as int; // intended type error</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 15" id="line15">
+                    <td>15</td><td></td><td>0</td><td><code>    return z;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 16" id="line16">
+                    <td>16</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>3</td><td><code>  static double _toDbl(dynamic x) =&gt; (x as num).toDouble();</code></td>
+                </tr>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>4</td><td><code>  static final Map&lt;Type, Cast&gt; _numCastors = {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>1</td><td><code>    int: _toInt,</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>1</td><td><code>    double: _toDbl,</code></td>
+                </tr>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code>  };</code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 25" id="line25">
+                    <td>25</td><td></td><td>3</td><td><code>  static int? _toNullableInt(dynamic x) =&gt; (x == null) ? null : _toInt(x);</code></td>
+                </tr>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>3</td><td><code>  static double? _toNullableDbl(dynamic x) =&gt; (x as num?)?.toDouble();</code></td>
+                </tr>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 29" id="line29">
+                    <td>29</td><td></td><td>4</td><td><code>  static final Map&lt;Type, Cast&gt; _nullableNumCastors = {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 30" id="line30">
+                    <td>30</td><td></td><td>1</td><td><code>    int: _toNullableInt,</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 31" id="line31">
+                    <td>31</td><td></td><td>1</td><td><code>    double: _toNullableDbl,</code></td>
+                </tr>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>  };</code></td>
+                </tr>
+                <tr class="noop" title="Line 33" id="line33">
+                    <td>33</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>1</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>3</td><td><code>  Cast&lt;T&gt; v&lt;T&gt;() =&gt; _numCastors[T] as Cast&lt;T&gt;? ?? super.v&lt;T&gt;();</code></td>
+                </tr>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>1</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>3</td><td><code>  Cast&lt;T?&gt; nv&lt;T&gt;() =&gt; _nullableNumCastors[T] as Cast&lt;T?&gt;? ?? super.nv&lt;T&gt;();</code></td>
+                </tr>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 40" id="line40">
+                    <td>40</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>  Cast&lt;Iterable&lt;T&gt;&gt; i&lt;T&gt;([Cast&lt;T&gt;? cast]) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 42" id="line42">
+                    <td>42</td><td></td><td>0</td><td><code>      super.i&lt;T&gt;(cast ?? _numCastors[T] as Cast&lt;T&gt;);</code></td>
+                </tr>
+                <tr class="noop" title="Line 43" id="line43">
+                    <td>43</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 45" id="line45">
+                    <td>45</td><td></td><td></td><td><code>  Cast&lt;Iterable&lt;T?&gt;&gt; ni&lt;T&gt;([Cast&lt;T?&gt;? cast]) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 46" id="line46">
+                    <td>46</td><td></td><td>0</td><td><code>      super.ni&lt;T&gt;(cast ?? _nullableNumCastors[T] as Cast&lt;T?&gt;);</code></td>
+                </tr>
+                <tr class="noop" title="Line 47" id="line47">
+                    <td>47</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 48" id="line48">
+                    <td>48</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 49" id="line49">
+                    <td>49</td><td></td><td></td><td><code>  Cast&lt;List&lt;T&gt;&gt; l&lt;T&gt;([Cast&lt;T&gt;? cast]) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 50" id="line50">
+                    <td>50</td><td></td><td>0</td><td><code>      super.l&lt;T&gt;(cast ?? _numCastors[T] as Cast&lt;T&gt;);</code></td>
+                </tr>
+                <tr class="noop" title="Line 51" id="line51">
+                    <td>51</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 53" id="line53">
+                    <td>53</td><td></td><td></td><td><code>  Cast&lt;List&lt;T?&gt;&gt; nl&lt;T&gt;([Cast&lt;T?&gt;? cast]) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 54" id="line54">
+                    <td>54</td><td></td><td>0</td><td><code>      super.nl&lt;T&gt;(cast ?? _nullableNumCastors[T] as Cast&lt;T?&gt;);</code></td>
+                </tr>
+                <tr class="noop" title="Line 55" id="line55">
+                    <td>55</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 56" id="line56">
+                    <td>56</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>0</td><td><code>  Cast&lt;Map&lt;K, V&gt;&gt; m&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) =&gt; super.m&lt;K, V&gt;(</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 58" id="line58">
+                    <td>58</td><td></td><td>0</td><td><code>        kcast: kcast ?? _numCastors[K] as Cast&lt;K&gt;?,</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 59" id="line59">
+                    <td>59</td><td></td><td>0</td><td><code>        vcast: vcast ?? _numCastors[V] as Cast&lt;V&gt;?,</code></td>
+                </tr>
+                <tr class="noop" title="Line 60" id="line60">
+                    <td>60</td><td></td><td></td><td><code>      );</code></td>
+                </tr>
+                <tr class="noop" title="Line 61" id="line61">
+                    <td>61</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 62" id="line62">
+                    <td>62</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 63" id="line63">
+                    <td>63</td><td></td><td></td><td><code>  Cast&lt;Map&lt;K, V?&gt;&gt; nm&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V?&gt;? vcast}) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 64" id="line64">
+                    <td>64</td><td></td><td>0</td><td><code>      super.nm&lt;K, V&gt;(</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>0</td><td><code>        kcast: kcast ?? _numCastors[K] as Cast&lt;K&gt;?,</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>0</td><td><code>        vcast: vcast ?? _nullableNumCastors[V] as Cast&lt;V?&gt;?,</code></td>
+                </tr>
+                <tr class="noop" title="Line 67" id="line67">
+                    <td>67</td><td></td><td></td><td><code>      );</code></td>
+                </tr>
+                <tr class="noop" title="Line 68" id="line68">
+                    <td>68</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>
+                Generated by: <a href="http://code.google.com/p/jgenhtml/">JGENHTML version 1.5</a>
+            </p>
+        </div>
+        <div class="controls">
+            <fieldset>
+                <legend>Choose Features</legend><label for="nofunc">Function coverage</label><input id="nofunc" type="checkbox" checked><label for="nobranch">Branch coverage</label><input id="nobranch" type="checkbox" checked><label for="nolegend">Legend</label><input id="nolegend" type="checkbox">
+            </fieldset>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6779661" lines-covered="80" lines-valid="118" package="/converters" testname="lcov.info" version="1.5">
+    <sources>
+        <source branches-hit="0" branches-valid="0" filename="num_converter.dart" functions-hit="0" functions-valid="0" lines-hit="21" lines-valid="38" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="21" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="cast_converter.dart" functions-hit="0" functions-valid="0" lines-hit="55" lines-valid="76" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="55" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="converter.dart" functions-hit="0" functions-valid="0" lines-hit="4" lines-valid="4" prefix="/home/runner/work/squadron/squadron/lib/src">
+            <testCase branch-hit="0" function-hit="0" line-hit="4" name="&lt;unnamed&gt;"/>
+        </source>
+    </sources>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

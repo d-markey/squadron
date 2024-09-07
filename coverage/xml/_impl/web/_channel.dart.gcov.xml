@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84810126" lines-covered="67" lines-valid="79" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8607595" lines-covered="68" lines-valid="79" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -340,8 +340,9 @@
             <code>          logger?.e(() =&gt; 'Connection to Web Worker failed: $error');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>          fail(error);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="9">
             <code>        } else if (!ready.isCompleted) {</code>
@@ -408,9 +409,9 @@
             <code>      if (!response.unwrapInPlace(disconnected)) {</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
+        <line hits="9">
             <code>        return;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      }</code>
@@ -582,10 +583,10 @@
             <code>/// Creates a [_WebChannel] from a [web.MessagePort].</code>
         </line>
         <line>
-            <code>Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,</code>
+            <code>Channel? deserialize(PlatformChannel? channelInfo,</code>
         </line>
         <line>
-            <code>        ExceptionManager exceptionManager) =&gt;</code>
+            <code>        [Logger? logger, ExceptionManager? exceptionManager]) =&gt;</code>
         </line>
         <line>
             <code>    (channelInfo == null)</code>
@@ -594,7 +595,19 @@
             <code>        ? null</code>
         </line>
         <line>
-            <code>        : _WebChannel._(channelInfo, logger, exceptionManager);</code>
+            <code>        : _WebChannel._(</code>
+        </line>
+        <line>
+            <code>            channelInfo,</code>
+        </line>
+        <line>
+            <code>            logger,</code>
+        </line>
+        <line>
+            <code>            exceptionManager ?? ExceptionManager(),</code>
+        </line>
+        <line>
+            <code>          );</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

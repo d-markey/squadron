@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_entry_point_uri.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8125" lines-covered="13" lines-valid="16" package="/_impl/web" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="_entry_point_uri.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8888889" lines-covered="24" lines-valid="27" package="/_impl/web" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:js_interop';</code>
@@ -18,6 +18,9 @@
         </line>
         <line>
             <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line>
+            <code>import '_patch.dart';</code>
         </line>
         <line>
             <code/>
@@ -44,15 +47,17 @@
         <line>
             <code>  @override</code>
         </line>
-        <line>
+        <line hits="1">
             <code>  void release() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10">
             <code>    if (_revoke) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
-            <code>      // web.URL.revokeObjectURL(uri);</code>
+        <line hits="10">
+            <code>      web.URL.revokeObjectURL(uri);</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
@@ -61,8 +66,50 @@
             <code>    super.release();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="11">
+            <code>  static String _getUrl(Uri uri) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>    var url = uri.toString();</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>    if (url.startsWith('~')) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>      final root = getHome();</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>      if (root != null) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>        url = '$root${url.substring(1)}';</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>      }</code>
+        </line>
+        <line>
+            <code>    }</code>
+        </line>
+        <line hits="11">
+            <code>    return url;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11">
+            <code>  }</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -81,6 +128,9 @@
         <line hits="0">
             <code>            '';</code>
         </line>
+        <line>
+            <code/>
+        </line>
         <line hits="11">
             <code>    if (fileName.endsWith('.js') || fileName.endsWith('.mjs')) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
@@ -89,12 +139,12 @@
             <code>      // a JavaScript worker</code>
         </line>
         <line hits="11">
-            <code>      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);</code>
+            <code>      return EntryPointUri._(_getUrl(workerEntrypoint), revoke: false);</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="11">
             <code>    } else if (fileName.endsWith('.wasm')) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      // blob containing the JavaScript code to load and invoke the Web Assembly worker</code>
@@ -102,9 +152,9 @@
         <line>
             <code>      final blob = web.Blob(</code>
         </line>
-        <line hits="1">
-            <code>        [wasmLoaderScript(workerEntrypoint.toString()).toJS].toJS,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line hits="11">
+            <code>        [wasmLoaderScript(_getUrl(workerEntrypoint)).toJS].toJS,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        web.BlobPropertyBag(type: 'application/javascript'),</code>
@@ -112,9 +162,9 @@
         <line>
             <code>      );</code>
         </line>
-        <line hits="1">
+        <line hits="11">
             <code>      return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
             <code>    } else if (workerEntrypoint.isScheme('data') ||</code>

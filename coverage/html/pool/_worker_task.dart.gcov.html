@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>37</td><td>42</td><td class="med">88.1%</td>
+                            <th scope="row">Lines</th><td>36</td><td>45</td><td class="med">80.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -103,7 +103,7 @@
                     <td>14</td><td></td><td></td><td><code>  final int submitted;</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>  int? _executed;</code></td>
+                    <td>15</td><td></td><td></td><td><code>  int? _scheduled;</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
                     <td>16</td><td></td><td></td><td><code>  int? _finished;</code></td>
@@ -151,7 +151,7 @@
                     <td>30</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>3</td><td><code>  bool get isPending =&gt; _executed == null &amp;&amp; _canceled == null;</code></td>
+                    <td>31</td><td></td><td>3</td><td><code>  bool get isPending =&gt; _scheduled == null &amp;&amp; _canceled == null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
                     <td>32</td><td></td><td></td><td><code></code></td>
@@ -163,7 +163,7 @@
                     <td>34</td><td></td><td>2</td><td><code>  bool get isFinished =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>8</td><td><code>      _executed != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code></td>
+                    <td>35</td><td></td><td>8</td><td><code>      _scheduled != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
                     <td>36</td><td></td><td></td><td><code></code></td>
@@ -175,7 +175,7 @@
                     <td>38</td><td></td><td>2</td><td><code>  bool get isRunning =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>7</td><td><code>      _executed != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code></td>
+                    <td>39</td><td></td><td>7</td><td><code>      _scheduled != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
                     <td>40</td><td></td><td></td><td><code></code></td>
@@ -184,7 +184,7 @@
                     <td>41</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>2</td><td><code>  Duration get runningTime =&gt; _executed == null</code></td>
+                    <td>42</td><td></td><td>2</td><td><code>  Duration get runningTime =&gt; _scheduled == null</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
                     <td>43</td><td></td><td>1</td><td><code>      ? Duration.zero</code></td>
@@ -196,7 +196,7 @@
                     <td>45</td><td></td><td></td><td><code>          microseconds:</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>1</td><td><code>              (_canceled ?? _finished ?? microsecTimeStamp()) - _executed!);</code></td>
+                    <td>46</td><td></td><td>1</td><td><code>              (_canceled ?? _finished ?? microsecTimeStamp()) - _scheduled!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
                     <td>47</td><td></td><td></td><td><code></code></td>
@@ -211,7 +211,7 @@
                     <td>50</td><td></td><td></td><td><code>      microseconds:</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>0</td><td><code>          (_executed ?? _canceled ?? microsecTimeStamp()) - submitted);</code></td>
+                    <td>51</td><td></td><td>0</td><td><code>          (_scheduled ?? _canceled ?? microsecTimeStamp()) - submitted);</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
                     <td>52</td><td></td><td></td><td><code></code></td>
@@ -250,7 +250,7 @@
                     <td>63</td><td></td><td>6</td><td><code>    _canceledException ??= TaskCanceledException(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>4</td><td><code>    if (_executed == null) {</code></td>
+                    <td>64</td><td></td><td>4</td><td><code>    if (_scheduled == null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 65" id="line65">
                     <td>65</td><td></td><td></td><td><code>      // task will not be scheduled, make sure it reports as completed</code></td>
@@ -268,61 +268,64 @@
                     <td>69</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>8</td><td><code>  Future&lt;void&gt; run(W worker) async {</code></td>
+                    <td>70</td><td></td><td>8</td><td><code>  void _success(bool res) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>8</td><td><code>    throwIfCanceled();</code></td>
+                    <td>71</td><td></td><td>12</td><td><code>    _finished ??= microsecTimeStamp();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>12</td><td><code>    _executed ??= microsecTimeStamp();</code></td>
+                    <td>72</td><td></td><td>12</td><td><code>    _counter?.update(_finished! - _scheduled!, res);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>4</td><td><code>    var success = false;</code></td>
+                    <td>73</td><td></td><td>12</td><td><code>    _done.complete();</code></td>
                 </tr>
-                <tr class="noop" title="Line 74" id="line74">
-                    <td>74</td><td></td><td></td><td><code>    try {</code></td>
+                <tr class="lineCov" title="Line 74" id="line74">
+                    <td>74</td><td></td><td>4</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>8</td><td><code>      success = await execute(worker);</code></td>
+                <tr class="noop" title="Line 75" id="line75">
+                    <td>75</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 76" id="line76">
-                    <td>76</td><td></td><td></td><td><code>    } catch (_) {</code></td>
+                <tr class="lineNoCov" title="Line 76" id="line76">
+                    <td>76</td><td></td><td>0</td><td><code>  void _error(_) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 77" id="line77">
-                    <td>77</td><td></td><td></td><td><code>      success = false;</code></td>
+                <tr class="lineNoCov" title="Line 77" id="line77">
+                    <td>77</td><td></td><td>0</td><td><code>    _finished ??= microsecTimeStamp();</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>0</td><td><code>      rethrow;</code></td>
+                    <td>78</td><td></td><td>0</td><td><code>    _counter?.update(_finished! - _scheduled!, false);</code></td>
                 </tr>
-                <tr class="noop" title="Line 79" id="line79">
-                    <td>79</td><td></td><td></td><td><code>    } finally {</code></td>
+                <tr class="lineNoCov" title="Line 79" id="line79">
+                    <td>79</td><td></td><td>0</td><td><code>    _done.complete();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>12</td><td><code>      _finished = microsecTimeStamp();</code></td>
+                <tr class="lineNoCov" title="Line 80" id="line80">
+                    <td>80</td><td></td><td>0</td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 81" id="line81">
-                    <td>81</td><td></td><td>8</td><td><code>      if (_canceledException != null) success = false;</code></td>
+                <tr class="noop" title="Line 81" id="line81">
+                    <td>81</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 82" id="line82">
-                    <td>82</td><td></td><td>9</td><td><code>      _counter?.update(_finished! - _executed!, success);</code></td>
+                    <td>82</td><td></td><td>8</td><td><code>  Future&lt;void&gt; run(W worker) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>12</td><td><code>      _done.complete();</code></td>
+                    <td>83</td><td></td><td>12</td><td><code>    _scheduled ??= microsecTimeStamp();</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
-                    <td>84</td><td></td><td></td><td><code>    }</code></td>
+                    <td>84</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 85" id="line85">
-                    <td>85</td><td></td><td>4</td><td><code>  }</code></td>
+                    <td>85</td><td></td><td>20</td><td><code>    return execute(worker).then(_success, onError: _error);</code></td>
                 </tr>
-                <tr class="noop" title="Line 86" id="line86">
-                    <td>86</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 86" id="line86">
+                    <td>86</td><td></td><td>4</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
-                    <td>87</td><td></td><td></td><td><code>  Future&lt;bool&gt; execute(W worker);</code></td>
+                    <td>87</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 88" id="line88">
-                    <td>88</td><td></td><td></td><td><code>}</code></td>
+                    <td>88</td><td></td><td></td><td><code>  Future&lt;bool&gt; execute(W worker);</code></td>
+                </tr>
+                <tr class="noop" title="Line 89" id="line89">
+                    <td>89</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

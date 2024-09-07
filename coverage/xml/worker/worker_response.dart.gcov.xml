@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9076923" lines-covered="59" lines-valid="65" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9076923" lines-covered="59" lines-valid="65" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -18,9 +18,6 @@
         </line>
         <line>
             <code>import '../_impl/xplat/_helpers.dart';</code>
-        </line>
-        <line>
-            <code>import '../cast_helpers.dart';</code>
         </line>
         <line>
             <code>import '../channel.dart';</code>
@@ -218,9 +215,9 @@
         <line>
             <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
         </line>
-        <line hits="15">
+        <line hits="16">
             <code>  bool get endOfStream =&gt; data[_$endOfStream];</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -325,17 +322,17 @@
             <code>    if (log != null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="23">
+        <line hits="24">
             <code>      channel.logger?.log(log.level, log.message,</code>
-            <hit count="23" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
             <code>          time: log.time, error: log.error, stackTrace: log.stackTrace);</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
+        <line hits="9">
             <code>      return false;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -470,25 +467,25 @@
             <code>      : LogEvent(</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="35">
-            <code>          _getLevel(Cast.toNullableInt(props[0])),</code>
-            <hit count="35" name="&lt;unnamed&gt;"/>
+        <line hits="36">
+            <code>          _getLevel((props[0] as num?)?.toInt()),</code>
+            <hit count="36" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="17">
+        <line hits="18">
             <code>          props[1],</code>
-            <hit count="17" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="35">
-            <code>          time: fromMicrosecTimeStamp(Cast.toNullableInt(props[2])),</code>
-            <hit count="35" name="&lt;unnamed&gt;"/>
+        <line hits="36">
+            <code>          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),</code>
+            <hit count="36" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="17">
+        <line hits="18">
             <code>          error: props[3],</code>
-            <hit count="17" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="26">
+        <line hits="27">
             <code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code>
-            <hit count="26" name="&lt;unnamed&gt;"/>
+            <hit count="27" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        );</code>
@@ -496,21 +493,21 @@
         <line>
             <code/>
         </line>
-        <line hits="17">
+        <line hits="18">
             <code>  static Level _getLevel(int? value) {</code>
-            <hit count="17" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
+        <line hits="9">
             <code>    if (value == null) return Level.debug;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="56">
             <code>    return Level.values.where((l) =&gt; l.value == value).first;</code>
             <hit count="56" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
+        <line hits="9">
             <code>  }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

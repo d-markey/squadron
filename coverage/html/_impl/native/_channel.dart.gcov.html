@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>40</td><td>49</td><td class="med">81.6%</td>
+                            <th scope="row">Lines</th><td>41</td><td>50</td><td class="med">82.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -433,10 +433,10 @@
                     <td>124</td><td></td><td></td><td><code>/// Creates a [_VmChannel] from a [SendPort].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>3</td><td><code>Channel? deserialize(PlatformChannel? channelInfo, Logger? logger,</code></td>
+                    <td>125</td><td></td><td>3</td><td><code>Channel? deserialize(PlatformChannel? channelInfo,</code></td>
                 </tr>
                 <tr class="noop" title="Line 126" id="line126">
-                    <td>126</td><td></td><td></td><td><code>        ExceptionManager exceptionManager) =&gt;</code></td>
+                    <td>126</td><td></td><td></td><td><code>        [Logger? logger, ExceptionManager? exceptionManager]) =&gt;</code></td>
                 </tr>
                 <tr class="noop" title="Line 127" id="line127">
                     <td>127</td><td></td><td></td><td><code>    (channelInfo == null)</code></td>
@@ -445,7 +445,19 @@
                     <td>128</td><td></td><td></td><td><code>        ? null</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>3</td><td><code>        : _VmChannel._(channelInfo, logger, exceptionManager);</code></td>
+                    <td>129</td><td></td><td>3</td><td><code>        : _VmChannel._(</code></td>
+                </tr>
+                <tr class="noop" title="Line 130" id="line130">
+                    <td>130</td><td></td><td></td><td><code>            channelInfo,</code></td>
+                </tr>
+                <tr class="noop" title="Line 131" id="line131">
+                    <td>131</td><td></td><td></td><td><code>            logger,</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 132" id="line132">
+                    <td>132</td><td></td><td>3</td><td><code>            exceptionManager ?? ExceptionManager(),</code></td>
+                </tr>
+                <tr class="noop" title="Line 133" id="line133">
+                    <td>133</td><td></td><td></td><td><code>          );</code></td>
                 </tr>
             </tbody>
         </table>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.88095236" lines-covered="37" lines-valid="42" package="/pool" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="36" lines-valid="45" package="/pool" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -45,7 +45,7 @@
             <code>  final int submitted;</code>
         </line>
         <line>
-            <code>  int? _executed;</code>
+            <code>  int? _scheduled;</code>
         </line>
         <line>
             <code>  int? _finished;</code>
@@ -98,7 +98,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3">
-            <code>  bool get isPending =&gt; _executed == null &amp;&amp; _canceled == null;</code>
+            <code>  bool get isPending =&gt; _scheduled == null &amp;&amp; _canceled == null;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -113,7 +113,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="8">
-            <code>      _executed != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code>
+            <code>      _scheduled != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -128,7 +128,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="7">
-            <code>      _executed != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code>
+            <code>      _scheduled != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code>
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -139,7 +139,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>  Duration get runningTime =&gt; _executed == null</code>
+            <code>  Duration get runningTime =&gt; _scheduled == null</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1">
@@ -153,7 +153,7 @@
             <code>          microseconds:</code>
         </line>
         <line hits="1">
-            <code>              (_canceled ?? _finished ?? microsecTimeStamp()) - _executed!);</code>
+            <code>              (_canceled ?? _finished ?? microsecTimeStamp()) - _scheduled!);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -169,7 +169,7 @@
             <code>      microseconds:</code>
         </line>
         <line hits="0">
-            <code>          (_executed ?? _canceled ?? microsecTimeStamp()) - submitted);</code>
+            <code>          (_scheduled ?? _canceled ?? microsecTimeStamp()) - submitted);</code>
         </line>
         <line>
             <code/>
@@ -215,7 +215,7 @@
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>    if (_executed == null) {</code>
+            <code>    if (_scheduled == null) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -236,58 +236,60 @@
             <code/>
         </line>
         <line hits="8">
-            <code>  Future&lt;void&gt; run(W worker) async {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="8">
-            <code>    throwIfCanceled();</code>
+            <code>  void _success(bool res) {</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="12">
-            <code>    _executed ??= microsecTimeStamp();</code>
+            <code>    _finished ??= microsecTimeStamp();</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    _counter?.update(_finished! - _scheduled!, res);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12">
+            <code>    _done.complete();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
-            <code>    var success = false;</code>
+            <code>  }</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    try {</code>
-        </line>
-        <line hits="8">
-            <code>      success = await execute(worker);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>    } catch (_) {</code>
-        </line>
-        <line>
-            <code>      success = false;</code>
+            <code/>
         </line>
         <line hits="0">
-            <code>      rethrow;</code>
+            <code>  void _error(_) {</code>
+        </line>
+        <line hits="0">
+            <code>    _finished ??= microsecTimeStamp();</code>
+        </line>
+        <line hits="0">
+            <code>    _counter?.update(_finished! - _scheduled!, false);</code>
+        </line>
+        <line hits="0">
+            <code>    _done.complete();</code>
+        </line>
+        <line hits="0">
+            <code>  }</code>
         </line>
         <line>
-            <code>    } finally {</code>
-        </line>
-        <line hits="12">
-            <code>      _finished = microsecTimeStamp();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <code/>
         </line>
         <line hits="8">
-            <code>      if (_canceledException != null) success = false;</code>
+            <code>  Future&lt;void&gt; run(W worker) async {</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9">
-            <code>      _counter?.update(_finished! - _executed!, success);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="12">
-            <code>      _done.complete();</code>
+            <code>    _scheduled ??= microsecTimeStamp();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>    }</code>
+            <code/>
+        </line>
+        <line hits="20">
+            <code>    return execute(worker).then(_success, onError: _error);</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>  }</code>

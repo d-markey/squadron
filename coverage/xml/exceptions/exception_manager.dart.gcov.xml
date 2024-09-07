@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.76666665" lines-covered="23" lines-valid="30" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.76666665" lines-covered="23" lines-valid="30" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -189,17 +189,17 @@
         <line hits="0">
             <code>    try {</code>
         </line>
-        <line hits="12">
+        <line hits="13">
             <code>      final exceptionType = data[0];</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="17">
+        <line hits="18">
             <code>      final deserializer = _deserializers[exceptionType];</code>
-            <hit count="17" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12">
+        <line hits="13">
             <code>      return deserializer?.call(data) ??</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>          WorkerException(</code>

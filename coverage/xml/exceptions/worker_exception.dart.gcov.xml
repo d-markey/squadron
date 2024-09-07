@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="18" lines-valid="18" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="18" lines-valid="18" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
         </line>
         <line>
             <code/>
-        </line>
-        <line>
-            <code>import '../cast_helpers.dart';</code>
         </line>
         <line>
             <code>import '_well_known_exceptions.dart';</code>
@@ -113,9 +110,9 @@
             <code>  void setCommand(int command) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8">
+        <line hits="9">
             <code>    _command = command;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>  }</code>
@@ -123,36 +120,36 @@
         <line>
             <code/>
         </line>
-        <line hits="10">
+        <line hits="11">
             <code>  static WorkerException? deserialize(List data) =&gt;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="15">
+        <line hits="16">
             <code>      (data[_$type] == $workerExceptionType)</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10">
+        <line hits="11">
             <code>          ? WorkerException(</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10">
+        <line hits="11">
             <code>              data[_$message],</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="15">
+        <line hits="16">
             <code>              SquadronException.loadStackTrace(data[_$stackTrace]),</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="15">
-            <code>              Cast.toNullableInt(data[_$command]),</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+        <line hits="16">
+            <code>              (data[_$command] as num?)?.toInt(),</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>            )</code>
         </line>
-        <line hits="5">
+        <line hits="6">
             <code>          : null;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

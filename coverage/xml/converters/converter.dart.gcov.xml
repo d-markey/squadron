@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="/converters" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>typedef Cast&lt;T&gt; = T Function(dynamic);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>abstract class Converter {</code>
+        </line>
+        <line hits="6">
+            <code>  static bool isIdentity&lt;T&gt;(Cast&lt;T&gt;? cast) =&gt;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      (cast == null) || (cast == identity&lt;T&gt;);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="16">
+            <code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="3">
+            <code>  static T? tryCast&lt;T&gt;(dynamic x) =&gt; (x is T) ? x : null;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  // single value</code>
+        </line>
+        <line>
+            <code>  Cast&lt;T&gt; v&lt;T&gt;();</code>
+        </line>
+        <line>
+            <code>  Cast&lt;T?&gt; nv&lt;T&gt;();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  // for typed data</code>
+        </line>
+        <line>
+            <code>  Cast&lt;T&gt; td&lt;T&gt;();</code>
+        </line>
+        <line>
+            <code>  Cast&lt;T?&gt; ntd&lt;T&gt;();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  // iterable</code>
+        </line>
+        <line>
+            <code>  Cast&lt;Iterable&lt;T&gt;&gt; i&lt;T&gt;([Cast&lt;T&gt;? cast]);</code>
+        </line>
+        <line>
+            <code>  Cast&lt;Iterable&lt;T?&gt;&gt; ni&lt;T&gt;([Cast&lt;T?&gt;? cast]);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  // list</code>
+        </line>
+        <line>
+            <code>  Cast&lt;List&lt;T&gt;&gt; l&lt;T&gt;([Cast&lt;T&gt;? cast]);</code>
+        </line>
+        <line>
+            <code>  Cast&lt;List&lt;T?&gt;&gt; nl&lt;T&gt;([Cast&lt;T?&gt;? cast]);</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>  // map</code>
+        </line>
+        <line>
+            <code>  Cast&lt;Map&lt;K, V&gt;&gt; m&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast});</code>
+        </line>
+        <line>
+            <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nm&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V?&gt;? vcast});</code>
+        </line>
+        <line>
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

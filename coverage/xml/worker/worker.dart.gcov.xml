@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9402985" lines-covered="126" lines-valid="134" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9402985" lines-covered="126" lines-valid="134" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:async';</code>
@@ -484,7 +484,7 @@
             <code>  /// Sends a workload to the worker.</code>
         </line>
         <line hits="16">
-            <code>  Future&lt;T&gt; send&lt;T&gt;(</code>
+            <code>  Future&lt;dynamic&gt; send(</code>
             <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -523,7 +523,7 @@
             <code/>
         </line>
         <line hits="8">
-            <code>    final completer = ForwardCompleter&lt;T&gt;();</code>
+            <code>    final completer = ForwardCompleter();</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -556,7 +556,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="16">
-            <code>      final res = await channel.sendRequest&lt;T&gt;(</code>
+            <code>      final res = await channel.sendRequest(</code>
             <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -621,7 +621,7 @@
             <code>  /// Sends a streaming workload to the worker.</code>
         </line>
         <line hits="10">
-            <code>  Stream&lt;T&gt; stream&lt;T&gt;(</code>
+            <code>  Stream&lt;dynamic&gt; stream(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -650,7 +650,7 @@
             <code/>
         </line>
         <line hits="5">
-            <code>    late final ForwardStreamController&lt;T&gt; controller;</code>
+            <code>    late final ForwardStreamController controller;</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line>
@@ -706,9 +706,9 @@
             <code>        squadronToken?.throwIfCanceled();</code>
             <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12">
+        <line hits="11">
             <code>        final channel = _channel ?? await start();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
             <code>        if (controller.isClosed) return;</code>
@@ -723,7 +723,7 @@
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
-            <code>            .sendStreamingRequest&lt;T&gt;(</code>
+            <code>            .sendStreamingRequest(</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
@@ -756,13 +756,13 @@
             <code>              controller.add,</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="7">
             <code>              onError: (ex, st) =&gt;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9">
+        <line hits="10">
             <code>                  controller.addError(SquadronException.from(ex, st, command)),</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10">
             <code>              onDone: controller.close,</code>

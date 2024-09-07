@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/_impl/web" testname="lcov.info" version="1.5">
+    <lines>
+        <line>
+            <code>import '../../converters/cast_converter.dart';</code>
+        </line>
+        <line>
+            <code>import '../../converters/num_converter.dart';</code>
+        </line>
+        <line>
+            <code>import '../../squadron_platform_type.dart';</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>CastConverter getPlatformConverter() =&gt; (1.toDouble() is int)</code>
+        </line>
+        <line hits="8">
+            <code>    ? CastConverter.instance // JavaScript</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    : NumConverter.instance; // Web Assembly</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line>
+            <code>SquadronPlatformType getPlatformType() =&gt; (1.toDouble() is int)</code>
+        </line>
+        <line hits="1">
+            <code>    ? SquadronPlatformType.js // JavaScript</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    : SquadronPlatformType.wasm; // Web Assembly</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

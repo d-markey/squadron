@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -451,7 +451,7 @@
                     <td>130</td><td></td><td></td><td><code>      // at least minWorkers</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>3</td><td><code>      workload = minWorkers;</code></td>
+                    <td>131</td><td></td><td>4</td><td><code>      workload = minWorkers;</code></td>
                 </tr>
                 <tr class="noop" title="Line 132" id="line132">
                     <td>132</td><td></td><td></td><td><code>    }</code></td>
@@ -625,22 +625,22 @@
                     <td>188</td><td></td><td></td><td><code>  /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 189" id="line189">
-                    <td>189</td><td></td><td>2</td><td><code>  @override</code></td>
+                    <td>189</td><td></td><td>3</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 190" id="line190">
                     <td>190</td><td></td><td>1</td><td><code>  FutureOr&lt;void&gt; start() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 191" id="line191">
-                    <td>191</td><td></td><td>4</td><td><code>    _stopped = false;</code></td>
+                    <td>191</td><td></td><td>6</td><td><code>    _stopped = false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 192" id="line192">
-                    <td>192</td><td></td><td>8</td><td><code>    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);</code></td>
+                    <td>192</td><td></td><td>12</td><td><code>    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 193" id="line193">
-                    <td>193</td><td></td><td>3</td><td><code>    if (needs &gt; 0) {</code></td>
+                    <td>193</td><td></td><td>4</td><td><code>    if (needs &gt; 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 194" id="line194">
-                    <td>194</td><td></td><td>4</td><td><code>      return _provisionWorkers(needs);</code></td>
+                    <td>194</td><td></td><td>6</td><td><code>      return _provisionWorkers(needs);</code></td>
                 </tr>
                 <tr class="noop" title="Line 195" id="line195">
                     <td>195</td><td></td><td></td><td><code>    }</code></td>
@@ -952,7 +952,7 @@
                     <td>297</td><td></td><td>8</td><td><code>  void _schedule() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 298" id="line298">
-                    <td>298</td><td></td><td>18</td><td><code>    if (_workers.isEmpty &amp;&amp; _startingWorkers &gt; 0) {</code></td>
+                    <td>298</td><td></td><td>16</td><td><code>    if (_workers.isEmpty &amp;&amp; _startingWorkers &gt; 0) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 299" id="line299">
                     <td>299</td><td></td><td></td><td><code>      // workers are still starting, defer</code></td>
@@ -1042,13 +1042,13 @@
                     <td>327</td><td></td><td>8</td><td><code>    if (needs &gt; 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 328" id="line328">
-                    <td>328</td><td></td><td>9</td><td><code>      _provisionWorkers(needs).then(</code></td>
+                    <td>328</td><td></td><td>6</td><td><code>      _provisionWorkers(needs).then(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 329" id="line329">
-                    <td>329</td><td></td><td>10</td><td><code>        (_) =&gt; _dispatchTasks(),</code></td>
+                    <td>329</td><td></td><td>8</td><td><code>        (_) =&gt; _dispatchTasks(),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 330" id="line330">
-                    <td>330</td><td></td><td>4</td><td><code>        onError: (ex) {</code></td>
+                    <td>330</td><td></td><td>3</td><td><code>        onError: (ex) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 331" id="line331">
                     <td>331</td><td></td><td>2</td><td><code>          channelLogger?.e(() =&gt; 'Provisionning workers failed with error $ex');</code></td>

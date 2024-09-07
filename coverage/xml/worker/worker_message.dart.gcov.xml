@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-08-31" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/worker" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="/worker" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -9,9 +9,6 @@
         </line>
         <line>
             <code>import '../_impl/xplat/_helpers.dart';</code>
-        </line>
-        <line>
-            <code>import '../cast_helpers.dart';</code>
         </line>
         <line>
             <code/>
@@ -56,17 +53,17 @@
             <code>  void unwrapTravelTime() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="19">
-            <code>    final ts = data[_$traveltime];</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+        <line hits="28">
+            <code>    final ts = (data[_$traveltime] as num?)?.toInt();</code>
+            <hit count="28" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10">
             <code>    if (ts != null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="46">
-            <code>      data[_$traveltime] = microsecTimeStamp() - Cast.toInt(ts);</code>
-            <hit count="46" name="&lt;unnamed&gt;"/>
+        <line hits="37">
+            <code>      data[_$traveltime] = microsecTimeStamp() - ts;</code>
+            <hit count="37" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>

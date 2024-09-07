@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-08-31</dd>
+                    <dd>2024-09-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -490,7 +490,7 @@
                     <td>143</td><td></td><td></td><td><code>  /// Sends a workload to the worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>16</td><td><code>  Future&lt;T&gt; send&lt;T&gt;(</code></td>
+                    <td>144</td><td></td><td>16</td><td><code>  Future&lt;dynamic&gt; send(</code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
                     <td>145</td><td></td><td></td><td><code>    int command, {</code></td>
@@ -526,7 +526,7 @@
                     <td>155</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>8</td><td><code>    final completer = ForwardCompleter&lt;T&gt;();</code></td>
+                    <td>156</td><td></td><td>8</td><td><code>    final completer = ForwardCompleter();</code></td>
                 </tr>
                 <tr class="noop" title="Line 157" id="line157">
                     <td>157</td><td></td><td></td><td><code></code></td>
@@ -556,7 +556,7 @@
                     <td>165</td><td></td><td>3</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>16</td><td><code>      final res = await channel.sendRequest&lt;T&gt;(</code></td>
+                    <td>166</td><td></td><td>16</td><td><code>      final res = await channel.sendRequest(</code></td>
                 </tr>
                 <tr class="noop" title="Line 167" id="line167">
                     <td>167</td><td></td><td></td><td><code>        command,</code></td>
@@ -613,7 +613,7 @@
                     <td>184</td><td></td><td></td><td><code>  /// Sends a streaming workload to the worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 185" id="line185">
-                    <td>185</td><td></td><td>10</td><td><code>  Stream&lt;T&gt; stream&lt;T&gt;(</code></td>
+                    <td>185</td><td></td><td>10</td><td><code>  Stream&lt;dynamic&gt; stream(</code></td>
                 </tr>
                 <tr class="noop" title="Line 186" id="line186">
                     <td>186</td><td></td><td></td><td><code>    int command, {</code></td>
@@ -640,7 +640,7 @@
                     <td>193</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 194" id="line194">
-                    <td>194</td><td></td><td>5</td><td><code>    late final ForwardStreamController&lt;T&gt; controller;</code></td>
+                    <td>194</td><td></td><td>5</td><td><code>    late final ForwardStreamController controller;</code></td>
                 </tr>
                 <tr class="noop" title="Line 195" id="line195">
                     <td>195</td><td></td><td></td><td><code></code></td>
@@ -685,7 +685,7 @@
                     <td>208</td><td></td><td>7</td><td><code>        squadronToken?.throwIfCanceled();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 209" id="line209">
-                    <td>209</td><td></td><td>12</td><td><code>        final channel = _channel ?? await start();</code></td>
+                    <td>209</td><td></td><td>11</td><td><code>        final channel = _channel ?? await start();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 210" id="line210">
                     <td>210</td><td></td><td>5</td><td><code>        if (controller.isClosed) return;</code></td>
@@ -697,7 +697,7 @@
                     <td>212</td><td></td><td>10</td><td><code>        controller.attachSubscription(channel</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 213" id="line213">
-                    <td>213</td><td></td><td>5</td><td><code>            .sendStreamingRequest&lt;T&gt;(</code></td>
+                    <td>213</td><td></td><td>5</td><td><code>            .sendStreamingRequest(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 214" id="line214">
                     <td>214</td><td></td><td>5</td><td><code>              command,</code></td>
@@ -724,10 +724,10 @@
                     <td>221</td><td></td><td>10</td><td><code>              controller.add,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 222" id="line222">
-                    <td>222</td><td></td><td>6</td><td><code>              onError: (ex, st) =&gt;</code></td>
+                    <td>222</td><td></td><td>7</td><td><code>              onError: (ex, st) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 223" id="line223">
-                    <td>223</td><td></td><td>9</td><td><code>                  controller.addError(SquadronException.from(ex, st, command)),</code></td>
+                    <td>223</td><td></td><td>10</td><td><code>                  controller.addError(SquadronException.from(ex, st, command)),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 224" id="line224">
                     <td>224</td><td></td><td>10</td><td><code>              onDone: controller.close,</code></td>
