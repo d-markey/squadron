@@ -21,8 +21,6 @@ then
 
     git config --global user.name 'd-markey'
     git config --global user.email 'd-markey@users.noreply.github.com'
-    git add ./coverage
-    git add ./coverage.json
     git commit -am "Automated test coverage report"
     git push
 fi

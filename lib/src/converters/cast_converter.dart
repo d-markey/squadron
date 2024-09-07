@@ -70,22 +70,22 @@ class CastConverter implements Converter {
   @override
   Cast<Iterable<T>> i<T>([Cast<T>? cast]) => Converter.isIdentity<T>(cast)
       ? ((x) => (x as Iterable).cast<T>())
-      : ((x) => (x as Iterable).map<T>(v<T>()));
+      : ((x) => (x as Iterable).map<T>(cast!));
 
   @override
   Cast<Iterable<T?>> ni<T>([Cast<T?>? cast]) => Converter.isIdentity<T?>(cast)
       ? ((x) => (x as Iterable).cast<T?>())
-      : ((x) => (x as Iterable).map<T?>(nv<T>()));
+      : ((x) => (x as Iterable).map<T?>(cast!));
 
   @override
   Cast<List<T>> l<T>([Cast<T>? cast]) => Converter.isIdentity<T>(cast)
       ? ((x) => (x as List).cast<T>())
-      : ((x) => (x as List).map<T>(v<T>()).toList());
+      : ((x) => (x as List).map<T>(cast!).toList());
 
   @override
   Cast<List<T?>> nl<T>([Cast<T?>? cast]) => Converter.isIdentity<T?>(cast)
       ? ((x) => (x as List).cast<T?>())
-      : ((x) => (x as List).map<T?>(nv<T>()).toList());
+      : ((x) => (x as List).map<T?>(cast!).toList());
 
   @override
   Cast<Map<K, V>> m<K, V>({Cast<K>? kcast, Cast<V>? vcast}) {

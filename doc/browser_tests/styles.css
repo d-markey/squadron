@@ -1,0 +1,52 @@
+html {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+body.main {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+body.test-runner {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    overflow: hidden;
+}
+
+#button-bar {
+    padding: 4px;
+    margin: 4px;
+}
+
+#output {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    overflow: scroll;
+    text-wrap: nowrap;
+}
+
+#test-runner {
+    padding: 4px;
+    margin: 4px;
+    border: 1px solid #000000;
+    height: 80%;
+    width: 98%;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
+}

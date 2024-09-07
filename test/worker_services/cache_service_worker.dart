@@ -9,8 +9,12 @@ class CacheWorker extends Worker implements Cache {
   CacheWorker(TestContext context) : super(context.entryPoints.cache!);
 
   @override
-  Future<dynamic> get(dynamic key) =>
-      send(CacheService.getOperation, args: [key]);
+  Future<dynamic> get(dynamic key) => send(
+        CacheService.getOperation,
+        args: [key],
+        inspectRequest: true,
+        inspectResponse: true,
+      );
 
   @override
   Future<bool> containsKey(dynamic key) =>
@@ -20,8 +24,12 @@ class CacheWorker extends Worker implements Cache {
   @override
   Future<dynamic> set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
-    return send(CacheService.setOperation,
-        args: [key, value, timeToLive?.inMicroseconds]);
+    return send(
+      CacheService.setOperation,
+      args: [key, value, timeToLive?.inMicroseconds],
+      inspectRequest: true,
+      inspectResponse: true,
+    );
   }
 
   @override

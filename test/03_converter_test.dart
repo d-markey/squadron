@@ -172,6 +172,221 @@ void execute(TestContext? tc) {
           });
         });
 
+        tc.group('- lists', () {
+          tc.test('- ints (cast)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3, 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            final res = converter.l<int>()(data);
+            expect(res, isA<List<int>>());
+            expect(res, data);
+          });
+
+          tc.test('- ints (map)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3, 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            final res = converter.l<int>((x) => x as int)(data);
+            expect(res, isA<List<int>>());
+            expect(res, data);
+          });
+
+          tc.test('- nullable ints', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, null, 4]);
+
+            await expectLater(() => data as List<int?>, throwsTypeError);
+            final res = converter.nl<int>()(data);
+            expect(res, isA<List<int?>>());
+            expect(res, data);
+          });
+
+          tc.test('- with integral double (cast)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3.toDouble(), 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            final res = converter.l<int>()(data);
+            expect(res, isA<List<int>>()); // conversion succeeds
+            try {
+              expect(res, data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a list with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a list with integral double', ex);
+              }
+            }
+          });
+
+          tc.test('- with integral double (map)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3.toDouble(), 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            try {
+              final res = converter.l<int>((x) => x as int)(data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+                expect(res, data);
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a list with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a list with integral double', ex);
+              }
+            }
+          });
+
+          tc.test('- doubles', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, 3.3, 4.4]);
+
+            await expectLater(() => data as List<double>, throwsTypeError);
+            final res = converter.l<double>()(data);
+            expect(res, isA<List<double>>());
+            expect(res, data);
+          });
+
+          tc.test('- nullable doubles', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, null, 4.4]);
+
+            await expectLater(() => data as List<double?>, throwsTypeError);
+            final res = converter.nl<double>()(data);
+            expect(res, isA<List<double?>>());
+            expect(res, data);
+          });
+
+          tc.test('- with int', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, 3.toInt(), 4.4]);
+
+            await expectLater(() => data as List<double>, throwsTypeError);
+            final res = converter.l<double>()(data);
+            expect(res, isA<List<double>>()); // conversion succeeds
+            try {
+              expect(res, data);
+              if (Squadron.platformType.isJs) {
+                // int is double on JavaScript platforms
+              } else {
+                throw unexpectedSuccess('conversion of a list with int', data);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // int is NOT double on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure('conversion of a list with int', ex);
+              }
+            }
+          });
+        });
+
+        tc.group('- maps', () {
+          tc.test('- Strings / ints (cast)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, 'two': 2, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>()(data);
+            expect(res, isA<Map<String, int>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / ints (map)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, 'two': 2, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>(vcast: (x) => x as int)(data);
+            expect(res, isA<Map<String, int>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / nullable int', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, '': null, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.nm<String, int?>()(data);
+            expect(res, isA<Map<String, int?>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / integral double (cast)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({
+              'one': 1.toDouble(),
+              'two': 2.toDouble(),
+              'three': 3.toDouble()
+            });
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>()(data);
+            expect(res, isA<Map<String, int>>());
+            try {
+              expect(res, data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a map with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a map with integral double', ex);
+              }
+            }
+          });
+
+          tc.test('- String / integral double (map)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({
+              'one': 1.toDouble(),
+              'two': 2.toDouble(),
+              'three': 3.toDouble()
+            });
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            try {
+              final res =
+                  converter.m<String, int>(vcast: (x) => x as int)(data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+                expect(res, isA<Map<String, int>>());
+                expect(res, data);
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a map with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a map with integral double', ex);
+              }
+            }
+          });
+        });
+
         tc.group('- typed data', () {
           final intData = [
             0, // 8 bits
@@ -554,6 +769,177 @@ void execute(TestContext? tc) {
           tc.test('- non-number values', () async {
             await expectLater(() => toDbl(Object()), throwsTypeError);
             await expectLater(() => toNullableDbl(Object()), throwsTypeError);
+          });
+        });
+
+        tc.group('- lists', () {
+          tc.test('- ints (cast)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3, 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            final res = converter.l<int>()(data);
+            expect(res, isA<List<int>>());
+            expect(res, data);
+          });
+
+          tc.test('- ints (map)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3, 4]);
+
+            final res = converter.l<int>((x) => x as int)(data);
+            expect(res, isA<List<int>>());
+            expect(res, data);
+          });
+
+          tc.test('- nullable ints', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, null, 4]);
+
+            await expectLater(() => data as List<int?>, throwsTypeError);
+            final res = converter.nl<int>()(data);
+            expect(res, isA<List<int?>>());
+            expect(res, data);
+          });
+
+          tc.test('- with integral double (cast)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3.toDouble(), 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            final res = converter.l<int>()(data);
+            expect(res, isA<List<int>>()); // conversion succeeds
+            expect(res, data);
+          });
+
+          tc.test('- with integral double (map)', () async {
+            final data = <dynamic>[];
+            data.addAll([1, 2, 3.toDouble(), 4]);
+
+            await expectLater(() => data as List<int>, throwsTypeError);
+            try {
+              final res = converter.l<int>((x) => x as int)(data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+                expect(res, data);
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a list with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a list with integral double', ex);
+              }
+            }
+          });
+
+          tc.test('- doubles', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, 3.3, 4.4]);
+
+            await expectLater(() => data as List<double>, throwsTypeError);
+            final res = converter.l<double>()(data);
+            expect(res, isA<List<double>>());
+            expect(res, data);
+          });
+
+          tc.test('- nullable doubles', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, null, 4.4]);
+
+            await expectLater(() => data as List<double?>, throwsTypeError);
+            final res = converter.nl<double>()(data);
+            expect(res, isA<List<double?>>());
+            expect(res, data);
+          });
+
+          tc.test('- with int', () async {
+            final data = <dynamic>[];
+            data.addAll([1.1, 2.2, 3.toInt(), 4.4]);
+
+            await expectLater(() => data as List<double>, throwsTypeError);
+            final res = converter.l<double>()(data);
+            expect(res, isA<List<double>>()); // conversion succeeds
+            expect(res, data);
+          });
+        });
+
+        tc.group('- maps', () {
+          tc.test('- Strings / ints (cast)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, 'two': 2, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>()(data);
+            expect(res, isA<Map<String, int>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / ints (map)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, 'two': 2, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>(vcast: (x) => x as int)(data);
+            expect(res, isA<Map<String, int>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / nullable int', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({'one': 1, '': null, 'three': 3});
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.nm<String, int?>()(data);
+            expect(res, isA<Map<String, int?>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / integral double (cast)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({
+              'one': 1.toDouble(),
+              'two': 2.toDouble(),
+              'three': 3.toDouble()
+            });
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            final res = converter.m<String, int>()(data);
+            expect(res, isA<Map<String, int>>());
+            expect(res, data);
+          });
+
+          tc.test('- String / integral double (map)', () async {
+            final data = <dynamic, dynamic>{};
+            data.addAll({
+              'one': 1.toDouble(),
+              'two': 2.toDouble(),
+              'three': 3.toDouble()
+            });
+
+            await expectLater(() => data as Map<String, int>, throwsTypeError);
+            try {
+              final res =
+                  converter.m<String, int>(vcast: (x) => x as int)(data);
+              if (Squadron.platformType.isJs) {
+                // integral double is int on JavaScript platforms
+                expect(res, isA<Map<String, int>>());
+                expect(res, data);
+              } else {
+                throw unexpectedSuccess(
+                    'conversion of a map with integral double', res);
+              }
+            } on TypeError catch (ex) {
+              if (!Squadron.platformType.isJs) {
+                // integral double is NOT int on non-JavaScript platforms
+              } else {
+                throw unexpectedFailure(
+                    'conversion of a map with integral double', ex);
+              }
+            }
           });
         });
       });

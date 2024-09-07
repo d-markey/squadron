@@ -1,0 +1,16 @@
+{
+  "version": 3,
+  "engine": "v2",
+  "file": "not_a_worker.dart.js",
+  "sourceRoot": "",
+  "sources": ["org-dartlang-sdk:///lib/_internal/js_runtime/lib/js_primitives.dart","org-dartlang-sdk:///lib/_internal/js_shared/lib/rti.dart","not_a_worker.dart","org-dartlang-sdk:///lib/_internal/js_runtime/lib/internal_patch.dart","org-dartlang-sdk:///lib/core/print.dart"],
+  "names": ["printString","_Universe.addRules","_Universe.addErasedTypes","_Utils.objectAssign","main","print","List","Map","Null","Object","String","addErasedTypes","addRules","bool","closureFromTearOff","double","int","num","objectAssign","throwLateFieldADI","arrayLength","asString","erasedTypes","objectKeys","printToConsole","typeRules"],
+  "mappings": "A;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAiBKA,IACHA,iCAEEA;AACAA,MAoBJA,+DAdIA;AACAA,MAaJA,CATEA,6BACEA;AACAA,MAOJA,CADEA,0CACFA,C;CC4hEcC,MACRA,OAAOA,KA3CPA,MA2C+CA,C;CA2BvCC,MACRA,OAAOA,KApEPA,MAoEiDA,C;CAyoDzCC,MAFRA,4BAkBqCA;AAZvCA,oBAxBmCA;UA4BrCA,C;CCnvHGC,GC6CHC,wBD3CFD,C",
+  "x_org_dartlang_dart2js": {
+    "minified_names": {
+      "global": "a,18,b,14,c,4,d,0,e,6,f,7,h,8,i,9,j,10,k,11,l,12,m,13,n,15,o,16,p,17,q,19",
+      "instance": ""
+    },
+    "frames": "s/HCskE0ByBM;sBA4BAHM;UA2oDXC4B;AACEHQ;oBAEECc;OC/uHjBhBAEqBEmBwB,A;"
+  }
+}
