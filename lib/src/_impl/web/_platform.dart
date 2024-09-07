@@ -8,4 +8,4 @@ CastConverter getPlatformConverter() => (1.toDouble() is int)
 
 SquadronPlatformType getPlatformType() => (1.toDouble() is int)
     ? SquadronPlatformType.js // JavaScript
-    : SquadronPlatformType.wasm;  // Web Assembly
+    : SquadronPlatformType.wasm; // Web Assembly
