@@ -35,9 +35,9 @@
             <code>  bool get isVm =&gt; this == vm;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7">
+        <line hits="8">
             <code>  bool get isJs =&gt; this == js;</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5">
             <code>  bool get isWasm =&gt; this == wasm;</code>

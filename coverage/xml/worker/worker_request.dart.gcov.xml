@@ -274,9 +274,9 @@
             <code>  void Function(dynamic)? get reply =&gt;</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="28">
+        <line hits="30">
             <code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code>
-            <hit count="28" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

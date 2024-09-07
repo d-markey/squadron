@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7236842" lines-covered="55" lines-valid="76" package="/converters" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-07" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85897434" lines-covered="67" lines-valid="78" package="/converters" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'dart:typed_data';</code>
@@ -265,7 +265,7 @@
             <code>      ? ((x) =&gt; (x as Iterable).cast&lt;T&gt;())</code>
         </line>
         <line hits="0">
-            <code>      : ((x) =&gt; (x as Iterable).map&lt;T&gt;(v&lt;T&gt;()));</code>
+            <code>      : ((x) =&gt; (x as Iterable).map&lt;T&gt;(cast!));</code>
         </line>
         <line>
             <code/>
@@ -280,90 +280,101 @@
             <code>      ? ((x) =&gt; (x as Iterable).cast&lt;T?&gt;())</code>
         </line>
         <line hits="0">
-            <code>      : ((x) =&gt; (x as Iterable).map&lt;T?&gt;(nv&lt;T&gt;()));</code>
+            <code>      : ((x) =&gt; (x as Iterable).map&lt;T?&gt;(cast!));</code>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="3">
             <code>  Cast&lt;List&lt;T&gt;&gt; l&lt;T&gt;([Cast&lt;T&gt;? cast]) =&gt; Converter.isIdentity&lt;T&gt;(cast)</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5">
+            <code>      ? ((x) =&gt; (x as List).cast&lt;T&gt;())</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>      : ((x) =&gt; (x as List).map&lt;T&gt;(cast!).toList());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2">
-            <code>      ? ((x) =&gt; (x as List).cast&lt;T&gt;())</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0">
-            <code>      : ((x) =&gt; (x as List).map&lt;T&gt;(v&lt;T&gt;()).toList());</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line hits="0">
             <code>  Cast&lt;List&lt;T?&gt;&gt; nl&lt;T&gt;([Cast&lt;T?&gt;? cast]) =&gt; Converter.isIdentity&lt;T?&gt;(cast)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="3">
             <code>      ? ((x) =&gt; (x as List).cast&lt;T?&gt;())</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
-            <code>      : ((x) =&gt; (x as List).map&lt;T?&gt;(nv&lt;T&gt;()).toList());</code>
+        <line hits="4">
+            <code>      : ((x) =&gt; (x as List).map&lt;T?&gt;(cast!).toList());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  Cast&lt;Map&lt;K, V&gt;&gt; m&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="9">
             <code>    if (Converter.isIdentity&lt;K&gt;(kcast) &amp;&amp; Converter.isIdentity&lt;V&gt;(vcast)) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6">
+        <line hits="9">
             <code>      return ((x) =&gt; (x as Map).cast&lt;K, V&gt;());</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
         </line>
-        <line hits="0">
+        <line hits="2">
             <code>      final key = kcast ?? v&lt;K&gt;(), value = vcast ?? v&lt;V&gt;();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="7">
             <code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(key(k), value(v))));</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    }</code>
         </line>
-        <line hits="2">
+        <line hits="3">
             <code>  }</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
         </line>
-        <line hits="0">
+        <line hits="1">
             <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line>
+        <line hits="1">
             <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nm&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V?&gt;? vcast}) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="3">
             <code>    if (Converter.isIdentity&lt;K&gt;(kcast) &amp;&amp; Converter.isIdentity&lt;V?&gt;(vcast)) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0">
+        <line hits="3">
             <code>      return ((x) =&gt; (x as Map).cast&lt;K, V?&gt;());</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    } else {</code>
@@ -377,8 +388,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line>
+        <line hits="1">
             <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

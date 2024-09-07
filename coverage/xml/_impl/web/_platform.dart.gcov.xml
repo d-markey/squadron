@@ -29,9 +29,9 @@
         <line>
             <code>SquadronPlatformType getPlatformType() =&gt; (1.toDouble() is int)</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    ? SquadronPlatformType.js // JavaScript</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>    : SquadronPlatformType.wasm; // Web Assembly</code>

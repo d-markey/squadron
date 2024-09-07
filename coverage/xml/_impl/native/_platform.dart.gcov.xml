@@ -17,9 +17,9 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>

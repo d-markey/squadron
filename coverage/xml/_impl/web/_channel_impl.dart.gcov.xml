@@ -162,13 +162,13 @@
         <line>
             <code/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  void _inspectAndPostRequest(WorkerRequest req) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>    if (_closed) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0">
             <code>      throw SquadronErrorExt.create('Channel is closed');</code>
@@ -186,31 +186,31 @@
             <code>    try {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      final data = req.wrapInPlace();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      final msg = data.jsify();</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      final transfer = Transferables.get(data);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>      if (transfer == null || transfer.isEmpty) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>        _sendPort.postMessage(msg);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>      } else {</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>        _sendPort.postMessage(msg, jsTransfer);</code>
@@ -232,9 +232,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="1">
+        <line hits="2">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>

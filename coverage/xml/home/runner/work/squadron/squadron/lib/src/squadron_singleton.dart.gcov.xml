@@ -23,9 +23,9 @@
             <code>  static final converter = impl.getPlatformConverter();</code>
             <hit count="32" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4">
+        <line hits="8">
             <code>  static final platformType = impl.getPlatformType();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

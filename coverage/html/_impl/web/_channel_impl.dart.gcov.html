@@ -205,10 +205,10 @@
                     <td>48</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>1</td><td><code>  void _inspectAndPostRequest(WorkerRequest req) {</code></td>
+                    <td>49</td><td></td><td>2</td><td><code>  void _inspectAndPostRequest(WorkerRequest req) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>1</td><td><code>    if (_closed) {</code></td>
+                    <td>50</td><td></td><td>2</td><td><code>    if (_closed) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 51" id="line51">
                     <td>51</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Channel is closed');</code></td>
@@ -226,25 +226,25 @@
                     <td>55</td><td></td><td>1</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>1</td><td><code>      final data = req.wrapInPlace();</code></td>
+                    <td>56</td><td></td><td>2</td><td><code>      final data = req.wrapInPlace();</code></td>
                 </tr>
                 <tr class="noop" title="Line 57" id="line57">
                     <td>57</td><td></td><td></td><td><code>      final msg = data.jsify();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>      final transfer = Transferables.get(data);</code></td>
+                    <td>58</td><td></td><td>2</td><td><code>      final transfer = Transferables.get(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>1</td><td><code>      if (transfer == null || transfer.isEmpty) {</code></td>
+                    <td>59</td><td></td><td>2</td><td><code>      if (transfer == null || transfer.isEmpty) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 60" id="line60">
-                    <td>60</td><td></td><td>1</td><td><code>        _sendPort.postMessage(msg);</code></td>
+                    <td>60</td><td></td><td>2</td><td><code>        _sendPort.postMessage(msg);</code></td>
                 </tr>
                 <tr class="noop" title="Line 61" id="line61">
                     <td>61</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>1</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
+                    <td>62</td><td></td><td>2</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
                     <td>63</td><td></td><td></td><td><code>        _sendPort.postMessage(msg, jsTransfer);</code></td>
@@ -265,7 +265,7 @@
                     <td>68</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>69</td><td></td><td>2</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
                     <td>70</td><td></td><td></td><td><code></code></td>
