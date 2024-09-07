@@ -26,16 +26,15 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
 class PrimeWorker extends Worker implements PrimeService {
   PrimeWorker(TestContext context, CacheWorker? cache)
       : super(context.entryPoints.prime!, args: [
-          context.useNumConverter,
           cache?.getSharedChannel()!.serialize(),
         ]);
 
   @override
   FutureOr<bool> isPrime(int n) => send(PrimeService.isPrimeCommand, args: [n])
-      .then(platformConverter.v<bool>());
+      .then(Squadron.converter.v<bool>());
 
   @override
   Stream<int> getPrimes(int min, int max) =>
       stream(PrimeService.getPrimesCommand, args: [min, max])
-          .map(platformConverter.v<int>());
+          .map(Squadron.converter.v<int>());
 }

@@ -238,6 +238,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/web/_entry_point_uri.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_event_buffer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_local_worker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_patch.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/web/_platform.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_uri_checker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_channel.dart
@@ -257,6 +258,7 @@ file:///C:/_Projects/github/squadron/lib/src/bootstrapper.dart
 file:///C:/_Projects/github/squadron/lib/src/channel.dart
 file:///C:/_Projects/github/squadron/lib/src/concurrency_settings.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart
@@ -281,6 +283,8 @@ file:///C:/_Projects/github/squadron/lib/src/pool/stream_task.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/task.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/value_task.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/worker_pool.dart
+file:///C:/_Projects/github/squadron/lib/src/squadron_platform_type.dart
+file:///C:/_Projects/github/squadron/lib/src/squadron_singleton.dart
 file:///C:/_Projects/github/squadron/lib/src/stats/perf_counter.dart
 file:///C:/_Projects/github/squadron/lib/src/stats/perf_counter_snapshot.dart
 file:///C:/_Projects/github/squadron/lib/src/stats/worker_stat.dart
@@ -294,7 +298,6 @@ file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_response.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
 file:///C:/_Projects/github/squadron/test/worker_services/issues_service.dart
-file:///C:/_Projects/github/squadron/test/workers/js/_platform.dart
 file:///C:/_Projects/github/squadron/test/workers/js/issues_worker.dart
 org-dartlang-sdk:///lib/_http/crypto.dart
 org-dartlang-sdk:///lib/_http/embedder_config.dart

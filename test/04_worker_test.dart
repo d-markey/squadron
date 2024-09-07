@@ -22,8 +22,8 @@ import 'worker_services/test_service.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '04_worker_test.dart';
@@ -225,6 +225,15 @@ void execute(TestContext? tc) {
       });
 
       tc.group('- workloads', () {
+        tc.test('- platform type', () async {
+          await TestWorker(tc).useAsync((w) async {
+            // make sure platforms match with the test context
+            expect(Squadron.platformType, tc.clientPlatform);
+            final workerPlatform = await w.getPlatformType();
+            expect(workerPlatform, tc.workerPlatform);
+          });
+        });
+
         tc.test('- sequential', () async {
           await TestWorker(tc).useAsync((w) async {
             int taskId = 0;
@@ -242,35 +251,35 @@ void execute(TestContext? tc) {
 
             await createTask(TestDelays.delay); // task #1
 
-            expect(completedTasks, [1]); // #1 has completed
+            expect(completedTasks, contains(1)); // #1 has completed
             expect(w.workload, isZero);
             expect(w.maxWorkload, 1);
             expect(w.totalWorkload, 1);
 
             final task = createTask(TestDelays.delay * 3); // task #2
 
-            expect(completedTasks, [1]); // #2 is pending
+            expect(completedTasks, contains(1)); // #2 is pending
             expect(w.workload, 1);
             expect(w.maxWorkload, 1);
             expect(w.totalWorkload, 1);
 
             await Future.delayed(TestDelays.delay);
 
-            expect(completedTasks, [1]); // #2 is still pending
+            expect(completedTasks, contains(1)); // #2 is still pending
             expect(w.workload, 1);
             expect(w.maxWorkload, 1);
             expect(w.totalWorkload, 1);
 
             await task;
 
-            expect(completedTasks, [1, 2]); // #2 has completed
+            expect(completedTasks, containsAll([1, 2])); // #2 has completed
             expect(w.workload, isZero);
             expect(w.maxWorkload, 1);
             expect(w.totalWorkload, 2);
 
             await createTask(TestDelays.delay); // task #3
 
-            expect(completedTasks, [1, 2, 3]); // #3 has completed
+            expect(completedTasks, containsAll([1, 2, 3])); // #3 has completed
             expect(w.workload, isZero);
             expect(w.maxWorkload, 1);
             expect(w.totalWorkload, 3);
@@ -315,7 +324,7 @@ void execute(TestContext? tc) {
             await Future.wait(tasks);
 
             // all tasks have completed
-            expect(completedTasks, {1, 2, 3});
+            expect(completedTasks, containsAll([1, 2, 3]));
             expect(w.workload, isZero);
             expect(w.maxWorkload, 3);
             expect(w.totalWorkload, 3);
@@ -343,7 +352,7 @@ void execute(TestContext? tc) {
 
             // 4 delays: #6 has completed
             await Future.delayed(TestDelays.delay * 3);
-            expect(completedTasks, {6});
+            expect(completedTasks, contains(6));
             expect(w.workload, 2);
             expect(w.maxWorkload, 3);
             expect(w.totalWorkload, 4);
@@ -351,21 +360,21 @@ void execute(TestContext? tc) {
             createTask(TestDelays.delay * 5); // #7 completes at ~9 delays
             createTask(TestDelays.delay * 3); // #8 completes at ~7 delays
 
-            expect(completedTasks, {6});
+            expect(completedTasks, contains(6));
             expect(w.workload, 4);
             expect(w.maxWorkload, 4);
             expect(w.totalWorkload, 4);
 
             // 8 delays: #5 and #8 have completed
             await Future.delayed(TestDelays.delay * 4);
-            expect(completedTasks, {5, 6, 8});
+            expect(completedTasks, containsAll([5, 6, 8]));
             expect(w.workload, 2);
             expect(w.maxWorkload, 4);
             expect(w.totalWorkload, 6);
 
             // 11 delays: all tasks have completed
             await Future.delayed(TestDelays.delay * 3);
-            expect(completedTasks, {4, 5, 6, 7, 8});
+            expect(completedTasks, containsAll([4, 5, 6, 7, 8]));
             expect(w.workload, isZero);
             expect(w.maxWorkload, 4);
             expect(w.totalWorkload, 8);

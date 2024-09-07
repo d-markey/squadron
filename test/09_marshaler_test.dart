@@ -11,8 +11,8 @@ import 'classes/utils.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '09_marshaler_test.dart';

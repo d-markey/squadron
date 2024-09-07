@@ -37,7 +37,6 @@ class InstallableWorker extends Worker implements InstallableService {
   InstallableWorker._(TestContext context,
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : super(context.entryPoints.installable!, args: [
-          context.useNumConverter,
           throwOnInstall,
           throwOnUninstall,
         ]);
@@ -61,10 +60,10 @@ class InstallableWorker extends Worker implements InstallableService {
   }
 
   @override
-  Future<bool> isInstalled() =>
-      send(InstallableService.cmdIsInstalled).then(platformConverter.v<bool>());
+  Future<bool> isInstalled() => send(InstallableService.cmdIsInstalled)
+      .then(Squadron.converter.v<bool>());
 
   @override
   Future<bool> isUninstalled() => send(InstallableService.cmdIsUninstalled)
-      .then(platformConverter.v<bool>());
+      .then(Squadron.converter.v<bool>());
 }

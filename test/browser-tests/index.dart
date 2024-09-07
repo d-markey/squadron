@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:js/js.dart';
 
 import '../classes/test_context.dart';
+import 'test_runner.dart';
 
 @JS()
 external get dartPrint;
@@ -11,6 +12,8 @@ external get dartPrint;
 external set dartPrint(dynamic print);
 
 void main() async {
+  await discoverTests();
+
   final origin = window.location.origin;
   final testRunner = querySelector('#test-runner') as IFrameElement;
 

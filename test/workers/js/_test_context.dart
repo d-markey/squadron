@@ -7,10 +7,9 @@ import 'dart:typed_data';
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_uri_checker.dart';
 
-import '../../classes/test_context.dart' show TestPlatform;
 import '../../classes/test_entry_points.dart';
 
-const platform = TestPlatform.js;
+const platform = SquadronPlatformType.js;
 String platformName = web.window.navigator.userAgent;
 
 final hasImageCodecs = js.context.callMethod('eval', [
@@ -33,15 +32,15 @@ final isCrossOriginIsolated =
     js.context.callMethod('eval', ['window.crossOriginIsolated']) as bool;
 
 extension TestEntryPointsExt on TestEntryPoints {
-  Future<void> set(String root, TestPlatform platform) async {
-    String ext;
+  Future<void> set(String root, SquadronPlatformType platform) async {
+    final String ext;
     switch (platform) {
-      case TestPlatform.js:
-        root = '${root}workers/js';
+      case SquadronPlatformType.js:
+        root = '$root/workers/js';
         ext = 'js';
         break;
-      case TestPlatform.wasm:
-        root = '${root}workers/wasm';
+      case SquadronPlatformType.wasm:
+        root = '$root/workers/wasm';
         ext = 'unopt.wasm';
         break;
       default:

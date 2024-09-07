@@ -50,7 +50,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
     LocalClientService.checkIdsCommand: (req) => checkIds(),
     LocalClientService.checkExceptionCommand: (req) => checkException(),
     LocalClientService.checkSequenceCommand: (req) =>
-        checkSequence(platformConverter.v<int>()(req.args[0])),
+        checkSequence(Squadron.converter.v<int>()(req.args[0])),
   };
 }
 
@@ -62,7 +62,6 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
       ConcurrencySettings? concurrencySettings)
       : super(
             () => LocalClientWorker(context, args: [
-                  context.useNumConverter,
                   localService.channel?.share().serialize(),
                 ]),
             concurrencySettings:
@@ -85,15 +84,15 @@ class LocalClientWorker extends Worker implements LocalClientService {
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand)
-      .then(platformConverter.v<String>());
+      .then(Squadron.converter.v<String>());
 
   @override
   Future<bool> checkException() =>
       send(LocalClientService.checkExceptionCommand)
-          .then(platformConverter.v<bool>());
+          .then(Squadron.converter.v<bool>());
 
   @override
   Stream<Map<String, dynamic>> checkSequence(int count) =>
       stream(LocalClientService.checkSequenceCommand, args: [count])
-          .map(platformConverter.m<String, dynamic>());
+          .map(Squadron.converter.m<String, dynamic>());
 }

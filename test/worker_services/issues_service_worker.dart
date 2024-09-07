@@ -17,14 +17,10 @@ class IssuesWorkerPool extends WorkerPool<IssuesWorker>
 }
 
 class IssuesWorker extends Worker implements IssuesService {
-  IssuesWorker(TestContext context)
-      : super(
-          context.entryPoints.issues!,
-          args: [context.useNumConverter],
-        );
+  IssuesWorker(TestContext context) : super(context.entryPoints.issues!);
 
   @override
   Stream<Map<String, int>> issue_8(List<int> nums) =>
       stream(IssuesService.cmdIssue_8, args: [nums])
-          .map(platformConverter.m<String, int>());
+          .map(Squadron.converter.m<String, int>());
 }

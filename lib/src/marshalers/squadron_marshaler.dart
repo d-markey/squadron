@@ -1,4 +1,5 @@
-import '../../squadron.dart';
+import '../converters/converter.dart';
+import '../squadron_singleton.dart';
 
 /// Base class to serialize/deserialize data of type [T] to a transferable type [S].
 abstract class SquadronMarshaler<T, S> {
@@ -17,8 +18,8 @@ abstract class SquadronMarshaler<T, S> {
 
 extension SquadronMarshalerExt<T, S> on SquadronMarshaler<T, S> {
   Cast<S> marshaler([Cast<T>? cast]) =>
-      (x) => marshal((cast ?? platformConverter.v<T>())(x));
+      (x) => marshal((cast ?? Squadron.converter.v<T>())(x));
 
   Cast<T> unmarshaler([Cast<S>? cast]) =>
-      (x) => unmarshal((cast ?? platformConverter.v<S>())(x));
+      (x) => unmarshal((cast ?? Squadron.converter.v<S>())(x));
 }

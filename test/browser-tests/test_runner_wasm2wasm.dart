@@ -2,6 +2,7 @@
 
 import 'dart:js_interop';
 
+import 'package:squadron/squadron.dart';
 import 'package:web/web.dart';
 
 import '../classes/test_context.dart';
@@ -26,14 +27,17 @@ void main(dynamic args) async {
 
   window.onMessage.listen((m) {
     if (m.data.dartify() == TestContext.cancelled) {
+      print('(*) cancel tests');
       context?.cancel();
     } else {
       print('(*) ${m.data}');
     }
   });
 
+  print('Client platform type = ${Squadron.platformType.label}');
+
   context = await runTests(
     Uri.parse(window.location.href).queryParameters.keys,
-    TestPlatform.wasm,
+    SquadronPlatformType.wasm,
   );
 }

@@ -116,6 +116,10 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
 
   StreamTask<int> infiniteWithErrorsTask([CancelationToken? token]) =>
       scheduleStreamTask((w) => w.infiniteWithErrors(token));
+
+  @override
+  Future<SquadronPlatformType> getPlatformType() =>
+      execute((w) => w.getPlatformType());
 }
 
 class TestWorker extends Worker implements TestService {
@@ -125,28 +129,28 @@ class TestWorker extends Worker implements TestService {
   TestWorker(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [context.useNumConverter, TestService.startupOk],
+          [TestService.startupOk],
           hook,
         );
 
   TestWorker.throws(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [context.useNumConverter, TestService.startupThrows],
+          [TestService.startupThrows],
           hook,
         );
 
   TestWorker.invalid(TestContext context, [PlatformThreadHook? hook])
       : this._(
           context.entryPoints.test!,
-          [context.useNumConverter, TestService.startupInvalid],
+          [TestService.startupInvalid],
           hook,
         );
 
   TestWorker.missingStartRequest(TestContext context)
       : this._(
           context.entryPoints.missingStartRequest!,
-          [context.useNumConverter, TestService.startupOk],
+          [TestService.startupOk],
         );
 
   @override
@@ -165,31 +169,31 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n])
-      .then(platformConverter.v<int>());
+      .then(Squadron.converter.v<int>());
 
   @override
   Future<int> throwException() =>
-      send(TestService.throwExceptionCommand).then(platformConverter.v<int>());
+      send(TestService.throwExceptionCommand).then(Squadron.converter.v<int>());
 
   @override
   Future<int> throwWorkerException() =>
       send(TestService.throwWorkerExceptionCommand)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Future<int> throwTaskTimeOutException() =>
       send(TestService.throwTaskTimeOutExceptionCommand)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Future<int> throwCanceledException() =>
       send(TestService.throwCanceledExceptionCommand)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Future<int> throwCustomException() =>
       send(TestService.throwCustomExceptionCommand)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Future<dynamic> sendBack(dynamic data) =>
@@ -203,44 +207,45 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<bool> ping() =>
-      send(TestService.pingCommand).then(platformConverter.v<bool>());
+      send(TestService.pingCommand).then(Squadron.converter.v<bool>());
 
   @override
   Stream<int> finite(int count, [CancelationToken? token]) =>
       stream(TestService.finiteCommand, args: [count], token: token)
-          .map(platformConverter.v<int>());
+          .map(Squadron.converter.v<int>());
 
   @override
   Stream<int> infinite([CancelationToken? token]) =>
       stream(TestService.infiniteCommand, token: token)
-          .map(platformConverter.v<int>());
+          .map(Squadron.converter.v<int>());
 
   @override
   Stream<int> clock({int frequency = 1, CancelationToken? token}) =>
       stream(TestService.clockCommand, args: [frequency], token: token)
-          .map(platformConverter.v<int>());
+          .map(Squadron.converter.v<int>());
 
   @override
   Future<int> cancelableInfiniteCpu(CancelationToken token) =>
       send(TestService.cancelableInfiniteCpuCommand, token: token)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Future<int> getPendingInfiniteWithErrors() =>
       send(TestService.getPendingInfiniteWithErrorsCommand)
-          .then(platformConverter.v<int>());
+          .then(Squadron.converter.v<int>());
 
   @override
   Stream<int> infiniteWithErrors([CancelationToken? token]) =>
       stream(TestService.infiniteWithErrorsCommand, token: token)
-          .map(platformConverter.v<int>());
+          .map(Squadron.converter.v<int>());
 
   @override
   Future<BigInt> bigIntAdd(BigInt a, BigInt b,
       {required bool marshalIn, required bool marshalOut}) {
     final bigIntMarshaler = BigIntMarshaler();
-    final marshal =
-        marshalIn ? bigIntMarshaler.marshaler() : platformConverter.v<BigInt>();
+    final marshal = marshalIn
+        ? bigIntMarshaler.marshaler()
+        : Squadron.converter.v<BigInt>();
     return send(
       TestService.bigIntAddCommand,
       args: [marshal(a), marshal(b), marshalIn, marshalOut],
@@ -249,7 +254,12 @@ class TestWorker extends Worker implements TestService {
     ).then(
       marshalOut
           ? bigIntMarshaler.unmarshaler()
-          : platformConverter.v<BigInt>(),
+          : Squadron.converter.v<BigInt>(),
     );
   }
+
+  @override
+  Future<SquadronPlatformType> getPlatformType() =>
+      send(TestService.platformTypeCommand).then((res) =>
+          SquadronPlatformType.tryParse(Squadron.converter.v<String>()(res))!);
 }

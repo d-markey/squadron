@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:html' as web show Worker;
 import 'dart:html' hide Worker;
 
+import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_entry_point_uri.dart';
 import 'package:squadron/src/_impl/xplat/_disconnected_channel.dart';
 import 'package:squadron/src/exceptions/squadron_error.dart';
@@ -17,8 +18,8 @@ import 'classes/test_context.dart';
 import 'classes/utils.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '01_web_worker_js_test.dart';

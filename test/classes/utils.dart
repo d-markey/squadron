@@ -1,16 +1,24 @@
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
-class UnexpectedSuccessException implements Exception {
-  UnexpectedSuccessException(this.message);
+class UnexpectedException implements Exception {
+  UnexpectedException(this.message);
 
   final String message;
+
+  @override
+  String toString() => message;
 }
 
-UnexpectedSuccessException unexpectedSuccess(String process, [dynamic res]) =>
-    UnexpectedSuccessException((res == null)
+UnexpectedException unexpectedSuccess(String process, [dynamic res]) =>
+    UnexpectedException((res == null)
         ? 'Unexpected: $process completed successfully'
         : 'Unexpected: $process completed successfully with res=$res');
+
+UnexpectedException unexpectedFailure(String process, [dynamic ex]) =>
+    UnexpectedException((ex == null)
+        ? 'Unexpected: $process failed'
+        : 'Unexpected: $process failed with ex=$ex');
 
 Matcher isNotA<T>() => isNot(isA<T>());
 

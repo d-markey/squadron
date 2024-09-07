@@ -15,8 +15,8 @@ import 'worker_services/delays.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '05_worker_streaming_test.dart';

@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:logger/web.dart';
 
 import 'test_logger.dart';
 

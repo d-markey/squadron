@@ -23,7 +23,7 @@ class CacheClient implements Cache {
 
   @override
   Future<bool> containsKey(dynamic key) => _remote.sendRequest(
-      CacheService.containsOperation, [key]).then(platformConverter.v<bool>());
+      CacheService.containsOperation, [key]).then(Squadron.converter.v<bool>());
 
   @override
   Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
@@ -97,7 +97,7 @@ class CacheService implements Cache, WorkerService {
     setOperation: (r) => set(r.args[0], r.args[1],
         timeToLive: (r.args[2] == null)
             ? null
-            : Duration(microseconds: platformConverter.v<int>()(r.args[2]))),
+            : Duration(microseconds: Squadron.converter.v<int>()(r.args[2]))),
     statsOperation: (r) => getStats().serialize()
   };
 }

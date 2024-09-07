@@ -4,6 +4,7 @@
 library;
 
 import 'package:logger/logger.dart';
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import 'classes/memory_logger.dart';
@@ -12,8 +13,8 @@ import 'classes/utils.dart';
 import 'worker_services/test_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '02_logging_test.dart';

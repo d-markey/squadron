@@ -7,6 +7,7 @@ import 'package:web/web.dart';
 import '../00_not_a_worker_test.dart' as not_a_worker_test;
 import '../01_web_worker_wasm_test.dart' as web_worker_test;
 import '../02_logging_test.dart' as logging_test;
+import '../03_converter_test.dart' as converter_test;
 import '../04_worker_test.dart' as worker_test;
 import '../05_worker_streaming_test.dart' as streaming_test;
 import '../06_local_worker_test.dart' as local_worker_test;
@@ -44,6 +45,10 @@ final executors = {
   'Logging': (
     script: logging_test.testScript,
     runner: logging_test.execute,
+  ),
+  'Converters': (
+    script: converter_test.testScript,
+    runner: converter_test.execute,
   ),
   'Marshalers': (
     script: marshaler_test.testScript,

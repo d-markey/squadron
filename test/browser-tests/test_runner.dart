@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:squadron/squadron.dart';
+
 import '../classes/test_context.dart';
 import 'tests_wasm.dart' if (dart.library.html) 'tests_js.dart';
 
@@ -7,10 +9,19 @@ String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
 
 Iterable<String> get testGroups => TestContext.rootGroups;
 
+Future<void> discoverTests() async {
+  final testContext = (await TestContext.init('', Squadron.platformType))!;
+  for (var executor in executors.entries) {
+    print('Discover from script ${executor.value.script}');
+    testContext.discover(executor.value.runner);
+  }
+  await Future(() => testContext.done);
+}
+
 Future<TestContext?> runTests(
-    Iterable<String> testLabels, TestPlatform platform) async {
+    Iterable<String> testLabels, SquadronPlatformType platform) async {
   if (testLabels.isNotEmpty) {
-    final testContext = await TestContext.init('/', platform);
+    final testContext = await TestContext.init('', platform);
     if (testContext == null) {
       throw UnsupportedError('Unsupported platform ${platform.label}');
     }
@@ -36,7 +47,7 @@ Future<TestContext?> runTests(
       reportStatus('${testContext.pending} tests pending...');
     }
 
-    Timer.periodic(Duration(milliseconds: 100), (t) {
+    Timer.periodic(Duration(milliseconds: 250), (t) {
       if (testContext.pending == 0) {
         t.cancel();
       } else {

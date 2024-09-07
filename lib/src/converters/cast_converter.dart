@@ -1,34 +1,29 @@
 import 'dart:typed_data';
 
-typedef Cast<T> = T Function(dynamic);
+import 'converter.dart';
 
-class CastConverter {
+class CastConverter implements Converter {
   const CastConverter();
 
   static const instance = CastConverter();
 
-  static bool isIdentity<T>(Cast<T>? cast) =>
-      (cast == null) || (cast == identity<T>);
+  @override
+  Cast<T> v<T>() => Converter.identity<T>;
 
-  static T identity<T>(dynamic x) => x as T;
+  @override
+  Cast<T?> nv<T>() => Converter.identity<T?>;
 
-  static T? _tryCast<T>(dynamic x) => (x is T) ? x : null;
-
-  Cast<T> v<T>() => identity<T>;
-
-  Cast<T?> nv<T>() => identity<T?>;
-
-  static ByteBuffer? _buffer(dynamic x) => (x == null)
+  static ByteBuffer? _buffer<T>(dynamic x) => (x == null)
       ? null
       : (x is ByteBuffer)
           ? x
-          : (x as TypedData).buffer;
+          : ((x as T) as TypedData).buffer;
 
   static Cast<T> _td<T>(T Function(ByteBuffer) b) =>
-      (x) => _tryCast<T>(x) ?? b(_buffer(x)!);
+      (x) => Converter.tryCast<T>(x) ?? b(_buffer<T>(x)!);
 
-  static Cast<T?> _ntd<T>(T Function(ByteBuffer) b) =>
-      (x) => (x == null) ? null : (_tryCast<T>(x) ?? b(_buffer(x)!));
+  static Cast<T?> _ntd<T>(T Function(ByteBuffer) b) => (x) =>
+      (x == null) ? null : (Converter.tryCast<T>(x) ?? b(_buffer<T>(x)!));
 
   static final Map<Type, Cast> _typeDataCastors = {
     ByteData: _td<ByteData>(ByteData.view),
@@ -66,28 +61,35 @@ class CastConverter {
     Float64x2List: _ntd<Float64x2List>(Float64x2List.view),
   };
 
+  @override
   Cast<T> td<T>() => _typeDataCastors[T] as Cast<T>;
 
+  @override
   Cast<T?> ntd<T>() => _nullableTypeDataCastors[T] as Cast<T?>;
 
-  Cast<Iterable<T>> i<T>([Cast<T>? cast]) => isIdentity<T>(cast)
+  @override
+  Cast<Iterable<T>> i<T>([Cast<T>? cast]) => Converter.isIdentity<T>(cast)
       ? ((x) => (x as Iterable).cast<T>())
       : ((x) => (x as Iterable).map<T>(v<T>()));
 
-  Cast<Iterable<T?>> ni<T>([Cast<T?>? cast]) => isIdentity<T?>(cast)
+  @override
+  Cast<Iterable<T?>> ni<T>([Cast<T?>? cast]) => Converter.isIdentity<T?>(cast)
       ? ((x) => (x as Iterable).cast<T?>())
       : ((x) => (x as Iterable).map<T?>(nv<T>()));
 
-  Cast<List<T>> l<T>([Cast<T>? cast]) => isIdentity<T>(cast)
+  @override
+  Cast<List<T>> l<T>([Cast<T>? cast]) => Converter.isIdentity<T>(cast)
       ? ((x) => (x as List).cast<T>())
       : ((x) => (x as List).map<T>(v<T>()).toList());
 
-  Cast<List<T?>> nl<T>([Cast<T?>? cast]) => isIdentity<T?>(cast)
+  @override
+  Cast<List<T?>> nl<T>([Cast<T?>? cast]) => Converter.isIdentity<T?>(cast)
       ? ((x) => (x as List).cast<T?>())
       : ((x) => (x as List).map<T?>(nv<T>()).toList());
 
+  @override
   Cast<Map<K, V>> m<K, V>({Cast<K>? kcast, Cast<V>? vcast}) {
-    if (isIdentity<K>(kcast) && isIdentity<V>(vcast)) {
+    if (Converter.isIdentity<K>(kcast) && Converter.isIdentity<V>(vcast)) {
       return ((x) => (x as Map).cast<K, V>());
     } else {
       final key = kcast ?? v<K>(), value = vcast ?? v<V>();
@@ -95,8 +97,9 @@ class CastConverter {
     }
   }
 
+  @override
   Cast<Map<K, V?>> nm<K, V>({Cast<K>? kcast, Cast<V?>? vcast}) {
-    if (isIdentity<K>(kcast) && isIdentity<V?>(vcast)) {
+    if (Converter.isIdentity<K>(kcast) && Converter.isIdentity<V?>(vcast)) {
       return ((x) => (x as Map).cast<K, V?>());
     } else {
       final key = kcast ?? v<K>(), value = vcast ?? v<V>();

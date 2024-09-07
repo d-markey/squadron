@@ -1,5 +1,3 @@
-import 'src/converters/cast_converter.dart';
-
 export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
 export 'package:logger/logger.dart' show Logger;
 
@@ -9,6 +7,7 @@ export 'src/bootstrapper.dart';
 export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
 export 'src/converters/cast_converter.dart';
+export 'src/converters/converter.dart';
 export 'src/converters/num_converter.dart';
 export 'src/exceptions/exception_manager.dart'
     hide SquadronExceptionDeserializer;
@@ -32,6 +31,8 @@ export 'src/pool/stream_task.dart';
 export 'src/pool/task.dart';
 export 'src/pool/value_task.dart';
 export 'src/pool/worker_pool.dart';
+export 'src/squadron_platform_type.dart';
+export 'src/squadron_singleton.dart';
 export 'src/stats/perf_counter.dart' hide PerfCounterExt;
 export 'src/stats/perf_counter_snapshot.dart';
 export 'src/stats/worker_stat.dart' hide WorkerStatExt;
@@ -43,5 +44,3 @@ export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;
 export 'src/worker/worker_response.dart' hide WorkerResponseExt;
 export 'src/worker_service.dart';
-
-CastConverter platformConverter = CastConverter.instance;

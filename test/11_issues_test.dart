@@ -14,8 +14,8 @@ import 'classes/utils.dart';
 import 'worker_services/issues_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '11_issues_test.dart';
@@ -28,6 +28,7 @@ void execute(TestContext? tc) {
       tc.group('- #8 - Exceptions from Streams must come through onError', () {
         tc.test('- Squadron Worker', () async {
           await IssuesWorker(tc).useAsync((w) async {
+            await w.start();
             final completer = Completer(), results = [], errors = [];
             w.issue_8([0, 1, 2, 3, 4]).listen(
               results.add,
@@ -50,6 +51,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Worker Pool', () async {
           await IssuesWorkerPool(tc).useAsync((p) async {
+            await p.start();
             final completer = Completer(), results = [], errors = [];
             p.issue_8([0, 1, 2, 3, 4]).listen(
               results.add,

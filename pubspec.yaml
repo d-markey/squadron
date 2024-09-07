@@ -8,10 +8,10 @@ environment:
 
 dependencies:
   cancelation_token: ^1.1.0
-  meta: ^1.10.0
-  logger: ^2.0.2
-  using: ^1.0.4
+  logger: ^2.0.0
   web: ^1.0.0
+  meta:
+  using:
 
 dev_dependencies:
   build_runner: ^2.4.11

@@ -18,8 +18,8 @@ const concurrencySettings_222 =
     ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 2);
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '08_cancelation_test.dart';
@@ -147,6 +147,11 @@ void execute(TestContext? tc) {
           expect(errors, 2);
           expect(digits, hasLength(count - errors));
 
+          if (tasks.where((t) => t.isRunning).isNotEmpty) {
+            // let Squadron finalize worker status management
+            await Future.delayed(Duration.zero);
+          }
+
           expect(tasks.where((t) => t.isRunning), isEmpty);
           expect(tasks.where((t) => t.isCanceled), hasLength(errors));
           expect(tasks.where((t) => t.isFinished), hasLength(count - errors));
@@ -183,6 +188,11 @@ void execute(TestContext? tc) {
 
           expect(errors, 2);
           expect(digits, hasLength(count - errors));
+
+          if (tasks.where((t) => t.isRunning).isNotEmpty) {
+            // let Squadron finalize worker status management
+            await Future.delayed(Duration.zero);
+          }
 
           expect(tasks.where((t) => t.isRunning), isEmpty);
           expect(tasks.where((t) => t.isCanceled), hasLength(errors));

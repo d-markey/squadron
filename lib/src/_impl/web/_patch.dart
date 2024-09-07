@@ -1,8 +1,16 @@
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
+import 'package:web/web.dart';
+
 @JS()
-external JSAny? get location;
+external DedicatedWorkerGlobalScope get self;
+
+String? getHome() {
+  if (window.isUndefinedOrNull) return null;
+  final components = window.location.pathname.split('/');
+  return components.take(components.length - 1).join('/');
+}
 
 const _dbgIdProp = '@@dbgid';
 

@@ -172,6 +172,8 @@ class TestService implements WorkerService {
           {required bool marshalIn, required bool marshalOut}) =>
       a + b;
 
+  FutureOr<SquadronPlatformType> getPlatformType() => Squadron.platformType;
+
   final bool _invalid;
 
   static const invalidCommand1 = -1; // command IDs must be > 0
@@ -198,6 +200,7 @@ class TestService implements WorkerService {
   static const getPendingInfiniteWithErrorsCommand = 45;
   static const infiniteWithErrorsCommand = 46;
   static const bigIntAddCommand = 51;
+  static const platformTypeCommand = 61;
 
   @override
   late final Map<int, CommandHandler> operations = {
@@ -233,6 +236,7 @@ class TestService implements WorkerService {
       final res =
           await bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
       return marshalOut ? bigIntMarshaler.marshal(res) : res;
-    }
+    },
+    platformTypeCommand: (r) => getPlatformType().toString(),
   };
 }

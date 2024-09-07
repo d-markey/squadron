@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import '../../classes/test_context.dart' show TestPlatform;
+import 'package:squadron/squadron.dart';
+
 import '../../classes/test_entry_points.dart';
 import 'cache_worker.dart' as entrypoint_cache;
 import 'installable_worker.dart' as entrypoint_installable;
@@ -10,7 +11,7 @@ import 'not_a_worker.dart' as entrypoint_not_a_worker;
 import 'prime_worker.dart' as entrypoint_prime;
 import 'test_worker.dart' as entrypoint_test;
 
-const platform = TestPlatform.vm;
+const platform = SquadronPlatformType.vm;
 String platformName = Platform.operatingSystemVersion;
 
 const hasImageCodecs = false;
@@ -22,8 +23,8 @@ const supportsWasmGc = false;
 const isCrossOriginIsolated = false;
 
 extension TestEntryPointsExt on TestEntryPoints {
-  Future<void> set(String root, TestPlatform platform) async {
-    if (platform != TestPlatform.vm) {
+  Future<void> set(String root, SquadronPlatformType platform) async {
+    if (platform != SquadronPlatformType.vm) {
       throw UnsupportedError('Unsupported platform $platform');
     }
 

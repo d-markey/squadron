@@ -1,18 +1,34 @@
 import 'cast_converter.dart';
+import 'converter.dart';
 
 class NumConverter extends CastConverter {
   const NumConverter();
 
   static const instance = NumConverter();
 
+  static int _toInt(dynamic x) {
+    if (x is int && x.isFinite) return x;
+    final y = (x as num).toDouble();
+    if (!y.isFinite) return double.minPositive as int; // intended type error
+    final z = y.toInt(), d = y - z;
+    if (d != 0) return double.minPositive as int; // intended type error
+    return z;
+  }
+
+  static double _toDbl(dynamic x) => (x as num).toDouble();
+
   static final Map<Type, Cast> _numCastors = {
-    int: (x) => (x as num).toInt(),
-    double: (x) => (x as num).toDouble(),
+    int: _toInt,
+    double: _toDbl,
   };
 
+  static int? _toNullableInt(dynamic x) => (x == null) ? null : _toInt(x);
+
+  static double? _toNullableDbl(dynamic x) => (x as num?)?.toDouble();
+
   static final Map<Type, Cast> _nullableNumCastors = {
-    int: (x) => (x as num?)?.toInt(),
-    double: (x) => (x as num?)?.toDouble(),
+    int: _toNullableInt,
+    double: _toNullableDbl,
   };
 
   @override

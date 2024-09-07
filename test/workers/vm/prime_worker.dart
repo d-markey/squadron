@@ -5,9 +5,10 @@ import '../../worker_services/prime_service.dart';
 
 void start(WorkerRequest command) => run(
       (startReq) {
-        final channel = (startReq.args.length < 2) ? null : startReq.args[1];
+        final channel = startReq.args.isEmpty ? null : startReq.args[0];
         final cacheChannel = Channel.deserialize(channel);
-        return PrimeService(CacheClient.connect(cacheChannel));
+        final cacheClient = CacheClient.connect(cacheChannel);
+        return PrimeService(cacheClient);
       },
       command,
     );

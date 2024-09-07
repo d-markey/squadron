@@ -3,6 +3,7 @@
 @TestOn('vm || browser')
 library;
 
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
@@ -12,8 +13,8 @@ import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '07_shared_channel_test.dart';

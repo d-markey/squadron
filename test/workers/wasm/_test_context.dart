@@ -8,10 +8,9 @@ import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_uri_checker.dart';
 import 'package:web/web.dart' as web;
 
-import '../../classes/test_context.dart' show TestPlatform;
 import '../../classes/test_entry_points.dart';
 
-const platform = TestPlatform.wasm;
+const platform = SquadronPlatformType.wasm;
 String platformName = web.window.navigator.userAgent;
 
 final hasImageCodecs = globalContext
@@ -35,15 +34,15 @@ final supportsWasmGc = (() {
 final isCrossOriginIsolated = web.window.crossOriginIsolated;
 
 extension TestEntryPointsExt on TestEntryPoints {
-  Future<void> set(String root, TestPlatform platform) async {
-    String ext;
+  Future<void> set(String root, SquadronPlatformType platform) async {
+    final String ext;
     switch (platform) {
-      case TestPlatform.js:
-        root = '${root}workers/js';
+      case SquadronPlatformType.js:
+        root = '$root/workers/js';
         ext = 'js';
         break;
-      case TestPlatform.wasm:
-        root = '${root}workers/wasm';
+      case SquadronPlatformType.wasm:
+        root = '$root/workers/wasm';
         ext = 'unopt.wasm';
         break;
       default:

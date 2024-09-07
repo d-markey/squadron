@@ -16,8 +16,8 @@ import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
 void main() {
-  TestContext.init('').then(execute);
-  // TestContext.init('', TestPlatform.wasm).then(execute);
+  TestContext.init('~').then(execute);
+  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
 }
 
 String testScript = '06_local_worker_test.dart';
@@ -47,7 +47,6 @@ void execute(TestContext? tc) {
           await LocalWorker.create(localService).useAsync((lw) async {
             final lwChannel = lw.channel!.share();
             await LocalClientWorker(tc, args: [
-              tc.useNumConverter,
               lwChannel.serialize(),
             ]).useAsync((w) async {
               final check = await w.checkIds();
@@ -104,7 +103,6 @@ void execute(TestContext? tc) {
           await LocalWorker.create(localService).useAsync((lw) async {
             final lwChannel = lw.channel!.share();
             await LocalClientWorker(tc, args: [
-              tc.useNumConverter,
               lwChannel.serialize(),
             ]).useAsync((w) async {
               expect(await w.checkException(), isTrue);
@@ -145,7 +143,6 @@ void execute(TestContext? tc) {
           await LocalWorker.create(localService).useAsync((lw) async {
             final lwChannel = lw.channel?.share();
             await LocalClientWorker(tc, args: [
-              tc.useNumConverter,
               lwChannel?.serialize(),
             ]).useAsync((w) async {
               final res = await w.checkSequence(19).toList();

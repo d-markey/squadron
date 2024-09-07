@@ -1,7 +1,10 @@
-import 'test_context.dart' show TestPlatform;
+import 'package:squadron/squadron.dart';
+
 import 'test_entry_points.dart';
 
-TestPlatform get platform => throw UnsupportedError('Unsupported platform');
+SquadronPlatformType get platform =>
+    throw UnsupportedError('Unsupported platform');
+
 String get platformName => throw UnsupportedError('Unsupported platform');
 
 bool get hasImageCodecs => throw UnsupportedError('Unsupported platform');
@@ -15,6 +18,6 @@ bool get isCrossOriginIsolated =>
     throw UnsupportedError('Unsupported platform');
 
 extension TestEntryPointsExt on TestEntryPoints {
-  Future<void> set(String root, TestPlatform platform) async =>
+  Future<void> set(String root, SquadronPlatformType platform) async =>
       throw UnsupportedError('Unsupported platform');
 }
