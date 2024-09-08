@@ -21,7 +21,7 @@ Future<void> discoverTests() async {
 Future<TestContext?> runTests(
     Iterable<String> testLabels, SquadronPlatformType platform) async {
   if (testLabels.isNotEmpty) {
-    final testContext = await TestContext.init('', platform);
+    final testContext = await TestContext.init('~/..', platform);
     if (testContext == null) {
       throw UnsupportedError('Unsupported platform ${platform.label}');
     }

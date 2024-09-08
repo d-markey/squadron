@@ -13874,7 +13874,7 @@
             case 3:
               // then
               $async$goto = 6;
-              return A._asyncAwait(A.TestContext_init("", platform), $async$runTests);
+              return A._asyncAwait(A.TestContext_init("~/..", platform), $async$runTests);
             case 6:
               // returning from await.
               testContext = $async$result;

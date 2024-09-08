@@ -1,0 +1,9 @@
+# Generated code and binaries
+**.dart.js
+**.dart.js.deps
+**.dart.js.map
+**.dart.mjs
+**.dart.wasm
+**.dart.wasm.map
+**.dart.unopt.wasm
+**.dart.unopt.wasm.map
