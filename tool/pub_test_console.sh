@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pushd $(dirname $0)/..
+pushd "$(dirname $0)/.."
 
 publish() { # arguments: folder
     cp ./test/$1/*.html ./doc/$1
@@ -28,7 +28,7 @@ git stash apply
 
 git config --global user.name 'd-markey'
 git config --global user.email 'd-markey@users.noreply.github.com'
-git commit -am Test console
+git commit -am "Test console"
 git push
 
 popd

@@ -6,8 +6,8 @@
 name: Pages
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: "never"
 
 jobs:
   build:

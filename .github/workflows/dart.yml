@@ -8,8 +8,10 @@ name: Dart
 on:
   push:
     branches: [main]
+    paths: ["lib/**", "test/**", "tool/**", "pubspec.yaml"]
   pull_request:
     branches: [main]
+    paths: ["lib/**", "test/**", "tool/**", "pubspec.yaml"]
 
 jobs:
   build:
