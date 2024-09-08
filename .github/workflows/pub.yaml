@@ -6,8 +6,7 @@
 name: Pages
 
 on:
-  schedule:
-    - cron: "never"
+  workflow_dispatch:
 
 jobs:
   build:
