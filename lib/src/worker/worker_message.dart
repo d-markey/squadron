@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_time_stamp.dart';
 
 /// Make [WorkerMessage] a `List` to minimize serialization overhead.
 extension type WorkerMessage(List data) {

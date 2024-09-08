@@ -58,7 +58,6 @@ Future<Channel> openChannel(
 
   try {
     worker = web.Worker(webEntryPoint.uri.toJS);
-    setDbgId(worker, '${webEntryPoint.uri}#');
 
     void $errorHandler(web.ErrorEvent? e) {
       final err = getErrorEventError(e)?.toString() ??

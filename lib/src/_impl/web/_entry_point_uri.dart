@@ -4,7 +4,6 @@ import 'package:using/using.dart';
 import 'package:web/web.dart' as web;
 
 import '../../exceptions/squadron_error.dart';
-import '_patch.dart';
 
 class EntryPointUri with Releasable {
   EntryPointUri._(this.uri, {required bool revoke}) : _revoke = revoke;
@@ -20,17 +19,6 @@ class EntryPointUri with Releasable {
     super.release();
   }
 
-  static String _getUrl(Uri uri) {
-    var url = uri.toString();
-    if (url.startsWith('~')) {
-      final root = getHome();
-      if (root != null) {
-        url = '$root${url.substring(1)}';
-      }
-    }
-    return url;
-  }
-
   factory EntryPointUri.from(Uri workerEntrypoint) {
     final fileName =
         workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??
@@ -38,11 +26,11 @@ class EntryPointUri with Releasable {
 
     if (fileName.endsWith('.js') || fileName.endsWith('.mjs')) {
       // a JavaScript worker
-      return EntryPointUri._(_getUrl(workerEntrypoint), revoke: false);
+      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);
     } else if (fileName.endsWith('.wasm')) {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
       final blob = web.Blob(
-        [wasmLoaderScript(_getUrl(workerEntrypoint)).toJS].toJS,
+        [wasmLoaderScript(workerEntrypoint.toString()).toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
       return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);

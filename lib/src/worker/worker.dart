@@ -7,7 +7,7 @@ import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
 import '../_impl/xplat/_forward_stream_controller.dart';
-import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';

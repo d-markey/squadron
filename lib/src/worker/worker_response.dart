@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
 import '../exceptions/squadron_error.dart';
 import '../exceptions/squadron_exception.dart';

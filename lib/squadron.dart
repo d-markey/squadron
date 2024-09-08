@@ -1,6 +1,6 @@
-export 'package:cancelation_token/cancelation_token.dart' show CancelationToken;
-export 'package:logger/logger.dart' show Logger;
-
+export 'src/_impl/xplat/helpers.dart'
+    if (dart.library.html) 'src/_impl/web/helpers.dart'
+    if (dart.library.js_interop) 'src/_impl/web/helpers.dart';
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';

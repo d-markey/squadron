@@ -243,6 +243,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/web/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_uri_checker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_runner.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/web/web_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_disconnected_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_completer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_stream_controller.dart

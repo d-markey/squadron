@@ -6,13 +6,3 @@ int microsecTimeStamp([DateTime? time]) =>
 DateTime? fromMicrosecTimeStamp(int? microsecs) => (microsecs == null)
     ? null
     : _latestUPDEpoch.add(Duration(microseconds: microsecs));
-
-extension FutureExt on Future {
-  Future<void> ignore() async {
-    try {
-      final _ = await this;
-    } catch (_) {
-      /* ignore */
-    }
-  }
-}

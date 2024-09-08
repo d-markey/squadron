@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../_impl/xplat/_helpers.dart';
+import '../_impl/xplat/_time_stamp.dart';
 import '../exceptions/task_canceled_exception.dart';
 import '../stats/perf_counter.dart';
 import '../worker/worker.dart';

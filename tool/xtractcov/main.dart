@@ -3,7 +3,7 @@ import 'dart:io';
 
 void main() async {
   try {
-    final input = await File('./coverage/xml/index.xml').readAsString();
+    final input = await File('./doc/coverage/xml/index.xml').readAsString();
     final linesValid = int.tryParse(
         RegExp('\\<coverage\\s+.*lines-valid="(\\d+)"')
                 .firstMatch(input)

@@ -9981,16 +9981,6 @@
       this.e = t0;
       this.ex = t1;
     },
-    EntryPointUri__getUrl(uri) {
-      var root,
-        url = uri.toString$0(0);
-      if (B.JSString_methods.startsWith$1(url, "~")) {
-        root = A.getHome();
-        if (root != null)
-          url = root + B.JSString_methods.substring$1(url, 1);
-      }
-      return url;
-    },
     EntryPointUri_EntryPointUri$from(workerEntrypoint) {
       var t2, t3, blob,
         t1 = A.IterableExtensions_get_lastOrNull(workerEntrypoint.get$pathSegments(), type$.String),
@@ -9998,11 +9988,11 @@
       if (fileName == null)
         fileName = "";
       if (B.JSString_methods.endsWith$1(fileName, ".js") || B.JSString_methods.endsWith$1(fileName, ".mjs"))
-        return new A.EntryPointUri(A.EntryPointUri__getUrl(workerEntrypoint), false, false, new A.Object());
+        return new A.EntryPointUri(workerEntrypoint.toString$0(0), false, false, new A.Object());
       else if (B.JSString_methods.endsWith$1(fileName, ".wasm")) {
         t1 = self;
         t2 = t1.Blob;
-        t3 = A.EntryPointUri__getUrl(workerEntrypoint);
+        t3 = workerEntrypoint.toString$0(0);
         blob = type$.JSObject._as(new t2(A._setArrayType(['(async function() {\n  const workerUri = new URL("' + A.stringReplaceAllUnchecked(t3, '"', '\\"') + "\", self.location.origin).href;\n  try {\n    let dart2wasm_runtime; let moduleInstance;\n    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');\n    try {\n      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));\n      dart2wasm_runtime = await import(runtimeUri);\n      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});\n    } catch (exception) {\n      console.error(`Failed to fetch and instantiate wasm module ${workerUri}: ${exception}`);\n      console.error('See https://dart.dev/web/wasm for more information.');\n      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');\n    }\n    try {\n      await dart2wasm_runtime.invoke(moduleInstance);\n      console.log(`Succesfully loaded and invoked ${workerUri}`);\n    } catch (exception) {\n      console.error(`Exception while invoking wasm module ${workerUri}: ${exception}`);\n      throw new Error(exception.message ?? 'Unknown error when invoking worker module');\n    }\n  } catch (ex) {\n    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;\n    postMessage([ts, null, [\"$sqdrn\", `Failed to load Web Worker from ${workerUri}: ${ex}`, null], null, null]);\n  }\n})()"], type$.JSArray_String), {type: "application/javascript"}));
         return new A.EntryPointUri(A._asString(t1.URL.createObjectURL(blob)), true, false, new A.Object());
       } else if (workerEntrypoint.isScheme$1("data") || workerEntrypoint.isScheme$1("javascript"))
@@ -14463,6 +14453,15 @@
       });
       return A._asyncStartSync($async$UriChecker_exists, $async$completer);
     },
+    mapUrl(url) {
+      var root;
+      if (B.JSString_methods.startsWith$1(url, "~")) {
+        root = A.getHome();
+        if (root != null)
+          url = root + B.JSString_methods.substring$1(url, 1);
+      }
+      return A.Uri_parse(url);
+    },
     microsecTimeStamp() {
       var t1 = Date.now();
       return new A.DateTime(t1, 0, false).toUtc$0().difference$1($.$get$_latestUPDEpoch())._duration;
@@ -14698,18 +14697,21 @@
                 default:
                   throw A.wrapException(A.UnsupportedError$("Unsupported platform " + platform.toString$0(0)));
               }
-              _this.native = A.Uri_parse(root + "/native_worker.js");
-              _this.notAWorker = A.Uri_parse(root + "/not_a_worker.dart." + ext);
-              _this.echo = A.Uri_parse(root + "/echo_worker.dart." + ext);
-              _this.cache = A.Uri_parse(root + "/cache_worker.dart." + ext);
-              _this.installable = A.Uri_parse(root + "/installable_worker.dart." + ext);
-              _this.issues = A.Uri_parse(root + "/issues_worker.dart." + ext);
-              _this.local = A.Uri_parse(root + "/local_client_worker.dart." + ext);
-              _this.prime = A.Uri_parse(root + "/prime_worker.dart." + ext);
-              _this.test = A.Uri_parse(root + "/test_worker.dart." + ext);
+              A.print("root = " + root);
+              t1 = A.mapUrl(root + "/native_worker.js");
+              _this.native = t1;
+              A.print("native = " + t1.toString$0(0));
+              _this.notAWorker = A.mapUrl(root + "/not_a_worker.dart." + ext);
+              _this.echo = A.mapUrl(root + "/echo_worker.dart." + ext);
+              _this.cache = A.mapUrl(root + "/cache_worker.dart." + ext);
+              _this.installable = A.mapUrl(root + "/installable_worker.dart." + ext);
+              _this.issues = A.mapUrl(root + "/issues_worker.dart." + ext);
+              _this.local = A.mapUrl(root + "/local_client_worker.dart." + ext);
+              _this.prime = A.mapUrl(root + "/prime_worker.dart." + ext);
+              _this.test = A.mapUrl(root + "/test_worker.dart." + ext);
               t1 = type$.Base64Codec._eval$1("Codec.S")._as(B.C_Utf8Encoder.convert$1('onmessage = (e) => { postMessage(`ECHO "${e.data}"`); };\n'));
               _this.inMemory = A.Uri_parse("data:application/javascript;base64," + B.C_Base64Codec.get$encoder().convert$1(t1));
-              _this.missingWorker = A.Uri_parse(root + "/missing_worker.dart." + ext);
+              _this.missingWorker = A.mapUrl(root + "/missing_worker.dart." + ext);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
