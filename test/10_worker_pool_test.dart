@@ -45,11 +45,10 @@ void execute(TestContext? tc) {
             }
 
             await Future.wait(tasks);
+            await pumpEventQueue();
+
             expect(completedTasks, hasLength(tasks.length));
-
             expect(p.stats, hasLength(p.maxWorkers));
-
-            p.maxWorkload;
 
             final maxWorkerWorkload = p.concurrencySettings.maxParallel;
             expect(p.stats.map((s) => s.maxWorkload),
@@ -90,6 +89,7 @@ void execute(TestContext? tc) {
 
             // wait until completion, then go idle
             await Future.wait(tasks);
+            await pumpEventQueue();
 
             // the extra workers should have been stopped and the pool should be back to minimum size
             // await pumpEventQueue();
@@ -238,6 +238,7 @@ void execute(TestContext? tc) {
             expect(progress.totalTimeInMicroseconds, isPositive);
 
             await Future.wait(tasks);
+            await pumpEventQueue();
 
             final end = counter.snapshot;
             expect(end.totalCount, greaterThanOrEqualTo(progress.totalCount));
@@ -273,6 +274,7 @@ void execute(TestContext? tc) {
             expect(progress.totalTimeInMicroseconds, isPositive);
 
             await Future.wait(tasks);
+            await pumpEventQueue();
 
             final end = counter.snapshot;
             expect(end.totalCount, greaterThanOrEqualTo(progress.totalCount));
@@ -350,6 +352,7 @@ void execute(TestContext? tc) {
           expect(digits, hasLength(lessThanOrEqualTo(count)));
 
           await Future.wait(tasks);
+          await pumpEventQueue();
 
           expect(p.stopped, isTrue);
           expect(p.pendingWorkload, isZero);

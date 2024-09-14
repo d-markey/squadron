@@ -5,7 +5,7 @@ import 'package:squadron/squadron.dart';
 abstract class Cache {
   FutureOr<dynamic> get(dynamic key);
   FutureOr<bool> containsKey(dynamic key);
-  FutureOr set(dynamic key, dynamic value, {Duration? timeToLive});
+  FutureOr<void> set(dynamic key, dynamic value, {Duration? timeToLive});
   FutureOr<CacheStat> getStats();
 }
 
@@ -22,8 +22,9 @@ class CacheClient implements Cache {
       _remote.sendRequest(CacheService.getOperation, [key]);
 
   @override
-  Future<bool> containsKey(dynamic key) => _remote.sendRequest(
-      CacheService.containsOperation, [key]).then(Squadron.converter.v<bool>());
+  Future<bool> containsKey(dynamic key) =>
+      _remote.sendRequest(CacheService.containsOperation, [key]).then(
+          Squadron.converter.value<bool>());
 
   @override
   Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
@@ -97,7 +98,8 @@ class CacheService implements Cache, WorkerService {
     setOperation: (r) => set(r.args[0], r.args[1],
         timeToLive: (r.args[2] == null)
             ? null
-            : Duration(microseconds: Squadron.converter.v<int>()(r.args[2]))),
+            : Duration(
+                microseconds: Squadron.converter.value<int>()(r.args[2]))),
     statsOperation: (r) => getStats().serialize()
   };
 }

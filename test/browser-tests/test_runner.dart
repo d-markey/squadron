@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
+import 'package:test/test.dart';
 
 import '../classes/test_context.dart';
 import 'tests_wasm.dart' if (dart.library.html) 'tests_js.dart';
@@ -10,12 +11,14 @@ String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
 Iterable<String> get testGroups => TestContext.rootGroups;
 
 Future<void> discoverTests() async {
-  final testContext = (await TestContext.init('', Squadron.platformType))!;
+  final testContext = (await TestContext.init('~/..', Squadron.platformType))!;
   for (var executor in executors.entries) {
     print('Discover from script ${executor.value.script}');
     testContext.discover(executor.value.runner);
   }
-  await Future(() => testContext.done);
+  await testContext.done;
+  await pumpEventQueue();
+  await pumpEventQueue();
 }
 
 Future<TestContext?> runTests(

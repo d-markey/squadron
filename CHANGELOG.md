@@ -5,8 +5,11 @@
 - Removed `SerializeWith` annotation.
 - Removed custom cancelation token implementations and switched to `package:cancelation_token`.
 - Removed custom logger implementations and switched to `package:logger` for logging.
-- Eliminated the Squadron singleton.
-- Reworked unit tests.
+- Reworked the Squadron singleton.
+- Worker methods `send()` and `stream()` are no longer generic: they return `Future<dynamic>` and `Stream<dynamic>`. It is now the user responsibility to ensure service arguments and return values are properly handled in terms of Dart type. One major caveat comes from Web Assembly, where Dart `int` values sent from one side are received as Dart `double` values on the other side. To help with conversions, Squadron provides converters and selects the proper converter depending on the runtime platform, so you can "cast" values on either side of the service call (see `Squadron.converters` in `squadron_singleton.dart`). The recommendation is to use [squadron_builder](https://pub.dev/packages/squadron_builder) to generate the code for your workers -- it will take care of casting and marshaling.
+- Reworked unit tests, and made unit tests cover VM, JS/JS and JS/Wasm scenarios. Wasm/JS and Wasm/Wasm are not unit tested yet.
+- Published the [test console](https://d-markey.github.io/squadron/browser-tests/) to enable testing of all combinations.
+- Also published the [test coverage](https://d-markey.github.io/squadron/coverage/) report.
 
 ## 5.1.6
 

@@ -243,13 +243,12 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/web/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_uri_checker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_runner.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/web/web_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_disconnected_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_completer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_stream_controller.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_helpers.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_internal_logger.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_result_stream.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_time_stamp.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_token_id.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_transferables.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_worker_runner.dart
@@ -260,6 +259,8 @@ file:///C:/_Projects/github/squadron/lib/src/channel.dart
 file:///C:/_Projects/github/squadron/lib/src/concurrency_settings.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/in_place_converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart

@@ -4,3 +4,5 @@ import '../../squadron_platform_type.dart';
 CastConverter getPlatformConverter() => CastConverter.instance;
 
 SquadronPlatformType getPlatformType() => SquadronPlatformType.vm;
+
+Uri mapUrl(String url) => Uri.parse(url);

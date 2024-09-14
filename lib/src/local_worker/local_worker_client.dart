@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
+import 'package:using/using.dart';
 
 import '../channel.dart';
 import '../tokens/_squadron_cancelation_token.dart';
@@ -11,13 +12,19 @@ import 'local_worker.dart';
 /// Base class used to communicate with a [LocalWorker].
 ///
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
-class LocalWorkerClient implements WorkerService {
+class LocalWorkerClient with Releasable implements WorkerService {
   /// Create a client for a [LocalWorker]. The [channel] passed to this client must have been obtained by
   /// calling [Channel.share] on the [LocalWorker.channel].
   LocalWorkerClient(this.channel);
 
   /// The [Channel] to communicate with the [LocalWorker].
   final Channel channel;
+
+  @override
+  void release() {
+    channel.close();
+    super.release();
+  }
 
   /// Sends a command to the [LocalWorker].
   Future<dynamic> send(int command,

@@ -6,4 +6,6 @@ import '_impl/xplat/_platform.dart'
 class Squadron {
   static final converter = impl.getPlatformConverter();
   static final platformType = impl.getPlatformType();
+
+  static Uri uri(String url) => impl.mapUrl(url);
 }

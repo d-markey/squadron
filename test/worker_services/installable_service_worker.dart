@@ -61,9 +61,9 @@ class InstallableWorker extends Worker implements InstallableService {
 
   @override
   Future<bool> isInstalled() => send(InstallableService.cmdIsInstalled)
-      .then(Squadron.converter.v<bool>());
+      .then(Squadron.converter.value<bool>());
 
   @override
   Future<bool> isUninstalled() => send(InstallableService.cmdIsUninstalled)
-      .then(Squadron.converter.v<bool>());
+      .then(Squadron.converter.value<bool>());
 }

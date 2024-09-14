@@ -45,10 +45,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Squadron', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
-            final lwChannel = lw.channel!.share();
-            await LocalClientWorker(tc, args: [
-              lwChannel.serialize(),
-            ]).useAsync((w) async {
+            await LocalClientWorker(tc, lw).useAsync((w) async {
               final check = await w.checkIds();
               final match = regExp.firstMatch(check)!;
               expect(match.group(1), isNot(match.group(2)));
@@ -101,10 +98,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Squadron', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
-            final lwChannel = lw.channel!.share();
-            await LocalClientWorker(tc, args: [
-              lwChannel.serialize(),
-            ]).useAsync((w) async {
+            await LocalClientWorker(tc, lw).useAsync((w) async {
               expect(await w.checkException(), isTrue);
             });
           });
@@ -141,10 +135,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Squadron', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
-            final lwChannel = lw.channel?.share();
-            await LocalClientWorker(tc, args: [
-              lwChannel?.serialize(),
-            ]).useAsync((w) async {
+            await LocalClientWorker(tc, lw).useAsync((w) async {
               final res = await w.checkSequence(19).toList();
               expect(res, hasLength(19));
               expect(res.map((e) => e['ok']), everyElement(isTrue));

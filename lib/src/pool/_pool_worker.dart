@@ -22,7 +22,7 @@ class PoolWorker<W extends Worker> {
   bool get isIdle => worker.isStopped || _capacity == _maxWorkload;
 
   /// Run the specified [task] in the [worker].
-  Future run(WorkerTask task) {
+  Future<void> run(WorkerTask task) {
     _lastStart = DateTime.now().millisecondsSinceEpoch;
     _capacity--;
     return task.run(worker).whenComplete(() {

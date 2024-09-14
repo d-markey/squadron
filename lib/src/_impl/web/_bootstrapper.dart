@@ -8,7 +8,9 @@ import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_patch.dart';
 import '_worker_runner.dart';
-import 'helpers.dart';
+
+@JS()
+external web.DedicatedWorkerGlobalScope get self;
 
 void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final com = web.MessageChannel();

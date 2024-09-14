@@ -31,10 +31,10 @@ class PrimeWorker extends Worker implements PrimeService {
 
   @override
   FutureOr<bool> isPrime(int n) => send(PrimeService.isPrimeCommand, args: [n])
-      .then(Squadron.converter.v<bool>());
+      .then(Squadron.converter.value<bool>());
 
   @override
   Stream<int> getPrimes(int min, int max) =>
       stream(PrimeService.getPrimesCommand, args: [min, max])
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
 }

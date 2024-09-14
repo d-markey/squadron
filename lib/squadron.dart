@@ -1,6 +1,3 @@
-export 'src/_impl/xplat/helpers.dart'
-    if (dart.library.html) 'src/_impl/web/helpers.dart'
-    if (dart.library.js_interop) 'src/_impl/web/helpers.dart';
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/bootstrapper.dart';
@@ -8,6 +5,8 @@ export 'src/channel.dart';
 export 'src/concurrency_settings.dart';
 export 'src/converters/cast_converter.dart';
 export 'src/converters/converter.dart';
+export 'src/converters/in_place_converter.dart';
+export 'src/converters/lazy_in_place_converter.dart';
 export 'src/converters/num_converter.dart';
 export 'src/exceptions/exception_manager.dart'
     hide SquadronExceptionDeserializer;

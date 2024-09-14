@@ -106,9 +106,7 @@ class TestContext {
     if (_discovery) {
       _pending += 1;
       _knownTests.add(_testPath);
-      Future.delayed(Duration(seconds: 1), () {
-        _checkDone();
-      });
+      env.pumpEventQueue().whenComplete(_checkDone);
     } else {
       _pending += 1;
       final currentTest = _testPath;
@@ -127,9 +125,7 @@ class TestContext {
     if (_discovery) {
       _pending += 1;
       _knownTests.add(_testPath);
-      Future.delayed(Duration(seconds: 1), () {
-        _checkDone();
-      });
+      env.pumpEventQueue().whenComplete(_checkDone);
     } else {
       _pending += 1;
       final currentTest = _testPath;

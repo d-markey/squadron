@@ -22,5 +22,5 @@ class IssuesWorker extends Worker implements IssuesService {
   @override
   Stream<Map<String, int>> issue_8(List<int> nums) =>
       stream(IssuesService.cmdIssue_8, args: [nums])
-          .map(Squadron.converter.m<String, int>());
+          .map(Squadron.converter.map<String, int>());
 }

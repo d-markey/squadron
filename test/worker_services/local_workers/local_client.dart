@@ -7,14 +7,14 @@ class LocalClient extends LocalWorkerClient implements LocalService {
 
   @override
   Future<String> getId() =>
-      send(LocalService.getIdCommand).then(Squadron.converter.v<String>());
+      send(LocalService.getIdCommand).then(Squadron.converter.value<String>());
 
   @override
   Future<bool> throwException() => send(LocalService.throwExceptionCommand)
-      .then(Squadron.converter.v<bool>());
+      .then(Squadron.converter.value<bool>());
 
   @override
   Stream<int> sequence(int count) =>
       stream(LocalService.sequenceCommand, args: [count])
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
 }

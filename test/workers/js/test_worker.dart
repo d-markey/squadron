@@ -5,7 +5,7 @@ import '../../worker_services/test_service.dart';
 void main() {
   run(
     (startReq) {
-      final startUpMode = Squadron.converter.v<int>()(startReq.args[0]);
+      final startUpMode = Squadron.converter.value<int>()(startReq.args[0]);
       switch (startUpMode) {
         case TestService.startupThrows:
           throw Exception('Intentional failure');

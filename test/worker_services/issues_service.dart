@@ -19,6 +19,6 @@ class IssuesService implements WorkerService {
   // command IDs --> command implementations
   @override
   Map<int, CommandHandler> get operations => {
-        cmdIssue_8: (r) => issue_8(Squadron.converter.l<int>()(r.args[0])),
+        cmdIssue_8: (r) => issue_8(Squadron.converter.list<int>()(r.args[0])),
       };
 }

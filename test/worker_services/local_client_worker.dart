@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
+import 'package:using/using.dart';
 
 import '../classes/test_context.dart';
 import '../classes/utils.dart';
@@ -17,8 +18,16 @@ abstract class LocalClientService {
   static const checkSequenceCommand = 3;
 }
 
-class LocalClientServiceImpl implements LocalClientService, WorkerService {
+class LocalClientServiceImpl
+    with Releasable
+    implements LocalClientService, WorkerService {
   LocalClientServiceImpl(this._localClient);
+
+  @override
+  void release() {
+    _localClient.release();
+    super.release();
+  }
 
   final LocalClient _localClient;
 
@@ -50,7 +59,7 @@ class LocalClientServiceImpl implements LocalClientService, WorkerService {
     LocalClientService.checkIdsCommand: (req) => checkIds(),
     LocalClientService.checkExceptionCommand: (req) => checkException(),
     LocalClientService.checkSequenceCommand: (req) =>
-        checkSequence(Squadron.converter.v<int>()(req.args[0])),
+        checkSequence(Squadron.converter.value<int>()(req.args[0])),
   };
 }
 
@@ -60,10 +69,7 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
       TestContext context,
       LocalWorker<LocalService> localService,
       ConcurrencySettings? concurrencySettings)
-      : super(
-            () => LocalClientWorker(context, args: [
-                  localService.channel?.share().serialize(),
-                ]),
+      : super(() => LocalClientWorker(context, localService),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
@@ -79,20 +85,22 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
 }
 
 class LocalClientWorker extends Worker implements LocalClientService {
-  LocalClientWorker(TestContext context, {List args = const []})
-      : super(context.entryPoints.local!, args: args);
+  LocalClientWorker(TestContext context, LocalWorker<LocalService> localService)
+      : super(context.entryPoints.local!, args: [
+          localService.channel?.share().serialize(),
+        ]);
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand)
-      .then(Squadron.converter.v<String>());
+      .then(Squadron.converter.value<String>());
 
   @override
   Future<bool> checkException() =>
       send(LocalClientService.checkExceptionCommand)
-          .then(Squadron.converter.v<bool>());
+          .then(Squadron.converter.value<bool>());
 
   @override
   Stream<Map<String, dynamic>> checkSequence(int count) =>
       stream(LocalClientService.checkSequenceCommand, args: [count])
-          .map(Squadron.converter.m<String, dynamic>());
+          .map(Squadron.converter.map<String, dynamic>());
 }

@@ -10,6 +10,6 @@ abstract class IWorker implements Releasable {
 
   ExceptionManager get exceptionManager;
 
-  FutureOr start() {}
-  FutureOr stop() {}
+  FutureOr<void> start() {}
+  FutureOr<void> stop() {}
 }

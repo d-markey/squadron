@@ -19,7 +19,7 @@ class CacheWorker extends Worker implements Cache {
   @override
   Future<bool> containsKey(dynamic key) =>
       send(CacheService.containsOperation, args: [key])
-          .then(Squadron.converter.v<bool>());
+          .then(Squadron.converter.value<bool>());
 
   @override
   Future<dynamic> set(dynamic key, dynamic value, {Duration? timeToLive}) {

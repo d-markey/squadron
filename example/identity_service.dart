@@ -25,6 +25,6 @@ class IdentityClient extends LocalWorkerClient implements IdentityService {
   IdentityClient(super.channel);
 
   @override
-  Future<String> whoAreYou() =>
-      send(IdentityService.whoAreYouCommand).then((x) => x as String);
+  Future<String> whoAreYou() => send(IdentityService.whoAreYouCommand)
+      .then(Squadron.converter.value<String>());
 }

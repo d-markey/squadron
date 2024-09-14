@@ -27,45 +27,47 @@ void execute(TestContext? tc) {
   // print('  * isCrossOriginIsolated = ${tc.isCrossOriginIsolated}');
 
   tc.run(() {
-    tc.test("- Not a worker (native worker)", () async {
-      await NotAWorker(tc).useAsync((w) async {
-        var started = false, expired = false;
-        Object? error;
+    tc.group('- Not a worker', () {
+      tc.test("- Native worker", () async {
+        await NotAWorker(tc).useAsync((w) async {
+          var started = false, expired = false;
+          Object? error;
 
-        await Future.wait([
-          w.start().then(
-                (_) => started = true,
-                onError: (ex) => (error = ex) == null,
-              ),
-          Future.delayed(Duration(seconds: 5)).then((_) => expired = true),
-        ]);
+          await Future.wait([
+            w.start().then(
+                  (_) => started = true,
+                  onError: (ex) => (error = ex) == null,
+                ),
+            Future.delayed(Duration(seconds: 1)).then((_) => expired = true),
+          ]);
 
-        expect(expired, isTrue);
-        expect(started, isFalse);
-        expect(error, isA<SquadronError>());
-      });
-    }, skip: !tc.workerPlatform.isVm);
+          expect(expired, isTrue);
+          expect(started, isFalse);
+          expect(error, isA<SquadronError>());
+        });
+      }, skip: !tc.workerPlatform.isVm);
 
-    tc.test("- Not a worker (Web worker)", () async {
-      await NotAWorker(tc).useAsync((w) async {
-        var started = false, expired = false;
-        Object? error;
+      tc.test("- Web worker", () async {
+        await NotAWorker(tc).useAsync((w) async {
+          var started = false, expired = false;
+          Object? error;
 
-        await Future.any([
-          w.start().then(
-                (_) => started = true,
-                onError: (ex) => (error = ex) == null,
-              ),
-          Future.delayed(Duration(seconds: 5)).then((_) => expired = true),
-        ]);
+          await Future.any([
+            w.start().then(
+                  (_) => started = true,
+                  onError: (ex) => (error = ex) == null,
+                ),
+            Future.delayed(Duration(seconds: 1)).then((_) => expired = true),
+          ]);
 
-        if (error != null) {
-          // hoping for this test to get broken due to improvement in error handling :)
-          throw error!;
-        }
-        expect(expired, isTrue);
-        expect(started, isFalse);
-      });
-    }, skip: !tc.workerPlatform.isWeb);
+          if (error != null) {
+            // hoping for this test to get broken due to improvement in error handling :)
+            throw error!;
+          }
+          expect(expired, isTrue);
+          expect(started, isFalse);
+        });
+      }, skip: !tc.workerPlatform.isWeb);
+    });
   });
 }

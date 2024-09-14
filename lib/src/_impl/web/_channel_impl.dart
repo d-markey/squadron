@@ -70,7 +70,7 @@ class _WebChannel implements Channel {
 
   /// Sends a termination [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr close() {
+  FutureOr<void> close() {
     if (!_closed) {
       _postRequest(WorkerRequest.stop());
       _closed = true;
@@ -79,7 +79,7 @@ class _WebChannel implements Channel {
 
   /// Sends a close stream [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr cancelStream(int streamId) {
+  FutureOr<void> cancelStream(int streamId) {
     if (!_closed) {
       _postRequest(WorkerRequest.cancelStream(streamId));
     }
@@ -87,7 +87,7 @@ class _WebChannel implements Channel {
 
   /// Sends a cancel token [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr cancelToken(SquadronCancelationToken? token) {
+  FutureOr<void> cancelToken(SquadronCancelationToken? token) {
     if (token != null && !_closed) {
       _postRequest(WorkerRequest.cancel(token));
     }

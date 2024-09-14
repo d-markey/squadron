@@ -63,7 +63,7 @@ abstract class LocalWorker<W extends WorkerService>
 
   /// Starts the local worker.
   @override
-  FutureOr start();
+  FutureOr<void> start();
 
   /// Stops the local worker.
   @override

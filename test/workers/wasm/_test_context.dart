@@ -49,16 +49,16 @@ extension TestEntryPointsExt on TestEntryPoints {
         throw UnsupportedError('Unsupported platform $platform');
     }
 
-    native = mapUrl('$root/native_worker.js');
+    native = Squadron.uri('$root/native_worker.js');
 
-    notAWorker = mapUrl('$root/not_a_worker.dart.$ext');
-    echo = mapUrl('$root/echo_worker.dart.$ext');
-    cache = mapUrl('$root/cache_worker.dart.$ext');
-    installable = mapUrl('$root/installable_worker.dart.$ext');
-    issues = mapUrl('$root/issues_worker.dart.$ext');
-    local = mapUrl('$root/local_client_worker.dart.$ext');
-    prime = mapUrl('$root/prime_worker.dart.$ext');
-    test = mapUrl('$root/test_worker.dart.$ext');
+    notAWorker = Squadron.uri('$root/not_a_worker.dart.$ext');
+    echo = Squadron.uri('$root/echo_worker.dart.$ext');
+    cache = Squadron.uri('$root/cache_worker.dart.$ext');
+    installable = Squadron.uri('$root/installable_worker.dart.$ext');
+    issues = Squadron.uri('$root/issues_worker.dart.$ext');
+    local = Squadron.uri('$root/local_client_worker.dart.$ext');
+    prime = Squadron.uri('$root/prime_worker.dart.$ext');
+    test = Squadron.uri('$root/test_worker.dart.$ext');
 
     inMemory = Uri.parse(
         'data:application/javascript;base64,${base64Encode(utf8.encode('''
@@ -67,7 +67,7 @@ onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };
 
     // await _checkWebWorkers(defined);
 
-    missingWorker = mapUrl('$root/missing_worker.dart.$ext');
+    missingWorker = Squadron.uri('$root/missing_worker.dart.$ext');
   }
 }
 

@@ -5099,6 +5099,11 @@
     },
     CastConverter: function CastConverter() {
     },
+    Converter_identity(x, $T) {
+      return $T._as(x);
+    },
+    Converter0: function Converter0() {
+    },
     SquadronCanceledException$(tokenId, message, stackTrace) {
       var t1 = new A.SquadronCanceledException(tokenId, message, stackTrace);
       t1.SquadronException$init$2(message, stackTrace);
@@ -5552,9 +5557,6 @@
             }
         };
       };
-    },
-    Converter_identity(x, $T) {
-      return $T._as(x);
     },
     WorkerRequestExt_unwrapInPlace(_this, logger) {
       var _null = null,
@@ -6630,13 +6632,13 @@
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 53
+    $signature: 51
   };
   A.initHooks_closure1.prototype = {
     call$1(tag) {
       return this.prototypeForTag(A._asString(tag));
     },
-    $signature: 41
+    $signature: 40
   };
   A.JSSyntaxRegExp.prototype = {
     toString$0(_) {
@@ -6844,7 +6846,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 9
+    $signature: 8
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -6918,13 +6920,13 @@
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new A.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 51
+    $signature: 44
   };
   A._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(A._asInt(errorCode), result);
     },
-    $signature: 44
+    $signature: 42
   };
   A._asyncStarHelper_closure.prototype = {
     call$0() {
@@ -6947,7 +6949,7 @@
       var errorCode = this.controller.cancelationFuture != null ? 2 : 0;
       this.bodyFunction.call$2(errorCode, null);
     },
-    $signature: 9
+    $signature: 8
   };
   A._AsyncStarStreamController.prototype = {
     _AsyncStarStreamController$1(body, $T) {
@@ -7001,7 +7003,7 @@
         return t1.cancelationFuture;
       }
     },
-    $signature: 42
+    $signature: 41
   };
   A._AsyncStarStreamController__closure.prototype = {
     call$0() {
@@ -7465,13 +7467,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 9
+    $signature: 8
   };
   A._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
       this.$this._completeError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
     },
-    $signature: 15
+    $signature: 16
   };
   A._Future__chainForeignFuture_closure1.prototype = {
     call$0() {
@@ -7536,7 +7538,7 @@
     call$1(_) {
       return this.originalSource;
     },
-    $signature: 40
+    $signature: 36
   };
   A._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -7869,7 +7871,7 @@
       t1._addError$2(type$.Object._as(e), type$.StackTrace._as(s));
       t1._close$0();
     },
-    $signature: 15
+    $signature: 16
   };
   A._AddStreamState_cancel_closure.prototype = {
     call$0() {
@@ -10762,10 +10764,11 @@
     $signature: 34
   };
   A.CastConverter.prototype = {
-    v$1$0($T) {
+    value$1$0($T) {
       return A.instantiate1(A.converter_Converter_identity$closure(), $T);
     }
   };
+  A.Converter0.prototype = {};
   A.SquadronCanceledException.prototype = {
     serialize$0() {
       var t1 = this._squadron_exception$_stackTrace;
@@ -11367,14 +11370,14 @@
       type$.List_dynamic._as(r);
       return null;
     },
-    $signature: 16
+    $signature: 15
   };
   A.TestService_operations_closure0.prototype = {
     call$1(r) {
       type$.List_dynamic._as(r);
       return null;
     },
-    $signature: 16
+    $signature: 15
   };
   A.TestService_operations_closure1.prototype = {
     call$1(r) {
@@ -11571,7 +11574,7 @@
   };
   A.main_closure.prototype = {
     call$1(startReq) {
-      switch ($.$get$Squadron_converter().v$1$0(type$.int).call$1(J.$index$ax(type$.List_dynamic._as(J.$index$ax(startReq, 3)), 0))) {
+      switch ($.$get$Squadron_converter().value$1$0(type$.int).call$1(J.$index$ax(type$.List_dynamic._as(J.$index$ax(startReq, 3)), 0))) {
         case 1:
           throw A.wrapException(A.Exception_Exception("Intentional failure"));
         case 2:
@@ -11601,9 +11604,9 @@
       _instance = hunkHelpers.installInstanceTearOff,
       _static = hunkHelpers.installStaticTearOff;
     _static_0(A, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 11);
-    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 8);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 8);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 8);
+    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 7);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 7);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 7);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_2(A, "async___nullErrorHandler$closure", "_nullErrorHandler", 5);
     _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 5);
@@ -11625,13 +11628,13 @@
     _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 2);
     _instance_1_u(_, "get$log", "log$1", 24);
     _instance(_, "get$error", 0, 1, null, ["call$3", "call$1", "call$2"], ["error$3", "error$1", "error$2"], 25, 0, 0);
-    _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 52);
-    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 7);
-    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 7);
-    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 7);
     _static(A, "converter_Converter_identity$closure", 1, null, ["call$1$1", "call$1"], ["Converter_identity", function(x) {
       return A.Converter_identity(x, type$.dynamic);
-    }], 36, 0);
+    }], 52, 0);
+    _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 53);
+    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 9);
+    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 9);
+    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 9);
     _static_0(A, "_platform__unsendable$closure", "unsendable", 0);
   })();
   (function inheritance() {
@@ -11639,7 +11642,7 @@
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(A.Object, null);
-    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.MappedIterator, A.WhereIterator, A.FixedLengthListMixin, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapBase, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._Cell, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._AsyncStarStreamController, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A._StreamController, A._AsyncStreamControllerDispatch, A._BufferingStreamSubscription, A._AddStreamState, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._StreamIterator, A._Zone, A._HashMapKeyIterator, A.SetBase, A._LinkedHashSetCell, A._LinkedHashSetIterator, A.ListBase, A._MapBaseValueIterator, A.Codec, A.Converter, A._JsonStringifier, A._JsonPrettyPrintMixin, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.Null, A._StringStackTrace, A.Stopwatch, A.StringBuffer, A.NullRejectionException, A.CancelationToken, A.CanceledException, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A._WebWorkerChannel, A.WorkerRunner, A.CastConverter, A.SquadronException, A.SquadronCanceledExceptions, A.CancelationTokenReference, A.TestService]);
+    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Error, A.Closure, A.SentinelValue, A.Iterable, A.ListIterator, A.MappedIterator, A.WhereIterator, A.FixedLengthListMixin, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A.MapBase, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._Cell, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._AsyncStarStreamController, A._IterationMarker, A._SyncStarIterator, A.AsyncError, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A.Stream, A._StreamController, A._AsyncStreamControllerDispatch, A._BufferingStreamSubscription, A._AddStreamState, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._StreamIterator, A._Zone, A._HashMapKeyIterator, A.SetBase, A._LinkedHashSetCell, A._LinkedHashSetIterator, A.ListBase, A._MapBaseValueIterator, A.Codec, A.Converter, A._JsonStringifier, A._JsonPrettyPrintMixin, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.Null, A._StringStackTrace, A.Stopwatch, A.StringBuffer, A.NullRejectionException, A.CancelationToken, A.CanceledException, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A._WebWorkerChannel, A.WorkerRunner, A.Converter0, A.SquadronException, A.SquadronCanceledExceptions, A.CancelationTokenReference, A.TestService]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JavaScriptBigInt, J.JavaScriptSymbol, J.JSNumber, J.JSString]);
     _inheritMany(J.JavaScriptObject, [J.LegacyJavaScriptObject, J.JSArray, A.NativeByteBuffer, A.NativeTypedData]);
     _inheritMany(J.LegacyJavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
@@ -11691,6 +11694,7 @@
     _inheritMany(A.Logger, [A.InternalLogger, A.TestLogger]);
     _inheritMany(A.LogOutput, [A._NoLogOutput, A.NoOutput]);
     _inheritMany(A.LogPrinter, [A._DummyPrinter, A.EmptyPrinter]);
+    _inherit(A.CastConverter, A.Converter0);
     _inheritMany(A.SquadronException, [A.SquadronCanceledException, A.SquadronError, A.WorkerException]);
     _inherit(A.SquadronTimeoutException, A.SquadronCanceledException);
     _inherit(A.SquadronCancelationToken, A.CancelationToken);
@@ -11706,7 +11710,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map"},
     mangledNames: {},
-    types: ["~()", "~(List<@>)", "~(@)", "Stream<int>(List<@>)", "Null()", "~(Object,StackTrace)", "~(Object?,Object?)", "bool(Object?)", "~(~())", "Null(@)", "String()", "int()", "@(@)", "@(List<@>)", "Future<~>(List<@>)", "Null(Object,StackTrace)", "Null(List<@>)", "~(Object?)", "bool()", "Object?(Object?)", "int(int)", "int(int,int)", "~(WorkerRunner)", "Null(JSObject)", "~(LogEvent)", "~(Object[StackTrace?,int?])", "Future<Null>()", "~(JSObject)", "~(OutputEvent)", "bool(int)", "~(Object[StackTrace?])", "CancelationTokenReference()", "Future<~>()", "~(@,StackTrace)", "Null(@,@)", "SquadronCanceledException(CanceledException)", "0^(@)<Object?>", "List<@>(SquadronCanceledException)", "bool(Level)", "bool(CanceledException)", "_Future<@>(@)", "@(String)", "_Future<@>?()", "Future<int>(List<@>)", "~(int,@)", "bool/(List<@>)", "Null(~())", "int/(List<@>)", "Future<Object>(List<@>)", "String(List<@>)", "TestService(List<@>)", "Null(@,StackTrace)", "SquadronCanceledException?(List<@>?)", "@(@,String)", "String(SquadronCanceledException)"],
+    types: ["~()", "~(List<@>)", "~(@)", "Stream<int>(List<@>)", "Null()", "~(Object,StackTrace)", "~(Object?,Object?)", "~(~())", "Null(@)", "bool(Object?)", "String()", "int()", "@(@)", "@(List<@>)", "Future<~>(List<@>)", "Null(List<@>)", "Null(Object,StackTrace)", "~(Object?)", "bool()", "Object?(Object?)", "int(int)", "int(int,int)", "~(WorkerRunner)", "Null(JSObject)", "~(LogEvent)", "~(Object[StackTrace?,int?])", "Future<Null>()", "~(JSObject)", "~(OutputEvent)", "bool(int)", "~(Object[StackTrace?])", "CancelationTokenReference()", "Future<~>()", "~(@,StackTrace)", "Null(@,@)", "SquadronCanceledException(CanceledException)", "_Future<@>(@)", "List<@>(SquadronCanceledException)", "bool(Level)", "bool(CanceledException)", "@(String)", "_Future<@>?()", "~(int,@)", "Future<int>(List<@>)", "Null(@,StackTrace)", "bool/(List<@>)", "Null(~())", "int/(List<@>)", "Future<Object>(List<@>)", "String(List<@>)", "TestService(List<@>)", "@(@,String)", "0^(@)<Object?>", "SquadronCanceledException?(List<@>?)", "String(SquadronCanceledException)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")

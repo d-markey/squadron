@@ -1959,6 +1959,11 @@
     getIsolateAffinityTag($name) {
       return init.getIsolateTag($name);
     },
+    LinkedHashMapKeyIterator$(_map, _modifications, $E) {
+      var t1 = new A.LinkedHashMapKeyIterator(_map, _modifications, $E._eval$1("LinkedHashMapKeyIterator<0>"));
+      t1._cell = _map._first;
+      return t1;
+    },
     defineProperty(obj, property, value) {
       Object.defineProperty(obj, property, {value: value, enumerable: false, writable: true, configurable: true});
     },
@@ -9739,7 +9744,6 @@
               success = new A.openChannel_success(ready, completer);
               $async$handler = 4;
               worker.__late_helper$_value = t2._as(new t1.Worker(webEntryPoint.uri));
-              worker._readLocal$0()["@@dbgid"] = webEntryPoint.uri + "#";
               $$errorHandler = new A.openChannel_$errorHandler(logger, fail, entryPoint);
               worker._readLocal$0().onerror = A._functionToJS1($$errorHandler);
               worker._readLocal$0().onmessageerror = A._functionToJS1($$errorHandler);
@@ -10188,79 +10192,102 @@
       this.maxWorkers = t1;
       this.maxParallel = t2;
     },
-    CastConverter__buffer(x, $T) {
-      var t1;
-      if (x == null)
-        t1 = null;
-      else
-        t1 = type$.ByteBuffer._is(x) ? x : J.get$buffer$x(type$.TypedData._as($T._as(x)));
-      return t1;
-    },
-    CastConverter__td(b, $T) {
-      return new A.CastConverter__td_closure(b, $T);
-    },
-    CastConverter__ntd(b, $T) {
-      return new A.CastConverter__ntd_closure(b, $T);
-    },
     CastConverter: function CastConverter() {
     },
-    CastConverter__td_closure: function CastConverter__td_closure(t0, t1) {
-      this.b = t0;
+    Converter_isIdentity(cast, $T) {
+      var t1 = J.$eq$(cast, A.instantiate1(A.converter_Converter_identity$closure(), $T));
+      return t1;
+    },
+    Converter_identity(x, $T) {
+      return $T._as(x);
+    },
+    Converter_toList(x) {
+      return x;
+    },
+    Converter__td(view, $T) {
+      return new A.Converter__td_closure(view, $T);
+    },
+    Converter0: function Converter0() {
+    },
+    Converter_nullable_closure: function Converter_nullable_closure(t0, t1) {
+      this.op = t0;
       this.T = t1;
     },
-    CastConverter__ntd_closure: function CastConverter__ntd_closure(t0, t1) {
-      this.b = t0;
-      this.T = t1;
-    },
-    CastConverter_l_closure: function CastConverter_l_closure(t0) {
+    Converter_list_closure: function Converter_list_closure(t0) {
       this.T = t0;
     },
-    CastConverter_l_closure0: function CastConverter_l_closure0(t0, t1) {
-      this.cast = t0;
+    Converter_list_closure0: function Converter_list_closure0(t0, t1) {
+      this.op = t0;
       this.T = t1;
     },
-    CastConverter_nl_closure: function CastConverter_nl_closure(t0) {
-      this.T = t0;
-    },
-    CastConverter_nl_closure0: function CastConverter_nl_closure0(t0, t1) {
-      this.cast = t0;
-      this.T = t1;
-    },
-    CastConverter_m_closure: function CastConverter_m_closure(t0, t1) {
+    Converter_map_closure: function Converter_map_closure(t0, t1) {
       this.K = t0;
       this.V = t1;
     },
-    CastConverter_m_closure0: function CastConverter_m_closure0(t0, t1, t2, t3) {
+    Converter_map_closure0: function Converter_map_closure0(t0, t1, t2, t3) {
       var _ = this;
-      _.key = t0;
-      _.value = t1;
+      _.kop = t0;
+      _.vop = t1;
       _.K = t2;
       _.V = t3;
     },
-    CastConverter_m__closure: function CastConverter_m__closure(t0, t1, t2, t3) {
+    Converter_map__closure: function Converter_map__closure(t0, t1, t2, t3) {
       var _ = this;
-      _.key = t0;
-      _.value = t1;
+      _.kop = t0;
+      _.vop = t1;
       _.K = t2;
       _.V = t3;
     },
-    CastConverter_nm_closure: function CastConverter_nm_closure(t0, t1) {
-      this.K = t0;
-      this.V = t1;
+    Converter__td_closure: function Converter__td_closure(t0, t1) {
+      this.view = t0;
+      this.T = t1;
     },
-    CastConverter_nm_closure0: function CastConverter_nm_closure0(t0, t1, t2, t3) {
-      var _ = this;
-      _.key = t0;
-      _.value = t1;
-      _.K = t2;
-      _.V = t3;
+    InPlaceConverter__toList(cast, $T) {
+      return new A.InPlaceConverter__toList_closure(cast, $T);
     },
-    CastConverter_nm__closure: function CastConverter_nm__closure(t0, t1, t2, t3) {
-      var _ = this;
-      _.key = t0;
-      _.value = t1;
-      _.K = t2;
-      _.V = t3;
+    InPlaceConverter: function InPlaceConverter(t0) {
+      this.converter = t0;
+    },
+    InPlaceConverter__toList_closure: function InPlaceConverter__toList_closure(t0, t1) {
+      this.cast = t0;
+      this.T = t1;
+    },
+    InPlaceConverter__toMap_closure: function InPlaceConverter__toMap_closure(t0, t1, t2) {
+      this.vcast = t0;
+      this.K = t1;
+      this.V = t2;
+    },
+    LazyInPlaceConverter__toList(cast, $T) {
+      return new A.LazyInPlaceConverter__toList_closure(cast, $T);
+    },
+    LazyInPlaceConverter__toMap(vcast, $K, $V) {
+      return new A.LazyInPlaceConverter__toMap_closure(vcast, $K, $V);
+    },
+    LazyInPlaceConverter: function LazyInPlaceConverter(t0) {
+      this.converter = t0;
+    },
+    LazyInPlaceConverter__toList_closure: function LazyInPlaceConverter__toList_closure(t0, t1) {
+      this.cast = t0;
+      this.T = t1;
+    },
+    LazyInPlaceConverter__toMap_closure: function LazyInPlaceConverter__toMap_closure(t0, t1, t2) {
+      this.vcast = t0;
+      this.K = t1;
+      this.V = t2;
+    },
+    _LazyInPlaceList: function _LazyInPlaceList(t0, t1, t2) {
+      this._data = t0;
+      this._cast = t1;
+      this.$ti = t2;
+    },
+    _LazyInPlaceList_contains_closure: function _LazyInPlaceList_contains_closure(t0, t1) {
+      this.$this = t0;
+      this.element = t1;
+    },
+    _LazyInPlaceMap: function _LazyInPlaceMap(t0, t1, t2) {
+      this._data = t0;
+      this._vcast = t1;
+      this.$ti = t2;
     },
     NumConverter__toInt(x) {
       var z;
@@ -10276,13 +10303,6 @@
     },
     NumConverter__toDbl(x) {
       return A._asNum(x);
-    },
-    NumConverter__toNullableInt(x) {
-      return x == null ? null : A.NumConverter__toInt(x);
-    },
-    NumConverter__toNullableDbl(x) {
-      A._asNumQ(x);
-      return x == null ? null : x;
     },
     NumConverter: function NumConverter() {
     },
@@ -10464,26 +10484,6 @@
     },
     _LocalWorker_Object_Releasable: function _LocalWorker_Object_Releasable() {
     },
-    SquadronMarshalerExt_marshaler(_this, $T, $S) {
-      return new A.SquadronMarshalerExt_marshaler_closure(_this, null, $S, $T);
-    },
-    SquadronMarshalerExt_unmarshaler(_this, $T, $S) {
-      return new A.SquadronMarshalerExt_unmarshaler_closure(_this, null, $T, $S);
-    },
-    SquadronMarshalerExt_marshaler_closure: function SquadronMarshalerExt_marshaler_closure(t0, t1, t2, t3) {
-      var _ = this;
-      _._this = t0;
-      _.cast = t1;
-      _.S = t2;
-      _.T = t3;
-    },
-    SquadronMarshalerExt_unmarshaler_closure: function SquadronMarshalerExt_unmarshaler_closure(t0, t1, t2, t3) {
-      var _ = this;
-      _._this = t0;
-      _.cast = t1;
-      _.T = t2;
-      _.S = t3;
-    },
     PoolWorker_compareCapacityDesc(a, b) {
       var t2,
         t1 = type$.PoolWorker_Worker;
@@ -10558,8 +10558,6 @@
       _.$ti = t4;
     },
     WorkerPool: function WorkerPool() {
-    },
-    WorkerPool_maxWorkload_closure: function WorkerPool_maxWorkload_closure() {
     },
     WorkerPool__provisionWorkers_closure: function WorkerPool__provisionWorkers_closure(t0) {
       this.$this = t0;
@@ -11775,29 +11773,32 @@
     execute__closure: function execute__closure(t0) {
       this.tc = t0;
     },
-    execute___closure0: function execute___closure0() {
-    },
-    execute____closure2: function execute____closure2(t0) {
-      this._box_0 = t0;
-    },
-    execute____closure3: function execute____closure3(t0) {
-      this._box_0 = t0;
-    },
-    execute____closure4: function execute____closure4(t0) {
-      this._box_0 = t0;
-    },
-    execute__closure0: function execute__closure0(t0) {
+    execute___closure: function execute___closure(t0) {
       this.tc = t0;
     },
-    execute___closure: function execute___closure() {
+    execute____closure0: function execute____closure0() {
     },
-    execute____closure: function execute____closure(t0) {
+    execute_____closure2: function execute_____closure2(t0) {
+      this._box_0 = t0;
+    },
+    execute_____closure3: function execute_____closure3(t0) {
+      this._box_0 = t0;
+    },
+    execute_____closure4: function execute_____closure4(t0) {
+      this._box_0 = t0;
+    },
+    execute___closure0: function execute___closure0(t0) {
+      this.tc = t0;
+    },
+    execute____closure: function execute____closure() {
+    },
+    execute_____closure: function execute_____closure(t0) {
       this._box_1 = t0;
     },
-    execute____closure0: function execute____closure0(t0) {
+    execute_____closure0: function execute_____closure0(t0) {
       this._box_1 = t0;
     },
-    execute____closure1: function execute____closure1(t0) {
+    execute_____closure1: function execute_____closure1(t0) {
       this._box_1 = t0;
     },
     execute0(tc) {
@@ -11819,52 +11820,52 @@
     execute_closure10: function execute_closure10(t0) {
       this.tc = t0;
     },
-    execute__closure13: function execute__closure13(t0) {
+    execute__closure12: function execute__closure12(t0) {
       this.tc = t0;
     },
     execute___closure45: function execute___closure45(t0) {
       this.tc = t0;
     },
-    execute____closure106: function execute____closure106(t0) {
+    execute____closure94: function execute____closure94(t0) {
       this.res = t0;
     },
-    execute____closure107: function execute____closure107(t0) {
+    execute____closure95: function execute____closure95(t0) {
       this.res = t0;
     },
     execute___closure46: function execute___closure46(t0) {
       this.tc = t0;
     },
-    execute____closure104: function execute____closure104(t0) {
+    execute____closure92: function execute____closure92(t0) {
       this.res = t0;
     },
-    execute____closure105: function execute____closure105(t0) {
+    execute____closure93: function execute____closure93(t0) {
       this.res = t0;
     },
     execute___closure47: function execute___closure47(t0) {
       this.tc = t0;
     },
-    execute____closure102: function execute____closure102(t0, t1) {
+    execute____closure90: function execute____closure90(t0, t1) {
       this.ready = t0;
       this.res = t1;
     },
-    execute____closure103: function execute____closure103(t0, t1) {
+    execute____closure91: function execute____closure91(t0, t1) {
       this.ready = t0;
       this.res = t1;
     },
     execute___closure48: function execute___closure48() {
     },
-    execute____closure100: function execute____closure100(t0) {
+    execute____closure88: function execute____closure88(t0) {
       this.res = t0;
     },
-    execute____closure101: function execute____closure101(t0) {
+    execute____closure89: function execute____closure89(t0) {
       this.res = t0;
     },
     execute___closure49: function execute___closure49() {
     },
-    execute____closure98: function execute____closure98(t0) {
+    execute____closure86: function execute____closure86(t0) {
       this.completer = t0;
     },
-    execute____closure99: function execute____closure99(t0) {
+    execute____closure87: function execute____closure87(t0) {
       this.completer = t0;
     },
     execute1(tc) {
@@ -11876,7 +11877,7 @@
     execute_closure4: function execute_closure4(t0) {
       this.tc = t0;
     },
-    execute__closure7: function execute__closure7(t0) {
+    execute__closure6: function execute__closure6(t0) {
       this.tc = t0;
     },
     execute___closure15: function execute___closure15(t0, t1, t2) {
@@ -11925,606 +11926,1429 @@
       this.worker = t0;
       this.logs = t1;
     },
+    _asInt0(x) {
+      return A._asInt(x);
+    },
+    _unexpectedSuccessIfNonJs(message, res) {
+      var t1 = $.$get$Squadron_platformType();
+      if (t1 !== B.SquadronPlatformType_JavaScript_js)
+        throw A.wrapException(A.unexpectedSuccess("Unexpected success on " + t1.label + ": " + message, res));
+    },
+    _unexpectedFailureIfJs(message, ex) {
+      var t2,
+        t1 = $.$get$Squadron_platformType();
+      if (t1 === B.SquadronPlatformType_JavaScript_js) {
+        t2 = ex.toString$0(0);
+        throw A.wrapException(A.UnexpectedException$("Unexpected: " + ("Unexpected failure on " + t1.label + ": " + message) + " failed with ex=" + t2));
+      }
+    },
     execute2(tc) {
       type$.nullable_TestContext._as(tc);
       if (tc == null)
         return;
-      tc.run$1(new A.execute_closure3(tc, new A.Throws(A.wrapMatcher(new A.TypeMatcher(type$.TypeMatcher_TypeError))), A.anyOf(1 / 0, -1 / 0)));
+      tc.run$1(new A.execute_closure3(tc));
     },
-    execute_closure3: function execute_closure3(t0, t1, t2) {
+    testCastConverter(tc) {
+      tc.group$2("- CastConverter", new A.testCastConverter_closure(tc));
+    },
+    testInPlaceCastConverter(tc) {
+      tc.group$2("- InPlaceConverter + CastConverter", new A.testInPlaceCastConverter_closure(tc));
+    },
+    testLazyInPlaceCastConverter(tc) {
+      tc.group$2("- LazyInPlaceConverter + CastConverter", new A.testLazyInPlaceCastConverter_closure(tc));
+    },
+    testNumConverter(tc) {
+      tc.group$2("- NumConverter", new A.testNumConverter_closure(tc));
+    },
+    testInPlaceNumConverter(tc) {
+      tc.group$2("- InPlaceConverter + NumConverter", new A.testInPlaceNumConverter_closure(tc));
+    },
+    testLazyInPlaceNumConverter(tc) {
+      tc.group$2("- LazyInPlaceConverter + NumConverter", new A.testLazyInPlaceNumConverter_closure(tc));
+    },
+    execute_closure3: function execute_closure3(t0) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.isInfinite = t2;
     },
-    execute__closure6: function execute__closure6(t0, t1, t2) {
+    execute__closure5: function execute__closure5(t0) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.isInfinite = t2;
     },
-    execute___closure13: function execute___closure13(t0, t1, t2) {
+    execute___closure13: function execute___closure13() {
+    },
+    execute___closure14: function execute___closure14() {
+    },
+    execute____closure27: function execute____closure27() {
+    },
+    testCastConverter_closure: function testCastConverter_closure(t0) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.isInfinite = t2;
     },
-    execute____closure35: function execute____closure35(t0, t1, t2) {
+    testCastConverter__closure: function testCastConverter__closure(t0, t1) {
       this.converter = t0;
       this.tc = t1;
-      this.throwsTypeError = t2;
     },
-    execute____closure_$platformSensitive0: function execute____closure_$platformSensitive0(t0, t1, t2) {
-      this.toNullableInt = t0;
-      this.toInt = t1;
-      this.tc = t2;
+    testCastConverter__closure_$platformSensitive0: function testCastConverter__closure_$platformSensitive0(t0, t1) {
+      this.$$toNullableInt = t0;
+      this.$$toInt = t1;
     },
-    execute_____closure105: function execute_____closure105(t0, t1) {
-      this.toInt = t0;
-      this.toNullableInt = t1;
+    testCastConverter___closure34: function testCastConverter___closure34(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute_____closure106: function execute_____closure106(t0, t1) {
-      this.toInt = t0;
-      this.toNullableInt = t1;
+    testCastConverter___closure35: function testCastConverter___closure35(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute_____closure107: function execute_____closure107(t0, t1, t2, t3) {
-      var _ = this;
-      _.$$platformSensitive = t0;
-      _.toInt = t1;
-      _.throwsTypeError = t2;
-      _.toNullableInt = t3;
+    testCastConverter___closure36: function testCastConverter___closure36(t0, t1, t2) {
+      this.$$platformSensitive = t0;
+      this.$$toInt = t1;
+      this.$$toNullableInt = t2;
     },
-    execute______closure72: function execute______closure72(t0) {
-      this.toInt = t0;
+    testCastConverter____closure26: function testCastConverter____closure26(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure73: function execute______closure73(t0) {
-      this.toNullableInt = t0;
+    testCastConverter____closure27: function testCastConverter____closure27(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute______closure74: function execute______closure74(t0) {
-      this.toInt = t0;
+    testCastConverter____closure28: function testCastConverter____closure28(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure75: function execute______closure75(t0) {
-      this.toNullableInt = t0;
+    testCastConverter____closure29: function testCastConverter____closure29(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure108: function execute_____closure108(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testCastConverter___closure37: function testCastConverter___closure37(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure71: function execute______closure71(t0) {
-      this.toInt = t0;
+    testCastConverter____closure25: function testCastConverter____closure25(t0) {
+      this.$$toInt = t0;
     },
-    execute_____closure109: function execute_____closure109(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testCastConverter___closure38: function testCastConverter___closure38(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure69: function execute______closure69(t0) {
-      this.toInt = t0;
+    testCastConverter____closure23: function testCastConverter____closure23(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure70: function execute______closure70(t0) {
-      this.toNullableInt = t0;
+    testCastConverter____closure24: function testCastConverter____closure24(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure110: function execute_____closure110(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testCastConverter___closure39: function testCastConverter___closure39(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure67: function execute______closure67(t0) {
-      this.toInt = t0;
+    testCastConverter____closure21: function testCastConverter____closure21(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure68: function execute______closure68(t0) {
-      this.toNullableInt = t0;
+    testCastConverter____closure22: function testCastConverter____closure22(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure111: function execute_____closure111(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testCastConverter___closure40: function testCastConverter___closure40(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure65: function execute______closure65(t0) {
-      this.toInt = t0;
+    testCastConverter____closure19: function testCastConverter____closure19(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure66: function execute______closure66(t0) {
-      this.toNullableInt = t0;
+    testCastConverter____closure20: function testCastConverter____closure20(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute____closure36: function execute____closure36(t0, t1, t2, t3) {
-      var _ = this;
-      _.converter = t0;
-      _.tc = t1;
-      _.isInfinite = t2;
-      _.throwsTypeError = t3;
+    testCastConverter__closure0: function testCastConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
     },
-    execute____closure_$platformSensitive: function execute____closure_$platformSensitive(t0, t1, t2) {
-      this.toNullableDbl = t0;
-      this.toDbl = t1;
-      this.tc = t2;
+    testCastConverter__closure_$platformSensitive: function testCastConverter__closure_$platformSensitive(t0, t1) {
+      this.$$toNullableDbl = t0;
+      this.$$toDbl = t1;
     },
-    execute_____closure98: function execute_____closure98(t0, t1) {
-      this.toDbl = t0;
-      this.toNullableDbl = t1;
+    testCastConverter___closure27: function testCastConverter___closure27(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute_____closure99: function execute_____closure99(t0) {
+    testCastConverter___closure28: function testCastConverter___closure28(t0) {
       this.$$platformSensitive = t0;
     },
-    execute_____closure100: function execute_____closure100(t0, t1, t2) {
-      this.toDbl = t0;
-      this.toNullableDbl = t1;
-      this.isInfinite = t2;
+    testCastConverter___closure29: function testCastConverter___closure29(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute_____closure101: function execute_____closure101(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testCastConverter___closure30: function testCastConverter___closure30(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure64: function execute______closure64(t0) {
-      this.toDbl = t0;
+    testCastConverter____closure18: function testCastConverter____closure18(t0) {
+      this.$$toDbl = t0;
     },
-    execute_____closure102: function execute_____closure102(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testCastConverter___closure31: function testCastConverter___closure31(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure62: function execute______closure62(t0) {
-      this.toDbl = t0;
+    testCastConverter____closure16: function testCastConverter____closure16(t0) {
+      this.$$toDbl = t0;
     },
-    execute______closure63: function execute______closure63(t0) {
-      this.toNullableDbl = t0;
+    testCastConverter____closure17: function testCastConverter____closure17(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute_____closure103: function execute_____closure103(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testCastConverter___closure32: function testCastConverter___closure32(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure60: function execute______closure60(t0) {
-      this.toDbl = t0;
+    testCastConverter____closure14: function testCastConverter____closure14(t0) {
+      this.$$toDbl = t0;
     },
-    execute______closure61: function execute______closure61(t0) {
-      this.toNullableDbl = t0;
+    testCastConverter____closure15: function testCastConverter____closure15(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute_____closure104: function execute_____closure104(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testCastConverter___closure33: function testCastConverter___closure33(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure58: function execute______closure58(t0) {
-      this.toDbl = t0;
+    testCastConverter____closure12: function testCastConverter____closure12(t0) {
+      this.$$toDbl = t0;
     },
-    execute______closure59: function execute______closure59(t0) {
-      this.toNullableDbl = t0;
+    testCastConverter____closure13: function testCastConverter____closure13(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute____closure37: function execute____closure37(t0, t1, t2) {
+    testCastConverter__closure1: function testCastConverter__closure1(t0, t1) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.converter = t2;
-    },
-    execute_____closure90: function execute_____closure90(t0, t1) {
-      this.throwsTypeError = t0;
       this.converter = t1;
     },
-    execute______closure57: function execute______closure57(t0) {
-      this.data = t0;
-    },
-    execute_____closure91: function execute_____closure91(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure55: function execute______closure55(t0) {
-      this.data = t0;
-    },
-    execute______closure56: function execute______closure56() {
-    },
-    execute_____closure92: function execute_____closure92(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure54: function execute______closure54(t0) {
-      this.data = t0;
-    },
-    execute_____closure93: function execute_____closure93(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure53: function execute______closure53(t0) {
-      this.data = t0;
-    },
-    execute_____closure94: function execute_____closure94(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure51: function execute______closure51(t0) {
-      this.data = t0;
-    },
-    execute______closure52: function execute______closure52() {
-    },
-    execute_____closure95: function execute_____closure95(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure50: function execute______closure50(t0) {
-      this.data = t0;
-    },
-    execute_____closure96: function execute_____closure96(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure49: function execute______closure49(t0) {
-      this.data = t0;
-    },
-    execute_____closure97: function execute_____closure97(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure48: function execute______closure48(t0) {
-      this.data = t0;
-    },
-    execute____closure38: function execute____closure38(t0, t1, t2) {
-      this.tc = t0;
-      this.throwsTypeError = t1;
-      this.converter = t2;
-    },
-    execute_____closure85: function execute_____closure85(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure47: function execute______closure47(t0) {
-      this.data = t0;
-    },
-    execute_____closure86: function execute_____closure86(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure45: function execute______closure45(t0) {
-      this.data = t0;
-    },
-    execute______closure46: function execute______closure46() {
-    },
-    execute_____closure87: function execute_____closure87(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure44: function execute______closure44(t0) {
-      this.data = t0;
-    },
-    execute_____closure88: function execute_____closure88(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure43: function execute______closure43(t0) {
-      this.data = t0;
-    },
-    execute_____closure89: function execute_____closure89(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure41: function execute______closure41(t0) {
-      this.data = t0;
-    },
-    execute______closure42: function execute______closure42() {
-    },
-    execute____closure39: function execute____closure39(t0, t1, t2) {
+    testCastConverter___closure19: function testCastConverter___closure19(t0) {
       this.converter = t0;
-      this.throwsTypeError = t1;
-      this.tc = t2;
     },
-    execute____closure_$test: function execute____closure_$test(t0, t1, t2) {
-      this.ntds = t0;
-      this.tds = t1;
-      this.throwsTypeError = t2;
+    testCastConverter____closure11: function testCastConverter____closure11(t0) {
+      this.data = t0;
     },
-    execute_____$test_closure: function execute_____$test_closure(t0) {
+    testCastConverter___closure20: function testCastConverter___closure20(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure10: function testCastConverter____closure10(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure21: function testCastConverter___closure21(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure9: function testCastConverter____closure9(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure22: function testCastConverter___closure22(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure8: function testCastConverter____closure8(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure23: function testCastConverter___closure23(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure7: function testCastConverter____closure7(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure24: function testCastConverter___closure24(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure6: function testCastConverter____closure6(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure25: function testCastConverter___closure25(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure5: function testCastConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure26: function testCastConverter___closure26(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure4: function testCastConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testCastConverter__closure2: function testCastConverter__closure2(t0, t1) {
+      this.tc = t0;
+      this.converter = t1;
+    },
+    testCastConverter___closure14: function testCastConverter___closure14(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure3: function testCastConverter____closure3(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure15: function testCastConverter___closure15(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure2: function testCastConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure16: function testCastConverter___closure16(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure1: function testCastConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure17: function testCastConverter___closure17(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure0: function testCastConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testCastConverter___closure18: function testCastConverter___closure18(t0) {
+      this.converter = t0;
+    },
+    testCastConverter____closure: function testCastConverter____closure(t0) {
+      this.data = t0;
+    },
+    testCastConverter__closure3: function testCastConverter__closure3(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testCastConverter__closure_$test: function testCastConverter__closure_$test(t0, t1) {
+      this.tds = t0;
+      this.converter = t1;
+    },
+    testCastConverter___$test_closure: function testCastConverter___$test_closure(t0, t1) {
       this.fn = t0;
+      this.T = t1;
     },
-    execute_____$test_closure0: function execute_____$test_closure0(t0, t1) {
+    testCastConverter___$test_closure0: function testCastConverter___$test_closure0(t0, t1) {
       this.efn = t0;
       this.input = t1;
     },
-    execute_____closure70: function execute_____closure70(t0, t1) {
+    testCastConverter___closure: function testCastConverter___closure(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure71: function execute_____closure71(t0, t1) {
+    testCastConverter___closure0: function testCastConverter___closure0(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure72: function execute_____closure72(t0, t1) {
+    testCastConverter___closure1: function testCastConverter___closure1(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure73: function execute_____closure73(t0, t1) {
+    testCastConverter___closure2: function testCastConverter___closure2(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure74: function execute_____closure74(t0, t1) {
+    testCastConverter___closure3: function testCastConverter___closure3(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure75: function execute_____closure75(t0, t1) {
+    testCastConverter___closure4: function testCastConverter___closure4(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure76: function execute_____closure76(t0, t1) {
+    testCastConverter___closure5: function testCastConverter___closure5(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure77: function execute_____closure77(t0, t1) {
+    testCastConverter___closure6: function testCastConverter___closure6(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure78: function execute_____closure78(t0) {
+    testCastConverter___closure7: function testCastConverter___closure7(t0) {
       this.$$test = t0;
     },
-    execute_____closure79: function execute_____closure79(t0, t1) {
+    testCastConverter___closure8: function testCastConverter___closure8(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure80: function execute_____closure80(t0, t1) {
+    testCastConverter___closure9: function testCastConverter___closure9(t0, t1) {
       this.intData = t0;
       this.$$test = t1;
     },
-    execute_____closure81: function execute_____closure81(t0, t1) {
+    testCastConverter___closure10: function testCastConverter___closure10(t0, t1) {
       this.dblData = t0;
       this.$$test = t1;
     },
-    execute_____closure82: function execute_____closure82(t0) {
+    testCastConverter___closure11: function testCastConverter___closure11(t0) {
       this.$$test = t0;
     },
-    execute_____closure83: function execute_____closure83(t0, t1) {
+    testCastConverter___closure12: function testCastConverter___closure12(t0, t1) {
       this.dblData = t0;
       this.$$test = t1;
     },
-    execute_____closure84: function execute_____closure84(t0) {
+    testCastConverter___closure13: function testCastConverter___closure13(t0) {
       this.$$test = t0;
     },
-    execute___closure14: function execute___closure14(t0, t1, t2) {
+    testInPlaceCastConverter_closure: function testInPlaceCastConverter_closure(t0) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.isInfinite = t2;
     },
-    execute____closure31: function execute____closure31(t0, t1, t2) {
+    testInPlaceCastConverter__closure: function testInPlaceCastConverter__closure(t0, t1) {
       this.converter = t0;
       this.tc = t1;
-      this.throwsTypeError = t2;
     },
-    execute_____closure63: function execute_____closure63(t0, t1) {
-      this.toInt = t0;
-      this.toNullableInt = t1;
+    testInPlaceCastConverter__closure_$platformSensitive0: function testInPlaceCastConverter__closure_$platformSensitive0(t0, t1) {
+      this.$$toNullableInt = t0;
+      this.$$toInt = t1;
     },
-    execute_____closure64: function execute_____closure64(t0, t1) {
-      this.toInt = t0;
-      this.toNullableInt = t1;
+    testInPlaceCastConverter___closure19: function testInPlaceCastConverter___closure19(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute_____closure65: function execute_____closure65(t0, t1, t2) {
-      this.toInt = t0;
-      this.toNullableInt = t1;
-      this.throwsTypeError = t2;
+    testInPlaceCastConverter___closure20: function testInPlaceCastConverter___closure20(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure33: function execute______closure33(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter___closure21: function testInPlaceCastConverter___closure21(t0, t1, t2) {
+      this.$$platformSensitive = t0;
+      this.$$toInt = t1;
+      this.$$toNullableInt = t2;
     },
-    execute______closure34: function execute______closure34(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter____closure26: function testInPlaceCastConverter____closure26(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure35: function execute______closure35(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure27: function testInPlaceCastConverter____closure27(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute______closure36: function execute______closure36(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter____closure28: function testInPlaceCastConverter____closure28(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure37: function execute______closure37(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure29: function testInPlaceCastConverter____closure29(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute______closure38: function execute______closure38(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter___closure22: function testInPlaceCastConverter___closure22(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure39: function execute______closure39(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure25: function testInPlaceCastConverter____closure25(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure40: function execute______closure40(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter___closure23: function testInPlaceCastConverter___closure23(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute_____closure66: function execute_____closure66(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testInPlaceCastConverter____closure23: function testInPlaceCastConverter____closure23(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure32: function execute______closure32(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure24: function testInPlaceCastConverter____closure24(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure67: function execute_____closure67(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testInPlaceCastConverter___closure24: function testInPlaceCastConverter___closure24(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure30: function execute______closure30(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure21: function testInPlaceCastConverter____closure21(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure31: function execute______closure31(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter____closure22: function testInPlaceCastConverter____closure22(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure68: function execute_____closure68(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testInPlaceCastConverter___closure25: function testInPlaceCastConverter___closure25(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
     },
-    execute______closure28: function execute______closure28(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter____closure19: function testInPlaceCastConverter____closure19(t0) {
+      this.$$toInt = t0;
     },
-    execute______closure29: function execute______closure29(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter____closure20: function testInPlaceCastConverter____closure20(t0) {
+      this.$$toNullableInt = t0;
     },
-    execute_____closure69: function execute_____closure69(t0, t1, t2) {
-      this.toInt = t0;
-      this.throwsTypeError = t1;
-      this.toNullableInt = t2;
+    testInPlaceCastConverter__closure0: function testInPlaceCastConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
     },
-    execute______closure26: function execute______closure26(t0) {
-      this.toInt = t0;
+    testInPlaceCastConverter__closure_$platformSensitive: function testInPlaceCastConverter__closure_$platformSensitive(t0, t1) {
+      this.$$toNullableDbl = t0;
+      this.$$toDbl = t1;
     },
-    execute______closure27: function execute______closure27(t0) {
-      this.toNullableInt = t0;
+    testInPlaceCastConverter___closure12: function testInPlaceCastConverter___closure12(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute____closure32: function execute____closure32(t0, t1, t2, t3) {
-      var _ = this;
-      _.converter = t0;
-      _.tc = t1;
-      _.isInfinite = t2;
-      _.throwsTypeError = t3;
+    testInPlaceCastConverter___closure13: function testInPlaceCastConverter___closure13(t0) {
+      this.$$platformSensitive = t0;
     },
-    execute_____closure56: function execute_____closure56(t0, t1) {
-      this.toDbl = t0;
-      this.toNullableDbl = t1;
+    testInPlaceCastConverter___closure14: function testInPlaceCastConverter___closure14(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute_____closure57: function execute_____closure57(t0, t1) {
-      this.toDbl = t0;
-      this.toNullableDbl = t1;
+    testInPlaceCastConverter___closure15: function testInPlaceCastConverter___closure15(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute_____closure58: function execute_____closure58(t0, t1, t2) {
-      this.toDbl = t0;
-      this.toNullableDbl = t1;
-      this.isInfinite = t2;
+    testInPlaceCastConverter____closure18: function testInPlaceCastConverter____closure18(t0) {
+      this.$$toDbl = t0;
     },
-    execute_____closure59: function execute_____closure59(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testInPlaceCastConverter___closure16: function testInPlaceCastConverter___closure16(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure25: function execute______closure25(t0) {
-      this.toDbl = t0;
+    testInPlaceCastConverter____closure16: function testInPlaceCastConverter____closure16(t0) {
+      this.$$toDbl = t0;
     },
-    execute_____closure60: function execute_____closure60(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testInPlaceCastConverter____closure17: function testInPlaceCastConverter____closure17(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute______closure23: function execute______closure23(t0) {
-      this.toDbl = t0;
+    testInPlaceCastConverter___closure17: function testInPlaceCastConverter___closure17(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure24: function execute______closure24(t0) {
-      this.toNullableDbl = t0;
+    testInPlaceCastConverter____closure14: function testInPlaceCastConverter____closure14(t0) {
+      this.$$toDbl = t0;
     },
-    execute_____closure61: function execute_____closure61(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testInPlaceCastConverter____closure15: function testInPlaceCastConverter____closure15(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute______closure21: function execute______closure21(t0) {
-      this.toDbl = t0;
+    testInPlaceCastConverter___closure18: function testInPlaceCastConverter___closure18(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
     },
-    execute______closure22: function execute______closure22(t0) {
-      this.toNullableDbl = t0;
+    testInPlaceCastConverter____closure12: function testInPlaceCastConverter____closure12(t0) {
+      this.$$toDbl = t0;
     },
-    execute_____closure62: function execute_____closure62(t0, t1, t2) {
-      this.toDbl = t0;
-      this.throwsTypeError = t1;
-      this.toNullableDbl = t2;
+    testInPlaceCastConverter____closure13: function testInPlaceCastConverter____closure13(t0) {
+      this.$$toNullableDbl = t0;
     },
-    execute______closure19: function execute______closure19(t0) {
-      this.toDbl = t0;
-    },
-    execute______closure20: function execute______closure20(t0) {
-      this.toNullableDbl = t0;
-    },
-    execute____closure33: function execute____closure33(t0, t1, t2) {
+    testInPlaceCastConverter__closure1: function testInPlaceCastConverter__closure1(t0, t1) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.converter = t2;
-    },
-    execute_____closure48: function execute_____closure48(t0, t1) {
-      this.throwsTypeError = t0;
       this.converter = t1;
     },
-    execute______closure18: function execute______closure18(t0) {
-      this.data = t0;
-    },
-    execute_____closure49: function execute_____closure49(t0) {
+    testInPlaceCastConverter___closure4: function testInPlaceCastConverter___closure4(t0) {
       this.converter = t0;
     },
-    execute______closure17: function execute______closure17() {
-    },
-    execute_____closure50: function execute_____closure50(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure16: function execute______closure16(t0) {
+    testInPlaceCastConverter____closure11: function testInPlaceCastConverter____closure11(t0) {
       this.data = t0;
     },
-    execute_____closure51: function execute_____closure51(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
+    testInPlaceCastConverter___closure5: function testInPlaceCastConverter___closure5(t0) {
+      this.converter = t0;
     },
-    execute______closure15: function execute______closure15(t0) {
+    testInPlaceCastConverter____closure10: function testInPlaceCastConverter____closure10(t0) {
       this.data = t0;
     },
-    execute_____closure52: function execute_____closure52(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
+    testInPlaceCastConverter___closure6: function testInPlaceCastConverter___closure6(t0) {
+      this.converter = t0;
     },
-    execute______closure13: function execute______closure13(t0) {
+    testInPlaceCastConverter____closure9: function testInPlaceCastConverter____closure9(t0) {
       this.data = t0;
     },
-    execute______closure14: function execute______closure14() {
+    testInPlaceCastConverter___closure7: function testInPlaceCastConverter___closure7(t0) {
+      this.converter = t0;
     },
-    execute_____closure53: function execute_____closure53(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
-    },
-    execute______closure12: function execute______closure12(t0) {
+    testInPlaceCastConverter____closure8: function testInPlaceCastConverter____closure8(t0) {
       this.data = t0;
     },
-    execute_____closure54: function execute_____closure54(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
+    testInPlaceCastConverter___closure8: function testInPlaceCastConverter___closure8(t0) {
+      this.converter = t0;
     },
-    execute______closure11: function execute______closure11(t0) {
+    testInPlaceCastConverter____closure7: function testInPlaceCastConverter____closure7(t0) {
       this.data = t0;
     },
-    execute_____closure55: function execute_____closure55(t0, t1) {
-      this.throwsTypeError = t0;
-      this.converter = t1;
+    testInPlaceCastConverter___closure9: function testInPlaceCastConverter___closure9(t0) {
+      this.converter = t0;
     },
-    execute______closure10: function execute______closure10(t0) {
+    testInPlaceCastConverter____closure6: function testInPlaceCastConverter____closure6(t0) {
       this.data = t0;
     },
-    execute____closure34: function execute____closure34(t0, t1, t2) {
+    testInPlaceCastConverter___closure10: function testInPlaceCastConverter___closure10(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure5: function testInPlaceCastConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testInPlaceCastConverter___closure11: function testInPlaceCastConverter___closure11(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure4: function testInPlaceCastConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testInPlaceCastConverter__closure2: function testInPlaceCastConverter__closure2(t0, t1) {
       this.tc = t0;
-      this.throwsTypeError = t1;
-      this.converter = t2;
-    },
-    execute_____closure43: function execute_____closure43(t0, t1) {
-      this.throwsTypeError = t0;
       this.converter = t1;
     },
-    execute______closure9: function execute______closure9(t0) {
+    testInPlaceCastConverter___closure: function testInPlaceCastConverter___closure(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure3: function testInPlaceCastConverter____closure3(t0) {
       this.data = t0;
     },
-    execute_____closure44: function execute_____closure44(t0, t1) {
-      this.throwsTypeError = t0;
+    testInPlaceCastConverter___closure0: function testInPlaceCastConverter___closure0(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure2: function testInPlaceCastConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testInPlaceCastConverter___closure1: function testInPlaceCastConverter___closure1(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure1: function testInPlaceCastConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testInPlaceCastConverter___closure2: function testInPlaceCastConverter___closure2(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure0: function testInPlaceCastConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testInPlaceCastConverter___closure3: function testInPlaceCastConverter___closure3(t0) {
+      this.converter = t0;
+    },
+    testInPlaceCastConverter____closure: function testInPlaceCastConverter____closure(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter_closure: function testLazyInPlaceCastConverter_closure(t0) {
+      this.tc = t0;
+    },
+    testLazyInPlaceCastConverter__closure: function testLazyInPlaceCastConverter__closure(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testLazyInPlaceCastConverter__closure_$platformSensitive0: function testLazyInPlaceCastConverter__closure_$platformSensitive0(t0, t1) {
+      this.$$toNullableInt = t0;
+      this.$$toInt = t1;
+    },
+    testLazyInPlaceCastConverter___closure19: function testLazyInPlaceCastConverter___closure19(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter___closure20: function testLazyInPlaceCastConverter___closure20(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter___closure21: function testLazyInPlaceCastConverter___closure21(t0, t1, t2) {
+      this.$$platformSensitive = t0;
+      this.$$toInt = t1;
+      this.$$toNullableInt = t2;
+    },
+    testLazyInPlaceCastConverter____closure26: function testLazyInPlaceCastConverter____closure26(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure27: function testLazyInPlaceCastConverter____closure27(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure28: function testLazyInPlaceCastConverter____closure28(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure29: function testLazyInPlaceCastConverter____closure29(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceCastConverter___closure22: function testLazyInPlaceCastConverter___closure22(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter____closure25: function testLazyInPlaceCastConverter____closure25(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter___closure23: function testLazyInPlaceCastConverter___closure23(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter____closure23: function testLazyInPlaceCastConverter____closure23(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure24: function testLazyInPlaceCastConverter____closure24(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceCastConverter___closure24: function testLazyInPlaceCastConverter___closure24(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter____closure21: function testLazyInPlaceCastConverter____closure21(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure22: function testLazyInPlaceCastConverter____closure22(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceCastConverter___closure25: function testLazyInPlaceCastConverter___closure25(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceCastConverter____closure19: function testLazyInPlaceCastConverter____closure19(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceCastConverter____closure20: function testLazyInPlaceCastConverter____closure20(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceCastConverter__closure0: function testLazyInPlaceCastConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testLazyInPlaceCastConverter__closure_$platformSensitive: function testLazyInPlaceCastConverter__closure_$platformSensitive(t0, t1) {
+      this.$$toNullableDbl = t0;
+      this.$$toDbl = t1;
+    },
+    testLazyInPlaceCastConverter___closure12: function testLazyInPlaceCastConverter___closure12(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter___closure13: function testLazyInPlaceCastConverter___closure13(t0) {
+      this.$$platformSensitive = t0;
+    },
+    testLazyInPlaceCastConverter___closure14: function testLazyInPlaceCastConverter___closure14(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter___closure15: function testLazyInPlaceCastConverter___closure15(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter____closure18: function testLazyInPlaceCastConverter____closure18(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceCastConverter___closure16: function testLazyInPlaceCastConverter___closure16(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter____closure16: function testLazyInPlaceCastConverter____closure16(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceCastConverter____closure17: function testLazyInPlaceCastConverter____closure17(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceCastConverter___closure17: function testLazyInPlaceCastConverter___closure17(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter____closure14: function testLazyInPlaceCastConverter____closure14(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceCastConverter____closure15: function testLazyInPlaceCastConverter____closure15(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceCastConverter___closure18: function testLazyInPlaceCastConverter___closure18(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceCastConverter____closure12: function testLazyInPlaceCastConverter____closure12(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceCastConverter____closure13: function testLazyInPlaceCastConverter____closure13(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceCastConverter__closure1: function testLazyInPlaceCastConverter__closure1(t0, t1) {
+      this.tc = t0;
       this.converter = t1;
     },
-    execute______closure7: function execute______closure7(t0) {
+    testLazyInPlaceCastConverter___closure4: function testLazyInPlaceCastConverter___closure4(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure11: function testLazyInPlaceCastConverter____closure11(t0) {
       this.data = t0;
     },
-    execute______closure8: function execute______closure8() {
+    testLazyInPlaceCastConverter___closure5: function testLazyInPlaceCastConverter___closure5(t0) {
+      this.converter = t0;
     },
-    execute_____closure45: function execute_____closure45(t0, t1) {
-      this.throwsTypeError = t0;
+    testLazyInPlaceCastConverter____closure10: function testLazyInPlaceCastConverter____closure10(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure6: function testLazyInPlaceCastConverter___closure6(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure9: function testLazyInPlaceCastConverter____closure9(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure7: function testLazyInPlaceCastConverter___closure7(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure8: function testLazyInPlaceCastConverter____closure8(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure8: function testLazyInPlaceCastConverter___closure8(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure7: function testLazyInPlaceCastConverter____closure7(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure9: function testLazyInPlaceCastConverter___closure9(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure6: function testLazyInPlaceCastConverter____closure6(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure10: function testLazyInPlaceCastConverter___closure10(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure5: function testLazyInPlaceCastConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure11: function testLazyInPlaceCastConverter___closure11(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure4: function testLazyInPlaceCastConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter__closure2: function testLazyInPlaceCastConverter__closure2(t0, t1) {
+      this.tc = t0;
       this.converter = t1;
     },
-    execute______closure6: function execute______closure6(t0) {
+    testLazyInPlaceCastConverter___closure: function testLazyInPlaceCastConverter___closure(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure3: function testLazyInPlaceCastConverter____closure3(t0) {
       this.data = t0;
     },
-    execute_____closure46: function execute_____closure46(t0, t1) {
-      this.throwsTypeError = t0;
+    testLazyInPlaceCastConverter___closure0: function testLazyInPlaceCastConverter___closure0(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure2: function testLazyInPlaceCastConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure1: function testLazyInPlaceCastConverter___closure1(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure1: function testLazyInPlaceCastConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure2: function testLazyInPlaceCastConverter___closure2(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure0: function testLazyInPlaceCastConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceCastConverter___closure3: function testLazyInPlaceCastConverter___closure3(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceCastConverter____closure: function testLazyInPlaceCastConverter____closure(t0) {
+      this.data = t0;
+    },
+    testNumConverter_closure: function testNumConverter_closure(t0) {
+      this.tc = t0;
+    },
+    testNumConverter__closure: function testNumConverter__closure(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testNumConverter___closure19: function testNumConverter___closure19(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter___closure20: function testNumConverter___closure20(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter___closure21: function testNumConverter___closure21(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter____closure25: function testNumConverter____closure25(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure26: function testNumConverter____closure26(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter____closure27: function testNumConverter____closure27(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure28: function testNumConverter____closure28(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter____closure29: function testNumConverter____closure29(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure30: function testNumConverter____closure30(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter____closure31: function testNumConverter____closure31(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure32: function testNumConverter____closure32(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter___closure22: function testNumConverter___closure22(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter____closure24: function testNumConverter____closure24(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter___closure23: function testNumConverter___closure23(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter____closure22: function testNumConverter____closure22(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure23: function testNumConverter____closure23(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter___closure24: function testNumConverter___closure24(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter____closure20: function testNumConverter____closure20(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure21: function testNumConverter____closure21(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter___closure25: function testNumConverter___closure25(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testNumConverter____closure18: function testNumConverter____closure18(t0) {
+      this.$$toInt = t0;
+    },
+    testNumConverter____closure19: function testNumConverter____closure19(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testNumConverter__closure0: function testNumConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testNumConverter___closure12: function testNumConverter___closure12(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter___closure13: function testNumConverter___closure13(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter___closure14: function testNumConverter___closure14(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter___closure15: function testNumConverter___closure15(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter____closure17: function testNumConverter____closure17(t0) {
+      this.$$toDbl = t0;
+    },
+    testNumConverter___closure16: function testNumConverter___closure16(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter____closure15: function testNumConverter____closure15(t0) {
+      this.$$toDbl = t0;
+    },
+    testNumConverter____closure16: function testNumConverter____closure16(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testNumConverter___closure17: function testNumConverter___closure17(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter____closure13: function testNumConverter____closure13(t0) {
+      this.$$toDbl = t0;
+    },
+    testNumConverter____closure14: function testNumConverter____closure14(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testNumConverter___closure18: function testNumConverter___closure18(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testNumConverter____closure11: function testNumConverter____closure11(t0) {
+      this.$$toDbl = t0;
+    },
+    testNumConverter____closure12: function testNumConverter____closure12(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testNumConverter__closure1: function testNumConverter__closure1(t0, t1) {
+      this.tc = t0;
       this.converter = t1;
     },
-    execute______closure5: function execute______closure5(t0) {
+    testNumConverter___closure4: function testNumConverter___closure4(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure10: function testNumConverter____closure10(t0) {
       this.data = t0;
     },
-    execute_____closure47: function execute_____closure47(t0, t1) {
-      this.throwsTypeError = t0;
+    testNumConverter___closure5: function testNumConverter___closure5(t0) {
+      this.converter = t0;
+    },
+    testNumConverter___closure6: function testNumConverter___closure6(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure9: function testNumConverter____closure9(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure7: function testNumConverter___closure7(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure8: function testNumConverter____closure8(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure8: function testNumConverter___closure8(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure7: function testNumConverter____closure7(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure9: function testNumConverter___closure9(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure6: function testNumConverter____closure6(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure10: function testNumConverter___closure10(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure5: function testNumConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure11: function testNumConverter___closure11(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure4: function testNumConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testNumConverter__closure2: function testNumConverter__closure2(t0, t1) {
+      this.tc = t0;
       this.converter = t1;
     },
-    execute______closure3: function execute______closure3(t0) {
+    testNumConverter___closure: function testNumConverter___closure(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure3: function testNumConverter____closure3(t0) {
       this.data = t0;
     },
-    execute______closure4: function execute______closure4() {
+    testNumConverter___closure0: function testNumConverter___closure0(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure2: function testNumConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure1: function testNumConverter___closure1(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure1: function testNumConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure2: function testNumConverter___closure2(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure0: function testNumConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testNumConverter___closure3: function testNumConverter___closure3(t0) {
+      this.converter = t0;
+    },
+    testNumConverter____closure: function testNumConverter____closure(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter_closure: function testInPlaceNumConverter_closure(t0) {
+      this.tc = t0;
+    },
+    testInPlaceNumConverter__closure: function testInPlaceNumConverter__closure(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testInPlaceNumConverter___closure19: function testInPlaceNumConverter___closure19(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter___closure20: function testInPlaceNumConverter___closure20(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter___closure21: function testInPlaceNumConverter___closure21(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter____closure26: function testInPlaceNumConverter____closure26(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure27: function testInPlaceNumConverter____closure27(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter____closure28: function testInPlaceNumConverter____closure28(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure29: function testInPlaceNumConverter____closure29(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter____closure30: function testInPlaceNumConverter____closure30(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure31: function testInPlaceNumConverter____closure31(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter____closure32: function testInPlaceNumConverter____closure32(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure33: function testInPlaceNumConverter____closure33(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter___closure22: function testInPlaceNumConverter___closure22(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter____closure25: function testInPlaceNumConverter____closure25(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter___closure23: function testInPlaceNumConverter___closure23(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter____closure23: function testInPlaceNumConverter____closure23(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure24: function testInPlaceNumConverter____closure24(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter___closure24: function testInPlaceNumConverter___closure24(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter____closure21: function testInPlaceNumConverter____closure21(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure22: function testInPlaceNumConverter____closure22(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter___closure25: function testInPlaceNumConverter___closure25(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testInPlaceNumConverter____closure19: function testInPlaceNumConverter____closure19(t0) {
+      this.$$toInt = t0;
+    },
+    testInPlaceNumConverter____closure20: function testInPlaceNumConverter____closure20(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testInPlaceNumConverter__closure0: function testInPlaceNumConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testInPlaceNumConverter___closure12: function testInPlaceNumConverter___closure12(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter___closure13: function testInPlaceNumConverter___closure13(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter___closure14: function testInPlaceNumConverter___closure14(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter___closure15: function testInPlaceNumConverter___closure15(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter____closure18: function testInPlaceNumConverter____closure18(t0) {
+      this.$$toDbl = t0;
+    },
+    testInPlaceNumConverter___closure16: function testInPlaceNumConverter___closure16(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter____closure16: function testInPlaceNumConverter____closure16(t0) {
+      this.$$toDbl = t0;
+    },
+    testInPlaceNumConverter____closure17: function testInPlaceNumConverter____closure17(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testInPlaceNumConverter___closure17: function testInPlaceNumConverter___closure17(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter____closure14: function testInPlaceNumConverter____closure14(t0) {
+      this.$$toDbl = t0;
+    },
+    testInPlaceNumConverter____closure15: function testInPlaceNumConverter____closure15(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testInPlaceNumConverter___closure18: function testInPlaceNumConverter___closure18(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testInPlaceNumConverter____closure12: function testInPlaceNumConverter____closure12(t0) {
+      this.$$toDbl = t0;
+    },
+    testInPlaceNumConverter____closure13: function testInPlaceNumConverter____closure13(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testInPlaceNumConverter__closure1: function testInPlaceNumConverter__closure1(t0, t1) {
+      this.tc = t0;
+      this.converter = t1;
+    },
+    testInPlaceNumConverter___closure4: function testInPlaceNumConverter___closure4(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure11: function testInPlaceNumConverter____closure11(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure5: function testInPlaceNumConverter___closure5(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure10: function testInPlaceNumConverter____closure10(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure6: function testInPlaceNumConverter___closure6(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure9: function testInPlaceNumConverter____closure9(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure7: function testInPlaceNumConverter___closure7(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure8: function testInPlaceNumConverter____closure8(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure8: function testInPlaceNumConverter___closure8(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure7: function testInPlaceNumConverter____closure7(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure9: function testInPlaceNumConverter___closure9(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure6: function testInPlaceNumConverter____closure6(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure10: function testInPlaceNumConverter___closure10(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure5: function testInPlaceNumConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure11: function testInPlaceNumConverter___closure11(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure4: function testInPlaceNumConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter__closure2: function testInPlaceNumConverter__closure2(t0, t1) {
+      this.tc = t0;
+      this.converter = t1;
+    },
+    testInPlaceNumConverter___closure: function testInPlaceNumConverter___closure(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure3: function testInPlaceNumConverter____closure3(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure0: function testInPlaceNumConverter___closure0(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure2: function testInPlaceNumConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure1: function testInPlaceNumConverter___closure1(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure1: function testInPlaceNumConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure2: function testInPlaceNumConverter___closure2(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure0: function testInPlaceNumConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testInPlaceNumConverter___closure3: function testInPlaceNumConverter___closure3(t0) {
+      this.converter = t0;
+    },
+    testInPlaceNumConverter____closure: function testInPlaceNumConverter____closure(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter_closure: function testLazyInPlaceNumConverter_closure(t0) {
+      this.tc = t0;
+    },
+    testLazyInPlaceNumConverter__closure: function testLazyInPlaceNumConverter__closure(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testLazyInPlaceNumConverter___closure19: function testLazyInPlaceNumConverter___closure19(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter___closure20: function testLazyInPlaceNumConverter___closure20(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter___closure21: function testLazyInPlaceNumConverter___closure21(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter____closure26: function testLazyInPlaceNumConverter____closure26(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure27: function testLazyInPlaceNumConverter____closure27(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure28: function testLazyInPlaceNumConverter____closure28(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure29: function testLazyInPlaceNumConverter____closure29(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure30: function testLazyInPlaceNumConverter____closure30(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure31: function testLazyInPlaceNumConverter____closure31(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure32: function testLazyInPlaceNumConverter____closure32(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure33: function testLazyInPlaceNumConverter____closure33(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter___closure22: function testLazyInPlaceNumConverter___closure22(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter____closure25: function testLazyInPlaceNumConverter____closure25(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter___closure23: function testLazyInPlaceNumConverter___closure23(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter____closure23: function testLazyInPlaceNumConverter____closure23(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure24: function testLazyInPlaceNumConverter____closure24(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter___closure24: function testLazyInPlaceNumConverter___closure24(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter____closure21: function testLazyInPlaceNumConverter____closure21(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure22: function testLazyInPlaceNumConverter____closure22(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter___closure25: function testLazyInPlaceNumConverter___closure25(t0, t1) {
+      this.$$toInt = t0;
+      this.$$toNullableInt = t1;
+    },
+    testLazyInPlaceNumConverter____closure19: function testLazyInPlaceNumConverter____closure19(t0) {
+      this.$$toInt = t0;
+    },
+    testLazyInPlaceNumConverter____closure20: function testLazyInPlaceNumConverter____closure20(t0) {
+      this.$$toNullableInt = t0;
+    },
+    testLazyInPlaceNumConverter__closure0: function testLazyInPlaceNumConverter__closure0(t0, t1) {
+      this.converter = t0;
+      this.tc = t1;
+    },
+    testLazyInPlaceNumConverter___closure12: function testLazyInPlaceNumConverter___closure12(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter___closure13: function testLazyInPlaceNumConverter___closure13(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter___closure14: function testLazyInPlaceNumConverter___closure14(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter___closure15: function testLazyInPlaceNumConverter___closure15(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter____closure18: function testLazyInPlaceNumConverter____closure18(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceNumConverter___closure16: function testLazyInPlaceNumConverter___closure16(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter____closure16: function testLazyInPlaceNumConverter____closure16(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceNumConverter____closure17: function testLazyInPlaceNumConverter____closure17(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceNumConverter___closure17: function testLazyInPlaceNumConverter___closure17(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter____closure14: function testLazyInPlaceNumConverter____closure14(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceNumConverter____closure15: function testLazyInPlaceNumConverter____closure15(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceNumConverter___closure18: function testLazyInPlaceNumConverter___closure18(t0, t1) {
+      this.$$toDbl = t0;
+      this.$$toNullableDbl = t1;
+    },
+    testLazyInPlaceNumConverter____closure12: function testLazyInPlaceNumConverter____closure12(t0) {
+      this.$$toDbl = t0;
+    },
+    testLazyInPlaceNumConverter____closure13: function testLazyInPlaceNumConverter____closure13(t0) {
+      this.$$toNullableDbl = t0;
+    },
+    testLazyInPlaceNumConverter__closure1: function testLazyInPlaceNumConverter__closure1(t0, t1) {
+      this.tc = t0;
+      this.converter = t1;
+    },
+    testLazyInPlaceNumConverter___closure4: function testLazyInPlaceNumConverter___closure4(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure11: function testLazyInPlaceNumConverter____closure11(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure5: function testLazyInPlaceNumConverter___closure5(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure10: function testLazyInPlaceNumConverter____closure10(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure6: function testLazyInPlaceNumConverter___closure6(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure9: function testLazyInPlaceNumConverter____closure9(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure7: function testLazyInPlaceNumConverter___closure7(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure8: function testLazyInPlaceNumConverter____closure8(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure8: function testLazyInPlaceNumConverter___closure8(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure7: function testLazyInPlaceNumConverter____closure7(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure9: function testLazyInPlaceNumConverter___closure9(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure6: function testLazyInPlaceNumConverter____closure6(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure10: function testLazyInPlaceNumConverter___closure10(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure5: function testLazyInPlaceNumConverter____closure5(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure11: function testLazyInPlaceNumConverter___closure11(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure4: function testLazyInPlaceNumConverter____closure4(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter__closure2: function testLazyInPlaceNumConverter__closure2(t0, t1) {
+      this.tc = t0;
+      this.converter = t1;
+    },
+    testLazyInPlaceNumConverter___closure: function testLazyInPlaceNumConverter___closure(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure3: function testLazyInPlaceNumConverter____closure3(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure0: function testLazyInPlaceNumConverter___closure0(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure2: function testLazyInPlaceNumConverter____closure2(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure1: function testLazyInPlaceNumConverter___closure1(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure1: function testLazyInPlaceNumConverter____closure1(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure2: function testLazyInPlaceNumConverter___closure2(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure0: function testLazyInPlaceNumConverter____closure0(t0) {
+      this.data = t0;
+    },
+    testLazyInPlaceNumConverter___closure3: function testLazyInPlaceNumConverter___closure3(t0) {
+      this.converter = t0;
+    },
+    testLazyInPlaceNumConverter____closure: function testLazyInPlaceNumConverter____closure(t0) {
+      this.data = t0;
     },
     execute3(tc) {
       type$.nullable_TestContext._as(tc);
@@ -12535,26 +13359,26 @@
     execute_closure9: function execute_closure9(t0) {
       this.tc = t0;
     },
-    execute__closure12: function execute__closure12(t0) {
+    execute__closure11: function execute__closure11(t0) {
       this.tc = t0;
     },
     execute___closure42: function execute___closure42(t0) {
       this.tc = t0;
     },
-    execute____closure91: function execute____closure91(t0) {
+    execute____closure79: function execute____closure79(t0) {
       this.memoryLogger = t0;
     },
-    execute____closure92: function execute____closure92(t0) {
+    execute____closure80: function execute____closure80(t0) {
       this.memoryLogger = t0;
     },
-    execute____closure93: function execute____closure93(t0, t1) {
+    execute____closure81: function execute____closure81(t0, t1) {
       this.tc = t0;
       this.memoryLogger = t1;
     },
-    execute_____closure168: function execute_____closure168(t0) {
+    execute_____closure105: function execute_____closure105(t0) {
       this.memoryLogger = t0;
     },
-    execute____closure94: function execute____closure94(t0, t1, t2) {
+    execute____closure82: function execute____closure82(t0, t1, t2) {
       this.tc = t0;
       this.memoryLogger = t1;
       this.logs = t2;
@@ -12562,95 +13386,95 @@
     execute____closure_hook0: function execute____closure_hook0(t0) {
       this._box_0 = t0;
     },
-    execute_____closure167: function execute_____closure167(t0, t1, t2) {
+    execute_____closure104: function execute_____closure104(t0, t1, t2) {
       this._box_0 = t0;
       this.memoryLogger = t1;
       this.logs = t2;
     },
-    execute____closure95: function execute____closure95(t0, t1) {
+    execute____closure83: function execute____closure83(t0, t1) {
       this.tc = t0;
       this.memoryLogger = t1;
     },
     execute____closure_hook: function execute____closure_hook(t0) {
       this._box_1 = t0;
     },
-    execute_____closure166: function execute_____closure166(t0, t1) {
+    execute_____closure103: function execute_____closure103(t0, t1) {
       this._box_1 = t0;
       this.memoryLogger = t1;
     },
-    execute____closure96: function execute____closure96(t0, t1, t2) {
+    execute____closure84: function execute____closure84(t0, t1, t2) {
       this.tc = t0;
       this.memoryLogger = t1;
       this.logs = t2;
     },
-    execute_____closure163: function execute_____closure163(t0, t1, t2) {
+    execute_____closure100: function execute_____closure100(t0, t1, t2) {
       this.tc = t0;
       this.memoryLogger = t1;
       this.logs = t2;
     },
-    execute______closure93: function execute______closure93(t0, t1) {
+    execute______closure20: function execute______closure20(t0, t1) {
       this.memoryLogger = t0;
       this.logs = t1;
     },
-    execute_____closure164: function execute_____closure164(t0, t1, t2) {
+    execute_____closure101: function execute_____closure101(t0, t1, t2) {
       this.tc = t0;
       this.memoryLogger = t1;
       this.logs = t2;
     },
-    execute______closure92: function execute______closure92(t0, t1) {
+    execute______closure19: function execute______closure19(t0, t1) {
       this.memoryLogger = t0;
       this.logs = t1;
     },
-    execute_____closure165: function execute_____closure165(t0, t1, t2) {
+    execute_____closure102: function execute_____closure102(t0, t1, t2) {
       this.tc = t0;
       this.memoryLogger = t1;
       this.logs = t2;
     },
-    execute______closure91: function execute______closure91(t0, t1) {
+    execute______closure18: function execute______closure18(t0, t1) {
       this.memoryLogger = t0;
       this.logs = t1;
     },
-    execute____closure97: function execute____closure97(t0) {
+    execute____closure85: function execute____closure85(t0) {
       this.tc = t0;
     },
-    execute_____closure162: function execute_____closure162() {
+    execute_____closure99: function execute_____closure99() {
     },
     execute___closure43: function execute___closure43(t0) {
       this.tc = t0;
     },
-    execute____closure87: function execute____closure87(t0) {
+    execute____closure75: function execute____closure75(t0) {
       this.tc = t0;
     },
-    execute_____closure161: function execute_____closure161() {
+    execute_____closure98: function execute_____closure98() {
     },
-    execute____closure88: function execute____closure88(t0) {
+    execute____closure76: function execute____closure76(t0) {
       this.tc = t0;
     },
-    execute_____closure160: function execute_____closure160() {
+    execute_____closure97: function execute_____closure97() {
     },
-    execute____closure89: function execute____closure89(t0) {
+    execute____closure77: function execute____closure77(t0) {
       this.tc = t0;
     },
-    execute_____closure159: function execute_____closure159() {
+    execute_____closure96: function execute_____closure96() {
     },
-    execute____closure90: function execute____closure90(t0) {
+    execute____closure78: function execute____closure78(t0) {
       this.tc = t0;
     },
-    execute_____closure158: function execute_____closure158() {
+    execute_____closure95: function execute_____closure95() {
     },
     execute___closure44: function execute___closure44(t0) {
       this.tc = t0;
     },
-    execute____closure83: function execute____closure83(t0) {
+    execute____closure71: function execute____closure71(t0) {
       this.tc = t0;
     },
-    execute_____closure157: function execute_____closure157(t0) {
+    execute_____closure94: function execute_____closure94(t0) {
       this.tc = t0;
     },
-    execute____closure84: function execute____closure84(t0) {
+    execute____closure72: function execute____closure72(t0) {
       this.tc = t0;
     },
-    execute_____closure156: function execute_____closure156() {
+    execute_____closure93: function execute_____closure93() {
     },
     execute_____closure_createTask0: function execute_____closure_createTask0(t0, t1, t2) {
       this._box_2 = t0;
@@ -12661,10 +13485,10 @@
       this.completedTasks = t0;
       this.id = t1;
     },
-    execute____closure85: function execute____closure85(t0) {
+    execute____closure73: function execute____closure73(t0) {
       this.tc = t0;
     },
-    execute_____closure155: function execute_____closure155() {
+    execute_____closure92: function execute_____closure92() {
     },
     execute_____closure_createTask: function execute_____closure_createTask(t0, t1, t2) {
       this._box_3 = t0;
@@ -12675,41 +13499,41 @@
       this.completedTasks = t0;
       this.id = t1;
     },
-    execute____closure86: function execute____closure86(t0) {
+    execute____closure74: function execute____closure74(t0) {
       this.tc = t0;
     },
-    execute_____closure144: function execute_____closure144(t0, t1) {
+    execute_____closure81: function execute_____closure81(t0, t1) {
       this.worker = t0;
       this.tc = t1;
     },
-    execute_____closure145: function execute_____closure145(t0) {
+    execute_____closure82: function execute_____closure82(t0) {
       this.worker = t0;
     },
-    execute_____closure146: function execute_____closure146(t0) {
+    execute_____closure83: function execute_____closure83(t0) {
       this.worker = t0;
     },
-    execute_____closure147: function execute_____closure147(t0) {
+    execute_____closure84: function execute_____closure84(t0) {
       this.worker = t0;
     },
-    execute_____closure148: function execute_____closure148(t0) {
+    execute_____closure85: function execute_____closure85(t0) {
       this.worker = t0;
     },
-    execute_____closure149: function execute_____closure149(t0) {
+    execute_____closure86: function execute_____closure86(t0) {
       this.worker = t0;
     },
-    execute_____closure150: function execute_____closure150(t0) {
+    execute_____closure87: function execute_____closure87(t0) {
       this.worker = t0;
     },
-    execute_____closure151: function execute_____closure151(t0) {
+    execute_____closure88: function execute_____closure88(t0) {
       this.worker = t0;
     },
-    execute_____closure152: function execute_____closure152(t0) {
+    execute_____closure89: function execute_____closure89(t0) {
       this.worker = t0;
     },
-    execute_____closure153: function execute_____closure153(t0) {
+    execute_____closure90: function execute_____closure90(t0) {
       this.worker = t0;
     },
-    execute_____closure154: function execute_____closure154(t0) {
+    execute_____closure91: function execute_____closure91(t0) {
       this.worker = t0;
     },
     execute4(tc) {
@@ -12721,39 +13545,39 @@
     execute_closure8: function execute_closure8(t0) {
       this.tc = t0;
     },
-    execute__closure11: function execute__closure11(t0) {
+    execute__closure10: function execute__closure10(t0) {
       this.tc = t0;
     },
     execute___closure41: function execute___closure41(t0) {
       this.tc = t0;
     },
-    execute____closure74: function execute____closure74(t0, t1) {
+    execute____closure62: function execute____closure62(t0, t1) {
       this.worker = t0;
       this.tc = t1;
     },
-    execute____closure75: function execute____closure75(t0) {
+    execute____closure63: function execute____closure63(t0) {
       this.worker = t0;
     },
-    execute____closure76: function execute____closure76(t0) {
+    execute____closure64: function execute____closure64(t0) {
       this.worker = t0;
     },
-    execute_____closure143: function execute_____closure143(t0, t1, t2, t3) {
+    execute_____closure80: function execute_____closure80(t0, t1, t2, t3) {
       var _ = this;
       _.errors = t0;
       _.maxErrors = t1;
       _.sub = t2;
       _.done = t3;
     },
-    execute____closure77: function execute____closure77(t0) {
+    execute____closure65: function execute____closure65(t0) {
       this.worker = t0;
     },
-    execute____closure78: function execute____closure78(t0) {
+    execute____closure66: function execute____closure66(t0) {
       this.worker = t0;
     },
-    execute____closure79: function execute____closure79(t0) {
+    execute____closure67: function execute____closure67(t0) {
       this.worker = t0;
     },
-    execute____closure80: function execute____closure80(t0) {
+    execute____closure68: function execute____closure68(t0) {
       this.worker = t0;
     },
     execute____closure_pause: function execute____closure_pause(t0, t1, t2, t3) {
@@ -12770,13 +13594,13 @@
       _.errors = t2;
       _.sub = t3;
     },
-    execute____closure81: function execute____closure81(t0) {
+    execute____closure69: function execute____closure69(t0) {
       this.worker = t0;
     },
-    execute____closure82: function execute____closure82(t0) {
+    execute____closure70: function execute____closure70(t0) {
       this.worker = t0;
     },
-    execute_____closure142: function execute_____closure142(t0) {
+    execute_____closure79: function execute_____closure79(t0) {
       this._box_1 = t0;
     },
     execute5(tc) {
@@ -12788,7 +13612,7 @@
     execute_closure5: function execute_closure5(t0) {
       this.tc = t0;
     },
-    execute__closure8: function execute__closure8(t0, t1, t2) {
+    execute__closure7: function execute__closure7(t0, t1, t2) {
       this.tc = t0;
       this.localService = t1;
       this.regExp = t2;
@@ -12798,91 +13622,91 @@
       this.localService = t1;
       this.regExp = t2;
     },
-    execute____closure46: function execute____closure46(t0) {
+    execute____closure34: function execute____closure34(t0) {
       this.localService = t0;
     },
-    execute_____closure120: function execute_____closure120() {
+    execute_____closure57: function execute_____closure57() {
     },
-    execute____closure47: function execute____closure47(t0, t1, t2) {
+    execute____closure35: function execute____closure35(t0, t1, t2) {
       this.localService = t0;
       this.tc = t1;
       this.regExp = t2;
     },
-    execute_____closure119: function execute_____closure119(t0, t1) {
+    execute_____closure56: function execute_____closure56(t0, t1) {
       this.tc = t0;
       this.regExp = t1;
     },
-    execute______closure81: function execute______closure81(t0) {
+    execute______closure8: function execute______closure8(t0) {
       this.regExp = t0;
     },
-    execute____closure48: function execute____closure48(t0, t1, t2) {
+    execute____closure36: function execute____closure36(t0, t1, t2) {
       this.localService = t0;
       this.tc = t1;
       this.regExp = t2;
     },
-    execute_____closure118: function execute_____closure118(t0, t1) {
+    execute_____closure55: function execute_____closure55(t0, t1) {
       this.tc = t0;
       this.regExp = t1;
     },
-    execute______closure80: function execute______closure80(t0) {
+    execute______closure7: function execute______closure7(t0) {
       this.regExp = t0;
     },
     execute___closure28: function execute___closure28(t0, t1) {
       this.tc = t0;
       this.localService = t1;
     },
-    execute____closure43: function execute____closure43(t0) {
+    execute____closure31: function execute____closure31(t0) {
       this.localService = t0;
     },
-    execute_____closure117: function execute_____closure117() {
+    execute_____closure54: function execute_____closure54() {
     },
-    execute____closure44: function execute____closure44(t0, t1) {
-      this.localService = t0;
-      this.tc = t1;
-    },
-    execute_____closure116: function execute_____closure116(t0) {
-      this.tc = t0;
-    },
-    execute______closure79: function execute______closure79() {
-    },
-    execute____closure45: function execute____closure45(t0, t1) {
+    execute____closure32: function execute____closure32(t0, t1) {
       this.localService = t0;
       this.tc = t1;
     },
-    execute_____closure115: function execute_____closure115(t0) {
+    execute_____closure53: function execute_____closure53(t0) {
       this.tc = t0;
     },
-    execute______closure78: function execute______closure78() {
+    execute______closure6: function execute______closure6() {
+    },
+    execute____closure33: function execute____closure33(t0, t1) {
+      this.localService = t0;
+      this.tc = t1;
+    },
+    execute_____closure52: function execute_____closure52(t0) {
+      this.tc = t0;
+    },
+    execute______closure5: function execute______closure5() {
     },
     execute___closure29: function execute___closure29(t0, t1) {
       this.tc = t0;
       this.localService = t1;
     },
-    execute____closure40: function execute____closure40(t0) {
+    execute____closure28: function execute____closure28(t0) {
       this.localService = t0;
     },
-    execute_____closure114: function execute_____closure114(t0) {
+    execute_____closure51: function execute_____closure51(t0) {
       this.list = t0;
     },
-    execute____closure41: function execute____closure41(t0, t1) {
+    execute____closure29: function execute____closure29(t0, t1) {
       this.localService = t0;
       this.tc = t1;
     },
-    execute_____closure113: function execute_____closure113(t0) {
+    execute_____closure50: function execute_____closure50(t0) {
       this.tc = t0;
     },
-    execute______closure77: function execute______closure77() {
+    execute______closure4: function execute______closure4() {
     },
     execute_______closure0: function execute_______closure0() {
     },
-    execute____closure42: function execute____closure42(t0, t1) {
+    execute____closure30: function execute____closure30(t0, t1) {
       this.localService = t0;
       this.tc = t1;
     },
-    execute_____closure112: function execute_____closure112(t0) {
+    execute_____closure49: function execute_____closure49(t0) {
       this.tc = t0;
     },
-    execute______closure76: function execute______closure76() {
+    execute______closure3: function execute______closure3() {
     },
     execute_______closure: function execute_______closure() {
     },
@@ -12895,21 +13719,21 @@
     execute_closure6: function execute_closure6(t0) {
       this.tc = t0;
     },
-    execute__closure9: function execute__closure9(t0) {
+    execute__closure8: function execute__closure8(t0) {
       this.tc = t0;
     },
     execute___closure30: function execute___closure30(t0) {
       this.tc = t0;
     },
-    execute____closure50: function execute____closure50() {
+    execute____closure38: function execute____closure38() {
     },
     execute___closure31: function execute___closure31(t0) {
       this.tc = t0;
     },
-    execute____closure49: function execute____closure49(t0) {
+    execute____closure37: function execute____closure37(t0) {
       this.tc = t0;
     },
-    execute_____closure121: function execute_____closure121(t0, t1) {
+    execute_____closure58: function execute_____closure58(t0, t1) {
       this._box_0 = t0;
       this.cache = t1;
     },
@@ -12922,16 +13746,16 @@
     execute_closure1: function execute_closure1(t0) {
       this.tc = t0;
     },
-    execute__closure2: function execute__closure2(t0, t1, t2) {
+    execute__closure1: function execute__closure1(t0, t1, t2) {
       this.pool = t0;
       this.tc = t1;
       this.worker = t2;
     },
-    execute__closure3: function execute__closure3(t0, t1) {
+    execute__closure2: function execute__closure2(t0, t1) {
       this.pool = t0;
       this.worker = t1;
     },
-    execute__closure4: function execute__closure4(t0, t1, t2) {
+    execute__closure3: function execute__closure3(t0, t1, t2) {
       this.tc = t0;
       this.pool = t1;
       this.worker = t2;
@@ -12940,31 +13764,43 @@
       this.tc = t0;
       this.pool = t1;
     },
+    execute____closure21: function execute____closure21(t0) {
+      this.pool = t0;
+    },
+    execute_____closure48: function execute_____closure48(t0) {
+      this._box_0 = t0;
+    },
+    execute____closure22: function execute____closure22(t0) {
+      this.pool = t0;
+    },
+    execute____closure23: function execute____closure23(t0) {
+      this.pool = t0;
+    },
+    execute____closure24: function execute____closure24(t0) {
+      this.pool = t0;
+    },
+    execute_____closure47: function execute_____closure47(t0) {
+      this._box_1 = t0;
+    },
     execute____closure25: function execute____closure25(t0) {
       this.pool = t0;
     },
     execute_____closure42: function execute_____closure42(t0) {
-      this._box_0 = t0;
+      this._box_2 = t0;
+    },
+    execute_____closure43: function execute_____closure43() {
+    },
+    execute_____closure44: function execute_____closure44() {
+    },
+    execute_____closure45: function execute_____closure45() {
+    },
+    execute_____closure46: function execute_____closure46() {
     },
     execute____closure26: function execute____closure26(t0) {
       this.pool = t0;
     },
-    execute____closure27: function execute____closure27(t0) {
-      this.pool = t0;
-    },
-    execute____closure28: function execute____closure28(t0) {
-      this.pool = t0;
-    },
-    execute_____closure41: function execute_____closure41(t0) {
-      this._box_1 = t0;
-    },
-    execute____closure29: function execute____closure29(t0) {
-      this.pool = t0;
-    },
-    execute_____closure36: function execute_____closure36(t0) {
-      this._box_2 = t0;
-    },
-    execute_____closure37: function execute_____closure37() {
+    execute_____closure37: function execute_____closure37(t0) {
+      this._box_3 = t0;
     },
     execute_____closure38: function execute_____closure38() {
     },
@@ -12972,80 +13808,56 @@
     },
     execute_____closure40: function execute_____closure40() {
     },
-    execute____closure30: function execute____closure30(t0) {
-      this.pool = t0;
-    },
-    execute_____closure31: function execute_____closure31(t0) {
-      this._box_3 = t0;
-    },
-    execute_____closure32: function execute_____closure32() {
-    },
-    execute_____closure33: function execute_____closure33() {
-    },
-    execute_____closure34: function execute_____closure34() {
-    },
-    execute_____closure35: function execute_____closure35() {
+    execute_____closure41: function execute_____closure41() {
     },
     execute___closure3: function execute___closure3(t0, t1) {
       this.tc = t0;
       this.pool = t1;
     },
-    execute____closure19: function execute____closure19(t0) {
+    execute____closure15: function execute____closure15(t0) {
       this.pool = t0;
     },
-    execute____closure20: function execute____closure20(t0) {
+    execute____closure16: function execute____closure16(t0) {
       this.pool = t0;
     },
-    execute____closure21: function execute____closure21(t0) {
+    execute____closure17: function execute____closure17(t0) {
       this.pool = t0;
     },
-    execute____closure22: function execute____closure22(t0) {
+    execute____closure18: function execute____closure18(t0) {
       this.pool = t0;
     },
-    execute_____closure27: function execute_____closure27() {
+    execute_____closure33: function execute_____closure33() {
     },
     execute______closure2: function execute______closure2() {
     },
-    execute_____closure28: function execute_____closure28() {
+    execute_____closure34: function execute_____closure34() {
     },
     execute______closure0: function execute______closure0() {
     },
     execute______closure1: function execute______closure1() {
     },
-    execute_____closure29: function execute_____closure29() {
+    execute_____closure35: function execute_____closure35() {
     },
     execute______closure: function execute______closure() {
     },
-    execute_____closure30: function execute_____closure30() {
+    execute_____closure36: function execute_____closure36() {
     },
-    execute____closure23: function execute____closure23(t0) {
+    execute____closure19: function execute____closure19(t0) {
       this.pool = t0;
     },
-    execute_____closure14: function execute_____closure14(t0, t1, t2) {
+    execute_____closure20: function execute_____closure20(t0, t1, t2) {
       this.start = t0;
       this.status = t1;
       this.i = t2;
     },
-    execute_____closure16: function execute_____closure16(t0, t1, t2) {
+    execute_____closure22: function execute_____closure22(t0, t1, t2) {
       this._box_4 = t0;
       this.status = t1;
       this.i = t2;
     },
-    execute_____closure15: function execute_____closure15(t0, t1) {
+    execute_____closure21: function execute_____closure21(t0, t1) {
       this.status = t0;
       this.i = t1;
-    },
-    execute_____closure17: function execute_____closure17() {
-    },
-    execute_____closure18: function execute_____closure18() {
-    },
-    execute_____closure19: function execute_____closure19() {
-    },
-    execute_____closure20: function execute_____closure20() {
-    },
-    execute_____closure21: function execute_____closure21() {
-    },
-    execute_____closure22: function execute_____closure22() {
     },
     execute_____closure23: function execute_____closure23() {
     },
@@ -13055,34 +13867,34 @@
     },
     execute_____closure26: function execute_____closure26() {
     },
-    execute____closure24: function execute____closure24(t0) {
+    execute_____closure27: function execute_____closure27() {
+    },
+    execute_____closure28: function execute_____closure28() {
+    },
+    execute_____closure29: function execute_____closure29() {
+    },
+    execute_____closure30: function execute_____closure30() {
+    },
+    execute_____closure31: function execute_____closure31() {
+    },
+    execute_____closure32: function execute_____closure32() {
+    },
+    execute____closure20: function execute____closure20(t0) {
       this.pool = t0;
     },
-    execute_____closure1: function execute_____closure1(t0, t1, t2) {
+    execute_____closure7: function execute_____closure7(t0, t1, t2) {
       this.start = t0;
       this.status = t1;
       this.i = t2;
     },
-    execute_____closure3: function execute_____closure3(t0, t1, t2) {
+    execute_____closure9: function execute_____closure9(t0, t1, t2) {
       this._box_5 = t0;
       this.status = t1;
       this.i = t2;
     },
-    execute_____closure2: function execute_____closure2(t0, t1) {
+    execute_____closure8: function execute_____closure8(t0, t1) {
       this.status = t0;
       this.i = t1;
-    },
-    execute_____closure4: function execute_____closure4() {
-    },
-    execute_____closure5: function execute_____closure5() {
-    },
-    execute_____closure6: function execute_____closure6() {
-    },
-    execute_____closure7: function execute_____closure7() {
-    },
-    execute_____closure8: function execute_____closure8() {
-    },
-    execute_____closure9: function execute_____closure9() {
     },
     execute_____closure10: function execute_____closure10() {
     },
@@ -13091,6 +13903,18 @@
     execute_____closure12: function execute_____closure12() {
     },
     execute_____closure13: function execute_____closure13() {
+    },
+    execute_____closure14: function execute_____closure14() {
+    },
+    execute_____closure15: function execute_____closure15() {
+    },
+    execute_____closure16: function execute_____closure16() {
+    },
+    execute_____closure17: function execute_____closure17() {
+    },
+    execute_____closure18: function execute_____closure18() {
+    },
+    execute_____closure19: function execute_____closure19() {
     },
     execute__closure_testFiniteCancelation: function execute__closure_testFiniteCancelation(t0) {
       this.worker = t0;
@@ -13125,29 +13949,6 @@
       _.testFinitePoolCancelation = t4;
       _.testInfinitePoolCancelation = t5;
     },
-    execute____closure15: function execute____closure15(t0) {
-      this.testFiniteCancelation = t0;
-    },
-    execute____closure16: function execute____closure16(t0) {
-      this.testInfiniteCancelation = t0;
-    },
-    execute____closure17: function execute____closure17(t0, t1) {
-      this.pool = t0;
-      this.testFinitePoolCancelation = t1;
-    },
-    execute____closure18: function execute____closure18(t0, t1) {
-      this.pool = t0;
-      this.testInfinitePoolCancelation = t1;
-    },
-    execute___closure5: function execute___closure5(t0, t1, t2, t3, t4, t5) {
-      var _ = this;
-      _.tc = t0;
-      _.testFiniteCancelation = t1;
-      _.testInfiniteCancelation = t2;
-      _.pool = t3;
-      _.testFinitePoolCancelation = t4;
-      _.testInfinitePoolCancelation = t5;
-    },
     execute____closure11: function execute____closure11(t0) {
       this.testFiniteCancelation = t0;
     },
@@ -13162,7 +13963,7 @@
       this.pool = t0;
       this.testInfinitePoolCancelation = t1;
     },
-    execute___closure6: function execute___closure6(t0, t1, t2, t3, t4, t5) {
+    execute___closure5: function execute___closure5(t0, t1, t2, t3, t4, t5) {
       var _ = this;
       _.tc = t0;
       _.testFiniteCancelation = t1;
@@ -13185,6 +13986,29 @@
       this.pool = t0;
       this.testInfinitePoolCancelation = t1;
     },
+    execute___closure6: function execute___closure6(t0, t1, t2, t3, t4, t5) {
+      var _ = this;
+      _.tc = t0;
+      _.testFiniteCancelation = t1;
+      _.testInfiniteCancelation = t2;
+      _.pool = t3;
+      _.testFinitePoolCancelation = t4;
+      _.testInfinitePoolCancelation = t5;
+    },
+    execute____closure3: function execute____closure3(t0) {
+      this.testFiniteCancelation = t0;
+    },
+    execute____closure4: function execute____closure4(t0) {
+      this.testInfiniteCancelation = t0;
+    },
+    execute____closure5: function execute____closure5(t0, t1) {
+      this.pool = t0;
+      this.testFinitePoolCancelation = t1;
+    },
+    execute____closure6: function execute____closure6(t0, t1) {
+      this.pool = t0;
+      this.testInfinitePoolCancelation = t1;
+    },
     execute8(tc) {
       type$.nullable_TestContext._as(tc);
       if (tc == null)
@@ -13194,7 +14018,7 @@
     execute_closure2: function execute_closure2(t0) {
       this.tc = t0;
     },
-    execute__closure5: function execute__closure5(t0) {
+    execute__closure4: function execute__closure4(t0) {
       this.tc = t0;
     },
     execute___closure7: function execute___closure7(t0, t1) {
@@ -13231,154 +14055,154 @@
     execute_closure7: function execute_closure7(t0) {
       this.tc = t0;
     },
-    execute__closure10: function execute__closure10(t0) {
+    execute__closure9: function execute__closure9(t0) {
       this.tc = t0;
     },
     execute___closure32: function execute___closure32(t0) {
       this.tc = t0;
     },
-    execute____closure73: function execute____closure73(t0) {
+    execute____closure61: function execute____closure61(t0) {
       this.tc = t0;
     },
-    execute_____closure141: function execute_____closure141() {
+    execute_____closure78: function execute_____closure78() {
     },
-    execute______closure89: function execute______closure89(t0, t1) {
+    execute______closure16: function execute______closure16(t0, t1) {
       this.completedTasks = t0;
       this.i = t1;
     },
-    execute______closure90: function execute______closure90() {
+    execute______closure17: function execute______closure17() {
     },
     execute___closure33: function execute___closure33(t0) {
       this.tc = t0;
     },
-    execute____closure72: function execute____closure72() {
+    execute____closure60: function execute____closure60() {
     },
-    execute_____closure140: function execute_____closure140(t0, t1) {
+    execute_____closure77: function execute_____closure77(t0, t1) {
       this._box_0 = t0;
       this.p = t1;
     },
-    execute______closure88: function execute______closure88() {
+    execute______closure15: function execute______closure15() {
     },
     execute___closure34: function execute___closure34(t0) {
       this.tc = t0;
     },
-    execute____closure69: function execute____closure69(t0) {
+    execute____closure57: function execute____closure57(t0) {
       this.tc = t0;
     },
-    execute_____closure139: function execute_____closure139() {
+    execute_____closure76: function execute_____closure76() {
     },
-    execute____closure70: function execute____closure70(t0) {
+    execute____closure58: function execute____closure58(t0) {
       this.tc = t0;
     },
-    execute_____closure138: function execute_____closure138() {
+    execute_____closure75: function execute_____closure75() {
     },
-    execute____closure71: function execute____closure71(t0) {
+    execute____closure59: function execute____closure59(t0) {
       this.tc = t0;
     },
-    execute_____closure137: function execute_____closure137() {
+    execute_____closure74: function execute_____closure74() {
     },
     execute___closure35: function execute___closure35(t0) {
-      this.tc = t0;
-    },
-    execute____closure63: function execute____closure63(t0) {
-      this.tc = t0;
-    },
-    execute_____closure136: function execute_____closure136() {
-    },
-    execute______closure87: function execute______closure87() {
-    },
-    execute____closure64: function execute____closure64(t0) {
-      this.tc = t0;
-    },
-    execute_____closure135: function execute_____closure135() {
-    },
-    execute______closure86: function execute______closure86() {
-    },
-    execute____closure65: function execute____closure65(t0) {
-      this.tc = t0;
-    },
-    execute_____closure134: function execute_____closure134() {
-    },
-    execute____closure66: function execute____closure66(t0) {
-      this.tc = t0;
-    },
-    execute_____closure133: function execute_____closure133() {
-    },
-    execute____closure67: function execute____closure67(t0) {
-      this.tc = t0;
-    },
-    execute_____closure132: function execute_____closure132() {
-    },
-    execute____closure68: function execute____closure68(t0) {
-      this.tc = t0;
-    },
-    execute_____closure131: function execute_____closure131() {
-    },
-    execute___closure36: function execute___closure36(t0) {
-      this.tc = t0;
-    },
-    execute____closure61: function execute____closure61(t0) {
-      this.tc = t0;
-    },
-    execute_____closure130: function execute_____closure130() {
-    },
-    execute____closure62: function execute____closure62(t0) {
-      this.tc = t0;
-    },
-    execute_____closure129: function execute_____closure129() {
-    },
-    execute___closure37: function execute___closure37(t0) {
-      this.tc = t0;
-    },
-    execute____closure60: function execute____closure60() {
-    },
-    execute___closure38: function execute___closure38(t0) {
-      this.tc = t0;
-    },
-    execute____closure59: function execute____closure59() {
-    },
-    execute___closure39: function execute___closure39(t0) {
-      this.tc = t0;
-    },
-    execute____closure58: function execute____closure58() {
-    },
-    execute___closure40: function execute___closure40(t0) {
       this.tc = t0;
     },
     execute____closure51: function execute____closure51(t0) {
       this.tc = t0;
     },
-    execute_____closure128: function execute_____closure128() {
+    execute_____closure73: function execute_____closure73() {
     },
-    execute______closure82: function execute______closure82(t0, t1) {
-      this.errors = t0;
-      this.token = t1;
-    },
-    execute______closure83: function execute______closure83() {
-    },
-    execute______closure84: function execute______closure84() {
-    },
-    execute______closure85: function execute______closure85() {
+    execute______closure14: function execute______closure14() {
     },
     execute____closure52: function execute____closure52(t0) {
       this.tc = t0;
     },
-    execute_____closure127: function execute_____closure127() {
+    execute_____closure72: function execute_____closure72() {
+    },
+    execute______closure13: function execute______closure13() {
     },
     execute____closure53: function execute____closure53(t0) {
       this.tc = t0;
     },
-    execute_____closure126: function execute_____closure126() {
+    execute_____closure71: function execute_____closure71() {
     },
     execute____closure54: function execute____closure54(t0) {
       this.tc = t0;
     },
-    execute_____closure125: function execute_____closure125() {
+    execute_____closure70: function execute_____closure70() {
     },
     execute____closure55: function execute____closure55(t0) {
       this.tc = t0;
     },
-    execute_____closure124: function execute_____closure124() {
+    execute_____closure69: function execute_____closure69() {
+    },
+    execute____closure56: function execute____closure56(t0) {
+      this.tc = t0;
+    },
+    execute_____closure68: function execute_____closure68() {
+    },
+    execute___closure36: function execute___closure36(t0) {
+      this.tc = t0;
+    },
+    execute____closure49: function execute____closure49(t0) {
+      this.tc = t0;
+    },
+    execute_____closure67: function execute_____closure67() {
+    },
+    execute____closure50: function execute____closure50(t0) {
+      this.tc = t0;
+    },
+    execute_____closure66: function execute_____closure66() {
+    },
+    execute___closure37: function execute___closure37(t0) {
+      this.tc = t0;
+    },
+    execute____closure48: function execute____closure48() {
+    },
+    execute___closure38: function execute___closure38(t0) {
+      this.tc = t0;
+    },
+    execute____closure47: function execute____closure47() {
+    },
+    execute___closure39: function execute___closure39(t0) {
+      this.tc = t0;
+    },
+    execute____closure46: function execute____closure46() {
+    },
+    execute___closure40: function execute___closure40(t0) {
+      this.tc = t0;
+    },
+    execute____closure39: function execute____closure39(t0) {
+      this.tc = t0;
+    },
+    execute_____closure65: function execute_____closure65() {
+    },
+    execute______closure9: function execute______closure9(t0, t1) {
+      this.errors = t0;
+      this.token = t1;
+    },
+    execute______closure10: function execute______closure10() {
+    },
+    execute______closure11: function execute______closure11() {
+    },
+    execute______closure12: function execute______closure12() {
+    },
+    execute____closure40: function execute____closure40(t0) {
+      this.tc = t0;
+    },
+    execute_____closure64: function execute_____closure64() {
+    },
+    execute____closure41: function execute____closure41(t0) {
+      this.tc = t0;
+    },
+    execute_____closure63: function execute_____closure63() {
+    },
+    execute____closure42: function execute____closure42(t0) {
+      this.tc = t0;
+    },
+    execute_____closure62: function execute_____closure62() {
+    },
+    execute____closure43: function execute____closure43(t0) {
+      this.tc = t0;
+    },
+    execute_____closure61: function execute_____closure61() {
     },
     execute_____closure_pause: function execute_____closure_pause(t0, t1, t2, t3) {
       var _ = this;
@@ -13394,15 +14218,15 @@
       _.errors = t2;
       _.sub = t3;
     },
-    execute____closure56: function execute____closure56(t0) {
+    execute____closure44: function execute____closure44(t0) {
       this.tc = t0;
     },
-    execute_____closure123: function execute_____closure123() {
+    execute_____closure60: function execute_____closure60() {
     },
-    execute____closure57: function execute____closure57(t0) {
+    execute____closure45: function execute____closure45(t0) {
       this.tc = t0;
     },
-    execute_____closure122: function execute_____closure122() {
+    execute_____closure59: function execute_____closure59() {
     },
     execute10(tc) {
       type$.nullable_TestContext._as(tc);
@@ -13413,23 +14237,21 @@
     execute_closure0: function execute_closure0(t0) {
       this.tc = t0;
     },
-    execute__closure1: function execute__closure1(t0) {
+    execute__closure0: function execute__closure0(t0) {
       this.tc = t0;
     },
     execute___closure1: function execute___closure1(t0) {
       this.tc = t0;
     },
-    execute____closure5: function execute____closure5(t0) {
+    execute____closure1: function execute____closure1(t0) {
       this.tc = t0;
     },
-    execute_____closure0: function execute_____closure0() {
+    execute_____closure6: function execute_____closure6() {
     },
-    execute____closure6: function execute____closure6(t0) {
+    execute____closure2: function execute____closure2(t0) {
       this.tc = t0;
     },
-    execute_____closure: function execute_____closure() {
-    },
-    BigIntMarshaler: function BigIntMarshaler() {
+    execute_____closure5: function execute_____closure5() {
     },
     CacheStat: function CacheStat(t0, t1, t2, t3, t4) {
       var _ = this;
@@ -13571,10 +14393,13 @@
         t6 = A.ExceptionManager$();
       return new A.LocalClientWorkerPool(new A.LocalClientWorkerPool_closure(context, localService), t6, t5, t1, t2, A.LinkedHashMap_LinkedHashMap$_empty(type$.Object, type$.void_Function_LocalClientWorker_bool), t4, A.LinkedHashSet_LinkedHashSet$_empty(t3), false, new A.Object());
     },
-    LocalClientWorker$(context, args) {
-      var t1 = context.entryPoints.local;
+    LocalClientWorker$(context, localService) {
+      var t2,
+        t1 = context.entryPoints.local;
       t1.toString;
-      return new A.LocalClientWorker(t1, null, args, false, new A.Object());
+      t2 = localService.___WebLocalWorker__channel_A;
+      t2 === $ && A.throwLateFieldNI("_channel");
+      return new A.LocalClientWorker(t1, null, [t2 == null ? null : t2.share$0(0)._sendPort], false, new A.Object());
     },
     LocalClientWorkerPool: function LocalClientWorkerPool(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9) {
       var _ = this;
@@ -14115,15 +14940,21 @@
       _.Releasable__released = t3;
       _.Releasable__token = t4;
     },
+    TestWorker_bigIntMarshaler_closure: function TestWorker_bigIntMarshaler_closure() {
+    },
+    TestWorker_bigIntUnmarshaler_closure: function TestWorker_bigIntUnmarshaler_closure() {
+    },
     TestWorker_getPlatformType_closure: function TestWorker_getPlatformType_closure() {
+    },
+    UnexpectedException$(message) {
+      return new A.UnexpectedException(message);
     },
     unexpectedSuccess(process, res) {
       var t1 = "Unexpected: " + process;
       return new A.UnexpectedException(res == null ? t1 + " completed successfully" : t1 + " completed successfully with res=" + A.S(res));
     },
-    unexpectedFailure(process, ex) {
-      var t1 = ex.toString$0(0);
-      return new A.UnexpectedException("Unexpected: " + process + " failed with ex=" + t1);
+    failsWith($E) {
+      return new A.Throws(A.wrapMatcher(new A.TypeMatcher($E._eval$1("TypeMatcher<0>"))));
     },
     UnexpectedException: function UnexpectedException(t0) {
       this.message = t0;
@@ -14386,6 +15217,15 @@
       } else
         return null;
     },
+    mapUrl(url) {
+      var root;
+      if (B.JSString_methods.startsWith$1(url, "~")) {
+        root = A.getHome();
+        if (root != null)
+          url = root + B.JSString_methods.substring$1(url, 1);
+      }
+      return A.Uri_parse(url);
+    },
     UriChecker_exists(url) {
       return A.UriChecker_exists$body(url);
     },
@@ -14452,15 +15292,6 @@
           }
       });
       return A._asyncStartSync($async$UriChecker_exists, $async$completer);
-    },
-    mapUrl(url) {
-      var root;
-      if (B.JSString_methods.startsWith$1(url, "~")) {
-        root = A.getHome();
-        if (root != null)
-          url = root + B.JSString_methods.substring$1(url, 1);
-      }
-      return A.Uri_parse(url);
     },
     microsecTimeStamp() {
       var t1 = Date.now();
@@ -14621,12 +15452,6 @@
         };
       };
     },
-    Converter_isIdentity(cast, $T) {
-      return cast == null || J.$eq$(cast, A.instantiate1(A.converter_Converter_identity$closure(), $T));
-    },
-    Converter_identity(x, $T) {
-      return $T._as(x);
-    },
     WorkerMessageExt_unwrapTravelTime(_this) {
       var t1 = J.getInterceptor$asx(_this),
         t2 = A._asNumQ(t1.$index(_this, 0)),
@@ -14697,10 +15522,7 @@
                 default:
                   throw A.wrapException(A.UnsupportedError$("Unsupported platform " + platform.toString$0(0)));
               }
-              A.print("root = " + root);
-              t1 = A.mapUrl(root + "/native_worker.js");
-              _this.native = t1;
-              A.print("native = " + t1.toString$0(0));
+              _this.native = A.mapUrl(root + "/native_worker.js");
               _this.notAWorker = A.mapUrl(root + "/not_a_worker.dart." + ext);
               _this.echo = A.mapUrl(root + "/echo_worker.dart." + ext);
               _this.cache = A.mapUrl(root + "/cache_worker.dart." + ext);
@@ -15146,8 +15968,8 @@
       return A.Iterable_iterableToFullString(receiver, "[", "]");
     },
     toList$1$growable(receiver, growable) {
-      var t1 = A._setArrayType(receiver.slice(0), A._arrayInstanceType(receiver));
-      return t1;
+      var t1 = A._arrayInstanceType(receiver);
+      return growable ? A._setArrayType(receiver.slice(0), t1) : J.JSArray_JSArray$markFixed(receiver.slice(0), t1._precomputed1);
     },
     toList$0(receiver) {
       return this.toList$1$growable(receiver, true);
@@ -15929,7 +16751,7 @@
       return A.SubListIterable$(this, 0, A.checkNotNullable(count, "count", type$.int), A._instanceType(this)._eval$1("ListIterable.E"));
     },
     toList$1$growable(_, growable) {
-      return A.List_List$of(this, true, A._instanceType(this)._eval$1("ListIterable.E"));
+      return A.List_List$of(this, growable, A._instanceType(this)._eval$1("ListIterable.E"));
     },
     toList$0(_) {
       return this.toList$1$growable(0, true);
@@ -16309,8 +17131,8 @@
       return this;
     },
     toList$1$growable(_, growable) {
-      var t1 = J.JSArray_JSArray$growable(0, this.$ti._precomputed1);
-      return t1;
+      var t1 = this.$ti._precomputed1;
+      return growable ? J.JSArray_JSArray$growable(0, t1) : J.JSArray_JSArray$fixed(0, t1);
     },
     toList$0(_) {
       return this.toList$1$growable(0, true);
@@ -16333,26 +17155,19 @@
       return new A.FollowedByIterator(J.get$iterator$ax(this.__internal$_first), this.__internal$_second, A._instanceType(this)._eval$1("FollowedByIterator<1>"));
     },
     get$length(_) {
-      var t1 = this.__internal$_second;
-      return J.get$length$asx(this.__internal$_first) + t1.get$length(t1);
+      return J.get$length$asx(this.__internal$_first) + this.__internal$_second.get$length(0);
     },
     get$isEmpty(_) {
       var t1;
       if (J.get$isEmpty$asx(this.__internal$_first)) {
         t1 = this.__internal$_second;
-        t1 = t1.get$isEmpty(t1);
+        t1 = t1._collection$_head === t1._collection$_tail;
       } else
         t1 = false;
       return t1;
     },
     get$isNotEmpty(_) {
-      var t1;
-      if (!J.get$isNotEmpty$asx(this.__internal$_first)) {
-        t1 = this.__internal$_second;
-        t1 = !t1.get$isEmpty(t1);
-      } else
-        t1 = true;
-      return t1;
+      return J.get$isNotEmpty$asx(this.__internal$_first) || !this.__internal$_second.get$isEmpty(0);
     },
     contains$1(_, value) {
       return J.contains$1$asx(this.__internal$_first, value) || this.__internal$_second.contains$1(0, value);
@@ -16376,7 +17191,7 @@
         return true;
       t1 = _this._nextIterable;
       if (t1 != null) {
-        _this.set$_currentIterator(t1.get$iterator(t1));
+        _this.set$_currentIterator(A._ListQueueIterator$(t1, t1.$ti._precomputed1));
         _this.set$_nextIterable(null);
         return _this._currentIterator.moveNext$0();
       }
@@ -16777,7 +17592,7 @@
     call$0() {
       return B.JSNumber_methods.floor$0(1000 * this.performance.now());
     },
-    $signature: 5
+    $signature: 3
   };
   A.Primitives_functionNoSuchMethod_closure.prototype = {
     call$2($name, argument) {
@@ -16789,7 +17604,7 @@
       B.JSArray_methods.add$1(this.$arguments, argument);
       ++t1.argumentCount;
     },
-    $signature: 17
+    $signature: 20
   };
   A.TypeErrorDecoder.prototype = {
     matchTypeError$1(message) {
@@ -17246,19 +18061,19 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 64
+    $signature: 94
   };
   A.initHooks_closure0.prototype = {
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 153
+    $signature: 149
   };
   A.initHooks_closure1.prototype = {
     call$1(tag) {
       return this.prototypeForTag(A._asString(tag));
     },
-    $signature: 188
+    $signature: 157
   };
   A._Record.prototype = {
     get$runtimeType(_) {
@@ -17950,7 +18765,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 9
+    $signature: 14
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -17960,19 +18775,19 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 151
+    $signature: 147
   };
   A._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0() {
       this.callback.call$0();
     },
-    $signature: 2
+    $signature: 1
   };
   A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0() {
       this.callback.call$0();
     },
-    $signature: 2
+    $signature: 1
   };
   A._TimerImpl.prototype = {
     _TimerImpl$2(milliseconds, callback) {
@@ -18010,7 +18825,7 @@
       t1._tick = 1;
       this.callback.call$0();
     },
-    $signature: 1
+    $signature: 2
   };
   A._TimerImpl$periodic_closure.prototype = {
     call$0() {
@@ -18026,7 +18841,7 @@
       t1._tick = tick;
       _this.callback.call$1(t1);
     },
-    $signature: 2
+    $signature: 1
   };
   A._AsyncAwaitCompleter.prototype = {
     complete$1(_, value) {
@@ -18058,19 +18873,19 @@
     call$1(result) {
       return this.bodyFunction.call$2(0, result);
     },
-    $signature: 13
+    $signature: 18
   };
   A._awaitOnObject_closure0.prototype = {
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new A.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 108
+    $signature: 107
   };
   A._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(A._asInt(errorCode), result);
     },
-    $signature: 148
+    $signature: 143
   };
   A._SyncStarIterator.prototype = {
     get$current(_) {
@@ -18480,7 +19295,7 @@
       }
       this.result._complete$1(computationResult);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Future_Future$microtask_closure.prototype = {
     call$0() {
@@ -18495,7 +19310,7 @@
       }
       this.result._complete$1(computationResult);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Future_Future$delayed_closure.prototype = {
     call$0() {
@@ -18517,7 +19332,7 @@
         _this.result._complete$1(computationResult);
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A.Future_wait_handleError.prototype = {
     call$2(theError, theStackTrace) {
@@ -18540,7 +19355,7 @@
         _this._future._completeError$2(t2, t1);
       }
     },
-    $signature: 36
+    $signature: 38
   };
   A.Future_wait_closure.prototype = {
     call$1(value) {
@@ -18596,7 +19411,7 @@
       if ((t1.future._state & 30) === 0)
         t1.completeError$2(error, stack);
     },
-    $signature: 36
+    $signature: 38
   };
   A.Future_forEach_closure.prototype = {
     call$0() {
@@ -18611,7 +19426,7 @@
         return result.then$1$1(A.async_Future__kTrue$closure(), type$.bool);
       return true;
     },
-    $signature: 190
+    $signature: 167
   };
   A.Future_doWhile_closure.prototype = {
     call$1(keepGoing) {
@@ -18650,7 +19465,7 @@
       }
       _this.doneSignal._complete$1(null);
     },
-    $signature: 43
+    $signature: 46
   };
   A.FutureExtensions_onError_onError.prototype = {
     call$2(error, stackTrace) {
@@ -18968,13 +19783,13 @@
     call$0() {
       A._Future__propagateToListeners(this.$this, this.listener);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__prependListeners_closure.prototype = {
     call$0() {
       A._Future__propagateToListeners(this.$this, this._box_0.listeners);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__chainForeignFuture_closure.prototype = {
     call$1(value) {
@@ -18989,37 +19804,37 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 9
+    $signature: 14
   };
   A._Future__chainForeignFuture_closure0.prototype = {
     call$2(error, stackTrace) {
       this.$this._completeError$2(type$.Object._as(error), type$.StackTrace._as(stackTrace));
     },
-    $signature: 42
+    $signature: 45
   };
   A._Future__chainForeignFuture_closure1.prototype = {
     call$0() {
       this.$this._completeError$2(this.e, this.s);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__chainCoreFutureAsync_closure.prototype = {
     call$0() {
       A._Future__chainCoreFutureSync(this._box_0.source, this.target);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__asyncCompleteWithValue_closure.prototype = {
     call$0() {
       this.$this._completeWithValue$1(this.value);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__asyncCompleteError_closure.prototype = {
     call$0() {
       this.$this._completeError$2(this.error, this.stackTrace);
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__propagateToListeners_handleWhenCompleteCallback.prototype = {
     call$0() {
@@ -19054,13 +19869,13 @@
         t1.listenerHasError = false;
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__propagateToListeners_handleWhenCompleteCallback_closure.prototype = {
     call$1(_) {
       return this.originalSource;
     },
-    $signature: 111
+    $signature: 110
   };
   A._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -19080,7 +19895,7 @@
         t1.listenerHasError = true;
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A._Future__propagateToListeners_handleError.prototype = {
     call$0() {
@@ -19104,7 +19919,7 @@
         t2.listenerHasError = true;
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A._AsyncCallbackEntry.prototype = {};
   A.Stream.prototype = {
@@ -19156,7 +19971,7 @@
       t1._addError$2(t2, type$.StackTrace._as(stackTrace));
       t1._closeUnchecked$0();
     },
-    $signature: 41
+    $signature: 43
   };
   A.Stream_Stream$fromIterable_closure.prototype = {
     call$1(controller) {
@@ -19231,7 +20046,7 @@
       } else
         t1.closeSync$0();
     },
-    $signature: 1
+    $signature: 2
   };
   A.Stream_Stream$fromIterable__closure.prototype = {
     call$0() {
@@ -19241,7 +20056,7 @@
         this.zone.scheduleMicrotask$1(this.next);
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A.Stream_length_closure.prototype = {
     call$1(_) {
@@ -19256,13 +20071,13 @@
     call$0() {
       this.future._complete$1(this._box_0.count);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Stream_isEmpty_closure.prototype = {
     call$0() {
       this.future._complete$1(true);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Stream_isEmpty_closure0.prototype = {
     call$1(_) {
@@ -19285,7 +20100,7 @@
     call$0() {
       this.future._complete$1(this.result);
     },
-    $signature: 1
+    $signature: 2
   };
   A._StreamController.prototype = {
     get$stream(_) {
@@ -19478,7 +20293,7 @@
     call$0() {
       A._runGuarded(this.$this.onListen);
     },
-    $signature: 1
+    $signature: 2
   };
   A._StreamController__recordCancel_complete.prototype = {
     call$0() {
@@ -19486,7 +20301,7 @@
       if (doneFuture != null && (doneFuture._state & 30) === 0)
         doneFuture._asyncComplete$1(null);
     },
-    $signature: 1
+    $signature: 2
   };
   A._SyncStreamControllerDispatch.prototype = {
     _sendData$1(data) {
@@ -19791,7 +20606,7 @@
     call$0() {
       this.result._complete$1(this._box_0.resultValue);
     },
-    $signature: 1
+    $signature: 2
   };
   A._BufferingStreamSubscription_asFuture_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -19805,13 +20620,13 @@
       else
         t1._completeError$2(error, stackTrace);
     },
-    $signature: 42
+    $signature: 45
   };
   A._BufferingStreamSubscription_asFuture__closure.prototype = {
     call$0() {
       this.result._completeError$2(this.error, this.stackTrace);
     },
-    $signature: 2
+    $signature: 1
   };
   A._BufferingStreamSubscription__sendError_sendError.prototype = {
     call$0() {
@@ -19831,7 +20646,7 @@
         t4.runUnaryGuarded$1$2(type$.void_Function_Object._as(onError), t2, t3);
       t1._state = (t1._state & 4294967231) >>> 0;
     },
-    $signature: 1
+    $signature: 2
   };
   A._BufferingStreamSubscription__sendDone_sendDone.prototype = {
     call$0() {
@@ -19843,7 +20658,7 @@
       t1._zone.runGuarded$1(t1._async$_onDone);
       t1._state = (t1._state & 4294967231) >>> 0;
     },
-    $signature: 1
+    $signature: 2
   };
   A._StreamImpl.prototype = {
     listen$4$cancelOnError$onDone$onError(onData, cancelOnError, onDone, onError) {
@@ -19942,7 +20757,7 @@
         t1.lastPendingEvent = null;
       $event.perform$1(t2);
     },
-    $signature: 1
+    $signature: 2
   };
   A._DoneStreamSubscription.prototype = {
     get$isPaused() {
@@ -20019,7 +20834,7 @@
     call$0() {
       this.result._completeWithValue$1(this._box_0.resultValue);
     },
-    $signature: 1
+    $signature: 2
   };
   A._StreamIterator.prototype = {
     get$current(_) {
@@ -20139,7 +20954,7 @@
     call$0() {
       this.$this._async$_onListen.call$1(this.controller);
     },
-    $signature: 1
+    $signature: 2
   };
   A._MultiStreamController.prototype = {
     addErrorSync$2(error, stackTrace) {
@@ -20174,7 +20989,7 @@
     call$0() {
       return this.future._complete$1(this.value);
     },
-    $signature: 1
+    $signature: 2
   };
   A._ForwardingStream.prototype = {
     get$isBroadcast() {
@@ -20551,7 +21366,7 @@
     call$0() {
       return this.$this.runGuarded$1(this.registered);
     },
-    $signature: 1
+    $signature: 2
   };
   A._CustomZone_bindUnaryCallbackGuarded_closure.prototype = {
     call$1(arg) {
@@ -20566,7 +21381,7 @@
     call$0() {
       A.Error_throwWithStackTrace(this.error, this.stackTrace);
     },
-    $signature: 1
+    $signature: 2
   };
   A._RootZone.prototype = {
     get$_run() {
@@ -20763,7 +21578,7 @@
     call$0() {
       return this.$this.runGuarded$1(this.f);
     },
-    $signature: 1
+    $signature: 2
   };
   A._RootZone_bindUnaryCallbackGuarded_closure.prototype = {
     call$1(arg) {
@@ -21245,13 +22060,13 @@
     call$2(k, v) {
       this.result.$indexSet(0, this.K._as(k), this.V._as(v));
     },
-    $signature: 33
+    $signature: 35
   };
   A.LinkedHashMap_LinkedHashMap$from_closure.prototype = {
     call$2(k, v) {
       this.result.$indexSet(0, this.K._as(k), this.V._as(v));
     },
-    $signature: 33
+    $signature: 35
   };
   A.ListBase.prototype = {
     get$iterator(receiver) {
@@ -21329,11 +22144,11 @@
     toList$1$growable(receiver, growable) {
       var t1, first, result, i, _this = this;
       if (_this.get$isEmpty(receiver)) {
-        t1 = J.JSArray_JSArray$growable(0, A.instanceType(receiver)._eval$1("ListBase.E"));
-        return t1;
+        t1 = A.instanceType(receiver)._eval$1("ListBase.E");
+        return growable ? J.JSArray_JSArray$growable(0, t1) : J.JSArray_JSArray$fixed(0, t1);
       }
       first = _this.$index(receiver, 0);
-      result = A.List_List$filled(_this.get$length(receiver), first, true, A.instanceType(receiver)._eval$1("ListBase.E"));
+      result = A.List_List$filled(_this.get$length(receiver), first, growable, A.instanceType(receiver)._eval$1("ListBase.E"));
       for (i = 1; i < _this.get$length(receiver); ++i)
         B.JSArray_methods.$indexSet(result, i, _this.$index(receiver, i));
       return result;
@@ -21464,7 +22279,7 @@
       t2 = A.S(v);
       t1._contents += t2;
     },
-    $signature: 51
+    $signature: 55
   };
   A._MapBaseValueIterable.prototype = {
     get$length(_) {
@@ -21602,11 +22417,11 @@
         mask = _this._collection$_table.length - 1,
         $length = (_this._collection$_tail - _this._collection$_head & mask) >>> 0;
       if ($length === 0) {
-        t1 = J.JSArray_JSArray$growable(0, _this.$ti._precomputed1);
-        return t1;
+        t1 = _this.$ti._precomputed1;
+        return growable ? J.JSArray_JSArray$growable(0, t1) : J.JSArray_JSArray$fixed(0, t1);
       }
       t1 = _this.$ti._precomputed1;
-      list = A.List_List$filled($length, _this.get$first(0), true, t1);
+      list = A.List_List$filled($length, _this.get$first(0), growable, t1);
       for (i = 0; i < $length; ++i) {
         t2 = _this._collection$_table;
         t3 = (_this._collection$_head + i & mask) >>> 0;
@@ -21779,7 +22594,7 @@
       return t1;
     },
     toList$1$growable(_, growable) {
-      return A.List_List$of(this, true, A._instanceType(this)._precomputed1);
+      return A.List_List$of(this, growable, A._instanceType(this)._precomputed1);
     },
     toList$0(_) {
       return this.toList$1$growable(0, true);
@@ -21871,7 +22686,7 @@
       }
       return null;
     },
-    $signature: 90
+    $signature: 91
   };
   A._Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0() {
@@ -21883,7 +22698,7 @@
       }
       return null;
     },
-    $signature: 90
+    $signature: 91
   };
   A.AsciiCodec.prototype = {
     encode$1(source) {
@@ -22277,7 +23092,7 @@
       B.JSArray_methods.$indexSet(t1, t2.i++, key);
       B.JSArray_methods.$indexSet(t1, t2.i++, value);
     },
-    $signature: 51
+    $signature: 55
   };
   A._JsonPrettyPrintMixin.prototype = {
     writeList$1(list) {
@@ -22342,7 +23157,7 @@
       B.JSArray_methods.$indexSet(t1, t2.i++, key);
       B.JSArray_methods.$indexSet(t1, t2.i++, value);
     },
-    $signature: 51
+    $signature: 55
   };
   A._JsonStringStringifier.prototype = {
     get$_partialResult() {
@@ -23063,7 +23878,7 @@
       hash = hash + ((hash & 524287) << 10) & 536870911;
       return hash ^ hash >>> 6;
     },
-    $signature: 60
+    $signature: 90
   };
   A._BigIntImpl_hashCode_finish.prototype = {
     call$1(hash) {
@@ -23071,7 +23886,7 @@
       hash ^= hash >>> 11;
       return hash + ((hash & 16383) << 15) & 536870911;
     },
-    $signature: 62
+    $signature: 89
   };
   A.NoSuchMethodError_toString_closure.prototype = {
     call$2(key, value) {
@@ -23087,7 +23902,7 @@
       t1._contents += t3;
       t2.comma = ", ";
     },
-    $signature: 114
+    $signature: 113
   };
   A.DateTime.prototype = {
     difference$1(other) {
@@ -23409,14 +24224,6 @@
     $isException: 1
   };
   A.Iterable.prototype = {
-    followedBy$1(_, other) {
-      var _this = this,
-        t1 = A._instanceType(_this);
-      t1._eval$1("Iterable<Iterable.E>")._as(other);
-      if (t1._eval$1("EfficientLengthIterable<Iterable.E>")._is(_this))
-        return A.FollowedByIterable_FollowedByIterable$firstEfficient(_this, other, t1._eval$1("Iterable.E"));
-      return new A.FollowedByIterable(_this, other, t1._eval$1("FollowedByIterable<Iterable.E>"));
-    },
     map$1$1(_, toElement, $T) {
       var t1 = A._instanceType(this);
       return A.MappedIterable_MappedIterable(this, t1._bind$1($T)._eval$1("1(Iterable.E)")._as(toElement), t1._eval$1("Iterable.E"), $T);
@@ -23437,14 +24244,6 @@
         if (J.$eq$(t1.get$current(t1), element))
           return true;
       return false;
-    },
-    fold$1$2(_, initialValue, combine, $T) {
-      var t1, value;
-      $T._as(initialValue);
-      A._instanceType(this)._bind$1($T)._eval$1("1(1,Iterable.E)")._as(combine);
-      for (t1 = this.get$iterator(this), value = initialValue; t1.moveNext$0();)
-        value = combine.call$2(value, t1.get$current(t1));
-      return value;
     },
     every$1(_, test) {
       var t1;
@@ -23698,19 +24497,19 @@
       }
       return map;
     },
-    $signature: 129
+    $signature: 128
   };
   A.Uri__parseIPv4Address_error.prototype = {
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 144
+    $signature: 134
   };
   A.Uri_parseIPv6Address_error.prototype = {
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv6 address, " + msg, this.host, position));
     },
-    $signature: 145
+    $signature: 140
   };
   A.Uri_parseIPv6Address_parseHex.prototype = {
     call$2(start, end) {
@@ -23722,7 +24521,7 @@
         this.error.call$2("each part must be in the range of `0x0..0xFFFF`", start);
       return value;
     },
-    $signature: 60
+    $signature: 90
   };
   A._Uri.prototype = {
     get$_text() {
@@ -24023,7 +24822,7 @@
     call$1(s) {
       return A._Uri__uriEncode(B.List_M2I0, A._asString(s), B.C_Utf8Codec, false);
     },
-    $signature: 19
+    $signature: 24
   };
   A.UriData.prototype = {
     get$uri() {
@@ -24064,7 +24863,7 @@
       B.NativeUint8List_methods.fillRange$3(t1, 0, 96, defaultTransition);
       return t1;
     },
-    $signature: 149
+    $signature: 146
   };
   A._createTables_setChars.prototype = {
     call$3(target, chars, transition) {
@@ -24076,7 +24875,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 67
+    $signature: 87
   };
   A._createTables_setRange.prototype = {
     call$3(target, range, transition) {
@@ -24095,7 +24894,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 67
+    $signature: 87
   };
   A._SimpleUri.prototype = {
     get$hasAuthority() {
@@ -24727,7 +25526,7 @@
     call$1(e) {
       return type$.Element._is(type$.Node._as(e));
     },
-    $signature: 122
+    $signature: 121
   };
   A.ErrorEvent.prototype = {$isErrorEvent: 1};
   A.Event.prototype = {$isEvent: 1};
@@ -24927,13 +25726,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 17
+    $signature: 20
   };
   A.MidiInputMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 17
+    $signature: 20
   };
   A.MidiOutputMap.prototype = {
     containsKey$1(receiver, key) {
@@ -24995,13 +25794,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 17
+    $signature: 20
   };
   A.MidiOutputMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 17
+    $signature: 20
   };
   A.MimeType.prototype = {$isMimeType: 1};
   A.MimeTypeArray.prototype = {
@@ -25247,13 +26046,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 17
+    $signature: 20
   };
   A.RtcStatsReport_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 17
+    $signature: 20
   };
   A.SelectElement.prototype = {
     get$length(receiver) {
@@ -25389,13 +26188,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 80
+    $signature: 86
   };
   A.Storage_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, v);
     },
-    $signature: 80
+    $signature: 86
   };
   A.StyleSheet.prototype = {$isStyleSheet: 1};
   A.TableElement.prototype = {
@@ -26005,13 +26804,13 @@
     call$1(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 20
+    $signature: 25
   };
   A._EventStreamSubscription_onData_closure.prototype = {
     call$1(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 20
+    $signature: 25
   };
   A._Html5NodeValidator.prototype = {
     _Html5NodeValidator$1$uriPolicy(uriPolicy) {
@@ -26057,13 +26856,13 @@
     call$1(v) {
       return type$.NodeValidator._as(v).allowsElement$1(this.element);
     },
-    $signature: 63
+    $signature: 84
   };
   A.NodeValidatorBuilder_allowsAttribute_closure.prototype = {
     call$1(v) {
       return type$.NodeValidator._as(v).allowsAttribute$3(this.element, this.attributeName, this.value);
     },
-    $signature: 63
+    $signature: 84
   };
   A._SimpleNodeValidator.prototype = {
     _SimpleNodeValidator$4$allowedAttributes$allowedElements$allowedUriAttributes(uriPolicy, allowedAttributes, allowedElements, allowedUriAttributes) {
@@ -26110,13 +26909,13 @@
     call$1(x) {
       return !B.JSArray_methods.contains$1(B.List_4Jt, A._asString(x));
     },
-    $signature: 3
+    $signature: 6
   };
   A._SimpleNodeValidator_closure0.prototype = {
     call$1(x) {
       return B.JSArray_methods.contains$1(B.List_4Jt, A._asString(x));
     },
-    $signature: 3
+    $signature: 6
   };
   A._TemplatingNodeValidator.prototype = {
     allowsAttribute$3(element, attributeName, value) {
@@ -26133,7 +26932,7 @@
     call$1(attr) {
       return "TEMPLATE::" + A._asString(attr);
     },
-    $signature: 19
+    $signature: 24
   };
   A._SvgNodeValidator.prototype = {
     allowsElement$1(element) {
@@ -26388,7 +27187,7 @@
         child = nextChild;
       }
     },
-    $signature: 210
+    $signature: 190
   };
   A._CssStyleDeclaration_JavaScriptObject_CssStyleDeclarationBase.prototype = {};
   A._DomRectList_JavaScriptObject_ListMixin.prototype = {};
@@ -26522,13 +27321,13 @@
     call$2(key, value) {
       this._box_0.copy[key] = this.$this.walk$1(value);
     },
-    $signature: 33
+    $signature: 35
   };
   A._StructuredClone_walk_closure0.prototype = {
     call$2(key, value) {
       this._box_0.copy[key] = this.$this.walk$1(value);
     },
-    $signature: 41
+    $signature: 43
   };
   A._AcceptStructuredClone.prototype = {
     findSlot$1(value) {
@@ -26619,7 +27418,7 @@
       this.map.$indexSet(0, key, t1);
       return t1;
     },
-    $signature: 226
+    $signature: 196
   };
   A._StructuredCloneDart2Js.prototype = {
     forEachObjectKey$2(object, action) {
@@ -26665,13 +27464,13 @@
       } else
         return o;
     },
-    $signature: 79
+    $signature: 82
   };
   A.promiseToFuture_closure.prototype = {
     call$1(r) {
       return this.completer.complete$1(0, this.T._eval$1("0/?")._as(r));
     },
-    $signature: 13
+    $signature: 18
   };
   A.promiseToFuture_closure0.prototype = {
     call$1(e) {
@@ -26679,7 +27478,7 @@
         return this.completer.completeError$1(new A.NullRejectionException(e === undefined));
       return this.completer.completeError$1(e);
     },
-    $signature: 13
+    $signature: 18
   };
   A.dartify_convert.prototype = {
     call$1(o) {
@@ -26726,7 +27525,7 @@
       }
       return o;
     },
-    $signature: 79
+    $signature: 82
   };
   A.NullRejectionException.prototype = {
     toString$0(_) {
@@ -27010,13 +27809,13 @@
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 17
+    $signature: 20
   };
   A.AudioParamMap_values_closure.prototype = {
     call$2(k, v) {
       return B.JSArray_methods.add$1(this.values, type$.Map_dynamic_dynamic._as(v));
     },
-    $signature: 17
+    $signature: 20
   };
   A.AudioTrackList.prototype = {
     get$length(receiver) {
@@ -27101,7 +27900,7 @@
         return null;
       t1.completeError$2(error, stackTrace);
     },
-    $signature: 42
+    $signature: 45
   };
   A.StreamGroup.prototype = {
     add$1(_, stream) {
@@ -27187,7 +27986,7 @@
     call$0() {
       return null;
     },
-    $signature: 2
+    $signature: 1
   };
   A.StreamGroup_add_closure0.prototype = {
     call$0() {
@@ -27200,7 +27999,7 @@
   A.StreamGroup__onListen_closure.prototype = {
     call$1(_) {
     },
-    $signature: 9
+    $signature: 14
   };
   A.StreamGroup__onCancel_closure.prototype = {
     call$1(entry) {
@@ -27251,7 +28050,7 @@
         }
       return future;
     },
-    $signature: 1
+    $signature: 2
   };
   A._StreamGroupState.prototype = {
     toString$0(_) {
@@ -27321,7 +28120,7 @@
       type$.CanceledException._as(e);
       return e.get$message(e);
     },
-    $signature: 96
+    $signature: 226
   };
   A.TimeoutCanceledException.prototype = {$isTimeoutException: 1,
     get$duration() {
@@ -27427,13 +28226,13 @@
       type$.CanceledException._as(_);
       return this.$this._checkTokens$1(this.idx);
     },
-    $signature: 103
+    $signature: 102
   };
   A.CompositeToken__checkTokens_closure.prototype = {
     call$1(e) {
       return type$.CancelationToken._as(e).get$exception();
     },
-    $signature: 104
+    $signature: 103
   };
   A.TimeoutToken.prototype = {
     get$exception() {
@@ -27466,7 +28265,7 @@
       this.$this._timeout_token$_cancel$0();
       t.cancel$0(0);
     },
-    $signature: 47
+    $signature: 49
   };
   A.EmptyUnmodifiableSet.prototype = {
     get$iterator(_) {
@@ -27720,7 +28519,7 @@
       return this.get$_base().take$1(0, n);
     },
     toList$1$growable(_, growable) {
-      return this.get$_base().toList$1$growable(0, true);
+      return this.get$_base().toList$1$growable(0, growable);
     },
     toList$0(_) {
       return this.toList$1$growable(0, true);
@@ -27881,7 +28680,7 @@
     call$0() {
       return new A.DevelopmentFilter();
     },
-    $signature: 109
+    $signature: 108
   };
   A.OutputEvent.prototype = {};
   A._Empty.prototype = {
@@ -28015,7 +28814,7 @@
         t2 = this.matchState;
       return t1.super$TypeMatcher$matches(0, e, t2) && t1.typedMatches$2(A._instanceType(t1)._eval$1("FeatureMatcher.T")._as(e), t2);
     },
-    $signature: 12
+    $signature: 15
   };
   A._Predicate.prototype = {
     typedMatches$2(item, matchState) {
@@ -28085,7 +28884,7 @@
     call$1(frame) {
       return frame.get$$package() === "test" || frame.get$$package() === "stream_channel" || frame.get$$package() === "matcher";
     },
-    $signature: 49
+    $signature: 50
   };
   A.StringDescription.prototype = {
     get$length(_) {
@@ -28326,14 +29125,14 @@
       var _this = this;
       return _this.matcher.call$4(_this.expectedElement, actualElement, _this.location, _this.depth) != null;
     },
-    $signature: 12
+    $signature: 15
   };
   A._DeepMatcher__compareSets_closure0.prototype = {
     call$2(description, verbose) {
       description._out._contents += "does not contain ";
       return description.addDescriptionOf$1(this.expectedElement);
     },
-    $signature: 26
+    $signature: 27
   };
   A._DeepMatcher__recursiveMatch_closure.prototype = {
     call$2(description, verbose) {
@@ -28347,34 +29146,34 @@
         t3.describe$1(description);
       }
     },
-    $signature: 26
+    $signature: 27
   };
   A._DeepMatcher__recursiveMatch_closure0.prototype = {
     call$2(description, verbose) {
       description._out._contents += "== threw ";
       return description.addDescriptionOf$1(this.e);
     },
-    $signature: 26
+    $signature: 27
   };
   A._DeepMatcher__recursiveMatch_closure1.prototype = {
     call$2(description, verbose) {
       description._out._contents += this.err + "is missing map key ";
       return description.addDescriptionOf$1(this.key);
     },
-    $signature: 26
+    $signature: 27
   };
   A._DeepMatcher__recursiveMatch_closure2.prototype = {
     call$2(description, verbose) {
       description._out._contents += this.err + "has extra map key ";
       return description.addDescriptionOf$1(this.key);
     },
-    $signature: 26
+    $signature: 27
   };
   A._DeepMatcher__recursiveMatch_closure3.prototype = {
     call$2(description, verbose) {
       return description.addDescriptionOf$1(this.expected);
     },
-    $signature: 26
+    $signature: 27
   };
   A._Mismatch.prototype = {};
   A._Mismatch$simple_closure.prototype = {
@@ -28382,7 +29181,7 @@
       description._out._contents += this.problem;
       return description;
     },
-    $signature: 26
+    $signature: 27
   };
   A.AsyncMatcher.prototype = {
     matches$2(_, item, matchState) {
@@ -28408,7 +29207,7 @@
         A.fail(A.formatFailure(this.$this, this.item, A._asString(realResult), null));
       this.outstandingWork.complete$0(0);
     },
-    $signature: 9
+    $signature: 14
   };
   A._expect_closure2.prototype = {
     call$5(actual, matcher, reason, matchState, verbose) {
@@ -28417,7 +29216,7 @@
       t1 = t1._contents;
       return A.formatFailure(matcher, actual, t1.charCodeAt(0) == 0 ? t1 : t1, reason);
     },
-    $signature: 130
+    $signature: 129
   };
   A._expect_closure.prototype = {
     call$1(realResult) {
@@ -28427,17 +29226,17 @@
       t1 = this._box_0;
       A.fail(A.formatFailure(type$.Matcher._as(t1.matcher), this.actual, A._asString(realResult), t1.reason));
     },
-    $signature: 9
+    $signature: 14
   };
   A._expect_closure0.prototype = {
     call$0() {
     },
-    $signature: 2
+    $signature: 1
   };
   A._expect_closure1.prototype = {
     call$0() {
     },
-    $signature: 2
+    $signature: 1
   };
   A.Throws.prototype = {
     matchAsync$1(item) {
@@ -28728,13 +29527,13 @@
     call$1(m) {
       return A._asIntQ(m) == null;
     },
-    $signature: 131
+    $signature: 130
   };
   A._UnorderedMatches__findPairingInner_closure.prototype = {
     call$1(m) {
       return !this.reserved.contains$1(0, A._asInt(m));
     },
-    $signature: 133
+    $signature: 131
   };
   A._ContainsAll.prototype = {
     describe$1(description) {
@@ -28767,7 +29566,7 @@
     call$1(e) {
       return e != null;
     },
-    $signature: 23
+    $signature: 26
   };
   A._OrderingMatcher.prototype = {
     matches$2(_, item, matchState) {
@@ -28858,34 +29657,34 @@
         }
       }
     },
-    $signature: 135
+    $signature: 132
   };
   A.prettyPrint_prettyPrintImpl_pp.prototype = {
     call$1(child) {
       return this.prettyPrintImpl.call$4(child, this.indent + 2, this._box_0.seen, false);
     },
-    $signature: 136
+    $signature: 133
   };
   A.prettyPrint_prettyPrintImpl_closure.prototype = {
     call$1(string) {
       A._asString(string);
       return B.JSArray_methods.join$1(A.List_List$filled(this.indent + 2, " ", false, type$.String), "") + string;
     },
-    $signature: 19
+    $signature: 24
   };
   A.prettyPrint_prettyPrintImpl_closure0.prototype = {
     call$1(key) {
       var t1 = this.pp;
       return A.S(t1.call$1(key)) + ": " + A.S(t1.call$1(J.$index$asx(this.object, key)));
     },
-    $signature: 137
+    $signature: 81
   };
   A.prettyPrint_prettyPrintImpl_closure1.prototype = {
     call$1(string) {
       A._asString(string);
       return B.JSArray_methods.join$1(A.List_List$filled(this.indent + 2, " ", false, type$.String), "") + string;
     },
-    $signature: 19
+    $signature: 24
   };
   A._MatchesRegExp.prototype = {
     typedMatches$2(item, matchState) {
@@ -28924,7 +29723,7 @@
     call$1(a) {
       return A._asBool(this.valueOrMatcher.call$1(a));
     },
-    $signature: 23
+    $signature: 26
   };
   A.escape_closure.prototype = {
     call$1(match) {
@@ -28936,7 +29735,7 @@
       t1.toString;
       return A._getHexLiteral(t1);
     },
-    $signature: 138
+    $signature: 135
   };
   A.Context.prototype = {
     absolute$15(_, part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11, part12, part13, part14, part15) {
@@ -29183,20 +29982,20 @@
     call$1(part) {
       return A._asString(part) !== "";
     },
-    $signature: 3
+    $signature: 6
   };
   A.Context_split_closure.prototype = {
     call$1(part) {
       return A._asString(part).length !== 0;
     },
-    $signature: 3
+    $signature: 6
   };
   A._validateArgList_closure.prototype = {
     call$1(arg) {
       A._asStringQ(arg);
       return arg == null ? "null" : '"' + arg + '"';
     },
-    $signature: 139
+    $signature: 136
   };
   A.InternalStyle.prototype = {
     getRoot$1(path) {
@@ -29600,7 +30399,7 @@
     call$1(part) {
       return A._asString(part) !== "";
     },
-    $signature: 3
+    $signature: 6
   };
   A.Pool.prototype = {
     request$0(_) {
@@ -29694,20 +30493,20 @@
         t1._closeGroup.close$0(0);
       return t1._closeGroup._future_group$_completer.future;
     },
-    $signature: 140
+    $signature: 137
   };
   A.Pool__onResourceReleaseAllowed_closure.prototype = {
     call$0() {
       return this.zone.run$1$1(this.registered, type$.void);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Pool__runOnRelease_closure.prototype = {
     call$1(value) {
       var t1 = this.$this;
       J.complete$1$z(t1._onReleaseCompleters.removeFirst$0(), new A.PoolResource(t1));
     },
-    $signature: 9
+    $signature: 14
   };
   A.Pool__runOnRelease_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -29715,7 +30514,7 @@
       type$.StackTrace._as(stackTrace);
       this.$this._onReleaseCompleters.removeFirst$0().completeError$2(error, stackTrace);
     },
-    $signature: 42
+    $signature: 45
   };
   A.PoolResource.prototype = {};
   A.openChannel_fail.prototype = {
@@ -29727,7 +30526,7 @@
       if ((t1.future._state & 30) === 0)
         t1.completeError$1(ex);
     },
-    $signature: 141
+    $signature: 138
   };
   A.openChannel_success.prototype = {
     call$1(channel) {
@@ -29738,7 +30537,7 @@
       if ((t1.future._state & 30) === 0)
         t1.complete$1(0, channel);
     },
-    $signature: 142
+    $signature: 139
   };
   A.openChannel_$errorHandler.prototype = {
     call$1(e) {
@@ -29756,13 +30555,13 @@
       t2 = this.entryPoint;
       A.UriChecker_exists(t2).then$1$1(new A.openChannel_$errorHandler_closure0(e, t2, err, t1), type$.Null);
     },
-    $signature: 65
+    $signature: 80
   };
   A.openChannel_$errorHandler_closure.prototype = {
     call$0() {
       return "Connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel_$errorHandler_closure0.prototype = {
     call$1(found) {
@@ -29784,19 +30583,19 @@
       } catch (exception) {
       }
     },
-    $signature: 146
+    $signature: 144
   };
   A.openChannel_$errorHandler__closure.prototype = {
     call$0() {
       return "Unhandled error from Web Worker: " + this.msg + ".";
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel_$errorHandler__closure0.prototype = {
     call$0() {
       return "It seems no Web Worker lives at " + this.entryPoint.toString$0(0) + ".";
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel_closure.prototype = {
     call$1(e) {
@@ -29829,13 +30628,13 @@
         return t1;
       }
     },
-    $signature: 65
+    $signature: 80
   };
   A.openChannel__closure1.prototype = {
     call$0() {
       return "Connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel_closure0.prototype = {
     call$1(e) {
@@ -29861,25 +30660,25 @@
           t2.d$1(0, new A.openChannel__closure0(response));
       }
     },
-    $signature: 59
+    $signature: 60
   };
   A.openChannel__closure.prototype = {
     call$0() {
       return "Connection to Web Worker failed: " + this.error.toString$0(0);
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel__closure0.prototype = {
     call$0() {
       return "Unexpected response: " + A.S(this.response);
     },
-    $signature: 7
+    $signature: 11
   };
   A.openChannel_closure1.prototype = {
     call$0() {
       return "Failed to post connection request " + A.S(this.startRequest) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A._WebChannel.prototype = {
     share$0(_) {
@@ -30011,13 +30810,13 @@
     call$0() {
       return "Failed to post request " + A.S(this.req) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A._WebChannel__inspectAndPostRequest_closure.prototype = {
     call$0() {
       return "Failed to post request " + A.S(this.req) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A._WebChannel__getResponseStream_$sendRequest.prototype = {
     call$0() {
@@ -30032,7 +30831,7 @@
       controller.set$finalLocalValue(A.StreamController_StreamController(t5, new A._WebChannel__getResponseStream_$sendRequest_closure(controller, t4, t2, buffer, t3, t1, _this.post, _this.req, t5), buffer.get$activate(), buffer.get$deactivate(), type$.List_dynamic));
       return J.get$stream$z(controller._readLocal$0());
     },
-    $signature: 150
+    $signature: 148
   };
   A._WebChannel__getResponseStream_$sendRequest_$forwardMessage.prototype = {
     call$1(msg) {
@@ -30040,7 +30839,7 @@
       if (!t1._readLocal$0().get$isClosed())
         J.add$1$ax(t1._readLocal$0(), msg);
     },
-    $signature: 31
+    $signature: 36
   };
   A._WebChannel__getResponseStream_$sendRequest_$forwardError.prototype = {
     call$2(error, st) {
@@ -30050,7 +30849,7 @@
       if (!t1._readLocal$0().get$isClosed())
         t1._readLocal$0().addError$1(A.SquadronException_from(error, st, this.command));
     },
-    $signature: 75
+    $signature: 77
   };
   A._WebChannel__getResponseStream_$sendRequest_$processBufferedItem.prototype = {
     call$1(item) {
@@ -30065,7 +30864,7 @@
         this.$$forwardError.call$2(t1, item._2);
       }
     },
-    $signature: 152
+    $signature: 150
   };
   A._WebChannel__getResponseStream_$sendRequest_$close.prototype = {
     call$0() {
@@ -30100,7 +30899,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A._WebChannel__getResponseStream_$sendRequest_closure.prototype = {
     call$0() {
@@ -30128,7 +30927,7 @@
         }
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A._WebChannel__getResponseStream_$sendRequest__closure.prototype = {
     call$1(e) {
@@ -30146,7 +30945,7 @@
       else
         this.$$forwardError.call$2(ex, null);
     },
-    $signature: 59
+    $signature: 60
   };
   A._WebChannel__getResponseStream_$sendRequest__closure0.prototype = {
     call$1(e) {
@@ -30158,7 +30957,7 @@
       else
         this.$$forwardMessage.call$1(res);
     },
-    $signature: 59
+    $signature: 60
   };
   A._WebChannel_sendRequest_$success.prototype = {
     call$1(data) {
@@ -30185,7 +30984,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 13
+    $signature: 18
   };
   A._WebChannel_sendRequest_$fail.prototype = {
     $call$body$_WebChannel_sendRequest_$fail(ex, st) {
@@ -30223,7 +31022,7 @@
     $defaultValues() {
       return [null];
     },
-    $signature: 45
+    $signature: 47
   };
   A._WebChannel_sendRequest_$done.prototype = {
     call$0() {
@@ -30249,7 +31048,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 1
+    $signature: 2
   };
   A._WebForwardChannel.prototype = {
     _forward$1(e) {
@@ -30289,7 +31088,7 @@
     call$0() {
       return "Failed to post request " + A.S(this.e) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A.EntryPointUri.prototype = {
     release$0(_) {
@@ -30382,13 +31181,13 @@
     call$0() {
       return "Failed to post response " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A._WebWorkerChannel__inspectAndPostResponse_closure.prototype = {
     call$0() {
       return "Failed to post response " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 7
+    $signature: 11
   };
   A.JsWorkerRunnerExt_get_handle_closure.prototype = {
     call$1($event) {
@@ -30399,7 +31198,7 @@
         A.throwExpression(A.SquadronError$_("Invalid worker request", null));
       return this._this.processRequest$1(_this);
     },
-    $signature: 46
+    $signature: 42
   };
   A.DisconnectedChannel.prototype = {
     _disconnectedError$0() {
@@ -30599,7 +31398,7 @@
         t1.close$0(0);
       }
     },
-    $signature: 31
+    $signature: 36
   };
   A.ResultStream_$decodeSingleResponse.prototype = {
     call$1(res) {
@@ -30640,7 +31439,7 @@
       t1 === $ && A.throwLateFieldNI(_s11_);
       t1.close$0(0);
     },
-    $signature: 31
+    $signature: 36
   };
   A.ResultStream_$getStreamId.prototype = {
     call$1(sub) {
@@ -30683,7 +31482,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 156
+    $signature: 154
   };
   A.ResultStream_$onCancel.prototype = {
     call$0() {
@@ -30726,7 +31525,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.ResultStream_$closeWithError.prototype = {
     call$2(error, st) {
@@ -30743,7 +31542,7 @@
         t3.addError$1(t2);
       t1.close$0(0);
     },
-    $signature: 75
+    $signature: 77
   };
   A.ResultStream_$onListen.prototype = {
     call$0() {
@@ -30763,7 +31562,7 @@
         _this.$$closeWithError.call$2(ex, st);
       }
     },
-    $signature: 1
+    $signature: 2
   };
   A.WorkerRunner.prototype = {
     processRequest$1(request) {
@@ -31064,7 +31863,7 @@
       var t1 = r._operations;
       return t1 == null ? null : t1.clear$0(0);
     },
-    $signature: 157
+    $signature: 96
   };
   A.WorkerRunner_processRequest_postError.prototype = {
     call$2(exception, stackTrace) {
@@ -31073,7 +31872,7 @@
     call$1(exception) {
       return this.call$2(exception, null);
     },
-    $signature: 45
+    $signature: 47
   };
   A.WorkerRunner_processRequest_post.prototype = {
     call$1(data) {
@@ -31086,14 +31885,14 @@
         this.postError.call$2(ex, st);
       }
     },
-    $signature: 13
+    $signature: 18
   };
   A.WorkerRunner__getTokenRef_closure.prototype = {
     call$0() {
       var t1 = this.token;
       return new A.CancelationTokenReference(t1.get$id(t1), new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_SquadronCanceledException), type$._AsyncCompleter_SquadronCanceledException), true);
     },
-    $signature: 94
+    $signature: 156
   };
   A.WorkerRunner__pipe_onDone.prototype = {
     call$0() {
@@ -31120,13 +31919,13 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.WorkerRunner__pipe_closure.prototype = {
     call$0() {
       return true;
     },
-    $signature: 83
+    $signature: 76
   };
   A.WorkerRunner__pipe_closure0.prototype = {
     call$0() {
@@ -31138,14 +31937,14 @@
       }
       return t1;
     },
-    $signature: 83
+    $signature: 76
   };
   A.WorkerRunner__pipe_closure1.prototype = {
     call$1(data) {
       if (A.boolConversionCheck(this._box_0.checkToken.call$0()))
         this.post.call$1(data);
     },
-    $signature: 13
+    $signature: 18
   };
   A.WorkerRunner__pipe_closure2.prototype = {
     call$2(ex, st) {
@@ -31155,76 +31954,122 @@
         this.postError.call$2(t1, type$.nullable_StackTrace._as(st));
       }
     },
-    $signature: 41
+    $signature: 43
   };
   A.ConcurrencySettings.prototype = {};
   A.CastConverter.prototype = {
-    v$1$0($T) {
+    value$1$0(_, $T) {
       return A.instantiate1(A.converter_Converter_identity$closure(), $T);
-    },
-    nv$1$0($T) {
-      return A.instantiate1(A.converter_Converter_identity$closure(), $T._eval$1("0?"));
-    },
-    td$1$0($T) {
-      return $T._eval$1("0(@)")._as($.$get$CastConverter__typeDataCastors().$index(0, A.createRuntimeType($T)));
-    },
-    ntd$1$0($T) {
-      return $T._eval$1("0?(@)")._as($.$get$CastConverter__nullableTypeDataCastors().$index(0, A.createRuntimeType($T)));
-    },
-    l$1$1(cast, $T) {
-      $T._eval$1("0(@)?")._as(cast);
-      return A.Converter_isIdentity(cast, $T) ? new A.CastConverter_l_closure($T) : new A.CastConverter_l_closure0(cast, $T);
-    },
-    l$1$0($T) {
-      return this.l$1$1(null, $T);
-    },
-    nl$1$1(cast, $T) {
-      $T._eval$1("0?(@)?")._as(cast);
-      return A.Converter_isIdentity(cast, $T._eval$1("0?")) ? new A.CastConverter_nl_closure($T) : new A.CastConverter_nl_closure0(cast, $T);
-    },
-    nl$1$0($T) {
-      return this.nl$1$1(null, $T);
-    },
-    m$2$2$kcast$vcast(kcast, vcast, $K, $V) {
-      var key;
-      $K._eval$1("0(@)?")._as(kcast);
-      $V._eval$1("0(@)?")._as(vcast);
-      if (A.Converter_isIdentity(kcast, $K) && A.Converter_isIdentity(vcast, $V))
-        return new A.CastConverter_m_closure($K, $V);
-      else {
-        key = kcast == null ? this.v$1$0($K) : kcast;
-        return new A.CastConverter_m_closure0(key, vcast == null ? this.v$1$0($V) : vcast, $K, $V);
-      }
-    },
-    m$2$0($K, $V) {
-      return this.m$2$2$kcast$vcast(null, null, $K, $V);
-    },
-    m$2$1$vcast(vcast, $K, $V) {
-      return this.m$2$2$kcast$vcast(null, vcast, $K, $V);
-    },
-    nm$2$2$kcast$vcast(kcast, vcast, $K, $V) {
-      var key;
-      $K._eval$1("0(@)?")._as(kcast);
-      $V._eval$1("0?(@)?")._as(vcast);
-      if (A.Converter_isIdentity(kcast, $K) && A.Converter_isIdentity(vcast, $V._eval$1("0?")))
-        return new A.CastConverter_nm_closure($K, $V);
-      else {
-        key = kcast == null ? this.v$1$0($K) : kcast;
-        return new A.CastConverter_nm_closure0(key, vcast == null ? this.v$1$0($V) : vcast, $K, $V);
-      }
-    },
-    nm$2$0($K, $V) {
-      return this.nm$2$2$kcast$vcast(null, null, $K, $V);
     }
   };
-  A.CastConverter__td_closure.prototype = {
+  A.Converter0.prototype = {
+    nullable$1$1(cast, $T) {
+      var op;
+      $T._eval$1("0(@)?")._as(cast);
+      op = cast == null ? this.value$1$0(0, $T) : cast;
+      return A.Converter_isIdentity(op, $T) ? this.value$1$0(0, $T._eval$1("0?")) : new A.Converter_nullable_closure(op, $T);
+    },
+    nullable$1$0($T) {
+      return this.nullable$1$1(null, $T);
+    },
+    list$1$1(_, cast, $T) {
+      var op;
+      $T._eval$1("0(@)?")._as(cast);
+      op = cast == null ? this.value$1$0(0, $T) : cast;
+      return A.Converter_isIdentity(op, $T) ? new A.Converter_list_closure($T) : new A.Converter_list_closure0(op, $T);
+    },
+    list$1$0(_, $T) {
+      return this.list$1$1(0, null, $T);
+    },
+    map$2$2$kcast$vcast(_, kcast, vcast, $K, $V) {
+      var kop, vop;
+      $K._eval$1("0(@)?")._as(kcast);
+      $V._eval$1("0(@)?")._as(vcast);
+      kop = kcast == null ? this.value$1$0(0, $K) : kcast;
+      vop = vcast == null ? this.value$1$0(0, $V) : vcast;
+      if (A.Converter_isIdentity(kop, $K) && A.Converter_isIdentity(vop, $V))
+        return new A.Converter_map_closure($K, $V);
+      else
+        return new A.Converter_map_closure0(kop, vop, $K, $V);
+    },
+    map$2$0(_, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, null, $K, $V);
+    },
+    map$2$1$vcast(_, vcast, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, vcast, $K, $V);
+    },
+    typedData$1$0($T) {
+      return $T._eval$1("0(@)")._as($.$get$Converter__typeDataCastors().$index(0, A.createRuntimeType($T)));
+    }
+  };
+  A.Converter_nullable_closure.prototype = {
+    call$1($$) {
+      return $$ == null ? null : this.op.call$1($$);
+    },
+    $signature() {
+      return this.T._eval$1("0?(@)");
+    }
+  };
+  A.Converter_list_closure.prototype = {
+    call$1(x) {
+      var t1 = A.Converter_toList(x);
+      return new A.CastList(t1, A._arrayInstanceType(t1)._eval$1("@<1>")._bind$1(this.T)._eval$1("CastList<1,2>"));
+    },
+    $signature() {
+      return this.T._eval$1("List<0>(@)");
+    }
+  };
+  A.Converter_list_closure0.prototype = {
+    call$1(x) {
+      var t1 = A.Converter_toList(x),
+        t2 = this.T,
+        t3 = A._arrayInstanceType(t1),
+        t4 = t3._eval$1("@<1>")._bind$1(t2)._eval$1("MappedListIterable<1,2>");
+      return A.List_List$of(new A.MappedListIterable(t1, t3._bind$1(t2)._eval$1("1(2)")._as(this.op), t4), true, t4._eval$1("ListIterable.E"));
+    },
+    $signature() {
+      return this.T._eval$1("List<0>(@)");
+    }
+  };
+  A.Converter_map_closure.prototype = {
+    call$1(x) {
+      return J.cast$2$0$ax(type$.Map_dynamic_dynamic._as(x), this.K, this.V);
+    },
+    $signature() {
+      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2>(@)");
+    }
+  };
+  A.Converter_map_closure0.prototype = {
+    call$1(x) {
+      var _this = this,
+        t1 = _this.K,
+        t2 = _this.V;
+      return J.map$2$1$ax(type$.Map_dynamic_dynamic._as(x), new A.Converter_map__closure(_this.kop, _this.vop, t1, t2), t1, t2);
+    },
+    $signature() {
+      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2>(@)");
+    }
+  };
+  A.Converter_map__closure.prototype = {
+    call$2(k, v) {
+      var _this = this;
+      return new A.MapEntry(_this.kop.call$1(k), _this.vop.call$1(v), _this.K._eval$1("@<0>")._bind$1(_this.V)._eval$1("MapEntry<1,2>"));
+    },
+    $signature() {
+      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("MapEntry<1,2>(@,@)");
+    }
+  };
+  A.Converter__td_closure.prototype = {
     call$1(x) {
       var t1 = this.T,
         t2 = t1._is(x) ? x : null;
       if (t2 == null) {
-        t1 = A.CastConverter__buffer(x, t1);
+        if (x == null)
+          t1 = null;
+        else
+          t1 = type$.ByteBuffer._is(x) ? x : J.get$buffer$x(type$.TypedData._as(t1._as(x)));
         t1.toString;
-        t1 = this.b.call$1(t1);
+        t1 = this.view.call$1(t1);
       } else
         t1 = t2;
       return t1;
@@ -31233,157 +32078,443 @@
       return this.T._eval$1("0(@)");
     }
   };
-  A.CastConverter__ntd_closure.prototype = {
+  A.InPlaceConverter.prototype = {
+    value$1$0(_, $T) {
+      return this.converter.value$1$0(0, $T);
+    },
+    list$1$1(_, cast, $T) {
+      var op;
+      $T._eval$1("0(@)?")._as(cast);
+      op = cast == null ? this.converter.value$1$0(0, $T) : cast;
+      return A.Converter_isIdentity(op, $T) ? this.converter.list$1$1(0, op, $T) : A.InPlaceConverter__toList(op, $T);
+    },
+    list$1$0(_, $T) {
+      return this.list$1$1(0, null, $T);
+    },
+    map$2$2$kcast$vcast(_, kcast, vcast, $K, $V) {
+      var t1, kop, vop;
+      $V._eval$1("0(@)?")._as(vcast);
+      t1 = this.converter;
+      kop = t1.value$1$0(0, $K);
+      vop = vcast == null ? t1.value$1$0(0, $V) : vcast;
+      return !A.Converter_isIdentity(kop, $K) || A.Converter_isIdentity(vop, $V) ? t1.map$2$2$kcast$vcast(0, kop, vop, $K, $V) : this._toMap$2$1(vop, $K, $V);
+    },
+    map$2$0(_, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, null, $K, $V);
+    },
+    map$2$1$vcast(_, vcast, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, vcast, $K, $V);
+    },
+    _toMap$2$1(vcast, $K, $V) {
+      return new A.InPlaceConverter__toMap_closure($V._eval$1("0(@)")._as(vcast), $K, $V);
+    }
+  };
+  A.InPlaceConverter__toList_closure.prototype = {
     call$1(x) {
-      var t1, t2;
-      if (x == null)
-        t1 = null;
-      else {
-        t1 = this.T;
-        t2 = t1._is(x) ? x : null;
-        if (t2 == null) {
-          t1 = A.CastConverter__buffer(x, t1);
-          t1.toString;
-          t1 = this.b.call$1(t1);
-        } else
-          t1 = t2;
+      var i, t1, v,
+        y = A.Converter_toList(x);
+      for (i = y.length - 1, t1 = this.cast; i >= 0; --i) {
+        if (!(i < y.length))
+          return A.ioore(y, i);
+        v = y[i];
+        B.JSArray_methods.$indexSet(y, i, v == null ? v : t1.call$1(v));
       }
+      return new A.CastList(y, A._arrayInstanceType(y)._eval$1("@<1>")._bind$1(this.T)._eval$1("CastList<1,2>"));
+    },
+    $signature() {
+      return this.T._eval$1("List<0>(@)");
+    }
+  };
+  A.InPlaceConverter__toMap_closure.prototype = {
+    call$1(x) {
+      var i, k, v,
+        t1 = A._instanceType(x)._eval$1("LinkedHashMapKeyIterable<1>"),
+        keys = A.List_List$of(new A.LinkedHashMapKeyIterable(x, t1), true, t1._eval$1("Iterable.E"));
+      for (i = keys.length - 1, t1 = this.vcast; i >= 0; --i) {
+        k = keys[i];
+        v = x.$index(0, k);
+        if (v != null)
+          x.$indexSet(0, k, t1.call$1(v));
+      }
+      return x.cast$2$0(x, this.K, this.V);
+    },
+    $signature() {
+      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2>(@)");
+    }
+  };
+  A.LazyInPlaceConverter.prototype = {
+    value$1$0(_, $T) {
+      return this.converter.value$1$0(0, $T);
+    },
+    list$1$1(_, cast, $T) {
+      var op;
+      $T._eval$1("0(@)?")._as(cast);
+      op = cast == null ? this.converter.value$1$0(0, $T) : cast;
+      return A.Converter_isIdentity(op, $T) ? this.converter.list$1$1(0, op, $T) : A.LazyInPlaceConverter__toList(op, $T);
+    },
+    list$1$0(_, $T) {
+      return this.list$1$1(0, null, $T);
+    },
+    map$2$2$kcast$vcast(_, kcast, vcast, $K, $V) {
+      var t1, kop, vop;
+      $V._eval$1("0(@)?")._as(vcast);
+      t1 = this.converter;
+      kop = t1.value$1$0(0, $K);
+      vop = vcast == null ? t1.value$1$0(0, $V) : vcast;
+      return !A.Converter_isIdentity(kop, $K) || A.Converter_isIdentity(vop, $V) ? t1.map$2$2$kcast$vcast(0, kop, vop, $K, $V) : A.LazyInPlaceConverter__toMap(vop, $K, $V);
+    },
+    map$2$0(_, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, null, $K, $V);
+    },
+    map$2$1$vcast(_, vcast, $K, $V) {
+      return this.map$2$2$kcast$vcast(0, null, vcast, $K, $V);
+    }
+  };
+  A.LazyInPlaceConverter__toList_closure.prototype = {
+    call$1(x) {
+      return new A._LazyInPlaceList(x, this.cast, this.T._eval$1("_LazyInPlaceList<0>"));
+    },
+    $signature() {
+      return this.T._eval$1("_LazyInPlaceList<0>(@)");
+    }
+  };
+  A.LazyInPlaceConverter__toMap_closure.prototype = {
+    call$1(x) {
+      return new A._LazyInPlaceMap(x, this.vcast, this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("_LazyInPlaceMap<1,2>"));
+    },
+    $signature() {
+      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("_LazyInPlaceMap<1,2>(@)");
+    }
+  };
+  A._LazyInPlaceList.prototype = {
+    _lazy_in_place_converter$_get$1(_, idx) {
+      var v, _this = this,
+        t1 = _this._data;
+      if (!(idx >= 0 && idx < t1.length))
+        return A.ioore(t1, idx);
+      v = t1[idx];
+      if (v != null && !_this.$ti._precomputed1._is(v)) {
+        v = _this._cast.call$1(v);
+        B.JSArray_methods.$indexSet(t1, idx, v);
+      }
+      return _this.$ti._precomputed1._as(v);
+    },
+    _iterate$0() {
+      return new A._SyncStarIterable(this._iterate$body$_LazyInPlaceList(), this.$ti._eval$1("_SyncStarIterable<1>"));
+    },
+    _iterate$body$_LazyInPlaceList() {
+      var $async$self = this;
+      return function() {
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, i;
+        return function $async$_iterate$0($async$iterator, $async$errorCode, $async$result) {
+          if ($async$errorCode === 1) {
+            $async$currentError = $async$result;
+            $async$goto = $async$handler;
+          }
+          while (true)
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                t1 = $async$self._data, i = 0;
+              case 2:
+                // for condition
+                if (!(i < t1.length)) {
+                  // goto after for
+                  $async$goto = 4;
+                  break;
+                }
+                $async$goto = 5;
+                return $async$iterator._async$_current = $async$self._lazy_in_place_converter$_get$1(0, i), 1;
+              case 5:
+                // after yield
+              case 3:
+                // for update
+                ++i;
+                // goto for condition
+                $async$goto = 2;
+                break;
+              case 4:
+                // after for
+                // implicit return
+                return 0;
+              case 1:
+                // rethrow
+                return $async$iterator._datum = $async$currentError, 3;
+            }
+        };
+      };
+    },
+    get$length(_) {
+      return this._data.length;
+    },
+    $index(_, index) {
+      return this._lazy_in_place_converter$_get$1(0, index);
+    },
+    $indexSet(_, index, value) {
+      this.$ti._precomputed1._as(value);
+      B.JSArray_methods.$indexSet(this._data, index, value);
+      return value;
+    },
+    any$1(_, test) {
+      this.$ti._eval$1("bool(1)")._as(test);
+      return this._iterate$0().any$1(0, test);
+    },
+    contains$1(_, element) {
+      return this._iterate$0().any$1(0, new A._LazyInPlaceList_contains_closure(this, element));
+    },
+    elementAt$1(_, index) {
+      return this._lazy_in_place_converter$_get$1(0, index);
+    },
+    every$1(_, test) {
+      this.$ti._eval$1("bool(1)")._as(test);
+      return this._iterate$0().every$1(0, test);
+    },
+    get$isEmpty(_) {
+      return this._data.length === 0;
+    },
+    get$isNotEmpty(_) {
+      return this._data.length !== 0;
+    },
+    get$iterator(_) {
+      var t1 = this._iterate$0();
+      return new A._SyncStarIterator(t1._outerHelper(), t1.$ti._eval$1("_SyncStarIterator<1>"));
+    },
+    map$1$1(_, toElement, $U) {
+      var t1, t2;
+      this.$ti._bind$1($U)._eval$1("1(2)")._as(toElement);
+      t1 = this._iterate$0();
+      t2 = t1.$ti;
+      return A.MappedIterable_MappedIterable(t1, t2._bind$1($U)._eval$1("1(Iterable.E)")._as(toElement), t2._eval$1("Iterable.E"), $U);
+    },
+    map$1(_, toElement) {
+      return this.map$1$1(0, toElement, type$.dynamic);
+    },
+    skip$1(_, count) {
+      return new A._SyncStarIterable(this.skip$body$_LazyInPlaceList(0, count), this.$ti._eval$1("_SyncStarIterable<1>"));
+    },
+    skip$body$_LazyInPlaceList($async$_, $async$count) {
+      var $async$self = this;
+      return function() {
+        var _ = $async$_,
+          count = $async$count;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, t1, i;
+        return function $async$skip$1($async$iterator, $async$errorCode, $async$result) {
+          if ($async$errorCode === 1) {
+            $async$currentError = $async$result;
+            $async$goto = $async$handler;
+          }
+          while (true)
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                t1 = $async$self._data, i = count;
+              case 2:
+                // for condition
+                if (!(i < t1.length)) {
+                  // goto after for
+                  $async$goto = 4;
+                  break;
+                }
+                $async$goto = 5;
+                return $async$iterator._async$_current = $async$self._lazy_in_place_converter$_get$1(0, i), 1;
+              case 5:
+                // after yield
+              case 3:
+                // for update
+                ++i;
+                // goto for condition
+                $async$goto = 2;
+                break;
+              case 4:
+                // after for
+                // implicit return
+                return 0;
+              case 1:
+                // rethrow
+                return $async$iterator._datum = $async$currentError, 3;
+            }
+        };
+      };
+    },
+    take$1(_, count) {
+      var t1 = this._iterate$0();
+      return A.TakeIterable_TakeIterable(t1, count, t1.$ti._eval$1("Iterable.E"));
+    },
+    toList$1$growable(_, growable) {
+      var t1 = this._iterate$0();
+      return A.List_List$of(t1, growable, t1.$ti._eval$1("Iterable.E"));
+    },
+    toList$0(_) {
+      return this.toList$1$growable(0, true);
+    },
+    toSet$0(_) {
+      var t1 = this._iterate$0();
+      return A.LinkedHashSet_LinkedHashSet$of(t1, t1.$ti._eval$1("Iterable.E"));
+    },
+    where$1(_, test) {
+      var t1, t2;
+      this.$ti._eval$1("bool(1)")._as(test);
+      t1 = this._iterate$0();
+      t2 = t1.$ti;
+      return new A.WhereIterable(t1, t2._eval$1("bool(Iterable.E)")._as(test), t2._eval$1("WhereIterable<Iterable.E>"));
+    },
+    whereType$1$0(_, $U) {
+      return new A.WhereTypeIterable(this._iterate$0(), $U._eval$1("WhereTypeIterable<0>"));
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  A._LazyInPlaceList_contains_closure.prototype = {
+    call$1(v) {
+      return J.$eq$(this.element, this.$this.$ti._precomputed1._as(v));
+    },
+    $signature() {
+      return this.$this.$ti._eval$1("bool(1)");
+    }
+  };
+  A._LazyInPlaceMap.prototype = {
+    _lazy_in_place_converter$_get$1(_, key) {
+      var _this = this,
+        t1 = _this._data,
+        v = t1.$index(0, key);
+      if (v != null && !_this.$ti._rest[1]._is(v)) {
+        v = _this._vcast.call$1(v);
+        t1.$indexSet(0, key, v);
+      }
+      return _this.$ti._eval$1("2?")._as(v);
+    },
+    _forceCast$0() {
+      var i,
+        t1 = this._data,
+        t2 = A._instanceType(t1)._eval$1("LinkedHashMapKeyIterable<1>"),
+        keys = A.List_List$of(new A.LinkedHashMapKeyIterable(t1, t2), true, t2._eval$1("Iterable.E"));
+      for (i = keys.length - 1; i >= 0; --i)
+        this._lazy_in_place_converter$_get$1(0, keys[i]);
       return t1;
     },
-    $signature() {
-      return this.T._eval$1("0?(@)");
-    }
-  };
-  A.CastConverter_l_closure.prototype = {
-    call$1(x) {
-      return new A.CastList(x, A._arrayInstanceType(x)._eval$1("@<1>")._bind$1(this.T)._eval$1("CastList<1,2>"));
+    $index(_, key) {
+      return this._lazy_in_place_converter$_get$1(0, key);
     },
-    $signature() {
-      return this.T._eval$1("List<0>(@)");
-    }
-  };
-  A.CastConverter_l_closure0.prototype = {
-    call$1(x) {
-      var t2, t3, t4,
-        t1 = this.cast;
-      t1.toString;
-      t2 = this.T;
-      t3 = A._arrayInstanceType(x);
-      t4 = t3._eval$1("@<1>")._bind$1(t2)._eval$1("MappedListIterable<1,2>");
-      return A.List_List$of(new A.MappedListIterable(x, t3._bind$1(t2)._eval$1("1(2)")._as(t1), t4), true, t4._eval$1("ListIterable.E"));
+    $indexSet(_, key, value) {
+      var t1 = this.$ti;
+      t1._precomputed1._as(key);
+      t1._rest[1]._as(value);
+      this._data.$indexSet(0, key, value);
+      return value;
     },
-    $signature() {
-      return this.T._eval$1("List<0>(@)");
-    }
-  };
-  A.CastConverter_nl_closure.prototype = {
-    call$1(x) {
-      return new A.CastList(x, A._arrayInstanceType(x)._eval$1("@<1>")._bind$1(this.T._eval$1("0?"))._eval$1("CastList<1,2>"));
+    cast$2$0(_, RK, RV) {
+      var t1 = this._forceCast$0();
+      return t1.cast$2$0(t1, RK, RV);
     },
-    $signature() {
-      return this.T._eval$1("List<0?>(@)");
-    }
-  };
-  A.CastConverter_nl_closure0.prototype = {
-    call$1(x) {
-      var t2, t3, t4,
-        t1 = this.cast;
-      t1.toString;
-      t2 = this.T._eval$1("0?");
-      t3 = A._arrayInstanceType(x);
-      t4 = t3._eval$1("@<1>")._bind$1(t2)._eval$1("MappedListIterable<1,2>");
-      return A.List_List$of(new A.MappedListIterable(x, t3._bind$1(t2)._eval$1("1(2)")._as(t1), t4), true, t4._eval$1("ListIterable.E"));
+    containsKey$1(_, key) {
+      return this._data.containsKey$1(0, key);
     },
-    $signature() {
-      return this.T._eval$1("List<0?>(@)");
-    }
-  };
-  A.CastConverter_m_closure.prototype = {
-    call$1(x) {
-      return J.cast$2$0$ax(type$.Map_dynamic_dynamic._as(x), this.K, this.V);
+    forEach$1(_, action) {
+      var t2, t3, k, t4,
+        t1 = this.$ti;
+      t1._eval$1("~(1,2)")._as(action);
+      for (t2 = this._data, t2 = A.LinkedHashMapKeyIterator$(t2, t2._modifications, A._instanceType(t2)._precomputed1), t3 = t1._precomputed1, t1 = t1._rest[1]; t2.moveNext$0();) {
+        k = t2.__js_helper$_current;
+        t3._as(k);
+        t4 = this._lazy_in_place_converter$_get$1(0, k);
+        action.call$2(k, t4 == null ? t1._as(t4) : t4);
+      }
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2>(@)");
-    }
-  };
-  A.CastConverter_m_closure0.prototype = {
-    call$1(x) {
-      var _this = this,
-        t1 = _this.K,
-        t2 = _this.V;
-      return J.map$2$1$ax(type$.Map_dynamic_dynamic._as(x), new A.CastConverter_m__closure(_this.key, _this.value, t1, t2), t1, t2);
+    get$isEmpty(_) {
+      return this._data._length === 0;
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2>(@)");
-    }
-  };
-  A.CastConverter_m__closure.prototype = {
-    call$2(k, v) {
-      var _this = this;
-      return new A.MapEntry(_this.key.call$1(k), _this.value.call$1(v), _this.K._eval$1("@<0>")._bind$1(_this.V)._eval$1("MapEntry<1,2>"));
+    get$isNotEmpty(_) {
+      return this._data._length !== 0;
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("MapEntry<1,2>(@,@)");
-    }
-  };
-  A.CastConverter_nm_closure.prototype = {
-    call$1(x) {
-      return x.cast$2$0(x, this.K, this.V._eval$1("0?"));
+    get$keys(_) {
+      var t1 = this._data,
+        t2 = A._instanceType(t1)._eval$1("LinkedHashMapKeyIterable<1>");
+      return A.CastIterable_CastIterable(new A.LinkedHashMapKeyIterable(t1, t2), t2._eval$1("Iterable.E"), this.$ti._precomputed1);
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2?>(@)");
-    }
-  };
-  A.CastConverter_nm_closure0.prototype = {
-    call$1(x) {
-      var _this = this,
-        t1 = _this.K,
-        t2 = _this.V;
-      return x.map$2$1(x, new A.CastConverter_nm__closure(_this.key, _this.value, t1, t2), t1, t2._eval$1("0?"));
+    get$length(_) {
+      return this._data._length;
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("Map<1,2?>(@)");
-    }
-  };
-  A.CastConverter_nm__closure.prototype = {
-    call$2(k, v) {
-      var _this = this;
-      return new A.MapEntry(_this.key.call$1(k), _this.value.call$1(v), _this.K._eval$1("@<0>")._bind$1(_this.V._eval$1("0?"))._eval$1("MapEntry<1,2>"));
+    map$2$1(_, convert, K2, V2) {
+      var r, t2, t3, keys, i, k, e,
+        t1 = this.$ti;
+      t1._bind$1(K2)._bind$1(V2)._eval$1("MapEntry<1,2>(3,4)")._as(convert);
+      r = A.LinkedHashMap_LinkedHashMap$_empty(K2, V2);
+      t2 = this._data;
+      t3 = A._instanceType(t2)._eval$1("LinkedHashMapKeyIterable<1>");
+      keys = A.List_List$of(new A.LinkedHashMapKeyIterable(t2, t3), true, t3._eval$1("Iterable.E"));
+      for (i = keys.length - 1, t2 = t1._precomputed1, t1 = t1._rest[1]; i >= 0; --i) {
+        k = keys[i];
+        t2._as(k);
+        t3 = this._lazy_in_place_converter$_get$1(0, k);
+        e = convert.call$2(k, t3 == null ? t1._as(t3) : t3);
+        r.$indexSet(0, e.key, e.value);
+      }
+      return r;
     },
-    $signature() {
-      return this.K._eval$1("@<0>")._bind$1(this.V)._eval$1("MapEntry<1,2?>(@,@)");
-    }
+    map$1(_, convert) {
+      var t1 = type$.dynamic;
+      return this.map$2$1(0, convert, t1, t1);
+    },
+    remove$1(_, key) {
+      return this.$ti._eval$1("2?")._as(this._data.remove$1(0, key));
+    },
+    get$values(_) {
+      return new A._SyncStarIterable(this.values$body$_LazyInPlaceMap(0), this.$ti._eval$1("_SyncStarIterable<2>"));
+    },
+    values$body$_LazyInPlaceMap($async$_) {
+      var $async$self = this;
+      return function() {
+        var _ = $async$_;
+        var $async$goto = 0, $async$handler = 1, $async$currentError, i, t1, t2, keys;
+        return function $async$get$values($async$iterator, $async$errorCode, $async$result) {
+          if ($async$errorCode === 1) {
+            $async$currentError = $async$result;
+            $async$goto = $async$handler;
+          }
+          while (true)
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                t1 = $async$self._data;
+                t2 = A._instanceType(t1)._eval$1("LinkedHashMapKeyIterable<1>");
+                keys = A.List_List$of(new A.LinkedHashMapKeyIterable(t1, t2), true, t2._eval$1("Iterable.E"));
+                t1 = $async$self.$ti._rest[1], i = 0;
+              case 2:
+                // for condition
+                if (!(i < keys.length)) {
+                  // goto after for
+                  $async$goto = 4;
+                  break;
+                }
+                t2 = $async$self._lazy_in_place_converter$_get$1(0, keys[i]);
+                $async$goto = 5;
+                return $async$iterator._async$_current = t2 == null ? t1._as(t2) : t2, 1;
+              case 5:
+                // after yield
+              case 3:
+                // for update
+                ++i;
+                // goto for condition
+                $async$goto = 2;
+                break;
+              case 4:
+                // after for
+                // implicit return
+                return 0;
+              case 1:
+                // rethrow
+                return $async$iterator._datum = $async$currentError, 3;
+            }
+        };
+      };
+    },
+    $isMap: 1
   };
   A.NumConverter.prototype = {
-    v$1$0($T) {
+    value$1$0(_, $T) {
       var t1 = $T._eval$1("0(@)?")._as($.$get$NumConverter__numCastors().$index(0, A.createRuntimeType($T)));
-      return t1 == null ? this.super$CastConverter$v($T) : t1;
-    },
-    nv$1$0($T) {
-      var t1 = $T._eval$1("0?(@)?")._as($.$get$NumConverter__nullableNumCastors().$index(0, A.createRuntimeType($T)));
-      return t1 == null ? this.super$CastConverter$nv($T) : t1;
-    },
-    l$1$1(cast, $T) {
-      $T._eval$1("0(@)?")._as(cast);
-      return this.super$CastConverter$l(cast == null ? $T._eval$1("0(@)")._as($.$get$NumConverter__numCastors().$index(0, A.createRuntimeType($T))) : cast, $T);
-    },
-    l$1$0($T) {
-      return this.l$1$1(null, $T);
-    },
-    nl$1$0($T) {
-      var t1 = $T._eval$1("0?(@)")._as($.$get$NumConverter__nullableNumCastors().$index(0, A.createRuntimeType($T)));
-      return this.super$CastConverter$nl(t1, $T);
-    },
-    m$2$1$vcast(vcast, $K, $V) {
-      var t2, t3,
-        t1 = $V._eval$1("0(@)?");
-      t1._as(vcast);
-      t2 = $.$get$NumConverter__numCastors();
-      t3 = $K._eval$1("0(@)?")._as(t2.$index(0, A.createRuntimeType($K)));
-      return this.super$CastConverter$m(t3, vcast == null ? t1._as(t2.$index(0, A.createRuntimeType($V))) : vcast, $K, $V);
-    },
-    m$2$0($K, $V) {
-      return this.m$2$1$vcast(null, $K, $V);
+      return t1 == null ? this.super$CastConverter$value(0, $T) : t1;
     }
   };
   A.ExceptionManager.prototype = {
@@ -31431,7 +32562,7 @@
       type$.CanceledException._as(e);
       return A.SquadronCanceledException_SquadronCanceledException$from(this.tokenId, e, e.get$stackTrace());
     },
-    $signature: 163
+    $signature: 158
   };
   A.SquadronCanceledExceptions.prototype = {
     get$innerExceptions() {
@@ -31465,13 +32596,13 @@
       type$.SquadronCanceledException._as(e);
       return e.get$message(e);
     },
-    $signature: 166
+    $signature: 162
   };
   A.SquadronCanceledExceptions_serialize_closure.prototype = {
     call$1(e) {
       return type$.SquadronCanceledException._as(e).serialize$0();
     },
-    $signature: 168
+    $signature: 165
   };
   A.SquadronError.prototype = {
     serialize$0() {
@@ -31562,29 +32693,6 @@
     }
   };
   A._LocalWorker_Object_Releasable.prototype = {};
-  A.SquadronMarshalerExt_marshaler_closure.prototype = {
-    call$1(x) {
-      var t1 = $.$get$Squadron_converter().v$1$0(this.T);
-      return type$.BigInt._as(t1.call$1(x)).toString$0(0);
-    },
-    $signature() {
-      return this.S._eval$1("0(@)");
-    }
-  };
-  A.SquadronMarshalerExt_unmarshaler_closure.prototype = {
-    call$1(x) {
-      var result,
-        t1 = $.$get$Squadron_converter().v$1$0(this.S);
-      t1 = A._asString(t1.call$1(x));
-      result = A._BigIntImpl__tryParse(t1, null);
-      if (result == null)
-        A.throwExpression(A.FormatException$("Could not parse BigInt", t1, null));
-      return result;
-    },
-    $signature() {
-      return this.T._eval$1("0(@)");
-    }
-  };
   A.PoolWorker.prototype = {
     run$1(task) {
       var _this = this;
@@ -31600,7 +32708,7 @@
       if (++t1._capacity === t1.__pool_worker$_maxWorkload)
         t1._lastStart = null;
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerStreamTask.prototype = {
     WorkerStreamTask$2(_producer, counter, $T, $W) {
@@ -31761,7 +32869,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.WorkerStreamTask__closure.prototype = {
     call$1(_) {
@@ -31775,7 +32883,7 @@
     call$1(_) {
       return true;
     },
-    $signature: 86
+    $signature: 75
   };
   A.WorkerTask.prototype = {
     get$isFinished() {
@@ -31956,13 +33064,6 @@
     get$exceptionManager() {
       var t1 = this._worker_pool$_exceptionManager;
       return t1;
-    },
-    get$maxWorkload() {
-      var t1 = this._deadWorkerStats,
-        t2 = this._workers,
-        t3 = A._arrayInstanceType(t2),
-        t4 = A._arrayInstanceType(t1);
-      return A.FollowedByIterable_FollowedByIterable$firstEfficient(t1, t4._eval$1("Iterable<1>")._as(new A.MappedListIterable(t2, t3._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure()), t3._eval$1("MappedListIterable<1,WorkerStat>"))), t4._precomputed1).fold$1$2(0, 0, new A.WorkerPool_maxWorkload_closure(), type$.int);
     },
     _getProvisionNeeds$1(workload) {
       var t1 = this.concurrencySettings,
@@ -32179,20 +33280,11 @@
       return this.cancel$2(0, task, null);
     }
   };
-  A.WorkerPool_maxWorkload_closure.prototype = {
-    call$2(p, s) {
-      var t1;
-      A._asInt(p);
-      t1 = type$.WorkerStat._as(s).maxWorkload;
-      return p >= t1 ? p : t1;
-    },
-    $signature: 50
-  };
   A.WorkerPool__provisionWorkers_closure.prototype = {
     call$0() {
       --this.$this._startingWorkers;
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerPool__provisionWorkers_closure0.prototype = {
     call$1(_) {
@@ -32203,7 +33295,7 @@
       B.JSArray_methods.add$1(t1._workers, t2);
       t1._notify$2$removed(t2.worker, false);
     },
-    $signature: 192
+    $signature: 169
   };
   A.WorkerPool__provisionWorkers_closure1.prototype = {
     call$2(ex, st) {
@@ -32212,7 +33304,7 @@
       t1 = ex == null ? type$.Object._as(ex) : ex;
       B.JSArray_methods.add$1(this.errors, A.SquadronException_from(t1, type$.nullable_StackTrace._as(st), null));
     },
-    $signature: 41
+    $signature: 43
   };
   A.WorkerPool__provisionWorkers_closure2.prototype = {
     call$0() {
@@ -32231,31 +33323,31 @@
           throw A.wrapException(t1);
         }
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerPool__provisionWorkers__closure.prototype = {
     call$1(e) {
       return type$.SquadronError._is(e);
     },
-    $signature: 12
+    $signature: 15
   };
   A.WorkerPool__provisionWorkers__closure0.prototype = {
     call$0() {
       return null;
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerPool__provisionWorkers__closure1.prototype = {
     call$1(e) {
       return e instanceof A.WorkerException;
     },
-    $signature: 12
+    $signature: 15
   };
   A.WorkerPool__provisionWorkers__closure2.prototype = {
     call$0() {
       return null;
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerPool_stop_closure.prototype = {
     call$1(w) {
@@ -32272,13 +33364,13 @@
     call$1(t) {
       return type$.WorkerTask_dynamic_Worker._as(t).__worker_task$_canceled != null;
     },
-    $signature: 88
+    $signature: 74
   };
   A.WorkerPool__schedule_closure0.prototype = {
     call$1(_) {
       return this.$this._dispatchTasks$0();
     },
-    $signature: 93
+    $signature: 72
   };
   A.WorkerPool__schedule_closure1.prototype = {
     call$1(ex) {
@@ -32286,7 +33378,7 @@
       for (t1 = this.$this._worker_pool$_queue; !t1.get$isEmpty(0);)
         J.cancel$1$z(t1.removeFirst$0(), "Provisionning workers failed");
     },
-    $signature: 9
+    $signature: 14
   };
   A.WorkerPool__dispatchTasks_closure.prototype = {
     call$0() {
@@ -32294,13 +33386,13 @@
       t1._executing.remove$1(0, this.task);
       t1._schedule$0();
     },
-    $signature: 2
+    $signature: 1
   };
   A.WorkerPool_cancel_closure.prototype = {
     call$1(t) {
       return type$.WorkerTask_dynamic_Worker._as(t) === this.task;
     },
-    $signature: 88
+    $signature: 74
   };
   A._WorkerPool_Object_Releasable.prototype = {};
   A.SquadronPlatformType.prototype = {
@@ -32638,7 +33730,7 @@
       if ((t2.future._state & 30) === 0)
         t2.completeError$1(t1);
     },
-    $signature: 77
+    $signature: 79
   };
   A.Worker_stream_closure.prototype = {
     call$1(ex) {
@@ -32664,7 +33756,7 @@
       if (t1 != null)
         t1.cancelToken$1(_this.squadronToken);
     },
-    $signature: 77
+    $signature: 79
   };
   A.Worker_stream_closure0.prototype = {
     call$0() {
@@ -32767,7 +33859,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.Worker_stream__closure.prototype = {
     call$2(ex, st) {
@@ -32780,14 +33872,14 @@
         t1.addError$1(t2);
       return null;
     },
-    $signature: 33
+    $signature: 35
   };
   A._Worker_Object_Releasable.prototype = {};
   A.LogEventSerialization__getLevel_closure.prototype = {
     call$1(l) {
       return type$.Level._as(l).value === this.value;
     },
-    $signature: 227
+    $signature: 211
   };
   A.Chain.prototype = {
     foldFrames$2$terse(predicate, terse) {
@@ -32824,25 +33916,25 @@
       B.JSArray_methods.addAll$1(t2, A.SubListIterable$(t1, 1, null, A._arrayInstanceType(t1)._precomputed1));
       return new A.Chain(A.List_List$unmodifiable(t2, type$.Trace));
     },
-    $signature: 37
+    $signature: 44
   };
   A.Chain_Chain$forTrace_closure.prototype = {
     call$0() {
       return A.Chain_Chain$parse(this.trace.toString$0(0));
     },
-    $signature: 37
+    $signature: 44
   };
   A.Chain_Chain$parse_closure.prototype = {
     call$1(line) {
       return A._asString(line).length !== 0;
     },
-    $signature: 3
+    $signature: 6
   };
   A.Chain_foldFrames_closure.prototype = {
     call$1(trace) {
       return type$.Trace._as(trace).foldFrames$2$terse(this.predicate, this.terse);
     },
-    $signature: 97
+    $signature: 227
   };
   A.Chain_foldFrames_closure0.prototype = {
     call$1(trace) {
@@ -32855,13 +33947,13 @@
         return false;
       return J.get$line$z(B.JSArray_methods.get$single(trace.get$frames())) != null;
     },
-    $signature: 98
+    $signature: 97
   };
   A.Chain_toTrace_closure.prototype = {
     call$1(trace) {
       return type$.Trace._as(trace).get$frames();
     },
-    $signature: 99
+    $signature: 98
   };
   A.Chain_toString_closure0.prototype = {
     call$1(trace) {
@@ -32869,14 +33961,14 @@
         t2 = A._arrayInstanceType(t1);
       return new A.MappedListIterable(t1, t2._eval$1("int(1)")._as(new A.Chain_toString__closure0()), t2._eval$1("MappedListIterable<1,int>")).fold$1$2(0, 0, B.CONSTANT, type$.int);
     },
-    $signature: 100
+    $signature: 99
   };
   A.Chain_toString__closure0.prototype = {
     call$1(frame) {
       type$.Frame._as(frame);
       return frame.get$location(frame).length;
     },
-    $signature: 87
+    $signature: 71
   };
   A.Chain_toString_closure.prototype = {
     call$1(trace) {
@@ -32884,14 +33976,14 @@
         t2 = A._arrayInstanceType(t1);
       return new A.MappedListIterable(t1, t2._eval$1("String(1)")._as(new A.Chain_toString__closure(this.longest)), t2._eval$1("MappedListIterable<1,String>")).join$0(0);
     },
-    $signature: 102
+    $signature: 101
   };
   A.Chain_toString__closure.prototype = {
     call$1(frame) {
       type$.Frame._as(frame);
       return B.JSString_methods.padRight$1(frame.get$location(frame), this.longest) + "  " + A.S(frame.get$member()) + "\n";
     },
-    $signature: 81
+    $signature: 70
   };
   A.Frame.prototype = {
     get$isCore() {
@@ -32971,7 +34063,7 @@
       line = t1 > 1 ? A.int_parse(lineAndColumn[1], _null) : _null;
       return new A.Frame(uri, line, t1 > 2 ? A.int_parse(lineAndColumn[2], _null) : _null, member);
     },
-    $signature: 34
+    $signature: 37
   };
   A.Frame_Frame$parseV8_closure.prototype = {
     call$0() {
@@ -33002,7 +34094,7 @@
         return t1.call$2(t2, _s4_);
       }
     },
-    $signature: 34
+    $signature: 37
   };
   A.Frame_Frame$parseV8_closure_parseLocation.prototype = {
     call$2($location, member) {
@@ -33038,7 +34130,7 @@
       columnMatch = t1[3];
       return new A.Frame(uri, line, columnMatch != null ? A.int_parse(columnMatch, _null) : _null, member);
     },
-    $signature: 105
+    $signature: 104
   };
   A.Frame_Frame$_parseFirefoxEval_closure.prototype = {
     call$0() {
@@ -33065,7 +34157,7 @@
       line = A.int_parse(t1, _null);
       return new A.Frame(uri, line, _null, member.length === 0 || member === "anonymous" ? "<fn>" : member);
     },
-    $signature: 34
+    $signature: 37
   };
   A.Frame_Frame$parseFirefox_closure.prototype = {
     call$0() {
@@ -33122,7 +34214,7 @@
       }
       return new A.Frame(uri, line, column, member);
     },
-    $signature: 34
+    $signature: 37
   };
   A.Frame_Frame$parseFriendly_closure.prototype = {
     call$0() {
@@ -33170,7 +34262,7 @@
         return A.ioore(t1, 4);
       return new A.Frame(uri, line, column, t1[4]);
     },
-    $signature: 34
+    $signature: 37
   };
   A.LazyChain.prototype = {
     get$_chain() {
@@ -33203,7 +34295,7 @@
     call$0() {
       return this.$this.get$_chain().foldFrames$2$terse(this.predicate, this.terse);
     },
-    $signature: 37
+    $signature: 44
   };
   A.LazyTrace.prototype = {
     get$_lazy_trace$_trace() {
@@ -33236,19 +34328,19 @@
     call$0() {
       return this.$this.get$_lazy_trace$_trace().foldFrames$2$terse(this.predicate, this.terse);
     },
-    $signature: 27
+    $signature: 30
   };
   A.StackZoneSpecification_chainFor_closure.prototype = {
     call$0() {
       return A.Chain_Chain$parse(this._box_0.trace.toString$0(0));
     },
-    $signature: 37
+    $signature: 44
   };
   A.StackZoneSpecification_chainFor_closure0.prototype = {
     call$0() {
       return A.Trace_Trace$parse(this.$this._trimVMChain$1(this.original));
     },
-    $signature: 27
+    $signature: 30
   };
   A.StackZoneSpecification__currentTrace_closure.prototype = {
     call$0() {
@@ -33256,7 +34348,7 @@
         t1 = A.Trace_Trace$parse(text).frames;
       return A.Trace$(A.SubListIterable$(t1, this.level + 2, null, A._arrayInstanceType(t1)._precomputed1), text);
     },
-    $signature: 27
+    $signature: 30
   };
   A._Node.prototype = {
     toChain$0() {
@@ -33309,38 +34401,38 @@
     call$0() {
       return A.Trace_Trace$parse(this.trace.toString$0(0));
     },
-    $signature: 27
+    $signature: 30
   };
   A.Trace__parseVM_closure.prototype = {
     call$1(line) {
       return A._asString(line).length !== 0;
     },
-    $signature: 3
+    $signature: 6
   };
   A.Trace$parseV8_closure.prototype = {
     call$1(line) {
       return !B.JSString_methods.startsWith$1(A._asString(line), $.$get$_v8TraceLine());
     },
-    $signature: 3
+    $signature: 6
   };
   A.Trace$parseJSCore_closure.prototype = {
     call$1(line) {
       return A._asString(line) !== "\tat ";
     },
-    $signature: 3
+    $signature: 6
   };
   A.Trace$parseFirefox_closure.prototype = {
     call$1(line) {
       A._asString(line);
       return line.length !== 0 && line !== "[native code]";
     },
-    $signature: 3
+    $signature: 6
   };
   A.Trace$parseFriendly_closure.prototype = {
     call$1(line) {
       return !B.JSString_methods.startsWith$1(A._asString(line), "=====");
     },
-    $signature: 3
+    $signature: 6
   };
   A.Trace_foldFrames_closure.prototype = {
     call$1(frame) {
@@ -33357,7 +34449,7 @@
         return false;
       return frame.get$line(frame) == null;
     },
-    $signature: 49
+    $signature: 50
   };
   A.Trace_foldFrames_closure0.prototype = {
     call$1(frame) {
@@ -33369,14 +34461,14 @@
       t2 = $.$get$_terseRegExp();
       return new A.Frame(A.Uri_parse(A.stringReplaceAllUnchecked(t1, t2, "")), null, null, frame.get$member());
     },
-    $signature: 106
+    $signature: 105
   };
   A.Trace_toString_closure0.prototype = {
     call$1(frame) {
       type$.Frame._as(frame);
       return frame.get$location(frame).length;
     },
-    $signature: 87
+    $signature: 71
   };
   A.Trace_toString_closure.prototype = {
     call$1(frame) {
@@ -33385,7 +34477,7 @@
         return frame.toString$0(0) + "\n";
       return B.JSString_methods.padRight$1(frame.get$location(frame), this.longest) + "  " + A.S(frame.get$member()) + "\n";
     },
-    $signature: 81
+    $signature: 70
   };
   A.UnparsedFrame.prototype = {
     toString$0(_) {
@@ -33669,7 +34761,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.Declarer_test__closure.prototype = {
     call$0() {
@@ -33706,7 +34798,7 @@
         return;
       throw A.wrapException(A.ArgumentError$("Groups may not be async.", null));
     },
-    $signature: 2
+    $signature: 1
   };
   A.Declarer_build_closure.prototype = {
     call$1(entry) {
@@ -33715,18 +34807,18 @@
       t1 = this.$this._soloEntries;
       return t1.length !== 0 && !B.JSArray_methods.contains$1(t1, entry) ? new A.LocalTest(entry.get$name(entry), entry.get$metadata(entry).change$2$skip$skipReason(true, 'does not have "solo"'), null, false, new A.Declarer_build__closure(), true) : entry;
     },
-    $signature: 107
+    $signature: 106
   };
   A.Declarer_build__closure.prototype = {
     call$0() {
     },
-    $signature: 1
+    $signature: 2
   };
   A.Declarer__runSetUps_closure.prototype = {
     call$1(setUp) {
       return type$.Function._as(setUp).call$0();
     },
-    $signature: 76
+    $signature: 69
   };
   A.Declarer__setUpAll_closure.prototype = {
     call$0() {
@@ -33734,19 +34826,19 @@
         t2 = type$.nullable_Object;
       return A.runZoned(new A.Declarer__setUpAll__closure(t1), null, A.LinkedHashMap_LinkedHashMap$_literal([B.Symbol_yzu, t1], t2, t2), type$.void);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Declarer__setUpAll__closure.prototype = {
     call$0() {
       return A.Future_forEach(this.$this._setUpAlls, new A.Declarer__setUpAll___closure(), type$.Function);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Declarer__setUpAll___closure.prototype = {
     call$1(setUp) {
       return type$.Function._as(setUp).call$0();
     },
-    $signature: 76
+    $signature: 69
   };
   A.Declarer__tearDownAll_closure.prototype = {
     call$0() {
@@ -33754,13 +34846,13 @@
         t2 = type$.nullable_Object;
       return A.runZoned(new A.Declarer__tearDownAll__closure(t1), null, A.LinkedHashMap_LinkedHashMap$_literal([B.Symbol_yzu, t1], t2, t2), type$.void);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Declarer__tearDownAll__closure.prototype = {
     call$0() {
       return type$.nullable_Invoker._as($.Zone__current.$index(0, B.Symbol_EY8)).runTearDowns$1(this.$this._tearDownAlls);
     },
-    $signature: 1
+    $signature: 2
   };
   A.DuplicateTestNameException.prototype = {
     toString$0(_) {
@@ -33798,13 +34890,13 @@
     call$1(entry) {
       return entry.forPlatform$1(this.platform);
     },
-    $signature: 74
+    $signature: 68
   };
   A.Group__map_closure.prototype = {
     call$1(entry) {
       return this.callback.call$1(type$.GroupEntry._as(entry));
     },
-    $signature: 74
+    $signature: 68
   };
   A.LocalTest.prototype = {
     load$2$groups(_, suite, groups) {
@@ -33931,14 +35023,14 @@
       else
         $self.get$parent($self).handleUncaughtError$2(error, stackTrace);
     },
-    $signature: 110
+    $signature: 109
   };
   A.Invoker_guard__closure.prototype = {
     call$0() {
       var _this = this;
       return _this.invoker._handleError$3(_this.zone, _this.error, _this.stackTrace);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Invoker_runTearDowns_closure.prototype = {
     call$0() {
@@ -33981,7 +35073,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.Invoker_runTearDowns__closure.prototype = {
     call$0() {
@@ -33992,7 +35084,7 @@
       t2 = this.completer;
       A.Future_Future$sync(t1.pop(), type$.void).whenComplete$1(type$.void_Function_$opt_void._as(t2.get$complete(t2)));
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker_runTearDowns__closure0.prototype = {
     call$1(_) {
@@ -34001,7 +35093,7 @@
       t1.get$_outstandingCallbacks().decrement$0();
       return null;
     },
-    $signature: 93
+    $signature: 72
   };
   A.Invoker__waitForOutstandingCallbacks_closure.prototype = {
     call$0() {
@@ -34059,7 +35151,7 @@
       t1.toString;
       B.JSArray_methods.remove$1(this.$this._outstandingCallbackZones, t1);
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker_heartbeat_message.prototype = {
     call$0() {
@@ -34079,14 +35171,14 @@
       message = "Test timed out after " + (t2.charCodeAt(0) == 0 ? t2 : t2) + ".";
       return t1 === 30000000 ? message + " See https://pub.dev/packages/test#timeouts" : message;
     },
-    $signature: 7
+    $signature: 11
   };
   A.Invoker_heartbeat_closure.prototype = {
     call$0() {
       var t1 = this.$this;
       B.JSArray_methods.get$last(t1._outstandingCallbackZones).run$1$1(new A.Invoker_heartbeat__closure(t1, this.message, this.timeout), type$.Null);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Invoker_heartbeat__closure.prototype = {
     call$0() {
@@ -34096,7 +35188,7 @@
       if ((t1.future._state & 30) === 0)
         t1.complete$0(0);
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker__handleError_closure.prototype = {
     call$0() {
@@ -34107,7 +35199,7 @@
       else
         t1.stackTrace = A.Chain_Chain$forTrace(t2);
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker__onRun_closure.prototype = {
     call$0() {
@@ -34118,7 +35210,7 @@
       else
         t2.call$0();
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker__onRun__closure.prototype = {
     call$0() {
@@ -34127,7 +35219,7 @@
         t2 = type$.nullable_Object;
       A.runZoned(new A.Invoker__onRun___closure(t1), new A._ZoneSpecification(_null, _null, _null, _null, _null, _null, _null, _null, _null, _null, _null, new A.Invoker__onRun___closure0(t1), _null), A.LinkedHashMap_LinkedHashMap$_literal([B.Symbol_EY8, t1, t1._forceOpenForTearDownKey, false, B.Symbol_runCount, t1._runCount], t2, t2), type$.Future_Null);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Invoker__onRun___closure.prototype = {
     call$0() {
@@ -34187,14 +35279,14 @@
   A.Invoker__onRun____closure.prototype = {
     call$0() {
     },
-    $signature: 2
+    $signature: 1
   };
   A.Invoker__onRun____closure0.prototype = {
     call$0() {
       var t1 = this.$this;
       return t1.runTearDowns$1(t1._invoker$_tearDowns);
     },
-    $signature: 8
+    $signature: 12
   };
   A.Invoker__onRun___closure0.prototype = {
     call$4(_, __, ___, line) {
@@ -34204,7 +35296,7 @@
       t1 === $ && A.throwLateFieldNI("_controller");
       return t1.message$1(0, new A.Message(B.MessageType_print, line));
     },
-    $signature: 85
+    $signature: 67
   };
   A._AsyncCounter.prototype = {
     decrement$0() {
@@ -34350,7 +35442,7 @@
         t2 = t1.tags;
       return A.Metadata$_(_this.chainStackTraces, t1.forTag, _this.languageVersionComment, _this.onPlatform, _this.retry, _this.skip, _this.skipReason, t2, _this.testOn, _this.timeout, _this.verboseTrace);
     },
-    $signature: 112
+    $signature: 111
   };
   A.Metadata_Metadata_closure.prototype = {
     call$2(merged, selector) {
@@ -34365,19 +35457,19 @@
       t1.toString;
       return merged.merge$1(t1);
     },
-    $signature: 113
+    $signature: 112
   };
   A.Metadata__validateTags_closure.prototype = {
     call$1(tag) {
       return !B.JSString_methods.contains$1(A._asString(tag), $.$get$anchoredHyphenatedIdentifier());
     },
-    $signature: 3
+    $signature: 6
   };
   A.Metadata__validateTags_closure0.prototype = {
     call$1(tag) {
       return '"' + A._asString(tag) + '"';
     },
-    $signature: 19
+    $signature: 24
   };
   A.Metadata_validatePlatformSelectors_closure.prototype = {
     call$2(selector, metadata) {
@@ -34388,21 +35480,21 @@
       selector.validate$1(t1);
       metadata.validatePlatformSelectors$1(t1);
     },
-    $signature: 72
+    $signature: 66
   };
   A.Metadata_merge_closure.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 71
+    $signature: 65
   };
   A.Metadata_merge_closure0.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 71
+    $signature: 65
   };
   A.Metadata_forPlatform_closure.prototype = {
     call$2(platformSelector, platformMetadata) {
@@ -34414,7 +35506,7 @@
       t1 = this._box_0;
       t1.metadata = t1.metadata.merge$1(platformMetadata);
     },
-    $signature: 72
+    $signature: 66
   };
   A.OperatingSystem.prototype = {
     toString$0(_) {
@@ -34455,14 +35547,14 @@
     call$0() {
       return this.$this._inner.validate$1(new A.PlatformSelector_validate__closure(this.validVariables));
     },
-    $signature: 1
+    $signature: 2
   };
   A.PlatformSelector_validate__closure.prototype = {
     call$1($name) {
       var t1 = $.$get$_universalValidVariables().contains$1(0, $name);
       return t1;
     },
-    $signature: 3
+    $signature: 6
   };
   A.PlatformSelector_evaluate_closure.prototype = {
     call$1(variable) {
@@ -34513,7 +35605,7 @@
       }
       return t1;
     },
-    $signature: 3
+    $signature: 6
   };
   A.Runtime.prototype = {
     toString$0(_) {
@@ -34545,7 +35637,7 @@
         return !t2.contains$1(0, frame.get$$package());
       return t1._except.contains$1(0, frame.get$$package());
     },
-    $signature: 49
+    $signature: 50
   };
   A.State.prototype = {
     $eq(_, other) {
@@ -34597,7 +35689,7 @@
     call$0() {
       return A.pumpEventQueue(this.times - 1);
     },
-    $signature: 39
+    $signature: 41
   };
   A.Engine.prototype = {
     get$_onUnpaused() {
@@ -34933,7 +36025,7 @@
         t2 = t1.result;
       return (t2 === B.Result_0 || t2 === B.Result_1) && t1.status === B.Status_2;
     },
-    $signature: 117
+    $signature: 116
   };
   A.Engine_closure.prototype = {
     call$1(_) {
@@ -34945,12 +36037,12 @@
       if (t1._closedBeforeDone == null)
         t1._closedBeforeDone = false;
     },
-    $signature: 118
+    $signature: 117
   };
   A.Engine_closure0.prototype = {
     call$2(_, __) {
     },
-    $signature: 119
+    $signature: 118
   };
   A.Engine_run_closure.prototype = {
     call$1(suite) {
@@ -34961,7 +36053,7 @@
       t1._onSuiteAddedController.add$1(0, suite);
       t1._group.add$1(0, new A.Engine_run__closure(t1, suite).call$0());
     },
-    $signature: 120
+    $signature: 119
   };
   A.Engine_run__closure.prototype = {
     call$0() {
@@ -35041,7 +36133,7 @@
       var t1 = this._box_0.controller;
       return t1 == null ? null : t1.close$0(0);
     },
-    $signature: 121
+    $signature: 120
   };
   A.Engine_run_closure0.prototype = {
     call$0() {
@@ -35051,7 +36143,7 @@
       t1._group.close$0(0);
       t1._runPool.close$0(0);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Engine__runLiveTest_closure.prototype = {
     call$1(state) {
@@ -35061,23 +36153,23 @@
       t1 = this.$this._active;
       t1.remove$1(t1, this.liveTest);
     },
-    $signature: 57
+    $signature: 52
   };
   A.Engine__runLiveTest_closure0.prototype = {
     call$0() {
       this.$this._engine$_subscriptions.remove$1(0, this.subscription);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Engine__runLiveTest_closure1.prototype = {
     call$0() {
     },
-    $signature: 2
+    $signature: 1
   };
   A.Engine__runSkippedTest_closure.prototype = {
     call$0() {
     },
-    $signature: 1
+    $signature: 2
   };
   A.Engine__runSkippedTest_closure0.prototype = {
     call$0() {
@@ -35091,12 +36183,12 @@
       t1._readLocal$0().setState$1(B.State_Status_2_Result_1);
       t1._readLocal$0().completer.complete$0(0);
     },
-    $signature: 1
+    $signature: 2
   };
   A.Engine__runSkippedTest_closure1.prototype = {
     call$0() {
     },
-    $signature: 1
+    $signature: 2
   };
   A.LiveSuite.prototype = {};
   A._LiveSuite.prototype = {};
@@ -35144,7 +36236,7 @@
         t1._failed.remove$1(0, t2);
       }
     },
-    $signature: 57
+    $signature: 52
   };
   A.LiveSuiteController_close_closure.prototype = {
     call$0() {
@@ -35190,7 +36282,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.ExpandedReporter.prototype = {
     _cancel$0() {
@@ -35314,14 +36406,14 @@
     call$1(state) {
       return this.$this._expanded$_onStateChange$2(this.liveTest, type$.State._as(state));
     },
-    $signature: 57
+    $signature: 52
   };
   A.ExpandedReporter__onTestStarted_closure0.prototype = {
     call$1(error) {
       type$.AsyncError._as(error);
       return this.$this._expanded$_onError$3(this.liveTest, error.error, error.stackTrace);
     },
-    $signature: 125
+    $signature: 124
   };
   A.ExpandedReporter__onTestStarted_closure1.prototype = {
     call$1(message) {
@@ -35334,7 +36426,7 @@
         text = "  " + t1._yellow + text + t1._noColor;
       t1._sink.writeln$1(text);
     },
-    $signature: 126
+    $signature: 125
   };
   A.RunnerSuite.prototype = {};
   A.RunnerSuiteController.prototype = {
@@ -35367,7 +36459,7 @@
       });
       return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 8
+    $signature: 12
   };
   A.SuiteConfiguration.prototype = {};
   A.IterableSet.prototype = {
@@ -35461,7 +36553,7 @@
     call$0() {
       return A.Invoker_guard(this.engine.get$run(), type$.Future_nullable_bool);
     },
-    $signature: 127
+    $signature: 126
   };
   A.currentOSGuess_closure.prototype = {
     call$0() {
@@ -35474,7 +36566,7 @@
         return B.OperatingSystem_elx;
       return B.OperatingSystem_Linux_linux;
     },
-    $signature: 128
+    $signature: 127
   };
   A.PrintSink.prototype = {
     writeln$1(obj) {
@@ -35566,15 +36658,22 @@
   };
   A.execute_closure.prototype = {
     call$0() {
+      var t1 = this.tc;
+      t1.group$2("- Not a worker", new A.execute__closure(t1));
+    },
+    $signature: 2
+  };
+  A.execute__closure.prototype = {
+    call$0() {
       var t1 = this.tc,
         t2 = t1.workerPlatform;
-      t1.test$3$skip("- Not a worker (native worker)", new A.execute__closure(t1), t2 !== B.SquadronPlatformType_dmi);
+      t1.test$3$skip("- Native worker", new A.execute___closure(t1), t2 !== B.SquadronPlatformType_dmi);
       t2 = t2 === B.SquadronPlatformType_JavaScript_js || t2 === B.SquadronPlatformType_FQO;
-      t1.test$3$skip("- Not a worker (Web worker)", new A.execute__closure0(t1), !t2);
+      t1.test$3$skip("- Web worker", new A.execute___closure0(t1), !t2);
     },
     $signature: 1
   };
-  A.execute__closure.prototype = {
+  A.execute___closure.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -35587,7 +36686,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute___closure0(), type$.NotAWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure0(), type$.NotAWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -35598,11 +36697,11 @@
     },
     $signature: 0
   };
-  A.execute___closure0.prototype = {
+  A.execute____closure0.prototype = {
     call$1(w) {
-      return this.$call$body$execute___closure0(type$.NotAWorker._as(w));
+      return this.$call$body$execute____closure0(type$.NotAWorker._as(w));
     },
-    $call$body$execute___closure0(w) {
+    $call$body$execute____closure0(w) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         t2, t1;
@@ -35618,7 +36717,7 @@
               t1.error = null;
               t2 = type$.bool;
               $async$goto = 2;
-              return A._asyncAwait(A.Future_wait(A._setArrayType([w.start$0(0).then$1$2$onError(new A.execute____closure2(t1), new A.execute____closure3(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 5), null, type$.dynamic).then$1$1(new A.execute____closure4(t1), t2)], type$.JSArray_Future_bool), false, t2), $async$call$1);
+              return A._asyncAwait(A.Future_wait(A._setArrayType([w.start$0(0).then$1$2$onError(new A.execute_____closure2(t1), new A.execute_____closure3(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure4(t1), t2)], type$.JSArray_Future_bool), false, t2), $async$call$1);
             case 2:
               // returning from await.
               A.expect(t1.expired, B.C__IsTrue, null);
@@ -35630,29 +36729,29 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 70
+    $signature: 64
   };
-  A.execute____closure2.prototype = {
+  A.execute_____closure2.prototype = {
     call$1(_) {
       type$.Channel._as(_);
       return this._box_0.started = true;
     },
-    $signature: 69
+    $signature: 95
   };
-  A.execute____closure3.prototype = {
+  A.execute_____closure3.prototype = {
     call$1(ex) {
       this._box_0.error = ex;
       return ex == null;
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute____closure4.prototype = {
+  A.execute_____closure4.prototype = {
     call$1(_) {
       return this._box_0.expired = true;
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute__closure0.prototype = {
+  A.execute___closure0.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -35665,7 +36764,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute___closure(), type$.NotAWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure(), type$.NotAWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -35676,11 +36775,11 @@
     },
     $signature: 0
   };
-  A.execute___closure.prototype = {
+  A.execute____closure.prototype = {
     call$1(w) {
-      return this.$call$body$execute___closure(type$.NotAWorker._as(w));
+      return this.$call$body$execute____closure(type$.NotAWorker._as(w));
     },
-    $call$body$execute___closure(w) {
+    $call$body$execute____closure(w) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         t2, t1;
@@ -35696,7 +36795,7 @@
               t1.error = null;
               t2 = type$.bool;
               $async$goto = 2;
-              return A._asyncAwait(A.Future_any(A._setArrayType([w.start$0(0).then$1$2$onError(new A.execute____closure(t1), new A.execute____closure0(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 5), null, type$.dynamic).then$1$1(new A.execute____closure1(t1), t2)], type$.JSArray_Future_bool), t2), $async$call$1);
+              return A._asyncAwait(A.Future_any(A._setArrayType([w.start$0(0).then$1$2$onError(new A.execute_____closure(t1), new A.execute_____closure0(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure1(t1), t2)], type$.JSArray_Future_bool), t2), $async$call$1);
             case 2:
               // returning from await.
               t2 = t1.error;
@@ -35710,36 +36809,36 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 70
+    $signature: 64
   };
-  A.execute____closure.prototype = {
+  A.execute_____closure.prototype = {
     call$1(_) {
       type$.Channel._as(_);
       return this._box_1.started = true;
     },
-    $signature: 69
+    $signature: 95
   };
-  A.execute____closure0.prototype = {
+  A.execute_____closure0.prototype = {
     call$1(ex) {
       this._box_1.error = ex;
       return ex == null;
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute____closure1.prototype = {
+  A.execute_____closure1.prototype = {
     call$1(_) {
       return this._box_1.expired = true;
     },
-    $signature: 12
+    $signature: 15
   };
   A.execute_closure10.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- WebWorker", new A.execute__closure13(t1));
+      t1.group$2("- WebWorker", new A.execute__closure12(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure13.prototype = {
+  A.execute__closure12.prototype = {
     call$0() {
       var t1 = this.tc;
       t1.test$2("- plain Web Worker", new A.execute___closure45(t1));
@@ -35748,7 +36847,7 @@
       t1.test$2("- missing Web Worker (JavaScript)", new A.execute___closure48());
       t1.test$2("- missing Web Worker (WebAssembly)", new A.execute___closure49());
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure45.prototype = {
     call$0() {
@@ -35773,8 +36872,8 @@
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
               t1 = type$.nullable_EventTarget;
-              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure106(res)), false, type$.Event);
-              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure107(res)), false, type$.MessageEvent);
+              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure94(res)), false, type$.Event);
+              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure95(res)), false, type$.MessageEvent);
               J.postMessage$1$x(w, "Hello");
               $async$temp1 = A;
               $async$goto = 5;
@@ -35810,17 +36909,17 @@
     },
     $signature: 0
   };
-  A.execute____closure106.prototype = {
+  A.execute____closure94.prototype = {
     call$1(e) {
       return this.res.completeError$1(A._errorFromEvent(e));
     },
-    $signature: 20
+    $signature: 25
   };
-  A.execute____closure107.prototype = {
+  A.execute____closure95.prototype = {
     call$1(e) {
       return this.res.complete$1(0, type$.nullable_FutureOr_String._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
     },
-    $signature: 28
+    $signature: 29
   };
   A.execute___closure46.prototype = {
     call$0() {
@@ -35845,8 +36944,8 @@
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
               t1 = type$.nullable_EventTarget;
-              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure104(res)), false, type$.Event);
-              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure105(res)), false, type$.MessageEvent);
+              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure92(res)), false, type$.Event);
+              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure93(res)), false, type$.MessageEvent);
               J.postMessage$1$x(w, "Hello");
               $async$temp1 = A;
               $async$goto = 5;
@@ -35882,17 +36981,17 @@
     },
     $signature: 0
   };
-  A.execute____closure104.prototype = {
+  A.execute____closure92.prototype = {
     call$1(e) {
       return this.res.completeError$1(A._errorFromEvent(e));
     },
-    $signature: 20
+    $signature: 25
   };
-  A.execute____closure105.prototype = {
+  A.execute____closure93.prototype = {
     call$1(e) {
       return this.res.complete$1(0, type$.nullable_FutureOr_String._as(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(type$.MessageEvent._as(e).data, true)));
     },
-    $signature: 28
+    $signature: 29
   };
   A.execute___closure47.prototype = {
     call$0() {
@@ -35919,8 +37018,8 @@
               ready = new A._AsyncCompleter(new A._Future(t1, type$._Future_bool), type$._AsyncCompleter_bool);
               res = new A._AsyncCompleter(new A._Future(t1, type$._Future_String), type$._AsyncCompleter_String);
               t1 = type$.nullable_EventTarget;
-              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure102(ready, res)), false, type$.Event);
-              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure103(ready, res)), false, type$.MessageEvent);
+              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure90(ready, res)), false, type$.Event);
+              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure91(ready, res)), false, type$.MessageEvent);
               $async$temp1 = A;
               $async$goto = 5;
               return A._asyncAwait(ready.future, $async$call$0);
@@ -35962,15 +37061,15 @@
     },
     $signature: 0
   };
-  A.execute____closure102.prototype = {
+  A.execute____closure90.prototype = {
     call$1(e) {
       var err = A._errorFromEvent(e);
       this.ready.completeError$1(err);
       this.res.completeError$1(err);
     },
-    $signature: 20
+    $signature: 25
   };
-  A.execute____closure103.prototype = {
+  A.execute____closure91.prototype = {
     call$1(e) {
       var t1;
       type$.MessageEvent._as(e);
@@ -35985,7 +37084,7 @@
         this.res.complete$1(0, t1);
       }
     },
-    $signature: 28
+    $signature: 29
   };
   A.execute___closure48.prototype = {
     call$0() {
@@ -36008,8 +37107,8 @@
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
               t1 = type$.nullable_EventTarget;
-              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure100(res)), false, type$.Event);
-              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure101(res)), false, type$.MessageEvent);
+              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure88(res)), false, type$.Event);
+              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure89(res)), false, type$.MessageEvent);
               J.postMessage$1$x(w, "Hello");
               $async$goto = 5;
               return A._asyncAwait(A._expect(res.future, new A.Throws(A.wrapMatcher(new A.TypeMatcher(type$.TypeMatcher_SquadronError))), null, null, null, false), $async$call$0);
@@ -36043,17 +37142,17 @@
     },
     $signature: 0
   };
-  A.execute____closure100.prototype = {
+  A.execute____closure88.prototype = {
     call$1(e) {
       return this.res.completeError$1(A._errorFromEvent(e));
     },
-    $signature: 20
+    $signature: 25
   };
-  A.execute____closure101.prototype = {
+  A.execute____closure89.prototype = {
     call$1(e) {
       return this.res.complete$1(0, "handled " + A.S(type$.MessageEvent._as(e)));
     },
-    $signature: 28
+    $signature: 29
   };
   A.execute___closure49.prototype = {
     call$0() {
@@ -36076,8 +37175,8 @@
               $async$handler = 2;
               completer = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
               t1 = type$.nullable_EventTarget;
-              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure98(completer)), false, type$.Event);
-              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure99(completer)), false, type$.MessageEvent);
+              A._EventStreamSubscription$(t1._as(w), "error", type$.nullable_void_Function_Event._as(new A.execute____closure86(completer)), false, type$.Event);
+              A._EventStreamSubscription$(t1._as(w), "message", type$.nullable_void_Function_MessageEvent._as(new A.execute____closure87(completer)), false, type$.MessageEvent);
               J.postMessage$1$x(w, "Hello");
               $async$handler = 6;
               $async$goto = 9;
@@ -36142,13 +37241,13 @@
     },
     $signature: 0
   };
-  A.execute____closure98.prototype = {
+  A.execute____closure86.prototype = {
     call$1(e) {
       return this.completer.completeError$1(A._errorFromEvent(e));
     },
-    $signature: 20
+    $signature: 25
   };
-  A.execute____closure99.prototype = {
+  A.execute____closure87.prototype = {
     call$1(e) {
       var res, error, ex, t1, exception;
       type$.MessageEvent._as(e);
@@ -36168,16 +37267,16 @@
         this.completer.completeError$1(new A._Exception("Unexpected: " + A.S(ex)));
       }
     },
-    $signature: 28
+    $signature: 29
   };
   A.execute_closure4.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Logging", new A.execute__closure7(t1));
+      t1.group$2("- Logging", new A.execute__closure6(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure7.prototype = {
+  A.execute__closure6.prototype = {
     call$0() {
       var t2, t3, t4,
         logs = A._setArrayType([], type$.JSArray_String),
@@ -36204,7 +37303,7 @@
       t1.test$2(">= trace", new A.execute___closure25(worker, logs));
       t1.test$2("all", new A.execute___closure26(worker, logs));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure15.prototype = {
     call$0() {
@@ -36237,7 +37336,7 @@
     call$0() {
       J.stop$0$x(this.worker._readLocal$0());
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure17.prototype = {
     call$0() {
@@ -36245,13 +37344,13 @@
       B.JSArray_methods.clear$0(t1._logs);
       t1._memory_logger$_filter._level = B.Level_0_all;
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure18.prototype = {
     call$0() {
       B.JSArray_methods.clear$0(this.memoryLogger._logs);
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure19.prototype = {
     call$0() {
@@ -36576,84 +37675,141 @@
   A.execute_closure3.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Converters", new A.execute__closure6(t1, this.throwsTypeError, this.isInfinite));
+      t1.group$2("- Converters", new A.execute__closure5(t1));
+    },
+    $signature: 2
+  };
+  A.execute__closure5.prototype = {
+    call$0() {
+      var t1 = this.tc;
+      t1.test$2("- custom identity is not considered an identity", new A.execute___closure13());
+      t1.test$2("- Type checks per platform", new A.execute___closure14());
+      A.testCastConverter(t1);
+      A.testNumConverter(t1);
+      A.testInPlaceCastConverter(t1);
+      A.testInPlaceNumConverter(t1);
+      A.testLazyInPlaceCastConverter(t1);
+      A.testLazyInPlaceNumConverter(t1);
     },
     $signature: 1
   };
-  A.execute__closure6.prototype = {
-    call$0() {
-      var t1 = this.tc,
-        t2 = this.throwsTypeError,
-        t3 = this.isInfinite;
-      t1.group$2("- CastConverter", new A.execute___closure13(t1, t2, t3));
-      t1.group$2("- NumConverter", new A.execute___closure14(t1, t2, t3));
-    },
-    $signature: 2
-  };
   A.execute___closure13.prototype = {
     call$0() {
-      var t1 = this.tc,
-        t2 = this.throwsTypeError;
-      t1.group$2("- ints", new A.execute____closure35(B.C_CastConverter, t1, t2));
-      t1.group$2("- doubles", new A.execute____closure36(B.C_CastConverter, t1, this.isInfinite, t2));
-      t1.group$2("- lists", new A.execute____closure37(t1, t2, B.C_CastConverter));
-      t1.group$2("- maps", new A.execute____closure38(t1, t2, B.C_CastConverter));
-      t1.group$2("- typed data", new A.execute____closure39(B.C_CastConverter, t2, t1));
+      A.expect(A.Converter_isIdentity(A.lib_03_converter_test___asInt$closure(), type$.int), B.C__IsFalse, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure35.prototype = {
+  A.execute___closure14.prototype = {
     call$0() {
-      var t2,
-        toInt = A.instantiate1(A.converter_Converter_identity$closure(), type$.int),
-        toNullableInt = A.instantiate1(A.converter_Converter_identity$closure(), type$.nullable_int),
-        t1 = this.tc;
-      t1.test$2("- converters are identities", new A.execute_____closure105(toInt, toNullableInt));
-      t1.test$2("- int values", new A.execute_____closure106(toInt, toNullableInt));
-      t2 = this.throwsTypeError;
-      t1.test$2("- doubles values (fail except for non-fractional doubles on JavaScript platforms)", new A.execute_____closure107(new A.execute____closure_$platformSensitive0(toNullableInt, toInt, t1), toInt, t2, toNullableInt));
-      t1.test$2("- null values", new A.execute_____closure108(toInt, t2, toNullableInt));
-      t1.test$2("- bool values", new A.execute_____closure109(toInt, t2, toNullableInt));
-      t1.test$2("- String values", new A.execute_____closure110(toInt, t2, toNullableInt));
-      t1.test$2("- non-number values", new A.execute_____closure111(toInt, t2, toNullableInt));
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        t2, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.TypeMatcher_int;
+              A.expect(1.1, new A._IsNot(A.wrapMatcher(new A.TypeMatcher(t1))), null);
+              t2 = type$.TypeMatcher_double;
+              A.expect(1.1, new A.TypeMatcher(t2), null);
+              A.expect(1, new A.TypeMatcher(t2), null);
+              $async$goto = $.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js ? 2 : 4;
+              break;
+            case 2:
+              // then
+              A.expect(1, new A.TypeMatcher(t1), null);
+              A.expect(1, 1, null);
+              // goto join
+              $async$goto = 3;
+              break;
+            case 4:
+              // else
+              A.expect(1, new A._IsNot(A.wrapMatcher(new A.TypeMatcher(t1))), null);
+              $async$goto = 5;
+              return A._asyncAwait(A._expect(new A.execute____closure27(), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 5:
+              // returning from await.
+            case 3:
+              // join
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 2
+    $signature: 0
   };
-  A.execute____closure_$platformSensitive0.prototype = {
+  A.execute____closure27.prototype = {
+    call$0() {
+      return 1;
+    },
+    $signature: 3
+  };
+  A.testCastConverter_closure.prototype = {
+    call$0() {
+      var t1 = this.tc;
+      t1.group$2("- ints", new A.testCastConverter__closure(B.C_CastConverter, t1));
+      t1.group$2("- doubles", new A.testCastConverter__closure0(B.C_CastConverter, t1));
+      t1.group$2("- lists", new A.testCastConverter__closure1(t1, B.C_CastConverter));
+      t1.group$2("- maps", new A.testCastConverter__closure2(t1, B.C_CastConverter));
+      t1.group$2("- typed data", new A.testCastConverter__closure3(B.C_CastConverter, t1));
+    },
+    $signature: 1
+  };
+  A.testCastConverter__closure.prototype = {
+    call$0() {
+      var t1 = type$.int,
+        $$toInt = A.instantiate1(A.converter_Converter_identity$closure(), t1),
+        $$toNullableInt = this.converter.nullable$1$0(t1);
+      t1 = this.tc;
+      t1.test$2("- converters are identities", new A.testCastConverter___closure34($$toInt, $$toNullableInt));
+      t1.test$2("- int", new A.testCastConverter___closure35($$toInt, $$toNullableInt));
+      t1.test$2("- double", new A.testCastConverter___closure36(new A.testCastConverter__closure_$platformSensitive0($$toNullableInt, $$toInt), $$toInt, $$toNullableInt));
+      t1.test$2("- null", new A.testCastConverter___closure37($$toInt, $$toNullableInt));
+      t1.test$2("- bool", new A.testCastConverter___closure38($$toInt, $$toNullableInt));
+      t1.test$2("- String", new A.testCastConverter___closure39($$toInt, $$toNullableInt));
+      t1.test$2("- Object", new A.testCastConverter___closure40($$toInt, $$toNullableInt));
+    },
+    $signature: 1
+  };
+  A.testCastConverter__closure_$platformSensitive0.prototype = {
     call$2$nullable(value, nullable) {
       var res, ex, exception, t1,
-        fn = nullable ? this.toNullableInt : this.toInt,
+        fn = nullable ? this.$$toNullableInt : this.$$toInt,
         process = nullable ? "toNullableInt" : "toInt";
       try {
         res = fn.call$1(value);
         A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
       } catch (exception) {
         t1 = A.unwrapException(exception);
         if (type$.TypeError._is(t1)) {
           ex = t1;
-          t1 = A.unexpectedFailure(process, ex);
-          throw A.wrapException(t1);
+          A._unexpectedFailureIfJs(process, ex);
         } else
           throw exception;
       }
     },
-    $signature: 132
+    $signature: 61
   };
-  A.execute_____closure105.prototype = {
+  A.testCastConverter___closure34.prototype = {
     call$0() {
-      A.expect(A.Converter_isIdentity(this.toInt, type$.int), B.C__IsTrue, null);
-      A.expect(A.Converter_isIdentity(this.toNullableInt, type$.nullable_int), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsTrue, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure106.prototype = {
+  A.testCastConverter___closure35.prototype = {
     call$0() {
-      A.expect(this.toInt.call$1(5), 5, null);
-      A.expect(this.toNullableInt.call$1(5), 5, null);
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure107.prototype = {
+  A.testCastConverter___closure36.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36668,15 +37824,15 @@
               t1 = $async$self.$$platformSensitive;
               t1.call$2$nullable(5, false);
               t1.call$2$nullable(5, true);
-              t2 = $async$self.toInt;
-              t3 = $async$self.throwsTypeError;
+              t2 = $async$self.$$toInt;
+              t3 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure72(t2), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure26(t2), t3, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              t4 = $async$self.toNullableInt;
+              t4 = $async$self.$$toNullableInt;
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure73(t4), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure27(t4), t3, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               t1.call$2$nullable(1 / 0, false);
@@ -36684,11 +37840,11 @@
               t1.call$2$nullable(-1 / 0, false);
               t1.call$2$nullable(-1 / 0, true);
               $async$goto = 4;
-              return A._asyncAwait(A._expect(new A.execute______closure74(t2), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure28(t2), t3, null, null, null, false), $async$call$0);
             case 4:
               // returning from await.
               $async$goto = 5;
-              return A._asyncAwait(A._expect(new A.execute______closure75(t4), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure29(t4), t3, null, null, null, false), $async$call$0);
             case 5:
               // returning from await.
               t1.call$2$nullable(-0.0, false);
@@ -36701,31 +37857,31 @@
     },
     $signature: 0
   };
-  A.execute______closure72.prototype = {
+  A.testCastConverter____closure26.prototype = {
     call$0() {
-      return this.toInt.call$1(5.5);
+      return this.$$toInt.call$1(5.5);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure73.prototype = {
+  A.testCastConverter____closure27.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(5.5);
+      return this.$$toNullableInt.call$1(5.5);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute______closure74.prototype = {
+  A.testCastConverter____closure28.prototype = {
     call$0() {
-      return this.toInt.call$1(0 / 0);
+      return this.$$toInt.call$1(0 / 0);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure75.prototype = {
+  A.testCastConverter____closure29.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(0 / 0);
+      return this.$$toNullableInt.call$1(0 / 0);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute_____closure108.prototype = {
+  A.testCastConverter___closure37.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36738,10 +37894,10 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure71($async$self.toInt), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure25($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              A.expect($async$self.toNullableInt.call$1(null), B.C__IsNull, null);
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -36750,13 +37906,13 @@
     },
     $signature: 0
   };
-  A.execute______closure71.prototype = {
+  A.testCastConverter____closure25.prototype = {
     call$0() {
-      return this.toInt.call$1(null);
+      return this.$$toInt.call$1(null);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute_____closure109.prototype = {
+  A.testCastConverter___closure38.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36768,13 +37924,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure69($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure23($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure70($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure24($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -36785,19 +37941,19 @@
     },
     $signature: 0
   };
-  A.execute______closure69.prototype = {
+  A.testCastConverter____closure23.prototype = {
     call$0() {
-      return this.toInt.call$1(true);
+      return this.$$toInt.call$1(true);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure70.prototype = {
+  A.testCastConverter____closure24.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(true);
+      return this.$$toNullableInt.call$1(true);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute_____closure110.prototype = {
+  A.testCastConverter___closure39.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36809,13 +37965,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure67($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure21($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure68($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure22($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -36826,19 +37982,19 @@
     },
     $signature: 0
   };
-  A.execute______closure67.prototype = {
+  A.testCastConverter____closure21.prototype = {
     call$0() {
-      return this.toInt.call$1("1");
+      return this.$$toInt.call$1("1");
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure68.prototype = {
+  A.testCastConverter____closure22.prototype = {
     call$0() {
-      return this.toNullableInt.call$1("1");
+      return this.$$toNullableInt.call$1("1");
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute_____closure111.prototype = {
+  A.testCastConverter___closure40.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36850,13 +38006,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure65($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure19($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure66($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure20($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -36867,90 +38023,90 @@
     },
     $signature: 0
   };
-  A.execute______closure65.prototype = {
+  A.testCastConverter____closure19.prototype = {
     call$0() {
-      return this.toInt.call$1(new A.Object());
+      return this.$$toInt.call$1(new A.Object());
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure66.prototype = {
+  A.testCastConverter____closure20.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(new A.Object());
+      return this.$$toNullableInt.call$1(new A.Object());
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute____closure36.prototype = {
+  A.testCastConverter__closure0.prototype = {
     call$0() {
-      var t2,
-        toDbl = A.instantiate1(A.converter_Converter_identity$closure(), type$.double),
-        toNullableDbl = A.instantiate1(A.converter_Converter_identity$closure(), type$.nullable_double),
-        t1 = this.tc;
-      t1.test$2("- converters are identities", new A.execute_____closure98(toDbl, toNullableDbl));
-      t1.test$2("- int values (fail except on JavaScript platforms)", new A.execute_____closure99(new A.execute____closure_$platformSensitive(toNullableDbl, toDbl, t1)));
-      t1.test$2("- doubles values", new A.execute_____closure100(toDbl, toNullableDbl, this.isInfinite));
-      t2 = this.throwsTypeError;
-      t1.test$2("- null values", new A.execute_____closure101(toDbl, t2, toNullableDbl));
-      t1.test$2("- bool values", new A.execute_____closure102(toDbl, t2, toNullableDbl));
-      t1.test$2("- String values", new A.execute_____closure103(toDbl, t2, toNullableDbl));
-      t1.test$2("- non-number values", new A.execute_____closure104(toDbl, t2, toNullableDbl));
+      var t1 = type$.double,
+        $$toDbl = A.instantiate1(A.converter_Converter_identity$closure(), t1),
+        $$toNullableDbl = this.converter.nullable$1$0(t1);
+      t1 = this.tc;
+      t1.test$2("- converters are identities", new A.testCastConverter___closure27($$toDbl, $$toNullableDbl));
+      t1.test$2("- int", new A.testCastConverter___closure28(new A.testCastConverter__closure_$platformSensitive($$toNullableDbl, $$toDbl)));
+      t1.test$2("- double", new A.testCastConverter___closure29($$toDbl, $$toNullableDbl));
+      t1.test$2("- null", new A.testCastConverter___closure30($$toDbl, $$toNullableDbl));
+      t1.test$2("- bool", new A.testCastConverter___closure31($$toDbl, $$toNullableDbl));
+      t1.test$2("- String", new A.testCastConverter___closure32($$toDbl, $$toNullableDbl));
+      t1.test$2("- Object", new A.testCastConverter___closure33($$toDbl, $$toNullableDbl));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure_$platformSensitive.prototype = {
+  A.testCastConverter__closure_$platformSensitive.prototype = {
     call$2$nullable(value, nullable) {
       var res, ex, exception, t1,
-        fn = nullable ? this.toNullableDbl : this.toDbl,
+        fn = nullable ? this.$$toNullableDbl : this.$$toDbl,
         process = nullable ? "toNullableDbl" : "toDbl";
       try {
         res = fn.call$1(value);
         A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
       } catch (exception) {
         t1 = A.unwrapException(exception);
         if (type$.TypeError._is(t1)) {
           ex = t1;
-          t1 = A.unexpectedFailure(process, ex);
-          throw A.wrapException(t1);
+          A._unexpectedFailureIfJs(process, ex);
         } else
           throw exception;
       }
     },
-    $signature: 134
+    $signature: 58
   };
-  A.execute_____closure98.prototype = {
+  A.testCastConverter___closure27.prototype = {
     call$0() {
-      A.expect(A.Converter_isIdentity(this.toDbl, type$.double), B.C__IsTrue, null);
-      A.expect(A.Converter_isIdentity(this.toNullableDbl, type$.nullable_double), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsTrue, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure99.prototype = {
+  A.testCastConverter___closure28.prototype = {
     call$0() {
       var t1 = this.$$platformSensitive;
       t1.call$2$nullable(5, false);
       t1.call$2$nullable(5, true);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure100.prototype = {
+  A.testCastConverter___closure29.prototype = {
     call$0() {
-      var t2, t3, _null = null,
-        t1 = this.toDbl;
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
       A.expect(t1.call$1(5.5), 5.5, _null);
-      t2 = this.toNullableDbl;
+      t2 = this.$$toNullableDbl;
       A.expect(t2.call$1(5.5), 5.5, _null);
       A.expect(t1.call$1(-0.0), -0.0, _null);
       A.expect(t2.call$1(-0.0), -0.0, _null);
-      t3 = this.isInfinite;
-      A.expect(t1.call$1(1 / 0), t3, _null);
-      A.expect(t2.call$1(1 / 0), t3, _null);
-      A.expect(t1.call$1(-1 / 0), t3, _null);
-      A.expect(t2.call$1(-1 / 0), t3, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
       A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
       A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure101.prototype = {
+  A.testCastConverter___closure30.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36963,10 +38119,10 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure64($async$self.toDbl), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure18($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              A.expect($async$self.toNullableDbl.call$1(null), B.C__IsNull, null);
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -36975,13 +38131,13 @@
     },
     $signature: 0
   };
-  A.execute______closure64.prototype = {
+  A.testCastConverter____closure18.prototype = {
     call$0() {
-      return this.toDbl.call$1(null);
+      return this.$$toDbl.call$1(null);
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute_____closure102.prototype = {
+  A.testCastConverter___closure31.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -36993,13 +38149,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure62($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure16($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure63($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure17($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -37010,19 +38166,19 @@
     },
     $signature: 0
   };
-  A.execute______closure62.prototype = {
+  A.testCastConverter____closure16.prototype = {
     call$0() {
-      return this.toDbl.call$1(true);
+      return this.$$toDbl.call$1(true);
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure63.prototype = {
+  A.testCastConverter____closure17.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1(true);
+      return this.$$toNullableDbl.call$1(true);
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute_____closure103.prototype = {
+  A.testCastConverter___closure32.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37034,13 +38190,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure60($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure14($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure61($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure15($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -37051,19 +38207,19 @@
     },
     $signature: 0
   };
-  A.execute______closure60.prototype = {
+  A.testCastConverter____closure14.prototype = {
     call$0() {
-      return this.toDbl.call$1("1");
+      return this.$$toDbl.call$1("1");
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure61.prototype = {
+  A.testCastConverter____closure15.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1("1");
+      return this.$$toNullableDbl.call$1("1");
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute_____closure104.prototype = {
+  A.testCastConverter___closure33.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37075,13 +38231,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure58($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure12($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure59($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure13($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -37092,35 +38248,34 @@
     },
     $signature: 0
   };
-  A.execute______closure58.prototype = {
+  A.testCastConverter____closure12.prototype = {
     call$0() {
-      return this.toDbl.call$1(new A.Object());
+      return this.$$toDbl.call$1(new A.Object());
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure59.prototype = {
+  A.testCastConverter____closure13.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1(new A.Object());
+      return this.$$toNullableDbl.call$1(new A.Object());
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute____closure37.prototype = {
+  A.testCastConverter__closure1.prototype = {
     call$0() {
       var t1 = this.tc,
-        t2 = this.throwsTypeError,
-        t3 = this.converter;
-      t1.test$2("- ints (cast)", new A.execute_____closure90(t2, t3));
-      t1.test$2("- ints (map)", new A.execute_____closure91(t2, t3));
-      t1.test$2("- nullable ints", new A.execute_____closure92(t2, t3));
-      t1.test$2("- with integral double (cast)", new A.execute_____closure93(t2, t3));
-      t1.test$2("- with integral double (map)", new A.execute_____closure94(t2, t3));
-      t1.test$2("- doubles", new A.execute_____closure95(t2, t3));
-      t1.test$2("- nullable doubles", new A.execute_____closure96(t2, t3));
-      t1.test$2("- with int", new A.execute_____closure97(t2, t3));
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testCastConverter___closure19(t2));
+      t1.test$2("- ints (map)", new A.testCastConverter___closure20(t2));
+      t1.test$2("- nullable ints", new A.testCastConverter___closure21(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testCastConverter___closure22(t2));
+      t1.test$2("- ints + integral double (map)", new A.testCastConverter___closure23(t2));
+      t1.test$2("- doubles", new A.testCastConverter___closure24(t2));
+      t1.test$2("- nullable doubles", new A.testCastConverter___closure25(t2));
+      t1.test$2("- doubles + int", new A.testCastConverter___closure26(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure90.prototype = {
+  A.testCastConverter___closure19.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37133,14 +38288,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, 3, 4]);
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure57(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure11(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.int).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37149,13 +38304,13 @@
     },
     $signature: 0
   };
-  A.execute______closure57.prototype = {
+  A.testCastConverter____closure11.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute_____closure91.prototype = {
+  A.testCastConverter___closure20.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37168,14 +38323,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, 3, 4]);
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure55(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$1(new A.execute______closure56(), type$.int).call$1(data);
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37184,23 +38339,17 @@
     },
     $signature: 0
   };
-  A.execute______closure55.prototype = {
+  A.testCastConverter____closure10.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute______closure56.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_____closure92.prototype = {
+  A.testCastConverter___closure21.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
+        $async$self = this, t1, res, data;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -37209,14 +38358,15 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, null, 4]);
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure54(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.nl$1$0(type$.int).call$1(data);
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfNullableInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37225,17 +38375,17 @@
     },
     $signature: 0
   };
-  A.execute______closure54.prototype = {
+  A.testCastConverter____closure9.prototype = {
     call$0() {
       return type$.List_nullable_int._as(this.data);
     },
-    $signature: 66
+    $signature: 33
   };
-  A.execute_____closure93.prototype = {
+  A.testCastConverter___closure22.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, ex, t1, exception, data;
+        $async$self = this, res, ex, exception, data, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -37244,25 +38394,22 @@
             case 0:
               // Function start
               data = [];
-              J.addAll$1$ax(data, [1, 2, 3, 4]);
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure53(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.int).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
               try {
-                A.expect(res, data, null);
-                if ($.$get$Squadron_platformType() !== B.SquadronPlatformType_JavaScript_js) {
-                  t1 = A.unexpectedSuccess(string$.conver, res);
-                  throw A.wrapException(t1);
-                }
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure(string$.conver, ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -37274,17 +38421,17 @@
     },
     $signature: 0
   };
-  A.execute______closure53.prototype = {
+  A.testCastConverter____closure8.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute_____closure94.prototype = {
+  A.testCastConverter___closure23.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, ex, t1, exception, data;
+        $async$self = this, res, ex, exception, data, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -37293,25 +38440,22 @@
             case 0:
               // Function start
               data = [];
-              J.addAll$1$ax(data, [1, 2, 3, 4]);
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure51(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               try {
-                res = $async$self.converter.l$1$1(new A.execute______closure52(), type$.int).call$1(data);
-                if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                  A.expect(res, data, null);
-                else {
-                  t1 = A.unexpectedSuccess(string$.conver, res);
-                  throw A.wrapException(t1);
-                }
+                res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure(string$.conver, ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -37323,19 +38467,13 @@
     },
     $signature: 0
   };
-  A.execute______closure51.prototype = {
+  A.testCastConverter____closure7.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute______closure52.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_____closure95.prototype = {
+  A.testCastConverter___closure24.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37348,14 +38486,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1.1, 2.2, 3.3, 4.4]);
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure50(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.double).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfDoubles, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37364,17 +38502,17 @@
     },
     $signature: 0
   };
-  A.execute______closure50.prototype = {
+  A.testCastConverter____closure6.prototype = {
     call$0() {
       return type$.List_double._as(this.data);
     },
-    $signature: 40
+    $signature: 13
   };
-  A.execute_____closure96.prototype = {
+  A.testCastConverter___closure25.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
+        $async$self = this, t1, res, data;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -37383,14 +38521,15 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1.1, 2.2, null, 4.4]);
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure49(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.nl$1$0(type$.double).call$1(data);
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfNullableDoubles, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37399,17 +38538,17 @@
     },
     $signature: 0
   };
-  A.execute______closure49.prototype = {
+  A.testCastConverter____closure5.prototype = {
     call$0() {
       return type$.List_nullable_double._as(this.data);
     },
-    $signature: 68
+    $signature: 32
   };
-  A.execute_____closure97.prototype = {
+  A.testCastConverter___closure26.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, ex, t1, exception, data;
+        $async$self = this, res, ex, exception, data, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -37418,25 +38557,22 @@
             case 0:
               // Function start
               data = [];
-              J.addAll$1$ax(data, [1.1, 2.2, 3, 4.4]);
+              t1 = $.$get$_listOfDoublesWithInt();
+              B.JSArray_methods.addAll$1(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure48(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.double).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
               try {
-                A.expect(res, data, null);
-                if ($.$get$Squadron_platformType() !== B.SquadronPlatformType_JavaScript_js) {
-                  t1 = A.unexpectedSuccess("conversion of a list with int", data);
-                  throw A.wrapException(t1);
-                }
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("int to double", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure("conversion of a list with int", ex));
+                  A._unexpectedFailureIfJs("int to double", ex);
                 } else
                   throw exception;
               }
@@ -37448,26 +38584,25 @@
     },
     $signature: 0
   };
-  A.execute______closure48.prototype = {
+  A.testCastConverter____closure4.prototype = {
     call$0() {
       return type$.List_double._as(this.data);
     },
-    $signature: 40
+    $signature: 13
   };
-  A.execute____closure38.prototype = {
+  A.testCastConverter__closure2.prototype = {
     call$0() {
       var t1 = this.tc,
-        t2 = this.throwsTypeError,
-        t3 = this.converter;
-      t1.test$2("- Strings / ints (cast)", new A.execute_____closure85(t2, t3));
-      t1.test$2("- String / ints (map)", new A.execute_____closure86(t2, t3));
-      t1.test$2("- String / nullable int", new A.execute_____closure87(t2, t3));
-      t1.test$2("- String / integral double (cast)", new A.execute_____closure88(t2, t3));
-      t1.test$2("- String / integral double (map)", new A.execute_____closure89(t2, t3));
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testCastConverter___closure14(t2));
+      t1.test$2("- String / int (map)", new A.testCastConverter___closure15(t2));
+      t1.test$2("- String / nullable int", new A.testCastConverter___closure16(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testCastConverter___closure17(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testCastConverter___closure18(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure85.prototype = {
+  A.testCastConverter___closure14.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37481,14 +38616,14 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure47(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.m$2$0(type$.String, type$.int).call$1(data);
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37497,13 +38632,13 @@
     },
     $signature: 0
   };
-  A.execute______closure47.prototype = {
+  A.testCastConverter____closure3.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute_____closure86.prototype = {
+  A.testCastConverter___closure15.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37517,14 +38652,14 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure45(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.m$2$1$vcast(new A.execute______closure46(), type$.String, type$.int).call$1(data);
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37533,19 +38668,13 @@
     },
     $signature: 0
   };
-  A.execute______closure45.prototype = {
+  A.testCastConverter____closure2.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute______closure46.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_____closure87.prototype = {
+  A.testCastConverter___closure16.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37559,14 +38688,15 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "", null, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfNullableInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure44(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.nm$2$0(type$.String, type$.nullable_int).call$1(data);
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfNullableInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -37575,13 +38705,13 @@
     },
     $signature: 0
   };
-  A.execute______closure44.prototype = {
+  A.testCastConverter____closure1.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute_____closure88.prototype = {
+  A.testCastConverter___closure17.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37595,25 +38725,22 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              J.addAll$1$ax(data, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure43(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.m$2$0(type$.String, type$.int).call$1(data);
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
               try {
-                A.expect(res, data, null);
-                if ($.$get$Squadron_platformType() !== B.SquadronPlatformType_JavaScript_js) {
-                  t1 = A.unexpectedSuccess("conversion of a map with integral double", res);
-                  throw A.wrapException(t1);
-                }
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure("conversion of a map with integral double", ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -37625,13 +38752,13 @@
     },
     $signature: 0
   };
-  A.execute______closure43.prototype = {
+  A.testCastConverter____closure0.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute_____closure89.prototype = {
+  A.testCastConverter___closure18.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37645,26 +38772,22 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              J.addAll$1$ax(data, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure41(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testCastConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               try {
-                res = $async$self.converter.m$2$1$vcast(new A.execute______closure42(), type$.String, type$.int).call$1(data);
-                if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js) {
-                  A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-                  A.expect(res, data, null);
-                } else {
-                  t1 = A.unexpectedSuccess("conversion of a map with integral double", res);
-                  throw A.wrapException(t1);
-                }
+                res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure("conversion of a map with integral double", ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -37676,113 +38799,81 @@
     },
     $signature: 0
   };
-  A.execute______closure41.prototype = {
+  A.testCastConverter____closure.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute______closure42.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute____closure39.prototype = {
+  A.testCastConverter__closure3.prototype = {
     call$0() {
-      var _s11_ = "- Int32List",
+      var t2,
         intData = A._setArrayType([0, 1, 2, 254, 256, 257, 65534, 65536, 65537, 4294967294, 4294967296, 4294967297, 4294967298], type$.JSArray_int),
         dblData = A._setArrayType([0 / 0, -1 / 0, -17976931348623157e292, -3.141592653589793, -0.0, 0, 5e-324, 3.141592653589793, 17976931348623157e292, 1 / 0], type$.JSArray_double),
-        t1 = this.converter,
-        t2 = type$.ByteData,
-        t3 = type$.Uint8ClampedList,
-        t4 = type$.Uint8List,
-        t5 = type$.Int8List,
-        t6 = type$.Uint16List,
-        t7 = type$.Int16List,
-        t8 = type$.Uint32List,
-        t9 = type$.Int32List,
-        t10 = type$.Int32x4List,
-        t11 = type$.Uint64List,
-        t12 = type$.Int64List,
-        t13 = type$.Float32List,
-        t14 = type$.Float32x4List,
-        t15 = type$.Float64List,
-        t16 = type$.Float64x2List,
-        t17 = type$.Type,
-        tds = A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, t1.td$1$0(t2), B.Type_Uint8ClampedList_9Bb, t1.td$1$0(t3), B.Type_Uint8List_CSc, t1.td$1$0(t4), B.Type_Int8List_woc, t1.td$1$0(t5), B.Type_Uint16List_2mh, t1.td$1$0(t6), B.Type_Int16List_cot, t1.td$1$0(t7), B.Type_Uint32List_2mh, t1.td$1$0(t8), B.Type_Int32List_m1p, t1.td$1$0(t9), B.Type_Int32x4List_A8J, t1.td$1$0(t10), B.Type_Uint64List_2mh, t1.td$1$0(t11), B.Type_Int64List_C72, t1.td$1$0(t12), B.Type_Float32List_Ymk, t1.td$1$0(t13), B.Type_Float32x4List_sWu, t1.td$1$0(t14), B.Type_Float64List_Ymk, t1.td$1$0(t15), B.Type_Float64x2List_sWu, t1.td$1$0(t16)], t17, type$.TypedData_Function_dynamic);
-      t17 = new A.execute____closure_$test(A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, t1.ntd$1$0(t2), B.Type_Uint8ClampedList_9Bb, t1.ntd$1$0(t3), B.Type_Uint8List_CSc, t1.ntd$1$0(t4), B.Type_Int8List_woc, t1.ntd$1$0(t5), B.Type_Uint16List_2mh, t1.ntd$1$0(t6), B.Type_Int16List_cot, t1.ntd$1$0(t7), B.Type_Uint32List_2mh, t1.ntd$1$0(t8), B.Type_Int32List_m1p, t1.ntd$1$0(t9), B.Type_Int32x4List_A8J, t1.ntd$1$0(t10), B.Type_Uint64List_2mh, t1.ntd$1$0(t11), B.Type_Int64List_C72, t1.ntd$1$0(t12), B.Type_Float32List_Ymk, t1.ntd$1$0(t13), B.Type_Float32x4List_sWu, t1.ntd$1$0(t14), B.Type_Float64List_Ymk, t1.ntd$1$0(t15), B.Type_Float64x2List_sWu, t1.ntd$1$0(t16)], t17, type$.nullable_TypedData_Function_dynamic), tds, this.throwsTypeError);
-      t16 = this.tc;
-      t16.test$2("- ByteData", new A.execute_____closure70(intData, t17));
-      t16.test$2("- Uint8ClampedList", new A.execute_____closure71(intData, t17));
-      t16.test$2("- Uint8List", new A.execute_____closure72(intData, t17));
-      t16.test$2("- Int8List", new A.execute_____closure73(intData, t17));
-      t16.test$2("- Uint16List", new A.execute_____closure74(intData, t17));
-      t16.test$2("- Int16List", new A.execute_____closure75(intData, t17));
-      t16.test$2("- Uint32List", new A.execute_____closure76(intData, t17));
-      t16.test$2(_s11_, new A.execute_____closure77(intData, t17));
-      t16.test$2(_s11_, new A.execute_____closure78(t17));
-      t16.test$3$skip("- Uint64List", new A.execute_____closure79(intData, t17), true);
-      t16.test$3$skip("- Int64List", new A.execute_____closure80(intData, t17), true);
-      t16.test$2("- Float32List", new A.execute_____closure81(dblData, t17));
-      t16.test$2("- Float32x4List", new A.execute_____closure82(t17));
-      t16.test$2("- Float64List", new A.execute_____closure83(dblData, t17));
-      t16.test$2("- Float64x2List", new A.execute_____closure84(t17));
+        t1 = this.converter;
+      t1 = new A.testCastConverter__closure_$test(A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, t1.typedData$1$0(type$.ByteData), B.Type_Uint8ClampedList_9Bb, t1.typedData$1$0(type$.Uint8ClampedList), B.Type_Uint8List_CSc, t1.typedData$1$0(type$.Uint8List), B.Type_Int8List_woc, t1.typedData$1$0(type$.Int8List), B.Type_Uint16List_2mh, t1.typedData$1$0(type$.Uint16List), B.Type_Int16List_cot, t1.typedData$1$0(type$.Int16List), B.Type_Uint32List_2mh, t1.typedData$1$0(type$.Uint32List), B.Type_Int32List_m1p, t1.typedData$1$0(type$.Int32List), B.Type_Int32x4List_A8J, t1.typedData$1$0(type$.Int32x4List), B.Type_Uint64List_2mh, t1.typedData$1$0(type$.Uint64List), B.Type_Int64List_C72, t1.typedData$1$0(type$.Int64List), B.Type_Float32List_Ymk, t1.typedData$1$0(type$.Float32List), B.Type_Float32x4List_sWu, t1.typedData$1$0(type$.Float32x4List), B.Type_Float64List_Ymk, t1.typedData$1$0(type$.Float64List), B.Type_Float64x2List_sWu, t1.typedData$1$0(type$.Float64x2List)], type$.Type, type$.TypedData_Function_dynamic), t1);
+      t2 = this.tc;
+      t2.test$2("- ByteData", new A.testCastConverter___closure(intData, t1));
+      t2.test$2("- Uint8ClampedList", new A.testCastConverter___closure0(intData, t1));
+      t2.test$2("- Uint8List", new A.testCastConverter___closure1(intData, t1));
+      t2.test$2("- Int8List", new A.testCastConverter___closure2(intData, t1));
+      t2.test$2("- Uint16List", new A.testCastConverter___closure3(intData, t1));
+      t2.test$2("- Int16List", new A.testCastConverter___closure4(intData, t1));
+      t2.test$2("- Uint32List", new A.testCastConverter___closure5(intData, t1));
+      t2.test$2("- Int32List", new A.testCastConverter___closure6(intData, t1));
+      t2.test$2("- Int32x4List", new A.testCastConverter___closure7(t1));
+      t2.test$3$skip("- Uint64List", new A.testCastConverter___closure8(intData, t1), true);
+      t2.test$3$skip("- Int64List", new A.testCastConverter___closure9(intData, t1), true);
+      t2.test$2("- Float32List", new A.testCastConverter___closure10(dblData, t1));
+      t2.test$2("- Float32x4List", new A.testCastConverter___closure11(t1));
+      t2.test$2("- Float64List", new A.testCastConverter___closure12(dblData, t1));
+      t2.test$2("- Float64x2List", new A.testCastConverter___closure13(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure_$test.prototype = {
-    $call$body$execute____closure_$test(input, output, nullable, $T) {
+  A.testCastConverter__closure_$test.prototype = {
+    $call$body$testCastConverter__closure_$test(input, output, $T) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
-        $async$self = this, fn, process, res, ex, exception, t2, t3, efn, t1;
-      var $async$call$1$3$nullable = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        $async$self = this, fn, process, res, exception, efn, t1, t2;
+      var $async$call$1$2 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
         while (true)
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = nullable ? $async$self.ntds.$index(0, A.createRuntimeType($T)) : $async$self.tds.$index(0, A.createRuntimeType($T));
-              t1.toString;
-              fn = t1;
-              process = nullable ? "converter.ntd<" + A.createRuntimeType($T).toString$0(0) + ">" : "converter.td<" + A.createRuntimeType($T).toString$0(0) + ">";
+              t1 = $async$self.tds;
+              t2 = t1.$index(0, A.createRuntimeType($T));
+              t2.toString;
+              fn = $T._eval$1("0(@)")._as(t2);
+              process = "converter.td<" + A.createRuntimeType($T).toString$0(0) + ">";
+              A.expect($async$self.converter.nullable$1$1(fn, $T).call$1(null), B.C__IsNull, null);
               try {
                 res = fn.call$1(null);
-                if (nullable)
-                  A.expect(res, B.C__IsNull, null);
-                else {
-                  t1 = A.unexpectedSuccess(process, res);
-                  throw A.wrapException(t1);
-                }
+                t2 = A.unexpectedSuccess(process, res);
+                throw A.wrapException(t2);
               } catch (exception) {
-                t1 = A.unwrapException(exception);
-                if (type$.TypeError._is(t1)) {
-                  ex = t1;
-                  if (nullable)
-                    throw A.wrapException(A.unexpectedFailure(process, ex));
-                } else
+                if (!type$.TypeError._is(A.unwrapException(exception)))
                   throw exception;
               }
-              t1 = $async$self.throwsTypeError;
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute_____$test_closure(fn), t1, null, null, null, false), $async$call$1$3$nullable);
+              return A._asyncAwait(A._expect(new A.testCastConverter___$test_closure(fn, $T), $.$get$_throwsTypeError(), null, null, null, false), $async$call$1$2);
             case 2:
               // returning from await.
               $async$goto = !type$.ByteBuffer._is(input) ? 3 : 4;
               break;
             case 3:
               // then
-              t2 = $async$self.ntds, t3 = $async$self.tds, t3 = t2.get$entries(t2).followedBy$1(0, t3.get$entries(t3)), t3 = new A.FollowedByIterator(J.get$iterator$ax(t3.__internal$_first), t3.__internal$_second, A._instanceType(t3)._eval$1("FollowedByIterator<1>"));
+              t1 = t1.get$entries(t1), t1 = t1.get$iterator(t1);
             case 5:
               // for condition
-              if (!t3.moveNext$0()) {
+              if (!t1.moveNext$0()) {
                 // goto after for
                 $async$goto = 6;
                 break;
               }
-              t2 = t3._currentIterator;
-              t2 = t2.get$current(t2);
+              t2 = t1.get$current(t1);
               efn = t2.value;
               $async$goto = t2.key === A.createRuntimeType($T) ? 7 : 9;
               break;
@@ -37795,7 +38886,7 @@
             case 9:
               // else
               $async$goto = 10;
-              return A._asyncAwait(A._expect(new A.execute_____$test_closure0(efn, input), t1, null, null, null, false), $async$call$1$3$nullable);
+              return A._asyncAwait(A._expect(new A.testCastConverter___$test_closure0(efn, input), $.$get$_throwsTypeError(), null, null, null, false), $async$call$1$2);
             case 10:
               // returning from await.
             case 8:
@@ -37811,27 +38902,32 @@
               return A._asyncReturn(null, $async$completer);
           }
       });
-      return A._asyncStartSync($async$call$1$3$nullable, $async$completer);
+      return A._asyncStartSync($async$call$1$2, $async$completer);
     },
-    call$1$3$nullable(input, output, nullable, $T) {
+    call$1$2(input, output, $T) {
       A.checkTypeBound($T, type$.TypedData, "T", "call");
-      return this.$call$body$execute____closure_$test(input, $T._as(output), nullable, $T);
+      return this.$call$body$testCastConverter__closure_$test(input, $T._as(output), $T);
     },
-    $signature: 143
+    call$2(input, output) {
+      return this.call$1$2(input, output, type$.TypedData);
+    },
+    $signature: 141
   };
-  A.execute_____$test_closure.prototype = {
+  A.testCastConverter___$test_closure.prototype = {
     call$0() {
       return this.fn.call$1(new A.Object());
     },
-    $signature: 92
+    $signature() {
+      return this.T._eval$1("0()");
+    }
   };
-  A.execute_____$test_closure0.prototype = {
+  A.testCastConverter___$test_closure0.prototype = {
     call$0() {
       return this.efn.call$1(this.input);
     },
-    $signature: 92
+    $signature: 142
   };
-  A.execute_____closure70.prototype = {
+  A.testCastConverter___closure.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37847,20 +38943,12 @@
               t1 = $async$self.$$test;
               t2 = type$.ByteData;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -37870,7 +38958,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure71.prototype = {
+  A.testCastConverter___closure0.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37886,20 +38974,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Uint8ClampedList;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -37909,7 +38989,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure72.prototype = {
+  A.testCastConverter___closure1.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37925,20 +39005,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Uint8List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -37948,7 +39020,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure73.prototype = {
+  A.testCastConverter___closure2.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -37964,20 +39036,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Int8List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -37987,7 +39051,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure74.prototype = {
+  A.testCastConverter___closure3.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38003,20 +39067,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Uint16List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38026,7 +39082,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure75.prototype = {
+  A.testCastConverter___closure4.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38042,20 +39098,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Int16List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38065,7 +39113,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure76.prototype = {
+  A.testCastConverter___closure5.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38081,20 +39129,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Uint32List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38104,7 +39144,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure77.prototype = {
+  A.testCastConverter___closure6.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38120,20 +39160,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Int32List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38143,7 +39175,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure78.prototype = {
+  A.testCastConverter___closure7.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38176,20 +39208,12 @@
               t2 = $async$self.$$test;
               t3 = type$.Int32x4List;
               $async$goto = 2;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, false, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(input, input, t3), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, true, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(t1.buffer, input, t3), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, false, t3), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, true, t3), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38199,7 +39223,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure79.prototype = {
+  A.testCastConverter___closure8.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38220,7 +39244,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure80.prototype = {
+  A.testCastConverter___closure9.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38241,7 +39265,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure81.prototype = {
+  A.testCastConverter___closure10.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38257,20 +39281,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Float32List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38280,7 +39296,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure82.prototype = {
+  A.testCastConverter___closure11.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38313,20 +39329,12 @@
               t2 = $async$self.$$test;
               t3 = type$.Float32x4List;
               $async$goto = 2;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, false, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(input, input, t3), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, true, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(t1.buffer, input, t3), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, false, t3), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, true, t3), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38336,7 +39344,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure83.prototype = {
+  A.testCastConverter___closure12.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38352,20 +39360,12 @@
               t1 = $async$self.$$test;
               t2 = type$.Float64List;
               $async$goto = 2;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, false, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input, input, t2), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t1.call$1$3$nullable(input, input, true, t2), $async$call$0);
+              return A._asyncAwait(t1.call$1$2(input.buffer, input, t2), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, false, t2), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t1.call$1$3$nullable(input.buffer, input, true, t2), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38375,7 +39375,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure84.prototype = {
+  A.testCastConverter___closure13.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38397,20 +39397,12 @@
               t2 = $async$self.$$test;
               t3 = type$.Float64x2List;
               $async$goto = 2;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, false, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(input, input, t3), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(t2.call$1$3$nullable(input, input, true, t3), $async$call$0);
+              return A._asyncAwait(t2.call$1$2(t1.buffer, input, t3), $async$call$0);
             case 3:
-              // returning from await.
-              $async$goto = 4;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, false, t3), $async$call$0);
-            case 4:
-              // returning from await.
-              $async$goto = 5;
-              return A._asyncAwait(t2.call$1$3$nullable(t1.buffer, input, true, t3), $async$call$0);
-            case 5:
               // returning from await.
               // implicit return
               return A._asyncReturn(null, $async$completer);
@@ -38420,54 +39412,73 @@
     },
     $signature: 0
   };
-  A.execute___closure14.prototype = {
+  A.testInPlaceCastConverter_closure.prototype = {
     call$0() {
-      var t1 = this.tc,
-        t2 = this.throwsTypeError;
-      t1.group$2("- ints", new A.execute____closure31(B.C_NumConverter, t1, t2));
-      t1.group$2("- doubles", new A.execute____closure32(B.C_NumConverter, t1, this.isInfinite, t2));
-      t1.group$2("- lists", new A.execute____closure33(t1, t2, B.C_NumConverter));
-      t1.group$2("- maps", new A.execute____closure34(t1, t2, B.C_NumConverter));
+      var converter = new A.InPlaceConverter(B.C_CastConverter),
+        t1 = this.tc;
+      t1.group$2("- ints", new A.testInPlaceCastConverter__closure(converter, t1));
+      t1.group$2("- doubles", new A.testInPlaceCastConverter__closure0(converter, t1));
+      t1.group$2("- lists", new A.testInPlaceCastConverter__closure1(t1, converter));
+      t1.group$2("- maps", new A.testInPlaceCastConverter__closure2(t1, converter));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure31.prototype = {
+  A.testInPlaceCastConverter__closure.prototype = {
     call$0() {
       var t1 = this.converter,
         t2 = type$.int,
-        toInt = t1.v$1$0(t2),
-        toNullableInt = t1.nv$1$0(t2);
+        $$toInt = t1.converter.value$1$0(0, t2),
+        $$toNullableInt = t1.nullable$1$0(t2);
       t2 = this.tc;
-      t2.test$2("- converters are not identities", new A.execute_____closure63(toInt, toNullableInt));
-      t2.test$2("- int values", new A.execute_____closure64(toInt, toNullableInt));
-      t1 = this.throwsTypeError;
-      t2.test$2("- doubles values", new A.execute_____closure65(toInt, toNullableInt, t1));
-      t2.test$2("- null values", new A.execute_____closure66(toInt, t1, toNullableInt));
-      t2.test$2("- bool values", new A.execute_____closure67(toInt, t1, toNullableInt));
-      t2.test$2("- String values", new A.execute_____closure68(toInt, t1, toNullableInt));
-      t2.test$2("- non-number values", new A.execute_____closure69(toInt, t1, toNullableInt));
+      t2.test$2("- converters are identities", new A.testInPlaceCastConverter___closure19($$toInt, $$toNullableInt));
+      t2.test$2("- int", new A.testInPlaceCastConverter___closure20($$toInt, $$toNullableInt));
+      t2.test$2("- double", new A.testInPlaceCastConverter___closure21(new A.testInPlaceCastConverter__closure_$platformSensitive0($$toNullableInt, $$toInt), $$toInt, $$toNullableInt));
+      t2.test$2("- null", new A.testInPlaceCastConverter___closure22($$toInt, $$toNullableInt));
+      t2.test$2("- bool", new A.testInPlaceCastConverter___closure23($$toInt, $$toNullableInt));
+      t2.test$2("- String", new A.testInPlaceCastConverter___closure24($$toInt, $$toNullableInt));
+      t2.test$2("- Object", new A.testInPlaceCastConverter___closure25($$toInt, $$toNullableInt));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure63.prototype = {
+  A.testInPlaceCastConverter__closure_$platformSensitive0.prototype = {
+    call$2$nullable(value, nullable) {
+      var res, ex, exception, t1,
+        fn = nullable ? this.$$toNullableInt : this.$$toInt,
+        process = nullable ? "toNullableInt" : "toInt";
+      try {
+        res = fn.call$1(value);
+        A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
+      } catch (exception) {
+        t1 = A.unwrapException(exception);
+        if (type$.TypeError._is(t1)) {
+          ex = t1;
+          A._unexpectedFailureIfJs(process, ex);
+        } else
+          throw exception;
+      }
+    },
+    $signature: 61
+  };
+  A.testInPlaceCastConverter___closure19.prototype = {
     call$0() {
-      A.expect(A.Converter_isIdentity(this.toInt, type$.int), B.C__IsFalse, null);
-      A.expect(A.Converter_isIdentity(this.toNullableInt, type$.nullable_int), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsTrue, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure64.prototype = {
+  A.testInPlaceCastConverter___closure20.prototype = {
     call$0() {
-      A.expect(this.toInt.call$1(5), 5, null);
-      A.expect(this.toNullableInt.call$1(5), 5, null);
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure65.prototype = {
+  A.testInPlaceCastConverter___closure21.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t2, t3, t1;
+        $async$self = this, t2, t3, t4, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -38475,45 +39486,34 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.toInt;
-              A.expect(t1.call$1(5), 5, null);
-              t2 = $async$self.toNullableInt;
-              A.expect(t2.call$1(5), 5, null);
-              t3 = $async$self.throwsTypeError;
+              t1 = $async$self.$$platformSensitive;
+              t1.call$2$nullable(5, false);
+              t1.call$2$nullable(5, true);
+              t2 = $async$self.$$toInt;
+              t3 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure33(t1), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure26(t2), t3, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
+              t4 = $async$self.$$toNullableInt;
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure34(t2), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure27(t4), t3, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
+              t1.call$2$nullable(1 / 0, false);
+              t1.call$2$nullable(1 / 0, true);
+              t1.call$2$nullable(-1 / 0, false);
+              t1.call$2$nullable(-1 / 0, true);
               $async$goto = 4;
-              return A._asyncAwait(A._expect(new A.execute______closure35(t1), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure28(t2), t3, null, null, null, false), $async$call$0);
             case 4:
               // returning from await.
               $async$goto = 5;
-              return A._asyncAwait(A._expect(new A.execute______closure36(t2), t3, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure29(t4), t3, null, null, null, false), $async$call$0);
             case 5:
               // returning from await.
-              $async$goto = 6;
-              return A._asyncAwait(A._expect(new A.execute______closure37(t1), t3, null, null, null, false), $async$call$0);
-            case 6:
-              // returning from await.
-              $async$goto = 7;
-              return A._asyncAwait(A._expect(new A.execute______closure38(t2), t3, null, null, null, false), $async$call$0);
-            case 7:
-              // returning from await.
-              $async$goto = 8;
-              return A._asyncAwait(A._expect(new A.execute______closure39(t1), t3, null, null, null, false), $async$call$0);
-            case 8:
-              // returning from await.
-              $async$goto = 9;
-              return A._asyncAwait(A._expect(new A.execute______closure40(t2), t3, null, null, null, false), $async$call$0);
-            case 9:
-              // returning from await.
-              A.expect(t1.call$1(-0.0), 0, null);
-              A.expect(t2.call$1(-0.0), 0, null);
+              t1.call$2$nullable(-0.0, false);
+              t1.call$2$nullable(-0.0, true);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -38522,55 +39522,31 @@
     },
     $signature: 0
   };
-  A.execute______closure33.prototype = {
+  A.testInPlaceCastConverter____closure26.prototype = {
     call$0() {
-      return this.toInt.call$1(5.5);
+      return this.$$toInt.call$1(5.5);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure34.prototype = {
+  A.testInPlaceCastConverter____closure27.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(5.5);
+      return this.$$toNullableInt.call$1(5.5);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute______closure35.prototype = {
+  A.testInPlaceCastConverter____closure28.prototype = {
     call$0() {
-      return this.toInt.call$1(1 / 0);
+      return this.$$toInt.call$1(0 / 0);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure36.prototype = {
+  A.testInPlaceCastConverter____closure29.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(1 / 0);
+      return this.$$toNullableInt.call$1(0 / 0);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute______closure37.prototype = {
-    call$0() {
-      return this.toInt.call$1(-1 / 0);
-    },
-    $signature: 5
-  };
-  A.execute______closure38.prototype = {
-    call$0() {
-      return this.toNullableInt.call$1(-1 / 0);
-    },
-    $signature: 10
-  };
-  A.execute______closure39.prototype = {
-    call$0() {
-      return this.toInt.call$1(0 / 0);
-    },
-    $signature: 5
-  };
-  A.execute______closure40.prototype = {
-    call$0() {
-      return this.toNullableInt.call$1(0 / 0);
-    },
-    $signature: 10
-  };
-  A.execute_____closure66.prototype = {
+  A.testInPlaceCastConverter___closure22.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38583,10 +39559,10 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure32($async$self.toInt), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure25($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              A.expect($async$self.toNullableInt.call$1(null), B.C__IsNull, null);
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -38595,13 +39571,13 @@
     },
     $signature: 0
   };
-  A.execute______closure32.prototype = {
+  A.testInPlaceCastConverter____closure25.prototype = {
     call$0() {
-      return this.toInt.call$1(null);
+      return this.$$toInt.call$1(null);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute_____closure67.prototype = {
+  A.testInPlaceCastConverter___closure23.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38613,13 +39589,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure30($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure23($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure31($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure24($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38630,19 +39606,19 @@
     },
     $signature: 0
   };
-  A.execute______closure30.prototype = {
+  A.testInPlaceCastConverter____closure23.prototype = {
     call$0() {
-      return this.toInt.call$1(true);
+      return this.$$toInt.call$1(true);
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure31.prototype = {
+  A.testInPlaceCastConverter____closure24.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(true);
+      return this.$$toNullableInt.call$1(true);
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute_____closure68.prototype = {
+  A.testInPlaceCastConverter___closure24.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38654,13 +39630,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure28($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure21($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure29($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure22($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38671,19 +39647,19 @@
     },
     $signature: 0
   };
-  A.execute______closure28.prototype = {
+  A.testInPlaceCastConverter____closure21.prototype = {
     call$0() {
-      return this.toInt.call$1("1");
+      return this.$$toInt.call$1("1");
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure29.prototype = {
+  A.testInPlaceCastConverter____closure22.prototype = {
     call$0() {
-      return this.toNullableInt.call$1("1");
+      return this.$$toNullableInt.call$1("1");
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute_____closure69.prototype = {
+  A.testInPlaceCastConverter___closure25.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38695,13 +39671,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure26($async$self.toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure19($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure27($async$self.toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure20($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38712,71 +39688,91 @@
     },
     $signature: 0
   };
-  A.execute______closure26.prototype = {
+  A.testInPlaceCastConverter____closure19.prototype = {
     call$0() {
-      return this.toInt.call$1(new A.Object());
+      return this.$$toInt.call$1(new A.Object());
     },
-    $signature: 5
+    $signature: 3
   };
-  A.execute______closure27.prototype = {
+  A.testInPlaceCastConverter____closure20.prototype = {
     call$0() {
-      return this.toNullableInt.call$1(new A.Object());
+      return this.$$toNullableInt.call$1(new A.Object());
     },
-    $signature: 10
+    $signature: 4
   };
-  A.execute____closure32.prototype = {
+  A.testInPlaceCastConverter__closure0.prototype = {
     call$0() {
-      var _this = this,
-        t1 = _this.converter,
+      var t1 = this.converter,
         t2 = type$.double,
-        toDbl = t1.v$1$0(t2),
-        toNullableDbl = t1.nv$1$0(t2);
-      t2 = _this.tc;
-      t2.test$2("- converters are not identities", new A.execute_____closure56(toDbl, toNullableDbl));
-      t2.test$2("- int values", new A.execute_____closure57(toDbl, toNullableDbl));
-      t2.test$2("- doubles values", new A.execute_____closure58(toDbl, toNullableDbl, _this.isInfinite));
-      t1 = _this.throwsTypeError;
-      t2.test$2("- null values", new A.execute_____closure59(toDbl, t1, toNullableDbl));
-      t2.test$2("- bool values", new A.execute_____closure60(toDbl, t1, toNullableDbl));
-      t2.test$2("- String values", new A.execute_____closure61(toDbl, t1, toNullableDbl));
-      t2.test$2("- non-number values", new A.execute_____closure62(toDbl, t1, toNullableDbl));
+        $$toDbl = t1.converter.value$1$0(0, t2),
+        $$toNullableDbl = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are identities", new A.testInPlaceCastConverter___closure12($$toDbl, $$toNullableDbl));
+      t2.test$2("- int", new A.testInPlaceCastConverter___closure13(new A.testInPlaceCastConverter__closure_$platformSensitive($$toNullableDbl, $$toDbl)));
+      t2.test$2("- double", new A.testInPlaceCastConverter___closure14($$toDbl, $$toNullableDbl));
+      t2.test$2("- null", new A.testInPlaceCastConverter___closure15($$toDbl, $$toNullableDbl));
+      t2.test$2("- bool", new A.testInPlaceCastConverter___closure16($$toDbl, $$toNullableDbl));
+      t2.test$2("- String", new A.testInPlaceCastConverter___closure17($$toDbl, $$toNullableDbl));
+      t2.test$2("- Object", new A.testInPlaceCastConverter___closure18($$toDbl, $$toNullableDbl));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure56.prototype = {
-    call$0() {
-      A.expect(A.Converter_isIdentity(this.toDbl, type$.double), B.C__IsFalse, null);
-      A.expect(A.Converter_isIdentity(this.toNullableDbl, type$.nullable_double), B.C__IsFalse, null);
+  A.testInPlaceCastConverter__closure_$platformSensitive.prototype = {
+    call$2$nullable(value, nullable) {
+      var res, ex, exception, t1,
+        fn = nullable ? this.$$toNullableDbl : this.$$toDbl,
+        process = nullable ? "toNullableDbl" : "toDbl";
+      try {
+        res = fn.call$1(value);
+        A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
+      } catch (exception) {
+        t1 = A.unwrapException(exception);
+        if (type$.TypeError._is(t1)) {
+          ex = t1;
+          A._unexpectedFailureIfJs(process, ex);
+        } else
+          throw exception;
+      }
     },
-    $signature: 2
+    $signature: 58
   };
-  A.execute_____closure57.prototype = {
+  A.testInPlaceCastConverter___closure12.prototype = {
     call$0() {
-      A.expect(this.toDbl.call$1(5), 5, null);
-      A.expect(this.toNullableDbl.call$1(5), 5, null);
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsTrue, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure58.prototype = {
+  A.testInPlaceCastConverter___closure13.prototype = {
     call$0() {
-      var t2, t3, _null = null,
-        t1 = this.toDbl;
+      var t1 = this.$$platformSensitive;
+      t1.call$2$nullable(5, false);
+      t1.call$2$nullable(5, true);
+    },
+    $signature: 1
+  };
+  A.testInPlaceCastConverter___closure14.prototype = {
+    call$0() {
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
       A.expect(t1.call$1(5.5), 5.5, _null);
-      t2 = this.toNullableDbl;
+      t2 = this.$$toNullableDbl;
       A.expect(t2.call$1(5.5), 5.5, _null);
       A.expect(t1.call$1(-0.0), -0.0, _null);
       A.expect(t2.call$1(-0.0), -0.0, _null);
-      t3 = this.isInfinite;
-      A.expect(t1.call$1(1 / 0), t3, _null);
-      A.expect(t2.call$1(1 / 0), t3, _null);
-      A.expect(t1.call$1(-1 / 0), t3, _null);
-      A.expect(t2.call$1(-1 / 0), t3, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
       A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
       A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure59.prototype = {
+  A.testInPlaceCastConverter___closure15.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38789,10 +39785,10 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure25($async$self.toDbl), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure18($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              A.expect($async$self.toNullableDbl.call$1(null), B.C__IsNull, null);
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -38801,13 +39797,13 @@
     },
     $signature: 0
   };
-  A.execute______closure25.prototype = {
+  A.testInPlaceCastConverter____closure18.prototype = {
     call$0() {
-      return this.toDbl.call$1(null);
+      return this.$$toDbl.call$1(null);
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute_____closure60.prototype = {
+  A.testInPlaceCastConverter___closure16.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38819,13 +39815,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure23($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure16($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure24($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure17($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38836,19 +39832,19 @@
     },
     $signature: 0
   };
-  A.execute______closure23.prototype = {
+  A.testInPlaceCastConverter____closure16.prototype = {
     call$0() {
-      return this.toDbl.call$1(true);
+      return this.$$toDbl.call$1(true);
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure24.prototype = {
+  A.testInPlaceCastConverter____closure17.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1(true);
+      return this.$$toNullableDbl.call$1(true);
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute_____closure61.prototype = {
+  A.testInPlaceCastConverter___closure17.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38860,13 +39856,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure21($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure14($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure22($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure15($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38877,19 +39873,19 @@
     },
     $signature: 0
   };
-  A.execute______closure21.prototype = {
+  A.testInPlaceCastConverter____closure14.prototype = {
     call$0() {
-      return this.toDbl.call$1("1");
+      return this.$$toDbl.call$1("1");
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure22.prototype = {
+  A.testInPlaceCastConverter____closure15.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1("1");
+      return this.$$toNullableDbl.call$1("1");
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute_____closure62.prototype = {
+  A.testInPlaceCastConverter___closure18.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38901,13 +39897,13 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $async$self.throwsTypeError;
+              t1 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure19($async$self.toDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure12($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.execute______closure20($async$self.toNullableDbl), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure13($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -38918,35 +39914,34 @@
     },
     $signature: 0
   };
-  A.execute______closure19.prototype = {
+  A.testInPlaceCastConverter____closure12.prototype = {
     call$0() {
-      return this.toDbl.call$1(new A.Object());
+      return this.$$toDbl.call$1(new A.Object());
     },
-    $signature: 18
+    $signature: 7
   };
-  A.execute______closure20.prototype = {
+  A.testInPlaceCastConverter____closure13.prototype = {
     call$0() {
-      return this.toNullableDbl.call$1(new A.Object());
+      return this.$$toNullableDbl.call$1(new A.Object());
     },
-    $signature: 29
+    $signature: 10
   };
-  A.execute____closure33.prototype = {
+  A.testInPlaceCastConverter__closure1.prototype = {
     call$0() {
       var t1 = this.tc,
-        t2 = this.throwsTypeError,
-        t3 = this.converter;
-      t1.test$2("- ints (cast)", new A.execute_____closure48(t2, t3));
-      t1.test$2("- ints (map)", new A.execute_____closure49(t3));
-      t1.test$2("- nullable ints", new A.execute_____closure50(t2, t3));
-      t1.test$2("- with integral double (cast)", new A.execute_____closure51(t2, t3));
-      t1.test$2("- with integral double (map)", new A.execute_____closure52(t2, t3));
-      t1.test$2("- doubles", new A.execute_____closure53(t2, t3));
-      t1.test$2("- nullable doubles", new A.execute_____closure54(t2, t3));
-      t1.test$2("- with int", new A.execute_____closure55(t2, t3));
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testInPlaceCastConverter___closure4(t2));
+      t1.test$2("- ints (map)", new A.testInPlaceCastConverter___closure5(t2));
+      t1.test$2("- nullable ints", new A.testInPlaceCastConverter___closure6(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testInPlaceCastConverter___closure7(t2));
+      t1.test$2("- ints + integral double (map)", new A.testInPlaceCastConverter___closure8(t2));
+      t1.test$2("- doubles", new A.testInPlaceCastConverter___closure9(t2));
+      t1.test$2("- nullable doubles", new A.testInPlaceCastConverter___closure10(t2));
+      t1.test$2("- doubles + int", new A.testInPlaceCastConverter___closure11(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure48.prototype = {
+  A.testInPlaceCastConverter___closure4.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38959,14 +39954,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, 3, 4]);
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure18(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure11(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.int).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -38975,13 +39970,13 @@
     },
     $signature: 0
   };
-  A.execute______closure18.prototype = {
+  A.testInPlaceCastConverter____closure11.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute_____closure49.prototype = {
+  A.testInPlaceCastConverter___closure5.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -38994,45 +39989,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, 3, 4]);
-              res = $async$self.converter.l$1$1(new A.execute______closure17(), type$.int).call$1(data);
-              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
-              A.expect(res, data, null);
-              // implicit return
-              return A._asyncReturn(null, $async$completer);
-          }
-      });
-      return A._asyncStartSync($async$call$0, $async$completer);
-    },
-    $signature: 0
-  };
-  A.execute______closure17.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_____closure50.prototype = {
-    call$0() {
-      var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return A._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, null, 4]);
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure16(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.nl$1$0(type$.int).call$1(data);
-              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
-              A.expect(res, data, null);
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39041,17 +40005,53 @@
     },
     $signature: 0
   };
-  A.execute______closure16.prototype = {
+  A.testInPlaceCastConverter____closure10.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceCastConverter___closure6.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
+              A.expect(res, $._listOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceCastConverter____closure9.prototype = {
     call$0() {
       return type$.List_nullable_int._as(this.data);
     },
-    $signature: 66
+    $signature: 33
   };
-  A.execute_____closure51.prototype = {
+  A.testInPlaceCastConverter___closure7.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
+        $async$self = this, res, ex, exception, data, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -39060,60 +40060,22 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1, 2, 3, 4]);
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure15(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.int).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
-              A.expect(res, data, null);
-              // implicit return
-              return A._asyncReturn(null, $async$completer);
-          }
-      });
-      return A._asyncStartSync($async$call$0, $async$completer);
-    },
-    $signature: 0
-  };
-  A.execute______closure15.prototype = {
-    call$0() {
-      return type$.List_int._as(this.data);
-    },
-    $signature: 24
-  };
-  A.execute_____closure52.prototype = {
-    call$0() {
-      var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, ex, t1, exception, data;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return A._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              data = [];
-              J.addAll$1$ax(data, [1, 2, 3, 4]);
-              $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure13(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
-            case 2:
-              // returning from await.
               try {
-                res = $async$self.converter.l$1$1(new A.execute______closure14(), type$.int).call$1(data);
-                if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                  A.expect(res, data, null);
-                else {
-                  t1 = A.unexpectedSuccess(string$.conver, res);
-                  throw A.wrapException(t1);
-                }
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure(string$.conver, ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -39125,19 +40087,59 @@
     },
     $signature: 0
   };
-  A.execute______closure13.prototype = {
+  A.testInPlaceCastConverter____closure8.prototype = {
     call$0() {
       return type$.List_int._as(this.data);
     },
-    $signature: 24
+    $signature: 8
   };
-  A.execute______closure14.prototype = {
-    call$1(x) {
-      return A._asInt(x);
+  A.testInPlaceCastConverter___closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
     },
-    $signature: 6
+    $signature: 0
   };
-  A.execute_____closure53.prototype = {
+  A.testInPlaceCastConverter____closure7.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceCastConverter___closure9.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39150,14 +40152,14 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1.1, 2.2, 3.3, 4.4]);
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure12(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.double).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfDoubles, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39166,17 +40168,17 @@
     },
     $signature: 0
   };
-  A.execute______closure12.prototype = {
+  A.testInPlaceCastConverter____closure6.prototype = {
     call$0() {
       return type$.List_double._as(this.data);
     },
-    $signature: 40
+    $signature: 13
   };
-  A.execute_____closure54.prototype = {
+  A.testInPlaceCastConverter___closure10.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
+        $async$self = this, t1, res, data;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -39185,14 +40187,15 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1.1, 2.2, null, 4.4]);
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure11(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.nl$1$0(type$.double).call$1(data);
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
-              A.expect(res, data, null);
+              A.expect(res, $._listOfNullableDoubles, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39201,17 +40204,17 @@
     },
     $signature: 0
   };
-  A.execute______closure11.prototype = {
+  A.testInPlaceCastConverter____closure5.prototype = {
     call$0() {
       return type$.List_nullable_double._as(this.data);
     },
-    $signature: 68
+    $signature: 32
   };
-  A.execute_____closure55.prototype = {
+  A.testInPlaceCastConverter___closure11.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, data;
+        $async$self = this, res, ex, exception, data, t1;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -39220,14 +40223,25 @@
             case 0:
               // Function start
               data = [];
-              B.JSArray_methods.addAll$1(data, [1.1, 2.2, 3, 4.4]);
+              t1 = $.$get$_listOfDoublesWithInt();
+              B.JSArray_methods.addAll$1(data, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure10(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.l$1$0(type$.double).call$1(data);
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
-              A.expect(res, data, null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("int to double", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("int to double", ex);
+                } else
+                  throw exception;
+              }
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39236,26 +40250,25 @@
     },
     $signature: 0
   };
-  A.execute______closure10.prototype = {
+  A.testInPlaceCastConverter____closure4.prototype = {
     call$0() {
       return type$.List_double._as(this.data);
     },
-    $signature: 40
+    $signature: 13
   };
-  A.execute____closure34.prototype = {
+  A.testInPlaceCastConverter__closure2.prototype = {
     call$0() {
       var t1 = this.tc,
-        t2 = this.throwsTypeError,
-        t3 = this.converter;
-      t1.test$2("- Strings / ints (cast)", new A.execute_____closure43(t2, t3));
-      t1.test$2("- String / ints (map)", new A.execute_____closure44(t2, t3));
-      t1.test$2("- String / nullable int", new A.execute_____closure45(t2, t3));
-      t1.test$2("- String / integral double (cast)", new A.execute_____closure46(t2, t3));
-      t1.test$2("- String / integral double (map)", new A.execute_____closure47(t2, t3));
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testInPlaceCastConverter___closure(t2));
+      t1.test$2("- String / int (map)", new A.testInPlaceCastConverter___closure0(t2));
+      t1.test$2("- String / nullable int", new A.testInPlaceCastConverter___closure1(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testInPlaceCastConverter___closure2(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testInPlaceCastConverter___closure3(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure43.prototype = {
+  A.testInPlaceCastConverter___closure.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39269,14 +40282,14 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure9(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.m$2$0(type$.String, type$.int).call$1(data);
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39285,13 +40298,13 @@
     },
     $signature: 0
   };
-  A.execute______closure9.prototype = {
+  A.testInPlaceCastConverter____closure3.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute_____closure44.prototype = {
+  A.testInPlaceCastConverter___closure0.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39305,14 +40318,14 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure7(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              res = $async$self.converter.m$2$1$vcast(new A.execute______closure8(), type$.String, type$.int).call$1(data);
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39321,23 +40334,17 @@
     },
     $signature: 0
   };
-  A.execute______closure7.prototype = {
+  A.testInPlaceCastConverter____closure2.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute______closure8.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_____closure45.prototype = {
+  A.testInPlaceCastConverter___closure1.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t2, t3, t4, res, t1, data;
+        $async$self = this, res, t1, data;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -39347,18 +40354,15 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "", null, "three", 3], t1, t1));
+              data.addAll$1(0, $._mapOfNullableInts);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure6(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
-              t1 = type$.String;
-              t2 = type$.nullable_int;
-              t3 = type$.nullable_String_Function_dynamic._as($.$get$NumConverter__numCastors().$index(0, A.createRuntimeType(t1)));
-              t4 = type$.nullable_nullable_int_Function_dynamic._as($.$get$NumConverter__nullableNumCastors().$index(0, A.createRuntimeType(t2)));
-              res = $async$self.converter.super$CastConverter$nm(t3, t4, t1, t2).call$1(data);
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
               A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
-              A.expect(res, data, null);
+              A.expect(res, $._mapOfNullableInts, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -39367,49 +40371,13 @@
     },
     $signature: 0
   };
-  A.execute______closure6.prototype = {
+  A.testInPlaceCastConverter____closure1.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute_____closure46.prototype = {
-    call$0() {
-      var $async$goto = 0,
-        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, res, t1, data;
-      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return A._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              t1 = type$.dynamic;
-              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              data.addAll$1(0, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
-              $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure5(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
-            case 2:
-              // returning from await.
-              res = $async$self.converter.m$2$0(type$.String, type$.int).call$1(data);
-              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-              A.expect(res, data, null);
-              // implicit return
-              return A._asyncReturn(null, $async$completer);
-          }
-      });
-      return A._asyncStartSync($async$call$0, $async$completer);
-    },
-    $signature: 0
-  };
-  A.execute______closure5.prototype = {
-    call$0() {
-      return type$.Map_String_int._as(this.data);
-    },
-    $signature: 15
-  };
-  A.execute_____closure47.prototype = {
+  A.testInPlaceCastConverter___closure2.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39423,26 +40391,22 @@
               // Function start
               t1 = type$.dynamic;
               data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
-              J.addAll$1$ax(data, A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], t1, t1));
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.execute______closure3(data), $async$self.throwsTypeError, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
               try {
-                res = $async$self.converter.m$2$1$vcast(new A.execute______closure4(), type$.String, type$.int).call$1(data);
-                if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js) {
-                  A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
-                  A.expect(res, data, null);
-                } else {
-                  t1 = A.unexpectedSuccess("conversion of a map with integral double", res);
-                  throw A.wrapException(t1);
-                }
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
               } catch (exception) {
                 t1 = A.unwrapException(exception);
                 if (type$.TypeError._is(t1)) {
                   ex = t1;
-                  if ($.$get$Squadron_platformType() === B.SquadronPlatformType_JavaScript_js)
-                    throw A.wrapException(A.unexpectedFailure("conversion of a map with integral double", ex));
+                  A._unexpectedFailureIfJs("integral double to int", ex);
                 } else
                   throw exception;
               }
@@ -39454,71 +40418,194 @@
     },
     $signature: 0
   };
-  A.execute______closure3.prototype = {
+  A.testInPlaceCastConverter____closure0.prototype = {
     call$0() {
       return type$.Map_String_int._as(this.data);
     },
-    $signature: 15
+    $signature: 5
   };
-  A.execute______closure4.prototype = {
-    call$1(x) {
-      return A._asInt(x);
-    },
-    $signature: 6
-  };
-  A.execute_closure9.prototype = {
+  A.testInPlaceCastConverter___closure3.prototype = {
     call$0() {
-      var t1 = this.tc;
-      t1.group$2("- Squadron Worker", new A.execute__closure12(t1));
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceCastConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceCastConverter____closure.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceCastConverter_closure.prototype = {
+    call$0() {
+      var converter = new A.LazyInPlaceConverter(B.C_CastConverter),
+        t1 = this.tc;
+      t1.group$2("- ints", new A.testLazyInPlaceCastConverter__closure(converter, t1));
+      t1.group$2("- doubles", new A.testLazyInPlaceCastConverter__closure0(converter, t1));
+      t1.group$2("- lists", new A.testLazyInPlaceCastConverter__closure1(t1, converter));
+      t1.group$2("- maps", new A.testLazyInPlaceCastConverter__closure2(t1, converter));
     },
     $signature: 1
   };
-  A.execute__closure12.prototype = {
+  A.testLazyInPlaceCastConverter__closure.prototype = {
     call$0() {
-      var t1 = this.tc;
-      t1.group$2("- start/stop", new A.execute___closure42(t1));
-      t1.group$2("- initialization error", new A.execute___closure43(t1));
-      t1.group$2("- workloads", new A.execute___closure44(t1));
-    },
-    $signature: 2
-  };
-  A.execute___closure42.prototype = {
-    call$0() {
-      var logs = A._setArrayType([], type$.JSArray_String),
-        memoryLogger = A.MemoryLogger$(logs),
-        t1 = A._declarer(),
-        t2 = type$.dynamic_Function,
-        t3 = t2._as(new A.execute____closure91(memoryLogger));
-      t1._checkNotBuilt$1("setUp");
-      B.JSArray_methods.add$1(t1._setUps, t3);
-      t3 = A._declarer();
-      t2 = t2._as(new A.execute____closure92(memoryLogger));
-      t3._checkNotBuilt$1("tearDown");
-      B.JSArray_methods.add$1(t3._tearDowns, t2);
+      var t1 = this.converter,
+        t2 = type$.int,
+        $$toInt = t1.converter.value$1$0(0, t2),
+        $$toNullableInt = t1.nullable$1$0(t2);
       t2 = this.tc;
-      t2.test$2("- start & stop", new A.execute____closure93(t2, memoryLogger));
-      t2.test$2("- hook", new A.execute____closure94(t2, memoryLogger, logs));
-      t2.test$2("- hook failure", new A.execute____closure95(t2, memoryLogger));
-      t2.group$2("- install", new A.execute____closure96(t2, memoryLogger, logs));
-      t2.test$2("- cannot restart after stop", new A.execute____closure97(t2));
+      t2.test$2("- converters are identities", new A.testLazyInPlaceCastConverter___closure19($$toInt, $$toNullableInt));
+      t2.test$2("- int", new A.testLazyInPlaceCastConverter___closure20($$toInt, $$toNullableInt));
+      t2.test$2("- double", new A.testLazyInPlaceCastConverter___closure21(new A.testLazyInPlaceCastConverter__closure_$platformSensitive0($$toNullableInt, $$toInt), $$toInt, $$toNullableInt));
+      t2.test$2("- null", new A.testLazyInPlaceCastConverter___closure22($$toInt, $$toNullableInt));
+      t2.test$2("- bool", new A.testLazyInPlaceCastConverter___closure23($$toInt, $$toNullableInt));
+      t2.test$2("- String", new A.testLazyInPlaceCastConverter___closure24($$toInt, $$toNullableInt));
+      t2.test$2("- Object", new A.testLazyInPlaceCastConverter___closure25($$toInt, $$toNullableInt));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure91.prototype = {
+  A.testLazyInPlaceCastConverter__closure_$platformSensitive0.prototype = {
+    call$2$nullable(value, nullable) {
+      var res, ex, exception, t1,
+        fn = nullable ? this.$$toNullableInt : this.$$toInt,
+        process = nullable ? "toNullableInt" : "toInt";
+      try {
+        res = fn.call$1(value);
+        A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
+      } catch (exception) {
+        t1 = A.unwrapException(exception);
+        if (type$.TypeError._is(t1)) {
+          ex = t1;
+          A._unexpectedFailureIfJs(process, ex);
+        } else
+          throw exception;
+      }
+    },
+    $signature: 61
+  };
+  A.testLazyInPlaceCastConverter___closure19.prototype = {
     call$0() {
-      var t1 = this.memoryLogger;
-      B.JSArray_methods.clear$0(t1._logs);
-      t1._memory_logger$_filter._level = B.Level_0_all;
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsTrue, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure92.prototype = {
+  A.testLazyInPlaceCastConverter___closure20.prototype = {
     call$0() {
-      B.JSArray_methods.clear$0(this.memoryLogger._logs);
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure93.prototype = {
+  A.testLazyInPlaceCastConverter___closure21.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t2, t3, t4, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $async$self.$$platformSensitive;
+              t1.call$2$nullable(5, false);
+              t1.call$2$nullable(5, true);
+              t2 = $async$self.$$toInt;
+              t3 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure26(t2), t3, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t4 = $async$self.$$toNullableInt;
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure27(t4), t3, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              t1.call$2$nullable(1 / 0, false);
+              t1.call$2$nullable(1 / 0, true);
+              t1.call$2$nullable(-1 / 0, false);
+              t1.call$2$nullable(-1 / 0, true);
+              $async$goto = 4;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure28(t2), t3, null, null, null, false), $async$call$0);
+            case 4:
+              // returning from await.
+              $async$goto = 5;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure29(t4), t3, null, null, null, false), $async$call$0);
+            case 5:
+              // returning from await.
+              t1.call$2$nullable(-0.0, false);
+              t1.call$2$nullable(-0.0, true);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure26.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(5.5);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter____closure27.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(5.5);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceCastConverter____closure28.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(0 / 0);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter____closure29.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(0 / 0);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceCastConverter___closure22.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39531,7 +40618,4109 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure168($async$self.memoryLogger), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure25($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure25.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(null);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter___closure23.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure23($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure24($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure23.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(true);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter____closure24.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(true);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceCastConverter___closure24.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure21($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure22($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure21.prototype = {
+    call$0() {
+      return this.$$toInt.call$1("1");
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter____closure22.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1("1");
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceCastConverter___closure25.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure19($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure20($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure19.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(new A.Object());
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceCastConverter____closure20.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(new A.Object());
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceCastConverter__closure0.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.double,
+        $$toDbl = t1.converter.value$1$0(0, t2),
+        $$toNullableDbl = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are identities", new A.testLazyInPlaceCastConverter___closure12($$toDbl, $$toNullableDbl));
+      t2.test$2("- int", new A.testLazyInPlaceCastConverter___closure13(new A.testLazyInPlaceCastConverter__closure_$platformSensitive($$toNullableDbl, $$toDbl)));
+      t2.test$2("- double", new A.testLazyInPlaceCastConverter___closure14($$toDbl, $$toNullableDbl));
+      t2.test$2("- null", new A.testLazyInPlaceCastConverter___closure15($$toDbl, $$toNullableDbl));
+      t2.test$2("- bool", new A.testLazyInPlaceCastConverter___closure16($$toDbl, $$toNullableDbl));
+      t2.test$2("- String", new A.testLazyInPlaceCastConverter___closure17($$toDbl, $$toNullableDbl));
+      t2.test$2("- Object", new A.testLazyInPlaceCastConverter___closure18($$toDbl, $$toNullableDbl));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter__closure_$platformSensitive.prototype = {
+    call$2$nullable(value, nullable) {
+      var res, ex, exception, t1,
+        fn = nullable ? this.$$toNullableDbl : this.$$toDbl,
+        process = nullable ? "toNullableDbl" : "toDbl";
+      try {
+        res = fn.call$1(value);
+        A.expect(res, value, null);
+        A._unexpectedSuccessIfNonJs(process, res);
+      } catch (exception) {
+        t1 = A.unwrapException(exception);
+        if (type$.TypeError._is(t1)) {
+          ex = t1;
+          A._unexpectedFailureIfJs(process, ex);
+        } else
+          throw exception;
+      }
+    },
+    $signature: 58
+  };
+  A.testLazyInPlaceCastConverter___closure12.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsTrue, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsTrue, null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter___closure13.prototype = {
+    call$0() {
+      var t1 = this.$$platformSensitive;
+      t1.call$2$nullable(5, false);
+      t1.call$2$nullable(5, true);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter___closure14.prototype = {
+    call$0() {
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
+      A.expect(t1.call$1(5.5), 5.5, _null);
+      t2 = this.$$toNullableDbl;
+      A.expect(t2.call$1(5.5), 5.5, _null);
+      A.expect(t1.call$1(-0.0), -0.0, _null);
+      A.expect(t2.call$1(-0.0), -0.0, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
+      A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
+      A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter___closure15.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure18($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure18.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(null);
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceCastConverter___closure16.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure16($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure17($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure16.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(true);
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceCastConverter____closure17.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(true);
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceCastConverter___closure17.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure14($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure15($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure14.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1("1");
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceCastConverter____closure15.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1("1");
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceCastConverter___closure18.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure12($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure13($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure12.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(new A.Object());
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceCastConverter____closure13.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(new A.Object());
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceCastConverter__closure1.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testLazyInPlaceCastConverter___closure4(t2));
+      t1.test$2("- ints (map)", new A.testLazyInPlaceCastConverter___closure5(t2));
+      t1.test$2("- nullable ints", new A.testLazyInPlaceCastConverter___closure6(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testLazyInPlaceCastConverter___closure7(t2));
+      t1.test$2("- ints + integral double (map)", new A.testLazyInPlaceCastConverter___closure8(t2));
+      t1.test$2("- doubles", new A.testLazyInPlaceCastConverter___closure9(t2));
+      t1.test$2("- nullable doubles", new A.testLazyInPlaceCastConverter___closure10(t2));
+      t1.test$2("- doubles + int", new A.testLazyInPlaceCastConverter___closure11(t2));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter___closure4.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure11(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure11.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceCastConverter___closure5.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure10.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceCastConverter___closure6.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
+              A.expect(res, $._listOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure9.prototype = {
+    call$0() {
+      return type$.List_nullable_int._as(this.data);
+    },
+    $signature: 33
+  };
+  A.testLazyInPlaceCastConverter___closure7.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure8.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceCastConverter___closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure7.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceCastConverter___closure9.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, $._listOfDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure6.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testLazyInPlaceCastConverter___closure10.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
+              A.expect(res, $._listOfNullableDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure5.prototype = {
+    call$0() {
+      return type$.List_nullable_double._as(this.data);
+    },
+    $signature: 32
+  };
+  A.testLazyInPlaceCastConverter___closure11.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, ex0, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              J.addAll$1$ax(data, $.$get$_listOfDoublesWithInt());
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(J.$index$asx(data, 0), new A.TypeMatcher(type$.TypeMatcher_double), null);
+              A.expect(J.$index$asx(res, 0), J.$index$asx(data, 0), null);
+              try {
+                A.expect(J.$index$asx(data, 2), new A.TypeMatcher(type$.TypeMatcher_int), null);
+                A.expect(J.$index$asx(res, 2), J.$index$asx(data, 2), null);
+                A._unexpectedSuccessIfNonJs("int to double", J.$index$asx(res, 2));
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("int to double", ex);
+                } else
+                  throw exception;
+              }
+              try {
+                A.expect(res, $.$get$_listOfDoublesWithInt(), null);
+                A._unexpectedSuccessIfNonJs("int to double", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex0 = t1;
+                  A._unexpectedFailureIfJs("int to double", ex0);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure4.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testLazyInPlaceCastConverter__closure2.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testLazyInPlaceCastConverter___closure(t2));
+      t1.test$2("- String / int (map)", new A.testLazyInPlaceCastConverter___closure0(t2));
+      t1.test$2("- String / nullable int", new A.testLazyInPlaceCastConverter___closure1(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testLazyInPlaceCastConverter___closure2(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testLazyInPlaceCastConverter___closure3(t2));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceCastConverter___closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure3.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceCastConverter___closure0.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure2.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceCastConverter___closure1.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
+              A.expect(res, $._mapOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure1.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceCastConverter___closure2.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, ex0, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              J.addAll$1$ax(data, $.$get$_mapOfIntsWithIntegralDouble());
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(J.$index$asx(data, "one"), new A.TypeMatcher(type$.TypeMatcher_int), null);
+              A.expect(J.$index$asx(res, "one"), J.$index$asx(data, "one"), null);
+              try {
+                A.expect(J.$index$asx(data, "two"), new A.TypeMatcher(type$.TypeMatcher_double), null);
+                A.expect(J.$index$asx(res, "two"), J.$index$asx(data, "two"), null);
+                A._unexpectedSuccessIfNonJs("integral double to int", J.$index$asx(res, "two"));
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              try {
+                A.expect(res, $.$get$_mapOfIntsWithIntegralDouble(), null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex0 = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex0);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure0.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceCastConverter___closure3.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceCastConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(data.$index(0, "one"), new A.TypeMatcher(type$.TypeMatcher_int), null);
+              A.expect(J.$index$asx(res, "one"), data.$index(0, "one"), null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceCastConverter____closure.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testNumConverter_closure.prototype = {
+    call$0() {
+      var t1 = this.tc;
+      t1.group$2("- ints", new A.testNumConverter__closure(B.C_NumConverter, t1));
+      t1.group$2("- doubles", new A.testNumConverter__closure0(B.C_NumConverter, t1));
+      t1.group$2("- lists", new A.testNumConverter__closure1(t1, B.C_NumConverter));
+      t1.group$2("- maps", new A.testNumConverter__closure2(t1, B.C_NumConverter));
+    },
+    $signature: 1
+  };
+  A.testNumConverter__closure.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.int,
+        $$toInt = t1.value$1$0(0, t2),
+        $$toNullableInt = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are not identities", new A.testNumConverter___closure19($$toInt, $$toNullableInt));
+      t2.test$2("- int", new A.testNumConverter___closure20($$toInt, $$toNullableInt));
+      t2.test$2("- double", new A.testNumConverter___closure21($$toInt, $$toNullableInt));
+      t2.test$2("- null", new A.testNumConverter___closure22($$toInt, $$toNullableInt));
+      t2.test$2("- bool", new A.testNumConverter___closure23($$toInt, $$toNullableInt));
+      t2.test$2("- String", new A.testNumConverter___closure24($$toInt, $$toNullableInt));
+      t2.test$2("- Object", new A.testNumConverter___closure25($$toInt, $$toNullableInt));
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure19.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure20.prototype = {
+    call$0() {
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure21.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t2, t3, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $async$self.$$toInt;
+              A.expect(t1.call$1(5), 5, null);
+              t2 = $async$self.$$toNullableInt;
+              A.expect(t2.call$1(5), 5, null);
+              t3 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure25(t1), t3, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure26(t2), t3, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              $async$goto = 4;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure27(t1), t3, null, null, null, false), $async$call$0);
+            case 4:
+              // returning from await.
+              $async$goto = 5;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure28(t2), t3, null, null, null, false), $async$call$0);
+            case 5:
+              // returning from await.
+              $async$goto = 6;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure29(t1), t3, null, null, null, false), $async$call$0);
+            case 6:
+              // returning from await.
+              $async$goto = 7;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure30(t2), t3, null, null, null, false), $async$call$0);
+            case 7:
+              // returning from await.
+              $async$goto = 8;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure31(t1), t3, null, null, null, false), $async$call$0);
+            case 8:
+              // returning from await.
+              $async$goto = 9;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure32(t2), t3, null, null, null, false), $async$call$0);
+            case 9:
+              // returning from await.
+              A.expect(t1.call$1(-0.0), 0, null);
+              A.expect(t2.call$1(-0.0), 0, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure25.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(5.5);
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure26.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(5.5);
+    },
+    $signature: 4
+  };
+  A.testNumConverter____closure27.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(1 / 0);
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure28.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(1 / 0);
+    },
+    $signature: 4
+  };
+  A.testNumConverter____closure29.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(-1 / 0);
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure30.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(-1 / 0);
+    },
+    $signature: 4
+  };
+  A.testNumConverter____closure31.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(0 / 0);
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure32.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(0 / 0);
+    },
+    $signature: 4
+  };
+  A.testNumConverter___closure22.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure24($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure24.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(null);
+    },
+    $signature: 3
+  };
+  A.testNumConverter___closure23.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure22($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure23($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure22.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(true);
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure23.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(true);
+    },
+    $signature: 4
+  };
+  A.testNumConverter___closure24.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure20($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure21($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure20.prototype = {
+    call$0() {
+      return this.$$toInt.call$1("1");
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure21.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1("1");
+    },
+    $signature: 4
+  };
+  A.testNumConverter___closure25.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure18($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure19($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure18.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(new A.Object());
+    },
+    $signature: 3
+  };
+  A.testNumConverter____closure19.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(new A.Object());
+    },
+    $signature: 4
+  };
+  A.testNumConverter__closure0.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.double,
+        $$toDbl = t1.value$1$0(0, t2),
+        $$toNullableDbl = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are not identities", new A.testNumConverter___closure12($$toDbl, $$toNullableDbl));
+      t2.test$2("- int", new A.testNumConverter___closure13($$toDbl, $$toNullableDbl));
+      t2.test$2("- double", new A.testNumConverter___closure14($$toDbl, $$toNullableDbl));
+      t2.test$2("- null", new A.testNumConverter___closure15($$toDbl, $$toNullableDbl));
+      t2.test$2("- bool", new A.testNumConverter___closure16($$toDbl, $$toNullableDbl));
+      t2.test$2("- String", new A.testNumConverter___closure17($$toDbl, $$toNullableDbl));
+      t2.test$2("- Object", new A.testNumConverter___closure18($$toDbl, $$toNullableDbl));
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure12.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure13.prototype = {
+    call$0() {
+      A.expect(this.$$toDbl.call$1(5), 5, null);
+      A.expect(this.$$toNullableDbl.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure14.prototype = {
+    call$0() {
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
+      A.expect(t1.call$1(5.5), 5.5, _null);
+      t2 = this.$$toNullableDbl;
+      A.expect(t2.call$1(5.5), 5.5, _null);
+      A.expect(t1.call$1(-0.0), -0.0, _null);
+      A.expect(t2.call$1(-0.0), -0.0, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
+      A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
+      A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure15.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure17($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure17.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(null);
+    },
+    $signature: 7
+  };
+  A.testNumConverter___closure16.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure15($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure16($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure15.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(true);
+    },
+    $signature: 7
+  };
+  A.testNumConverter____closure16.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(true);
+    },
+    $signature: 10
+  };
+  A.testNumConverter___closure17.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure13($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure14($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure13.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1("1");
+    },
+    $signature: 7
+  };
+  A.testNumConverter____closure14.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1("1");
+    },
+    $signature: 10
+  };
+  A.testNumConverter___closure18.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure11($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure12($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure11.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(new A.Object());
+    },
+    $signature: 7
+  };
+  A.testNumConverter____closure12.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(new A.Object());
+    },
+    $signature: 10
+  };
+  A.testNumConverter__closure1.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testNumConverter___closure4(t2));
+      t1.test$2("- ints (map)", new A.testNumConverter___closure5(t2));
+      t1.test$2("- nullable ints", new A.testNumConverter___closure6(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testNumConverter___closure7(t2));
+      t1.test$2("- ints + integral double (map)", new A.testNumConverter___closure8(t2));
+      t1.test$2("- doubles", new A.testNumConverter___closure9(t2));
+      t1.test$2("- nullable doubles", new A.testNumConverter___closure10(t2));
+      t1.test$2("- doubles + int", new A.testNumConverter___closure11(t2));
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure4.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure10.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testNumConverter___closure5.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter___closure6.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
+              A.expect(res, $._listOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure9.prototype = {
+    call$0() {
+      return type$.List_nullable_int._as(this.data);
+    },
+    $signature: 33
+  };
+  A.testNumConverter___closure7.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure8.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testNumConverter___closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure7.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testNumConverter___closure9.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, $._listOfDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure6.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testNumConverter___closure10.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
+              A.expect(res, $._listOfNullableDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure5.prototype = {
+    call$0() {
+      return type$.List_nullable_double._as(this.data);
+    },
+    $signature: 32
+  };
+  A.testNumConverter___closure11.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfDoublesWithInt();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure4.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testNumConverter__closure2.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testNumConverter___closure(t2));
+      t1.test$2("- String / int (map)", new A.testNumConverter___closure0(t2));
+      t1.test$2("- String / nullable int", new A.testNumConverter___closure1(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testNumConverter___closure2(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testNumConverter___closure3(t2));
+    },
+    $signature: 1
+  };
+  A.testNumConverter___closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure3.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testNumConverter___closure0.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure2.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testNumConverter___closure1.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
+              A.expect(res, $._mapOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure1.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testNumConverter___closure2.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure0.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testNumConverter___closure3.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testNumConverter____closure.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testInPlaceNumConverter_closure.prototype = {
+    call$0() {
+      var converter = new A.InPlaceConverter(B.C_NumConverter),
+        t1 = this.tc;
+      t1.group$2("- ints", new A.testInPlaceNumConverter__closure(converter, t1));
+      t1.group$2("- doubles", new A.testInPlaceNumConverter__closure0(converter, t1));
+      t1.group$2("- lists", new A.testInPlaceNumConverter__closure1(t1, converter));
+      t1.group$2("- maps", new A.testInPlaceNumConverter__closure2(t1, converter));
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter__closure.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.int,
+        $$toInt = t1.converter.value$1$0(0, t2),
+        $$toNullableInt = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are not identities", new A.testInPlaceNumConverter___closure19($$toInt, $$toNullableInt));
+      t2.test$2("- int", new A.testInPlaceNumConverter___closure20($$toInt, $$toNullableInt));
+      t2.test$2("- double", new A.testInPlaceNumConverter___closure21($$toInt, $$toNullableInt));
+      t2.test$2("- null", new A.testInPlaceNumConverter___closure22($$toInt, $$toNullableInt));
+      t2.test$2("- bool", new A.testInPlaceNumConverter___closure23($$toInt, $$toNullableInt));
+      t2.test$2("- String", new A.testInPlaceNumConverter___closure24($$toInt, $$toNullableInt));
+      t2.test$2("- Object", new A.testInPlaceNumConverter___closure25($$toInt, $$toNullableInt));
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure19.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure20.prototype = {
+    call$0() {
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure21.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t2, t3, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $async$self.$$toInt;
+              A.expect(t1.call$1(5), 5, null);
+              t2 = $async$self.$$toNullableInt;
+              A.expect(t2.call$1(5), 5, null);
+              t3 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure26(t1), t3, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure27(t2), t3, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              $async$goto = 4;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure28(t1), t3, null, null, null, false), $async$call$0);
+            case 4:
+              // returning from await.
+              $async$goto = 5;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure29(t2), t3, null, null, null, false), $async$call$0);
+            case 5:
+              // returning from await.
+              $async$goto = 6;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure30(t1), t3, null, null, null, false), $async$call$0);
+            case 6:
+              // returning from await.
+              $async$goto = 7;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure31(t2), t3, null, null, null, false), $async$call$0);
+            case 7:
+              // returning from await.
+              $async$goto = 8;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure32(t1), t3, null, null, null, false), $async$call$0);
+            case 8:
+              // returning from await.
+              $async$goto = 9;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure33(t2), t3, null, null, null, false), $async$call$0);
+            case 9:
+              // returning from await.
+              A.expect(t1.call$1(-0.0), 0, null);
+              A.expect(t2.call$1(-0.0), 0, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure26.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(5.5);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure27.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(5.5);
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter____closure28.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(1 / 0);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure29.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(1 / 0);
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter____closure30.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(-1 / 0);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure31.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(-1 / 0);
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter____closure32.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(0 / 0);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure33.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(0 / 0);
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter___closure22.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure25($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure25.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(null);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter___closure23.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure23($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure24($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure23.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(true);
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure24.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(true);
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter___closure24.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure21($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure22($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure21.prototype = {
+    call$0() {
+      return this.$$toInt.call$1("1");
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure22.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1("1");
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter___closure25.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure19($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure20($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure19.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(new A.Object());
+    },
+    $signature: 3
+  };
+  A.testInPlaceNumConverter____closure20.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(new A.Object());
+    },
+    $signature: 4
+  };
+  A.testInPlaceNumConverter__closure0.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.double,
+        $$toDbl = t1.converter.value$1$0(0, t2),
+        $$toNullableDbl = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are identities", new A.testInPlaceNumConverter___closure12($$toDbl, $$toNullableDbl));
+      t2.test$2("- int", new A.testInPlaceNumConverter___closure13($$toDbl, $$toNullableDbl));
+      t2.test$2("- double", new A.testInPlaceNumConverter___closure14($$toDbl, $$toNullableDbl));
+      t2.test$2("- null", new A.testInPlaceNumConverter___closure15($$toDbl, $$toNullableDbl));
+      t2.test$2("- bool", new A.testInPlaceNumConverter___closure16($$toDbl, $$toNullableDbl));
+      t2.test$2("- String", new A.testInPlaceNumConverter___closure17($$toDbl, $$toNullableDbl));
+      t2.test$2("- Object", new A.testInPlaceNumConverter___closure18($$toDbl, $$toNullableDbl));
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure12.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure13.prototype = {
+    call$0() {
+      A.expect(this.$$toDbl.call$1(5), 5, null);
+      A.expect(this.$$toNullableDbl.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure14.prototype = {
+    call$0() {
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
+      A.expect(t1.call$1(5.5), 5.5, _null);
+      t2 = this.$$toNullableDbl;
+      A.expect(t2.call$1(5.5), 5.5, _null);
+      A.expect(t1.call$1(-0.0), -0.0, _null);
+      A.expect(t2.call$1(-0.0), -0.0, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
+      A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
+      A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure15.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure18($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure18.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(null);
+    },
+    $signature: 7
+  };
+  A.testInPlaceNumConverter___closure16.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure16($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure17($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure16.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(true);
+    },
+    $signature: 7
+  };
+  A.testInPlaceNumConverter____closure17.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(true);
+    },
+    $signature: 10
+  };
+  A.testInPlaceNumConverter___closure17.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure14($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure15($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure14.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1("1");
+    },
+    $signature: 7
+  };
+  A.testInPlaceNumConverter____closure15.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1("1");
+    },
+    $signature: 10
+  };
+  A.testInPlaceNumConverter___closure18.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure12($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure13($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure12.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(new A.Object());
+    },
+    $signature: 7
+  };
+  A.testInPlaceNumConverter____closure13.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(new A.Object());
+    },
+    $signature: 10
+  };
+  A.testInPlaceNumConverter__closure1.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testInPlaceNumConverter___closure4(t2));
+      t1.test$2("- ints (map)", new A.testInPlaceNumConverter___closure5(t2));
+      t1.test$2("- nullable ints", new A.testInPlaceNumConverter___closure6(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testInPlaceNumConverter___closure7(t2));
+      t1.test$2("- ints + integral double (map)", new A.testInPlaceNumConverter___closure8(t2));
+      t1.test$2("- doubles", new A.testInPlaceNumConverter___closure9(t2));
+      t1.test$2("- nullable doubles", new A.testInPlaceNumConverter___closure10(t2));
+      t1.test$2("- doubles + int", new A.testInPlaceNumConverter___closure11(t2));
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure4.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure11(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure11.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceNumConverter___closure5.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure10.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceNumConverter___closure6.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
+              A.expect(res, $._listOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure9.prototype = {
+    call$0() {
+      return type$.List_nullable_int._as(this.data);
+    },
+    $signature: 33
+  };
+  A.testInPlaceNumConverter___closure7.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure8.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceNumConverter___closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure7.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testInPlaceNumConverter___closure9.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, $._listOfDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure6.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testInPlaceNumConverter___closure10.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
+              A.expect(res, $._listOfNullableDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure5.prototype = {
+    call$0() {
+      return type$.List_nullable_double._as(this.data);
+    },
+    $signature: 32
+  };
+  A.testInPlaceNumConverter___closure11.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfDoublesWithInt();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure4.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testInPlaceNumConverter__closure2.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testInPlaceNumConverter___closure(t2));
+      t1.test$2("- String / int (map)", new A.testInPlaceNumConverter___closure0(t2));
+      t1.test$2("- String / nullable int", new A.testInPlaceNumConverter___closure1(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testInPlaceNumConverter___closure2(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testInPlaceNumConverter___closure3(t2));
+    },
+    $signature: 1
+  };
+  A.testInPlaceNumConverter___closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure3.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testInPlaceNumConverter___closure0.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure2.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testInPlaceNumConverter___closure1.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
+              A.expect(res, $._mapOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure1.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testInPlaceNumConverter___closure2.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure0.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testInPlaceNumConverter___closure3.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              J.addAll$1$ax(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testInPlaceNumConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              try {
+                res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+                A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testInPlaceNumConverter____closure.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceNumConverter_closure.prototype = {
+    call$0() {
+      var converter = new A.LazyInPlaceConverter(B.C_NumConverter),
+        t1 = this.tc;
+      t1.group$2("- ints", new A.testLazyInPlaceNumConverter__closure(converter, t1));
+      t1.group$2("- doubles", new A.testLazyInPlaceNumConverter__closure0(converter, t1));
+      t1.group$2("- lists", new A.testLazyInPlaceNumConverter__closure1(t1, converter));
+      t1.group$2("- maps", new A.testLazyInPlaceNumConverter__closure2(t1, converter));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter__closure.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.int,
+        $$toInt = t1.converter.value$1$0(0, t2),
+        $$toNullableInt = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are identities", new A.testLazyInPlaceNumConverter___closure19($$toInt, $$toNullableInt));
+      t2.test$2("- int", new A.testLazyInPlaceNumConverter___closure20($$toInt, $$toNullableInt));
+      t2.test$2("- double", new A.testLazyInPlaceNumConverter___closure21($$toInt, $$toNullableInt));
+      t2.test$2("- null", new A.testLazyInPlaceNumConverter___closure22($$toInt, $$toNullableInt));
+      t2.test$2("- bool", new A.testLazyInPlaceNumConverter___closure23($$toInt, $$toNullableInt));
+      t2.test$2("- String", new A.testLazyInPlaceNumConverter___closure24($$toInt, $$toNullableInt));
+      t2.test$2("- Object", new A.testLazyInPlaceNumConverter___closure25($$toInt, $$toNullableInt));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure19.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toInt, type$.int), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableInt, type$.nullable_int), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure20.prototype = {
+    call$0() {
+      A.expect(this.$$toInt.call$1(5), 5, null);
+      A.expect(this.$$toNullableInt.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure21.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t2, t3, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $async$self.$$toInt;
+              A.expect(t1.call$1(5), 5, null);
+              t2 = $async$self.$$toNullableInt;
+              A.expect(t2.call$1(5), 5, null);
+              t3 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure26(t1), t3, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure27(t2), t3, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              $async$goto = 4;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure28(t1), t3, null, null, null, false), $async$call$0);
+            case 4:
+              // returning from await.
+              $async$goto = 5;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure29(t2), t3, null, null, null, false), $async$call$0);
+            case 5:
+              // returning from await.
+              $async$goto = 6;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure30(t1), t3, null, null, null, false), $async$call$0);
+            case 6:
+              // returning from await.
+              $async$goto = 7;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure31(t2), t3, null, null, null, false), $async$call$0);
+            case 7:
+              // returning from await.
+              $async$goto = 8;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure32(t1), t3, null, null, null, false), $async$call$0);
+            case 8:
+              // returning from await.
+              $async$goto = 9;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure33(t2), t3, null, null, null, false), $async$call$0);
+            case 9:
+              // returning from await.
+              A.expect(t1.call$1(-0.0), 0, null);
+              A.expect(t2.call$1(-0.0), 0, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure26.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(5.5);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure27.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(5.5);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter____closure28.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(1 / 0);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure29.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(1 / 0);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter____closure30.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(-1 / 0);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure31.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(-1 / 0);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter____closure32.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(0 / 0);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure33.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(0 / 0);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter___closure22.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure25($async$self.$$toInt), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableInt.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure25.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(null);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter___closure23.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure23($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure24($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure23.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(true);
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure24.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(true);
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter___closure24.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure21($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure22($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure21.prototype = {
+    call$0() {
+      return this.$$toInt.call$1("1");
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure22.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1("1");
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter___closure25.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure19($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure20($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure19.prototype = {
+    call$0() {
+      return this.$$toInt.call$1(new A.Object());
+    },
+    $signature: 3
+  };
+  A.testLazyInPlaceNumConverter____closure20.prototype = {
+    call$0() {
+      return this.$$toNullableInt.call$1(new A.Object());
+    },
+    $signature: 4
+  };
+  A.testLazyInPlaceNumConverter__closure0.prototype = {
+    call$0() {
+      var t1 = this.converter,
+        t2 = type$.double,
+        $$toDbl = t1.converter.value$1$0(0, t2),
+        $$toNullableDbl = t1.nullable$1$0(t2);
+      t2 = this.tc;
+      t2.test$2("- converters are not identities", new A.testLazyInPlaceNumConverter___closure12($$toDbl, $$toNullableDbl));
+      t2.test$2("- int", new A.testLazyInPlaceNumConverter___closure13($$toDbl, $$toNullableDbl));
+      t2.test$2("- double", new A.testLazyInPlaceNumConverter___closure14($$toDbl, $$toNullableDbl));
+      t2.test$2("- null", new A.testLazyInPlaceNumConverter___closure15($$toDbl, $$toNullableDbl));
+      t2.test$2("- bool", new A.testLazyInPlaceNumConverter___closure16($$toDbl, $$toNullableDbl));
+      t2.test$2("- String", new A.testLazyInPlaceNumConverter___closure17($$toDbl, $$toNullableDbl));
+      t2.test$2("- Object", new A.testLazyInPlaceNumConverter___closure18($$toDbl, $$toNullableDbl));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure12.prototype = {
+    call$0() {
+      A.expect(A.Converter_isIdentity(this.$$toDbl, type$.double), B.C__IsFalse, null);
+      A.expect(A.Converter_isIdentity(this.$$toNullableDbl, type$.nullable_double), B.C__IsFalse, null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure13.prototype = {
+    call$0() {
+      A.expect(this.$$toDbl.call$1(5), 5, null);
+      A.expect(this.$$toNullableDbl.call$1(5), 5, null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure14.prototype = {
+    call$0() {
+      var t2, t3, t4, _null = null,
+        t1 = this.$$toDbl;
+      A.expect(t1.call$1(5.5), 5.5, _null);
+      t2 = this.$$toNullableDbl;
+      A.expect(t2.call$1(5.5), 5.5, _null);
+      A.expect(t1.call$1(-0.0), -0.0, _null);
+      A.expect(t2.call$1(-0.0), -0.0, _null);
+      t3 = t1.call$1(1 / 0);
+      t4 = $.$get$_isInfinite();
+      A.expect(t3, t4, _null);
+      A.expect(t2.call$1(1 / 0), t4, _null);
+      A.expect(t1.call$1(-1 / 0), t4, _null);
+      A.expect(t2.call$1(-1 / 0), t4, _null);
+      A.expect(t1.call$1(0 / 0), B.C__IsNaN, _null);
+      A.expect(t2.call$1(0 / 0), B.C__IsNaN, _null);
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure15.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure18($async$self.$$toDbl), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              A.expect($async$self.$$toNullableDbl.call$1(null), B.C__IsNull, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure18.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(null);
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceNumConverter___closure16.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure16($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure17($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure16.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(true);
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceNumConverter____closure17.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(true);
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceNumConverter___closure17.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure14($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure15($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure14.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1("1");
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceNumConverter____closure15.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1("1");
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceNumConverter___closure18.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = $.$get$_throwsTypeError();
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure12($async$self.$$toDbl), t1, null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure13($async$self.$$toNullableDbl), t1, null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure12.prototype = {
+    call$0() {
+      return this.$$toDbl.call$1(new A.Object());
+    },
+    $signature: 7
+  };
+  A.testLazyInPlaceNumConverter____closure13.prototype = {
+    call$0() {
+      return this.$$toNullableDbl.call$1(new A.Object());
+    },
+    $signature: 10
+  };
+  A.testLazyInPlaceNumConverter__closure1.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- ints (cast)", new A.testLazyInPlaceNumConverter___closure4(t2));
+      t1.test$2("- ints (map)", new A.testLazyInPlaceNumConverter___closure5(t2));
+      t1.test$2("- nullable ints", new A.testLazyInPlaceNumConverter___closure6(t2));
+      t1.test$2("- ints + integral double (cast)", new A.testLazyInPlaceNumConverter___closure7(t2));
+      t1.test$2("- ints + integral double (map)", new A.testLazyInPlaceNumConverter___closure8(t2));
+      t1.test$2("- doubles", new A.testLazyInPlaceNumConverter___closure9(t2));
+      t1.test$2("- nullable doubles", new A.testLazyInPlaceNumConverter___closure10(t2));
+      t1.test$2("- doubles + int", new A.testLazyInPlaceNumConverter___closure11(t2));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure4.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure11(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure11.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceNumConverter___closure5.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure10(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, $._listOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure10.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceNumConverter___closure6.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure9(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.int), type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_int), null);
+              A.expect(res, $._listOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure9.prototype = {
+    call$0() {
+      return type$.List_nullable_int._as(this.data);
+    },
+    $signature: 33
+  };
+  A.testLazyInPlaceNumConverter___closure7.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure8(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure8.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceNumConverter___closure8.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfIntsWithIntegralDouble();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure7(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$1(0, A.lib_03_converter_test___asInt$closure(), type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_int), null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure7.prototype = {
+    call$0() {
+      return type$.List_int._as(this.data);
+    },
+    $signature: 8
+  };
+  A.testLazyInPlaceNumConverter___closure9.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure6(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              A.expect(res, $._listOfDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure6.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testLazyInPlaceNumConverter___closure10.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, t1, res, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              B.JSArray_methods.addAll$1(data, $._listOfNullableDoubles);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure5(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.list$1$1(0, t1.nullable$1$0(type$.double), type$.nullable_double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_nullable_double), null);
+              A.expect(res, $._listOfNullableDoubles, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure5.prototype = {
+    call$0() {
+      return type$.List_nullable_double._as(this.data);
+    },
+    $signature: 32
+  };
+  A.testLazyInPlaceNumConverter___closure11.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$returnValue, $async$self = this, res, t2, t3, data, t1;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              data = [];
+              t1 = $.$get$_listOfDoublesWithInt();
+              B.JSArray_methods.addAll$1(data, t1);
+              $async$goto = 3;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure4(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 3:
+              // returning from await.
+              res = $async$self.converter.list$1$0(0, type$.double).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_List_double), null);
+              if (0 >= data.length) {
+                $async$returnValue = A.ioore(data, 0);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              A.expect(data[0], new A.TypeMatcher(type$.TypeMatcher_double), null);
+              t2 = J.getInterceptor$asx(res);
+              t3 = t2.$index(res, 0);
+              if (0 >= data.length) {
+                $async$returnValue = A.ioore(data, 0);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              A.expect(t3, data[0], null);
+              if (2 >= data.length) {
+                $async$returnValue = A.ioore(data, 2);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              A.expect(data[2], new A.TypeMatcher(type$.TypeMatcher_int), null);
+              t2 = t2.$index(res, 2);
+              if (2 >= data.length) {
+                $async$returnValue = A.ioore(data, 2);
+                // goto return
+                $async$goto = 1;
+                break;
+              }
+              A.expect(t2, data[2], null);
+              A.expect(res, t1, null);
+            case 1:
+              // return
+              return A._asyncReturn($async$returnValue, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure4.prototype = {
+    call$0() {
+      return type$.List_double._as(this.data);
+    },
+    $signature: 13
+  };
+  A.testLazyInPlaceNumConverter__closure2.prototype = {
+    call$0() {
+      var t1 = this.tc,
+        t2 = this.converter;
+      t1.test$2("- String / int (cast)", new A.testLazyInPlaceNumConverter___closure(t2));
+      t1.test$2("- String / int (map)", new A.testLazyInPlaceNumConverter___closure0(t2));
+      t1.test$2("- String / nullable int", new A.testLazyInPlaceNumConverter___closure1(t2));
+      t1.test$2("- String / ints + integral double (cast)", new A.testLazyInPlaceNumConverter___closure2(t2));
+      t1.test$2("- String / ints + integral double (map)", new A.testLazyInPlaceNumConverter___closure3(t2));
+    },
+    $signature: 1
+  };
+  A.testLazyInPlaceNumConverter___closure.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure3(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure3.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceNumConverter___closure0.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure2(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(res, $._mapOfInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure2.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceNumConverter___closure1.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              data.addAll$1(0, $._mapOfNullableInts);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure1(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              t1 = $async$self.converter;
+              res = t1.map$2$1$vcast(0, t1.nullable$1$0(type$.int), type$.String, type$.nullable_int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_of_String_and_nullable_int), null);
+              A.expect(res, $._mapOfNullableInts, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure1.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceNumConverter___closure2.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, t2, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure0(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$0(0, type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(data.$index(0, "one"), new A.TypeMatcher(type$.TypeMatcher_int), null);
+              t2 = J.getInterceptor$asx(res);
+              A.expect(t2.$index(res, "one"), data.$index(0, "one"), null);
+              A.expect(data.$index(0, "two"), new A.TypeMatcher(type$.TypeMatcher_double), null);
+              A.expect(t2.$index(res, "two"), data.$index(0, "two"), null);
+              A.expect(res, t1, null);
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure0.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.testLazyInPlaceNumConverter___closure3.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this, res, ex, exception, t1, data;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              t1 = type$.dynamic;
+              data = A.LinkedHashMap_LinkedHashMap$_empty(t1, t1);
+              t1 = $.$get$_mapOfIntsWithIntegralDouble();
+              data.addAll$1(0, t1);
+              $async$goto = 2;
+              return A._asyncAwait(A._expect(new A.testLazyInPlaceNumConverter____closure(data), $.$get$_throwsTypeError(), null, null, null, false), $async$call$0);
+            case 2:
+              // returning from await.
+              res = $async$self.converter.map$2$1$vcast(0, A.lib_03_converter_test___asInt$closure(), type$.String, type$.int).call$1(data);
+              A.expect(res, new A.TypeMatcher(type$.TypeMatcher_Map_String_int), null);
+              A.expect(data.$index(0, "one"), new A.TypeMatcher(type$.TypeMatcher_int), null);
+              A.expect(J.$index$asx(res, "one"), data.$index(0, "one"), null);
+              try {
+                A.expect(res, t1, null);
+                A._unexpectedSuccessIfNonJs("integral double to int", res);
+              } catch (exception) {
+                t1 = A.unwrapException(exception);
+                if (type$.TypeError._is(t1)) {
+                  ex = t1;
+                  A._unexpectedFailureIfJs("integral double to int", ex);
+                } else
+                  throw exception;
+              }
+              // implicit return
+              return A._asyncReturn(null, $async$completer);
+          }
+      });
+      return A._asyncStartSync($async$call$0, $async$completer);
+    },
+    $signature: 0
+  };
+  A.testLazyInPlaceNumConverter____closure.prototype = {
+    call$0() {
+      return type$.Map_String_int._as(this.data);
+    },
+    $signature: 5
+  };
+  A.execute_closure9.prototype = {
+    call$0() {
+      var t1 = this.tc;
+      t1.group$2("- Squadron Worker", new A.execute__closure11(t1));
+    },
+    $signature: 2
+  };
+  A.execute__closure11.prototype = {
+    call$0() {
+      var t1 = this.tc;
+      t1.group$2("- start/stop", new A.execute___closure42(t1));
+      t1.group$2("- initialization error", new A.execute___closure43(t1));
+      t1.group$2("- workloads", new A.execute___closure44(t1));
+    },
+    $signature: 1
+  };
+  A.execute___closure42.prototype = {
+    call$0() {
+      var logs = A._setArrayType([], type$.JSArray_String),
+        memoryLogger = A.MemoryLogger$(logs),
+        t1 = A._declarer(),
+        t2 = type$.dynamic_Function,
+        t3 = t2._as(new A.execute____closure79(memoryLogger));
+      t1._checkNotBuilt$1("setUp");
+      B.JSArray_methods.add$1(t1._setUps, t3);
+      t3 = A._declarer();
+      t2 = t2._as(new A.execute____closure80(memoryLogger));
+      t3._checkNotBuilt$1("tearDown");
+      B.JSArray_methods.add$1(t3._tearDowns, t2);
+      t2 = this.tc;
+      t2.test$2("- start & stop", new A.execute____closure81(t2, memoryLogger));
+      t2.test$2("- hook", new A.execute____closure82(t2, memoryLogger, logs));
+      t2.test$2("- hook failure", new A.execute____closure83(t2, memoryLogger));
+      t2.group$2("- install", new A.execute____closure84(t2, memoryLogger, logs));
+      t2.test$2("- cannot restart after stop", new A.execute____closure85(t2));
+    },
+    $signature: 1
+  };
+  A.execute____closure79.prototype = {
+    call$0() {
+      var t1 = this.memoryLogger;
+      B.JSArray_methods.clear$0(t1._logs);
+      t1._memory_logger$_filter._level = B.Level_0_all;
+    },
+    $signature: 1
+  };
+  A.execute____closure80.prototype = {
+    call$0() {
+      B.JSArray_methods.clear$0(this.memoryLogger._logs);
+    },
+    $signature: 1
+  };
+  A.execute____closure81.prototype = {
+    call$0() {
+      var $async$goto = 0,
+        $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
+        $async$self = this;
+      var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
+        while (true)
+          switch ($async$goto) {
+            case 0:
+              // Function start
+              $async$goto = 2;
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure105($async$self.memoryLogger), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39542,7 +44731,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure168.prototype = {
+  A.execute_____closure105.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure40(type$.TestWorker._as(w));
     },
@@ -39594,13 +44783,13 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure94.prototype = {
+  A.execute____closure82.prototype = {
     call$0() {
-      return this.$call$body$execute____closure15();
+      return this.$call$body$execute____closure17();
     },
-    $call$body$execute____closure15() {
+    $call$body$execute____closure17() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t1;
@@ -39614,7 +44803,7 @@
               t1 = {};
               t1.status = null;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, new A.execute____closure_hook0(t1)), new A.execute_____closure167(t1, $async$self.memoryLogger, $async$self.logs), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, new A.execute____closure_hook0(t1)), new A.execute_____closure104(t1, $async$self.memoryLogger, $async$self.logs), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39629,9 +44818,9 @@
     call$1(pw) {
       this._box_0.status = "hook called";
     },
-    $signature: 46
+    $signature: 42
   };
-  A.execute_____closure167.prototype = {
+  A.execute_____closure104.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure39(type$.TestWorker._as(w));
     },
@@ -39661,13 +44850,13 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure95.prototype = {
+  A.execute____closure83.prototype = {
     call$0() {
-      return this.$call$body$execute____closure14();
+      return this.$call$body$execute____closure16();
     },
-    $call$body$execute____closure14() {
+    $call$body$execute____closure16() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t1;
@@ -39681,7 +44870,7 @@
               t1 = {};
               t1.status = null;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, new A.execute____closure_hook(t1)), new A.execute_____closure166(t1, $async$self.memoryLogger), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, new A.execute____closure_hook(t1)), new A.execute_____closure103(t1, $async$self.memoryLogger), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39697,9 +44886,9 @@
       this._box_1.status = "hook called";
       throw A.wrapException(A.CustomException$("intended exception after setting status", null, null));
     },
-    $signature: 46
+    $signature: 42
   };
-  A.execute_____closure166.prototype = {
+  A.execute_____closure103.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure38(type$.TestWorker._as(w));
     },
@@ -39762,20 +44951,20 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure96.prototype = {
+  A.execute____closure84.prototype = {
     call$0() {
       var t1 = this.tc,
         t2 = this.memoryLogger,
         t3 = this.logs;
-      t1.test$2("- no error", new A.execute_____closure163(t1, t2, t3));
-      t1.test$2("- error on installation", new A.execute_____closure164(t1, t2, t3));
-      t1.test$2("- error on uninstallation", new A.execute_____closure165(t1, t2, t3));
+      t1.test$2("- no error", new A.execute_____closure100(t1, t2, t3));
+      t1.test$2("- error on installation", new A.execute_____closure101(t1, t2, t3));
+      t1.test$2("- error on uninstallation", new A.execute_____closure102(t1, t2, t3));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure163.prototype = {
+  A.execute_____closure100.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39790,7 +44979,7 @@
               t1 = $async$self.tc.entryPoints.installable;
               t1.toString;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [false, false], false, new A.Object()), new A.execute______closure93($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [false, false], false, new A.Object()), new A.execute______closure20($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39801,7 +44990,7 @@
     },
     $signature: 0
   };
-  A.execute______closure93.prototype = {
+  A.execute______closure20.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure7(type$.InstallableWorker._as(w));
     },
@@ -39849,9 +45038,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 56
+    $signature: 57
   };
-  A.execute_____closure164.prototype = {
+  A.execute_____closure101.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39866,7 +45055,7 @@
               t1 = $async$self.tc.entryPoints.installable;
               t1.toString;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [true, false], false, new A.Object()), new A.execute______closure92($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [true, false], false, new A.Object()), new A.execute______closure19($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39877,7 +45066,7 @@
     },
     $signature: 0
   };
-  A.execute______closure92.prototype = {
+  A.execute______closure19.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure6(type$.InstallableWorker._as(w));
     },
@@ -39974,9 +45163,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 56
+    $signature: 57
   };
-  A.execute_____closure165.prototype = {
+  A.execute_____closure102.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -39991,7 +45180,7 @@
               t1 = $async$self.tc.entryPoints.installable;
               t1.toString;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [false, true], false, new A.Object()), new A.execute______closure91($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(new A.InstallableWorker(t1, null, [false, true], false, new A.Object()), new A.execute______closure18($async$self.memoryLogger, $async$self.logs), type$.InstallableWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40002,7 +45191,7 @@
     },
     $signature: 0
   };
-  A.execute______closure91.prototype = {
+  A.execute______closure18.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure5(type$.InstallableWorker._as(w));
     },
@@ -40050,9 +45239,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 56
+    $signature: 57
   };
-  A.execute____closure97.prototype = {
+  A.execute____closure85.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40065,7 +45254,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure162(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure99(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40076,7 +45265,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure162.prototype = {
+  A.execute_____closure99.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure37(type$.TestWorker._as(w));
     },
@@ -40151,19 +45340,19 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
   A.execute___closure43.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$3$skip("- not found", new A.execute____closure87(t1), t1.entryPoints.missingWorker == null);
-      t1.test$2("- failed init", new A.execute____closure88(t1));
-      t1.test$3$skip("- missing start request", new A.execute____closure89(t1), true);
-      t1.test$2("- invalid command ID", new A.execute____closure90(t1));
+      t1.test$3$skip("- not found", new A.execute____closure75(t1), t1.entryPoints.missingWorker == null);
+      t1.test$2("- failed init", new A.execute____closure76(t1));
+      t1.test$3$skip("- missing start request", new A.execute____closure77(t1), true);
+      t1.test$2("- invalid command ID", new A.execute____closure78(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure87.prototype = {
+  A.execute____closure75.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40178,7 +45367,7 @@
               t1 = $async$self.tc.entryPoints.missingWorker;
               t1.toString;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(new A.MissingWorker(t1, null, B.List_empty0, false, new A.Object()), new A.execute_____closure161(), type$.MissingWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(new A.MissingWorker(t1, null, B.List_empty0, false, new A.Object()), new A.execute_____closure98(), type$.MissingWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40189,7 +45378,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure161.prototype = {
+  A.execute_____closure98.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure36(type$.MissingWorker._as(w));
     },
@@ -40213,9 +45402,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 147
+    $signature: 145
   };
-  A.execute____closure88.prototype = {
+  A.execute____closure76.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40228,7 +45417,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$throws($async$self.tc), new A.execute_____closure160(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$throws($async$self.tc), new A.execute_____closure97(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40239,7 +45428,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure160.prototype = {
+  A.execute_____closure97.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure35(type$.TestWorker._as(w));
     },
@@ -40269,9 +45458,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure89.prototype = {
+  A.execute____closure77.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40284,7 +45473,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$missingStartRequest($async$self.tc), new A.execute_____closure159(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$missingStartRequest($async$self.tc), new A.execute_____closure96(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40295,7 +45484,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure159.prototype = {
+  A.execute_____closure96.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure34(type$.TestWorker._as(w));
     },
@@ -40325,9 +45514,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure90.prototype = {
+  A.execute____closure78.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40340,7 +45529,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$invalid($async$self.tc), new A.execute_____closure158(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$invalid($async$self.tc), new A.execute_____closure95(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40351,7 +45540,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure158.prototype = {
+  A.execute_____closure95.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure33(type$.TestWorker._as(w));
     },
@@ -40381,19 +45570,19 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
   A.execute___closure44.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- platform type", new A.execute____closure83(t1));
-      t1.test$2("- sequential", new A.execute____closure84(t1));
-      t1.test$2("- parallel", new A.execute____closure85(t1));
-      t1.group$2("- error handling", new A.execute____closure86(t1));
+      t1.test$2("- platform type", new A.execute____closure71(t1));
+      t1.test$2("- sequential", new A.execute____closure72(t1));
+      t1.test$2("- parallel", new A.execute____closure73(t1));
+      t1.group$2("- error handling", new A.execute____closure74(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure83.prototype = {
+  A.execute____closure71.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40407,7 +45596,7 @@
               // Function start
               t1 = $async$self.tc;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$(t1, null), new A.execute_____closure157(t1), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$(t1, null), new A.execute_____closure94(t1), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40418,7 +45607,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure157.prototype = {
+  A.execute_____closure94.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure32(type$.TestWorker._as(w));
     },
@@ -40446,9 +45635,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
-  A.execute____closure84.prototype = {
+  A.execute____closure72.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40461,7 +45650,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure156(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure93(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40472,7 +45661,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure156.prototype = {
+  A.execute_____closure93.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure31(type$.TestWorker._as(w));
     },
@@ -40542,7 +45731,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
   A.execute_____closure_createTask0.prototype = {
     call$1(duration) {
@@ -40555,9 +45744,9 @@
     call$0() {
       return B.JSArray_methods.add$1(this.completedTasks, this.id);
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute____closure85.prototype = {
+  A.execute____closure73.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40570,7 +45759,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure155(), type$.TestWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorker$($async$self.tc, null), new A.execute_____closure92(), type$.TestWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -40581,7 +45770,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure155.prototype = {
+  A.execute_____closure92.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure30(type$.TestWorker._as(w));
     },
@@ -40617,6 +45806,10 @@
               return A._asyncAwait(A.Future_wait(tasks, false, t2), $async$call$1);
             case 3:
               // returning from await.
+              $async$goto = 4;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 4:
+              // returning from await.
               A.expect(completedTasks, A._ContainsAll$([1, 2, 3]), null);
               A.expect(w._workload, B._OrderingMatcher_Kvb, null);
               A.expect(w._maxWorkload, 3, null);
@@ -40631,17 +45824,17 @@
               A.expect(w._workload, 3, null);
               A.expect(w._maxWorkload, 3, null);
               A.expect(w._totalWorkload, 3, null);
-              $async$goto = 4;
+              $async$goto = 5;
               return A._asyncAwait(A.Future_Future$delayed(B.Duration_80000, null, t2), $async$call$1);
-            case 4:
+            case 5:
               // returning from await.
               A.expect(completedTasks, B.C__Empty, null);
               A.expect(w._workload, 3, null);
               A.expect(w._maxWorkload, 3, null);
               A.expect(w._totalWorkload, 3, null);
-              $async$goto = 5;
+              $async$goto = 6;
               return A._asyncAwait(A.Future_Future$delayed(new A.Duration(240000), null, t2), $async$call$1);
-            case 5:
+            case 6:
               // returning from await.
               A.expect(completedTasks, new A._Contains(6), null);
               A.expect(w._workload, 2, null);
@@ -40653,17 +45846,17 @@
               A.expect(w._workload, 4, null);
               A.expect(w._maxWorkload, 4, null);
               A.expect(w._totalWorkload, 4, null);
-              $async$goto = 6;
+              $async$goto = 7;
               return A._asyncAwait(A.Future_Future$delayed(new A.Duration(320000), null, t2), $async$call$1);
-            case 6:
+            case 7:
               // returning from await.
               A.expect(completedTasks, A._ContainsAll$([5, 6, 8]), null);
               A.expect(w._workload, 2, null);
               A.expect(w._maxWorkload, 4, null);
               A.expect(w._totalWorkload, 6, null);
-              $async$goto = 7;
+              $async$goto = 8;
               return A._asyncAwait(A.Future_Future$delayed(new A.Duration(240000), null, t2), $async$call$1);
-            case 7:
+            case 8:
               // returning from await.
               A.expect(completedTasks, A._ContainsAll$([4, 5, 6, 7, 8]), null);
               A.expect(w._workload, B._OrderingMatcher_Kvb, null);
@@ -40681,7 +45874,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 14
+    $signature: 17
   };
   A.execute_____closure_createTask.prototype = {
     call$1(duration) {
@@ -40694,27 +45887,27 @@
     call$0() {
       return B.JSArray_methods.add$1(this.completedTasks, this.id);
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute____closure86.prototype = {
+  A.execute____closure74.prototype = {
     call$0() {
       var worker = A._Cell$named("worker"),
         t1 = this.tc;
-      A._declarer().setUpAll$1(new A.execute_____closure144(worker, t1));
-      A._declarer().tearDownAll$1(new A.execute_____closure145(worker));
-      t1.test$2("- Exception", new A.execute_____closure146(worker));
-      t1.test$2("- WorkerException", new A.execute_____closure147(worker));
-      t1.test$2("- TaskTimeOutException", new A.execute_____closure148(worker));
-      t1.test$2("- CanceledException", new A.execute_____closure149(worker));
-      t1.test$2("- CustomException (unregistered)", new A.execute_____closure150(worker));
-      t1.test$2("- CustomException (registered)", new A.execute_____closure151(worker));
-      t1.test$2("- invalid request", new A.execute_____closure152(worker));
-      t1.test$2("- invalid response", new A.execute_____closure153(worker));
-      t1.test$2("- missing operation", new A.execute_____closure154(worker));
+      A._declarer().setUpAll$1(new A.execute_____closure81(worker, t1));
+      A._declarer().tearDownAll$1(new A.execute_____closure82(worker));
+      t1.test$2("- Exception", new A.execute_____closure83(worker));
+      t1.test$2("- WorkerException", new A.execute_____closure84(worker));
+      t1.test$2("- TaskTimeOutException", new A.execute_____closure85(worker));
+      t1.test$2("- CanceledException", new A.execute_____closure86(worker));
+      t1.test$2("- CustomException (unregistered)", new A.execute_____closure87(worker));
+      t1.test$2("- CustomException (registered)", new A.execute_____closure88(worker));
+      t1.test$2("- invalid request", new A.execute_____closure89(worker));
+      t1.test$2("- invalid response", new A.execute_____closure90(worker));
+      t1.test$2("- missing operation", new A.execute_____closure91(worker));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure144.prototype = {
+  A.execute_____closure81.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40740,13 +45933,13 @@
     },
     $signature: 0
   };
-  A.execute_____closure145.prototype = {
+  A.execute_____closure82.prototype = {
     call$0() {
       J.stop$0$x(this.worker._readLocal$0());
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute_____closure146.prototype = {
+  A.execute_____closure83.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40810,7 +46003,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure147.prototype = {
+  A.execute_____closure84.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40874,7 +46067,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure148.prototype = {
+  A.execute_____closure85.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40935,7 +46128,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure149.prototype = {
+  A.execute_____closure86.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -40996,7 +46189,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure150.prototype = {
+  A.execute_____closure87.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41060,7 +46253,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure151.prototype = {
+  A.execute_____closure88.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41153,7 +46346,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure152.prototype = {
+  A.execute_____closure89.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41225,7 +46418,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure153.prototype = {
+  A.execute_____closure90.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41289,7 +46482,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure154.prototype = {
+  A.execute_____closure91.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41355,34 +46548,34 @@
   A.execute_closure8.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Squadron Worker", new A.execute__closure11(t1));
+      t1.group$2("- Squadron Worker", new A.execute__closure10(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure11.prototype = {
+  A.execute__closure10.prototype = {
     call$0() {
       var t1 = this.tc;
       t1.group$2("- streaming", new A.execute___closure41(t1));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure41.prototype = {
     call$0() {
       var worker = A._Cell$named("worker"),
         t1 = this.tc;
-      A._declarer().setUpAll$1(new A.execute____closure74(worker, t1));
-      A._declarer().tearDownAll$1(new A.execute____closure75(worker));
-      t1.test$2("- cancelOnError: false", new A.execute____closure76(worker));
-      t1.test$2("- cancelOnError: true", new A.execute____closure77(worker));
-      t1.test$2("- await for", new A.execute____closure78(worker));
-      t1.test$2("- throwing in await for", new A.execute____closure79(worker));
-      t1.test$2("- pause/resume", new A.execute____closure80(worker));
-      t1.test$2("- immediate cancelation", new A.execute____closure81(worker));
-      t1.test$2("- subscription cancelation", new A.execute____closure82(worker));
+      A._declarer().setUpAll$1(new A.execute____closure62(worker, t1));
+      A._declarer().tearDownAll$1(new A.execute____closure63(worker));
+      t1.test$2("- cancelOnError: false", new A.execute____closure64(worker));
+      t1.test$2("- cancelOnError: true", new A.execute____closure65(worker));
+      t1.test$2("- await for", new A.execute____closure66(worker));
+      t1.test$2("- throwing in await for", new A.execute____closure67(worker));
+      t1.test$2("- pause/resume", new A.execute____closure68(worker));
+      t1.test$2("- immediate cancelation", new A.execute____closure69(worker));
+      t1.test$2("- subscription cancelation", new A.execute____closure70(worker));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure74.prototype = {
+  A.execute____closure62.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41408,13 +46601,13 @@
     },
     $signature: 0
   };
-  A.execute____closure75.prototype = {
+  A.execute____closure63.prototype = {
     call$0() {
       J.stop$0$x(this.worker._readLocal$0());
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure76.prototype = {
+  A.execute____closure64.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41438,7 +46631,7 @@
               // returning from await.
               $async$temp1.expect($async$result, B._OrderingMatcher_Kvb, null);
               sub = A._Cell$named("sub");
-              sub.set$finalLocalValue(t2._readLocal$0().infiniteWithErrors$0().listen$4$cancelOnError$onDone$onError(type$.void_Function_int._as(B.JSArray_methods.get$add(numbers)), false, type$.void_Function_$opt_dynamic._as(done.get$complete(done)), new A.execute_____closure143(errors, 3, sub, done)));
+              sub.set$finalLocalValue(t2._readLocal$0().infiniteWithErrors$0().listen$4$cancelOnError$onDone$onError(type$.void_Function_int._as(B.JSArray_methods.get$add(numbers)), false, type$.void_Function_$opt_dynamic._as(done.get$complete(done)), new A.execute_____closure80(errors, 3, sub, done)));
               $async$temp1 = A;
               $async$goto = 3;
               return A._asyncAwait(t2._readLocal$0().getPendingInfiniteWithErrors$0(), $async$call$0);
@@ -41467,7 +46660,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure143.prototype = {
+  A.execute_____closure80.prototype = {
     call$1(ex) {
       var _this = this,
         t1 = _this.errors;
@@ -41477,9 +46670,9 @@
         J.cancel$0$z(_this.sub._readLocal$0()).then$1$1(type$.void_Function_$opt_dynamic._as(t1.get$complete(t1)), type$.void);
       }
     },
-    $signature: 9
+    $signature: 14
   };
-  A.execute____closure77.prototype = {
+  A.execute____closure65.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41564,7 +46757,7 @@
     },
     $signature: 0
   };
-  A.execute____closure78.prototype = {
+  A.execute____closure66.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41602,7 +46795,7 @@
               if (t6 === t2)
                 A.throwExpression(A.LateError$localNI(t5));
               $async$goto = 12;
-              return A._asyncAwait(J.send$1$z(t6, 45).then$1$1($.$get$Squadron_converter().v$1$0(t4), t4), $async$call$0);
+              return A._asyncAwait(J.send$1$z(t6, 45).then$1$1($.$get$Squadron_converter().value$1$0(0, t4), t4), $async$call$0);
             case 12:
               // returning from await.
               pending = $async$result;
@@ -41681,7 +46874,7 @@
     },
     $signature: 0
   };
-  A.execute____closure79.prototype = {
+  A.execute____closure67.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41719,7 +46912,7 @@
               if (t6 === t2)
                 A.throwExpression(A.LateError$localNI(t5));
               $async$goto = 12;
-              return A._asyncAwait(J.send$1$z(t6, 45).then$1$1($.$get$Squadron_converter().v$1$0(t4), t4), $async$call$0);
+              return A._asyncAwait(J.send$1$z(t6, 45).then$1$1($.$get$Squadron_converter().value$1$0(0, t4), t4), $async$call$0);
             case 12:
               // returning from await.
               pending = $async$result;
@@ -41803,11 +46996,11 @@
     },
     $signature: 0
   };
-  A.execute____closure80.prototype = {
+  A.execute____closure68.prototype = {
     call$0() {
-      return this.$call$body$execute____closure13();
+      return this.$call$body$execute____closure15();
     },
-    $call$body$execute____closure13() {
+    $call$body$execute____closure15() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, numbers, errors, sub, t3, t4, t5, t1, t2, $async$temp1;
@@ -41911,7 +47104,7 @@
       }
       ++t1.paused;
     },
-    $signature: 1
+    $signature: 2
   };
   A.execute____closure_resume.prototype = {
     call$0() {
@@ -41924,9 +47117,9 @@
       if (t2 > 0)
         t1.paused = t2 - 1;
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute____closure81.prototype = {
+  A.execute____closure69.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -41976,11 +47169,11 @@
     },
     $signature: 0
   };
-  A.execute____closure82.prototype = {
+  A.execute____closure70.prototype = {
     call$0() {
-      return this.$call$body$execute____closure12();
+      return this.$call$body$execute____closure14();
     },
-    $call$body$execute____closure12() {
+    $call$body$execute____closure14() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t2, t3, sub, t1;
@@ -41995,7 +47188,7 @@
               t1.counter = 0;
               t2 = J.stream$3$args$token$z($async$self.worker._readLocal$0(), 43, [100], null);
               t3 = t2.$ti;
-              sub = new A._MapStream(t3._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().v$1$0(type$.int)), t2, t3._eval$1("_MapStream<Stream.T,int>")).listen$1(new A.execute_____closure142(t1));
+              sub = new A._MapStream(t3._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().value$1$0(0, type$.int)), t2, t3._eval$1("_MapStream<Stream.T,int>")).listen$1(new A.execute_____closure79(t1));
               $async$goto = 2;
               return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 100, 0), null, type$.dynamic), $async$call$0);
             case 2:
@@ -42013,21 +47206,21 @@
     },
     $signature: 0
   };
-  A.execute_____closure142.prototype = {
+  A.execute_____closure79.prototype = {
     call$1(_) {
       A._asInt(_);
       return this._box_1.counter++;
     },
-    $signature: 54
+    $signature: 56
   };
   A.execute_closure5.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Local Worker", new A.execute__closure8(t1, new A.LocalServiceImpl(), A.RegExp_RegExp('Worker running as "(0x[0-9A-Fa-f]+)", LocalService running as "(0x[0-9A-Fa-f]+)"', true, false)));
+      t1.group$2("- Local Worker", new A.execute__closure7(t1, new A.LocalServiceImpl(), A.RegExp_RegExp('Worker running as "(0x[0-9A-Fa-f]+)", LocalService running as "(0x[0-9A-Fa-f]+)"', true, false)));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure8.prototype = {
+  A.execute__closure7.prototype = {
     call$0() {
       var t1 = this.tc,
         t2 = this.localService;
@@ -42035,21 +47228,21 @@
       t1.group$2("- Exception", new A.execute___closure28(t1, t2));
       t1.group$2("- Stream", new A.execute___closure29(t1, t2));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure27.prototype = {
     call$0() {
       var t3,
         t1 = this.tc,
         t2 = this.localService;
-      t1.test$2("- Local", new A.execute____closure46(t2));
+      t1.test$2("- Local", new A.execute____closure34(t2));
       t3 = this.regExp;
-      t1.test$2("- Squadron", new A.execute____closure47(t2, t1, t3));
-      t1.test$2("- Pool", new A.execute____closure48(t2, t1, t3));
+      t1.test$2("- Squadron", new A.execute____closure35(t2, t1, t3));
+      t1.test$2("- Pool", new A.execute____closure36(t2, t1, t3));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure46.prototype = {
+  A.execute____closure34.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42064,7 +47257,7 @@
               id = 'LocalService running as "' + $.$get$threadId() + '"';
               A.expect(id, id, null);
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure120(), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure57(), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42075,7 +47268,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure120.prototype = {
+  A.execute_____closure57.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure9(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42104,9 +47297,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute____closure47.prototype = {
+  A.execute____closure35.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42119,7 +47312,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure119($async$self.tc, $async$self.regExp), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure56($async$self.tc, $async$self.regExp), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42130,14 +47323,14 @@
     },
     $signature: 0
   };
-  A.execute_____closure119.prototype = {
+  A.execute_____closure56.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure8(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
     $call$body$execute_____closure8(lw) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t1;
+        $async$self = this;
       var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -42145,10 +47338,8 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = lw.___WebLocalWorker__channel_A;
-              t1 === $ && A.throwLateFieldNI("_channel");
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, [t1.share$0(0)._sendPort]), new A.execute______closure81($async$self.regExp), type$.LocalClientWorker, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, lw), new A.execute______closure8($async$self.regExp), type$.LocalClientWorker, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42157,9 +47348,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure81.prototype = {
+  A.execute______closure8.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure4(type$.LocalClientWorker._as(w));
     },
@@ -42202,9 +47393,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 53
+    $signature: 54
   };
-  A.execute____closure48.prototype = {
+  A.execute____closure36.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42217,7 +47408,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure118($async$self.tc, $async$self.regExp), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure55($async$self.tc, $async$self.regExp), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42228,7 +47419,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure118.prototype = {
+  A.execute_____closure55.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure7(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42244,7 +47435,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure80($async$self.regExp), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure7($async$self.regExp), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42253,9 +47444,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure80.prototype = {
+  A.execute______closure7.prototype = {
     call$1(p) {
       return this.$call$body$execute______closure3(type$.LocalClientWorkerPool._as(p));
     },
@@ -42316,19 +47507,19 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 58
+    $signature: 51
   };
   A.execute___closure28.prototype = {
     call$0() {
       var t1 = this.tc,
         t2 = this.localService;
-      t1.test$2("- Local", new A.execute____closure43(t2));
-      t1.test$2("- Squadron", new A.execute____closure44(t2, t1));
-      t1.test$2("- Pool", new A.execute____closure45(t2, t1));
+      t1.test$2("- Local", new A.execute____closure31(t2));
+      t1.test$2("- Squadron", new A.execute____closure32(t2, t1));
+      t1.test$2("- Pool", new A.execute____closure33(t2, t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure43.prototype = {
+  A.execute____closure31.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42348,7 +47539,7 @@
                 A.expect(ex, new A.Reported("Error that reported", "message", A.wrapMatcher(t1)), null);
               }
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure117(), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure54(), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42359,7 +47550,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure117.prototype = {
+  A.execute_____closure54.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure6(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42423,9 +47614,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute____closure44.prototype = {
+  A.execute____closure32.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42438,7 +47629,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure116($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure53($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42449,14 +47640,14 @@
     },
     $signature: 0
   };
-  A.execute_____closure116.prototype = {
+  A.execute_____closure53.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure5(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
     $call$body$execute_____closure5(lw) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t1;
+        $async$self = this;
       var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -42464,10 +47655,8 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = lw.___WebLocalWorker__channel_A;
-              t1 === $ && A.throwLateFieldNI("_channel");
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, [t1.share$0(0)._sendPort]), new A.execute______closure79(), type$.LocalClientWorker, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, lw), new A.execute______closure6(), type$.LocalClientWorker, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42476,9 +47665,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure79.prototype = {
+  A.execute______closure6.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure2(type$.LocalClientWorker._as(w));
     },
@@ -42505,9 +47694,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 53
+    $signature: 54
   };
-  A.execute____closure45.prototype = {
+  A.execute____closure33.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42520,7 +47709,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure115($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure52($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42531,7 +47720,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure115.prototype = {
+  A.execute_____closure52.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure4(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42547,7 +47736,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure78(), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure5(), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42556,9 +47745,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure78.prototype = {
+  A.execute______closure5.prototype = {
     call$1(p) {
       return this.$call$body$execute______closure1(type$.LocalClientWorkerPool._as(p));
     },
@@ -42588,19 +47777,19 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 58
+    $signature: 51
   };
   A.execute___closure29.prototype = {
     call$0() {
       var t1 = this.tc,
         t2 = this.localService;
-      t1.test$2("- Local", new A.execute____closure40(t2));
-      t1.test$2("- Squadron", new A.execute____closure41(t2, t1));
-      t1.test$2("- Pool", new A.execute____closure42(t2, t1));
+      t1.test$2("- Local", new A.execute____closure28(t2));
+      t1.test$2("- Squadron", new A.execute____closure29(t2, t1));
+      t1.test$2("- Pool", new A.execute____closure30(t2, t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure40.prototype = {
+  A.execute____closure28.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42620,7 +47809,7 @@
               list = $async$result;
               A.expect(list, A.Iterable_Iterable$generate(19, type$.dynamic), null);
               $async$goto = 3;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure114(list), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure51(list), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -42631,7 +47820,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure114.prototype = {
+  A.execute_____closure51.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure3(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42660,9 +47849,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute____closure41.prototype = {
+  A.execute____closure29.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42675,7 +47864,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure113($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure50($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42686,14 +47875,14 @@
     },
     $signature: 0
   };
-  A.execute_____closure113.prototype = {
+  A.execute_____closure50.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure2(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
     $call$body$execute_____closure2(lw) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, lwChannel, t1;
+        $async$self = this;
       var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -42701,12 +47890,8 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = lw.___WebLocalWorker__channel_A;
-              t1 === $ && A.throwLateFieldNI("_channel");
-              lwChannel = t1 == null ? null : t1.share$0(0);
-              t1 = lwChannel == null ? null : lwChannel._sendPort;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, [t1]), new A.execute______closure77(), type$.LocalClientWorker, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorker$($async$self.tc, lw), new A.execute______closure4(), type$.LocalClientWorker, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42715,9 +47900,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure77.prototype = {
+  A.execute______closure4.prototype = {
     call$1(w) {
       return this.$call$body$execute______closure0(type$.LocalClientWorker._as(w));
     },
@@ -42745,7 +47930,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 53
+    $signature: 54
   };
   A.execute_______closure0.prototype = {
     call$1(e) {
@@ -42753,7 +47938,7 @@
     },
     $signature: 78
   };
-  A.execute____closure42.prototype = {
+  A.execute____closure30.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -42766,7 +47951,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure112($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.LocalWorker_LocalWorker$create($async$self.localService, type$.LocalServiceImpl), new A.execute_____closure49($async$self.tc), type$.LocalWorker_LocalServiceImpl, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42777,7 +47962,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure112.prototype = {
+  A.execute_____closure49.prototype = {
     call$1(lw) {
       return this.$call$body$execute_____closure1(type$.LocalWorker_LocalServiceImpl._as(lw));
     },
@@ -42793,7 +47978,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure76(), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.LocalClientWorkerPool$($async$self.tc, lw, B.ConcurrencySettings_2_5_3), new A.execute______closure3(), type$.LocalClientWorkerPool, type$.Null), $async$call$1);
             case 2:
               // returning from await.
               // implicit return
@@ -42802,9 +47987,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 16
+    $signature: 19
   };
-  A.execute______closure76.prototype = {
+  A.execute______closure3.prototype = {
     call$1(p) {
       return this.$call$body$execute______closure(type$.LocalClientWorkerPool._as(p));
     },
@@ -42837,7 +48022,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 58
+    $signature: 51
   };
   A.execute_______closure.prototype = {
     call$1(e) {
@@ -42848,17 +48033,17 @@
   A.execute_closure6.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Shared Channel", new A.execute__closure9(t1));
+      t1.group$2("- Shared Channel", new A.execute__closure8(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure9.prototype = {
+  A.execute__closure8.prototype = {
     call$0() {
       var t1 = this.tc;
       t1.test$2("- cache worker", new A.execute___closure30(t1));
       t1.test$2("- prime worker with cache", new A.execute___closure31(t1));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure30.prototype = {
     call$0() {
@@ -42873,7 +48058,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$($async$self.tc), new A.execute____closure50(), type$.CacheWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$($async$self.tc), new A.execute____closure38(), type$.CacheWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42884,11 +48069,11 @@
     },
     $signature: 0
   };
-  A.execute____closure50.prototype = {
+  A.execute____closure38.prototype = {
     call$1(cache) {
-      return this.$call$body$execute____closure6(type$.CacheWorker._as(cache));
+      return this.$call$body$execute____closure8(type$.CacheWorker._as(cache));
     },
-    $call$body$execute____closure6(cache) {
+    $call$body$execute____closure8(cache) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$temp1;
@@ -42933,7 +48118,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 52
+    $signature: 62
   };
   A.execute___closure31.prototype = {
     call$0() {
@@ -42949,7 +48134,7 @@
               // Function start
               t1 = $async$self.tc;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$(t1), new A.execute____closure49(t1), type$.CacheWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$(t1), new A.execute____closure37(t1), type$.CacheWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -42960,11 +48145,11 @@
     },
     $signature: 0
   };
-  A.execute____closure49.prototype = {
+  A.execute____closure37.prototype = {
     call$1(cache) {
-      return this.$call$body$execute____closure5(type$.CacheWorker._as(cache));
+      return this.$call$body$execute____closure7(type$.CacheWorker._as(cache));
     },
-    $call$body$execute____closure5(cache) {
+    $call$body$execute____closure7(cache) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, cacheStats, t1, $async$temp1;
@@ -42992,7 +48177,7 @@
               A.expect(cacheStats.size, B._OrderingMatcher_Kvb, null);
               A.expect(cacheStats.maxSize, B._OrderingMatcher_Kvb, null);
               $async$goto = 4;
-              return A._asyncAwait(A.Using_useAsync(A.PrimeWorker$($async$self.tc, cache), new A.execute_____closure121(t1, cache), type$.PrimeWorker, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.PrimeWorker$($async$self.tc, cache), new A.execute_____closure58(t1, cache), type$.PrimeWorker, type$.Null), $async$call$1);
             case 4:
               // returning from await.
               // implicit return
@@ -43001,9 +48186,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 52
+    $signature: 62
   };
-  A.execute_____closure121.prototype = {
+  A.execute_____closure58.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure10(type$.PrimeWorker._as(w));
     },
@@ -43029,7 +48214,7 @@
                 $async$goto = 3;
                 break;
               }
-              t5 = w.send$2$args(0, 1, [t1.get$current(0)]).then$1$1($.$get$Squadron_converter().v$1$0(t4), t4);
+              t5 = w.send$2$args(0, 1, [t1.get$current(0)]).then$1$1($.$get$Squadron_converter().value$1$0(0, t4), t4);
               if (!t3._is(t5)) {
                 A._asBool(t5);
                 t6 = new A._Future($.Zone__current, t2);
@@ -43073,7 +48258,7 @@
                 $async$goto = 7;
                 break;
               }
-              t7 = w.send$2$args(0, 1, [t6.get$current(0)]).then$1$1($.$get$Squadron_converter().v$1$0(t4), t4);
+              t7 = w.send$2$args(0, 1, [t6.get$current(0)]).then$1$1($.$get$Squadron_converter().value$1$0(0, t4), t4);
               if (!t3._is(t7)) {
                 A._asBool(t7);
                 t8 = new A._Future($.Zone__current, t2);
@@ -43111,20 +48296,20 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 155
+    $signature: 153
   };
   A.execute_closure1.prototype = {
     call$0() {
       var pool = A._Cell$named("pool"),
         worker = A._Cell$named("worker"),
         t1 = this.tc;
-      A._declarer().setUpAll$1(new A.execute__closure2(pool, t1, worker));
-      A._declarer().tearDownAll$1(new A.execute__closure3(pool, worker));
-      t1.group$2("- Cancelation", new A.execute__closure4(t1, pool, worker));
+      A._declarer().setUpAll$1(new A.execute__closure1(pool, t1, worker));
+      A._declarer().tearDownAll$1(new A.execute__closure2(pool, worker));
+      t1.group$2("- Cancelation", new A.execute__closure3(t1, pool, worker));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure2.prototype = {
+  A.execute__closure1.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43153,14 +48338,14 @@
     },
     $signature: 0
   };
-  A.execute__closure3.prototype = {
+  A.execute__closure2.prototype = {
     call$0() {
       J.stop$0$x(this.pool._readLocal$0());
       J.stop$0$x(this.worker._readLocal$0());
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute__closure4.prototype = {
+  A.execute__closure3.prototype = {
     call$0() {
       var t3, t4, t5, t6,
         t1 = this.tc,
@@ -43176,26 +48361,26 @@
       t1.group$2("- TimeoutToken", new A.execute___closure5(t1, t4, t3, t2, t5, t6));
       t1.group$2("- CompositeToken", new A.execute___closure6(t1, t4, t3, t2, t5, t6));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure2.prototype = {
     call$0() {
       var t1 = this.tc,
         t2 = this.pool;
-      t1.test$2("- immediate with pool.cancel()", new A.execute____closure25(t2));
-      t1.test$2("- immediate with pool.cancel(task)", new A.execute____closure26(t2));
-      t1.test$2("- immediate with task.cancel()", new A.execute____closure27(t2));
-      t1.test$2("- with pool.cancel()", new A.execute____closure28(t2));
-      t1.test$2("- with pool.cancel(task)", new A.execute____closure29(t2));
-      t1.test$2("- with task.cancel()", new A.execute____closure30(t2));
+      t1.test$2("- immediate with pool.cancel()", new A.execute____closure21(t2));
+      t1.test$2("- immediate with pool.cancel(task)", new A.execute____closure22(t2));
+      t1.test$2("- immediate with task.cancel()", new A.execute____closure23(t2));
+      t1.test$2("- with pool.cancel()", new A.execute____closure24(t2));
+      t1.test$2("- with pool.cancel(task)", new A.execute____closure25(t2));
+      t1.test$2("- with task.cancel()", new A.execute____closure26(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure25.prototype = {
+  A.execute____closure21.prototype = {
     call$0() {
-      return this.$call$body$execute____closure4();
+      return this.$call$body$execute____closure6();
     },
-    $call$body$execute____closure4() {
+    $call$body$execute____closure6() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, t6, _box_0, t1, t2, count, tasks, digits, i;
@@ -43217,7 +48402,7 @@
                 t6 = t1.__late_helper$_value;
                 if (t6 === t1)
                   A.throwExpression(A.LateError$localNI(t5));
-                B.JSArray_methods.add$1(tasks, t6.delayed$1(i).then$1$2$onError(t3._as(t2), new A.execute_____closure42(_box_0), t4));
+                B.JSArray_methods.add$1(tasks, t6.delayed$1(i).then$1$2$onError(t3._as(t2), new A.execute_____closure48(_box_0), t4));
               }
               J.cancel$0$z(t1._readLocal$0());
               $async$goto = 2;
@@ -43234,13 +48419,13 @@
     },
     $signature: 0
   };
-  A.execute_____closure42.prototype = {
+  A.execute_____closure48.prototype = {
     call$1(_) {
       return this._box_0.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
-  A.execute____closure26.prototype = {
+  A.execute____closure22.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43308,7 +48493,7 @@
     },
     $signature: 0
   };
-  A.execute____closure27.prototype = {
+  A.execute____closure23.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43380,11 +48565,11 @@
     },
     $signature: 0
   };
-  A.execute____closure28.prototype = {
+  A.execute____closure24.prototype = {
     call$0() {
-      return this.$call$body$execute____closure3();
+      return this.$call$body$execute____closure5();
     },
-    $call$body$execute____closure3() {
+    $call$body$execute____closure5() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, t6, _box_1, t1, t2, count, tasks, digits, i;
@@ -43406,7 +48591,7 @@
                 t6 = t1.__late_helper$_value;
                 if (t6 === t1)
                   A.throwExpression(A.LateError$localNI(t5));
-                B.JSArray_methods.add$1(tasks, t6.delayed$1(i).then$1$2$onError(t3._as(t2), new A.execute_____closure41(_box_1), t4));
+                B.JSArray_methods.add$1(tasks, t6.delayed$1(i).then$1$2$onError(t3._as(t2), new A.execute_____closure47(_box_1), t4));
               }
               $async$goto = 2;
               return A._asyncAwait(A.Future_Future$delayed(B.Duration_80000, null, t4), $async$call$0);
@@ -43427,17 +48612,17 @@
     },
     $signature: 0
   };
-  A.execute_____closure41.prototype = {
+  A.execute_____closure47.prototype = {
     call$1(e) {
       return this._box_1.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
-  A.execute____closure29.prototype = {
+  A.execute____closure25.prototype = {
     call$0() {
-      return this.$call$body$execute____closure2();
+      return this.$call$body$execute____closure4();
     },
-    $call$body$execute____closure2() {
+    $call$body$execute____closure4() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, t6, task, firstTask, lastTask, _box_2, t1, t2, count, tasks, futures, digits, i;
@@ -43462,7 +48647,7 @@
                   A.throwExpression(A.LateError$localNI(t5));
                 task = t6.delayedTask$1(i);
                 B.JSArray_methods.add$1(tasks, task);
-                B.JSArray_methods.add$1(futures, task._result.future.then$1$2$onError(t3._as(t2), new A.execute_____closure36(_box_2), t4));
+                B.JSArray_methods.add$1(futures, task._result.future.then$1$2$onError(t3._as(t2), new A.execute_____closure42(_box_2), t4));
               }
               firstTask = B.JSArray_methods.get$first(tasks);
               J.cancel$1$z(t1._readLocal$0(), firstTask);
@@ -43487,7 +48672,7 @@
               A.expect(digits, new A._HasLength(A.wrapMatcher(count - _box_2.errors)), null);
               t1 = type$.bool_Function_ValueTask_dynamic;
               t2 = type$.WhereIterable_ValueTask_dynamic;
-              $async$goto = !new A.WhereIterable(tasks, t1._as(new A.execute_____closure37()), t2).get$isEmpty(0) ? 4 : 5;
+              $async$goto = !new A.WhereIterable(tasks, t1._as(new A.execute_____closure43()), t2).get$isEmpty(0) ? 4 : 5;
               break;
             case 4:
               // then
@@ -43497,9 +48682,9 @@
               // returning from await.
             case 5:
               // join
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure38()), t2), B.C__Empty, null);
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure39()), t2), new A._HasLength(A.wrapMatcher(_box_2.errors)), null);
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure40()), t2), new A._HasLength(A.wrapMatcher(count - _box_2.errors)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure44()), t2), B.C__Empty, null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure45()), t2), new A._HasLength(A.wrapMatcher(_box_2.errors)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure46()), t2), new A._HasLength(A.wrapMatcher(count - _box_2.errors)), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -43508,41 +48693,41 @@
     },
     $signature: 0
   };
-  A.execute_____closure36.prototype = {
+  A.execute_____closure42.prototype = {
     call$1(_) {
       return this._box_2.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
-  A.execute_____closure37.prototype = {
+  A.execute_____closure43.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
     $signature: 22
   };
-  A.execute_____closure38.prototype = {
+  A.execute_____closure44.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
     $signature: 22
   };
-  A.execute_____closure39.prototype = {
+  A.execute_____closure45.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).__worker_task$_canceled != null;
     },
     $signature: 22
   };
-  A.execute_____closure40.prototype = {
+  A.execute_____closure46.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isFinished();
     },
     $signature: 22
   };
-  A.execute____closure30.prototype = {
+  A.execute____closure26.prototype = {
     call$0() {
-      return this.$call$body$execute____closure1();
+      return this.$call$body$execute____closure3();
     },
-    $call$body$execute____closure1() {
+    $call$body$execute____closure3() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, t6, task, firstTask, lastTask, _box_3, t1, t2, count, tasks, futures, digits, i;
@@ -43567,7 +48752,7 @@
                   A.throwExpression(A.LateError$localNI(t5));
                 task = t6.delayedTask$1(i);
                 B.JSArray_methods.add$1(tasks, task);
-                B.JSArray_methods.add$1(futures, task._result.future.then$1$2$onError(t3._as(t2), new A.execute_____closure31(_box_3), t4));
+                B.JSArray_methods.add$1(futures, task._result.future.then$1$2$onError(t3._as(t2), new A.execute_____closure37(_box_3), t4));
               }
               firstTask = B.JSArray_methods.get$first(tasks);
               firstTask.super$WorkerTask$cancel(0, null);
@@ -43598,7 +48783,7 @@
               A.expect(digits, new A._HasLength(A.wrapMatcher(count - _box_3.errors)), null);
               t1 = type$.bool_Function_ValueTask_dynamic;
               t2 = type$.WhereIterable_ValueTask_dynamic;
-              $async$goto = !new A.WhereIterable(tasks, t1._as(new A.execute_____closure32()), t2).get$isEmpty(0) ? 4 : 5;
+              $async$goto = !new A.WhereIterable(tasks, t1._as(new A.execute_____closure38()), t2).get$isEmpty(0) ? 4 : 5;
               break;
             case 4:
               // then
@@ -43608,9 +48793,9 @@
               // returning from await.
             case 5:
               // join
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure33()), t2), B.C__Empty, null);
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure34()), t2), new A._HasLength(A.wrapMatcher(_box_3.errors)), null);
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure35()), t2), new A._HasLength(A.wrapMatcher(count - _box_3.errors)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure39()), t2), B.C__Empty, null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure40()), t2), new A._HasLength(A.wrapMatcher(_box_3.errors)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure41()), t2), new A._HasLength(A.wrapMatcher(count - _box_3.errors)), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -43619,31 +48804,31 @@
     },
     $signature: 0
   };
-  A.execute_____closure31.prototype = {
+  A.execute_____closure37.prototype = {
     call$1(_) {
       return this._box_3.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
-  A.execute_____closure32.prototype = {
+  A.execute_____closure38.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
     $signature: 22
   };
-  A.execute_____closure33.prototype = {
+  A.execute_____closure39.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isRunning();
     },
     $signature: 22
   };
-  A.execute_____closure34.prototype = {
+  A.execute_____closure40.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).__worker_task$_canceled != null;
     },
     $signature: 22
   };
-  A.execute_____closure35.prototype = {
+  A.execute_____closure41.prototype = {
     call$1(t) {
       return type$.ValueTask_dynamic._as(t).get$isFinished();
     },
@@ -43653,16 +48838,16 @@
     call$0() {
       var t1 = this.tc,
         t2 = this.pool;
-      t1.test$2("- immediate with pool.cancel()", new A.execute____closure19(t2));
-      t1.test$2("- immediate with pool.cancel(task)", new A.execute____closure20(t2));
-      t1.test$2("- immediate with task.cancel()", new A.execute____closure21(t2));
-      t1.test$2("- with pool.cancel()", new A.execute____closure22(t2));
-      t1.test$2("- with pool.cancel(task)", new A.execute____closure23(t2));
-      t1.test$2("- with task.cancel()", new A.execute____closure24(t2));
+      t1.test$2("- immediate with pool.cancel()", new A.execute____closure15(t2));
+      t1.test$2("- immediate with pool.cancel(task)", new A.execute____closure16(t2));
+      t1.test$2("- immediate with task.cancel()", new A.execute____closure17(t2));
+      t1.test$2("- with pool.cancel()", new A.execute____closure18(t2));
+      t1.test$2("- with pool.cancel(task)", new A.execute____closure19(t2));
+      t1.test$2("- with task.cancel()", new A.execute____closure20(t2));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure19.prototype = {
+  A.execute____closure15.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43717,7 +48902,7 @@
     },
     $signature: 0
   };
-  A.execute____closure20.prototype = {
+  A.execute____closure16.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43757,7 +48942,7 @@
     },
     $signature: 0
   };
-  A.execute____closure21.prototype = {
+  A.execute____closure17.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43803,7 +48988,7 @@
     },
     $signature: 0
   };
-  A.execute____closure22.prototype = {
+  A.execute____closure18.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -43849,10 +49034,10 @@
               // returning from await.
               t2 = type$.bool_Function_List_dynamic;
               t1 = type$.WhereIterable_List_dynamic;
-              fullExecutions = new A.WhereIterable(results, t2._as(new A.execute_____closure27()), t1).get$length(0);
-              partialExecutions = new A.WhereIterable(results, t2._as(new A.execute_____closure28()), t1).get$length(0);
-              fullCancelations = new A.WhereIterable(results, t2._as(new A.execute_____closure29()), t1).get$length(0);
-              multipleErrors = new A.WhereIterable(results, t2._as(new A.execute_____closure30()), t1).get$length(0);
+              fullExecutions = new A.WhereIterable(results, t2._as(new A.execute_____closure33()), t1).get$length(0);
+              partialExecutions = new A.WhereIterable(results, t2._as(new A.execute_____closure34()), t1).get$length(0);
+              fullCancelations = new A.WhereIterable(results, t2._as(new A.execute_____closure35()), t1).get$length(0);
+              multipleErrors = new A.WhereIterable(results, t2._as(new A.execute_____closure36()), t1).get$length(0);
               A.expect(fullExecutions, B._OrderingMatcher_g8g, null);
               A.expect(partialExecutions, B._OrderingMatcher_g8g, null);
               A.expect(fullCancelations, B._OrderingMatcher_g8g, null);
@@ -43866,62 +49051,62 @@
     },
     $signature: 0
   };
-  A.execute_____closure27.prototype = {
+  A.execute_____closure33.prototype = {
     call$1(r) {
       return J.every$1$ax(type$.List_dynamic._as(r), new A.execute______closure2());
     },
-    $signature: 35
+    $signature: 39
   };
   A.execute______closure2.prototype = {
     call$1(e) {
       return A._isInt(e);
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute_____closure28.prototype = {
+  A.execute_____closure34.prototype = {
     call$1(r) {
       var t1;
       type$.List_dynamic._as(r);
       t1 = J.getInterceptor$ax(r);
       return t1.any$1(r, new A.execute______closure0()) && t1.any$1(r, new A.execute______closure1());
     },
-    $signature: 35
+    $signature: 39
   };
   A.execute______closure0.prototype = {
     call$1(e) {
       return A._isInt(e);
     },
-    $signature: 12
+    $signature: 15
   };
   A.execute______closure1.prototype = {
     call$1(e) {
       return type$.CanceledException._is(e);
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute_____closure29.prototype = {
+  A.execute_____closure35.prototype = {
     call$1(r) {
       return J.every$1$ax(type$.List_dynamic._as(r), new A.execute______closure());
     },
-    $signature: 35
+    $signature: 39
   };
   A.execute______closure.prototype = {
     call$1(e) {
       return type$.CanceledException._is(e);
     },
-    $signature: 12
+    $signature: 15
   };
-  A.execute_____closure30.prototype = {
+  A.execute_____closure36.prototype = {
     call$1(r) {
       return J.whereType$1$0$ax(type$.List_dynamic._as(r), type$.CanceledException).get$length(0) > 1;
     },
-    $signature: 35
+    $signature: 39
   };
-  A.execute____closure23.prototype = {
+  A.execute____closure19.prototype = {
     call$0() {
-      return this.$call$body$execute____closure0();
+      return this.$call$body$execute____closure2();
     },
-    $call$body$execute____closure0() {
+    $call$body$execute____closure2() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, t6, t7, i0, task, t8, t9, _box_4, t1, t2, count, tasks, started, $status, i;
@@ -43954,14 +49139,14 @@
                 t7 = t7.__ForwardStreamController__controller_F;
                 t7 === $ && A.throwLateFieldNI("_controller");
                 t8 = A._instanceType(t7);
-                t6 = t8._eval$1("_ControllerStream<1>")._eval$1("~(1)?")._as(new A.execute_____closure14(new A._AsyncCompleter(t6, t4), $status, i));
-                t9 = t2._as(new A.execute_____closure15($status, i));
-                t7._subscribe$4(t8._eval$1("~(1)?")._as(t6), new A.execute_____closure16(_box_4, $status, i), t9, false);
+                t6 = t8._eval$1("_ControllerStream<1>")._eval$1("~(1)?")._as(new A.execute_____closure20(new A._AsyncCompleter(t6, t4), $status, i));
+                t9 = t2._as(new A.execute_____closure21($status, i));
+                t7._subscribe$4(t8._eval$1("~(1)?")._as(t6), new A.execute_____closure22(_box_4, $status, i), t9, false);
               }
               t2 = A._arrayInstanceType($status);
               t3 = t2._eval$1("bool(1)");
               t2 = t2._eval$1("WhereIterable<1>");
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure17()), t2), B.C__Empty, null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure23()), t2), B.C__Empty, null);
               $async$goto = 2;
               return A._asyncAwait(B.JSArray_methods.get$first(started), $async$call$0);
             case 2:
@@ -43974,22 +49159,22 @@
               // returning from await.
               J.cancel$1$z(t1._readLocal$0(), B.JSArray_methods.get$last(tasks));
               A.expect(B.JSArray_methods.get$last(tasks).__worker_task$_canceled != null, B.C__IsTrue, null);
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure18()), t2), new A._HasLength(A.wrapMatcher(B._OrderingMatcher_g8g)), null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure24()), t2), new A._HasLength(A.wrapMatcher(B._OrderingMatcher_g8g)), null);
               $async$goto = 4;
-              return A._asyncAwait(A.Future_wait(new A.MappedListIterable(tasks, type$.Future_void_Function_StreamTask_dynamic._as(new A.execute_____closure19()), type$.MappedListIterable_of_StreamTask_dynamic_and_Future_void), false, type$.void), $async$call$0);
+              return A._asyncAwait(A.Future_wait(new A.MappedListIterable(tasks, type$.Future_void_Function_StreamTask_dynamic._as(new A.execute_____closure25()), type$.MappedListIterable_of_StreamTask_dynamic_and_Future_void), false, type$.void), $async$call$0);
             case 4:
               // returning from await.
               t1 = type$.bool_Function_StreamTask_dynamic;
               t4 = type$.WhereIterable_StreamTask_dynamic;
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure20()), t4), B.C__Empty, null);
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure21()), t4), new A._HasLength(A.wrapMatcher(2)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure26()), t4), B.C__Empty, null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure27()), t4), new A._HasLength(A.wrapMatcher(2)), null);
               t5 = count - 2;
-              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure22()), t4), new A._HasLength(A.wrapMatcher(t5)), null);
+              A.expect(new A.WhereIterable(tasks, t1._as(new A.execute_____closure28()), t4), new A._HasLength(A.wrapMatcher(t5)), null);
               A.expect(_box_4.errors, 2, null);
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure23()), t2), B.C__Empty, null);
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure24()), t2), new A._HasLength(A.wrapMatcher(1)), null);
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure25()), t2), new A._HasLength(A.wrapMatcher(1)), null);
-              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure26()), t2), new A._HasLength(A.wrapMatcher(t5)), null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure29()), t2), B.C__Empty, null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure30()), t2), new A._HasLength(A.wrapMatcher(1)), null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure31()), t2), new A._HasLength(A.wrapMatcher(1)), null);
+              A.expect(new A.WhereIterable($status, t3._as(new A.execute_____closure32()), t2), new A._HasLength(A.wrapMatcher(t5)), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -43998,7 +49183,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure14.prototype = {
+  A.execute_____closure20.prototype = {
     call$1($event) {
       var t1;
       A._asInt($event);
@@ -44008,9 +49193,9 @@
         B.JSArray_methods.$indexSet(this.status, this.i, "started");
       }
     },
-    $signature: 54
+    $signature: 56
   };
-  A.execute_____closure16.prototype = {
+  A.execute_____closure22.prototype = {
     call$1(e) {
       var t1 = this.status,
         t2 = this.i;
@@ -44019,9 +49204,9 @@
       B.JSArray_methods.$indexSet(t1, t2, t1[t2] === "started" ? "interrupted" : "canceled");
       ++this._box_4.errors;
     },
-    $signature: 9
+    $signature: 14
   };
-  A.execute_____closure15.prototype = {
+  A.execute_____closure21.prototype = {
     call$0() {
       var t1 = this.status,
         t2 = this.i;
@@ -44030,73 +49215,73 @@
       if (t1[t2] === "started")
         B.JSArray_methods.$indexSet(t1, t2, "completed");
     },
-    $signature: 1
-  };
-  A.execute_____closure17.prototype = {
-    call$1(s) {
-      return A._asString(s) === "started";
-    },
-    $signature: 3
-  };
-  A.execute_____closure18.prototype = {
-    call$1(s) {
-      return A._asString(s) === "started";
-    },
-    $signature: 3
-  };
-  A.execute_____closure19.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t)._done.future;
-    },
-    $signature: 82
-  };
-  A.execute_____closure20.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).get$isRunning();
-    },
-    $signature: 30
-  };
-  A.execute_____closure21.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).__worker_task$_canceled != null;
-    },
-    $signature: 30
-  };
-  A.execute_____closure22.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).get$isFinished();
-    },
-    $signature: 30
+    $signature: 2
   };
   A.execute_____closure23.prototype = {
     call$1(s) {
       return A._asString(s) === "started";
     },
-    $signature: 3
+    $signature: 6
   };
   A.execute_____closure24.prototype = {
     call$1(s) {
-      return A._asString(s) === "interrupted";
+      return A._asString(s) === "started";
     },
-    $signature: 3
+    $signature: 6
   };
   A.execute_____closure25.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t)._done.future;
+    },
+    $signature: 83
+  };
+  A.execute_____closure26.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).get$isRunning();
+    },
+    $signature: 31
+  };
+  A.execute_____closure27.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).__worker_task$_canceled != null;
+    },
+    $signature: 31
+  };
+  A.execute_____closure28.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).get$isFinished();
+    },
+    $signature: 31
+  };
+  A.execute_____closure29.prototype = {
+    call$1(s) {
+      return A._asString(s) === "started";
+    },
+    $signature: 6
+  };
+  A.execute_____closure30.prototype = {
+    call$1(s) {
+      return A._asString(s) === "interrupted";
+    },
+    $signature: 6
+  };
+  A.execute_____closure31.prototype = {
     call$1(s) {
       return A._asString(s) === "canceled";
     },
-    $signature: 3
+    $signature: 6
   };
-  A.execute_____closure26.prototype = {
+  A.execute_____closure32.prototype = {
     call$1(s) {
       return A._asString(s) === "completed";
     },
-    $signature: 3
+    $signature: 6
   };
-  A.execute____closure24.prototype = {
+  A.execute____closure20.prototype = {
     call$0() {
-      return this.$call$body$execute____closure();
+      return this.$call$body$execute____closure1();
     },
-    $call$body$execute____closure() {
+    $call$body$execute____closure1() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this, t3, t4, t5, i, t6, i0, task, t7, t8, t9, _box_5, t1, t2, count, tasks, started, $status;
@@ -44129,14 +49314,14 @@
                 t7 = t7.__ForwardStreamController__controller_F;
                 t7 === $ && A.throwLateFieldNI("_controller");
                 t8 = A._instanceType(t7);
-                t6 = t8._eval$1("_ControllerStream<1>")._eval$1("~(1)?")._as(new A.execute_____closure1(new A._AsyncCompleter(t6, t4), $status, i));
-                t9 = t2._as(new A.execute_____closure2($status, i));
-                t7._subscribe$4(t8._eval$1("~(1)?")._as(t6), new A.execute_____closure3(_box_5, $status, i), t9, false);
+                t6 = t8._eval$1("_ControllerStream<1>")._eval$1("~(1)?")._as(new A.execute_____closure7(new A._AsyncCompleter(t6, t4), $status, i));
+                t9 = t2._as(new A.execute_____closure8($status, i));
+                t7._subscribe$4(t8._eval$1("~(1)?")._as(t6), new A.execute_____closure9(_box_5, $status, i), t9, false);
               }
               t1 = A._arrayInstanceType($status);
               t2 = t1._eval$1("bool(1)");
               t1 = t1._eval$1("WhereIterable<1>");
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure4()), t1), B.C__Empty, null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure10()), t1), B.C__Empty, null);
               $async$goto = 2;
               return A._asyncAwait(B.JSArray_methods.get$first(started), $async$call$0);
             case 2:
@@ -44169,22 +49354,22 @@
                 t5.addError$1(t4);
               t3.close$0(0);
               A.expect(B.JSArray_methods.get$last(tasks).__worker_task$_canceled != null, B.C__IsTrue, null);
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure5()), t1), new A._HasLength(A.wrapMatcher(B._OrderingMatcher_g8g)), null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure11()), t1), new A._HasLength(A.wrapMatcher(B._OrderingMatcher_g8g)), null);
               $async$goto = 4;
-              return A._asyncAwait(A.Future_wait(new A.MappedListIterable(tasks, type$.Future_void_Function_StreamTask_dynamic._as(new A.execute_____closure6()), type$.MappedListIterable_of_StreamTask_dynamic_and_Future_void), false, type$.void), $async$call$0);
+              return A._asyncAwait(A.Future_wait(new A.MappedListIterable(tasks, type$.Future_void_Function_StreamTask_dynamic._as(new A.execute_____closure12()), type$.MappedListIterable_of_StreamTask_dynamic_and_Future_void), false, type$.void), $async$call$0);
             case 4:
               // returning from await.
               t3 = type$.bool_Function_StreamTask_dynamic;
               t4 = type$.WhereIterable_StreamTask_dynamic;
-              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure7()), t4), B.C__Empty, null);
-              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure8()), t4), new A._HasLength(A.wrapMatcher(2)), null);
+              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure13()), t4), B.C__Empty, null);
+              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure14()), t4), new A._HasLength(A.wrapMatcher(2)), null);
               t5 = count - 2;
-              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure9()), t4), new A._HasLength(A.wrapMatcher(t5)), null);
+              A.expect(new A.WhereIterable(tasks, t3._as(new A.execute_____closure15()), t4), new A._HasLength(A.wrapMatcher(t5)), null);
               A.expect(_box_5.errors, 2, null);
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure10()), t1), B.C__Empty, null);
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure11()), t1), new A._HasLength(A.wrapMatcher(1)), null);
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure12()), t1), new A._HasLength(A.wrapMatcher(1)), null);
-              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure13()), t1), new A._HasLength(A.wrapMatcher(t5)), null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure16()), t1), B.C__Empty, null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure17()), t1), new A._HasLength(A.wrapMatcher(1)), null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure18()), t1), new A._HasLength(A.wrapMatcher(1)), null);
+              A.expect(new A.WhereIterable($status, t2._as(new A.execute_____closure19()), t1), new A._HasLength(A.wrapMatcher(t5)), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
@@ -44193,7 +49378,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure1.prototype = {
+  A.execute_____closure7.prototype = {
     call$1($event) {
       var t1;
       A._asInt($event);
@@ -44203,9 +49388,9 @@
         B.JSArray_methods.$indexSet(this.status, this.i, "started");
       }
     },
-    $signature: 54
+    $signature: 56
   };
-  A.execute_____closure3.prototype = {
+  A.execute_____closure9.prototype = {
     call$1(e) {
       var t1 = this.status,
         t2 = this.i;
@@ -44214,9 +49399,9 @@
       B.JSArray_methods.$indexSet(t1, t2, t1[t2] === "started" ? "interrupted" : "canceled");
       ++this._box_5.errors;
     },
-    $signature: 9
+    $signature: 14
   };
-  A.execute_____closure2.prototype = {
+  A.execute_____closure8.prototype = {
     call$0() {
       var t1 = this.status,
         t2 = this.i;
@@ -44225,67 +49410,67 @@
       if (t1[t2] === "started")
         B.JSArray_methods.$indexSet(t1, t2, "completed");
     },
-    $signature: 1
-  };
-  A.execute_____closure4.prototype = {
-    call$1(s) {
-      return A._asString(s) === "started";
-    },
-    $signature: 3
-  };
-  A.execute_____closure5.prototype = {
-    call$1(s) {
-      return A._asString(s) === "started";
-    },
-    $signature: 3
-  };
-  A.execute_____closure6.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t)._done.future;
-    },
-    $signature: 82
-  };
-  A.execute_____closure7.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).get$isRunning();
-    },
-    $signature: 30
-  };
-  A.execute_____closure8.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).__worker_task$_canceled != null;
-    },
-    $signature: 30
-  };
-  A.execute_____closure9.prototype = {
-    call$1(t) {
-      return type$.StreamTask_dynamic._as(t).get$isFinished();
-    },
-    $signature: 30
+    $signature: 2
   };
   A.execute_____closure10.prototype = {
     call$1(s) {
       return A._asString(s) === "started";
     },
-    $signature: 3
+    $signature: 6
   };
   A.execute_____closure11.prototype = {
     call$1(s) {
-      return A._asString(s) === "interrupted";
+      return A._asString(s) === "started";
     },
-    $signature: 3
+    $signature: 6
   };
   A.execute_____closure12.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t)._done.future;
+    },
+    $signature: 83
+  };
+  A.execute_____closure13.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).get$isRunning();
+    },
+    $signature: 31
+  };
+  A.execute_____closure14.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).__worker_task$_canceled != null;
+    },
+    $signature: 31
+  };
+  A.execute_____closure15.prototype = {
+    call$1(t) {
+      return type$.StreamTask_dynamic._as(t).get$isFinished();
+    },
+    $signature: 31
+  };
+  A.execute_____closure16.prototype = {
+    call$1(s) {
+      return A._asString(s) === "started";
+    },
+    $signature: 6
+  };
+  A.execute_____closure17.prototype = {
+    call$1(s) {
+      return A._asString(s) === "interrupted";
+    },
+    $signature: 6
+  };
+  A.execute_____closure18.prototype = {
     call$1(s) {
       return A._asString(s) === "canceled";
     },
-    $signature: 3
+    $signature: 6
   };
-  A.execute_____closure13.prototype = {
+  A.execute_____closure19.prototype = {
     call$1(s) {
       return A._asString(s) === "completed";
     },
-    $signature: 3
+    $signature: 6
   };
   A.execute__closure_testFiniteCancelation.prototype = {
     $call$body$execute__closure_testFiniteCancelation($N, token) {
@@ -44381,7 +49566,7 @@
     call$2($N, token) {
       return this.$call$body$execute__closure_testFiniteCancelation($N, token);
     },
-    $signature: 160
+    $signature: 159
   };
   A.execute__closure_testInfiniteCancelation.prototype = {
     $call$body$execute__closure_testInfiniteCancelation(token) {
@@ -44477,7 +49662,7 @@
     call$1(token) {
       return this.$call$body$execute__closure_testInfiniteCancelation(token);
     },
-    $signature: 161
+    $signature: 160
   };
   A.execute__closure_testFinitePoolCancelation.prototype = {
     $call$body$execute__closure_testFinitePoolCancelation($N, count, token) {
@@ -44526,20 +49711,20 @@
     call$3($N, count, token) {
       return this.$call$body$execute__closure_testFinitePoolCancelation($N, count, token);
     },
-    $signature: 244
+    $signature: 243
   };
   A.execute___testFinitePoolCancelation_closure.prototype = {
     call$1(_) {
       type$.List_int._as(_);
       return this._box_6.success++;
     },
-    $signature: 84
+    $signature: 85
   };
   A.execute___testFinitePoolCancelation_closure0.prototype = {
     call$1(_) {
       return this._box_6.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
   A.execute__closure_testInfinitePoolCancelation.prototype = {
     $call$body$execute__closure_testInfinitePoolCancelation(count, token) {
@@ -44588,34 +49773,34 @@
     call$2(count, token) {
       return this.$call$body$execute__closure_testInfinitePoolCancelation(count, token);
     },
-    $signature: 164
+    $signature: 163
   };
   A.execute___testInfinitePoolCancelation_closure.prototype = {
     call$1(_) {
       type$.List_int._as(_);
       return this._box_7.success++;
     },
-    $signature: 84
+    $signature: 85
   };
   A.execute___testInfinitePoolCancelation_closure0.prototype = {
     call$1(_) {
       return this._box_7.errors++;
     },
-    $signature: 6
+    $signature: 21
   };
   A.execute___closure4.prototype = {
     call$0() {
       var t2, _this = this,
         t1 = _this.tc;
-      t1.test$2("- finite() worker", new A.execute____closure15(_this.testFiniteCancelation));
-      t1.test$2("- infinite() worker", new A.execute____closure16(_this.testInfiniteCancelation));
+      t1.test$2("- finite() worker", new A.execute____closure11(_this.testFiniteCancelation));
+      t1.test$2("- infinite() worker", new A.execute____closure12(_this.testInfiniteCancelation));
       t2 = _this.pool;
-      t1.test$2("- finite() pool", new A.execute____closure17(t2, _this.testFinitePoolCancelation));
-      t1.test$2("- infinite() pool", new A.execute____closure18(t2, _this.testInfinitePoolCancelation));
+      t1.test$2("- finite() pool", new A.execute____closure13(t2, _this.testFinitePoolCancelation));
+      t1.test$2("- infinite() pool", new A.execute____closure14(t2, _this.testInfinitePoolCancelation));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure15.prototype = {
+  A.execute____closure11.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44648,7 +49833,7 @@
     },
     $signature: 0
   };
-  A.execute____closure16.prototype = {
+  A.execute____closure12.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44681,7 +49866,7 @@
     },
     $signature: 0
   };
-  A.execute____closure17.prototype = {
+  A.execute____closure13.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44717,7 +49902,7 @@
     },
     $signature: 0
   };
-  A.execute____closure18.prototype = {
+  A.execute____closure14.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44755,15 +49940,15 @@
     call$0() {
       var t2, _this = this,
         t1 = _this.tc;
-      t1.test$2("- finite() worker", new A.execute____closure11(_this.testFiniteCancelation));
-      t1.test$2("- infinite() worker", new A.execute____closure12(_this.testInfiniteCancelation));
+      t1.test$2("- finite() worker", new A.execute____closure7(_this.testFiniteCancelation));
+      t1.test$2("- infinite() worker", new A.execute____closure8(_this.testInfiniteCancelation));
       t2 = _this.pool;
-      t1.test$2("- finite() pool", new A.execute____closure13(t2, _this.testFinitePoolCancelation));
-      t1.test$2("- infinite() pool", new A.execute____closure14(t2, _this.testInfinitePoolCancelation));
+      t1.test$2("- finite() pool", new A.execute____closure9(t2, _this.testFinitePoolCancelation));
+      t1.test$2("- infinite() pool", new A.execute____closure10(t2, _this.testInfinitePoolCancelation));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure11.prototype = {
+  A.execute____closure7.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44795,7 +49980,7 @@
     },
     $signature: 0
   };
-  A.execute____closure12.prototype = {
+  A.execute____closure8.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44827,7 +50012,7 @@
     },
     $signature: 0
   };
-  A.execute____closure13.prototype = {
+  A.execute____closure9.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44862,7 +50047,7 @@
     },
     $signature: 0
   };
-  A.execute____closure14.prototype = {
+  A.execute____closure10.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44899,15 +50084,15 @@
     call$0() {
       var t2, _this = this,
         t1 = _this.tc;
-      t1.test$2("- finite() worker", new A.execute____closure7(_this.testFiniteCancelation));
-      t1.test$2("- infinite() worker", new A.execute____closure8(_this.testInfiniteCancelation));
+      t1.test$2("- finite() worker", new A.execute____closure3(_this.testFiniteCancelation));
+      t1.test$2("- infinite() worker", new A.execute____closure4(_this.testInfiniteCancelation));
       t2 = _this.pool;
-      t1.test$2("- finite() pool", new A.execute____closure9(t2, _this.testFinitePoolCancelation));
-      t1.test$2("- infinite() pool", new A.execute____closure10(t2, _this.testInfinitePoolCancelation));
+      t1.test$2("- finite() pool", new A.execute____closure5(t2, _this.testFinitePoolCancelation));
+      t1.test$2("- infinite() pool", new A.execute____closure6(t2, _this.testInfinitePoolCancelation));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure7.prototype = {
+  A.execute____closure3.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -44989,7 +50174,7 @@
     },
     $signature: 0
   };
-  A.execute____closure8.prototype = {
+  A.execute____closure4.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45071,7 +50256,7 @@
     },
     $signature: 0
   };
-  A.execute____closure9.prototype = {
+  A.execute____closure5.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45158,7 +50343,7 @@
     },
     $signature: 0
   };
-  A.execute____closure10.prototype = {
+  A.execute____closure6.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45242,11 +50427,11 @@
   A.execute_closure2.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Marshaler", new A.execute__closure5(t1));
+      t1.group$2("- Marshaler", new A.execute__closure4(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure5.prototype = {
+  A.execute__closure4.prototype = {
     call$0() {
       var t2,
         testWorker = A._Cell$named("testWorker"),
@@ -45259,7 +50444,7 @@
       t1.test$2('- unmarshaled "non-native" output types work in VM, fail on Web', new A.execute___closure11(t2, t1));
       t1.test$2('- marshaled "non-native" types always work', new A.execute___closure12(t2));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure7.prototype = {
     call$0() {
@@ -45291,20 +50476,19 @@
     call$0() {
       J.stop$0$x(this.testWorker._readLocal$0());
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute__closure_testSum.prototype = {
     call$2$marshalIn$marshalOut(marshalIn, marshalOut) {
       var t1 = this.testWorker._readLocal$0(),
         t2 = $.$get$_BigIntImpl_one(),
         t3 = $.$get$_BigIntImpl_two(),
-        bigIntMarshaler = new A.BigIntMarshaler(),
-        t4 = type$.BigInt,
-        marshal = marshalIn ? A.SquadronMarshalerExt_marshaler(bigIntMarshaler, t4, type$.String) : $.$get$Squadron_converter().v$1$0(t4);
+        marshal = marshalIn ? $.$get$TestWorker_bigIntMarshaler() : $.$get$Squadron_converter().value$1$0(0, type$.BigInt);
       t1 = J.send$4$args$inspectRequest$inspectResponse$z(t1, 51, [marshal.call$1(t2), marshal.call$1(t3), marshalIn, marshalOut], true, true);
-      return t1.then$1$1(marshalOut ? A.SquadronMarshalerExt_unmarshaler(bigIntMarshaler, t4, type$.String) : $.$get$Squadron_converter().v$1$0(t4), t4);
+      t2 = marshalOut ? $.$get$TestWorker_bigIntUnmarshaler() : $.$get$Squadron_converter().value$1$0(0, type$.BigInt);
+      return t1.then$1$1(t2, type$.BigInt);
     },
-    $signature: 165
+    $signature: 164
   };
   A.execute___closure9.prototype = {
     call$0() {
@@ -45527,11 +50711,11 @@
   A.execute_closure7.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- Worker Pool", new A.execute__closure10(t1));
+      t1.group$2("- Worker Pool", new A.execute__closure9(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure10.prototype = {
+  A.execute__closure9.prototype = {
     call$0() {
       var t1 = this.tc;
       t1.test$2("- prime worker pool with cache", new A.execute___closure32(t1));
@@ -45544,7 +50728,7 @@
       t1.test$2("- pool termination does not prevent processing of pending tasks", new A.execute___closure39(t1));
       t1.group$2("- streaming - with multiple errors", new A.execute___closure40(t1));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure32.prototype = {
     call$0() {
@@ -45560,7 +50744,7 @@
               // Function start
               t1 = $async$self.tc;
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$(t1), new A.execute____closure73(t1), type$.CacheWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.CacheWorker$(t1), new A.execute____closure61(t1), type$.CacheWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45571,11 +50755,11 @@
     },
     $signature: 0
   };
-  A.execute____closure73.prototype = {
+  A.execute____closure61.prototype = {
     call$1(cache) {
-      return this.$call$body$execute____closure11(type$.CacheWorker._as(cache));
+      return this.$call$body$execute____closure13(type$.CacheWorker._as(cache));
     },
-    $call$body$execute____closure11(cache) {
+    $call$body$execute____closure13(cache) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$self = this;
@@ -45591,7 +50775,7 @@
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, cache, B.ConcurrencySettings_2_2_2), new A.execute_____closure141(), type$.PrimeWorkerPool, type$.Null), $async$call$1);
+              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, cache, B.ConcurrencySettings_2_2_2), new A.execute_____closure78(), type$.PrimeWorkerPool, type$.Null), $async$call$1);
             case 3:
               // returning from await.
               // implicit return
@@ -45600,9 +50784,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 52
+    $signature: 62
   };
-  A.execute_____closure141.prototype = {
+  A.execute_____closure78.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure29(type$.PrimeWorkerPool._as(p));
     },
@@ -45624,10 +50808,14 @@
               completedTasks = A._setArrayType([], type$.JSArray_int);
               tasks = A._setArrayType([], type$.JSArray_Future_dynamic);
               for (t3 = type$.dynamic, i = 0; i <= count; ++i)
-                B.JSArray_methods.add$1(tasks, p.isPrime$1(i).then$1$1(new A.execute______closure89(completedTasks, i), t3));
+                B.JSArray_methods.add$1(tasks, p.isPrime$1(i).then$1$1(new A.execute______closure16(completedTasks, i), t3));
               $async$goto = 2;
               return A._asyncAwait(A.Future_wait(tasks, false, t3), $async$call$1);
             case 2:
+              // returning from await.
+              $async$goto = 3;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 3:
               // returning from await.
               A.expect(completedTasks, new A._HasLength(A.wrapMatcher(tasks.length)), null);
               t3 = p._workers;
@@ -45635,28 +50823,27 @@
               t4._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure());
               t4 = t4._eval$1("MappedListIterable<1,WorkerStat>");
               A.expect(new A.MappedListIterable(t3, A._pool_worker_PoolWorker_getStats$closure(), t4), new A._HasLength(A.wrapMatcher(t2)), null);
-              p.get$maxWorkload();
-              A.expect(new A.MappedListIterable(new A.MappedListIterable(t3, A._pool_worker_PoolWorker_getStats$closure(), t4), t4._eval$1("int(ListIterable.E)")._as(new A.execute______closure90()), t4._eval$1("MappedListIterable<ListIterable.E,int>")), new A._EveryElement(A.wrapMatcher(new A._OrderingMatcher(t1, true, true, false, "a value less than or equal to", true))), null);
+              A.expect(new A.MappedListIterable(new A.MappedListIterable(t3, A._pool_worker_PoolWorker_getStats$closure(), t4), t4._eval$1("int(ListIterable.E)")._as(new A.execute______closure17()), t4._eval$1("MappedListIterable<ListIterable.E,int>")), new A._EveryElement(A.wrapMatcher(new A._OrderingMatcher(t1, true, true, false, "a value less than or equal to", true))), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 48
+    $signature: 53
   };
-  A.execute______closure89.prototype = {
+  A.execute______closure16.prototype = {
     call$1(_) {
       A._asBool(_);
       return B.JSArray_methods.add$1(this.completedTasks, this.i);
     },
-    $signature: 43
+    $signature: 46
   };
-  A.execute______closure90.prototype = {
+  A.execute______closure17.prototype = {
     call$1(s) {
       return type$.WorkerStat._as(s).maxWorkload;
     },
-    $signature: 167
+    $signature: 166
   };
   A.execute___closure33.prototype = {
     call$0() {
@@ -45671,7 +50858,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_5_3), new A.execute____closure72(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_5_3), new A.execute____closure60(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45682,11 +50869,11 @@
     },
     $signature: 0
   };
-  A.execute____closure72.prototype = {
+  A.execute____closure60.prototype = {
     call$1(p) {
-      return this.$call$body$execute____closure10(type$.TestWorkerPool._as(p));
+      return this.$call$body$execute____closure12(type$.TestWorkerPool._as(p));
     },
-    $call$body$execute____closure10(p) {
+    $call$body$execute____closure12(p) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$handler = 1, $async$currentError, $async$next = [], tasks, timer, i, t4, _box_0, t1, t2, count, t3;
@@ -45721,7 +50908,7 @@
               // returning from await.
               A.expect(t3.length, t2, null);
               _box_0.stopped = 0;
-              timer = A.Timer_Timer$periodic(new A.Duration(40000), new A.execute_____closure140(_box_0, p));
+              timer = A.Timer_Timer$periodic(new A.Duration(40000), new A.execute_____closure77(_box_0, p));
               $async$handler = 4;
               $async$goto = 7;
               return A._asyncAwait(A.Future_Future$delayed(new A.Duration(160000), null, t4), $async$call$1);
@@ -45731,6 +50918,10 @@
               $async$goto = 8;
               return A._asyncAwait(A.Future_wait(tasks, false, t4), $async$call$1);
             case 8:
+              // returning from await.
+              $async$goto = 9;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 9:
               // returning from await.
               A.expect(_box_0.stopped, B._OrderingMatcher_g8g, null);
               A.expect(t3.length, t1, null);
@@ -45759,33 +50950,33 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute_____closure140.prototype = {
+  A.execute_____closure77.prototype = {
     call$1(timer) {
       var t1;
       type$.Timer._as(timer);
       t1 = this._box_0;
-      t1.stopped = t1.stopped + this.p.stop$1(0, new A.execute______closure88());
+      t1.stopped = t1.stopped + this.p.stop$1(0, new A.execute______closure15());
     },
-    $signature: 47
+    $signature: 49
   };
-  A.execute______closure88.prototype = {
+  A.execute______closure15.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).get$idleTime()._duration > 80000;
     },
-    $signature: 169
+    $signature: 168
   };
   A.execute___closure34.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- failed init", new A.execute____closure69(t1));
-      t1.test$3$skip("- missing command", new A.execute____closure70(t1), true);
-      t1.test$2("- invalid command ID", new A.execute____closure71(t1));
+      t1.test$2("- failed init", new A.execute____closure57(t1));
+      t1.test$3$skip("- missing command", new A.execute____closure58(t1), true);
+      t1.test$2("- invalid command ID", new A.execute____closure59(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure69.prototype = {
+  A.execute____closure57.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45798,7 +50989,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$throws($async$self.tc), new A.execute_____closure139(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$throws($async$self.tc), new A.execute_____closure76(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45809,7 +51000,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure139.prototype = {
+  A.execute_____closure76.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure28(type$.TestWorkerPool._as(p));
     },
@@ -45838,9 +51029,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure70.prototype = {
+  A.execute____closure58.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45853,7 +51044,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$missingStartRequest($async$self.tc), new A.execute_____closure138(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$missingStartRequest($async$self.tc), new A.execute_____closure75(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45864,7 +51055,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure138.prototype = {
+  A.execute_____closure75.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure27(type$.TestWorkerPool._as(p));
     },
@@ -45893,9 +51084,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure71.prototype = {
+  A.execute____closure59.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45908,7 +51099,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$invalid($async$self.tc), new A.execute_____closure137(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$invalid($async$self.tc), new A.execute_____closure74(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45919,7 +51110,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure137.prototype = {
+  A.execute_____closure74.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure26(type$.TestWorkerPool._as(p));
     },
@@ -45948,21 +51139,21 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute___closure35.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- Exception", new A.execute____closure63(t1));
-      t1.test$2("- WorkerException", new A.execute____closure64(t1));
-      t1.test$2("- TaskTimeOutException", new A.execute____closure65(t1));
-      t1.test$2("- CanceledException", new A.execute____closure66(t1));
-      t1.test$2("- CustomException (unregistered)", new A.execute____closure67(t1));
-      t1.test$2("- CustomException (registered)", new A.execute____closure68(t1));
+      t1.test$2("- Exception", new A.execute____closure51(t1));
+      t1.test$2("- WorkerException", new A.execute____closure52(t1));
+      t1.test$2("- TaskTimeOutException", new A.execute____closure53(t1));
+      t1.test$2("- CanceledException", new A.execute____closure54(t1));
+      t1.test$2("- CustomException (unregistered)", new A.execute____closure55(t1));
+      t1.test$2("- CustomException (registered)", new A.execute____closure56(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure63.prototype = {
+  A.execute____closure51.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -45975,7 +51166,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure136(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure73(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -45986,7 +51177,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure136.prototype = {
+  A.execute_____closure73.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure25(type$.TestWorkerPool._as(p));
     },
@@ -46040,7 +51231,7 @@
               // after finally
               t1 = p._workers;
               t2 = A._arrayInstanceType(t1);
-              A.expect(new A.MappedListIterable(t1, t2._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure()), t2._eval$1("MappedListIterable<1,WorkerStat>")).fold$1$2(0, 0, new A.execute______closure87(), type$.int), 1, null);
+              A.expect(new A.MappedListIterable(t1, t2._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure()), t2._eval$1("MappedListIterable<1,WorkerStat>")).fold$1$2(0, 0, new A.execute______closure14(), type$.int), 1, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
             case 1:
@@ -46050,15 +51241,15 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute______closure87.prototype = {
+  A.execute______closure14.prototype = {
     call$2(t, s) {
       return A._asInt(t) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 50
+    $signature: 88
   };
-  A.execute____closure64.prototype = {
+  A.execute____closure52.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46071,7 +51262,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure135(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure72(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46082,7 +51273,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure135.prototype = {
+  A.execute_____closure72.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure24(type$.TestWorkerPool._as(p));
     },
@@ -46136,7 +51327,7 @@
               // after finally
               t1 = p._workers;
               t2 = A._arrayInstanceType(t1);
-              A.expect(new A.MappedListIterable(t1, t2._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure()), t2._eval$1("MappedListIterable<1,WorkerStat>")).fold$1$2(0, 0, new A.execute______closure86(), type$.int), 1, null);
+              A.expect(new A.MappedListIterable(t1, t2._eval$1("WorkerStat(1)")._as(A._pool_worker_PoolWorker_getStats$closure()), t2._eval$1("MappedListIterable<1,WorkerStat>")).fold$1$2(0, 0, new A.execute______closure13(), type$.int), 1, null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
             case 1:
@@ -46146,15 +51337,15 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute______closure86.prototype = {
+  A.execute______closure13.prototype = {
     call$2(t, s) {
       return A._asInt(t) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 50
+    $signature: 88
   };
-  A.execute____closure65.prototype = {
+  A.execute____closure53.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46167,7 +51358,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure134(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure71(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46178,7 +51369,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure134.prototype = {
+  A.execute_____closure71.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure23(type$.TestWorkerPool._as(p));
     },
@@ -46236,9 +51427,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure66.prototype = {
+  A.execute____closure54.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46251,7 +51442,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure133(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure70(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46262,7 +51453,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure133.prototype = {
+  A.execute_____closure70.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure22(type$.TestWorkerPool._as(p));
     },
@@ -46320,9 +51511,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure67.prototype = {
+  A.execute____closure55.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46335,7 +51526,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure132(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure69(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46346,7 +51537,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure132.prototype = {
+  A.execute_____closure69.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure21(type$.TestWorkerPool._as(p));
     },
@@ -46414,9 +51605,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure68.prototype = {
+  A.execute____closure56.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46429,7 +51620,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure131(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_2_2_2), new A.execute_____closure68(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46440,7 +51631,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure131.prototype = {
+  A.execute_____closure68.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure20(type$.TestWorkerPool._as(p));
     },
@@ -46509,17 +51700,17 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute___closure36.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- value", new A.execute____closure61(t1));
-      t1.test$2("- streaming", new A.execute____closure62(t1));
+      t1.test$2("- value", new A.execute____closure49(t1));
+      t1.test$2("- streaming", new A.execute____closure50(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure61.prototype = {
+  A.execute____closure49.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46532,7 +51723,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, null, B.ConcurrencySettings_1_3_1), new A.execute_____closure130(), type$.PrimeWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, null, B.ConcurrencySettings_1_3_1), new A.execute_____closure67(), type$.PrimeWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46543,7 +51734,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure130.prototype = {
+  A.execute_____closure67.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure19(type$.PrimeWorkerPool._as(p));
     },
@@ -46593,6 +51784,10 @@
               return A._asyncAwait(A.Future_wait(tasks, false, type$.dynamic), $async$call$1);
             case 6:
               // returning from await.
+              $async$goto = 7;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 7:
+              // returning from await.
               end = A.PerfCounterSnapshot$(counter);
               A.expect(end.totalCount, new A._OrderingMatcher(t1, true, false, true, "a value greater than or equal to", true), null);
               A.expect(end.totalErrors, B._OrderingMatcher_Kvb, null);
@@ -46603,9 +51798,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 48
+    $signature: 53
   };
-  A.execute____closure62.prototype = {
+  A.execute____closure50.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -46618,7 +51813,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, null, B.ConcurrencySettings_1_3_1), new A.execute_____closure129(), type$.PrimeWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.PrimeWorkerPool$($async$self.tc, null, B.ConcurrencySettings_1_3_1), new A.execute_____closure66(), type$.PrimeWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46629,7 +51824,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure129.prototype = {
+  A.execute_____closure66.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure18(type$.PrimeWorkerPool._as(p));
     },
@@ -46681,6 +51876,10 @@
               return A._asyncAwait(A.Future_wait(tasks, false, t1), $async$call$1);
             case 6:
               // returning from await.
+              $async$goto = 7;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 7:
+              // returning from await.
               end = A.PerfCounterSnapshot$(counter);
               A.expect(end.totalCount, new A._OrderingMatcher(t2, true, false, true, "a value greater than or equal to", true), null);
               A.expect(end.totalErrors, B._OrderingMatcher_Kvb, null);
@@ -46691,7 +51890,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 48
+    $signature: 53
   };
   A.execute___closure37.prototype = {
     call$0() {
@@ -46706,7 +51905,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_0_1_50), new A.execute____closure60(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_0_1_50), new A.execute____closure48(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46717,11 +51916,11 @@
     },
     $signature: 0
   };
-  A.execute____closure60.prototype = {
+  A.execute____closure48.prototype = {
     call$1(p) {
-      return this.$call$body$execute____closure9(type$.TestWorkerPool._as(p));
+      return this.$call$body$execute____closure11(type$.TestWorkerPool._as(p));
     },
-    $call$body$execute____closure9(p) {
+    $call$body$execute____closure11(p) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$handler = 1, $async$currentError, n, ex, t1, exception, $async$exception, $async$temp1;
@@ -46785,7 +51984,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute___closure38.prototype = {
     call$0() {
@@ -46800,7 +51999,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_0_2_50), new A.execute____closure59(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_0_2_50), new A.execute____closure47(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46811,11 +52010,11 @@
     },
     $signature: 0
   };
-  A.execute____closure59.prototype = {
+  A.execute____closure47.prototype = {
     call$1(p) {
-      return this.$call$body$execute____closure8(type$.TestWorkerPool._as(p));
+      return this.$call$body$execute____closure10(type$.TestWorkerPool._as(p));
     },
-    $call$body$execute____closure8(p) {
+    $call$body$execute____closure10(p) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         $async$handler = 1, $async$currentError, n, ex, exception, t1, $async$exception;
@@ -46899,7 +52098,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute___closure39.prototype = {
     call$0() {
@@ -46914,7 +52113,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_1_3_1), new A.execute____closure58(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_1_3_1), new A.execute____closure46(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -46925,11 +52124,11 @@
     },
     $signature: 0
   };
-  A.execute____closure58.prototype = {
+  A.execute____closure46.prototype = {
     call$1(p) {
-      return this.$call$body$execute____closure7(type$.TestWorkerPool._as(p));
+      return this.$call$body$execute____closure9(type$.TestWorkerPool._as(p));
     },
-    $call$body$execute____closure7(p) {
+    $call$body$execute____closure9(p) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
         t3, i, t1, t2, count, digits, tasks;
@@ -46960,12 +52159,16 @@
               return A._asyncAwait(A.Future_wait(tasks, false, t3), $async$call$1);
             case 3:
               // returning from await.
-              A.expect(p._worker_pool$_stopped, B.C__IsTrue, null);
-              A.expect(t1.get$length(0), B._OrderingMatcher_Kvb, null);
-              A.expect(digits, new A._HasLength(A.wrapMatcher(count)), null);
               $async$goto = 4;
               return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
             case 4:
+              // returning from await.
+              A.expect(p._worker_pool$_stopped, B.C__IsTrue, null);
+              A.expect(t1.get$length(0), B._OrderingMatcher_Kvb, null);
+              A.expect(digits, new A._HasLength(A.wrapMatcher(count)), null);
+              $async$goto = 5;
+              return A._asyncAwait(A.pumpEventQueue(20), $async$call$1);
+            case 5:
               // returning from await.
               A.expect(p._workers.length, B._OrderingMatcher_Kvb, null);
               // implicit return
@@ -46974,22 +52177,22 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute___closure40.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- cancelOnError: false", new A.execute____closure51(t1));
-      t1.test$2("- cancelOnError: true", new A.execute____closure52(t1));
-      t1.test$2("- await for", new A.execute____closure53(t1));
-      t1.test$2("- throwing in await for", new A.execute____closure54(t1));
-      t1.test$2("- pause/resume", new A.execute____closure55(t1));
-      t1.test$2("- pause/resume/cancel - using a StreamTask", new A.execute____closure56(t1));
-      t1.test$2("- immediate cancelation", new A.execute____closure57(t1));
+      t1.test$2("- cancelOnError: false", new A.execute____closure39(t1));
+      t1.test$2("- cancelOnError: true", new A.execute____closure40(t1));
+      t1.test$2("- await for", new A.execute____closure41(t1));
+      t1.test$2("- throwing in await for", new A.execute____closure42(t1));
+      t1.test$2("- pause/resume", new A.execute____closure43(t1));
+      t1.test$2("- pause/resume/cancel - using a StreamTask", new A.execute____closure44(t1));
+      t1.test$2("- immediate cancelation", new A.execute____closure45(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure51.prototype = {
+  A.execute____closure39.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47002,7 +52205,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure128(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure65(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47013,7 +52216,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure128.prototype = {
+  A.execute_____closure65.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure17(type$.TestWorkerPool._as(p));
     },
@@ -47034,7 +52237,7 @@
               done = new A._AsyncCompleter(t1, type$._AsyncCompleter_dynamic);
               numbers = A._setArrayType([], type$.JSArray_int);
               errors = A._setArrayType([], type$.JSArray_SquadronException);
-              p.infiniteWithErrors$1(token).listen$4$cancelOnError$onDone$onError(type$.void_Function_int._as(B.JSArray_methods.get$add(numbers)), false, type$.void_Function_$opt_dynamic._as(done.get$complete(done)), new A.execute______closure82(errors, token));
+              p.infiniteWithErrors$1(token).listen$4$cancelOnError$onDone$onError(type$.void_Function_int._as(B.JSArray_methods.get$add(numbers)), false, type$.void_Function_$opt_dynamic._as(done.get$complete(done)), new A.execute______closure9(errors, token));
               $async$goto = 2;
               return A._asyncAwait(t1, $async$call$1);
             case 2:
@@ -47042,47 +52245,47 @@
               A.expect(numbers, new A._HasLength(A.wrapMatcher(new A._OrderingMatcher(6, false, false, true, "a value greater than", true))), null);
               A.expect(errors, new A._HasLength(A.wrapMatcher(new A._OrderingMatcher(3, false, false, true, "a value greater than", true))), null);
               t1 = type$.MappedListIterable_SquadronException_String;
-              messages = new A.MappedListIterable(errors, type$.String_Function_SquadronException._as(new A.execute______closure83()), t1);
+              messages = new A.MappedListIterable(errors, type$.String_Function_SquadronException._as(new A.execute______closure10()), t1);
               t1 = t1._eval$1("bool(ListIterable.E)");
-              A.expect(messages.super$Iterable$where(0, t1._as(new A.execute______closure84())), new A._HasLength(A.wrapMatcher(3)), null);
-              A.expect(messages.super$Iterable$where(0, t1._as(new A.execute______closure85())), new A._HasLength(A.wrapMatcher(1)), null);
+              A.expect(messages.super$Iterable$where(0, t1._as(new A.execute______closure11())), new A._HasLength(A.wrapMatcher(3)), null);
+              A.expect(messages.super$Iterable$where(0, t1._as(new A.execute______closure12())), new A._HasLength(A.wrapMatcher(1)), null);
               // implicit return
               return A._asyncReturn(null, $async$completer);
           }
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute______closure82.prototype = {
+  A.execute______closure9.prototype = {
     call$1(ex) {
       var t1 = this.errors;
       B.JSArray_methods.add$1(t1, type$.SquadronException._as(ex));
       if (t1.length >= 3)
         this.token.cancel$1(0, new A.CanceledException("forced"));
     },
-    $signature: 9
+    $signature: 14
   };
-  A.execute______closure83.prototype = {
+  A.execute______closure10.prototype = {
     call$1(e) {
       type$.SquadronException._as(e);
       return e.get$message(e).toLowerCase();
     },
     $signature: 170
   };
-  A.execute______closure84.prototype = {
+  A.execute______closure11.prototype = {
     call$1(m) {
       return B.JSString_methods.contains$1(A._asString(m), "error #");
     },
-    $signature: 3
+    $signature: 6
   };
-  A.execute______closure85.prototype = {
+  A.execute______closure12.prototype = {
     call$1(m) {
       return B.JSString_methods.contains$1(A._asString(m), "forced");
     },
-    $signature: 3
+    $signature: 6
   };
-  A.execute____closure52.prototype = {
+  A.execute____closure40.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47095,7 +52298,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure127(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure64(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47106,7 +52309,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure127.prototype = {
+  A.execute_____closure64.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure16(type$.TestWorkerPool._as(p));
     },
@@ -47168,9 +52371,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure53.prototype = {
+  A.execute____closure41.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47183,7 +52386,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure126(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure63(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47194,7 +52397,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure126.prototype = {
+  A.execute_____closure63.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure15(type$.TestWorkerPool._as(p));
     },
@@ -47291,9 +52494,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure54.prototype = {
+  A.execute____closure42.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47306,7 +52509,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure125(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure62(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47317,7 +52520,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure125.prototype = {
+  A.execute_____closure62.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure14(type$.TestWorkerPool._as(p));
     },
@@ -47418,9 +52621,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure55.prototype = {
+  A.execute____closure43.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47433,7 +52636,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure124(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure61(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47444,7 +52647,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure124.prototype = {
+  A.execute_____closure61.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure13(type$.TestWorkerPool._as(p));
     },
@@ -47509,7 +52712,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute_____closure_pause.prototype = {
     call$0() {
@@ -47532,7 +52735,7 @@
       }
       ++t1.paused;
     },
-    $signature: 1
+    $signature: 2
   };
   A.execute_____closure_resume.prototype = {
     call$0() {
@@ -47545,9 +52748,9 @@
       if (t2 > 0)
         t1.paused = t2 - 1;
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute____closure56.prototype = {
+  A.execute____closure44.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47560,7 +52763,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_1_1_1), new A.execute_____closure123(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, B.ConcurrencySettings_1_1_1), new A.execute_____closure60(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47571,7 +52774,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure123.prototype = {
+  A.execute_____closure60.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure12(type$.TestWorkerPool._as(p));
     },
@@ -47674,9 +52877,9 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
-  A.execute____closure57.prototype = {
+  A.execute____closure45.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47689,7 +52892,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure122(), type$.TestWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.TestWorkerPool$($async$self.tc, null), new A.execute_____closure59(), type$.TestWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47700,7 +52903,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure122.prototype = {
+  A.execute_____closure59.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure11(type$.TestWorkerPool._as(p));
     },
@@ -47746,31 +52949,31 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 4
+    $signature: 9
   };
   A.execute_closure0.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.group$2("- GitHub Issues", new A.execute__closure1(t1));
+      t1.group$2("- GitHub Issues", new A.execute__closure0(t1));
     },
-    $signature: 1
+    $signature: 2
   };
-  A.execute__closure1.prototype = {
+  A.execute__closure0.prototype = {
     call$0() {
       var t1 = this.tc;
       t1.group$2("- #8 - Exceptions from Streams must come through onError", new A.execute___closure1(t1));
     },
-    $signature: 2
+    $signature: 1
   };
   A.execute___closure1.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("- Squadron Worker", new A.execute____closure5(t1));
-      t1.test$2("- Worker Pool", new A.execute____closure6(t1));
+      t1.test$2("- Squadron Worker", new A.execute____closure1(t1));
+      t1.test$2("- Worker Pool", new A.execute____closure2(t1));
     },
-    $signature: 2
+    $signature: 1
   };
-  A.execute____closure5.prototype = {
+  A.execute____closure1.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47783,7 +52986,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.IssuesWorker$($async$self.tc), new A.execute_____closure0(), type$.IssuesWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.IssuesWorker$($async$self.tc), new A.execute_____closure6(), type$.IssuesWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47794,7 +52997,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure0.prototype = {
+  A.execute_____closure6.prototype = {
     call$1(w) {
       return this.$call$body$execute_____closure0(type$.IssuesWorker._as(w));
     },
@@ -47842,7 +53045,7 @@
     },
     $signature: 171
   };
-  A.execute____closure6.prototype = {
+  A.execute____closure2.prototype = {
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
@@ -47855,7 +53058,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.IssuesWorkerPool$($async$self.tc), new A.execute_____closure(), type$.IssuesWorkerPool, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.IssuesWorkerPool$($async$self.tc), new A.execute_____closure5(), type$.IssuesWorkerPool, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -47866,7 +53069,7 @@
     },
     $signature: 0
   };
-  A.execute_____closure.prototype = {
+  A.execute_____closure5.prototype = {
     call$1(p) {
       return this.$call$body$execute_____closure(type$.IssuesWorkerPool._as(p));
     },
@@ -47915,12 +53118,11 @@
     },
     $signature: 172
   };
-  A.BigIntMarshaler.prototype = {};
   A.CacheStat.prototype = {};
   A.CacheWorker.prototype = {
     containsKey$1(_, key) {
       var t1 = type$.bool;
-      return this.send$2$args(0, 2, [key]).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$2$args(0, 2, [key]).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     getStats$0(_) {
       var $async$goto = 0,
@@ -48160,11 +53362,11 @@
   A.InstallableWorker.prototype = {
     isInstalled$0() {
       var t1 = type$.bool;
-      return this.send$1(0, 1).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 1).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     isUninstalled$0() {
       var t1 = type$.bool;
-      return this.send$1(0, 2).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 2).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     }
   };
   A.IssuesWorkerPool.prototype = {
@@ -48188,7 +53390,7 @@
     issue_8$1(nums) {
       var t1 = this.stream$2$args(0, 1, [type$.List_int._as(nums)]),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("Map<String,int>(Stream.T)")._as($.$get$Squadron_converter().m$2$0(type$.String, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,Map<String,int>>"));
+      return new A._MapStream(t2._eval$1("Map<String,int>(Stream.T)")._as($.$get$Squadron_converter().map$2$0(0, type$.String, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,Map<String,int>>"));
     }
   };
   A.LocalClientWorkerPool.prototype = {
@@ -48204,10 +53406,7 @@
   };
   A.LocalClientWorkerPool_closure.prototype = {
     call$0() {
-      var t1 = this.localService.___WebLocalWorker__channel_A;
-      t1 === $ && A.throwLateFieldNI("_channel");
-      t1 = t1 == null ? null : t1.share$0(0)._sendPort;
-      return A.LocalClientWorker$(this.context, [t1]);
+      return A.LocalClientWorker$(this.context, this.localService);
     },
     $signature: 176
   };
@@ -48232,16 +53431,16 @@
   A.LocalClientWorker.prototype = {
     checkIds$0() {
       var t1 = type$.String;
-      return this.send$1(0, 1).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 1).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     checkException$0() {
       var t1 = type$.bool;
-      return this.send$1(0, 2).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 2).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     checkSequence$1(count) {
       var t1 = this.stream$2$args(0, 3, [count]),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("Map<String,@>(Stream.T)")._as($.$get$Squadron_converter().m$2$0(type$.String, type$.dynamic)), t1, t2._eval$1("_MapStream<Stream.T,Map<String,@>>"));
+      return new A._MapStream(t2._eval$1("Map<String,@>(Stream.T)")._as($.$get$Squadron_converter().map$2$0(0, type$.String, type$.dynamic)), t1, t2._eval$1("_MapStream<Stream.T,Map<String,@>>"));
     }
   };
   A.LocalService.prototype = {};
@@ -48276,7 +53475,7 @@
       type$.List_dynamic._as(req);
       return this.$this.throwException$0();
     },
-    $signature: 35
+    $signature: 39
   };
   A.LocalServiceImpl_operations_closure1.prototype = {
     call$1(req) {
@@ -48284,7 +53483,7 @@
         t1 = type$.List_dynamic;
       t1._as(req);
       t2 = type$.int;
-      return A.Stream_Stream$fromIterable(A.Iterable_Iterable$generate(A._asInt($.$get$Squadron_converter().v$1$0(t2).call$1(J.$index$asx(t1._as(J.$index$asx(req, 3)), 0))), t2), t2);
+      return A.Stream_Stream$fromIterable(A.Iterable_Iterable$generate(A._asInt($.$get$Squadron_converter().value$1$0(0, t2).call$1(J.$index$asx(t1._as(J.$index$asx(req, 3)), 0))), t2), t2);
     },
     $signature: 181
   };
@@ -48357,14 +53556,14 @@
     call$1(w) {
       var t1 = type$.PrimeWorker._as(w).stream$2$args(0, 2, [this.min, this.max]),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().v$1$0(type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
+      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().value$1$0(0, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
     },
     $signature: 184
   };
   A.PrimeWorker.prototype = {
     isPrime$1(n) {
       var t1 = type$.bool;
-      return this.send$2$args(0, 1, [n]).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$2$args(0, 1, [n]).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     }
   };
   A.TestContext.prototype = {
@@ -48431,7 +53630,7 @@
     call$1(_) {
       return this.$this._canceled;
     },
-    $signature: 86
+    $signature: 75
   };
   A.TestContext_test_closure.prototype = {
     call$1(t) {
@@ -48551,7 +53750,7 @@
       A.print("[" + ("JavaScript/" + t1.workerPlatform.label) + '] Skip test "' + this.currentTest + '"');
       t1._checkDone$0();
     },
-    $signature: 2
+    $signature: 1
   };
   A.TestException.prototype = {
     toString$0(_) {
@@ -48588,13 +53787,13 @@
       else
         A.reportStatus("" + t1 + " tests pending...");
     },
-    $signature: 47
+    $signature: 49
   };
   A.runTests_closure1.prototype = {
     call$1(canceled) {
       return A.reportStatus(A._asBool(canceled) ? "Cancelled" : "Done");
     },
-    $signature: 43
+    $signature: 46
   };
   A.main_closure.prototype = {
     call$1(message) {
@@ -48603,7 +53802,7 @@
         t1 = "(null)";
       this.htmlLogger.print$1(0, t1);
     },
-    $signature: 9
+    $signature: 14
   };
   A.main_closure0.prototype = {
     call$1(m) {
@@ -48623,7 +53822,7 @@
       } else
         A.print("(*) " + A.S(new A._AcceptStructuredCloneDart2Js([], []).convertNativeToDart_AcceptStructuredClone$2$mustCopy(m.data, true)));
     },
-    $signature: 28
+    $signature: 29
   };
   A.TestWorkerPool.prototype = {
     io$1$ms(ms) {
@@ -48685,25 +53884,25 @@
     call$0() {
       return A.TestWorker$(this.context, null);
     },
-    $signature: 44
+    $signature: 40
   };
   A.TestWorkerPool$throws_closure.prototype = {
     call$0() {
       return A.TestWorker$throws(this.context);
     },
-    $signature: 44
+    $signature: 40
   };
   A.TestWorkerPool$missingStartRequest_closure.prototype = {
     call$0() {
       return A.TestWorker$missingStartRequest(this.context);
     },
-    $signature: 44
+    $signature: 40
   };
   A.TestWorkerPool$invalid_closure.prototype = {
     call$0() {
       return A.TestWorker$invalid(this.context);
     },
-    $signature: 44
+    $signature: 40
   };
   A.TestWorkerPool_io_closure.prototype = {
     call$1(w) {
@@ -48715,37 +53914,37 @@
     call$1(w) {
       return type$.TestWorker._as(w).delayed$1(this.n);
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_throwException_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).throwException$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_throwWorkerException_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).throwWorkerException$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_throwTaskTimeOutException_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).throwTaskTimeOutException$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_throwCanceledException_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).throwCanceledException$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_throwCustomException_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).throwCustomException$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_ping_closure.prototype = {
     call$1(w) {
@@ -48757,91 +53956,91 @@
     call$1(w) {
       return type$.TestWorker._as(w).finite$2(this.count, this.token);
     },
-    $signature: 32
+    $signature: 34
   };
   A.TestWorkerPool_infinite_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).infinite$1(this.token);
     },
-    $signature: 32
+    $signature: 34
   };
   A.TestWorkerPool_getPendingInfiniteWithErrors_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).getPendingInfiniteWithErrors$0();
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_infiniteWithErrors_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).infiniteWithErrors$1(this.token);
     },
-    $signature: 32
+    $signature: 34
   };
   A.TestWorkerPool_delayedTask_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).delayed$1(this.n);
     },
-    $signature: 21
+    $signature: 23
   };
   A.TestWorkerPool_finiteTask_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).finite$2(this.n, this.token);
     },
-    $signature: 32
+    $signature: 34
   };
   A.TestWorkerPool_infiniteWithErrorsTask_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).infiniteWithErrors$1(this.token);
     },
-    $signature: 32
+    $signature: 34
   };
   A.TestWorker.prototype = {
     delayed$1(n) {
       var t1 = type$.int;
-      return this.send$2$args(0, 13, [n]).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$2$args(0, 13, [n]).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     throwException$0() {
       var t1 = type$.int;
-      return this.send$1(0, 21).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 21).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     throwWorkerException$0() {
       var t1 = type$.int;
-      return this.send$1(0, 22).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 22).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     throwTaskTimeOutException$0() {
       var t1 = type$.int;
-      return this.send$1(0, 23).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 23).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     throwCanceledException$0() {
       var t1 = type$.int;
-      return this.send$1(0, 24).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 24).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     throwCustomException$0() {
       var t1 = type$.int;
-      return this.send$1(0, 25).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 25).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     ping$0() {
       var t1 = type$.bool;
-      return this.send$1(0, 34).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 34).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     finite$2(count, token) {
       var t1 = this.stream$3$args$token(0, 41, [count], token),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().v$1$0(type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
+      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().value$1$0(0, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
     },
     infinite$1(token) {
       var t1 = this.stream$2$token(0, 42, token),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().v$1$0(type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
+      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().value$1$0(0, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
     },
     getPendingInfiniteWithErrors$0() {
       var t1 = type$.int;
-      return this.send$1(0, 45).then$1$1($.$get$Squadron_converter().v$1$0(t1), t1);
+      return this.send$1(0, 45).then$1$1($.$get$Squadron_converter().value$1$0(0, t1), t1);
     },
     infiniteWithErrors$1(token) {
       var t1 = this.stream$2$token(0, 46, token),
         t2 = t1.$ti;
-      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().v$1$0(type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
+      return new A._MapStream(t2._eval$1("int(Stream.T)")._as($.$get$Squadron_converter().value$1$0(0, type$.int)), t1, t2._eval$1("_MapStream<Stream.T,int>"));
     },
     infiniteWithErrors$0() {
       return this.infiniteWithErrors$1(null);
@@ -48850,13 +54049,30 @@
       return this.send$1(0, 61).then$1$1(new A.TestWorker_getPlatformType_closure(), type$.SquadronPlatformType);
     }
   };
+  A.TestWorker_bigIntMarshaler_closure.prototype = {
+    call$1(x) {
+      return x.toString$0(0);
+    },
+    $signature: 81
+  };
+  A.TestWorker_bigIntUnmarshaler_closure.prototype = {
+    call$1(x) {
+      var result;
+      A._asString(x);
+      result = A._BigIntImpl__tryParse(x, null);
+      if (result == null)
+        A.throwExpression(A.FormatException$("Could not parse BigInt", x, null));
+      return result;
+    },
+    $signature: 193
+  };
   A.TestWorker_getPlatformType_closure.prototype = {
     call$1(res) {
-      var t1 = A.SquadronPlatformType_tryParse($.$get$Squadron_converter().v$1$0(type$.String).call$1(res));
+      var t1 = A.SquadronPlatformType_tryParse($.$get$Squadron_converter().value$1$0(0, type$.String).call$1(res));
       t1.toString;
       return t1;
     },
-    $signature: 193
+    $signature: 194
   };
   A.UnexpectedException.prototype = {
     toString$0(_) {
@@ -48901,12 +54117,7 @@
     _.super$TypeMatcher$describe = _.describe$1;
     _.super$TypeMatcher$matches = _.matches$2;
     _ = A.CastConverter.prototype;
-    _.super$CastConverter$v = _.v$1$0;
-    _.super$CastConverter$nv = _.nv$1$0;
-    _.super$CastConverter$l = _.l$1$1;
-    _.super$CastConverter$nl = _.nl$1$1;
-    _.super$CastConverter$m = _.m$2$2$kcast$vcast;
-    _.super$CastConverter$nm = _.nm$2$2$kcast$vcast;
+    _.super$CastConverter$value = _.value$1$0;
     _ = A.WorkerTask.prototype;
     _.super$WorkerTask$cancel = _.cancel$1;
     _ = A.Releasable.prototype;
@@ -48923,128 +54134,129 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _instance_2_u = hunkHelpers._instance_2u,
       _instance_1_u = hunkHelpers._instance_1u;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 194);
-    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 25);
-    _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 195, 0, 0);
-    _static_0(A, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 5);
-    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 55);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 55);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 55);
-    _static_1(A, "async_Future__kTrue$closure", "Future__kTrue", 23);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 195);
+    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 28);
+    _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 188, 0, 0);
+    _static_0(A, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 3);
+    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 59);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 59);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 59);
+    _static_1(A, "async_Future__kTrue$closure", "Future__kTrue", 26);
     _static(A, "async__FutureExtensions__ignore$closure", 1, function() {
       return [null];
     }, ["call$2", "call$1"], ["FutureExtensions__ignore", function(_) {
       return A.FutureExtensions__ignore(_, null);
-    }], 196, 0);
-    _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 1);
-    _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 13);
-    _static_2(A, "async___nullErrorHandler$closure", "_nullErrorHandler", 36);
-    _static_0(A, "async___nullDoneHandler$closure", "_nullDoneHandler", 1);
-    _static(A, "async___rootHandleUncaughtError$closure", 5, null, ["call$5"], ["_rootHandleUncaughtError"], 197, 0);
+    }], 197, 0);
+    _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 2);
+    _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 18);
+    _static_2(A, "async___nullErrorHandler$closure", "_nullErrorHandler", 38);
+    _static_0(A, "async___nullDoneHandler$closure", "_nullDoneHandler", 2);
+    _static(A, "async___rootHandleUncaughtError$closure", 5, null, ["call$5"], ["_rootHandleUncaughtError"], 198, 0);
     _static(A, "async___rootRun$closure", 4, null, ["call$1$4", "call$4"], ["_rootRun", function($self, $parent, zone, f) {
       return A._rootRun($self, $parent, zone, f, type$.dynamic);
-    }], 198, 1);
+    }], 199, 1);
     _static(A, "async___rootRunUnary$closure", 5, null, ["call$2$5", "call$5"], ["_rootRunUnary", function($self, $parent, zone, f, arg) {
       var t1 = type$.dynamic;
       return A._rootRunUnary($self, $parent, zone, f, arg, t1, t1);
-    }], 199, 1);
+    }], 200, 1);
     _static(A, "async___rootRunBinary$closure", 6, null, ["call$3$6", "call$6"], ["_rootRunBinary", function($self, $parent, zone, f, arg1, arg2) {
       var t1 = type$.dynamic;
       return A._rootRunBinary($self, $parent, zone, f, arg1, arg2, t1, t1, t1);
-    }], 200, 1);
+    }], 201, 1);
     _static(A, "async___rootRegisterCallback$closure", 4, null, ["call$1$4", "call$4"], ["_rootRegisterCallback", function($self, $parent, zone, f) {
       return A._rootRegisterCallback($self, $parent, zone, f, type$.dynamic);
-    }], 201, 0);
+    }], 202, 0);
     _static(A, "async___rootRegisterUnaryCallback$closure", 4, null, ["call$2$4", "call$4"], ["_rootRegisterUnaryCallback", function($self, $parent, zone, f) {
       var t1 = type$.dynamic;
       return A._rootRegisterUnaryCallback($self, $parent, zone, f, t1, t1);
-    }], 202, 0);
+    }], 203, 0);
     _static(A, "async___rootRegisterBinaryCallback$closure", 4, null, ["call$3$4", "call$4"], ["_rootRegisterBinaryCallback", function($self, $parent, zone, f) {
       var t1 = type$.dynamic;
       return A._rootRegisterBinaryCallback($self, $parent, zone, f, t1, t1, t1);
-    }], 203, 0);
-    _static(A, "async___rootErrorCallback$closure", 5, null, ["call$5"], ["_rootErrorCallback"], 204, 0);
-    _static(A, "async___rootScheduleMicrotask$closure", 4, null, ["call$4"], ["_rootScheduleMicrotask"], 205, 0);
-    _static(A, "async___rootCreateTimer$closure", 5, null, ["call$5"], ["_rootCreateTimer"], 206, 0);
-    _static(A, "async___rootCreatePeriodicTimer$closure", 5, null, ["call$5"], ["_rootCreatePeriodicTimer"], 207, 0);
-    _static(A, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 85, 0);
-    _static_1(A, "async___printToZone$closure", "_printToZone", 208);
-    _static(A, "async___rootFork$closure", 5, null, ["call$5"], ["_rootFork"], 209, 0);
+    }], 204, 0);
+    _static(A, "async___rootErrorCallback$closure", 5, null, ["call$5"], ["_rootErrorCallback"], 205, 0);
+    _static(A, "async___rootScheduleMicrotask$closure", 4, null, ["call$4"], ["_rootScheduleMicrotask"], 206, 0);
+    _static(A, "async___rootCreateTimer$closure", 5, null, ["call$5"], ["_rootCreateTimer"], 207, 0);
+    _static(A, "async___rootCreatePeriodicTimer$closure", 5, null, ["call$5"], ["_rootCreatePeriodicTimer"], 208, 0);
+    _static(A, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 67, 0);
+    _static_1(A, "async___printToZone$closure", "_printToZone", 209);
+    _static(A, "async___rootFork$closure", 5, null, ["call$5"], ["_rootFork"], 210, 0);
     var _;
-    _instance_0_u(_ = A._BroadcastSubscription.prototype, "get$_onPause", "_onPause$0", 1);
-    _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 25);
+    _instance_0_u(_ = A._BroadcastSubscription.prototype, "get$_onPause", "_onPause$0", 2);
+    _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
+    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 28);
     _instance(_, "get$addError", 0, 1, function() {
       return [null];
-    }, ["call$2", "call$1"], ["addError$2", "addError$1"], 45, 0, 0);
-    _instance_0_i(_, "get$close", "close$0", 8);
+    }, ["call$2", "call$1"], ["addError$2", "addError$1"], 47, 0, 0);
+    _instance_0_i(_, "get$close", "close$0", 12);
     _instance(A._Completer.prototype, "get$completeError", 0, 1, function() {
       return [null];
-    }, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 45, 0, 0);
+    }, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 47, 0, 0);
     _instance(A._AsyncCompleter.prototype, "get$complete", 1, 0, function() {
       return [null];
-    }, ["call$1", "call$0"], ["complete$1", "complete$0"], 95, 0, 0);
-    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 36);
-    _instance_0_u(_ = A._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 1);
-    _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance(_ = A._BufferingStreamSubscription.prototype, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 89, 0, 0);
-    _instance_0_i(_, "get$resume", "resume$0", 1);
-    _instance_0_i(_, "get$cancel", "cancel$0", 39);
-    _instance_0_u(_, "get$_onPause", "_onPause$0", 1);
-    _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance(_ = A._DoneStreamSubscription.prototype, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 89, 0, 0);
-    _instance_0_i(_, "get$resume", "resume$0", 1);
-    _instance_0_i(_, "get$cancel", "cancel$0", 39);
-    _instance_0_u(_, "get$_onMicrotask", "_onMicrotask$0", 1);
-    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 25);
-    _instance_2_u(_, "get$_onError", "_onError$2", 36);
-    _instance_0_u(_, "get$_async$_onDone", "_async$_onDone$0", 1);
-    _instance_0_u(_ = A._ForwardingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 1);
-    _instance_0_u(_, "get$_onResume", "_onResume$0", 1);
-    _instance_1_u(_, "get$_handleData", "_handleData$1", 25);
-    _instance_2_u(_, "get$_async$_handleError", "_async$_handleError$2", 158);
-    _instance_0_u(_, "get$_handleDone", "_handleDone$0", 1);
-    _instance_1_i(A._LinkedHashSet.prototype, "get$contains", "contains$1", 23);
-    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 64);
-    _static_1(A, "core__GeneratorIterable__id$closure", "_GeneratorIterable__id", 62);
-    _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 19);
-    _static(A, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 91, 0);
-    _static(A, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 91, 0);
-    _instance_0_i(_ = A._EventStreamSubscription.prototype, "get$cancel", "cancel$0", 39);
-    _instance(_, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 159, 0, 0);
-    _instance_0_i(_, "get$resume", "resume$0", 1);
+    }, ["call$1", "call$0"], ["complete$1", "complete$0"], 225, 0, 0);
+    _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 38);
+    _instance_0_u(_ = A._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 2);
+    _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
+    _instance(_ = A._BufferingStreamSubscription.prototype, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 92, 0, 0);
+    _instance_0_i(_, "get$resume", "resume$0", 2);
+    _instance_0_i(_, "get$cancel", "cancel$0", 41);
+    _instance_0_u(_, "get$_onPause", "_onPause$0", 2);
+    _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
+    _instance(_ = A._DoneStreamSubscription.prototype, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 92, 0, 0);
+    _instance_0_i(_, "get$resume", "resume$0", 2);
+    _instance_0_i(_, "get$cancel", "cancel$0", 41);
+    _instance_0_u(_, "get$_onMicrotask", "_onMicrotask$0", 2);
+    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 28);
+    _instance_2_u(_, "get$_onError", "_onError$2", 38);
+    _instance_0_u(_, "get$_async$_onDone", "_async$_onDone$0", 2);
+    _instance_0_u(_ = A._ForwardingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 2);
+    _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
+    _instance_1_u(_, "get$_handleData", "_handleData$1", 28);
+    _instance_2_u(_, "get$_async$_handleError", "_async$_handleError$2", 151);
+    _instance_0_u(_, "get$_handleDone", "_handleDone$0", 2);
+    _instance_1_i(A._LinkedHashSet.prototype, "get$contains", "contains$1", 26);
+    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 94);
+    _static_1(A, "core__GeneratorIterable__id$closure", "_GeneratorIterable__id", 89);
+    _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 24);
+    _static(A, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 93, 0);
+    _static(A, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 93, 0);
+    _instance_0_i(_ = A._EventStreamSubscription.prototype, "get$cancel", "cancel$0", 41);
+    _instance(_, "get$pause", 1, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 155, 0, 0);
+    _instance_0_i(_, "get$resume", "resume$0", 2);
     _static(A, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return A.max(a, b, type$.num);
-    }], 211, 1);
-    _instance_0_u(_ = A.StreamGroup.prototype, "get$_onListen", "_onListen$0", 1);
-    _instance_0_u(_, "get$_onCancelBroadcast", "_onCancelBroadcast$0", 1);
+    }], 212, 1);
+    _instance_0_u(_ = A.StreamGroup.prototype, "get$_onListen", "_onListen$0", 2);
+    _instance_0_u(_, "get$_onCancelBroadcast", "_onCancelBroadcast$0", 2);
     _static(A, "canceled_exceptions___self$closure", 1, null, ["call$1$1", "call$1"], ["_self", function(x) {
       return A._self(x, type$.dynamic);
-    }], 212, 1);
+    }], 213, 1);
     _instance(A.CancelableToken.prototype, "get$cancel", 1, 0, function() {
       return [null];
-    }, ["call$1", "call$0"], ["cancel$1", "cancel$0"], 101, 0, 0);
-    _instance_1_i(A._DelegatingIterableBase.prototype, "get$contains", "contains$1", 23);
-    _instance(A._DeepMatcher.prototype, "get$_recursiveMatch", 0, 4, null, ["call$4"], ["_recursiveMatch$4"], 115, 0, 0);
-    _static_1(A, "pretty_print___escapeString$closure", "_escapeString", 19);
-    _static_1(A, "util__wrapMatcher$closure", "wrapMatcher", 213);
-    _static_1(A, "util___getHexLiteral$closure", "_getHexLiteral", 19);
-    _instance_1_u(_ = A._WebChannel.prototype, "get$_postRequest", "_postRequest$1", 31);
-    _instance_1_u(_, "get$_inspectAndPostRequest", "_inspectAndPostRequest$1", 31);
-    _instance_1_u(A._WebForwardChannel.prototype, "get$_forward", "_forward$1", 46);
-    _instance_0_u(_ = A.EventBuffer.prototype, "get$activate", "activate$0", 1);
-    _instance_0_u(_, "get$deactivate", "deactivate$0", 1);
-    _instance_1_i(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 13);
-    _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 13);
-    _instance(_, "get$error", 1, 1, null, ["call$3", "call$2", "call$1"], ["error$3", "error$2", "error$1"], 154, 0, 0);
-    _instance_1_i(_ = A.ForwardStreamController.prototype, "get$add", "add$1", 25);
-    _instance_0_i(_, "get$close", "close$0", 8);
-    _instance_0_u(_, "get$_pause", "_pause$0", 1);
-    _instance_0_u(_, "get$_resume", "_resume$0", 1);
-    _static_1(A, "num_converter_NumConverter__toInt$closure", "NumConverter__toInt", 6);
-    _static_1(A, "num_converter_NumConverter__toDbl$closure", "NumConverter__toDbl", 214);
-    _static_1(A, "num_converter_NumConverter__toNullableInt$closure", "NumConverter__toNullableInt", 215);
-    _static_1(A, "num_converter_NumConverter__toNullableDbl$closure", "NumConverter__toNullableDbl", 216);
+    }, ["call$1", "call$0"], ["cancel$1", "cancel$0"], 100, 0, 0);
+    _instance_1_i(A._DelegatingIterableBase.prototype, "get$contains", "contains$1", 26);
+    _instance(A._DeepMatcher.prototype, "get$_recursiveMatch", 0, 4, null, ["call$4"], ["_recursiveMatch$4"], 114, 0, 0);
+    _static_1(A, "pretty_print___escapeString$closure", "_escapeString", 24);
+    _static_1(A, "util__wrapMatcher$closure", "wrapMatcher", 214);
+    _static_1(A, "util___getHexLiteral$closure", "_getHexLiteral", 24);
+    _instance_1_u(_ = A._WebChannel.prototype, "get$_postRequest", "_postRequest$1", 36);
+    _instance_1_u(_, "get$_inspectAndPostRequest", "_inspectAndPostRequest$1", 36);
+    _instance_1_u(A._WebForwardChannel.prototype, "get$_forward", "_forward$1", 42);
+    _instance_0_u(_ = A.EventBuffer.prototype, "get$activate", "activate$0", 2);
+    _instance_0_u(_, "get$deactivate", "deactivate$0", 2);
+    _instance_1_i(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 18);
+    _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 18);
+    _instance(_, "get$error", 1, 1, null, ["call$3", "call$2", "call$1"], ["error$3", "error$2", "error$1"], 152, 0, 0);
+    _instance_1_i(_ = A.ForwardStreamController.prototype, "get$add", "add$1", 28);
+    _instance_0_i(_, "get$close", "close$0", 12);
+    _instance_0_u(_, "get$_pause", "_pause$0", 2);
+    _instance_0_u(_, "get$_resume", "_resume$0", 2);
+    _static(A, "converter_Converter_identity$closure", 1, null, ["call$1$1", "call$1"], ["Converter_identity", function(x) {
+      return A.Converter_identity(x, type$.dynamic);
+    }], 215, 1);
+    _static_1(A, "num_converter_NumConverter__toInt$closure", "NumConverter__toInt", 21);
+    _static_1(A, "num_converter_NumConverter__toDbl$closure", "NumConverter__toDbl", 216);
     _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 217);
     _static_1(A, "squadron_canceled_exceptions__SquadronCanceledExceptionsExt_deserialize$closure", "SquadronCanceledExceptionsExt_deserialize", 218);
     _static_1(A, "squadron_error__SquadronErrorExt_deserialize$closure", "SquadronErrorExt_deserialize", 219);
@@ -49053,45 +54265,46 @@
     _static_2(A, "_pool_worker_PoolWorker_compareCapacityDesc$closure", "PoolWorker_compareCapacityDesc", 222);
     _static_1(A, "_pool_worker_PoolWorker_isStopped$closure", "PoolWorker_isStopped", 223);
     _static_1(A, "_pool_worker_PoolWorker_getStats$closure", "PoolWorker_getStats", 224);
-    _instance_1_u(_ = A.WorkerStreamTask.prototype, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 25);
-    _instance_2_u(_, "get$__worker_stream_task$_onError", "__worker_stream_task$_onError$2", 33);
-    _instance_1_u(_ = A.WorkerTask.prototype, "get$_success", "_success$1", 43);
-    _instance_1_u(_, "get$_error", "_error$1", 13);
-    _instance_1_u(_ = A.WorkerPool.prototype, "get$_removeWorkerAndNotify", "_removeWorkerAndNotify$1", 25);
-    _instance_0_u(_, "get$_schedule", "_schedule$0", 1);
+    _instance_1_u(_ = A.WorkerStreamTask.prototype, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 28);
+    _instance_2_u(_, "get$__worker_stream_task$_onError", "__worker_stream_task$_onError$2", 35);
+    _instance_1_u(_ = A.WorkerTask.prototype, "get$_success", "_success$1", 46);
+    _instance_1_u(_, "get$_error", "_error$1", 18);
+    _instance_1_u(_ = A.WorkerPool.prototype, "get$_removeWorkerAndNotify", "_removeWorkerAndNotify$1", 28);
+    _instance_0_u(_, "get$_schedule", "_schedule$0", 2);
     _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, function() {
       return [null];
-    }, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 225, 0, 0);
-    _instance_0_u(A.Worker0.prototype, "get$_leave", "_leave$0", 1);
-    _instance_0_u(A.Chain.prototype, "get$toTrace", "toTrace$0", 27);
-    _static_1(A, "frame_Frame___parseVM_tearOff$closure", "Frame___parseVM_tearOff", 38);
-    _static_1(A, "frame_Frame___parseV8_tearOff$closure", "Frame___parseV8_tearOff", 38);
-    _static_1(A, "frame_Frame___parseFirefox_tearOff$closure", "Frame___parseFirefox_tearOff", 38);
-    _static_1(A, "frame_Frame___parseFriendly_tearOff$closure", "Frame___parseFriendly_tearOff", 38);
-    _instance_0_u(A.LazyChain.prototype, "get$toTrace", "toTrace$0", 27);
-    _static_1(A, "trace_Trace___parseVM_tearOff$closure", "Trace___parseVM_tearOff", 61);
-    _static_1(A, "trace_Trace___parseFriendly_tearOff$closure", "Trace___parseFriendly_tearOff", 61);
-    _instance_0_i(A.OutstandingWork.prototype, "get$complete", "complete$0", 1);
-    _instance_0_u(_ = A.Invoker.prototype, "get$removeOutstandingCallback", "removeOutstandingCallback$0", 1);
-    _instance_0_u(_, "get$_onRun", "_onRun$0", 1);
-    _instance_0_u(A.LiveTestController.prototype, "get$run", "run$0", 8);
-    _instance_0_u(A.Engine.prototype, "get$run", "run$0", 116);
-    _instance_1_u(_ = A.ExpandedReporter.prototype, "get$_onTestStarted", "_onTestStarted$1", 123);
-    _instance_1_u(_, "get$_onDone", "_onDone$1", 124);
-    _static_1(A, "lib_00_not_a_worker_test__execute$closure", "execute", 11);
-    _static_1(A, "lib_01_web_worker_js_test__execute$closure", "execute0", 11);
-    _static_1(A, "lib_02_logging_test__execute$closure", "execute1", 11);
-    _static_1(A, "lib_03_converter_test__execute$closure", "execute2", 11);
-    _static_1(A, "lib_04_worker_test__execute$closure", "execute3", 11);
-    _static_1(A, "lib_05_worker_streaming_test__execute$closure", "execute4", 11);
-    _static_1(A, "lib_06_local_worker_test__execute$closure", "execute5", 11);
-    _static_1(A, "lib_07_shared_channel_test__execute$closure", "execute6", 11);
-    _static_1(A, "lib_08_cancelation_test__execute$closure", "execute7", 11);
-    _static_1(A, "lib_09_marshaler_test__execute$closure", "execute8", 11);
-    _static_1(A, "lib_10_worker_pool_test__execute$closure", "execute9", 11);
-    _static_1(A, "lib_11_issues_test__execute$closure", "execute10", 11);
+    }, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 192, 0, 0);
+    _instance_0_u(A.Worker0.prototype, "get$_leave", "_leave$0", 2);
+    _instance_0_u(A.Chain.prototype, "get$toTrace", "toTrace$0", 30);
+    _static_1(A, "frame_Frame___parseVM_tearOff$closure", "Frame___parseVM_tearOff", 48);
+    _static_1(A, "frame_Frame___parseV8_tearOff$closure", "Frame___parseV8_tearOff", 48);
+    _static_1(A, "frame_Frame___parseFirefox_tearOff$closure", "Frame___parseFirefox_tearOff", 48);
+    _static_1(A, "frame_Frame___parseFriendly_tearOff$closure", "Frame___parseFriendly_tearOff", 48);
+    _instance_0_u(A.LazyChain.prototype, "get$toTrace", "toTrace$0", 30);
+    _static_1(A, "trace_Trace___parseVM_tearOff$closure", "Trace___parseVM_tearOff", 63);
+    _static_1(A, "trace_Trace___parseFriendly_tearOff$closure", "Trace___parseFriendly_tearOff", 63);
+    _instance_0_i(A.OutstandingWork.prototype, "get$complete", "complete$0", 2);
+    _instance_0_u(_ = A.Invoker.prototype, "get$removeOutstandingCallback", "removeOutstandingCallback$0", 2);
+    _instance_0_u(_, "get$_onRun", "_onRun$0", 2);
+    _instance_0_u(A.LiveTestController.prototype, "get$run", "run$0", 12);
+    _instance_0_u(A.Engine.prototype, "get$run", "run$0", 115);
+    _instance_1_u(_ = A.ExpandedReporter.prototype, "get$_onTestStarted", "_onTestStarted$1", 122);
+    _instance_1_u(_, "get$_onDone", "_onDone$1", 123);
+    _static_1(A, "lib_00_not_a_worker_test__execute$closure", "execute", 16);
+    _static_1(A, "lib_01_web_worker_js_test__execute$closure", "execute0", 16);
+    _static_1(A, "lib_02_logging_test__execute$closure", "execute1", 16);
+    _static_1(A, "lib_03_converter_test___asInt$closure", "_asInt0", 21);
+    _static_1(A, "lib_03_converter_test__execute$closure", "execute2", 16);
+    _static_1(A, "lib_04_worker_test__execute$closure", "execute3", 16);
+    _static_1(A, "lib_05_worker_streaming_test__execute$closure", "execute4", 16);
+    _static_1(A, "lib_06_local_worker_test__execute$closure", "execute5", 16);
+    _static_1(A, "lib_07_shared_channel_test__execute$closure", "execute6", 16);
+    _static_1(A, "lib_08_cancelation_test__execute$closure", "execute7", 16);
+    _static_1(A, "lib_09_marshaler_test__execute$closure", "execute8", 16);
+    _static_1(A, "lib_10_worker_pool_test__execute$closure", "execute9", 16);
+    _static_1(A, "lib_11_issues_test__execute$closure", "execute10", 16);
     _static_1(A, "custom_exception_CustomException_deserialize$closure", "CustomException_deserialize", 228);
-    _instance_1_u(A.HtmlLogger.prototype, "get$_onScroll", "_onScroll$1", 20);
+    _instance_1_u(A.HtmlLogger.prototype, "get$_onScroll", "_onScroll$1", 25);
     _static(A, "typed_data_ByteData___view_tearOff$closure", 1, null, ["call$3", "call$2", "call$1"], ["ByteData___view_tearOff", function(buffer, offsetInBytes) {
       return A.ByteData___view_tearOff(buffer, offsetInBytes, null);
     }, function(buffer) {
@@ -49166,21 +54379,18 @@
       return A.Float64x2List___view_tearOff(buffer, offsetInBytes, null);
     }, function(buffer) {
       return A.Float64x2List___view_tearOff(buffer, 0, null);
-    }], 243, 0);
-    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 23);
-    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 23);
-    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 23);
-    _static(A, "converter_Converter_identity$closure", 1, null, ["call$1$1", "call$1"], ["Converter_identity", function(x) {
-      return A.Converter_identity(x, type$.dynamic);
-    }], 162, 1);
-    _static_0(A, "_platform__unsendable$closure", "unsendable", 1);
+    }], 161, 0);
+    _static_1(A, "_transferables_Transferables__isBaseType$closure", "Transferables__isBaseType", 26);
+    _static_1(A, "_transferables_Transferables__isSafeForTransfer$closure", "Transferables__isSafeForTransfer", 26);
+    _static_1(A, "_transferables_Transferables__isNotSafeForTransfer$closure", "Transferables__isNotSafeForTransfer", 26);
+    _static_0(A, "_platform__unsendable$closure", "unsendable", 2);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(A.Object, null);
-    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Iterable, A.CastIterator, A.MapBase, A.Closure, A.Error, A.ListBase, A.SentinelValue, A.ListIterator, A.MappedIterator, A.WhereIterator, A.ExpandIterator, A.TakeIterator, A.SkipIterator, A.SkipWhileIterator, A.EmptyIterator, A.FollowedByIterator, A.WhereTypeIterator, A.NonNullsIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.Symbol, A._Record, A.MapView, A.ConstantMap, A._KeysOrValuesOrElementsIterator, A.SetBase, A.JSInvocationMirror, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A._Required, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A._Cell, A._NativeFloat32x4List_Object_ListMixin, A._NativeInt32x4List_Object_ListMixin, A._NativeFloat64x2List_Object_ListMixin, A.NativeFloat32x4, A.NativeInt32x4, A.NativeFloat64x2, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._SyncStarIterator, A.AsyncError, A.Stream, A._BufferingStreamSubscription, A._BroadcastStreamController, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A._StreamController, A._SyncStreamControllerDispatch, A._AsyncStreamControllerDispatch, A._StreamSinkWrapper, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._ZoneFunction, A._ZoneSpecification, A._ZoneDelegate, A._Zone, A._HashMapKeyIterator, A._LinkedHashSetCell, A._LinkedHashSetIterator, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A._ListQueueIterator, A.Codec, A.Converter, A._Base64Encoder, A._JsonStringifier, A._JsonPrettyPrintMixin, A._Utf8Encoder, A._Utf8Decoder, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.MapEntry, A.Null, A._StringStackTrace, A.Stopwatch, A.RuneIterator, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.Expando, A.CssStyleDeclarationBase, A.EventStreamProvider, A._EventStreamSubscription, A._Html5NodeValidator, A.ImmutableListMixin, A.NodeValidatorBuilder, A._SimpleNodeValidator, A._SvgNodeValidator, A.FixedSizeListIterator, A._DOMWindowCrossFrame, A._SameOriginUriPolicy, A._ValidatingTreeSanitizer, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A._JSRandom, A._JSSecureRandom, A.AsyncMemoizer, A.DelegatingSink, A.FutureGroup, A.StreamGroup, A._StreamGroupState, A.All, A.CancelationToken, A.CanceledException, A.CanceledExceptions, A._QueueList_Object_ListMixin, A.UnionSetController, A._DelegatingIterableBase, A.UnmodifiableSetMixin, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A.Matcher, A.StringDescription, A._Mismatch, A.Context, A.Style, A.ParsedPath, A.PathException, A.Pool, A.PoolResource, A._WebChannel, A._EntryPointUri_Object_Releasable, A.EventBuffer, A._LocalWorker_Object_Releasable, A._WebWorkerChannel, A.DisconnectedChannel, A.ForwardCompleter, A.ForwardStreamController, A.ResultStream, A.WorkerRunner, A.ConcurrencySettings, A.CastConverter, A.ExceptionManager, A.SquadronException, A.SquadronCanceledExceptions, A.TaskCanceledException, A.PoolWorker, A.WorkerTask, A._WorkerPool_Object_Releasable, A.PerfCounter, A.PerfCounterSnapshot, A.WorkerStat, A.CancelationTokenReference, A._Worker_Object_Releasable, A.Chain, A.Frame, A.LazyChain, A.LazyTrace, A._Node, A.Trace, A.UnparsedFrame, A.TestHandle, A.OutstandingWork, A.OutsideTestException, A.ClosedException, A.Timeout, A.Declarer, A.DuplicateTestNameException, A.Group, A.Test, A.Invoker, A._AsyncCounter, A.LiveTest, A.Message, A.MessageType, A.Metadata, A.OperatingSystem, A.PlatformSelector, A.Runtime, A.StackTraceFormatter, A.State, A.Suite, A.SuitePlatform, A.TestFailure, A.Engine, A.LiveSuite, A.LiveSuiteController, A.ExpandedReporter, A.RunnerSuiteController, A.SuiteConfiguration, A._IterableSet_Object_SetMixin, A.PrintSink, A.ReleasedException, A.Releasable, A.BigIntMarshaler, A.CacheStat, A.ConsoleToHtml, A.SequenceReplacement, A.HtmlLogger, A.LocalService, A.TestContext, A.TestException, A.TestResult, A.TestEntryPoints, A.UnexpectedException]);
+    _inheritMany(A.Object, [A.JS_CONST, J.Interceptor, J.ArrayIterator, A.Iterable, A.CastIterator, A.MapBase, A.Closure, A.Error, A.ListBase, A.SentinelValue, A.ListIterator, A.MappedIterator, A.WhereIterator, A.ExpandIterator, A.TakeIterator, A.SkipIterator, A.SkipWhileIterator, A.EmptyIterator, A.FollowedByIterator, A.WhereTypeIterator, A.NonNullsIterator, A.FixedLengthListMixin, A.UnmodifiableListMixin, A.Symbol, A._Record, A.MapView, A.ConstantMap, A._KeysOrValuesOrElementsIterator, A.SetBase, A.JSInvocationMirror, A.TypeErrorDecoder, A.NullThrownFromJavaScriptException, A.ExceptionAndStackTrace, A._StackTrace, A._Required, A.LinkedHashMapCell, A.LinkedHashMapKeyIterator, A.JSSyntaxRegExp, A._MatchImplementation, A._AllMatchesIterator, A.StringMatch, A._StringAllMatchesIterator, A._Cell, A._NativeFloat32x4List_Object_ListMixin, A._NativeInt32x4List_Object_ListMixin, A._NativeFloat64x2List_Object_ListMixin, A.NativeFloat32x4, A.NativeInt32x4, A.NativeFloat64x2, A.Rti, A._FunctionParameters, A._Type, A._TimerImpl, A._AsyncAwaitCompleter, A._SyncStarIterator, A.AsyncError, A.Stream, A._BufferingStreamSubscription, A._BroadcastStreamController, A.TimeoutException, A._Completer, A._FutureListener, A._Future, A._AsyncCallbackEntry, A._StreamController, A._SyncStreamControllerDispatch, A._AsyncStreamControllerDispatch, A._StreamSinkWrapper, A._DelayedEvent, A._DelayedDone, A._PendingEvents, A._DoneStreamSubscription, A._StreamIterator, A._ZoneFunction, A._ZoneSpecification, A._ZoneDelegate, A._Zone, A._HashMapKeyIterator, A._LinkedHashSetCell, A._LinkedHashSetIterator, A._MapBaseValueIterator, A._UnmodifiableMapMixin, A._ListQueueIterator, A.Codec, A.Converter, A._Base64Encoder, A._JsonStringifier, A._JsonPrettyPrintMixin, A._Utf8Encoder, A._Utf8Decoder, A._BigIntImpl, A.DateTime, A.Duration, A._Enum, A.OutOfMemoryError, A.StackOverflowError, A._Exception, A.FormatException, A.IntegerDivisionByZeroException, A.MapEntry, A.Null, A._StringStackTrace, A.Stopwatch, A.RuneIterator, A.StringBuffer, A._Uri, A.UriData, A._SimpleUri, A.Expando, A.CssStyleDeclarationBase, A.EventStreamProvider, A._EventStreamSubscription, A._Html5NodeValidator, A.ImmutableListMixin, A.NodeValidatorBuilder, A._SimpleNodeValidator, A._SvgNodeValidator, A.FixedSizeListIterator, A._DOMWindowCrossFrame, A._SameOriginUriPolicy, A._ValidatingTreeSanitizer, A._StructuredClone, A._AcceptStructuredClone, A.NullRejectionException, A._JSRandom, A._JSSecureRandom, A.AsyncMemoizer, A.DelegatingSink, A.FutureGroup, A.StreamGroup, A._StreamGroupState, A.All, A.CancelationToken, A.CanceledException, A.CanceledExceptions, A._QueueList_Object_ListMixin, A.UnionSetController, A._DelegatingIterableBase, A.UnmodifiableSetMixin, A.LogFilter, A.LogEvent, A.LogOutput, A.LogPrinter, A.Logger, A.OutputEvent, A.Matcher, A.StringDescription, A._Mismatch, A.Context, A.Style, A.ParsedPath, A.PathException, A.Pool, A.PoolResource, A._WebChannel, A._EntryPointUri_Object_Releasable, A.EventBuffer, A._LocalWorker_Object_Releasable, A._WebWorkerChannel, A.DisconnectedChannel, A.ForwardCompleter, A.ForwardStreamController, A.ResultStream, A.WorkerRunner, A.ConcurrencySettings, A.Converter0, A._LazyInPlaceList, A._LazyInPlaceMap, A.ExceptionManager, A.SquadronException, A.SquadronCanceledExceptions, A.TaskCanceledException, A.PoolWorker, A.WorkerTask, A._WorkerPool_Object_Releasable, A.PerfCounter, A.PerfCounterSnapshot, A.WorkerStat, A.CancelationTokenReference, A._Worker_Object_Releasable, A.Chain, A.Frame, A.LazyChain, A.LazyTrace, A._Node, A.Trace, A.UnparsedFrame, A.TestHandle, A.OutstandingWork, A.OutsideTestException, A.ClosedException, A.Timeout, A.Declarer, A.DuplicateTestNameException, A.Group, A.Test, A.Invoker, A._AsyncCounter, A.LiveTest, A.Message, A.MessageType, A.Metadata, A.OperatingSystem, A.PlatformSelector, A.Runtime, A.StackTraceFormatter, A.State, A.Suite, A.SuitePlatform, A.TestFailure, A.Engine, A.LiveSuite, A.LiveSuiteController, A.ExpandedReporter, A.RunnerSuiteController, A.SuiteConfiguration, A._IterableSet_Object_SetMixin, A.PrintSink, A.ReleasedException, A.Releasable, A.CacheStat, A.ConsoleToHtml, A.SequenceReplacement, A.HtmlLogger, A.LocalService, A.TestContext, A.TestException, A.TestResult, A.TestEntryPoints, A.UnexpectedException]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JavaScriptBigInt, J.JavaScriptSymbol, J.JSNumber, J.JSString]);
     _inheritMany(J.JavaScriptObject, [J.LegacyJavaScriptObject, J.JSArray, A.NativeByteBuffer, A.NativeTypedData, A.EventTarget, A.AccessibleNodeList, A.Blob, A.CssTransformComponent, A.CssRule, A._CssStyleDeclaration_JavaScriptObject_CssStyleDeclarationBase, A.CssStyleValue, A.DataTransferItemList, A.DomException, A.DomImplementation, A._DomRectList_JavaScriptObject_ListMixin, A.DomRectReadOnly, A._DomStringList_JavaScriptObject_ListMixin, A.DomTokenList, A.Event, A._FileList_JavaScriptObject_ListMixin, A.Gamepad, A.History, A._HtmlCollection_JavaScriptObject_ListMixin, A.ImageData, A.Location, A.MediaList, A._MidiInputMap_JavaScriptObject_MapMixin, A._MidiOutputMap_JavaScriptObject_MapMixin, A.MimeType, A._MimeTypeArray_JavaScriptObject_ListMixin, A._NodeList_JavaScriptObject_ListMixin, A.Plugin, A._PluginArray_JavaScriptObject_ListMixin, A._RtcStatsReport_JavaScriptObject_MapMixin, A.SharedArrayBuffer, A.SpeechGrammar, A._SpeechGrammarList_JavaScriptObject_ListMixin, A.SpeechRecognitionResult, A._Storage_JavaScriptObject_MapMixin, A.StyleSheet, A._TextTrackCueList_JavaScriptObject_ListMixin, A.TimeRanges, A.Touch, A._TouchList_JavaScriptObject_ListMixin, A.TrackDefaultList, A.Url, A.__CssRuleList_JavaScriptObject_ListMixin, A.__GamepadList_JavaScriptObject_ListMixin, A.__NamedNodeMap_JavaScriptObject_ListMixin, A.__SpeechRecognitionResultList_JavaScriptObject_ListMixin, A.__StyleSheetList_JavaScriptObject_ListMixin, A.Length, A._LengthList_JavaScriptObject_ListMixin, A.Number, A._NumberList_JavaScriptObject_ListMixin, A.PointList, A._StringList_JavaScriptObject_ListMixin, A.Transform, A._TransformList_JavaScriptObject_ListMixin, A.AudioBuffer, A._AudioParamMap_JavaScriptObject_MapMixin]);
     _inheritMany(J.LegacyJavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
@@ -49192,12 +54402,12 @@
     _inherit(A._CastListBase, A.__CastListBase__CastIterableBase_ListMixin);
     _inherit(A.CastList, A._CastListBase);
     _inheritMany(A.MapBase, [A.CastMap, A.JsLinkedHashMap, A._HashMap, A._AttributeMap]);
-    _inheritMany(A.Closure, [A.Closure2Args, A.Closure0Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_any_onValue, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A._Contains_matches_closure, A.CustomMatcher_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A._UnorderedMatches__test_closure, A._UnorderedMatches__findPairingInner_closure, A._wrapArgs_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A.openChannel_fail, A.openChannel_success, A.openChannel_$errorHandler, A.openChannel_$errorHandler_closure0, A.openChannel_closure, A.openChannel_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardMessage, A._WebChannel__getResponseStream_$sendRequest_$processBufferedItem, A._WebChannel__getResponseStream_$sendRequest__closure, A._WebChannel__getResponseStream_$sendRequest__closure0, A._WebChannel_sendRequest_$success, A._WebChannel_sendRequest_$fail, A.JsWorkerRunnerExt_get_handle_closure, A.ResultStream_$decodeStreamOfResponses, A.ResultStream_$decodeSingleResponse, A.ResultStream_$getStreamId, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner_processRequest_postError, A.WorkerRunner_processRequest_post, A.WorkerRunner__pipe_closure1, A.CastConverter__td_closure, A.CastConverter__ntd_closure, A.CastConverter_l_closure, A.CastConverter_l_closure0, A.CastConverter_nl_closure, A.CastConverter_nl_closure0, A.CastConverter_m_closure, A.CastConverter_m_closure0, A.CastConverter_nm_closure, A.CastConverter_nm_closure0, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.SquadronMarshalerExt_marshaler_closure, A.SquadronMarshalerExt_unmarshaler_closure, A.WorkerStreamTask__closure, A.WorkerStreamTask_execute_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.Worker_send_closure, A.Worker_stream_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A.execute___closure0, A.execute____closure2, A.execute____closure3, A.execute____closure4, A.execute___closure, A.execute____closure, A.execute____closure0, A.execute____closure1, A.execute____closure106, A.execute____closure107, A.execute____closure104, A.execute____closure105, A.execute____closure102, A.execute____closure103, A.execute____closure100, A.execute____closure101, A.execute____closure98, A.execute____closure99, A.execute____closure_$platformSensitive0, A.execute____closure_$platformSensitive, A.execute______closure56, A.execute______closure52, A.execute______closure46, A.execute______closure42, A.execute____closure_$test, A.execute______closure17, A.execute______closure14, A.execute______closure8, A.execute______closure4, A.execute_____closure168, A.execute____closure_hook0, A.execute_____closure167, A.execute____closure_hook, A.execute_____closure166, A.execute______closure93, A.execute______closure92, A.execute______closure91, A.execute_____closure162, A.execute_____closure161, A.execute_____closure160, A.execute_____closure159, A.execute_____closure158, A.execute_____closure157, A.execute_____closure156, A.execute_____closure_createTask0, A.execute_____closure155, A.execute_____closure_createTask, A.execute_____closure143, A.execute_____closure142, A.execute_____closure120, A.execute_____closure119, A.execute______closure81, A.execute_____closure118, A.execute______closure80, A.execute_____closure117, A.execute_____closure116, A.execute______closure79, A.execute_____closure115, A.execute______closure78, A.execute_____closure114, A.execute_____closure113, A.execute______closure77, A.execute_______closure0, A.execute_____closure112, A.execute______closure76, A.execute_______closure, A.execute____closure50, A.execute____closure49, A.execute_____closure121, A.execute_____closure42, A.execute_____closure41, A.execute_____closure36, A.execute_____closure37, A.execute_____closure38, A.execute_____closure39, A.execute_____closure40, A.execute_____closure31, A.execute_____closure32, A.execute_____closure33, A.execute_____closure34, A.execute_____closure35, A.execute_____closure27, A.execute______closure2, A.execute_____closure28, A.execute______closure0, A.execute______closure1, A.execute_____closure29, A.execute______closure, A.execute_____closure30, A.execute_____closure14, A.execute_____closure16, A.execute_____closure17, A.execute_____closure18, A.execute_____closure19, A.execute_____closure20, A.execute_____closure21, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure25, A.execute_____closure26, A.execute_____closure1, A.execute_____closure3, A.execute_____closure4, A.execute_____closure5, A.execute_____closure6, A.execute_____closure7, A.execute_____closure8, A.execute_____closure9, A.execute_____closure10, A.execute_____closure11, A.execute_____closure12, A.execute_____closure13, A.execute__closure_testInfiniteCancelation, A.execute__closure_testFinitePoolCancelation, A.execute___testFinitePoolCancelation_closure, A.execute___testFinitePoolCancelation_closure0, A.execute___testInfinitePoolCancelation_closure, A.execute___testInfinitePoolCancelation_closure0, A.execute__closure_testSum, A.execute____closure73, A.execute_____closure141, A.execute______closure89, A.execute______closure90, A.execute____closure72, A.execute_____closure140, A.execute______closure88, A.execute_____closure139, A.execute_____closure138, A.execute_____closure137, A.execute_____closure136, A.execute_____closure135, A.execute_____closure134, A.execute_____closure133, A.execute_____closure132, A.execute_____closure131, A.execute_____closure130, A.execute_____closure129, A.execute____closure60, A.execute____closure59, A.execute____closure58, A.execute_____closure128, A.execute______closure82, A.execute______closure83, A.execute______closure84, A.execute______closure85, A.execute_____closure127, A.execute_____closure126, A.execute_____closure125, A.execute_____closure124, A.execute_____closure123, A.execute_____closure122, A.execute_____closure0, A.execute_____closure, A.ConsoleToHtml_convert_closure, A.IssuesWorkerPool_issue_8_closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestContext_done_closure, A.TestContext_test_closure, A.runTests_closure, A.runTests_closure0, A.runTests_closure1, A.main_closure, A.main_closure0, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwException_closure, A.TestWorkerPool_throwWorkerException_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_infinite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.TestWorker_getPlatformType_closure]);
-    _inheritMany(A.Closure2Args, [A.CastMap_forEach_closure, A.ConstantMap_map_closure, A.Primitives_functionNoSuchMethod_closure, A.JsLinkedHashMap_addAll_closure, A.initHooks_closure0, A._awaitOnObject_closure0, A._wrapJsFunctionForAsync_closure, A.Future_wait_handleError, A.Future_any_onError, A.FutureExtensions_onError_onError, A._Future__chainForeignFuture_closure0, A.Stream_Stream$fromFuture_closure0, A._BufferingStreamSubscription_asFuture_closure0, A.HashMap_HashMap$from_closure, A.LinkedHashMap_LinkedHashMap$from_closure, A.MapBase_mapToString_closure, A._JsonStringifier_writeMap_closure, A._JsonPrettyPrintMixin_writeMap_closure, A._BigIntImpl_hashCode_combine, A.NoSuchMethodError_toString_closure, A.Uri_splitQueryString_closure, A.Uri__parseIPv4Address_error, A.Uri_parseIPv6Address_error, A.Uri_parseIPv6Address_parseHex, A._createTables_build, A.MidiInputMap_keys_closure, A.MidiInputMap_values_closure, A.MidiOutputMap_keys_closure, A.MidiOutputMap_values_closure, A.RtcStatsReport_keys_closure, A.RtcStatsReport_values_closure, A.Storage_keys_closure, A.Storage_values_closure, A._ValidatingTreeSanitizer_sanitizeTree_walk, A._StructuredClone_walk_closure, A._StructuredClone_walk_closure0, A._AcceptStructuredClone_walk_closure, A.AudioParamMap_keys_closure, A.AudioParamMap_values_closure, A.FutureGroup_add_closure0, A.StreamGroup__onCancelBroadcast_closure, A.mergeMaps_closure, A.UnionSet_length_closure, A._DeepMatcher__compareSets_closure0, A._DeepMatcher__recursiveMatch_closure, A._DeepMatcher__recursiveMatch_closure0, A._DeepMatcher__recursiveMatch_closure1, A._DeepMatcher__recursiveMatch_closure2, A._DeepMatcher__recursiveMatch_closure3, A._Mismatch$simple_closure, A.Pool__runOnRelease_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardError, A.ResultStream_$closeWithError, A.WorkerRunner__pipe_closure2, A.CastConverter_m__closure, A.CastConverter_nm__closure, A.WorkerPool_maxWorkload_closure, A.WorkerPool__provisionWorkers_closure1, A.Worker_stream__closure, A.Frame_Frame$parseV8_closure_parseLocation, A.Metadata_Metadata_closure, A.Metadata_validatePlatformSelectors_closure, A.Metadata_merge_closure, A.Metadata_merge_closure0, A.Metadata_forPlatform_closure, A.Engine_closure0, A.execute__closure_testFiniteCancelation, A.execute__closure_testInfinitePoolCancelation, A.execute______closure87, A.execute______closure86]);
+    _inheritMany(A.Closure, [A.Closure2Args, A.Closure0Args, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_values_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_any_onValue, A.Future_doWhile_closure, A._Future__chainForeignFuture_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A._createTables_setChars, A._createTables_setRange, A.Element_Element$html_closure, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.NodeValidatorBuilder_allowsElement_closure, A.NodeValidatorBuilder_allowsAttribute_closure, A._SimpleNodeValidator_closure, A._SimpleNodeValidator_closure0, A._TemplatingNodeValidator_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A._Contains_matches_closure, A.CustomMatcher_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A._UnorderedMatches__test_closure, A._UnorderedMatches__findPairingInner_closure, A._wrapArgs_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A.openChannel_fail, A.openChannel_success, A.openChannel_$errorHandler, A.openChannel_$errorHandler_closure0, A.openChannel_closure, A.openChannel_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardMessage, A._WebChannel__getResponseStream_$sendRequest_$processBufferedItem, A._WebChannel__getResponseStream_$sendRequest__closure, A._WebChannel__getResponseStream_$sendRequest__closure0, A._WebChannel_sendRequest_$success, A._WebChannel_sendRequest_$fail, A.JsWorkerRunnerExt_get_handle_closure, A.ResultStream_$decodeStreamOfResponses, A.ResultStream_$decodeSingleResponse, A.ResultStream_$getStreamId, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner_processRequest_postError, A.WorkerRunner_processRequest_post, A.WorkerRunner__pipe_closure1, A.Converter_nullable_closure, A.Converter_list_closure, A.Converter_list_closure0, A.Converter_map_closure, A.Converter_map_closure0, A.Converter__td_closure, A.InPlaceConverter__toList_closure, A.InPlaceConverter__toMap_closure, A.LazyInPlaceConverter__toList_closure, A.LazyInPlaceConverter__toMap_closure, A._LazyInPlaceList_contains_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerStreamTask__closure, A.WorkerStreamTask_execute_closure, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool__schedule_closure, A.WorkerPool__schedule_closure0, A.WorkerPool__schedule_closure1, A.WorkerPool_cancel_closure, A.Worker_send_closure, A.Worker_stream_closure, A.LogEventSerialization__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Declarer__setUpAll___closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A.execute____closure0, A.execute_____closure2, A.execute_____closure3, A.execute_____closure4, A.execute____closure, A.execute_____closure, A.execute_____closure0, A.execute_____closure1, A.execute____closure94, A.execute____closure95, A.execute____closure92, A.execute____closure93, A.execute____closure90, A.execute____closure91, A.execute____closure88, A.execute____closure89, A.execute____closure86, A.execute____closure87, A.testCastConverter__closure_$platformSensitive0, A.testCastConverter__closure_$platformSensitive, A.testCastConverter__closure_$test, A.testInPlaceCastConverter__closure_$platformSensitive0, A.testInPlaceCastConverter__closure_$platformSensitive, A.testLazyInPlaceCastConverter__closure_$platformSensitive0, A.testLazyInPlaceCastConverter__closure_$platformSensitive, A.execute_____closure105, A.execute____closure_hook0, A.execute_____closure104, A.execute____closure_hook, A.execute_____closure103, A.execute______closure20, A.execute______closure19, A.execute______closure18, A.execute_____closure99, A.execute_____closure98, A.execute_____closure97, A.execute_____closure96, A.execute_____closure95, A.execute_____closure94, A.execute_____closure93, A.execute_____closure_createTask0, A.execute_____closure92, A.execute_____closure_createTask, A.execute_____closure80, A.execute_____closure79, A.execute_____closure57, A.execute_____closure56, A.execute______closure8, A.execute_____closure55, A.execute______closure7, A.execute_____closure54, A.execute_____closure53, A.execute______closure6, A.execute_____closure52, A.execute______closure5, A.execute_____closure51, A.execute_____closure50, A.execute______closure4, A.execute_______closure0, A.execute_____closure49, A.execute______closure3, A.execute_______closure, A.execute____closure38, A.execute____closure37, A.execute_____closure58, A.execute_____closure48, A.execute_____closure47, A.execute_____closure42, A.execute_____closure43, A.execute_____closure44, A.execute_____closure45, A.execute_____closure46, A.execute_____closure37, A.execute_____closure38, A.execute_____closure39, A.execute_____closure40, A.execute_____closure41, A.execute_____closure33, A.execute______closure2, A.execute_____closure34, A.execute______closure0, A.execute______closure1, A.execute_____closure35, A.execute______closure, A.execute_____closure36, A.execute_____closure20, A.execute_____closure22, A.execute_____closure23, A.execute_____closure24, A.execute_____closure25, A.execute_____closure26, A.execute_____closure27, A.execute_____closure28, A.execute_____closure29, A.execute_____closure30, A.execute_____closure31, A.execute_____closure32, A.execute_____closure7, A.execute_____closure9, A.execute_____closure10, A.execute_____closure11, A.execute_____closure12, A.execute_____closure13, A.execute_____closure14, A.execute_____closure15, A.execute_____closure16, A.execute_____closure17, A.execute_____closure18, A.execute_____closure19, A.execute__closure_testInfiniteCancelation, A.execute__closure_testFinitePoolCancelation, A.execute___testFinitePoolCancelation_closure, A.execute___testFinitePoolCancelation_closure0, A.execute___testInfinitePoolCancelation_closure, A.execute___testInfinitePoolCancelation_closure0, A.execute__closure_testSum, A.execute____closure61, A.execute_____closure78, A.execute______closure16, A.execute______closure17, A.execute____closure60, A.execute_____closure77, A.execute______closure15, A.execute_____closure76, A.execute_____closure75, A.execute_____closure74, A.execute_____closure73, A.execute_____closure72, A.execute_____closure71, A.execute_____closure70, A.execute_____closure69, A.execute_____closure68, A.execute_____closure67, A.execute_____closure66, A.execute____closure48, A.execute____closure47, A.execute____closure46, A.execute_____closure65, A.execute______closure9, A.execute______closure10, A.execute______closure11, A.execute______closure12, A.execute_____closure64, A.execute_____closure63, A.execute_____closure62, A.execute_____closure61, A.execute_____closure60, A.execute_____closure59, A.execute_____closure6, A.execute_____closure5, A.ConsoleToHtml_convert_closure, A.IssuesWorkerPool_issue_8_closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.TestContext_done_closure, A.TestContext_test_closure, A.runTests_closure, A.runTests_closure0, A.runTests_closure1, A.main_closure, A.main_closure0, A.TestWorkerPool_io_closure, A.TestWorkerPool_delayed_closure, A.TestWorkerPool_throwException_closure, A.TestWorkerPool_throwWorkerException_closure, A.TestWorkerPool_throwTaskTimeOutException_closure, A.TestWorkerPool_throwCanceledException_closure, A.TestWorkerPool_throwCustomException_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_closure, A.TestWorkerPool_infinite_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.TestWorker_bigIntMarshaler_closure, A.TestWorker_bigIntUnmarshaler_closure, A.TestWorker_getPlatformType_closure]);
+    _inheritMany(A.Closure2Args, [A.CastMap_forEach_closure, A.ConstantMap_map_closure, A.Primitives_functionNoSuchMethod_closure, A.JsLinkedHashMap_addAll_closure, A.initHooks_closure0, A._awaitOnObject_closure0, A._wrapJsFunctionForAsync_closure, A.Future_wait_handleError, A.Future_any_onError, A.FutureExtensions_onError_onError, A._Future__chainForeignFuture_closure0, A.Stream_Stream$fromFuture_closure0, A._BufferingStreamSubscription_asFuture_closure0, A.HashMap_HashMap$from_closure, A.LinkedHashMap_LinkedHashMap$from_closure, A.MapBase_mapToString_closure, A._JsonStringifier_writeMap_closure, A._JsonPrettyPrintMixin_writeMap_closure, A._BigIntImpl_hashCode_combine, A.NoSuchMethodError_toString_closure, A.Uri_splitQueryString_closure, A.Uri__parseIPv4Address_error, A.Uri_parseIPv6Address_error, A.Uri_parseIPv6Address_parseHex, A._createTables_build, A.MidiInputMap_keys_closure, A.MidiInputMap_values_closure, A.MidiOutputMap_keys_closure, A.MidiOutputMap_values_closure, A.RtcStatsReport_keys_closure, A.RtcStatsReport_values_closure, A.Storage_keys_closure, A.Storage_values_closure, A._ValidatingTreeSanitizer_sanitizeTree_walk, A._StructuredClone_walk_closure, A._StructuredClone_walk_closure0, A._AcceptStructuredClone_walk_closure, A.AudioParamMap_keys_closure, A.AudioParamMap_values_closure, A.FutureGroup_add_closure0, A.StreamGroup__onCancelBroadcast_closure, A.mergeMaps_closure, A.UnionSet_length_closure, A._DeepMatcher__compareSets_closure0, A._DeepMatcher__recursiveMatch_closure, A._DeepMatcher__recursiveMatch_closure0, A._DeepMatcher__recursiveMatch_closure1, A._DeepMatcher__recursiveMatch_closure2, A._DeepMatcher__recursiveMatch_closure3, A._Mismatch$simple_closure, A.Pool__runOnRelease_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardError, A.ResultStream_$closeWithError, A.WorkerRunner__pipe_closure2, A.Converter_map__closure, A.WorkerPool__provisionWorkers_closure1, A.Worker_stream__closure, A.Frame_Frame$parseV8_closure_parseLocation, A.Metadata_Metadata_closure, A.Metadata_validatePlatformSelectors_closure, A.Metadata_merge_closure, A.Metadata_merge_closure0, A.Metadata_forPlatform_closure, A.Engine_closure0, A.execute__closure_testFiniteCancelation, A.execute__closure_testInfinitePoolCancelation, A.execute______closure14, A.execute______closure13]);
     _inheritMany(A.Error, [A.LateError, A.TypeError, A.JsNoSuchMethodError, A.UnknownJsTypeError, A._CyclicInitializationError, A.RuntimeError, A.AssertionError, A._Error, A.JsonUnsupportedObjectError, A.ArgumentError, A.NoSuchMethodError, A.UnsupportedError, A.UnimplementedError, A.StateError, A.ConcurrentModificationError]);
     _inheritMany(A.ListBase, [A.UnmodifiableListBase, A._ChildNodeListLazy]);
     _inheritMany(A.UnmodifiableListBase, [A.CodeUnits, A.UnmodifiableListView]);
-    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A._expect_closure0, A._expect_closure1, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A.openChannel_$errorHandler_closure, A.openChannel_$errorHandler__closure, A.openChannel_$errorHandler__closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure1, A._WebChannel__postRequest_closure, A._WebChannel__inspectAndPostRequest_closure, A._WebChannel__getResponseStream_$sendRequest, A._WebChannel__getResponseStream_$sendRequest_$close, A._WebChannel__getResponseStream_$sendRequest_closure, A._WebChannel_sendRequest_$done, A._WebForwardChannel__forward_closure, A._WebWorkerChannel__postResponse_closure, A._WebWorkerChannel__inspectAndPostResponse_closure, A.ResultStream_$onCancel, A.ResultStream_$onListen, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure, A.WorkerRunner__pipe_closure0, A.PoolWorker_run_closure, A.WorkerStreamTask_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_stream_closure0, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure, A.execute__closure, A.execute__closure0, A.execute_closure10, A.execute__closure13, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute___closure48, A.execute___closure49, A.execute_closure4, A.execute__closure7, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute___closure23, A.execute___closure24, A.execute___closure25, A.execute___closure26, A.execute_closure3, A.execute__closure6, A.execute___closure13, A.execute____closure35, A.execute_____closure105, A.execute_____closure106, A.execute_____closure107, A.execute______closure72, A.execute______closure73, A.execute______closure74, A.execute______closure75, A.execute_____closure108, A.execute______closure71, A.execute_____closure109, A.execute______closure69, A.execute______closure70, A.execute_____closure110, A.execute______closure67, A.execute______closure68, A.execute_____closure111, A.execute______closure65, A.execute______closure66, A.execute____closure36, A.execute_____closure98, A.execute_____closure99, A.execute_____closure100, A.execute_____closure101, A.execute______closure64, A.execute_____closure102, A.execute______closure62, A.execute______closure63, A.execute_____closure103, A.execute______closure60, A.execute______closure61, A.execute_____closure104, A.execute______closure58, A.execute______closure59, A.execute____closure37, A.execute_____closure90, A.execute______closure57, A.execute_____closure91, A.execute______closure55, A.execute_____closure92, A.execute______closure54, A.execute_____closure93, A.execute______closure53, A.execute_____closure94, A.execute______closure51, A.execute_____closure95, A.execute______closure50, A.execute_____closure96, A.execute______closure49, A.execute_____closure97, A.execute______closure48, A.execute____closure38, A.execute_____closure85, A.execute______closure47, A.execute_____closure86, A.execute______closure45, A.execute_____closure87, A.execute______closure44, A.execute_____closure88, A.execute______closure43, A.execute_____closure89, A.execute______closure41, A.execute____closure39, A.execute_____$test_closure, A.execute_____$test_closure0, A.execute_____closure70, A.execute_____closure71, A.execute_____closure72, A.execute_____closure73, A.execute_____closure74, A.execute_____closure75, A.execute_____closure76, A.execute_____closure77, A.execute_____closure78, A.execute_____closure79, A.execute_____closure80, A.execute_____closure81, A.execute_____closure82, A.execute_____closure83, A.execute_____closure84, A.execute___closure14, A.execute____closure31, A.execute_____closure63, A.execute_____closure64, A.execute_____closure65, A.execute______closure33, A.execute______closure34, A.execute______closure35, A.execute______closure36, A.execute______closure37, A.execute______closure38, A.execute______closure39, A.execute______closure40, A.execute_____closure66, A.execute______closure32, A.execute_____closure67, A.execute______closure30, A.execute______closure31, A.execute_____closure68, A.execute______closure28, A.execute______closure29, A.execute_____closure69, A.execute______closure26, A.execute______closure27, A.execute____closure32, A.execute_____closure56, A.execute_____closure57, A.execute_____closure58, A.execute_____closure59, A.execute______closure25, A.execute_____closure60, A.execute______closure23, A.execute______closure24, A.execute_____closure61, A.execute______closure21, A.execute______closure22, A.execute_____closure62, A.execute______closure19, A.execute______closure20, A.execute____closure33, A.execute_____closure48, A.execute______closure18, A.execute_____closure49, A.execute_____closure50, A.execute______closure16, A.execute_____closure51, A.execute______closure15, A.execute_____closure52, A.execute______closure13, A.execute_____closure53, A.execute______closure12, A.execute_____closure54, A.execute______closure11, A.execute_____closure55, A.execute______closure10, A.execute____closure34, A.execute_____closure43, A.execute______closure9, A.execute_____closure44, A.execute______closure7, A.execute_____closure45, A.execute______closure6, A.execute_____closure46, A.execute______closure5, A.execute_____closure47, A.execute______closure3, A.execute_closure9, A.execute__closure12, A.execute___closure42, A.execute____closure91, A.execute____closure92, A.execute____closure93, A.execute____closure94, A.execute____closure95, A.execute____closure96, A.execute_____closure163, A.execute_____closure164, A.execute_____closure165, A.execute____closure97, A.execute___closure43, A.execute____closure87, A.execute____closure88, A.execute____closure89, A.execute____closure90, A.execute___closure44, A.execute____closure83, A.execute____closure84, A.execute______createTask_closure0, A.execute____closure85, A.execute______createTask_closure, A.execute____closure86, A.execute_____closure144, A.execute_____closure145, A.execute_____closure146, A.execute_____closure147, A.execute_____closure148, A.execute_____closure149, A.execute_____closure150, A.execute_____closure151, A.execute_____closure152, A.execute_____closure153, A.execute_____closure154, A.execute_closure8, A.execute__closure11, A.execute___closure41, A.execute____closure74, A.execute____closure75, A.execute____closure76, A.execute____closure77, A.execute____closure78, A.execute____closure79, A.execute____closure80, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure81, A.execute____closure82, A.execute_closure5, A.execute__closure8, A.execute___closure27, A.execute____closure46, A.execute____closure47, A.execute____closure48, A.execute___closure28, A.execute____closure43, A.execute____closure44, A.execute____closure45, A.execute___closure29, A.execute____closure40, A.execute____closure41, A.execute____closure42, A.execute_closure6, A.execute__closure9, A.execute___closure30, A.execute___closure31, A.execute_closure1, A.execute__closure2, A.execute__closure3, A.execute__closure4, A.execute___closure2, A.execute____closure25, A.execute____closure26, A.execute____closure27, A.execute____closure28, A.execute____closure29, A.execute____closure30, A.execute___closure3, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute____closure22, A.execute____closure23, A.execute_____closure15, A.execute____closure24, A.execute_____closure2, A.execute___closure4, A.execute____closure15, A.execute____closure16, A.execute____closure17, A.execute____closure18, A.execute___closure5, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute____closure14, A.execute___closure6, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute____closure10, A.execute_closure2, A.execute__closure5, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.execute___closure11, A.execute___closure12, A.execute_closure7, A.execute__closure10, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute____closure69, A.execute____closure70, A.execute____closure71, A.execute___closure35, A.execute____closure63, A.execute____closure64, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute___closure36, A.execute____closure61, A.execute____closure62, A.execute___closure37, A.execute___closure38, A.execute___closure39, A.execute___closure40, A.execute____closure51, A.execute____closure52, A.execute____closure53, A.execute____closure54, A.execute____closure55, A.execute_____closure_pause, A.execute_____closure_resume, A.execute____closure56, A.execute____closure57, A.execute_closure0, A.execute__closure1, A.execute___closure1, A.execute____closure5, A.execute____closure6, A.IssuesWorkerPool_closure, A.LocalClientWorkerPool_closure, A.PrimeWorkerPool_closure, A.TestContext_test_closure0, A.TestContext_test__closure, A.TestContext_test__closure0, A.TestContext_test_closure1, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$missingStartRequest_closure, A.TestWorkerPool$invalid_closure]);
+    _inheritMany(A.Closure0Args, [A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainForeignFuture_closure1, A._Future__chainCoreFutureAsync_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteError_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A._expect_closure0, A._expect_closure1, A.Pool_close_closure, A.Pool__onResourceReleaseAllowed_closure, A.openChannel_$errorHandler_closure, A.openChannel_$errorHandler__closure, A.openChannel_$errorHandler__closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure1, A._WebChannel__postRequest_closure, A._WebChannel__inspectAndPostRequest_closure, A._WebChannel__getResponseStream_$sendRequest, A._WebChannel__getResponseStream_$sendRequest_$close, A._WebChannel__getResponseStream_$sendRequest_closure, A._WebChannel_sendRequest_$done, A._WebForwardChannel__forward_closure, A._WebWorkerChannel__postResponse_closure, A._WebWorkerChannel__inspectAndPostResponse_closure, A.ResultStream_$onCancel, A.ResultStream_$onListen, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure, A.WorkerRunner__pipe_closure0, A.PoolWorker_run_closure, A.WorkerStreamTask_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_stream_closure0, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__setUpAll_closure, A.Declarer__setUpAll__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure, A.execute__closure, A.execute___closure, A.execute___closure0, A.execute_closure10, A.execute__closure12, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute___closure48, A.execute___closure49, A.execute_closure4, A.execute__closure6, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute___closure19, A.execute___closure20, A.execute___closure21, A.execute___closure22, A.execute___closure23, A.execute___closure24, A.execute___closure25, A.execute___closure26, A.execute_closure3, A.execute__closure5, A.execute___closure13, A.execute___closure14, A.execute____closure27, A.testCastConverter_closure, A.testCastConverter__closure, A.testCastConverter___closure34, A.testCastConverter___closure35, A.testCastConverter___closure36, A.testCastConverter____closure26, A.testCastConverter____closure27, A.testCastConverter____closure28, A.testCastConverter____closure29, A.testCastConverter___closure37, A.testCastConverter____closure25, A.testCastConverter___closure38, A.testCastConverter____closure23, A.testCastConverter____closure24, A.testCastConverter___closure39, A.testCastConverter____closure21, A.testCastConverter____closure22, A.testCastConverter___closure40, A.testCastConverter____closure19, A.testCastConverter____closure20, A.testCastConverter__closure0, A.testCastConverter___closure27, A.testCastConverter___closure28, A.testCastConverter___closure29, A.testCastConverter___closure30, A.testCastConverter____closure18, A.testCastConverter___closure31, A.testCastConverter____closure16, A.testCastConverter____closure17, A.testCastConverter___closure32, A.testCastConverter____closure14, A.testCastConverter____closure15, A.testCastConverter___closure33, A.testCastConverter____closure12, A.testCastConverter____closure13, A.testCastConverter__closure1, A.testCastConverter___closure19, A.testCastConverter____closure11, A.testCastConverter___closure20, A.testCastConverter____closure10, A.testCastConverter___closure21, A.testCastConverter____closure9, A.testCastConverter___closure22, A.testCastConverter____closure8, A.testCastConverter___closure23, A.testCastConverter____closure7, A.testCastConverter___closure24, A.testCastConverter____closure6, A.testCastConverter___closure25, A.testCastConverter____closure5, A.testCastConverter___closure26, A.testCastConverter____closure4, A.testCastConverter__closure2, A.testCastConverter___closure14, A.testCastConverter____closure3, A.testCastConverter___closure15, A.testCastConverter____closure2, A.testCastConverter___closure16, A.testCastConverter____closure1, A.testCastConverter___closure17, A.testCastConverter____closure0, A.testCastConverter___closure18, A.testCastConverter____closure, A.testCastConverter__closure3, A.testCastConverter___$test_closure, A.testCastConverter___$test_closure0, A.testCastConverter___closure, A.testCastConverter___closure0, A.testCastConverter___closure1, A.testCastConverter___closure2, A.testCastConverter___closure3, A.testCastConverter___closure4, A.testCastConverter___closure5, A.testCastConverter___closure6, A.testCastConverter___closure7, A.testCastConverter___closure8, A.testCastConverter___closure9, A.testCastConverter___closure10, A.testCastConverter___closure11, A.testCastConverter___closure12, A.testCastConverter___closure13, A.testInPlaceCastConverter_closure, A.testInPlaceCastConverter__closure, A.testInPlaceCastConverter___closure19, A.testInPlaceCastConverter___closure20, A.testInPlaceCastConverter___closure21, A.testInPlaceCastConverter____closure26, A.testInPlaceCastConverter____closure27, A.testInPlaceCastConverter____closure28, A.testInPlaceCastConverter____closure29, A.testInPlaceCastConverter___closure22, A.testInPlaceCastConverter____closure25, A.testInPlaceCastConverter___closure23, A.testInPlaceCastConverter____closure23, A.testInPlaceCastConverter____closure24, A.testInPlaceCastConverter___closure24, A.testInPlaceCastConverter____closure21, A.testInPlaceCastConverter____closure22, A.testInPlaceCastConverter___closure25, A.testInPlaceCastConverter____closure19, A.testInPlaceCastConverter____closure20, A.testInPlaceCastConverter__closure0, A.testInPlaceCastConverter___closure12, A.testInPlaceCastConverter___closure13, A.testInPlaceCastConverter___closure14, A.testInPlaceCastConverter___closure15, A.testInPlaceCastConverter____closure18, A.testInPlaceCastConverter___closure16, A.testInPlaceCastConverter____closure16, A.testInPlaceCastConverter____closure17, A.testInPlaceCastConverter___closure17, A.testInPlaceCastConverter____closure14, A.testInPlaceCastConverter____closure15, A.testInPlaceCastConverter___closure18, A.testInPlaceCastConverter____closure12, A.testInPlaceCastConverter____closure13, A.testInPlaceCastConverter__closure1, A.testInPlaceCastConverter___closure4, A.testInPlaceCastConverter____closure11, A.testInPlaceCastConverter___closure5, A.testInPlaceCastConverter____closure10, A.testInPlaceCastConverter___closure6, A.testInPlaceCastConverter____closure9, A.testInPlaceCastConverter___closure7, A.testInPlaceCastConverter____closure8, A.testInPlaceCastConverter___closure8, A.testInPlaceCastConverter____closure7, A.testInPlaceCastConverter___closure9, A.testInPlaceCastConverter____closure6, A.testInPlaceCastConverter___closure10, A.testInPlaceCastConverter____closure5, A.testInPlaceCastConverter___closure11, A.testInPlaceCastConverter____closure4, A.testInPlaceCastConverter__closure2, A.testInPlaceCastConverter___closure, A.testInPlaceCastConverter____closure3, A.testInPlaceCastConverter___closure0, A.testInPlaceCastConverter____closure2, A.testInPlaceCastConverter___closure1, A.testInPlaceCastConverter____closure1, A.testInPlaceCastConverter___closure2, A.testInPlaceCastConverter____closure0, A.testInPlaceCastConverter___closure3, A.testInPlaceCastConverter____closure, A.testLazyInPlaceCastConverter_closure, A.testLazyInPlaceCastConverter__closure, A.testLazyInPlaceCastConverter___closure19, A.testLazyInPlaceCastConverter___closure20, A.testLazyInPlaceCastConverter___closure21, A.testLazyInPlaceCastConverter____closure26, A.testLazyInPlaceCastConverter____closure27, A.testLazyInPlaceCastConverter____closure28, A.testLazyInPlaceCastConverter____closure29, A.testLazyInPlaceCastConverter___closure22, A.testLazyInPlaceCastConverter____closure25, A.testLazyInPlaceCastConverter___closure23, A.testLazyInPlaceCastConverter____closure23, A.testLazyInPlaceCastConverter____closure24, A.testLazyInPlaceCastConverter___closure24, A.testLazyInPlaceCastConverter____closure21, A.testLazyInPlaceCastConverter____closure22, A.testLazyInPlaceCastConverter___closure25, A.testLazyInPlaceCastConverter____closure19, A.testLazyInPlaceCastConverter____closure20, A.testLazyInPlaceCastConverter__closure0, A.testLazyInPlaceCastConverter___closure12, A.testLazyInPlaceCastConverter___closure13, A.testLazyInPlaceCastConverter___closure14, A.testLazyInPlaceCastConverter___closure15, A.testLazyInPlaceCastConverter____closure18, A.testLazyInPlaceCastConverter___closure16, A.testLazyInPlaceCastConverter____closure16, A.testLazyInPlaceCastConverter____closure17, A.testLazyInPlaceCastConverter___closure17, A.testLazyInPlaceCastConverter____closure14, A.testLazyInPlaceCastConverter____closure15, A.testLazyInPlaceCastConverter___closure18, A.testLazyInPlaceCastConverter____closure12, A.testLazyInPlaceCastConverter____closure13, A.testLazyInPlaceCastConverter__closure1, A.testLazyInPlaceCastConverter___closure4, A.testLazyInPlaceCastConverter____closure11, A.testLazyInPlaceCastConverter___closure5, A.testLazyInPlaceCastConverter____closure10, A.testLazyInPlaceCastConverter___closure6, A.testLazyInPlaceCastConverter____closure9, A.testLazyInPlaceCastConverter___closure7, A.testLazyInPlaceCastConverter____closure8, A.testLazyInPlaceCastConverter___closure8, A.testLazyInPlaceCastConverter____closure7, A.testLazyInPlaceCastConverter___closure9, A.testLazyInPlaceCastConverter____closure6, A.testLazyInPlaceCastConverter___closure10, A.testLazyInPlaceCastConverter____closure5, A.testLazyInPlaceCastConverter___closure11, A.testLazyInPlaceCastConverter____closure4, A.testLazyInPlaceCastConverter__closure2, A.testLazyInPlaceCastConverter___closure, A.testLazyInPlaceCastConverter____closure3, A.testLazyInPlaceCastConverter___closure0, A.testLazyInPlaceCastConverter____closure2, A.testLazyInPlaceCastConverter___closure1, A.testLazyInPlaceCastConverter____closure1, A.testLazyInPlaceCastConverter___closure2, A.testLazyInPlaceCastConverter____closure0, A.testLazyInPlaceCastConverter___closure3, A.testLazyInPlaceCastConverter____closure, A.testNumConverter_closure, A.testNumConverter__closure, A.testNumConverter___closure19, A.testNumConverter___closure20, A.testNumConverter___closure21, A.testNumConverter____closure25, A.testNumConverter____closure26, A.testNumConverter____closure27, A.testNumConverter____closure28, A.testNumConverter____closure29, A.testNumConverter____closure30, A.testNumConverter____closure31, A.testNumConverter____closure32, A.testNumConverter___closure22, A.testNumConverter____closure24, A.testNumConverter___closure23, A.testNumConverter____closure22, A.testNumConverter____closure23, A.testNumConverter___closure24, A.testNumConverter____closure20, A.testNumConverter____closure21, A.testNumConverter___closure25, A.testNumConverter____closure18, A.testNumConverter____closure19, A.testNumConverter__closure0, A.testNumConverter___closure12, A.testNumConverter___closure13, A.testNumConverter___closure14, A.testNumConverter___closure15, A.testNumConverter____closure17, A.testNumConverter___closure16, A.testNumConverter____closure15, A.testNumConverter____closure16, A.testNumConverter___closure17, A.testNumConverter____closure13, A.testNumConverter____closure14, A.testNumConverter___closure18, A.testNumConverter____closure11, A.testNumConverter____closure12, A.testNumConverter__closure1, A.testNumConverter___closure4, A.testNumConverter____closure10, A.testNumConverter___closure5, A.testNumConverter___closure6, A.testNumConverter____closure9, A.testNumConverter___closure7, A.testNumConverter____closure8, A.testNumConverter___closure8, A.testNumConverter____closure7, A.testNumConverter___closure9, A.testNumConverter____closure6, A.testNumConverter___closure10, A.testNumConverter____closure5, A.testNumConverter___closure11, A.testNumConverter____closure4, A.testNumConverter__closure2, A.testNumConverter___closure, A.testNumConverter____closure3, A.testNumConverter___closure0, A.testNumConverter____closure2, A.testNumConverter___closure1, A.testNumConverter____closure1, A.testNumConverter___closure2, A.testNumConverter____closure0, A.testNumConverter___closure3, A.testNumConverter____closure, A.testInPlaceNumConverter_closure, A.testInPlaceNumConverter__closure, A.testInPlaceNumConverter___closure19, A.testInPlaceNumConverter___closure20, A.testInPlaceNumConverter___closure21, A.testInPlaceNumConverter____closure26, A.testInPlaceNumConverter____closure27, A.testInPlaceNumConverter____closure28, A.testInPlaceNumConverter____closure29, A.testInPlaceNumConverter____closure30, A.testInPlaceNumConverter____closure31, A.testInPlaceNumConverter____closure32, A.testInPlaceNumConverter____closure33, A.testInPlaceNumConverter___closure22, A.testInPlaceNumConverter____closure25, A.testInPlaceNumConverter___closure23, A.testInPlaceNumConverter____closure23, A.testInPlaceNumConverter____closure24, A.testInPlaceNumConverter___closure24, A.testInPlaceNumConverter____closure21, A.testInPlaceNumConverter____closure22, A.testInPlaceNumConverter___closure25, A.testInPlaceNumConverter____closure19, A.testInPlaceNumConverter____closure20, A.testInPlaceNumConverter__closure0, A.testInPlaceNumConverter___closure12, A.testInPlaceNumConverter___closure13, A.testInPlaceNumConverter___closure14, A.testInPlaceNumConverter___closure15, A.testInPlaceNumConverter____closure18, A.testInPlaceNumConverter___closure16, A.testInPlaceNumConverter____closure16, A.testInPlaceNumConverter____closure17, A.testInPlaceNumConverter___closure17, A.testInPlaceNumConverter____closure14, A.testInPlaceNumConverter____closure15, A.testInPlaceNumConverter___closure18, A.testInPlaceNumConverter____closure12, A.testInPlaceNumConverter____closure13, A.testInPlaceNumConverter__closure1, A.testInPlaceNumConverter___closure4, A.testInPlaceNumConverter____closure11, A.testInPlaceNumConverter___closure5, A.testInPlaceNumConverter____closure10, A.testInPlaceNumConverter___closure6, A.testInPlaceNumConverter____closure9, A.testInPlaceNumConverter___closure7, A.testInPlaceNumConverter____closure8, A.testInPlaceNumConverter___closure8, A.testInPlaceNumConverter____closure7, A.testInPlaceNumConverter___closure9, A.testInPlaceNumConverter____closure6, A.testInPlaceNumConverter___closure10, A.testInPlaceNumConverter____closure5, A.testInPlaceNumConverter___closure11, A.testInPlaceNumConverter____closure4, A.testInPlaceNumConverter__closure2, A.testInPlaceNumConverter___closure, A.testInPlaceNumConverter____closure3, A.testInPlaceNumConverter___closure0, A.testInPlaceNumConverter____closure2, A.testInPlaceNumConverter___closure1, A.testInPlaceNumConverter____closure1, A.testInPlaceNumConverter___closure2, A.testInPlaceNumConverter____closure0, A.testInPlaceNumConverter___closure3, A.testInPlaceNumConverter____closure, A.testLazyInPlaceNumConverter_closure, A.testLazyInPlaceNumConverter__closure, A.testLazyInPlaceNumConverter___closure19, A.testLazyInPlaceNumConverter___closure20, A.testLazyInPlaceNumConverter___closure21, A.testLazyInPlaceNumConverter____closure26, A.testLazyInPlaceNumConverter____closure27, A.testLazyInPlaceNumConverter____closure28, A.testLazyInPlaceNumConverter____closure29, A.testLazyInPlaceNumConverter____closure30, A.testLazyInPlaceNumConverter____closure31, A.testLazyInPlaceNumConverter____closure32, A.testLazyInPlaceNumConverter____closure33, A.testLazyInPlaceNumConverter___closure22, A.testLazyInPlaceNumConverter____closure25, A.testLazyInPlaceNumConverter___closure23, A.testLazyInPlaceNumConverter____closure23, A.testLazyInPlaceNumConverter____closure24, A.testLazyInPlaceNumConverter___closure24, A.testLazyInPlaceNumConverter____closure21, A.testLazyInPlaceNumConverter____closure22, A.testLazyInPlaceNumConverter___closure25, A.testLazyInPlaceNumConverter____closure19, A.testLazyInPlaceNumConverter____closure20, A.testLazyInPlaceNumConverter__closure0, A.testLazyInPlaceNumConverter___closure12, A.testLazyInPlaceNumConverter___closure13, A.testLazyInPlaceNumConverter___closure14, A.testLazyInPlaceNumConverter___closure15, A.testLazyInPlaceNumConverter____closure18, A.testLazyInPlaceNumConverter___closure16, A.testLazyInPlaceNumConverter____closure16, A.testLazyInPlaceNumConverter____closure17, A.testLazyInPlaceNumConverter___closure17, A.testLazyInPlaceNumConverter____closure14, A.testLazyInPlaceNumConverter____closure15, A.testLazyInPlaceNumConverter___closure18, A.testLazyInPlaceNumConverter____closure12, A.testLazyInPlaceNumConverter____closure13, A.testLazyInPlaceNumConverter__closure1, A.testLazyInPlaceNumConverter___closure4, A.testLazyInPlaceNumConverter____closure11, A.testLazyInPlaceNumConverter___closure5, A.testLazyInPlaceNumConverter____closure10, A.testLazyInPlaceNumConverter___closure6, A.testLazyInPlaceNumConverter____closure9, A.testLazyInPlaceNumConverter___closure7, A.testLazyInPlaceNumConverter____closure8, A.testLazyInPlaceNumConverter___closure8, A.testLazyInPlaceNumConverter____closure7, A.testLazyInPlaceNumConverter___closure9, A.testLazyInPlaceNumConverter____closure6, A.testLazyInPlaceNumConverter___closure10, A.testLazyInPlaceNumConverter____closure5, A.testLazyInPlaceNumConverter___closure11, A.testLazyInPlaceNumConverter____closure4, A.testLazyInPlaceNumConverter__closure2, A.testLazyInPlaceNumConverter___closure, A.testLazyInPlaceNumConverter____closure3, A.testLazyInPlaceNumConverter___closure0, A.testLazyInPlaceNumConverter____closure2, A.testLazyInPlaceNumConverter___closure1, A.testLazyInPlaceNumConverter____closure1, A.testLazyInPlaceNumConverter___closure2, A.testLazyInPlaceNumConverter____closure0, A.testLazyInPlaceNumConverter___closure3, A.testLazyInPlaceNumConverter____closure, A.execute_closure9, A.execute__closure11, A.execute___closure42, A.execute____closure79, A.execute____closure80, A.execute____closure81, A.execute____closure82, A.execute____closure83, A.execute____closure84, A.execute_____closure100, A.execute_____closure101, A.execute_____closure102, A.execute____closure85, A.execute___closure43, A.execute____closure75, A.execute____closure76, A.execute____closure77, A.execute____closure78, A.execute___closure44, A.execute____closure71, A.execute____closure72, A.execute______createTask_closure0, A.execute____closure73, A.execute______createTask_closure, A.execute____closure74, A.execute_____closure81, A.execute_____closure82, A.execute_____closure83, A.execute_____closure84, A.execute_____closure85, A.execute_____closure86, A.execute_____closure87, A.execute_____closure88, A.execute_____closure89, A.execute_____closure90, A.execute_____closure91, A.execute_closure8, A.execute__closure10, A.execute___closure41, A.execute____closure62, A.execute____closure63, A.execute____closure64, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute____closure68, A.execute____closure_pause, A.execute____closure_resume, A.execute____closure69, A.execute____closure70, A.execute_closure5, A.execute__closure7, A.execute___closure27, A.execute____closure34, A.execute____closure35, A.execute____closure36, A.execute___closure28, A.execute____closure31, A.execute____closure32, A.execute____closure33, A.execute___closure29, A.execute____closure28, A.execute____closure29, A.execute____closure30, A.execute_closure6, A.execute__closure8, A.execute___closure30, A.execute___closure31, A.execute_closure1, A.execute__closure1, A.execute__closure2, A.execute__closure3, A.execute___closure2, A.execute____closure21, A.execute____closure22, A.execute____closure23, A.execute____closure24, A.execute____closure25, A.execute____closure26, A.execute___closure3, A.execute____closure15, A.execute____closure16, A.execute____closure17, A.execute____closure18, A.execute____closure19, A.execute_____closure21, A.execute____closure20, A.execute_____closure8, A.execute___closure4, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute____closure14, A.execute___closure5, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute____closure10, A.execute___closure6, A.execute____closure3, A.execute____closure4, A.execute____closure5, A.execute____closure6, A.execute_closure2, A.execute__closure4, A.execute___closure7, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.execute___closure11, A.execute___closure12, A.execute_closure7, A.execute__closure9, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute____closure57, A.execute____closure58, A.execute____closure59, A.execute___closure35, A.execute____closure51, A.execute____closure52, A.execute____closure53, A.execute____closure54, A.execute____closure55, A.execute____closure56, A.execute___closure36, A.execute____closure49, A.execute____closure50, A.execute___closure37, A.execute___closure38, A.execute___closure39, A.execute___closure40, A.execute____closure39, A.execute____closure40, A.execute____closure41, A.execute____closure42, A.execute____closure43, A.execute_____closure_pause, A.execute_____closure_resume, A.execute____closure44, A.execute____closure45, A.execute_closure0, A.execute__closure0, A.execute___closure1, A.execute____closure1, A.execute____closure2, A.IssuesWorkerPool_closure, A.LocalClientWorkerPool_closure, A.PrimeWorkerPool_closure, A.TestContext_test_closure0, A.TestContext_test__closure, A.TestContext_test__closure0, A.TestContext_test_closure1, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$missingStartRequest_closure, A.TestWorkerPool$invalid_closure]);
     _inheritMany(A.EfficientLengthIterable, [A.ListIterable, A.EmptyIterable, A.LinkedHashMapKeyIterable, A._HashMapKeyIterable, A._MapBaseValueIterable]);
     _inheritMany(A.ListIterable, [A.SubListIterable, A.MappedListIterable, A.ReversedListIterable, A.ListQueue, A._GeneratorIterable]);
     _inherit(A.EfficientLengthMappedIterable, A.MappedIterable);
@@ -49347,6 +54557,7 @@
     _inheritMany(A.Logger, [A.InternalLogger, A.MemoryLogger]);
     _inheritMany(A.LogOutput, [A._NoLogOutput, A.NoOutput]);
     _inheritMany(A.LogPrinter, [A._DummyPrinter, A.EmptyPrinter]);
+    _inheritMany(A.Converter0, [A.CastConverter, A.InPlaceConverter, A.LazyInPlaceConverter]);
     _inherit(A.NumConverter, A.CastConverter);
     _inheritMany(A.SquadronException, [A.SquadronCanceledException, A.SquadronError, A.WorkerException]);
     _inherit(A.SquadronTimeoutException, A.SquadronCanceledException);
@@ -49444,7 +54655,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map"},
     mangledNames: {},
-    types: ["Future<Null>()", "~()", "Null()", "bool(String)", "Future<Null>(TestWorkerPool)", "int()", "int(@)", "String()", "Future<~>()", "Null(@)", "int?()", "~(TestContext?)", "bool(@)", "~(@)", "Future<Null>(TestWorker)", "Map<String,int>()", "Future<Null>(LocalWorker<LocalServiceImpl>)", "~(String,@)", "double()", "String(String)", "~(Event)", "Future<int>(TestWorker)", "bool(ValueTask<@>)", "bool(Object?)", "List<int>()", "~(Object?)", "~(Description,bool)", "Trace()", "~(MessageEvent)", "double?()", "bool(StreamTask<@>)", "~(List<@>)", "Stream<int>(TestWorker)", "~(@,@)", "Frame()", "bool(List<@>)", "~(Object,StackTrace)", "Chain()", "Frame(String)", "Future<@>()", "List<double>()", "Null(@,@)", "Null(Object,StackTrace)", "~(bool)", "TestWorker()", "~(Object[StackTrace?])", "~(JSObject)", "~(Timer)", "Future<Null>(PrimeWorkerPool)", "bool(Frame)", "int(int,WorkerStat)", "~(Object?,Object?)", "Future<Null>(CacheWorker)", "Future<Null>(LocalClientWorker)", "~(int)", "~(~())", "Future<Null>(InstallableWorker)", "~(State)", "Future<Null>(LocalClientWorkerPool)", "Null(JSObject)", "int(int,int)", "Trace(String)", "int(int)", "bool(NodeValidator)", "@(@)", "~(JSObject?)", "List<int?>()", "~(Uint8List,String,int)", "List<double?>()", "bool(Channel)", "Future<Null>(NotAWorker)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "Future<@>(Duration)", "GroupEntry?(GroupEntry)", "~(Object,StackTrace?)", "@(Function)", "Null(CanceledException)", "@(Map<String,@>)", "Object?(Object?)", "~(String,String)", "String(Frame)", "Future<~>(StreamTask<@>)", "bool()", "int(List<int>)", "~(Zone,ZoneDelegate,Zone,String)", "bool(~)", "int(Frame)", "bool(WorkerTask<@,Worker0>)", "~([Future<~>?])", "@()", "bool(Element,String,String,_Html5NodeValidator)", "TypedData?()", "~(~)", "CancelationTokenReference()", "~([Object?])", "String(CanceledException)", "Trace(Trace)", "bool(Trace)", "List<Frame>(Trace)", "int(Trace)", "Future<~>([CanceledException?])", "String(Trace)", "~(CanceledException)", "CanceledException?(CancelationToken)", "Frame(String,String)", "Frame(Frame)", "GroupEntry(GroupEntry)", "Null(@,StackTrace)", "DevelopmentFilter()", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "_Future<@>(@)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~(Symbol0,@)", "_Mismatch?(Object?,Object?,String,int)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "bool(Node)", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "Map<String,String>(Map<String,String>,String)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "bool(int?)", "~(double{nullable!bool})", "bool(int)", "~(int{nullable!bool})", "String(Object?,int,Set<Object?>,bool)", "String(Object?)", "String(@)", "String(Match)", "String(String?)", "Future<List<@>>()", "~(SquadronException)", "~(Channel)", "Future<~>(@,0^{nullable!bool})<TypedData>", "~(String,int)", "~(String,int?)", "Null(bool)", "Future<Null>(MissingWorker)", "~(int,@)", "Uint8List(@,@)", "Stream<List<@>>()", "Null(~())", "~(+err,item,st(Object?,List<@>?,StackTrace?))", "@(@,String)", "~(Object[StackTrace?,int?])", "Future<Null>(PrimeWorker)", "Future<int?>(StreamSubscription<@>)", "~(WorkerRunner)", "~(@,StackTrace)", "~([Future<@>?])", "Future<+digits,exception(List<int>,Object?)>(int,CancelationToken)", "Future<+digits,exception(List<int>,Object?)>(CancelationToken)", "0^(@)<Object?>", "SquadronCanceledException(CanceledException)", "Future<+errors,success(int,int)>(int,CancelationToken)", "Future<BigInt>({marshalIn!bool,marshalOut!bool})", "String(SquadronCanceledException)", "int(WorkerStat)", "List<@>(SquadronCanceledException)", "bool(TestWorker)", "String(SquadronException)", "Future<Null>(IssuesWorker)", "Future<Null>(IssuesWorkerPool)", "bool(SequenceReplacement)", "IssuesWorker()", "Stream<Map<String,int>>(IssuesWorker)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<Map<String,@>>(LocalClientWorker)", "String(List<@>)", "Stream<int>(List<@>)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "bool(Pattern)", "0&()", "String(Pattern)", "@(String)", "Future<~>(TestWorker)", "bool/()", "Future<bool>(TestWorker)", "Null(Channel)", "SquadronPlatformType(@)", "int(@,@)", "bool(Pattern[int])", "~(Object?[Object?])", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "~(Node,Node?)", "0^(0^,0^)<num>", "0^(0^)<Object?>", "Matcher(Object?)", "double(@)", "int?(@)", "double?(@)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "int(PoolWorker<Worker0>,PoolWorker<Worker0>)", "bool(PoolWorker<Worker0>)", "WorkerStat(PoolWorker<Worker0>)", "~([@])", "@(@,@)", "bool(Level)", "CustomException?(List<@>)", "ByteData(ByteBuffer[int,int?])", "Int8List(ByteBuffer[int,int?])", "Uint8List(ByteBuffer[int,int?])", "Uint8ClampedList(ByteBuffer[int,int?])", "Int16List(ByteBuffer[int,int?])", "Uint16List(ByteBuffer[int,int?])", "Int32List(ByteBuffer[int,int?])", "Uint32List(ByteBuffer[int,int?])", "Int64List(ByteBuffer[int,int?])", "Uint64List(ByteBuffer[int,int?])", "Float32List(ByteBuffer[int,int?])", "Float64List(ByteBuffer[int,int?])", "Float32x4List(ByteBuffer[int,int?])", "Int32x4List(ByteBuffer[int,int?])", "Float64x2List(ByteBuffer[int,int?])", "Future<+errors,success(int,int)>(int,int,CancelationToken)"],
+    types: ["Future<Null>()", "Null()", "~()", "int()", "int?()", "Map<String,int>()", "bool(String)", "double()", "List<int>()", "Future<Null>(TestWorkerPool)", "double?()", "String()", "Future<~>()", "List<double>()", "Null(@)", "bool(@)", "~(TestContext?)", "Future<Null>(TestWorker)", "~(@)", "Future<Null>(LocalWorker<LocalServiceImpl>)", "~(String,@)", "int(@)", "bool(ValueTask<@>)", "Future<int>(TestWorker)", "String(String)", "~(Event)", "bool(Object?)", "~(Description,bool)", "~(Object?)", "~(MessageEvent)", "Trace()", "bool(StreamTask<@>)", "List<double?>()", "List<int?>()", "Stream<int>(TestWorker)", "~(@,@)", "~(List<@>)", "Frame()", "~(Object,StackTrace)", "bool(List<@>)", "TestWorker()", "Future<@>()", "~(JSObject)", "Null(@,@)", "Chain()", "Null(Object,StackTrace)", "~(bool)", "~(Object[StackTrace?])", "Frame(String)", "~(Timer)", "bool(Frame)", "Future<Null>(LocalClientWorkerPool)", "~(State)", "Future<Null>(PrimeWorkerPool)", "Future<Null>(LocalClientWorker)", "~(Object?,Object?)", "~(int)", "Future<Null>(InstallableWorker)", "~(int{nullable!bool})", "~(~())", "Null(JSObject)", "~(double{nullable!bool})", "Future<Null>(CacheWorker)", "Trace(String)", "Future<Null>(NotAWorker)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "~(Zone,ZoneDelegate,Zone,String)", "GroupEntry?(GroupEntry)", "@(Function)", "String(Frame)", "int(Frame)", "~(~)", "Future<@>(Duration)", "bool(WorkerTask<@,Worker0>)", "bool(~)", "bool()", "~(Object,StackTrace?)", "@(Map<String,@>)", "Null(CanceledException)", "~(JSObject?)", "String(@)", "Object?(Object?)", "Future<~>(StreamTask<@>)", "bool(NodeValidator)", "int(List<int>)", "~(String,String)", "~(Uint8List,String,int)", "int(int,WorkerStat)", "int(int)", "int(int,int)", "@()", "~([Future<~>?])", "bool(Element,String,String,_Html5NodeValidator)", "@(@)", "bool(Channel)", "~(WorkerRunner)", "bool(Trace)", "List<Frame>(Trace)", "int(Trace)", "Future<~>([CanceledException?])", "String(Trace)", "~(CanceledException)", "CanceledException?(CancelationToken)", "Frame(String,String)", "Frame(Frame)", "GroupEntry(GroupEntry)", "Null(@,StackTrace)", "DevelopmentFilter()", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "_Future<@>(@)", "Metadata()", "Metadata(Metadata,BooleanSelector)", "~(Symbol0,@)", "_Mismatch?(Object?,Object?,String,int)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "Future<@>?()", "bool(Node)", "~(LiveTest)", "~(bool?)", "~(AsyncError)", "~(Message)", "Future<bool?>?()", "OperatingSystem()", "Map<String,String>(Map<String,String>,String)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "bool(int?)", "bool(int)", "String(Object?,int,Set<Object?>,bool)", "String(Object?)", "~(String,int)", "String(Match)", "String(String?)", "Future<List<@>>()", "~(SquadronException)", "~(Channel)", "~(String,int?)", "Future<~>(@,0^)<TypedData>", "TypedData()", "~(int,@)", "Null(bool)", "Future<Null>(MissingWorker)", "Uint8List(@,@)", "Null(~())", "Stream<List<@>>()", "@(@,String)", "~(+err,item,st(Object?,List<@>?,StackTrace?))", "~(@,StackTrace)", "~(Object[StackTrace?,int?])", "Future<Null>(PrimeWorker)", "Future<int?>(StreamSubscription<@>)", "~([Future<@>?])", "CancelationTokenReference()", "@(String)", "SquadronCanceledException(CanceledException)", "Future<+digits,exception(List<int>,Object?)>(int,CancelationToken)", "Future<+digits,exception(List<int>,Object?)>(CancelationToken)", "Float64x2List(ByteBuffer[int,int?])", "String(SquadronCanceledException)", "Future<+errors,success(int,int)>(int,CancelationToken)", "Future<BigInt>({marshalIn!bool,marshalOut!bool})", "List<@>(SquadronCanceledException)", "int(WorkerStat)", "bool/()", "bool(TestWorker)", "Null(Channel)", "String(SquadronException)", "Future<Null>(IssuesWorker)", "Future<Null>(IssuesWorkerPool)", "bool(SequenceReplacement)", "IssuesWorker()", "Stream<Map<String,int>>(IssuesWorker)", "LocalClientWorker()", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<Map<String,@>>(LocalClientWorker)", "String(List<@>)", "Stream<int>(List<@>)", "PrimeWorker()", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "bool(Pattern)", "0&()", "String(Pattern)", "bool(Pattern[int])", "Future<~>(TestWorker)", "~(Node,Node?)", "Future<bool>(TestWorker)", "~([@])", "BigInt(@)", "SquadronPlatformType(@)", "int(@,@)", "@(@,@)", "~(Object?[Object?])", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "bool(Level)", "0^(0^,0^)<num>", "0^(0^)<Object?>", "Matcher(Object?)", "0^(@)<Object?>", "double(@)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "WorkerException?(List<@>)", "int(PoolWorker<Worker0>,PoolWorker<Worker0>)", "bool(PoolWorker<Worker0>)", "WorkerStat(PoolWorker<Worker0>)", "~([Object?])", "String(CanceledException)", "Trace(Trace)", "CustomException?(List<@>)", "ByteData(ByteBuffer[int,int?])", "Int8List(ByteBuffer[int,int?])", "Uint8List(ByteBuffer[int,int?])", "Uint8ClampedList(ByteBuffer[int,int?])", "Int16List(ByteBuffer[int,int?])", "Uint16List(ByteBuffer[int,int?])", "Int32List(ByteBuffer[int,int?])", "Uint32List(ByteBuffer[int,int?])", "Int64List(ByteBuffer[int,int?])", "Uint64List(ByteBuffer[int,int?])", "Float32List(ByteBuffer[int,int?])", "Float64List(ByteBuffer[int,int?])", "Float32x4List(ByteBuffer[int,int?])", "Int32x4List(ByteBuffer[int,int?])", "Future<+errors,success(int,int)>(int,int,CancelationToken)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti"),
@@ -49455,7 +54666,7 @@
       "3;err,item,st": (t1, t2, t3) => o => o instanceof A._Record_3_err_item_st && t1._is(o._0) && t2._is(o._1) && t3._is(o._2)
     }
   };
-  A._Universe_addRules(init.typeUniverse, JSON.parse('{"JavaScriptFunction":"LegacyJavaScriptObject","PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","KeyframeEffect":"JavaScriptObject","KeyframeEffectReadOnly":"JavaScriptObject","AnimationEffectReadOnly":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AudioContext":"BaseAudioContext","AbsoluteOrientationSensor":"EventTarget","OrientationSensor":"EventTarget","Sensor":"EventTarget","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","VttCue":"TextTrackCue","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","HtmlFormControlsCollection":"HtmlCollection","CssCharsetRule":"CssRule","CssMatrixComponent":"CssTransformComponent","CssStyleSheet":"StyleSheet","CssurlImageValue":"CssStyleValue","CssImageValue":"CssStyleValue","CssResourceValue":"CssStyleValue","JSBool":{"bool":[],"TrustedGetRuntimeType":[]},"JSNull":{"Null":[],"TrustedGetRuntimeType":[]},"JavaScriptObject":{"JSObject":[]},"LegacyJavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"JSObject":[],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"JSObject":[],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"],"TrustedGetRuntimeType":[]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"],"TrustedGetRuntimeType":[]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"TrustedGetRuntimeType":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_CastListBase":{"ListBase":["2"],"List":["2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"]},"CastList":{"_CastListBase":["1","2"],"ListBase":["2"],"List":["2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListBase.E":"2","Iterable.E":"2"},"CastMap":{"MapBase":["3","4"],"Map":["3","4"],"MapBase.K":"3","MapBase.V":"4"},"LateError":{"Error":[]},"CodeUnits":{"ListBase":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListBase.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2","ListIterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"FollowedByIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthFollowedByIterable":{"FollowedByIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"FollowedByIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"NonNullsIterable":{"Iterable":["1"],"Iterable.E":"1"},"NonNullsIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListBase":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"Symbol":{"Symbol0":[]},"_Record_2_digits_ex78ception":{"_Record2":[],"_Record":[]},"_Record_2_errors_success":{"_Record2":[],"_Record":[]},"_Record_2_runner_script":{"_Record2":[],"_Record":[]},"_Record_3_err_item_st":{"_Record3":[],"_Record":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_KeysOrValues":{"Iterable":["1"],"Iterable.E":"1"},"_KeysOrValuesOrElementsIterator":{"Iterator":["1"]},"ConstantSet":{"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ConstantStringSet":{"ConstantSet":["1"],"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"GeneralConstantSet":{"ConstantSet":["1"],"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"_CyclicInitializationError":{"Error":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapBase":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JsConstantLinkedHashMap":{"JsLinkedHashMap":["1","2"],"MapBase":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_Record2":{"_Record":[]},"_Record3":{"_Record":[]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"JSObject":[],"ByteBuffer":[],"TrustedGetRuntimeType":[]},"NativeFloat32x4List":{"Float32x4List":[],"ListBase":["Float32x4"],"List":["Float32x4"],"EfficientLengthIterable":["Float32x4"],"Iterable":["Float32x4"],"FixedLengthListMixin":["Float32x4"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Float32x4"},"NativeInt32x4List":{"Int32x4List":[],"ListBase":["Int32x4"],"List":["Int32x4"],"EfficientLengthIterable":["Int32x4"],"Iterable":["Int32x4"],"FixedLengthListMixin":["Int32x4"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Int32x4"},"NativeFloat64x2List":{"Float64x2List":[],"ListBase":["Float64x2"],"List":["Float64x2"],"EfficientLengthIterable":["Float64x2"],"Iterable":["Float64x2"],"FixedLengthListMixin":["Float64x2"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Float64x2"},"NativeTypedData":{"JSObject":[],"TypedData":[]},"NativeByteData":{"NativeTypedData":[],"ByteData":[],"JSObject":[],"TypedData":[],"TrustedGetRuntimeType":[]},"NativeTypedArray":{"NativeTypedData":[],"JavaScriptIndexingBehavior":["1"],"JSObject":[],"TypedData":[]},"NativeTypedArrayOfDouble":{"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"Float32List":[],"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"TrustedGetRuntimeType":[],"ListBase.E":"double"},"NativeFloat64List":{"Float64List":[],"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"TrustedGetRuntimeType":[],"ListBase.E":"double"},"NativeInt16List":{"Int16List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeInt32List":{"Int32List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeInt8List":{"Int8List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint16List":{"Uint16List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint32List":{"Uint32List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint8ClampedList":{"Uint8ClampedList":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint8List":{"Uint8List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeFloat32x4":{"Float32x4":[]},"NativeInt32x4":{"Int32x4":[]},"NativeFloat64x2":{"Float64x2":[]},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"TimeoutException":{"Exception":[]},"_Future":{"Future":["1"]},"MultiStreamController":{"StreamController":["1"],"Sink":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_MultiStream":{"Stream":["1"],"Stream.T":"1"},"_MultiStreamController":{"_AsyncStreamController":["1"],"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"MultiStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_ForwardingStream":{"Stream":["2"]},"_ForwardingStreamSubscription":{"_BufferingStreamSubscription":["2"],"StreamSubscription":["2"],"_EventSink":["2"],"_EventDispatch":["2"],"_BufferingStreamSubscription.T":"2"},"_MapStream":{"_ForwardingStream":["1","2"],"Stream":["2"],"Stream.T":"2"},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapBase":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_IdentityHashMap":{"_HashMap":["1","2"],"MapBase":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedHashSet":{"_SetBase":["1"],"SetBase":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListBase":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListBase.E":"1","UnmodifiableListMixin.E":"1"},"ListBase":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"Queue":["1"],"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetBase":{"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"JsonUnsupportedObjectError":{"Error":[]},"JsonCyclicError":{"Error":[]},"JsonCodec":{"Codec":["Object?","String"],"Codec.S":"Object?"},"JsonEncoder":{"Converter":["Object?","String"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"BigInt":{"Comparable":["BigInt"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"TypeError":{"Error":[]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"_BigIntImpl":{"BigInt":[],"Comparable":["BigInt"]},"AssertionError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"IntegerDivisionByZeroException":{"Exception":[],"Error":[]},"_GeneratorIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"CssRule":{"JSObject":[]},"Element":{"Node":[],"EventTarget":[],"JSObject":[]},"Event":{"JSObject":[]},"File":{"Blob":[],"JSObject":[]},"Gamepad":{"JSObject":[]},"MessageEvent":{"Event":[],"JSObject":[]},"MimeType":{"JSObject":[]},"Node":{"EventTarget":[],"JSObject":[]},"Plugin":{"JSObject":[]},"SourceBuffer":{"EventTarget":[],"JSObject":[]},"SpeechGrammar":{"JSObject":[]},"SpeechRecognitionResult":{"JSObject":[]},"StyleSheet":{"JSObject":[]},"TextTrack":{"EventTarget":[],"JSObject":[]},"TextTrackCue":{"EventTarget":[],"JSObject":[]},"Touch":{"JSObject":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"AccessibleNodeList":{"JSObject":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"Blob":{"JSObject":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"CharacterData":{"Node":[],"EventTarget":[],"JSObject":[]},"CssPerspective":{"JSObject":[]},"CssStyleDeclaration":{"JSObject":[]},"CssStyleValue":{"JSObject":[]},"CssTransformComponent":{"JSObject":[]},"CssTransformValue":{"JSObject":[]},"CssUnparsedValue":{"JSObject":[]},"DataTransferItemList":{"JSObject":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"Document":{"Node":[],"EventTarget":[],"JSObject":[]},"DomException":{"JSObject":[]},"DomImplementation":{"JSObject":[]},"DomRectList":{"ListBase":["Rectangle<num>"],"ImmutableListMixin":["Rectangle<num>"],"List":["Rectangle<num>"],"JavaScriptIndexingBehavior":["Rectangle<num>"],"EfficientLengthIterable":["Rectangle<num>"],"JSObject":[],"Iterable":["Rectangle<num>"],"ListBase.E":"Rectangle<num>","ImmutableListMixin.E":"Rectangle<num>"},"DomRectReadOnly":{"Rectangle":["num"],"JSObject":[]},"DomStringList":{"ListBase":["String"],"ImmutableListMixin":["String"],"List":["String"],"JavaScriptIndexingBehavior":["String"],"EfficientLengthIterable":["String"],"JSObject":[],"Iterable":["String"],"ListBase.E":"String","ImmutableListMixin.E":"String"},"DomTokenList":{"JSObject":[]},"ErrorEvent":{"Event":[],"JSObject":[]},"EventTarget":{"JSObject":[]},"FileList":{"ListBase":["File"],"ImmutableListMixin":["File"],"List":["File"],"JavaScriptIndexingBehavior":["File"],"EfficientLengthIterable":["File"],"JSObject":[],"Iterable":["File"],"ListBase.E":"File","ImmutableListMixin.E":"File"},"FileWriter":{"EventTarget":[],"JSObject":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"History":{"JSObject":[]},"HtmlCollection":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"HtmlDocument":{"Node":[],"EventTarget":[],"JSObject":[]},"ImageData":{"JSObject":[]},"Location":{"JSObject":[]},"MediaList":{"JSObject":[]},"MessagePort":{"EventTarget":[],"JSObject":[]},"MidiInputMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"MidiOutputMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"MimeTypeArray":{"ListBase":["MimeType"],"ImmutableListMixin":["MimeType"],"List":["MimeType"],"JavaScriptIndexingBehavior":["MimeType"],"EfficientLengthIterable":["MimeType"],"JSObject":[],"Iterable":["MimeType"],"ListBase.E":"MimeType","ImmutableListMixin.E":"MimeType"},"_ChildNodeListLazy":{"ListBase":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListBase.E":"Node"},"NodeList":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"PluginArray":{"ListBase":["Plugin"],"ImmutableListMixin":["Plugin"],"List":["Plugin"],"JavaScriptIndexingBehavior":["Plugin"],"EfficientLengthIterable":["Plugin"],"JSObject":[],"Iterable":["Plugin"],"ListBase.E":"Plugin","ImmutableListMixin.E":"Plugin"},"RtcStatsReport":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"SharedArrayBuffer":{"JSObject":[]},"SourceBufferList":{"ListBase":["SourceBuffer"],"ImmutableListMixin":["SourceBuffer"],"List":["SourceBuffer"],"EventTarget":[],"JavaScriptIndexingBehavior":["SourceBuffer"],"EfficientLengthIterable":["SourceBuffer"],"JSObject":[],"Iterable":["SourceBuffer"],"ListBase.E":"SourceBuffer","ImmutableListMixin.E":"SourceBuffer"},"SpeechGrammarList":{"ListBase":["SpeechGrammar"],"ImmutableListMixin":["SpeechGrammar"],"List":["SpeechGrammar"],"JavaScriptIndexingBehavior":["SpeechGrammar"],"EfficientLengthIterable":["SpeechGrammar"],"JSObject":[],"Iterable":["SpeechGrammar"],"ListBase.E":"SpeechGrammar","ImmutableListMixin.E":"SpeechGrammar"},"Storage":{"MapBase":["String","String"],"JSObject":[],"Map":["String","String"],"MapBase.K":"String","MapBase.V":"String"},"TableElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TextTrackCueList":{"ListBase":["TextTrackCue"],"ImmutableListMixin":["TextTrackCue"],"List":["TextTrackCue"],"JavaScriptIndexingBehavior":["TextTrackCue"],"EfficientLengthIterable":["TextTrackCue"],"JSObject":[],"Iterable":["TextTrackCue"],"ListBase.E":"TextTrackCue","ImmutableListMixin.E":"TextTrackCue"},"TextTrackList":{"ListBase":["TextTrack"],"ImmutableListMixin":["TextTrack"],"List":["TextTrack"],"EventTarget":[],"JavaScriptIndexingBehavior":["TextTrack"],"EfficientLengthIterable":["TextTrack"],"JSObject":[],"Iterable":["TextTrack"],"ListBase.E":"TextTrack","ImmutableListMixin.E":"TextTrack"},"TimeRanges":{"JSObject":[]},"TouchList":{"ListBase":["Touch"],"ImmutableListMixin":["Touch"],"List":["Touch"],"JavaScriptIndexingBehavior":["Touch"],"EfficientLengthIterable":["Touch"],"JSObject":[],"Iterable":["Touch"],"ListBase.E":"Touch","ImmutableListMixin.E":"Touch"},"TrackDefaultList":{"JSObject":[]},"Url":{"JSObject":[]},"VideoTrackList":{"EventTarget":[],"JSObject":[]},"Window":{"WindowBase":[],"EventTarget":[],"JSObject":[]},"Worker":{"EventTarget":[],"JSObject":[]},"_Attr":{"Node":[],"EventTarget":[],"JSObject":[]},"_CssRuleList":{"ListBase":["CssRule"],"ImmutableListMixin":["CssRule"],"List":["CssRule"],"JavaScriptIndexingBehavior":["CssRule"],"EfficientLengthIterable":["CssRule"],"JSObject":[],"Iterable":["CssRule"],"ListBase.E":"CssRule","ImmutableListMixin.E":"CssRule"},"_DomRect":{"Rectangle":["num"],"JSObject":[]},"_GamepadList":{"ListBase":["Gamepad?"],"ImmutableListMixin":["Gamepad?"],"List":["Gamepad?"],"JavaScriptIndexingBehavior":["Gamepad?"],"EfficientLengthIterable":["Gamepad?"],"JSObject":[],"Iterable":["Gamepad?"],"ListBase.E":"Gamepad?","ImmutableListMixin.E":"Gamepad?"},"_NamedNodeMap":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"_SpeechRecognitionResultList":{"ListBase":["SpeechRecognitionResult"],"ImmutableListMixin":["SpeechRecognitionResult"],"List":["SpeechRecognitionResult"],"JavaScriptIndexingBehavior":["SpeechRecognitionResult"],"EfficientLengthIterable":["SpeechRecognitionResult"],"JSObject":[],"Iterable":["SpeechRecognitionResult"],"ListBase.E":"SpeechRecognitionResult","ImmutableListMixin.E":"SpeechRecognitionResult"},"_StyleSheetList":{"ListBase":["StyleSheet"],"ImmutableListMixin":["StyleSheet"],"List":["StyleSheet"],"JavaScriptIndexingBehavior":["StyleSheet"],"EfficientLengthIterable":["StyleSheet"],"JSObject":[],"Iterable":["StyleSheet"],"ListBase.E":"StyleSheet","ImmutableListMixin.E":"StyleSheet"},"_AttributeMap":{"MapBase":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapBase":["String","String"],"Map":["String","String"],"MapBase.K":"String","MapBase.V":"String"},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_DOMWindowCrossFrame":{"WindowBase":[],"EventTarget":[],"JSObject":[]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"Length":{"JSObject":[]},"Number":{"JSObject":[]},"Transform":{"JSObject":[]},"LengthList":{"ListBase":["Length"],"ImmutableListMixin":["Length"],"List":["Length"],"EfficientLengthIterable":["Length"],"JSObject":[],"Iterable":["Length"],"ListBase.E":"Length","ImmutableListMixin.E":"Length"},"NumberList":{"ListBase":["Number"],"ImmutableListMixin":["Number"],"List":["Number"],"EfficientLengthIterable":["Number"],"JSObject":[],"Iterable":["Number"],"ListBase.E":"Number","ImmutableListMixin.E":"Number"},"PointList":{"JSObject":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"StringList":{"ListBase":["String"],"ImmutableListMixin":["String"],"List":["String"],"EfficientLengthIterable":["String"],"JSObject":[],"Iterable":["String"],"ListBase.E":"String","ImmutableListMixin.E":"String"},"SvgElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TransformList":{"ListBase":["Transform"],"ImmutableListMixin":["Transform"],"List":["Transform"],"EfficientLengthIterable":["Transform"],"JSObject":[],"Iterable":["Transform"],"ListBase.E":"Transform","ImmutableListMixin.E":"Transform"},"AudioBuffer":{"JSObject":[]},"AudioParamMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"AudioTrackList":{"EventTarget":[],"JSObject":[]},"BaseAudioContext":{"EventTarget":[],"JSObject":[]},"OfflineAudioContext":{"EventTarget":[],"JSObject":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"CanceledException":{"Exception":[]},"CanceledExceptions":{"CanceledException":[],"Exception":[]},"TimeoutCanceledException":{"CanceledException":[],"TimeoutException":[],"Exception":[]},"CancelableToken":{"CancelationToken":[]},"CompositeToken":{"CancelationToken":[]},"TimeoutToken":{"CancelationToken":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListBase":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListBase.E":"1","QueueList.E":"1"},"UnionSet":{"SetBase":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"DevelopmentFilter":{"LogFilter":[]},"ProductionFilter":{"LogFilter":[]},"_Empty":{"Matcher":[]},"_NotEmpty":{"Matcher":[]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_IsNaN":{"FeatureMatcher":["num"],"TypeMatcher":["num"],"Matcher":[],"TypeMatcher.T":"num","FeatureMatcher.T":"num"},"_HasLength":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"CustomMatcher":{"Matcher":[]},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"AsyncMatcher":{"Matcher":[]},"Throws":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_EveryElement":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[],"TypeMatcher.T":"Iterable<@>","FeatureMatcher.T":"Iterable<@>"},"_IterableMatcher":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[]},"_UnorderedMatches":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[]},"_ContainsAll":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[],"TypeMatcher.T":"Iterable<@>","FeatureMatcher.T":"Iterable<@>"},"_IsNot":{"Matcher":[]},"_AnyOf":{"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"_MatchesRegExp":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"_WebChannel":{"Channel":[]},"_WebForwardChannel":{"Channel":[]},"EntryPointUri":{"Releasable":[]},"_WebLocalWorker":{"LocalWorker":["1"],"Releasable":[]},"_WebWorkerChannel":{"WorkerChannel":[]},"DisconnectedChannel":{"Channel":[]},"InternalLogger":{"Logger":[]},"_NoLogOutput":{"LogOutput":[]},"_DummyPrinter":{"LogPrinter":[]},"_LogAllFilter":{"LogFilter":[]},"SquadronCanceledException":{"SquadronException":[],"CanceledException":[],"Exception":[]},"SquadronCanceledExceptions":{"SquadronCanceledException":[],"CanceledExceptions":[],"SquadronException":[],"CanceledException":[],"Exception":[]},"SquadronError":{"SquadronException":[],"Exception":[]},"SquadronException":{"Exception":[]},"SquadronTimeoutException":{"SquadronCanceledException":[],"TimeoutCanceledException":[],"SquadronException":[],"CanceledException":[],"TimeoutException":[],"Exception":[]},"TaskCanceledException":{"SquadronError":[],"SquadronException":[],"CanceledException":[],"Exception":[]},"WorkerException":{"SquadronException":[],"Exception":[]},"LocalWorker":{"Releasable":[]},"WorkerStreamTask":{"WorkerTask":["1","2"],"StreamTask":["1"],"Task":["1"]},"WorkerTask":{"Task":["1"]},"WorkerValueTask":{"WorkerTask":["1","2"],"ValueTask":["1"],"Task":["1"]},"WorkerPool":{"Releasable":[]},"CancelationTokenReference":{"SquadronCancelationToken":[],"CancelationToken":[]},"SquadronCancelationToken":{"CancelationToken":[]},"Worker0":{"Releasable":[]},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"TestFailure":{"Exception":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetBase":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"ReleasedException":{"Exception":[]},"CacheWorker":{"Worker0":[],"Releasable":[]},"CustomException":{"WorkerException":[],"SquadronException":[],"Exception":[]},"InstallableWorker":{"Worker0":[],"Releasable":[]},"IssuesWorkerPool":{"WorkerPool":["IssuesWorker"],"Releasable":[],"WorkerPool.W":"IssuesWorker"},"IssuesWorker":{"Worker0":[],"Releasable":[]},"LocalClientWorkerPool":{"WorkerPool":["LocalClientWorker"],"Releasable":[],"WorkerPool.W":"LocalClientWorker"},"LocalClientWorker":{"Worker0":[],"Releasable":[]},"MemoryLogger":{"Logger":[]},"MissingWorker":{"Worker0":[],"Releasable":[]},"NotAWorker":{"Worker0":[],"Releasable":[]},"PrimeWorkerPool":{"WorkerPool":["PrimeWorker"],"Releasable":[],"WorkerPool.W":"PrimeWorker"},"PrimeWorker":{"Worker0":[],"Releasable":[]},"TestException":{"Exception":[]},"TestTimeOutException":{"Exception":[]},"NoOutput":{"LogOutput":[]},"EmptyPrinter":{"LogPrinter":[]},"TestWorkerPool":{"WorkerPool":["TestWorker"],"Releasable":[],"WorkerPool.W":"TestWorker"},"TestWorker":{"Worker0":[],"Releasable":[]},"UnexpectedException":{"Exception":[]},"Called":{"Matcher":[]},"Reported":{"Matcher":[]},"ByteData":{"TypedData":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int64List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint64List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"TypedData":[],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"TypedData":[],"Iterable":["double"]},"Float32x4List":{"List":["Float32x4"],"EfficientLengthIterable":["Float32x4"],"TypedData":[],"Iterable":["Float32x4"]},"Int32x4List":{"List":["Int32x4"],"EfficientLengthIterable":["Int32x4"],"TypedData":[],"Iterable":["Int32x4"]},"Float64x2List":{"List":["Float64x2"],"EfficientLengthIterable":["Float64x2"],"TypedData":[],"Iterable":["Float64x2"]},"StreamTask":{"Task":["1"]},"ValueTask":{"Task":["1"]}}'));
+  A._Universe_addRules(init.typeUniverse, JSON.parse('{"JavaScriptFunction":"LegacyJavaScriptObject","PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","KeyframeEffect":"JavaScriptObject","KeyframeEffectReadOnly":"JavaScriptObject","AnimationEffectReadOnly":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AudioContext":"BaseAudioContext","AbsoluteOrientationSensor":"EventTarget","OrientationSensor":"EventTarget","Sensor":"EventTarget","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","VttCue":"TextTrackCue","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","HtmlFormControlsCollection":"HtmlCollection","CssCharsetRule":"CssRule","CssMatrixComponent":"CssTransformComponent","CssStyleSheet":"StyleSheet","CssurlImageValue":"CssStyleValue","CssImageValue":"CssStyleValue","CssResourceValue":"CssStyleValue","JSBool":{"bool":[],"TrustedGetRuntimeType":[]},"JSNull":{"Null":[],"TrustedGetRuntimeType":[]},"JavaScriptObject":{"JSObject":[]},"LegacyJavaScriptObject":{"JSObject":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"JSObject":[],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"JSObject":[],"Iterable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"],"TrustedGetRuntimeType":[]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"],"TrustedGetRuntimeType":[]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"TrustedGetRuntimeType":[]},"_CastIterableBase":{"Iterable":["2"]},"CastIterator":{"Iterator":["2"]},"CastIterable":{"_CastIterableBase":["1","2"],"Iterable":["2"],"Iterable.E":"2"},"_EfficientLengthCastIterable":{"CastIterable":["1","2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_CastListBase":{"ListBase":["2"],"List":["2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"]},"CastList":{"_CastListBase":["1","2"],"ListBase":["2"],"List":["2"],"_CastIterableBase":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListBase.E":"2","Iterable.E":"2"},"CastMap":{"MapBase":["3","4"],"Map":["3","4"],"MapBase.K":"3","MapBase.V":"4"},"LateError":{"Error":[]},"CodeUnits":{"ListBase":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListBase.E":"int","UnmodifiableListMixin.E":"int"},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2","ListIterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"TakeIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthTakeIterable":{"TakeIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"TakeIterator":{"Iterator":["1"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"SkipWhileIterable":{"Iterable":["1"],"Iterable.E":"1"},"SkipWhileIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"FollowedByIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthFollowedByIterable":{"FollowedByIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"FollowedByIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"NonNullsIterable":{"Iterable":["1"],"Iterable.E":"1"},"NonNullsIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListBase":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"Symbol":{"Symbol0":[]},"_Record_2_digits_ex78ception":{"_Record2":[],"_Record":[]},"_Record_2_errors_success":{"_Record2":[],"_Record":[]},"_Record_2_runner_script":{"_Record2":[],"_Record":[]},"_Record_3_err_item_st":{"_Record3":[],"_Record":[]},"ConstantMapView":{"UnmodifiableMapView":["1","2"],"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"_KeysOrValues":{"Iterable":["1"],"Iterable.E":"1"},"_KeysOrValuesOrElementsIterator":{"Iterator":["1"]},"ConstantSet":{"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ConstantStringSet":{"ConstantSet":["1"],"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"GeneralConstantSet":{"ConstantSet":["1"],"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"JSInvocationMirror":{"Invocation":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Closure":[],"Function":[]},"Closure2Args":{"Closure":[],"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"_CyclicInitializationError":{"Error":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapBase":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JsConstantLinkedHashMap":{"JsLinkedHashMap":["1","2"],"MapBase":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_Record2":{"_Record":[]},"_Record3":{"_Record":[]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"JSObject":[],"ByteBuffer":[],"TrustedGetRuntimeType":[]},"NativeFloat32x4List":{"Float32x4List":[],"ListBase":["Float32x4"],"List":["Float32x4"],"EfficientLengthIterable":["Float32x4"],"Iterable":["Float32x4"],"FixedLengthListMixin":["Float32x4"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Float32x4"},"NativeInt32x4List":{"Int32x4List":[],"ListBase":["Int32x4"],"List":["Int32x4"],"EfficientLengthIterable":["Int32x4"],"Iterable":["Int32x4"],"FixedLengthListMixin":["Int32x4"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Int32x4"},"NativeFloat64x2List":{"Float64x2List":[],"ListBase":["Float64x2"],"List":["Float64x2"],"EfficientLengthIterable":["Float64x2"],"Iterable":["Float64x2"],"FixedLengthListMixin":["Float64x2"],"TypedData":[],"TrustedGetRuntimeType":[],"ListBase.E":"Float64x2"},"NativeTypedData":{"JSObject":[],"TypedData":[]},"NativeByteData":{"NativeTypedData":[],"ByteData":[],"JSObject":[],"TypedData":[],"TrustedGetRuntimeType":[]},"NativeTypedArray":{"NativeTypedData":[],"JavaScriptIndexingBehavior":["1"],"JSObject":[],"TypedData":[]},"NativeTypedArrayOfDouble":{"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"]},"NativeTypedArrayOfInt":{"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeFloat32List":{"Float32List":[],"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"TrustedGetRuntimeType":[],"ListBase.E":"double"},"NativeFloat64List":{"Float64List":[],"ListBase":["double"],"List":["double"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["double"],"EfficientLengthIterable":["double"],"JSObject":[],"TypedData":[],"Iterable":["double"],"FixedLengthListMixin":["double"],"TrustedGetRuntimeType":[],"ListBase.E":"double"},"NativeInt16List":{"Int16List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeInt32List":{"Int32List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeInt8List":{"Int8List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint16List":{"Uint16List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint32List":{"Uint32List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint8ClampedList":{"Uint8ClampedList":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeUint8List":{"Uint8List":[],"ListBase":["int"],"List":["int"],"NativeTypedData":[],"JavaScriptIndexingBehavior":["int"],"EfficientLengthIterable":["int"],"JSObject":[],"TypedData":[],"Iterable":["int"],"FixedLengthListMixin":["int"],"TrustedGetRuntimeType":[],"ListBase.E":"int"},"NativeFloat32x4":{"Float32x4":[]},"NativeInt32x4":{"Int32x4":[]},"NativeFloat64x2":{"Float64x2":[]},"_Type":{"Type":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"AsyncError":{"Error":[]},"TimeoutException":{"Exception":[]},"_Future":{"Future":["1"]},"MultiStreamController":{"StreamController":["1"],"Sink":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_TimerImpl":{"Timer":[]},"_AsyncAwaitCompleter":{"Completer":["1"]},"_SyncStarIterator":{"Iterator":["1"]},"_SyncStarIterable":{"Iterable":["1"],"Iterable.E":"1"},"_BroadcastStream":{"_ControllerStream":["1"],"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_BroadcastSubscription":{"_ControllerSubscription":["1"],"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_BroadcastStreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_SyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_AsyncBroadcastStreamController":{"_BroadcastStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_Completer":{"Completer":["1"]},"_AsyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_SyncCompleter":{"_Completer":["1"],"Completer":["1"]},"_StreamController":{"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_AsyncStreamController":{"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_SyncStreamController":{"_SyncStreamControllerDispatch":["1"],"_StreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_ControllerStream":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_ControllerSubscription":{"_BufferingStreamSubscription":["1"],"StreamSubscription":["1"],"_EventSink":["1"],"_EventDispatch":["1"],"_BufferingStreamSubscription.T":"1"},"_StreamSinkWrapper":{"Sink":["1"]},"_StreamImpl":{"Stream":["1"]},"_DelayedData":{"_DelayedEvent":["1"]},"_DelayedError":{"_DelayedEvent":["@"]},"_DelayedDone":{"_DelayedEvent":["@"]},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_MultiStream":{"Stream":["1"],"Stream.T":"1"},"_MultiStreamController":{"_AsyncStreamController":["1"],"_AsyncStreamControllerDispatch":["1"],"_StreamController":["1"],"MultiStreamController":["1"],"StreamController":["1"],"Sink":["1"],"_StreamControllerLifecycle":["1"],"_EventSink":["1"],"_EventDispatch":["1"]},"_ForwardingStream":{"Stream":["2"]},"_ForwardingStreamSubscription":{"_BufferingStreamSubscription":["2"],"StreamSubscription":["2"],"_EventSink":["2"],"_EventDispatch":["2"],"_BufferingStreamSubscription.T":"2"},"_MapStream":{"_ForwardingStream":["1","2"],"Stream":["2"],"Stream.T":"2"},"_ZoneSpecification":{"ZoneSpecification":[]},"_ZoneDelegate":{"ZoneDelegate":[]},"_Zone":{"Zone":[]},"_CustomZone":{"_Zone":[],"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_HashMap":{"MapBase":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_IdentityHashMap":{"_HashMap":["1","2"],"MapBase":["1","2"],"Map":["1","2"],"MapBase.K":"1","MapBase.V":"2"},"_HashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"_HashMapKeyIterator":{"Iterator":["1"]},"_LinkedHashSet":{"_SetBase":["1"],"SetBase":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"UnmodifiableListView":{"ListBase":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListBase.E":"1","UnmodifiableListMixin.E":"1"},"ListBase":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"Map":["1","2"]},"_MapBaseValueIterable":{"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"_MapBaseValueIterator":{"Iterator":["2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"ListQueue":{"Queue":["1"],"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"_ListQueueIterator":{"Iterator":["1"]},"SetBase":{"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_SetBase":{"SetBase":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"AsciiCodec":{"Codec":["String","List<int>"],"Codec.S":"String"},"_UnicodeSubsetEncoder":{"Converter":["String","List<int>"]},"AsciiEncoder":{"Converter":["String","List<int>"]},"Base64Codec":{"Codec":["List<int>","String"],"Codec.S":"List<int>"},"Base64Encoder":{"Converter":["List<int>","String"]},"_FusedCodec":{"Codec":["1","3"],"Codec.S":"1"},"Encoding":{"Codec":["String","List<int>"]},"JsonUnsupportedObjectError":{"Error":[]},"JsonCyclicError":{"Error":[]},"JsonCodec":{"Codec":["Object?","String"],"Codec.S":"Object?"},"JsonEncoder":{"Converter":["Object?","String"]},"Utf8Codec":{"Codec":["String","List<int>"],"Codec.S":"String"},"Utf8Encoder":{"Converter":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"BigInt":{"Comparable":["BigInt"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"Duration":{"Comparable":["Duration"]},"TypeError":{"Error":[]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"_BigIntImpl":{"BigInt":[],"Comparable":["BigInt"]},"AssertionError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"NoSuchMethodError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"IntegerDivisionByZeroException":{"Exception":[],"Error":[]},"_GeneratorIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1","ListIterable.E":"1"},"_StringStackTrace":{"StackTrace":[]},"Runes":{"Iterable":["int"],"Iterable.E":"int"},"RuneIterator":{"Iterator":["int"]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"CssRule":{"JSObject":[]},"Element":{"Node":[],"EventTarget":[],"JSObject":[]},"Event":{"JSObject":[]},"File":{"Blob":[],"JSObject":[]},"Gamepad":{"JSObject":[]},"MessageEvent":{"Event":[],"JSObject":[]},"MimeType":{"JSObject":[]},"Node":{"EventTarget":[],"JSObject":[]},"Plugin":{"JSObject":[]},"SourceBuffer":{"EventTarget":[],"JSObject":[]},"SpeechGrammar":{"JSObject":[]},"SpeechRecognitionResult":{"JSObject":[]},"StyleSheet":{"JSObject":[]},"TextTrack":{"EventTarget":[],"JSObject":[]},"TextTrackCue":{"EventTarget":[],"JSObject":[]},"Touch":{"JSObject":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"AccessibleNodeList":{"JSObject":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"Blob":{"JSObject":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"CharacterData":{"Node":[],"EventTarget":[],"JSObject":[]},"CssPerspective":{"JSObject":[]},"CssStyleDeclaration":{"JSObject":[]},"CssStyleValue":{"JSObject":[]},"CssTransformComponent":{"JSObject":[]},"CssTransformValue":{"JSObject":[]},"CssUnparsedValue":{"JSObject":[]},"DataTransferItemList":{"JSObject":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"Document":{"Node":[],"EventTarget":[],"JSObject":[]},"DomException":{"JSObject":[]},"DomImplementation":{"JSObject":[]},"DomRectList":{"ListBase":["Rectangle<num>"],"ImmutableListMixin":["Rectangle<num>"],"List":["Rectangle<num>"],"JavaScriptIndexingBehavior":["Rectangle<num>"],"EfficientLengthIterable":["Rectangle<num>"],"JSObject":[],"Iterable":["Rectangle<num>"],"ListBase.E":"Rectangle<num>","ImmutableListMixin.E":"Rectangle<num>"},"DomRectReadOnly":{"Rectangle":["num"],"JSObject":[]},"DomStringList":{"ListBase":["String"],"ImmutableListMixin":["String"],"List":["String"],"JavaScriptIndexingBehavior":["String"],"EfficientLengthIterable":["String"],"JSObject":[],"Iterable":["String"],"ListBase.E":"String","ImmutableListMixin.E":"String"},"DomTokenList":{"JSObject":[]},"ErrorEvent":{"Event":[],"JSObject":[]},"EventTarget":{"JSObject":[]},"FileList":{"ListBase":["File"],"ImmutableListMixin":["File"],"List":["File"],"JavaScriptIndexingBehavior":["File"],"EfficientLengthIterable":["File"],"JSObject":[],"Iterable":["File"],"ListBase.E":"File","ImmutableListMixin.E":"File"},"FileWriter":{"EventTarget":[],"JSObject":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"History":{"JSObject":[]},"HtmlCollection":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"HtmlDocument":{"Node":[],"EventTarget":[],"JSObject":[]},"ImageData":{"JSObject":[]},"Location":{"JSObject":[]},"MediaList":{"JSObject":[]},"MessagePort":{"EventTarget":[],"JSObject":[]},"MidiInputMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"MidiOutputMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"MimeTypeArray":{"ListBase":["MimeType"],"ImmutableListMixin":["MimeType"],"List":["MimeType"],"JavaScriptIndexingBehavior":["MimeType"],"EfficientLengthIterable":["MimeType"],"JSObject":[],"Iterable":["MimeType"],"ListBase.E":"MimeType","ImmutableListMixin.E":"MimeType"},"_ChildNodeListLazy":{"ListBase":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListBase.E":"Node"},"NodeList":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"PluginArray":{"ListBase":["Plugin"],"ImmutableListMixin":["Plugin"],"List":["Plugin"],"JavaScriptIndexingBehavior":["Plugin"],"EfficientLengthIterable":["Plugin"],"JSObject":[],"Iterable":["Plugin"],"ListBase.E":"Plugin","ImmutableListMixin.E":"Plugin"},"RtcStatsReport":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"SharedArrayBuffer":{"JSObject":[]},"SourceBufferList":{"ListBase":["SourceBuffer"],"ImmutableListMixin":["SourceBuffer"],"List":["SourceBuffer"],"EventTarget":[],"JavaScriptIndexingBehavior":["SourceBuffer"],"EfficientLengthIterable":["SourceBuffer"],"JSObject":[],"Iterable":["SourceBuffer"],"ListBase.E":"SourceBuffer","ImmutableListMixin.E":"SourceBuffer"},"SpeechGrammarList":{"ListBase":["SpeechGrammar"],"ImmutableListMixin":["SpeechGrammar"],"List":["SpeechGrammar"],"JavaScriptIndexingBehavior":["SpeechGrammar"],"EfficientLengthIterable":["SpeechGrammar"],"JSObject":[],"Iterable":["SpeechGrammar"],"ListBase.E":"SpeechGrammar","ImmutableListMixin.E":"SpeechGrammar"},"Storage":{"MapBase":["String","String"],"JSObject":[],"Map":["String","String"],"MapBase.K":"String","MapBase.V":"String"},"TableElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TextTrackCueList":{"ListBase":["TextTrackCue"],"ImmutableListMixin":["TextTrackCue"],"List":["TextTrackCue"],"JavaScriptIndexingBehavior":["TextTrackCue"],"EfficientLengthIterable":["TextTrackCue"],"JSObject":[],"Iterable":["TextTrackCue"],"ListBase.E":"TextTrackCue","ImmutableListMixin.E":"TextTrackCue"},"TextTrackList":{"ListBase":["TextTrack"],"ImmutableListMixin":["TextTrack"],"List":["TextTrack"],"EventTarget":[],"JavaScriptIndexingBehavior":["TextTrack"],"EfficientLengthIterable":["TextTrack"],"JSObject":[],"Iterable":["TextTrack"],"ListBase.E":"TextTrack","ImmutableListMixin.E":"TextTrack"},"TimeRanges":{"JSObject":[]},"TouchList":{"ListBase":["Touch"],"ImmutableListMixin":["Touch"],"List":["Touch"],"JavaScriptIndexingBehavior":["Touch"],"EfficientLengthIterable":["Touch"],"JSObject":[],"Iterable":["Touch"],"ListBase.E":"Touch","ImmutableListMixin.E":"Touch"},"TrackDefaultList":{"JSObject":[]},"Url":{"JSObject":[]},"VideoTrackList":{"EventTarget":[],"JSObject":[]},"Window":{"WindowBase":[],"EventTarget":[],"JSObject":[]},"Worker":{"EventTarget":[],"JSObject":[]},"_Attr":{"Node":[],"EventTarget":[],"JSObject":[]},"_CssRuleList":{"ListBase":["CssRule"],"ImmutableListMixin":["CssRule"],"List":["CssRule"],"JavaScriptIndexingBehavior":["CssRule"],"EfficientLengthIterable":["CssRule"],"JSObject":[],"Iterable":["CssRule"],"ListBase.E":"CssRule","ImmutableListMixin.E":"CssRule"},"_DomRect":{"Rectangle":["num"],"JSObject":[]},"_GamepadList":{"ListBase":["Gamepad?"],"ImmutableListMixin":["Gamepad?"],"List":["Gamepad?"],"JavaScriptIndexingBehavior":["Gamepad?"],"EfficientLengthIterable":["Gamepad?"],"JSObject":[],"Iterable":["Gamepad?"],"ListBase.E":"Gamepad?","ImmutableListMixin.E":"Gamepad?"},"_NamedNodeMap":{"ListBase":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"JSObject":[],"Iterable":["Node"],"ListBase.E":"Node","ImmutableListMixin.E":"Node"},"_SpeechRecognitionResultList":{"ListBase":["SpeechRecognitionResult"],"ImmutableListMixin":["SpeechRecognitionResult"],"List":["SpeechRecognitionResult"],"JavaScriptIndexingBehavior":["SpeechRecognitionResult"],"EfficientLengthIterable":["SpeechRecognitionResult"],"JSObject":[],"Iterable":["SpeechRecognitionResult"],"ListBase.E":"SpeechRecognitionResult","ImmutableListMixin.E":"SpeechRecognitionResult"},"_StyleSheetList":{"ListBase":["StyleSheet"],"ImmutableListMixin":["StyleSheet"],"List":["StyleSheet"],"JavaScriptIndexingBehavior":["StyleSheet"],"EfficientLengthIterable":["StyleSheet"],"JSObject":[],"Iterable":["StyleSheet"],"ListBase.E":"StyleSheet","ImmutableListMixin.E":"StyleSheet"},"_AttributeMap":{"MapBase":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapBase":["String","String"],"Map":["String","String"],"MapBase.K":"String","MapBase.V":"String"},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_DOMWindowCrossFrame":{"WindowBase":[],"EventTarget":[],"JSObject":[]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"Length":{"JSObject":[]},"Number":{"JSObject":[]},"Transform":{"JSObject":[]},"LengthList":{"ListBase":["Length"],"ImmutableListMixin":["Length"],"List":["Length"],"EfficientLengthIterable":["Length"],"JSObject":[],"Iterable":["Length"],"ListBase.E":"Length","ImmutableListMixin.E":"Length"},"NumberList":{"ListBase":["Number"],"ImmutableListMixin":["Number"],"List":["Number"],"EfficientLengthIterable":["Number"],"JSObject":[],"Iterable":["Number"],"ListBase.E":"Number","ImmutableListMixin.E":"Number"},"PointList":{"JSObject":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"StringList":{"ListBase":["String"],"ImmutableListMixin":["String"],"List":["String"],"EfficientLengthIterable":["String"],"JSObject":[],"Iterable":["String"],"ListBase.E":"String","ImmutableListMixin.E":"String"},"SvgElement":{"Element":[],"Node":[],"EventTarget":[],"JSObject":[]},"TransformList":{"ListBase":["Transform"],"ImmutableListMixin":["Transform"],"List":["Transform"],"EfficientLengthIterable":["Transform"],"JSObject":[],"Iterable":["Transform"],"ListBase.E":"Transform","ImmutableListMixin.E":"Transform"},"AudioBuffer":{"JSObject":[]},"AudioParamMap":{"MapBase":["String","@"],"JSObject":[],"Map":["String","@"],"MapBase.K":"String","MapBase.V":"@"},"AudioTrackList":{"EventTarget":[],"JSObject":[]},"BaseAudioContext":{"EventTarget":[],"JSObject":[]},"OfflineAudioContext":{"EventTarget":[],"JSObject":[]},"DelegatingSink":{"Sink":["1"]},"FutureGroup":{"Sink":["Future<1>"]},"StreamGroup":{"Sink":["Stream<1>"]},"All":{"BooleanSelector":[]},"CanceledException":{"Exception":[]},"CanceledExceptions":{"CanceledException":[],"Exception":[]},"TimeoutCanceledException":{"CanceledException":[],"TimeoutException":[],"Exception":[]},"CancelableToken":{"CancelationToken":[]},"CompositeToken":{"CancelationToken":[]},"TimeoutToken":{"CancelationToken":[]},"EmptyUnmodifiableSet":{"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"QueueList":{"ListBase":["1"],"List":["1"],"Queue":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListBase.E":"1","QueueList.E":"1"},"UnionSet":{"SetBase":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"UnmodifiableSetView":{"_UnmodifiableSetView_DelegatingSet_UnmodifiableSetMixin":["1"],"DelegatingSet":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_DelegatingIterableBase":{"Iterable":["1"]},"DelegatingSet":{"Set":["1"],"_DelegatingIterableBase":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"DevelopmentFilter":{"LogFilter":[]},"ProductionFilter":{"LogFilter":[]},"_Empty":{"Matcher":[]},"_NotEmpty":{"Matcher":[]},"_IsNull":{"Matcher":[]},"_IsNotNull":{"Matcher":[]},"_IsTrue":{"Matcher":[]},"_IsFalse":{"Matcher":[]},"_IsNaN":{"FeatureMatcher":["num"],"TypeMatcher":["num"],"Matcher":[],"TypeMatcher.T":"num","FeatureMatcher.T":"num"},"_HasLength":{"Matcher":[]},"_Contains":{"Matcher":[]},"_Predicate":{"FeatureMatcher":["1"],"TypeMatcher":["1"],"Matcher":[],"TypeMatcher.T":"1","FeatureMatcher.T":"1"},"CustomMatcher":{"Matcher":[]},"StringDescription":{"Description":[]},"_StringEqualsMatcher":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"_DeepMatcher":{"Matcher":[]},"AsyncMatcher":{"Matcher":[]},"Throws":{"Matcher":[]},"FeatureMatcher":{"TypeMatcher":["1"],"Matcher":[]},"_EveryElement":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[],"TypeMatcher.T":"Iterable<@>","FeatureMatcher.T":"Iterable<@>"},"_IterableMatcher":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[]},"_UnorderedMatches":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[]},"_ContainsAll":{"FeatureMatcher":["Iterable<@>"],"TypeMatcher":["Iterable<@>"],"Matcher":[],"TypeMatcher.T":"Iterable<@>","FeatureMatcher.T":"Iterable<@>"},"_IsNot":{"Matcher":[]},"_AnyOf":{"Matcher":[]},"_OrderingMatcher":{"Matcher":[]},"_MatchesRegExp":{"FeatureMatcher":["String"],"TypeMatcher":["String"],"Matcher":[],"TypeMatcher.T":"String","FeatureMatcher.T":"String"},"TypeMatcher":{"Matcher":[],"TypeMatcher.T":"1"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"_WebChannel":{"Channel":[]},"_WebForwardChannel":{"Channel":[]},"EntryPointUri":{"Releasable":[]},"_WebLocalWorker":{"LocalWorker":["1"],"Releasable":[]},"_WebWorkerChannel":{"WorkerChannel":[]},"DisconnectedChannel":{"Channel":[]},"InternalLogger":{"Logger":[]},"_NoLogOutput":{"LogOutput":[]},"_DummyPrinter":{"LogPrinter":[]},"_LogAllFilter":{"LogFilter":[]},"CastConverter":{"Converter0":[]},"InPlaceConverter":{"Converter0":[]},"_LazyInPlaceList":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LazyInPlaceMap":{"Map":["1","2"]},"LazyInPlaceConverter":{"Converter0":[]},"NumConverter":{"Converter0":[]},"SquadronCanceledException":{"SquadronException":[],"CanceledException":[],"Exception":[]},"SquadronCanceledExceptions":{"SquadronCanceledException":[],"CanceledExceptions":[],"SquadronException":[],"CanceledException":[],"Exception":[]},"SquadronError":{"SquadronException":[],"Exception":[]},"SquadronException":{"Exception":[]},"SquadronTimeoutException":{"SquadronCanceledException":[],"TimeoutCanceledException":[],"SquadronException":[],"CanceledException":[],"TimeoutException":[],"Exception":[]},"TaskCanceledException":{"SquadronError":[],"SquadronException":[],"CanceledException":[],"Exception":[]},"WorkerException":{"SquadronException":[],"Exception":[]},"LocalWorker":{"Releasable":[]},"WorkerStreamTask":{"WorkerTask":["1","2"],"StreamTask":["1"],"Task":["1"]},"WorkerTask":{"Task":["1"]},"WorkerValueTask":{"WorkerTask":["1","2"],"ValueTask":["1"],"Task":["1"]},"WorkerPool":{"Releasable":[]},"CancelationTokenReference":{"SquadronCancelationToken":[],"CancelationToken":[]},"SquadronCancelationToken":{"CancelationToken":[]},"Worker0":{"Releasable":[]},"Chain":{"StackTrace":[]},"LazyChain":{"Chain":[],"StackTrace":[]},"LazyTrace":{"Trace":[],"StackTrace":[]},"Trace":{"StackTrace":[]},"UnparsedFrame":{"Frame":[]},"OutsideTestException":{"Exception":[]},"ClosedException":{"Exception":[]},"DuplicateTestNameException":{"Exception":[]},"Group":{"GroupEntry":[]},"LocalTest":{"Test":[],"GroupEntry":[]},"LiveTestController":{"LiveTest":[]},"Test":{"GroupEntry":[]},"TestFailure":{"Exception":[]},"_LiveSuite":{"LiveSuite":[]},"RunnerSuite":{"Suite":[]},"IterableSet":{"SetBase":["1"],"UnmodifiableSetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"PrintSink":{"StringSink":[]},"ReleasedException":{"Exception":[]},"CacheWorker":{"Worker0":[],"Releasable":[]},"CustomException":{"WorkerException":[],"SquadronException":[],"Exception":[]},"InstallableWorker":{"Worker0":[],"Releasable":[]},"IssuesWorkerPool":{"WorkerPool":["IssuesWorker"],"Releasable":[],"WorkerPool.W":"IssuesWorker"},"IssuesWorker":{"Worker0":[],"Releasable":[]},"LocalClientWorkerPool":{"WorkerPool":["LocalClientWorker"],"Releasable":[],"WorkerPool.W":"LocalClientWorker"},"LocalClientWorker":{"Worker0":[],"Releasable":[]},"MemoryLogger":{"Logger":[]},"MissingWorker":{"Worker0":[],"Releasable":[]},"NotAWorker":{"Worker0":[],"Releasable":[]},"PrimeWorkerPool":{"WorkerPool":["PrimeWorker"],"Releasable":[],"WorkerPool.W":"PrimeWorker"},"PrimeWorker":{"Worker0":[],"Releasable":[]},"TestException":{"Exception":[]},"TestTimeOutException":{"Exception":[]},"NoOutput":{"LogOutput":[]},"EmptyPrinter":{"LogPrinter":[]},"TestWorkerPool":{"WorkerPool":["TestWorker"],"Releasable":[],"WorkerPool.W":"TestWorker"},"TestWorker":{"Worker0":[],"Releasable":[]},"UnexpectedException":{"Exception":[]},"Called":{"Matcher":[]},"Reported":{"Matcher":[]},"ByteData":{"TypedData":[]},"Int8List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint8ClampedList":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int16List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint16List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int32List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint32List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Int64List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Uint64List":{"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"Iterable":["int"]},"Float32List":{"List":["double"],"EfficientLengthIterable":["double"],"TypedData":[],"Iterable":["double"]},"Float64List":{"List":["double"],"EfficientLengthIterable":["double"],"TypedData":[],"Iterable":["double"]},"Float32x4List":{"List":["Float32x4"],"EfficientLengthIterable":["Float32x4"],"TypedData":[],"Iterable":["Float32x4"]},"Int32x4List":{"List":["Int32x4"],"EfficientLengthIterable":["Int32x4"],"TypedData":[],"Iterable":["Int32x4"]},"Float64x2List":{"List":["Float64x2"],"EfficientLengthIterable":["Float64x2"],"TypedData":[],"Iterable":["Float64x2"]},"StreamTask":{"Task":["1"]},"ValueTask":{"Task":["1"]}}'));
   A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"__CastListBase__CastIterableBase_ListMixin":2,"NativeTypedArray":1,"_DelayedEvent":1,"_EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin":1,"_QueueList_Object_ListMixin":1,"_UnionSet_SetBase_UnmodifiableSetMixin":1,"_IterableSet_Object_SetMixin":1,"_IterableSet_Object_SetMixin_UnmodifiableSetMixin":1}'));
   var string$ = {
     ______: "===== asynchronous gap ===========================\n",
@@ -49465,7 +54676,6 @@
     Cannoten: "Cannot extract a non-Windows file path from a file URI with an authority",
     Cannotf: "Cannot fire new event. Controller is already firing an event",
     Error_: "Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type",
-    conver: "conversion of a list with integral double",
     matchA: "matchAsync() may only return a String, a Future, or null.",
     max_mu: "max must be in range 0 < max \u2264 2^32, was "
   };
@@ -49727,8 +54937,9 @@
       TypeMatcher_Map_of_String_and_nullable_int: findType("TypeMatcher<Map<String,int?>>"),
       TypeMatcher_SquadronError: findType("TypeMatcher<SquadronError>"),
       TypeMatcher_TimeoutException: findType("TypeMatcher<TimeoutException>"),
-      TypeMatcher_TypeError: findType("TypeMatcher<TypeError>"),
       TypeMatcher_WorkerException: findType("TypeMatcher<WorkerException>"),
+      TypeMatcher_double: findType("TypeMatcher<double>"),
+      TypeMatcher_int: findType("TypeMatcher<int>"),
       TypedData: findType("TypedData"),
       TypedData_Function_dynamic: findType("TypedData(@)"),
       Uint16List: findType("Uint16List"),
@@ -49826,7 +55037,6 @@
       dynamic_Function_Object: findType("@(Object)"),
       dynamic_Function_Object_StackTrace: findType("@(Object,StackTrace)"),
       dynamic_Function_String: findType("@(String)"),
-      dynamic_Function_dynamic: findType("@(@)"),
       dynamic_Function_dynamic_dynamic: findType("@(@,@)"),
       int: findType("int"),
       legacy_Never: findType("0&*"),
@@ -49861,9 +55071,7 @@
       nullable_StreamSubscription_LiveTest: findType("StreamSubscription<LiveTest>?"),
       nullable_String: findType("String?"),
       nullable_String_Function_Match: findType("String(Match)?"),
-      nullable_String_Function_dynamic: findType("String(@)?"),
       nullable_TestContext: findType("TestContext?"),
-      nullable_TypedData_Function_dynamic: findType("TypedData?(@)"),
       nullable_WorkerChannel: findType("WorkerChannel?"),
       nullable_WorkerException_Function_List_dynamic: findType("WorkerException?(List<@>)"),
       nullable_Zone: findType("Zone?"),
@@ -49878,7 +55086,6 @@
       nullable_double: findType("double?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
       nullable_int: findType("int?"),
-      nullable_nullable_int_Function_dynamic: findType("int?(@)?"),
       nullable_void_Function: findType("~()?"),
       nullable_void_Function_Event: findType("~(Event)?"),
       nullable_void_Function_MessageEvent: findType("~(MessageEvent)?"),
@@ -50274,6 +55481,12 @@
     $._globalDeclarer = null;
     $._macOSDirectories = A.LinkedHashSet_LinkedHashSet$_literal(["/Applications", "/Library", "/Network", "/System", "/Users"], type$.String);
     $.ReleasableTracker__releasables = A.LinkedHashSet_LinkedHashSet$_empty(A.findType("Releasable"));
+    $._listOfInts = A._setArrayType([1, 2, 3, 4], type$.JSArray_int);
+    $._listOfNullableInts = A._setArrayType([1, 2, null, 4], A.findType("JSArray<int?>"));
+    $._listOfDoubles = A._setArrayType([1.1, 2.2, 3.3, 3.4], type$.JSArray_double);
+    $._listOfNullableDoubles = A._setArrayType([1.1, 2.2, null, 4.4], A.findType("JSArray<double?>"));
+    $._mapOfInts = A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], type$.String, type$.int);
+    $._mapOfNullableInts = A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "", null, "three", 3], type$.String, type$.nullable_int);
   })();
   (function lazyInitializers() {
     var _lazyFinal = hunkHelpers.lazyFinal,
@@ -50376,10 +55589,8 @@
         A.throwExpression(A.ArgumentError$("(2020, 2, 2, 0, 0, 0, 0, 0)", null));
       return new A.DateTime(t1, 0, true);
     });
-    _lazyFinal($, "CastConverter__typeDataCastors", "$get$CastConverter__typeDataCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, A.CastConverter__td(A.typed_data_ByteData___view_tearOff$closure(), type$.ByteData), B.Type_Uint8ClampedList_9Bb, A.CastConverter__td(A.typed_data_Uint8ClampedList___view_tearOff$closure(), type$.Uint8ClampedList), B.Type_Uint8List_CSc, A.CastConverter__td(A.typed_data_Uint8List___view_tearOff$closure(), type$.Uint8List), B.Type_Int8List_woc, A.CastConverter__td(A.typed_data_Int8List___view_tearOff$closure(), type$.Int8List), B.Type_Uint16List_2mh, A.CastConverter__td(A.typed_data_Uint16List___view_tearOff$closure(), type$.Uint16List), B.Type_Int16List_cot, A.CastConverter__td(A.typed_data_Int16List___view_tearOff$closure(), type$.Int16List), B.Type_Uint32List_2mh, A.CastConverter__td(A.typed_data_Uint32List___view_tearOff$closure(), type$.Uint32List), B.Type_Int32List_m1p, A.CastConverter__td(A.typed_data_Int32List___view_tearOff$closure(), type$.Int32List), B.Type_Int32x4List_A8J, A.CastConverter__td(A.typed_data_Int32x4List___view_tearOff$closure(), type$.Int32x4List), B.Type_Uint64List_2mh, A.CastConverter__td(A.typed_data_Uint64List___view_tearOff$closure(), type$.Uint64List), B.Type_Int64List_C72, A.CastConverter__td(A.typed_data_Int64List___view_tearOff$closure(), type$.Int64List), B.Type_Float32List_Ymk, A.CastConverter__td(A.typed_data_Float32List___view_tearOff$closure(), type$.Float32List), B.Type_Float32x4List_sWu, A.CastConverter__td(A.typed_data_Float32x4List___view_tearOff$closure(), type$.Float32x4List), B.Type_Float64List_Ymk, A.CastConverter__td(A.typed_data_Float64List___view_tearOff$closure(), type$.Float64List), B.Type_Float64x2List_sWu, A.CastConverter__td(A.typed_data_Float64x2List___view_tearOff$closure(), type$.Float64x2List)], type$.Type, type$.dynamic_Function_dynamic));
-    _lazyFinal($, "CastConverter__nullableTypeDataCastors", "$get$CastConverter__nullableTypeDataCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, A.CastConverter__ntd(A.typed_data_ByteData___view_tearOff$closure(), type$.ByteData), B.Type_Uint8ClampedList_9Bb, A.CastConverter__ntd(A.typed_data_Uint8ClampedList___view_tearOff$closure(), type$.Uint8ClampedList), B.Type_Uint8List_CSc, A.CastConverter__ntd(A.typed_data_Uint8List___view_tearOff$closure(), type$.Uint8List), B.Type_Int8List_woc, A.CastConverter__ntd(A.typed_data_Int8List___view_tearOff$closure(), type$.Int8List), B.Type_Uint16List_2mh, A.CastConverter__ntd(A.typed_data_Uint16List___view_tearOff$closure(), type$.Uint16List), B.Type_Int16List_cot, A.CastConverter__ntd(A.typed_data_Int16List___view_tearOff$closure(), type$.Int16List), B.Type_Uint32List_2mh, A.CastConverter__ntd(A.typed_data_Uint32List___view_tearOff$closure(), type$.Uint32List), B.Type_Int32List_m1p, A.CastConverter__ntd(A.typed_data_Int32List___view_tearOff$closure(), type$.Int32List), B.Type_Int32x4List_A8J, A.CastConverter__ntd(A.typed_data_Int32x4List___view_tearOff$closure(), type$.Int32x4List), B.Type_Uint64List_2mh, A.CastConverter__ntd(A.typed_data_Uint64List___view_tearOff$closure(), type$.Uint64List), B.Type_Int64List_C72, A.CastConverter__ntd(A.typed_data_Int64List___view_tearOff$closure(), type$.Int64List), B.Type_Float32List_Ymk, A.CastConverter__ntd(A.typed_data_Float32List___view_tearOff$closure(), type$.Float32List), B.Type_Float32x4List_sWu, A.CastConverter__ntd(A.typed_data_Float32x4List___view_tearOff$closure(), type$.Float32x4List), B.Type_Float64List_Ymk, A.CastConverter__ntd(A.typed_data_Float64List___view_tearOff$closure(), type$.Float64List), B.Type_Float64x2List_sWu, A.CastConverter__ntd(A.typed_data_Float64x2List___view_tearOff$closure(), type$.Float64x2List)], type$.Type, type$.dynamic_Function_dynamic));
-    _lazyFinal($, "NumConverter__numCastors", "$get$NumConverter__numCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_int_8nG, A.num_converter_NumConverter__toInt$closure(), B.Type_double_23F, A.num_converter_NumConverter__toDbl$closure()], type$.Type, type$.dynamic_Function_dynamic));
-    _lazyFinal($, "NumConverter__nullableNumCastors", "$get$NumConverter__nullableNumCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_int_8nG, A.num_converter_NumConverter__toNullableInt$closure(), B.Type_double_23F, A.num_converter_NumConverter__toNullableDbl$closure()], type$.Type, type$.dynamic_Function_dynamic));
+    _lazyFinal($, "Converter__typeDataCastors", "$get$Converter__typeDataCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_ByteData_mF8, A.Converter__td(A.typed_data_ByteData___view_tearOff$closure(), type$.ByteData), B.Type_Uint8ClampedList_9Bb, A.Converter__td(A.typed_data_Uint8ClampedList___view_tearOff$closure(), type$.Uint8ClampedList), B.Type_Uint8List_CSc, A.Converter__td(A.typed_data_Uint8List___view_tearOff$closure(), type$.Uint8List), B.Type_Int8List_woc, A.Converter__td(A.typed_data_Int8List___view_tearOff$closure(), type$.Int8List), B.Type_Uint16List_2mh, A.Converter__td(A.typed_data_Uint16List___view_tearOff$closure(), type$.Uint16List), B.Type_Int16List_cot, A.Converter__td(A.typed_data_Int16List___view_tearOff$closure(), type$.Int16List), B.Type_Uint32List_2mh, A.Converter__td(A.typed_data_Uint32List___view_tearOff$closure(), type$.Uint32List), B.Type_Int32List_m1p, A.Converter__td(A.typed_data_Int32List___view_tearOff$closure(), type$.Int32List), B.Type_Int32x4List_A8J, A.Converter__td(A.typed_data_Int32x4List___view_tearOff$closure(), type$.Int32x4List), B.Type_Uint64List_2mh, A.Converter__td(A.typed_data_Uint64List___view_tearOff$closure(), type$.Uint64List), B.Type_Int64List_C72, A.Converter__td(A.typed_data_Int64List___view_tearOff$closure(), type$.Int64List), B.Type_Float32List_Ymk, A.Converter__td(A.typed_data_Float32List___view_tearOff$closure(), type$.Float32List), B.Type_Float32x4List_sWu, A.Converter__td(A.typed_data_Float32x4List___view_tearOff$closure(), type$.Float32x4List), B.Type_Float64List_Ymk, A.Converter__td(A.typed_data_Float64List___view_tearOff$closure(), type$.Float64List), B.Type_Float64x2List_sWu, A.Converter__td(A.typed_data_Float64x2List___view_tearOff$closure(), type$.Float64x2List)], type$.Type, A.findType("@(@)")));
+    _lazyFinal($, "NumConverter__numCastors", "$get$NumConverter__numCastors", () => A.LinkedHashMap_LinkedHashMap$_literal([B.Type_int_8nG, A.num_converter_NumConverter__toInt$closure(), B.Type_double_23F, A.num_converter_NumConverter__toDbl$closure()], type$.Type, A.findType("@(@)")));
     _lazyFinal($, "Squadron_converter", "$get$Squadron_converter", () => B.C_CastConverter);
     _lazyFinal($, "Squadron_platformType", "$get$Squadron_platformType", () => B.SquadronPlatformType_JavaScript_js);
     _lazyFinal($, "CancelationTokenReference_noToken", "$get$CancelationTokenReference_noToken", () => {
@@ -50442,6 +55653,11 @@
       return new A.SuiteConfiguration(_null, _null, _null);
     });
     _lazyFinal($, "currentOSGuess", "$get$currentOSGuess", () => new A.currentOSGuess_closure().call$0());
+    _lazyFinal($, "_listOfIntsWithIntegralDouble", "$get$_listOfIntsWithIntegralDouble", () => A._setArrayType([1, 2, 3, 4], A.findType("JSArray<num>")));
+    _lazyFinal($, "_listOfDoublesWithInt", "$get$_listOfDoublesWithInt", () => A._setArrayType([1.1, 2.2, 3, 4.4], A.findType("JSArray<num>")));
+    _lazyFinal($, "_mapOfIntsWithIntegralDouble", "$get$_mapOfIntsWithIntegralDouble", () => A.LinkedHashMap_LinkedHashMap$_literal(["one", 1, "two", 2, "three", 3], type$.String, type$.num));
+    _lazyFinal($, "_throwsTypeError", "$get$_throwsTypeError", () => A.failsWith(type$.TypeError));
+    _lazyFinal($, "_isInfinite", "$get$_isInfinite", () => A.anyOf(1 / 0, -1 / 0));
     _lazy($, "platformName", "$get$platformName", () => {
       var t1 = A.window().navigator.userAgent;
       t1.toString;
@@ -50474,6 +55690,8 @@
     });
     _lazyFinal($, "ConsoleToHtml_sequences", "$get$ConsoleToHtml_sequences", () => A._setArrayType([$.$get$ConsoleToHtml_cr(), $.$get$ConsoleToHtml_lf(), $.$get$ConsoleToHtml_amp(), $.$get$ConsoleToHtml_lt(), $.$get$ConsoleToHtml_gt(), $.$get$ConsoleToHtml_resetSeq(), $.$get$ConsoleToHtml_boldSeq(), $.$get$ConsoleToHtml_redSeq(), $.$get$ConsoleToHtml_greenSeq()], A.findType("JSArray<SequenceReplacement>")));
     _lazyFinal($, "HtmlLogger__formatter", "$get$HtmlLogger__formatter", () => new A.ConsoleToHtml());
+    _lazyFinal($, "TestWorker_bigIntMarshaler", "$get$TestWorker_bigIntMarshaler", () => new A.TestWorker_bigIntMarshaler_closure());
+    _lazyFinal($, "TestWorker_bigIntUnmarshaler", "$get$TestWorker_bigIntUnmarshaler", () => new A.TestWorker_bigIntUnmarshaler_closure());
     _lazyFinal($, "executors", "$get$executors", () => A.LinkedHashMap_LinkedHashMap$_literal(["Classic Web Workers", new A._Record_2_runner_script(A.lib_01_web_worker_js_test__execute$closure(), "01_web_worker_js_test.dart"), "Squadron Workers", new A._Record_2_runner_script(A.lib_04_worker_test__execute$closure(), "04_worker_test.dart"), "Streaming", new A._Record_2_runner_script(A.lib_05_worker_streaming_test__execute$closure(), "05_worker_streaming_test.dart"), "Squadron Worker Pools", new A._Record_2_runner_script(A.lib_10_worker_pool_test__execute$closure(), "10_worker_pool_test.dart"), "Shared Channel", new A._Record_2_runner_script(A.lib_07_shared_channel_test__execute$closure(), "07_shared_channel_test.dart"), "Local Workers", new A._Record_2_runner_script(A.lib_06_local_worker_test__execute$closure(), "06_local_worker_test.dart"), "Logging", new A._Record_2_runner_script(A.lib_02_logging_test__execute$closure(), "02_logging_test.dart"), "Converters", new A._Record_2_runner_script(A.lib_03_converter_test__execute$closure(), "03_converter_test.dart"), "Marshalers", new A._Record_2_runner_script(A.lib_09_marshaler_test__execute$closure(), "09_marshaler_test.dart"), "Cancelation Tokens", new A._Record_2_runner_script(A.lib_08_cancelation_test__execute$closure(), "08_cancelation_test.dart"), "GitHub Issues", new A._Record_2_runner_script(A.lib_11_issues_test__execute$closure(), "11_issues_test.dart"), "Not a worker", new A._Record_2_runner_script(A.lib_00_not_a_worker_test__execute$closure(), "00_not_a_worker_test.dart")], type$.String, A.findType("+runner,script(~(TestContext?),String)")));
   })();
   (function nativeSupport() {

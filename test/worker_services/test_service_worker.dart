@@ -170,31 +170,31 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n])
-      .then(Squadron.converter.v<int>());
+      .then(Squadron.converter.value<int>());
 
   @override
-  Future<int> throwException() =>
-      send(TestService.throwExceptionCommand).then(Squadron.converter.v<int>());
+  Future<int> throwException() => send(TestService.throwExceptionCommand)
+      .then(Squadron.converter.value<int>());
 
   @override
   Future<int> throwWorkerException() =>
       send(TestService.throwWorkerExceptionCommand)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Future<int> throwTaskTimeOutException() =>
       send(TestService.throwTaskTimeOutExceptionCommand)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Future<int> throwCanceledException() =>
       send(TestService.throwCanceledExceptionCommand)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Future<int> throwCustomException() =>
       send(TestService.throwCustomExceptionCommand)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Future<dynamic> sendBack(dynamic data) =>
@@ -208,59 +208,60 @@ class TestWorker extends Worker implements TestService {
 
   @override
   Future<bool> ping() =>
-      send(TestService.pingCommand).then(Squadron.converter.v<bool>());
+      send(TestService.pingCommand).then(Squadron.converter.value<bool>());
 
   @override
   Stream<int> finite(int count, [CancelationToken? token]) =>
       stream(TestService.finiteCommand, args: [count], token: token)
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
 
   @override
   Stream<int> infinite([CancelationToken? token]) =>
       stream(TestService.infiniteCommand, token: token)
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
 
   @override
   Stream<int> clock({int frequency = 1, CancelationToken? token}) =>
       stream(TestService.clockCommand, args: [frequency], token: token)
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
 
   @override
   Future<int> cancelableInfiniteCpu(CancelationToken token) =>
       send(TestService.cancelableInfiniteCpuCommand, token: token)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Future<int> getPendingInfiniteWithErrors() =>
       send(TestService.getPendingInfiniteWithErrorsCommand)
-          .then(Squadron.converter.v<int>());
+          .then(Squadron.converter.value<int>());
 
   @override
   Stream<int> infiniteWithErrors([CancelationToken? token]) =>
       stream(TestService.infiniteWithErrorsCommand, token: token)
-          .map(Squadron.converter.v<int>());
+          .map(Squadron.converter.value<int>());
+
+  static final bigIntMarshaler = ((x) => (const BigIntMarshaler()).marshal(x));
+  static final bigIntUnmarshaler =
+      ((x) => (const BigIntMarshaler()).unmarshal(x));
 
   @override
   Future<BigInt> bigIntAdd(BigInt a, BigInt b,
       {required bool marshalIn, required bool marshalOut}) {
-    final bigIntMarshaler = BigIntMarshaler();
-    final marshal = marshalIn
-        ? bigIntMarshaler.marshaler()
-        : Squadron.converter.v<BigInt>();
+    final marshal =
+        marshalIn ? bigIntMarshaler : Squadron.converter.value<BigInt>();
     return send(
       TestService.bigIntAddCommand,
       args: [marshal(a), marshal(b), marshalIn, marshalOut],
       inspectRequest: true,
       inspectResponse: true,
     ).then(
-      marshalOut
-          ? bigIntMarshaler.unmarshaler()
-          : Squadron.converter.v<BigInt>(),
+      marshalOut ? bigIntUnmarshaler : Squadron.converter.value<BigInt>(),
     );
   }
 
   @override
   Future<SquadronPlatformType> getPlatformType() =>
       send(TestService.platformTypeCommand).then((res) =>
-          SquadronPlatformType.tryParse(Squadron.converter.v<String>()(res))!);
+          SquadronPlatformType.tryParse(
+              Squadron.converter.value<String>()(res))!);
 }
