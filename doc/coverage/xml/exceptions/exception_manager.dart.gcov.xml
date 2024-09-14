@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.76666665" lines-covered="23" lines-valid="30" package="/exceptions" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.76666665" lines-covered="23" lines-valid="30" package="/exceptions" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'package:meta/meta.dart';</code>
@@ -171,13 +171,13 @@
         <line>
             <code>  /// Deserializes a [List] that was produced by [serialize].</code>
         </line>
-        <line hits="19">
+        <line hits="20">
             <code>  SquadronException? deserialize(List? data) {</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="15">
+        <line hits="16">
             <code>    if (data == null || data.isEmpty) {</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="9">
             <code>      return null;</code>
@@ -189,17 +189,17 @@
         <line hits="0">
             <code>    try {</code>
         </line>
-        <line hits="13">
+        <line hits="14">
             <code>      final exceptionType = data[0];</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="18">
+        <line hits="19">
             <code>      final deserializer = _deserializers[exceptionType];</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
+            <hit count="19" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="13">
+        <line hits="14">
             <code>      return deserializer?.call(data) ??</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4">
             <code>          WorkerException(</code>
@@ -221,9 +221,9 @@
         <line>
             <code>    }</code>
         </line>
-        <line hits="10">
+        <line hits="11">
             <code>  }</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

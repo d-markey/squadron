@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../../../../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="/home/runner/work/squadron/squadron/lib/src" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import '_impl/xplat/_platform.dart'</code>
@@ -26,6 +26,13 @@
         <line hits="8">
             <code>  static final platformType = impl.getPlatformType();</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="12">
+            <code>  static Uri uri(String url) =&gt; impl.mapUrl(url);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

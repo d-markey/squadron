@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-09-08</dd>
+                    <dd>2024-09-14</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -75,140 +75,95 @@
                 <tr class="noop" title="Line 5" id="line5">
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>@JS()</code></td>
+                <tr class="lineCov" title="Line 6" id="line6">
+                    <td>6</td><td></td><td>12</td><td><code>String? getHome() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>external DedicatedWorkerGlobalScope get self;</code></td>
+                <tr class="lineNoCov" title="Line 7" id="line7">
+                    <td>7</td><td></td><td>0</td><td><code>  if (window.isUndefinedOrNull) return null;</code></td>
                 </tr>
-                <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 8" id="line8">
+                    <td>8</td><td></td><td>12</td><td><code>  final components = window.location.pathname.split('/');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>11</td><td><code>String? getHome() {</code></td>
+                    <td>9</td><td></td><td>12</td><td><code>  return components.take(components.length - 1).join('/');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>0</td><td><code>  if (window.isUndefinedOrNull) return null;</code></td>
+                <tr class="lineCov" title="Line 10" id="line10">
+                    <td>10</td><td></td><td>12</td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>11</td><td><code>  final components = window.location.pathname.split('/');</code></td>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>11</td><td><code>  return components.take(components.length - 1).join('/');</code></td>
+                    <td>12</td><td></td><td>2</td><td><code>String? getErrorEventMessage(JSObject? obj) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>11</td><td><code>}</code></td>
+                    <td>13</td><td></td><td>2</td><td><code>  if (obj != null &amp;&amp; obj.has('message')) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 14" id="line14">
+                    <td>14</td><td></td><td>0</td><td><code>    return obj['message']?.toString();</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>const _dbgIdProp = '@@dbgid';</code></td>
+                    <td>15</td><td></td><td></td><td><code>  } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 16" id="line16">
+                    <td>16</td><td></td><td>2</td><td><code>    return null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>void setDbgId(JSObject obj, String id) {</code></td>
+                    <td>17</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  obj[_dbgIdProp] = id.toJS;</code></td>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>2</td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
-                    <td>19</td><td></td><td></td><td><code>}</code></td>
+                    <td>19</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>2</td><td><code>Object? getErrorEventError(JSObject? obj) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>String getDbgId(JSObject obj) {</code></td>
+                <tr class="lineCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>2</td><td><code>  if (obj != null &amp;&amp; obj.has('error')) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>  return obj.has(_dbgIdProp)</code></td>
+                <tr class="lineNoCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>0</td><td><code>    return obj['error'].dartify();</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>      ? obj[_dbgIdProp].dartify().toString()</code></td>
+                    <td>23</td><td></td><td></td><td><code>  } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>      : '($_dbgIdProp not set)';</code></td>
+                <tr class="lineCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>2</td><td><code>    return null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>}</code></td>
+                    <td>25</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 26" id="line26">
+                    <td>26</td><td></td><td>2</td><td><code>}</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>1</td><td><code>String? getErrorEventMessage(JSObject? obj) {</code></td>
+                <tr class="noop" title="Line 27" id="line27">
+                    <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>1</td><td><code>  if (obj != null &amp;&amp; obj.has('message')) {</code></td>
+                    <td>28</td><td></td><td>10</td><td><code>List? getMessageEventData(JSObject? obj) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>0</td><td><code>    return obj['message']?.toString();</code></td>
+                <tr class="lineCov" title="Line 29" id="line29">
+                    <td>29</td><td></td><td>10</td><td><code>  if (obj != null &amp;&amp; obj.has('data')) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  } else {</code></td>
+                    <td>30</td><td></td><td></td><td><code>    final data = obj['data'].dartify();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>1</td><td><code>    return null;</code></td>
+                    <td>31</td><td></td><td>10</td><td><code>    return (data == null) ? null : (data as List);</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  }</code></td>
+                    <td>32</td><td></td><td></td><td><code>  } else {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>1</td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>0</td><td><code>    return null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code></code></td>
+                    <td>34</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>1</td><td><code>Object? getErrorEventError(JSObject? obj) {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>1</td><td><code>  if (obj != null &amp;&amp; obj.has('error')) {</code></td>
-                </tr>
-                <tr class="lineNoCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>0</td><td><code>    return obj['error'].dartify();</code></td>
-                </tr>
-                <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>  } else {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>1</td><td><code>    return null;</code></td>
-                </tr>
-                <tr class="noop" title="Line 40" id="line40">
-                    <td>40</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>1</td><td><code>}</code></td>
-                </tr>
-                <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>9</td><td><code>List? getMessageEventData(JSObject? obj) {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>9</td><td><code>  if (obj != null &amp;&amp; obj.has('data')) {</code></td>
-                </tr>
-                <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>    final data = obj['data'].dartify();</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>9</td><td><code>    return (data == null) ? null : (data as List);</code></td>
-                </tr>
-                <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code>  } else {</code></td>
-                </tr>
-                <tr class="lineNoCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>0</td><td><code>    return null;</code></td>
-                </tr>
-                <tr class="noop" title="Line 49" id="line49">
-                    <td>49</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>9</td><td><code>}</code></td>
+                    <td>35</td><td></td><td>10</td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

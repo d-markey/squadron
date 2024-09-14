@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.16666667" lines-covered="1" lines-valid="6" package="/annotations" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.16666667" lines-covered="1" lines-valid="6" package="/annotations" testname="lcov.info" version="1.5">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="squadron_method.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/src">
             <testCase branch-hit="0" function-hit="0" line-hit="1" name="&lt;unnamed&gt;"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91803277" lines-covered="56" lines-valid="61" package="/_impl/native" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.91803277" lines-covered="56" lines-valid="61" package="/_impl/native" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>part of '_channel.dart';</code>
@@ -136,7 +136,7 @@
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  FutureOr close() {</code>
+            <code>  FutureOr&lt;void&gt; close() {</code>
         </line>
         <line hits="9">
             <code>    if (!_closed) {</code>
@@ -167,7 +167,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  FutureOr cancelStream(int streamId) {</code>
+            <code>  FutureOr&lt;void&gt; cancelStream(int streamId) {</code>
         </line>
         <line hits="3">
             <code>    if (!_closed) {</code>
@@ -194,7 +194,7 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line>
-            <code>  FutureOr cancelToken(SquadronCancelationToken? token) {</code>
+            <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token) {</code>
         </line>
         <line hits="2">
             <code>    if (token != null &amp;&amp; !_closed) {</code>

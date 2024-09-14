@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-09-08</dd>
+                    <dd>2024-09-14</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -82,7 +82,7 @@
                     <td>7</td><td></td><td></td><td><code>class SquadronError extends SquadronException {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>24</td><td><code>  SquadronError._(super.message, [super.stackTrace]) : super.init();</code></td>
+                    <td>8</td><td></td><td>25</td><td><code>  SquadronError._(super.message, [super.stackTrace]) : super.init();</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
                     <td>9</td><td></td><td></td><td><code></code></td>
@@ -133,31 +133,31 @@
                     <td>24</td><td></td><td>10</td><td><code>  static SquadronError create(String message, [StackTrace? stackTrace]) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>15</td><td><code>      SquadronError._(message, stackTrace);</code></td>
+                    <td>25</td><td></td><td>16</td><td><code>      SquadronError._(message, stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
                     <td>26</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>6</td><td><code>  static SquadronException? deserialize(List exceptionInfo) =&gt;</code></td>
+                    <td>27</td><td></td><td>7</td><td><code>  static SquadronException? deserialize(List exceptionInfo) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>8</td><td><code>      (exceptionInfo[_$type] == $squadronErrorType)</code></td>
+                    <td>28</td><td></td><td>9</td><td><code>      (exceptionInfo[_$type] == $squadronErrorType)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>6</td><td><code>          ? SquadronError._(</code></td>
+                    <td>29</td><td></td><td>7</td><td><code>          ? SquadronError._(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>6</td><td><code>              exceptionInfo[_$message],</code></td>
+                    <td>30</td><td></td><td>7</td><td><code>              exceptionInfo[_$message],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>8</td><td><code>              SquadronException.loadStackTrace(exceptionInfo[_$stackTrace]),</code></td>
+                    <td>31</td><td></td><td>9</td><td><code>              SquadronException.loadStackTrace(exceptionInfo[_$stackTrace]),</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
                     <td>32</td><td></td><td></td><td><code>            )</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>4</td><td><code>          : null;</code></td>
+                    <td>33</td><td></td><td>5</td><td><code>          : null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
                     <td>34</td><td></td><td></td><td><code>}</code></td>

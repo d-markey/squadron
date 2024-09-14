@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="squadron_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="4" lines-valid="5" package="/marshalers" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="squadron_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="/marshalers" testname="lcov.info" version="1.5">
     <lines>
-        <line>
-            <code>import '../converters/converter.dart';</code>
-        </line>
-        <line>
-            <code>import '../squadron_singleton.dart';</code>
-        </line>
-        <line>
-            <code/>
-        </line>
         <line>
             <code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code>
         </line>
         <line>
             <code>abstract class SquadronMarshaler&lt;T, S&gt; {</code>
         </line>
-        <line hits="0">
+        <line hits="7">
             <code>  const SquadronMarshaler();</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -48,34 +40,6 @@
         </line>
         <line>
             <code>  T unmarshal(S data);</code>
-        </line>
-        <line>
-            <code>}</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line>
-            <code>extension SquadronMarshalerExt&lt;T, S&gt; on SquadronMarshaler&lt;T, S&gt; {</code>
-        </line>
-        <line hits="2">
-            <code>  Cast&lt;S&gt; marshaler([Cast&lt;T&gt;? cast]) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6">
-            <code>      (x) =&gt; marshal((cast ?? Squadron.converter.v&lt;T&gt;())(x));</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="2">
-            <code>  Cast&lt;T&gt; unmarshaler([Cast&lt;S&gt;? cast]) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6">
-            <code>      (x) =&gt; unmarshal((cast ?? Squadron.converter.v&lt;S&gt;())(x));</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code>}</code>

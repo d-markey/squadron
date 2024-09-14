@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-09-08</dd>
+                    <dd>2024-09-14</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -76,7 +76,7 @@
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '../_impl/xplat/_helpers.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>import '../_impl/xplat/_time_stamp.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
                     <td>7</td><td></td><td></td><td><code>import '../channel.dart';</code></td>
@@ -274,7 +274,7 @@
                     <td>71</td><td></td><td></td><td><code>  /// The [WorkerResponse] exception, if any.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>28</td><td><code>  SquadronException? get error =&gt; data[_$error];</code></td>
+                    <td>72</td><td></td><td>29</td><td><code>  SquadronException? get error =&gt; data[_$error];</code></td>
                 </tr>
                 <tr class="noop" title="Line 73" id="line73">
                     <td>73</td><td></td><td></td><td><code></code></td>
@@ -349,16 +349,16 @@
                     <td>96</td><td></td><td></td><td><code>  /// used for log messages only).</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>19</td><td><code>  bool unwrapInPlace(Channel channel) {</code></td>
+                    <td>97</td><td></td><td>20</td><td><code>  bool unwrapInPlace(Channel channel) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
                     <td>98</td><td></td><td>10</td><td><code>    unwrapTravelTime();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>28</td><td><code>    final log = LogEventSerialization.deserialize(data[_$log]);</code></td>
+                    <td>99</td><td></td><td>29</td><td><code>    final log = LogEventSerialization.deserialize(data[_$log]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>10</td><td><code>    if (log != null) {</code></td>
+                    <td>100</td><td></td><td>11</td><td><code>    if (log != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 101" id="line101">
                     <td>101</td><td></td><td>24</td><td><code>      channel.logger?.log(log.level, log.message,</code></td>
@@ -373,19 +373,19 @@
                     <td>104</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 105" id="line105">
-                    <td>105</td><td></td><td>46</td><td><code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code></td>
+                    <td>105</td><td></td><td>47</td><td><code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>19</td><td><code>      data[_$endOfStream] ??= false;</code></td>
+                    <td>106</td><td></td><td>20</td><td><code>      data[_$endOfStream] ??= false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>10</td><td><code>      return true;</code></td>
+                    <td>107</td><td></td><td>11</td><td><code>      return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
                     <td>108</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>10</td><td><code>  }</code></td>
+                    <td>109</td><td></td><td>11</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 110" id="line110">
                     <td>110</td><td></td><td></td><td><code></code></td>
@@ -421,10 +421,10 @@
                     <td>120</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>19</td><td><code>  static WorkerResponse from(List data) {</code></td>
+                    <td>121</td><td></td><td>20</td><td><code>  static WorkerResponse from(List data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>28</td><td><code>    if (data.length != 5) {</code></td>
+                    <td>122</td><td></td><td>29</td><td><code>    if (data.length != 5) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 123" id="line123">
                     <td>123</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Invalid worker response');</code></td>
@@ -433,10 +433,10 @@
                     <td>124</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>19</td><td><code>    return WorkerResponse._(data);</code></td>
+                    <td>125</td><td></td><td>20</td><td><code>    return WorkerResponse._(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>10</td><td><code>  }</code></td>
+                    <td>126</td><td></td><td>11</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 127" id="line127">
                     <td>127</td><td></td><td></td><td><code>}</code></td>

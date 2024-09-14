@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-08" filename="num_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8780488" lines-covered="36" lines-valid="41" package="/converters" testname="lcov.info" version="1.5">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="num_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="14" lines-valid="15" package="/converters" testname="lcov.info" version="1.5">
     <lines>
         <line>
             <code>import 'cast_converter.dart';</code>
@@ -22,6 +22,17 @@
         </line>
         <line>
             <code>  static const instance = NumConverter();</code>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="1">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4">
+            <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; _numCastors[T] as Cast&lt;T&gt;? ?? super.value&lt;T&gt;();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line>
             <code/>
@@ -81,162 +92,6 @@
         </line>
         <line>
             <code>  };</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  static int? _toNullableInt(dynamic x) =&gt; (x == null) ? null : _toInt(x);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="3">
-            <code>  static double? _toNullableDbl(dynamic x) =&gt; (x as num?)?.toDouble();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="4">
-            <code>  static final Map&lt;Type, Cast&gt; _nullableNumCastors = {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    int: _toNullableInt,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>    double: _toNullableDbl,</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  };</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>  Cast&lt;T&gt; v&lt;T&gt;() =&gt; _numCastors[T] as Cast&lt;T&gt;? ?? super.v&lt;T&gt;();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>  Cast&lt;T?&gt; nv&lt;T&gt;() =&gt; _nullableNumCastors[T] as Cast&lt;T?&gt;? ?? super.nv&lt;T&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  Cast&lt;Iterable&lt;T&gt;&gt; i&lt;T&gt;([Cast&lt;T&gt;? cast]) =&gt;</code>
-        </line>
-        <line hits="0">
-            <code>      super.i&lt;T&gt;(cast ?? _numCastors[T] as Cast&lt;T&gt;);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="0">
-            <code>  @override</code>
-        </line>
-        <line>
-            <code>  Cast&lt;Iterable&lt;T?&gt;&gt; ni&lt;T&gt;([Cast&lt;T?&gt;? cast]) =&gt;</code>
-        </line>
-        <line hits="0">
-            <code>      super.ni&lt;T&gt;(cast ?? _nullableNumCastors[T] as Cast&lt;T?&gt;);</code>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  Cast&lt;List&lt;T&gt;&gt; l&lt;T&gt;([Cast&lt;T&gt;? cast]) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      super.l&lt;T&gt;(cast ?? _numCastors[T] as Cast&lt;T&gt;);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>  Cast&lt;List&lt;T?&gt;&gt; nl&lt;T&gt;([Cast&lt;T?&gt;? cast]) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4">
-            <code>      super.nl&lt;T&gt;(cast ?? _nullableNumCastors[T] as Cast&lt;T?&gt;);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2">
-            <code>  Cast&lt;Map&lt;K, V&gt;&gt; m&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) =&gt; super.m&lt;K, V&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>        kcast: kcast ?? _numCastors[K] as Cast&lt;K&gt;?,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>        vcast: vcast ?? _numCastors[V] as Cast&lt;V&gt;?,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1">
-            <code>      );</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code/>
-        </line>
-        <line hits="1">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nm&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V?&gt;? vcast}) =&gt;</code>
-        </line>
-        <line hits="2">
-            <code>      super.nm&lt;K, V&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>        kcast: kcast ?? _numCastors[K] as Cast&lt;K&gt;?,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3">
-            <code>        vcast: vcast ?? _nullableNumCastors[V] as Cast&lt;V?&gt;?,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line>
-            <code>      );</code>
         </line>
         <line>
             <code>}</code>
