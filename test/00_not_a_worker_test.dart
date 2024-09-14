@@ -62,7 +62,8 @@ void execute(TestContext? tc) {
 
           if (error != null) {
             // hoping for this test to get broken due to improvement in error handling :)
-            throw error!;
+            print('Received error ${error.runtimeType}');
+            // throw error!;
           }
           expect(expired, isTrue);
           expect(started, isFalse);

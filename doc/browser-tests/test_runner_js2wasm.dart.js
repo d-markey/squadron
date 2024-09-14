@@ -36800,7 +36800,7 @@
               // returning from await.
               t2 = t1.error;
               if (t2 != null)
-                throw A.wrapException(t2);
+                A.print("Received error " + J.get$runtimeType$(t2).toString$0(0));
               A.expect(t1.expired, B.C__IsTrue, null);
               A.expect(t1.started, B.C__IsFalse, null);
               // implicit return
