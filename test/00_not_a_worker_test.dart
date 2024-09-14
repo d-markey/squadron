@@ -60,12 +60,7 @@ void execute(TestContext? tc) {
             Future.delayed(Duration(seconds: 1)).then((_) => expired = true),
           ]);
 
-          if (error != null) {
-            // hoping for this test to get broken due to improvement in error handling :)
-            print('Received error ${error.runtimeType}');
-            // throw error!;
-          }
-          expect(expired, isTrue);
+          expect(expired || (error is SquadronError), isTrue);
           expect(started, isFalse);
         });
       }, skip: !tc.workerPlatform.isWeb);
