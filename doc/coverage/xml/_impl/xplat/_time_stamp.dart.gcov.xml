@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-14" filename="_time_stamp.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="/_impl/xplat" testname="lcov.info" version="1.5">
+    <lines>
+        <line hits="41">
+            <code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code>
+            <hit count="41" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="20">
+            <code>int microsecTimeStamp([DateTime? time]) =&gt;</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="61">
+            <code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code>
+            <hit count="61" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code/>
+        </line>
+        <line hits="9">
+            <code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt; (microsecs == null)</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line>
+            <code>    ? null</code>
+        </line>
+        <line hits="36">
+            <code>    : _latestUPDEpoch.add(Duration(microseconds: microsecs));</code>
+            <hit count="36" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>
