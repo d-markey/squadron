@@ -7,7 +7,7 @@ import 'stream_task.dart';
 import 'value_task.dart';
 
 /// Base worker task class
-abstract class Task<T> {
+abstract interface class Task<T> {
   /// Returns a future that will complete when the task has run.
   Future<void> get done;
 

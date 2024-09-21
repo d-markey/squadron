@@ -34,8 +34,8 @@ class TestService implements WorkerService {
     _logger.f('fatal test in worker');
   }
 
-  Future<void> io({required int ms}) =>
-      Future.delayed(Duration(milliseconds: ms));
+  Future<void> io({required int ms}) async =>
+      await Future.delayed(Duration(milliseconds: ms));
 
   void cpu({required int ms}) {
     final sw = Stopwatch()..start();

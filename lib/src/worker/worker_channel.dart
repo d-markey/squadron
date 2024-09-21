@@ -17,7 +17,7 @@ typedef PostRequest = void Function(WorkerRequest req);
 /// A [WorkerChannel] supports communication from a platform worker to the
 /// client that posted the [WorkerRequest]. It is used to send [WorkerResponse]
 /// back to the client.
-abstract class WorkerChannel {
+abstract interface class WorkerChannel {
   /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an
   /// opaque object than can be deserialized as a [Channel]. This method must
   /// be called by the worker upon startup.

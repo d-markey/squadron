@@ -1,7 +1,7 @@
 part of '_channel.dart';
 
 /// [Channel] implementation for the JavaScript world.
-class _WebChannel implements Channel {
+final class _WebChannel implements Channel {
   _WebChannel._(this._sendPort, this.logger, this.exceptionManager);
 
   /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
@@ -103,64 +103,39 @@ class _WebChannel implements Channel {
 
     // return a stream of responses
     Stream<WorkerResponse> $sendRequest() {
-      late final StreamController<WorkerResponse> controller;
+      StreamController<WorkerResponse>? controller;
 
-      void $forwardMessage(WorkerResponse msg) {
-        if (!controller.isClosed) controller.add(msg);
-      }
+      void $forwardMessage(WorkerResponse msg) => controller?.add(msg);
 
-      void $forwardError(Object error, StackTrace? st) {
-        if (!controller.isClosed) {
-          controller.addError(SquadronException.from(error, st, command));
-        }
-      }
+      void $forwardError(Object error, StackTrace? st) =>
+          controller?.addError(SquadronException.from(error, st, command));
 
-      void $processBufferedItem(BufferedItem<WorkerResponse> item) {
-        if (item.item != null) {
-          $forwardMessage(item.item!);
-        } else {
-          $forwardError(item.err!, item.st);
-        }
-      }
-
-      final buffer = EventBuffer($processBufferedItem);
+      final buffer = EventBuffer($forwardMessage, $forwardError);
 
       Future<void> $close() async {
         com.port1.close();
         com.port2.close();
-        if (!controller.isClosed) {
-          await controller.close();
-        }
+        final future = controller?.close();
+        controller = null;
+        await future;
       }
 
-      controller = StreamController(
+      controller = StreamController<WorkerResponse>(
         onListen: () {
           // do nothing if the controller is closed already
-          if (controller.isClosed) return;
+          if (controller == null) return;
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
-            final ex = SquadronException.from(
-              getErrorEventError(e) ??
-                  getErrorEventMessage(e) ??
-                  'Unknown error',
-              null,
-              command,
-            );
-            if (buffer.isActive) {
-              buffer.addError(ex, null);
-            } else {
-              $forwardError(ex, null);
-            }
+            final ex = SquadronException.from(getError(e), null, command);
+            final handler = buffer.isActive ? buffer.addError : $forwardError;
+            handler(ex, null);
           }.toJS;
 
           com.port1.onmessage = (web.MessageEvent e) {
-            final res = WorkerResponseExt.from(getMessageEventData(e) as List);
-            if (buffer.isActive) {
-              buffer.add(res);
-            } else {
-              $forwardMessage(res);
-            }
+            final res = WorkerResponseExt.from(getMessageEventData(e)!);
+            final handler = buffer.isActive ? buffer.add : $forwardMessage;
+            handler(res);
           }.toJS;
 
           // send the request
@@ -181,7 +156,7 @@ class _WebChannel implements Channel {
         onCancel: $close,
       );
 
-      return controller.stream;
+      return controller!.stream;
     }
 
     // return a stream of decoded responses
@@ -249,7 +224,7 @@ class _WebChannel implements Channel {
 /// [Channel] used to communicate between [web.Worker]s. Creates a
 /// [web.MessageChannel] to receive commands on
 /// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].
-class _WebForwardChannel extends _WebChannel {
+final class _WebForwardChannel extends _WebChannel {
   /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate
   /// message channel
   _WebForwardChannel._(this._remote, this._com, Logger? logger,

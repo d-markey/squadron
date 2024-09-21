@@ -6,13 +6,20 @@ import '../classes/test_context.dart';
 import 'cache_service_worker.dart';
 import 'prime_service.dart';
 
-class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
-  PrimeWorkerPool(TestContext context,
-      [CacheWorker? cache,
-      ConcurrencySettings concurrencySettings =
-          ConcurrencySettings.threeCpuThreads])
-      : super(() => PrimeWorker(context, cache),
-            concurrencySettings: concurrencySettings);
+base class PrimeWorkerPool extends WorkerPool<PrimeWorker>
+    implements PrimeService {
+  PrimeWorkerPool(
+    TestContext context, [
+    CacheWorker? cache,
+    ConcurrencySettings concurrencySettings =
+        ConcurrencySettings.threeCpuThreads,
+    ExceptionManager? exceptionManager,
+  ]) : super(
+          (ExceptionManager exceptionManager) =>
+              PrimeWorker(context, cache, exceptionManager),
+          concurrencySettings: concurrencySettings,
+          exceptionManager: exceptionManager,
+        );
 
   @override
   Future<bool> isPrime(int n, [PerfCounter? counter]) =>
@@ -23,11 +30,14 @@ class PrimeWorkerPool extends WorkerPool<PrimeWorker> implements PrimeService {
       stream((w) => w.getPrimes(min, max), counter: counter);
 }
 
-class PrimeWorker extends Worker implements PrimeService {
-  PrimeWorker(TestContext context, CacheWorker? cache)
-      : super(context.entryPoints.prime!, args: [
-          cache?.getSharedChannel()!.serialize(),
-        ]);
+base class PrimeWorker extends Worker implements PrimeService {
+  PrimeWorker(TestContext context, CacheWorker? cache,
+      [ExceptionManager? exceptionManager])
+      : super(
+          context.entryPoints.prime!,
+          args: [cache?.getSharedChannel()!.serialize()],
+          exceptionManager: exceptionManager,
+        );
 
   @override
   FutureOr<bool> isPrime(int n) => send(PrimeService.isPrimeCommand, args: [n])

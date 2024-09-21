@@ -22,11 +22,11 @@ import 'stream_task.dart';
 import 'task.dart';
 import 'value_task.dart';
 
-typedef WorkerFactory<W> = W Function();
+typedef WorkerFactory<W> = W Function(ExceptionManager);
 
 /// Worker pool responsible for instantiating, starting and stopping workers running in parallel.
 /// A [WorkerPool] is also responsible for creating and assigning [WorkerTask]s to [Worker]s.
-class WorkerPool<W extends Worker>
+abstract class WorkerPool<W extends Worker>
     with Releasable
     implements WorkerService, IWorker {
   /// Create a worker pool.
@@ -143,9 +143,8 @@ class WorkerPool<W extends Worker>
     final errors = [];
     for (var i = 0; i < workload; i++) {
       try {
-        final worker = _workerFactory();
+        final worker = _workerFactory(exceptionManager);
         worker.channelLogger = channelLogger;
-        worker.setExceptionManager(exceptionManager);
 
         final poolWorker = PoolWorker(worker, maxParallel);
         _startingWorkers++;

@@ -13,20 +13,19 @@ import '../../worker/worker_response.dart';
 import '../xplat/_transferables.dart';
 
 /// [WorkerChannel] implementation for the JavaScript world.
-class _WebWorkerChannel implements WorkerChannel {
+final class _WebWorkerChannel implements WorkerChannel {
   _WebWorkerChannel._(this._sendPort, this._logger);
 
-  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is owned by the worker owner. Otherwise,
-  /// [web.MessagePort] to return values to the client.
+  /// [web.MessagePort] to communicate with the [web.Worker] if the channel is
+  /// owned by the worker owner. Otherwise, [web.MessagePort] to return values
+  /// to the client.
   final web.MessagePort _sendPort;
 
   final Logger? _logger;
 
   void _postResponse(WorkerResponse res) {
     try {
-      final data = res.wrapInPlace();
-      final msg = data.jsify();
-      _sendPort.postMessage(msg);
+      _sendPort.postMessage(res.wrapInPlace().jsify());
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
       throw SquadronErrorExt.create('Failed to post response: $ex', st);
@@ -36,13 +35,11 @@ class _WebWorkerChannel implements WorkerChannel {
   void _inspectAndPostResponse(WorkerResponse res) {
     try {
       final data = res.wrapInPlace();
-      final msg = data.jsify();
       final transfer = Transferables.get(data);
       if (transfer == null || transfer.isEmpty) {
-        _sendPort.postMessage(msg);
+        _sendPort.postMessage(data.jsify());
       } else {
-        final jsTransfer = transfer.jsify() as JSArray;
-        _sendPort.postMessage(msg, jsTransfer);
+        _sendPort.postMessage(data.jsify(), transfer.jsify() as JSArray);
       }
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');

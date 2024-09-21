@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 typedef Cast<T> = T Function(dynamic);
 
-abstract class Converter {
+abstract base class Converter {
   const Converter();
 
   static bool isIdentity<T>(Cast<T>? cast) =>
@@ -39,7 +39,7 @@ abstract class Converter {
 
   // set
   Cast<Set<T>> set<T>([Cast<T>? cast]) {
-    final op = list<T>();
+    final op = list<T>(cast);
     return (x) => op(x).toSet();
   }
 

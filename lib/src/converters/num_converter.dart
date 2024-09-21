@@ -1,7 +1,7 @@
 import 'cast_converter.dart';
 import 'converter.dart';
 
-class NumConverter extends CastConverter {
+final class NumConverter extends CastConverter {
   const NumConverter();
 
   static const instance = NumConverter();
@@ -12,9 +12,9 @@ class NumConverter extends CastConverter {
   static int _toInt(dynamic x) {
     if (x is int && x.isFinite) return x;
     final y = (x as num).toDouble();
-    if (!y.isFinite) return double.minPositive as int; // intended type error
+    if (!y.isFinite) return double.nan as int; // intended type error
     final z = y.toInt(), d = y - z;
-    if (d != 0) return double.minPositive as int; // intended type error
+    if (d != 0) return double.nan as int; // intended type error
     return z;
   }
 

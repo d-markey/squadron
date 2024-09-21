@@ -1,33 +1,26 @@
 import 'dart:async';
 
-typedef BufferedItem<T> = ({T? item, Object? err, StackTrace? st});
-
 class EventBuffer<T> {
-  EventBuffer(this._process);
+  EventBuffer(this._processValue, this._processError);
 
-  final void Function(BufferedItem<T>) _process;
+  FutureOr<void> Function()? onDeactivate;
 
-  final _buffer = <BufferedItem<T>>[];
+  final void Function(T) _processValue;
+  final void Function(Object, StackTrace?) _processError;
+
+  final _buffer = <void Function()>[];
 
   var _pauses = 0;
 
   bool get isActive => _pauses > 0;
 
-  void add(T item) {
-    _buffer.add((item: item, err: null, st: null));
-  }
-
-  void addError(Object err, StackTrace? st) {
-    _buffer.add((item: null, err: err, st: st));
-  }
-
-  void activate() {
-    _pauses++;
-  }
+  void activate() => _pauses++;
 
   void deactivate() {
     if (_pauses == 1) {
-      _buffer.forEach(_process);
+      for (var fn in _buffer) {
+        fn.call();
+      }
       _buffer.clear();
       onDeactivate?.call();
     }
@@ -36,5 +29,8 @@ class EventBuffer<T> {
     }
   }
 
-  FutureOr<void> Function()? onDeactivate;
+  void add(T value) => _buffer.add(() => _processValue(value));
+
+  void addError(Object err, StackTrace? st) =>
+      _buffer.add(() => _processError(err, st));
 }

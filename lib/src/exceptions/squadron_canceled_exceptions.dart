@@ -6,14 +6,12 @@ import 'package:meta/meta.dart';
 import '_well_known_exceptions.dart';
 import 'squadron_canceled_exception.dart';
 
-class SquadronCanceledExceptions
-    implements SquadronCanceledException, CanceledExceptions {
+class SquadronCanceledExceptions extends SquadronCanceledException
+    implements CanceledExceptions {
   SquadronCanceledExceptions(
-      this.tokenId, Iterable<SquadronCanceledException> exceptions)
-      : _exceptions = exceptions.toList();
-
-  @override
-  final String tokenId;
+      String tokenId, Iterable<SquadronCanceledException> exceptions)
+      : _exceptions = exceptions.toList(),
+        super(tokenId, '', null);
 
   final List<SquadronCanceledException> _exceptions;
 

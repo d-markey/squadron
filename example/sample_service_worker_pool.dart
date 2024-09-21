@@ -5,7 +5,7 @@ import 'package:squadron/squadron.dart';
 import 'identity_service.dart';
 import 'sample_service.dart';
 
-class SampleWorkerPool extends WorkerPool<SampleWorker>
+base class SampleWorkerPool extends WorkerPool<SampleWorker>
     implements SampleService {
   SampleWorkerPool(
       EntryPoint entryPoint,
@@ -13,9 +13,12 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
       PlatformThreadHook? threadHook,
       ConcurrencySettings concurrencySettings)
       : super(
-            () => SampleWorker(entryPoint,
-                args: [identityServer.channel?.share().serialize()],
-                threadHook: threadHook),
+            (ExceptionManager exceptionManager) => SampleWorker(
+                  entryPoint,
+                  args: [identityServer.channel?.share().serialize()],
+                  threadHook: threadHook,
+                  exceptionManager: exceptionManager,
+                ),
             concurrencySettings: concurrencySettings);
 
   @override
@@ -30,8 +33,9 @@ class SampleWorkerPool extends WorkerPool<SampleWorker>
   Future<String> whoAreYouTalkingTo() => execute((w) => w.whoAreYouTalkingTo());
 }
 
-class SampleWorker extends Worker implements SampleService {
-  SampleWorker(super.entryPoint, {super.args, super.threadHook});
+base class SampleWorker extends Worker implements SampleService {
+  SampleWorker(super.entryPoint,
+      {super.args, super.threadHook, super.exceptionManager});
 
   @override
   Future io({required int milliseconds}) =>

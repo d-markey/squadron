@@ -3,7 +3,7 @@ import 'converter.dart';
 /// This converter converts items in lists and maps **in place**. It avoids
 /// creating a copy of the data to hold the conversion result. All items in
 /// the list/map are converted at the time the list/map is processed.
-class InPlaceConverter extends Converter {
+final class InPlaceConverter extends Converter {
   const InPlaceConverter(this.converter) : super();
 
   final Converter converter;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:logger/logger.dart';
+import 'package:meta/meta.dart';
 
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
@@ -8,7 +9,8 @@ import '../../exceptions/squadron_error.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 
-class DisconnectedChannel implements Channel {
+@internal
+final class DisconnectedChannel implements Channel {
   DisconnectedChannel([ExceptionManager? exceptionManager, this.logger])
       : exceptionManager = exceptionManager ?? ExceptionManager();
 

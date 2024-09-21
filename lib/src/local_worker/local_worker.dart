@@ -29,7 +29,7 @@ import '../worker_service.dart';
 /// worker are deserialized as [WorkerRequest]s and dispatched to a handler
 /// defined in the [service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
-abstract class LocalWorker<W extends WorkerService>
+abstract base class LocalWorker<W extends WorkerService>
     with Releasable
     implements WorkerService, IWorker {
   LocalWorker(this.service);

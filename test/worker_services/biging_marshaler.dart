@@ -1,6 +1,6 @@
 import 'package:squadron/squadron.dart';
 
-class BigIntMarshaler extends SquadronMarshaler<BigInt, String> {
+class BigIntMarshaler implements SquadronMarshaler<BigInt, String> {
   const BigIntMarshaler();
 
   @override

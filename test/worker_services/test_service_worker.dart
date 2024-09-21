@@ -7,30 +7,57 @@ import '../classes/test_context.dart';
 import 'biging_marshaler.dart';
 import 'test_service.dart';
 
-class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
+base class TestWorkerPool extends WorkerPool<TestWorker>
+    implements TestService {
   TestWorkerPool._(
-      super._workerFactory, ConcurrencySettings? concurrencySettings)
+      super._workerFactory, ConcurrencySettings? concurrencySettings,
+      [ExceptionManager? exceptionManager])
       : super(
-            concurrencySettings:
-                concurrencySettings ?? ConcurrencySettings.fourIoThreads);
+          concurrencySettings:
+              concurrencySettings ?? ConcurrencySettings.fourIoThreads,
+          exceptionManager: exceptionManager,
+        );
 
   TestWorkerPool(TestContext context,
-      [ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker(context),
-            concurrencySettings ?? ConcurrencySettings.fourIoThreads);
+      [ConcurrencySettings? concurrencySettings,
+      ExceptionManager? exceptionManager])
+      : this._(
+          (ExceptionManager exceptionManager) =>
+              TestWorker(context, exceptionManager: exceptionManager),
+          concurrencySettings ?? ConcurrencySettings.fourIoThreads,
+          exceptionManager,
+        );
 
   TestWorkerPool.throws(TestContext context,
-      [ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker.throws(context), concurrencySettings);
+      [ConcurrencySettings? concurrencySettings,
+      ExceptionManager? exceptionManager])
+      : this._(
+          (ExceptionManager exceptionManager) =>
+              TestWorker.throws(context, exceptionManager: exceptionManager),
+          concurrencySettings,
+          exceptionManager,
+        );
 
   TestWorkerPool.missingStartRequest(TestContext context,
-      [ConcurrencySettings? concurrencySettings])
+      [ConcurrencySettings? concurrencySettings,
+      ExceptionManager? exceptionManager])
       : this._(
-            () => TestWorker.missingStartRequest(context), concurrencySettings);
+          (ExceptionManager exceptionManager) => TestWorker.missingStartRequest(
+              context,
+              exceptionManager: exceptionManager),
+          concurrencySettings,
+          exceptionManager,
+        );
 
   TestWorkerPool.invalid(TestContext context,
-      [ConcurrencySettings? concurrencySettings])
-      : this._(() => TestWorker.invalid(context), concurrencySettings);
+      [ConcurrencySettings? concurrencySettings,
+      ExceptionManager? exceptionManager])
+      : this._(
+          (ExceptionManager exceptionManager) =>
+              TestWorker.invalid(context, exceptionManager: exceptionManager),
+          concurrencySettings,
+          exceptionManager,
+        );
 
   @override
   Future<void> setLevel(int level) => execute((w) => w.setLevel(level));
@@ -123,35 +150,49 @@ class TestWorkerPool extends WorkerPool<TestWorker> implements TestService {
       execute((w) => w.getPlatformType());
 }
 
-class TestWorker extends Worker implements TestService {
-  TestWorker._(super.entryPoint, List args, [PlatformThreadHook? hook])
-      : super(threadHook: hook, args: args);
+base class TestWorker extends Worker implements TestService {
+  TestWorker._(super.entryPoint, List args, PlatformThreadHook? hook,
+      ExceptionManager? exceptionManager)
+      : super(
+          threadHook: hook,
+          args: args,
+          exceptionManager: exceptionManager,
+        );
 
-  TestWorker(TestContext context, [PlatformThreadHook? hook])
+  TestWorker(TestContext context,
+      {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
       : this._(
           context.entryPoints.test!,
           [TestService.startupOk],
           hook,
+          exceptionManager,
         );
 
-  TestWorker.throws(TestContext context, [PlatformThreadHook? hook])
+  TestWorker.throws(TestContext context,
+      {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
       : this._(
           context.entryPoints.test!,
           [TestService.startupThrows],
           hook,
+          exceptionManager,
         );
 
-  TestWorker.invalid(TestContext context, [PlatformThreadHook? hook])
+  TestWorker.invalid(TestContext context,
+      {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
       : this._(
           context.entryPoints.test!,
           [TestService.startupInvalid],
           hook,
+          exceptionManager,
         );
 
-  TestWorker.missingStartRequest(TestContext context)
+  TestWorker.missingStartRequest(TestContext context,
+      {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
       : this._(
           context.entryPoints.missingStartRequest!,
           [TestService.startupOk],
+          hook,
+          exceptionManager,
         );
 
   @override

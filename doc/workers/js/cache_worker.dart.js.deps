@@ -261,6 +261,8 @@ file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/in_place_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_list.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_map.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart

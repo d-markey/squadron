@@ -12,7 +12,7 @@ import '../../worker/worker_channel.dart';
 import '../../worker/worker_response.dart';
 
 /// [WorkerChannel] implementation for the native world.
-class _VmWorkerChannel implements WorkerChannel {
+final class _VmWorkerChannel implements WorkerChannel {
   _VmWorkerChannel._(this._sendPort, this._logger);
 
   final Logger? _logger;

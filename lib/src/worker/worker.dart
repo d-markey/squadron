@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
-import 'package:meta/meta.dart';
 import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
@@ -266,11 +265,4 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   /// Workers do not need an [operations] map.
   @override
   Map<int, CommandHandler> get operations => WorkerService.noOperations;
-}
-
-@internal
-extension WorkerExt on Worker {
-  void setExceptionManager(ExceptionManager exceptionManager) {
-    _exceptionManager ??= exceptionManager;
-  }
 }

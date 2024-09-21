@@ -60,11 +60,7 @@ Future<Channel> openChannel(
     worker = web.Worker(webEntryPoint.uri.toJS);
 
     void $errorHandler(web.ErrorEvent? e) {
-      final err = getErrorEventError(e)?.toString() ??
-          getErrorEventMessage(e) ??
-          'Unknown error';
-      var error = SquadronErrorExt.create(err);
-
+      final err = getError(e), error = SquadronErrorExt.create(err.toString());
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 

@@ -54,3 +54,27 @@ class Reported extends CustomMatcher {
   Object? featureValueOf(dynamic actual) =>
       (actual is SquadronException) ? actual.message : actual.toString();
 }
+
+void checkOutcome<X, Y>(String process, X a, X b, Y Function(X) test) {
+  try {
+    final ra = test(a);
+    final rb = test(b);
+    expect(ra, rb);
+  } catch (exa, sta) {
+    try {
+      final rb = test(b);
+      print('$process succeeded for $b with $rb, failed for $a with $exa');
+      throw unexpectedSuccess(process, rb);
+    } catch (exb, stb) {
+      try {
+        expect(exa.runtimeType, exb.runtimeType);
+        expect(exa.toString(), exb.toString());
+      } catch (_) {
+        print('$process failed for $a with $exa, for $b with $exb');
+        print('Stacktrace (a): $sta');
+        print('Stacktrace (b): $stb');
+        rethrow;
+      }
+    }
+  }
+}

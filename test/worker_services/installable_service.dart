@@ -6,7 +6,7 @@ import 'package:squadron/squadron.dart';
 import '../classes/test_logger.dart';
 import 'delays.dart';
 
-class InstallableService implements WorkerService, ServiceInstaller {
+class InstallableService with ServiceInstaller implements WorkerService {
   InstallableService(
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : _throwOnInstall = throwOnInstall,

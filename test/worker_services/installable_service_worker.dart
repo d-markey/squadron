@@ -3,16 +3,19 @@ import 'package:squadron/squadron.dart';
 import '../classes/test_context.dart';
 import 'installable_service.dart';
 
-class InstallableWorkerPool extends WorkerPool<InstallableWorker>
+base class InstallableWorkerPool extends WorkerPool<InstallableWorker>
     implements InstallableService {
   InstallableWorkerPool(TestContext context,
       {bool throwOnInstall = false,
       bool throwOnUninstall = false,
       ConcurrencySettings? concurrencySettings})
       : super(
-            () => InstallableWorker._(context,
-                throwOnInstall: throwOnInstall,
-                throwOnUninstall: throwOnUninstall),
+            (ExceptionManager exceptionManager) => InstallableWorker._(
+                  context,
+                  throwOnInstall: throwOnInstall,
+                  throwOnUninstall: throwOnUninstall,
+                  exceptionManager: exceptionManager,
+                ),
             concurrencySettings:
                 concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
 
@@ -33,13 +36,20 @@ class InstallableWorkerPool extends WorkerPool<InstallableWorker>
   Future<bool> isUninstalled() => execute((w) => w.isUninstalled());
 }
 
-class InstallableWorker extends Worker implements InstallableService {
-  InstallableWorker._(TestContext context,
-      {bool throwOnInstall = false, bool throwOnUninstall = false})
-      : super(context.entryPoints.installable!, args: [
-          throwOnInstall,
-          throwOnUninstall,
-        ]);
+base class InstallableWorker extends Worker implements InstallableService {
+  InstallableWorker._(
+    TestContext context, {
+    bool throwOnInstall = false,
+    bool throwOnUninstall = false,
+    ExceptionManager? exceptionManager,
+  }) : super(
+          context.entryPoints.installable!,
+          args: [
+            throwOnInstall,
+            throwOnUninstall,
+          ],
+          exceptionManager: exceptionManager,
+        );
 
   InstallableWorker(TestContext context) : this._(context);
 

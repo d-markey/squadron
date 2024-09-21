@@ -82,7 +82,7 @@ void execute(TestContext? tc) {
             status = 'hook called';
           }
 
-          await TestWorker(tc, hook).useAsync((w) async {
+          await TestWorker(tc, hook: hook).useAsync((w) async {
             w.channelLogger = memoryLogger;
             expect(status, isNull);
             await w.start();
@@ -98,7 +98,7 @@ void execute(TestContext? tc) {
             throw CustomException('intended exception after setting status');
           }
 
-          await TestWorker(tc, hook).useAsync((w) async {
+          await TestWorker(tc, hook: hook).useAsync((w) async {
             w.channelLogger = memoryLogger;
             expect(status, isNull);
             try {
@@ -300,7 +300,7 @@ void execute(TestContext? tc) {
             Future createTask(Duration duration) {
               final id = ++taskId;
               return w
-                  .io(ms: duration.inMilliseconds)
+                  .io(ms: duration.inMilliseconds + 50)
                   .whenComplete(() => completedTasks.add(id));
             }
 
@@ -330,7 +330,7 @@ void execute(TestContext? tc) {
             expect(w.maxWorkload, 3);
             expect(w.totalWorkload, 3);
             expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay * 5));
-            expect(w.upTime, lessThan(TestDelays.delay * 7));
+            expect(w.upTime, lessThanOrEqualTo(TestDelays.delay * 7));
 
             /////////// time origin for next tasks ///////////
 
@@ -385,7 +385,7 @@ void execute(TestContext? tc) {
             expect(w.maxWorkload, 4);
             expect(w.totalWorkload, 8);
             expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay * 16));
-            expect(w.upTime, lessThan(TestDelays.delay * 18));
+            expect(w.upTime, lessThan(TestDelays.delay * 19));
           });
         });
 

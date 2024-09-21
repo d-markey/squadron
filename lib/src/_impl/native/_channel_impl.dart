@@ -1,7 +1,7 @@
 part of '_channel.dart';
 
 /// [Channel] implementation for the Native world.
-class _VmChannel implements Channel {
+final class _VmChannel implements Channel {
   _VmChannel._(this._sendPort, this.logger, this.exceptionManager);
 
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by

@@ -63,15 +63,20 @@ class LocalClientServiceImpl
   };
 }
 
-class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
+base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
     implements LocalClientService {
   LocalClientWorkerPool(
-      TestContext context,
-      LocalWorker<LocalService> localService,
-      ConcurrencySettings? concurrencySettings)
-      : super(() => LocalClientWorker(context, localService),
+    TestContext context,
+    LocalWorker<LocalService> localService,
+    ConcurrencySettings? concurrencySettings, {
+    ExceptionManager? exceptionManager,
+  }) : super(
+            (ExceptionManager exceptionManager) =>
+                LocalClientWorker(context, localService),
             concurrencySettings:
-                concurrencySettings ?? ConcurrencySettings.threeCpuThreads);
+                concurrencySettings ?? ConcurrencySettings.threeCpuThreads,
+            exceptionManager:
+                exceptionManager ?? localService.exceptionManager);
 
   @override
   Future<String> checkIds() => execute((w) => w.checkIds());
@@ -84,11 +89,14 @@ class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
       stream((w) => w.checkSequence(count));
 }
 
-class LocalClientWorker extends Worker implements LocalClientService {
-  LocalClientWorker(TestContext context, LocalWorker<LocalService> localService)
-      : super(context.entryPoints.local!, args: [
-          localService.channel?.share().serialize(),
-        ]);
+base class LocalClientWorker extends Worker implements LocalClientService {
+  LocalClientWorker(TestContext context, LocalWorker<LocalService> localService,
+      {ExceptionManager? exceptionManager})
+      : super(
+          context.entryPoints.local!,
+          args: [localService.channel?.share().serialize()],
+          exceptionManager: exceptionManager ?? localService.exceptionManager,
+        );
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand)

@@ -6,7 +6,11 @@
 
 ## **Squadron - Multithreading and worker pools in Dart**
 
-Offload CPU-bound and long running tasks and give your mobile and Web apps some air!
+Offload CPU-bound and long running tasks and give your apps some air!
+
+Works everywhere: desktop, server, device, browser.
+
+Supports native, JavaScript & Web Assembly platforms.
 
 [![Pub Package](https://img.shields.io/pub/v/squadron)](https://pub.dev/packages/squadron)
 [![Dart Platforms](https://badgen.net/pub/dart-platform/squadron)](https://pub.dev/packages/squadron)
@@ -73,7 +77,7 @@ Import squadron from your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-   squadron: ^5.0.0
+   squadron: ^6.0.0
 ```
 
 ## <a name="usage"></a>Usage

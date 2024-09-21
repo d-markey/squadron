@@ -96,7 +96,7 @@ extension WorkerResponseExt on WorkerResponse {
   /// used for log messages only).
   bool unwrapInPlace(Channel channel) {
     unwrapTravelTime();
-    final log = LogEventSerialization.deserialize(data[_$log]);
+    final log = _LogEventSerializationExt.deserialize(data[_$log]);
     if (log != null) {
       channel.logger?.log(log.level, log.message,
           time: log.time, error: log.error, stackTrace: log.stackTrace);
@@ -126,7 +126,7 @@ extension WorkerResponseExt on WorkerResponse {
   }
 }
 
-extension LogEventSerialization on LogEvent {
+extension _LogEventSerializationExt on LogEvent {
   List serialize() => [
         level.value,
         _stringify(message),

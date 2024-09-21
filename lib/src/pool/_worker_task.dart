@@ -8,7 +8,7 @@ import 'task.dart';
 import 'worker_pool.dart';
 
 /// [WorkerTask] registered in the [WorkerPool].
-abstract class WorkerTask<T, W extends Worker> implements Task<T> {
+abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   WorkerTask(this._counter) : submitted = microsecTimeStamp();
 
   final int submitted;

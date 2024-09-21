@@ -498,6 +498,8 @@ file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/in_place_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_converter.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_list.dart
+file:///C:/_Projects/github/squadron/lib/src/converters/lazy_in_place_map.dart
 file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_well_known_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart
@@ -540,6 +542,8 @@ file:///C:/_Projects/github/squadron/test/00_not_a_worker_test.dart
 file:///C:/_Projects/github/squadron/test/01_web_worker_js_test.dart
 file:///C:/_Projects/github/squadron/test/02_logging_test.dart
 file:///C:/_Projects/github/squadron/test/03_converter_test.dart
+file:///C:/_Projects/github/squadron/test/03_converter_test__list_features.dart
+file:///C:/_Projects/github/squadron/test/03_converter_test__map_features.dart
 file:///C:/_Projects/github/squadron/test/03_converter_test_cast.dart
 file:///C:/_Projects/github/squadron/test/03_converter_test_cast_in_place.dart
 file:///C:/_Projects/github/squadron/test/03_converter_test_cast_lazy_in_place.dart

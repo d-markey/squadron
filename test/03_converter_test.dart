@@ -9,6 +9,8 @@ import 'dart:typed_data';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
+import '03_converter_test__list_features.dart';
+import '03_converter_test__map_features.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
 
@@ -72,6 +74,14 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.run(() {
+    tc.group('- Lazy lists', () {
+      testLazyLists(tc);
+    });
+
+    tc.group('- Lazy maps', () {
+      testLazyMaps(tc);
+    });
+
     tc.group('- Converters', () {
       tc.test('- custom identity is not considered an identity', () {
         expect(Converter.isIdentity<int>(_asInt), isFalse);

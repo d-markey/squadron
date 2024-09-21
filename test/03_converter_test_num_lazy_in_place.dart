@@ -212,6 +212,103 @@ void testLazyInPlaceNumConverter(TestContext tc) {
       });
     });
 
+    tc.group('- sets', () {
+      tc.test('- ints (cast)', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfInts);
+
+        await expectLater(() => data as Set<int>, _throwsTypeError);
+        final res = converter.set<int>()(data);
+        expect(res, isA<Set<int>>());
+        expect(res, _listOfInts.toSet());
+      });
+
+      tc.test('- ints (map)', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfInts);
+
+        await expectLater(() => data as Set<int>, _throwsTypeError);
+        final res = converter.set<int>()(data);
+        expect(res, isA<Set<int>>());
+        expect(res, _listOfInts.toSet());
+      });
+
+      tc.test('- nullable ints', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfNullableInts);
+
+        await expectLater(() => data as Set<int?>, _throwsTypeError);
+        final res = converter.set<int?>(converter.nullable<int>())(data);
+        expect(res, isA<Set<int?>>());
+        expect(res, _listOfNullableInts.toSet());
+      });
+
+      tc.test('- ints + integral double (cast)', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfIntsWithIntegralDouble);
+
+        await expectLater(() => data as Set<int>, _throwsTypeError);
+        try {
+          final res = converter.set<int>()(data);
+          expect(res, isA<Set<int>>());
+          expect(res, _listOfIntsWithIntegralDouble.toSet());
+          _unexpectedSuccessIfNonJs('integral double to int', res);
+        } catch (ex) {
+          _unexpectedFailureIfJs('integral double to int', ex);
+        }
+      });
+
+      tc.test('- ints + integral double (map)', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfIntsWithIntegralDouble);
+
+        await expectLater(() => data as Set<int>, _throwsTypeError);
+        try {
+          final res = converter.set<int>(_asInt)(data);
+          expect(res, isA<Set<int>>());
+          expect(res, _listOfIntsWithIntegralDouble.toSet());
+          _unexpectedSuccessIfNonJs('integral double to int', res);
+        } on TypeError catch (ex) {
+          _unexpectedFailureIfJs('integral double to int', ex);
+        }
+      });
+
+      tc.test('- doubles', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfDoubles);
+
+        await expectLater(() => data as Set<double>, _throwsTypeError);
+        final res = converter.set<double>()(data);
+        expect(res, isA<Set<double>>());
+        expect(res, _listOfDoubles.toSet());
+      });
+
+      tc.test('- nullable doubles', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfNullableDoubles);
+
+        await expectLater(() => data as Set<double?>, _throwsTypeError);
+        final res = converter.set<double?>(converter.nullable<double>())(data);
+        expect(res, isA<Set<double?>>());
+        expect(res, _listOfNullableDoubles.toSet());
+      });
+
+      tc.test('- doubles + int', () async {
+        final data = <dynamic>{};
+        data.addAll(_listOfDoublesWithInt);
+
+        await expectLater(() => data as Set<double>, _throwsTypeError);
+        try {
+          final res = converter.set<double>()(data);
+          expect(res, isA<Set<double>>());
+          expect(res, _listOfDoublesWithInt.toSet());
+          _unexpectedSuccessIfNonJs('integral double to int', res);
+        } catch (ex) {
+          _unexpectedFailureIfJs('integral double to int', ex);
+        }
+      });
+    });
+
     tc.group('- maps', () {
       tc.test('- String / int (cast)', () async {
         final data = <dynamic, dynamic>{};

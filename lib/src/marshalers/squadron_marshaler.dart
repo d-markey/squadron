@@ -1,5 +1,5 @@
 /// Base class to serialize/deserialize data of type [T] to a transferable type [S].
-abstract class SquadronMarshaler<T, S> {
+abstract interface class SquadronMarshaler<T, S> {
   const SquadronMarshaler();
 
   /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary representation.

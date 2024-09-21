@@ -6,7 +6,7 @@ import '../worker/worker.dart';
 import '_worker_task.dart';
 import 'value_task.dart';
 
-class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
+final class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
     implements ValueTask<T> {
   /// Creates a new [ValueTask].
   WorkerValueTask(this._computer, PerfCounter? counter) : super(counter);

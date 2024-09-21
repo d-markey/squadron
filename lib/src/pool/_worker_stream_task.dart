@@ -7,7 +7,7 @@ import '../worker/worker.dart';
 import '_worker_task.dart';
 import 'stream_task.dart';
 
-class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
+final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
     implements StreamTask<T> {
   /// Creates a new [StreamTask].
   WorkerStreamTask(this._producer, PerfCounter? counter) : super(counter) {

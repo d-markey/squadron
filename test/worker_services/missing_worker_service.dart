@@ -2,7 +2,7 @@ import 'package:squadron/squadron.dart';
 
 import '../classes/test_context.dart';
 
-class MissingWorker extends Worker {
+base class MissingWorker extends Worker {
   MissingWorker._(super.entryPoint, [PlatformThreadHook? hook])
       : super(threadHook: hook);
 

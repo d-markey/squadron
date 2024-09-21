@@ -9,15 +9,15 @@ String? getHome() {
   return components.take(components.length - 1).join('/');
 }
 
-String? getErrorEventMessage(JSObject? obj) {
+String? _getErrorEventMessage(JSObject? obj) {
   if (obj != null && obj.has('message')) {
-    return obj['message']?.toString();
+    return obj['message'].dartify()?.toString();
   } else {
     return null;
   }
 }
 
-Object? getErrorEventError(JSObject? obj) {
+Object? _getErrorEventError(JSObject? obj) {
   if (obj != null && obj.has('error')) {
     return obj['error'].dartify();
   } else {
@@ -25,10 +25,12 @@ Object? getErrorEventError(JSObject? obj) {
   }
 }
 
+Object getError(JSObject? obj) =>
+    _getErrorEventError(obj) ?? _getErrorEventMessage(obj) ?? 'Unknown error';
+
 List? getMessageEventData(JSObject? obj) {
   if (obj != null && obj.has('data')) {
-    final data = obj['data'].dartify();
-    return (data == null) ? null : (data as List);
+    return obj['data'].dartify() as List?;
   } else {
     return null;
   }

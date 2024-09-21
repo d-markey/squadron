@@ -5,7 +5,7 @@ import 'package:squadron/squadron.dart';
 import '../classes/test_context.dart';
 import 'cache_service.dart';
 
-class CacheWorker extends Worker implements Cache {
+base class CacheWorker extends Worker implements Cache {
   CacheWorker(TestContext context) : super(context.entryPoints.cache!);
 
   @override

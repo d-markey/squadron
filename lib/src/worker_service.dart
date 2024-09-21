@@ -13,7 +13,7 @@ typedef SquadronAsyncCallback = FutureOr<void> Function();
 
 /// Extend this class or implement this interface in your worker service if it needs
 /// to take action when the worker thread is started or stopped.
-class ServiceInstaller {
+mixin ServiceInstaller {
   /// Squadron will call this method as part of the worker thread initialization.
   /// It will be called just after the service instance has been constructed. The
   /// future returned by [Worker.start] will not complete before this method completes
@@ -30,9 +30,7 @@ class ServiceInstaller {
 }
 
 /// Base class for a worker service.
-abstract class WorkerService {
-  WorkerService();
-
+abstract interface class WorkerService {
   /// Map of command handlers. Upon reception of a [WorkerRequest], the platform
   /// worker will dispatch the request to the [CommandHandler] mathing the value
   /// of [WorkerRequest.command].

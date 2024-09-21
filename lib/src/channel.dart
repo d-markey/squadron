@@ -11,11 +11,10 @@ import 'tokens/_squadron_cancelation_token.dart';
 import 'typedefs.dart';
 import 'worker/worker_request.dart';
 import 'worker/worker_response.dart';
-import 'worker_service.dart';
 
 /// A [Channel] supports communication from a client to a platform worker. It
 /// is used to send a [WorkerRequest] to a platform worker.
-abstract class Channel {
+abstract interface class Channel {
   /// The [ExceptionManager] attached to this channel.
   ExceptionManager get exceptionManager;
 
@@ -40,10 +39,6 @@ abstract class Channel {
 
   /// Sends a cancel token [WorkerRequest] to the worker.
   FutureOr<void> cancelToken(SquadronCancelationToken? token);
-
-  /// Static method that does nothing. Useful when a [SquadronCallback] is
-  /// required but there is nothing to do.
-  static void noop() {}
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects
   /// a single value from the worker.

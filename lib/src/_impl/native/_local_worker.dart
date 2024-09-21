@@ -8,7 +8,7 @@ import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
+base class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _VmLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
     _port.listen(runner.handle);

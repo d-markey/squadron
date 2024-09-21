@@ -10,7 +10,7 @@ import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
-class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
+base class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   _WebLocalWorker._(super.service, ExceptionManager exceptionManager) {
     final runner = WorkerRunner.use(this);
     _port.port1.onmessage = runner.handle.toJS;
