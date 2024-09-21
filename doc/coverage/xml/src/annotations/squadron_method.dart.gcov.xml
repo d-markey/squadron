@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_method.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src/annotations" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import '../channel.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>/// Annotation for service methods to be exposed by workers.</code>
+        </line>
+        <line number="4">
+            <code>class SquadronMethod {</code>
+        </line>
+        <line hits="11" number="5">
+            <code>  const SquadronMethod(</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="6">
+            <code>      {this.inspectRequest = false, this.inspectResponse = false});</code>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line number="8">
+            <code>  /// Indicates whether the contents of the incoming message should be inspected</code>
+        </line>
+        <line number="9">
+            <code>  /// by Squadron before sending the request to the worker. By default, incoming</code>
+        </line>
+        <line number="10">
+            <code>  /// messages are not inspected except for the startup message. The purpose of</code>
+        </line>
+        <line number="11">
+            <code>  /// message inspection is to detect non-base-type data that require transfer of</code>
+        </line>
+        <line number="12">
+            <code>  /// ownership to the target worker. E.g. if the request data include a [Channel]</code>
+        </line>
+        <line number="13">
+            <code>  /// object, [inspectRequest] must be set to `true`.</code>
+        </line>
+        <line number="14">
+            <code>  final bool inspectRequest;</code>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line number="16">
+            <code>  /// Same as [inspectRequest] but for outgoing messages (response produced by the</code>
+        </line>
+        <line number="17">
+            <code>  /// worker).</code>
+        </line>
+        <line number="18">
+            <code>  final bool inspectResponse;</code>
+        </line>
+        <line number="19">
+            <code>}</code>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>const squadronMethod = SquadronMethod();</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

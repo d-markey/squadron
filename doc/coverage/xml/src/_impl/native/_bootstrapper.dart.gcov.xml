@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_bootstrapper.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="8" lines-valid="8" package="src/_impl/native" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:isolate';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import '../../worker/worker_request.dart';</code>
+        </line>
+        <line number="4">
+            <code>import '../../worker_service.dart';</code>
+        </line>
+        <line number="5">
+            <code>import '../xplat/_worker_runner.dart';</code>
+        </line>
+        <line number="6">
+            <code>import '_worker_runner.dart';</code>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line hits="9" number="8">
+            <code>void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="9">
+            <code>  final workerPort = ReceivePort();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code/>
+        </line>
+        <line hits="18" number="11">
+            <code>  final runner = WorkerRunner((r) {</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="12">
+            <code>    r.internalLogger.t('Terminating Isolate');</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="13">
+            <code>    workerPort.close();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="14">
+            <code>    Isolate.current.kill(priority: Isolate.beforeNextEvent);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="15">
+            <code>  });</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line hits="18" number="17">
+            <code>  workerPort.listen(runner.handle);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="18">
+            <code>  runner.connect(command, workerPort.sendPort, initializer);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

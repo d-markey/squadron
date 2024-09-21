@@ -1,0 +1,331 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../jgenhtml.js"></script>
+        <title>LCOV - lcov.info converter.dart</title>
+    </head>
+    <body class="noscript nolegend">
+        <h1>LCOV - code coverage report</h1>
+        <div class="header">
+            <div class="row">
+                <dl class="pageView">
+                    <dt>Current view</dt>
+                    <dd>
+                        <a href="../../index.html">top level</a> - <a href="index.html">src/converters</a> - converter.dart
+                    </dd>
+                    <dt>Test</dt>
+                    <dd>lcov.info</dd>
+                    <dt>Date</dt>
+                    <dd>2024-09-21</dd>
+                    <dt class="legend">Legend</dt>
+                    <dd class="legend">
+                        <dl class="legend">
+                            <dt>Lines</dt>
+                            <dd class="lineCov">hit</dd>
+                            <dd class="lineNoCov">not hit</dd>
+                            <dt>Branches</dt>
+                            <dd class="taken"> taken</dd>
+                            <dd class="noTaken"> not taken</dd>
+                            <dd class="lineNoCov"># not executed</dd>
+                        </dl>
+                    </dd>
+                </dl>
+                <table class="stats">
+                    <thead>
+                        <tr>
+                            <td></td><th scope="col">Hit</th><th scope="col">Total</th><th scope="col">Coverage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Lines</th><td>51</td><td>53</td><td class="high">96.2%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Branches</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <table class="coverage" title="Each row represents a line of source code">
+            <caption>Each row represents a line of source code</caption>
+            <thead>
+                <tr>
+                    <th>Line</th><th>Branch</th><th>Hits</th><th>Source code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="noop" title="Line 1" id="line1">
+                    <td>1</td><td></td><td></td><td><code>import 'dart:typed_data';</code></td>
+                </tr>
+                <tr class="noop" title="Line 2" id="line2">
+                    <td>2</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 3" id="line3">
+                    <td>3</td><td></td><td></td><td><code>typedef Cast&lt;T&gt; = T Function(dynamic);</code></td>
+                </tr>
+                <tr class="noop" title="Line 4" id="line4">
+                    <td>4</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 5" id="line5">
+                    <td>5</td><td></td><td></td><td><code>abstract base class Converter {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 6" id="line6">
+                    <td>6</td><td></td><td>23</td><td><code>  const Converter();</code></td>
+                </tr>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 8" id="line8">
+                    <td>8</td><td></td><td>6</td><td><code>  static bool isIdentity&lt;T&gt;(Cast&lt;T&gt;? cast) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 9" id="line9">
+                    <td>9</td><td></td><td>6</td><td><code>      (cast == null) || (cast == identity&lt;T&gt;);</code></td>
+                </tr>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>16</td><td><code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code></td>
+                </tr>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>3</td><td><code>  static T? tryCast&lt;T&gt;(dynamic x) =&gt; (x is T) ? x : null;</code></td>
+                </tr>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 15" id="line15">
+                    <td>15</td><td></td><td>3</td><td><code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 16" id="line16">
+                    <td>16</td><td></td><td>4</td><td><code>      (x is List) ? x : (x as Iterable).toList();</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>0</td><td><code>  static Set&lt;dynamic&gt; toSet(dynamic x) =&gt;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 19" id="line19">
+                    <td>19</td><td></td><td>0</td><td><code>      (x is Set) ? x : (x as Iterable).toSet();</code></td>
+                </tr>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>  // non-nullable value</code></td>
+                </tr>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code>  Cast&lt;T&gt; value&lt;T&gt;();</code></td>
+                </tr>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code>  // nullable value</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 25" id="line25">
+                    <td>25</td><td></td><td>2</td><td><code>  Cast&lt;T?&gt; nullable&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 26" id="line26">
+                    <td>26</td><td></td><td>2</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>2</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 28" id="line28">
+                    <td>28</td><td></td><td>2</td><td><code>        ? value&lt;T?&gt;()</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 29" id="line29">
+                    <td>29</td><td></td><td>3</td><td><code>        : (($) =&gt; ($ == null) ? null : op($));</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 30" id="line30">
+                    <td>30</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>  // list</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>3</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>3</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>3</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 36" id="line36">
+                    <td>36</td><td></td><td>7</td><td><code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>5</td><td><code>        : ((x) =&gt; Converter.toList(x).map&lt;T&gt;(op).toList());</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code>  // set</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 41" id="line41">
+                    <td>41</td><td></td><td>2</td><td><code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 42" id="line42">
+                    <td>42</td><td></td><td>2</td><td><code>    final op = list&lt;T&gt;(cast);</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 43" id="line43">
+                    <td>43</td><td></td><td>4</td><td><code>    return (x) =&gt; op(x).toSet();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>1</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 45" id="line45">
+                    <td>45</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 46" id="line46">
+                    <td>46</td><td></td><td></td><td><code>  // map</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 47" id="line47">
+                    <td>47</td><td></td><td>6</td><td><code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 48" id="line48">
+                    <td>48</td><td></td><td>9</td><td><code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 49" id="line49">
+                    <td>49</td><td></td><td>9</td><td><code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 50" id="line50">
+                    <td>50</td><td></td><td>9</td><td><code>      return ((x) =&gt; (x as Map).cast&lt;K, V&gt;());</code></td>
+                </tr>
+                <tr class="noop" title="Line 51" id="line51">
+                    <td>51</td><td></td><td></td><td><code>    } else {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>7</td><td><code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v))));</code></td>
+                </tr>
+                <tr class="noop" title="Line 53" id="line53">
+                    <td>53</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 54" id="line54">
+                    <td>54</td><td></td><td>3</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 55" id="line55">
+                    <td>55</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>  // typed data</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>4</td><td><code>  Cast&lt;T&gt; typedData&lt;T&gt;() =&gt; _typeDataCastors[T] as Cast&lt;T&gt;;</code></td>
+                </tr>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 59" id="line59">
+                    <td>59</td><td></td><td>1</td><td><code>  static ByteBuffer? _buffer&lt;T&gt;(dynamic x) =&gt; (x == null)</code></td>
+                </tr>
+                <tr class="noop" title="Line 60" id="line60">
+                    <td>60</td><td></td><td></td><td><code>      ? null</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 61" id="line61">
+                    <td>61</td><td></td><td>2</td><td><code>      : (x is ByteBuffer)</code></td>
+                </tr>
+                <tr class="noop" title="Line 62" id="line62">
+                    <td>62</td><td></td><td></td><td><code>          ? x</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 63" id="line63">
+                    <td>63</td><td></td><td>1</td><td><code>          : ((x as T) as TypedData).buffer;</code></td>
+                </tr>
+                <tr class="noop" title="Line 64" id="line64">
+                    <td>64</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>2</td><td><code>  static Cast&lt;T&gt; _td&lt;T&gt;(T Function(ByteBuffer) view) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>4</td><td><code>      (x) =&gt; Converter.tryCast&lt;T&gt;(x) ?? view(_buffer&lt;T&gt;(x)!);</code></td>
+                </tr>
+                <tr class="noop" title="Line 67" id="line67">
+                    <td>67</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 68" id="line68">
+                    <td>68</td><td></td><td>4</td><td><code>  static final Map&lt;Type, Cast&gt; _typeDataCastors = {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 69" id="line69">
+                    <td>69</td><td></td><td>2</td><td><code>    ByteData: _td&lt;ByteData&gt;(ByteData.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>2</td><td><code>    Uint8ClampedList: _td&lt;Uint8ClampedList&gt;(Uint8ClampedList.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 71" id="line71">
+                    <td>71</td><td></td><td>2</td><td><code>    Uint8List: _td&lt;Uint8List&gt;(Uint8List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 72" id="line72">
+                    <td>72</td><td></td><td>2</td><td><code>    Int8List: _td&lt;Int8List&gt;(Int8List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 73" id="line73">
+                    <td>73</td><td></td><td>2</td><td><code>    Uint16List: _td&lt;Uint16List&gt;(Uint16List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 74" id="line74">
+                    <td>74</td><td></td><td>2</td><td><code>    Int16List: _td&lt;Int16List&gt;(Int16List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 75" id="line75">
+                    <td>75</td><td></td><td>2</td><td><code>    Uint32List: _td&lt;Uint32List&gt;(Uint32List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 76" id="line76">
+                    <td>76</td><td></td><td>2</td><td><code>    Int32List: _td&lt;Int32List&gt;(Int32List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 77" id="line77">
+                    <td>77</td><td></td><td>2</td><td><code>    Int32x4List: _td&lt;Int32x4List&gt;(Int32x4List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 78" id="line78">
+                    <td>78</td><td></td><td>2</td><td><code>    Uint64List: _td&lt;Uint64List&gt;(Uint64List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 79" id="line79">
+                    <td>79</td><td></td><td>2</td><td><code>    Int64List: _td&lt;Int64List&gt;(Int64List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 80" id="line80">
+                    <td>80</td><td></td><td>2</td><td><code>    Float32List: _td&lt;Float32List&gt;(Float32List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 81" id="line81">
+                    <td>81</td><td></td><td>2</td><td><code>    Float32x4List: _td&lt;Float32x4List&gt;(Float32x4List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 82" id="line82">
+                    <td>82</td><td></td><td>2</td><td><code>    Float64List: _td&lt;Float64List&gt;(Float64List.view),</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 83" id="line83">
+                    <td>83</td><td></td><td>2</td><td><code>    Float64x2List: _td&lt;Float64x2List&gt;(Float64x2List.view),</code></td>
+                </tr>
+                <tr class="noop" title="Line 84" id="line84">
+                    <td>84</td><td></td><td></td><td><code>  };</code></td>
+                </tr>
+                <tr class="noop" title="Line 85" id="line85">
+                    <td>85</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>
+                Generated by: <a href="https://github.com/ricksbrown/jgenhtml">JGENHTML version 1.6</a>
+            </p>
+        </div>
+        <div class="controls">
+            <fieldset>
+                <legend>Choose Features</legend><label for="nofunc">Function coverage</label><input id="nofunc" type="checkbox" checked><label for="nobranch">Branch coverage</label><input id="nobranch" type="checkbox" checked><label for="nolegend">Legend</label><input id="nolegend" type="checkbox">
+            </fieldset>
+        </div>
+    </body>
+</html>

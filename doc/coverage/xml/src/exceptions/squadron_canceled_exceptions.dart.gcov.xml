@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_canceled_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5217391" lines-covered="12" lines-valid="23" package="src/exceptions" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:convert';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line number="7">
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line number="9">
+            <code>class SquadronCanceledExceptions extends SquadronCanceledException</code>
+        </line>
+        <line number="10">
+            <code>    implements CanceledExceptions {</code>
+        </line>
+        <line hits="2" number="11">
+            <code>  SquadronCanceledExceptions(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="12">
+            <code>      String tokenId, Iterable&lt;SquadronCanceledException&gt; exceptions)</code>
+        </line>
+        <line hits="2" number="13">
+            <code>      : _exceptions = exceptions.toList(),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="14">
+            <code>        super(tokenId, '', null);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line number="16">
+            <code>  final List&lt;SquadronCanceledException&gt; _exceptions;</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line hits="0" number="18">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="19">
+            <code>  Iterable&lt;CanceledException&gt; get innerExceptions =&gt; _exceptions;</code>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line hits="0" number="21">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="22">
+            <code>  String get message =&gt; _exceptions.map((e) =&gt; e.message).join('\n');</code>
+        </line>
+        <line number="23">
+            <code/>
+        </line>
+        <line hits="0" number="24">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="25">
+            <code>  StackTrace? get stackTrace =&gt; null;</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line hits="0" number="27">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="28">
+            <code>  String toString() =&gt; jsonEncode(serialize());</code>
+        </line>
+        <line number="29">
+            <code/>
+        </line>
+        <line hits="1" number="30">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="31">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="32">
+            <code>        $canceledExceptionsType,</code>
+        </line>
+        <line hits="2" number="33">
+            <code>        tokenId,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="34">
+            <code>        _exceptions.map((e) =&gt; e.serialize()).toList(),</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="35">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="36">
+            <code>}</code>
+        </line>
+        <line number="37">
+            <code/>
+        </line>
+        <line number="38">
+            <code>const _$type = 0;</code>
+        </line>
+        <line number="39">
+            <code>const _$tokenId = 1;</code>
+        </line>
+        <line number="40">
+            <code>const _$innerExceptions = 2;</code>
+        </line>
+        <line number="41">
+            <code/>
+        </line>
+        <line number="42">
+            <code>@internal</code>
+        </line>
+        <line number="43">
+            <code>extension SquadronCanceledExceptionsExt on SquadronCanceledExceptions {</code>
+        </line>
+        <line hits="1" number="44">
+            <code>  static SquadronCanceledExceptions? deserialize(List? props) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="45">
+            <code>    if (props == null) return null;</code>
+        </line>
+        <line hits="2" number="46">
+            <code>    if (props[_$type] != $canceledExceptionsType) return null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="47">
+            <code>    return SquadronCanceledExceptions(</code>
+        </line>
+        <line hits="1" number="48">
+            <code>      props[_$tokenId],</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="49">
+            <code>      props[_$innerExceptions].map(SquadronCanceledExceptionExt.deserialize),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="50">
+            <code>    );</code>
+        </line>
+        <line hits="0" number="51">
+            <code>  }</code>
+        </line>
+        <line number="52">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

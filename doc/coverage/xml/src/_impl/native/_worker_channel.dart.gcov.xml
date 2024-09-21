@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="23" lines-valid="23" package="src/_impl/native" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code>import 'dart:isolate';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line number="5">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line number="7">
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line number="8">
+            <code>import '../../exceptions/squadron_exception.dart';</code>
+        </line>
+        <line number="9">
+            <code>import '../../exceptions/worker_exception.dart';</code>
+        </line>
+        <line number="10">
+            <code>import '../../typedefs.dart';</code>
+        </line>
+        <line number="11">
+            <code>import '../../worker/worker_channel.dart';</code>
+        </line>
+        <line number="12">
+            <code>import '../../worker/worker_response.dart';</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>/// [WorkerChannel] implementation for the native world.</code>
+        </line>
+        <line number="15">
+            <code>final class _VmWorkerChannel implements WorkerChannel {</code>
+        </line>
+        <line hits="9" number="16">
+            <code>  _VmWorkerChannel._(this._sendPort, this._logger);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>  final Logger? _logger;</code>
+        </line>
+        <line number="19">
+            <code/>
+        </line>
+        <line number="20">
+            <code>  /// [SendPort] to communicate with the [Isolate] if the channel is owned by</code>
+        </line>
+        <line number="21">
+            <code>  /// the worker owner. Otherwise, [SendPort] to return values to the client.</code>
+        </line>
+        <line number="22">
+            <code>  final SendPort _sendPort;</code>
+        </line>
+        <line number="23">
+            <code/>
+        </line>
+        <line hits="9" number="24">
+            <code>  void _postResponse(WorkerResponse res) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="25">
+            <code>    try {</code>
+        </line>
+        <line hits="9" number="26">
+            <code>      final data = res.wrapInPlace();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="27">
+            <code>      _sendPort.send(data);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="4" number="29">
+            <code>      _logger?.e(() =&gt; 'Failed to post response $res: $ex');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="30">
+            <code>      throw SquadronErrorExt.create('Failed to post response: $ex', st);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="31">
+            <code>    }</code>
+        </line>
+        <line number="32">
+            <code>  }</code>
+        </line>
+        <line number="33">
+            <code/>
+        </line>
+        <line number="34">
+            <code>  /// Sends the [SendPort] to communicate with the [Isolate]. This method must</code>
+        </line>
+        <line number="35">
+            <code>  /// be called by the worker [Isolate] upon startup.</code>
+        </line>
+        <line hits="9" number="36">
+            <code>  @override</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="37">
+            <code>  void connect(PlatformChannel channelInfo) =&gt; inspectAndReply(channelInfo);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="38">
+            <code/>
+        </line>
+        <line number="39">
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line number="40">
+            <code>  /// This method must be called from the worker [Isolate] only.</code>
+        </line>
+        <line hits="9" number="41">
+            <code>  @override</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="42">
+            <code>  void reply(dynamic data) =&gt; _postResponse(WorkerResponse.withResult(data));</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line number="44">
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line number="45">
+            <code>  /// This method must be called from the worker [Isolate] only. On VM</code>
+        </line>
+        <line number="46">
+            <code>  /// platforms, this is the same as [reply] .</code>
+        </line>
+        <line hits="9" number="47">
+            <code>  @override</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="48">
+            <code>  void inspectAndReply(dynamic data) =&gt; reply(data);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code/>
+        </line>
+        <line hits="9" number="50">
+            <code>  @override</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="51">
+            <code>  void log(LogEvent message) =&gt; _postResponse(WorkerResponse.log(message));</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code/>
+        </line>
+        <line number="53">
+            <code>  /// Checks if [stream] can be streamed back to the worker client. Returns</code>
+        </line>
+        <line number="54">
+            <code>  /// `true` unless [stream] is a [ReceivePort].</code>
+        </line>
+        <line hits="6" number="55">
+            <code>  @override</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="56">
+            <code>  bool canStream(Stream&lt;dynamic&gt; stream) =&gt; stream is! ReceivePort;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="57">
+            <code/>
+        </line>
+        <line number="58">
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client. This method</code>
+        </line>
+        <line number="59">
+            <code>  /// must be called from the worker [Isolate] only.</code>
+        </line>
+        <line hits="5" number="60">
+            <code>  @override</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="61">
+            <code>  void closeStream() =&gt; _postResponse(WorkerResponse.closeStream());</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="62">
+            <code/>
+        </line>
+        <line number="63">
+            <code>  /// Sends the [WorkerException] to the worker client. This method must be</code>
+        </line>
+        <line number="64">
+            <code>  /// called from the worker [Isolate] only.</code>
+        </line>
+        <line hits="5" number="65">
+            <code>  @override</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="66">
+            <code>  void error(Object err, [StackTrace? stackTrace, int? command]) {</code>
+        </line>
+        <line hits="5" number="67">
+            <code>    final ex = SquadronException.from(err, stackTrace, command);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="68">
+            <code>    _postResponse(WorkerResponse.withError(ex));</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="69">
+            <code>  }</code>
+        </line>
+        <line number="70">
+            <code>}</code>
+        </line>
+        <line number="71">
+            <code/>
+        </line>
+        <line number="72">
+            <code>/// Creates a [WorkerChannel] from a [SendPort].</code>
+        </line>
+        <line hits="9" number="73">
+            <code>@internal</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="74">
+            <code>WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =&gt;</code>
+        </line>
+        <line hits="9" number="75">
+            <code>    (channelInfo == null) ? null : _VmWorkerChannel._(channelInfo, logger);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

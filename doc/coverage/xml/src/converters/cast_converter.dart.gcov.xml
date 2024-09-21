@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/converters" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import '../../squadron.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>base class CastConverter extends Converter {</code>
+        </line>
+        <line hits="22" number="4">
+            <code>  const CastConverter();</code>
+            <hit count="22" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>  static const instance = CastConverter();</code>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line hits="9" number="8">
+            <code>  @override</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="9">
+            <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; Converter.identity&lt;T&gt;;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

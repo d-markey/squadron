@@ -1,0 +1,193 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../jgenhtml.js"></script>
+        <title>LCOV - lcov.info squadron_service.dart</title>
+    </head>
+    <body class="noscript nolegend">
+        <h1>LCOV - code coverage report</h1>
+        <div class="header">
+            <div class="row">
+                <dl class="pageView">
+                    <dt>Current view</dt>
+                    <dd>
+                        <a href="../../index.html">top level</a> - <a href="index.html">src/annotations</a> - squadron_service.dart
+                    </dd>
+                    <dt>Test</dt>
+                    <dd>lcov.info</dd>
+                    <dt>Date</dt>
+                    <dd>2024-09-21</dd>
+                    <dt class="legend">Legend</dt>
+                    <dd class="legend">
+                        <dl class="legend">
+                            <dt>Lines</dt>
+                            <dd class="lineCov">hit</dd>
+                            <dd class="lineNoCov">not hit</dd>
+                            <dt>Branches</dt>
+                            <dd class="taken"> taken</dd>
+                            <dd class="noTaken"> not taken</dd>
+                            <dd class="lineNoCov"># not executed</dd>
+                        </dl>
+                    </dd>
+                </dl>
+                <table class="stats">
+                    <thead>
+                        <tr>
+                            <td></td><th scope="col">Hit</th><th scope="col">Total</th><th scope="col">Coverage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Lines</th><td>0</td><td>5</td><td class="low">0.0%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Branches</th><td>0</td><td>0</td><td class="high">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <table class="coverage" title="Each row represents a line of source code">
+            <caption>Each row represents a line of source code</caption>
+            <thead>
+                <tr>
+                    <th>Line</th><th>Branch</th><th>Hits</th><th>Source code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="noop" title="Line 1" id="line1">
+                    <td>1</td><td></td><td></td><td><code>import '../pool/worker_pool.dart';</code></td>
+                </tr>
+                <tr class="noop" title="Line 2" id="line2">
+                    <td>2</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 3" id="line3">
+                    <td>3</td><td></td><td></td><td><code>/// Annotation for service classes to be wrapped as workers.</code></td>
+                </tr>
+                <tr class="noop" title="Line 4" id="line4">
+                    <td>4</td><td></td><td></td><td><code>class SquadronService {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 5" id="line5">
+                    <td>5</td><td></td><td>0</td><td><code>  const SquadronService({</code></td>
+                </tr>
+                <tr class="noop" title="Line 6" id="line6">
+                    <td>6</td><td></td><td></td><td><code>    this.pool = true,</code></td>
+                </tr>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>    this.vm = true,</code></td>
+                </tr>
+                <tr class="noop" title="Line 8" id="line8">
+                    <td>8</td><td></td><td></td><td><code>    this.web = true,</code></td>
+                </tr>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code>    this.wasm = false,</code></td>
+                </tr>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code>    this.baseUrl = '',</code></td>
+                </tr>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code>  });</code></td>
+                </tr>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>0</td><td><code>  const SquadronService.web(</code></td>
+                </tr>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code>      {bool pool = true, bool wasm = false, required String baseUrl})</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 15" id="line15">
+                    <td>15</td><td></td><td>0</td><td><code>      : this(pool: pool, vm: false, web: true, wasm: wasm, baseUrl: baseUrl);</code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 17" id="line17">
+                    <td>17</td><td></td><td>0</td><td><code>  const SquadronService.vm({bool pool = true})</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>0</td><td><code>      : this(pool: pool, vm: true, web: false, wasm: false);</code></td>
+                </tr>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  /// Controls code generation of a [WorkerPool] exposing the target service class.</code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>  /// `true` by default.</code></td>
+                </tr>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code>  final bool pool;</code></td>
+                </tr>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code>  /// Controls code generation of a native entry point (for Isolate). `true` by</code></td>
+                </tr>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code>  /// default.</code></td>
+                </tr>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code>  final bool vm;</code></td>
+                </tr>
+                <tr class="noop" title="Line 27" id="line27">
+                    <td>27</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code>  /// Controls code generation of a Web entry point (for Web Worker). `true` by</code></td>
+                </tr>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>  /// default.</code></td>
+                </tr>
+                <tr class="noop" title="Line 30" id="line30">
+                    <td>30</td><td></td><td></td><td><code>  final bool web;</code></td>
+                </tr>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>  /// Controls entry-point extension for Web worker URIs: '.js' if `false`, '.wasm'</code></td>
+                </tr>
+                <tr class="noop" title="Line 33" id="line33">
+                    <td>33</td><td></td><td></td><td><code>  /// if `true`. By default, JavaScript Web workers are used.</code></td>
+                </tr>
+                <tr class="noop" title="Line 34" id="line34">
+                    <td>34</td><td></td><td></td><td><code>  final bool wasm;</code></td>
+                </tr>
+                <tr class="noop" title="Line 35" id="line35">
+                    <td>35</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 36" id="line36">
+                    <td>36</td><td></td><td></td><td><code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code></td>
+                </tr>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code>  /// be exposed in production.</code></td>
+                </tr>
+                <tr class="noop" title="Line 38" id="line38">
+                    <td>38</td><td></td><td></td><td><code>  final String baseUrl;</code></td>
+                </tr>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>
+                Generated by: <a href="https://github.com/ricksbrown/jgenhtml">JGENHTML version 1.6</a>
+            </p>
+        </div>
+        <div class="controls">
+            <fieldset>
+                <legend>Choose Features</legend><label for="nofunc">Function coverage</label><input id="nofunc" type="checkbox" checked><label for="nobranch">Branch coverage</label><input id="nobranch" type="checkbox" checked><label for="nolegend">Legend</label><input id="nolegend" type="checkbox">
+            </fieldset>
+        </div>
+    </body>
+</html>

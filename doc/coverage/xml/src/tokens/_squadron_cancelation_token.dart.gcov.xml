@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_squadron_cancelation_token.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9" lines-covered="36" lines-valid="40" package="src/tokens" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import '../_impl/xplat/_token_id.dart';</code>
+        </line>
+        <line number="7">
+            <code>import '../exceptions/squadron_canceled_exception.dart';</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line number="9">
+            <code>class SquadronCancelationToken extends CancelationToken {</code>
+        </line>
+        <line hits="4" number="10">
+            <code>  SquadronCancelationToken._(this.token, this.id) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="11">
+            <code>    token?.onCanceled.then(_checkToken);</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="12">
+            <code>  }</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line hits="2" number="14">
+            <code>  List serialize() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="15">
+            <code>    _checkToken();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="16">
+            <code>    return List.unmodifiable([</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="17">
+            <code>      id,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="18">
+            <code>      exception?.serialize(),</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code>    ]);</code>
+        </line>
+        <line hits="0" number="20">
+            <code>  }</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line hits="10" number="22">
+            <code>  static SquadronCancelationToken? deserialize(List? props) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="23">
+            <code>    if (props == null) return null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="24">
+            <code>    final id = props[_$id];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="25">
+            <code>    final ex = SquadronCanceledExceptionExt.deserialize(props[_$ex]);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="26">
+            <code>    final token = SquadronCancelationToken._(null, id);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="27">
+            <code>    if (ex != null) {</code>
+        </line>
+        <line hits="2" number="28">
+            <code>      token._exception = ex;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="29">
+            <code>      token._completer.complete(ex);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="30">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="31">
+            <code>    return token;</code>
+        </line>
+        <line hits="1" number="32">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="33">
+            <code/>
+        </line>
+        <line number="34">
+            <code>  // cancelation token ID</code>
+        </line>
+        <line number="35">
+            <code>  final String id;</code>
+        </line>
+        <line number="36">
+            <code/>
+        </line>
+        <line number="37">
+            <code>  // reference to the real cancelation token (only set on the caller side, will</code>
+        </line>
+        <line number="38">
+            <code>  // be `null` in worker threads)</code>
+        </line>
+        <line number="39">
+            <code>  final CancelationToken? token;</code>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line hits="2" number="41">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="42">
+            <code>  SquadronCanceledException? get exception =&gt; _exception;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code>  SquadronCanceledException? _exception;</code>
+        </line>
+        <line number="44">
+            <code/>
+        </line>
+        <line hits="2" number="45">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="46">
+            <code>  void ensureStarted() {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="47">
+            <code>    token?.ensureStarted();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="48">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code/>
+        </line>
+        <line hits="2" number="50">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="51">
+            <code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code>  final _completer = Completer&lt;CanceledException&gt;();</code>
+        </line>
+        <line number="53">
+            <code/>
+        </line>
+        <line hits="4" number="54">
+            <code>  void _checkToken([dynamic _]) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="55">
+            <code>    final ex = token?.exception;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="56">
+            <code>    if (ex != null) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="57">
+            <code>      _exception ??= SquadronCanceledException.from(id, ex);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="58">
+            <code>      if (!_completer.isCompleted) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="59">
+            <code>        _completer.complete(_exception);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="60">
+            <code>      }</code>
+        </line>
+        <line number="61">
+            <code>    }</code>
+        </line>
+        <line hits="2" number="62">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="63">
+            <code>}</code>
+        </line>
+        <line number="64">
+            <code/>
+        </line>
+        <line number="65">
+            <code>const _$id = 0;</code>
+        </line>
+        <line number="66">
+            <code>const _$ex = 1;</code>
+        </line>
+        <line number="67">
+            <code/>
+        </line>
+        <line number="68">
+            <code>@internal</code>
+        </line>
+        <line number="69">
+            <code>extension SquadronCancelationTokenExt on CancelationToken {</code>
+        </line>
+        <line hits="4" number="70">
+            <code>  SquadronCancelationToken wrap() {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="71">
+            <code>    final self = this;</code>
+        </line>
+        <line hits="2" number="72">
+            <code>    if (self is SquadronCancelationToken) return self;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="73">
+            <code>    final token = SquadronCancelationToken._(self, TokenId.next());</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="74">
+            <code>    token._checkToken();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="75">
+            <code>    return token;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="76">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="77">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

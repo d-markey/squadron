@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="concurrency_settings.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.33333334" lines-covered="2" lines-valid="6" package="src" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>/// Concurrency settings governing parallelization of workers in a [WorkerPool].</code>
+        </line>
+        <line number="2">
+            <code>class ConcurrencySettings {</code>
+        </line>
+        <line hits="14" number="3">
+            <code>  const ConcurrencySettings(</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="4">
+            <code>      {this.minWorkers = 0, this.maxWorkers = 0, this.maxParallel = 1})</code>
+        </line>
+        <line hits="0" number="5">
+            <code>      : assert(minWorkers &gt;= 0, 'minWorkers must be &gt;= 0'),</code>
+        </line>
+        <line hits="0" number="6">
+            <code>        assert(maxWorkers &gt;= 0, 'maxWorkers must be &gt;= 0'),</code>
+        </line>
+        <line hits="0" number="7">
+            <code>        assert(minWorkers &lt;= maxWorkers, 'maxWorkers must be &gt;= minWorkers'),</code>
+        </line>
+        <line hits="0" number="8">
+            <code>        assert(maxParallel &gt;= 1, 'maxParallel must be &gt;= 1');</code>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line number="10">
+            <code>  /// Minimum number of workers in the pool.</code>
+        </line>
+        <line number="11">
+            <code>  final int minWorkers;</code>
+        </line>
+        <line number="12">
+            <code/>
+        </line>
+        <line number="13">
+            <code>  /// Maximum number of workers in the pool. If this is set to 0, the number of</code>
+        </line>
+        <line number="14">
+            <code>  /// workers is unbounded (as a result, any task posted to the pool will be</code>
+        </line>
+        <line number="15">
+            <code>  /// assigned a worker asap).</code>
+        </line>
+        <line number="16">
+            <code>  final int maxWorkers;</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>  /// Maximum number of tasks that can be posted to a worker. Tasks in excess</code>
+        </line>
+        <line number="19">
+            <code>  /// will be queued and processed later. Please note that this value does not</code>
+        </line>
+        <line number="20">
+            <code>  /// reflect real parallelism; eg. when a synchronous workload is picked up by</code>
+        </line>
+        <line number="21">
+            <code>  /// a worker, it will run to completion (either success or failure) before any</code>
+        </line>
+        <line number="22">
+            <code>  /// other task can be scheduled.</code>
+        </line>
+        <line number="23">
+            <code>  final int maxParallel;</code>
+        </line>
+        <line number="24">
+            <code/>
+        </line>
+        <line number="25">
+            <code>  /// Maximum number of running tasks.</code>
+        </line>
+        <line hits="15" number="26">
+            <code>  int get maxConcurrency =&gt; maxWorkers * maxParallel;</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="27">
+            <code/>
+        </line>
+        <line number="28">
+            <code>  /// 50 tasks per worker with at most 1 worker.</code>
+        </line>
+        <line number="29">
+            <code>  static const oneIoThread =</code>
+        </line>
+        <line number="30">
+            <code>      ConcurrencySettings(minWorkers: 0, maxWorkers: 1, maxParallel: 50);</code>
+        </line>
+        <line number="31">
+            <code/>
+        </line>
+        <line number="32">
+            <code>  /// 50 tasks per worker with at most 2 workers.</code>
+        </line>
+        <line number="33">
+            <code>  static const twoIoThreads =</code>
+        </line>
+        <line number="34">
+            <code>      ConcurrencySettings(minWorkers: 0, maxWorkers: 2, maxParallel: 50);</code>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  /// 50 tasks per worker, 1 to 4 workers.</code>
+        </line>
+        <line number="37">
+            <code>  static const fourIoThreads =</code>
+        </line>
+        <line number="38">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 4, maxParallel: 50);</code>
+        </line>
+        <line number="39">
+            <code/>
+        </line>
+        <line number="40">
+            <code>  /// 50 tasks per worker, 1 to 8 workers.</code>
+        </line>
+        <line number="41">
+            <code>  static const eightIoThreads =</code>
+        </line>
+        <line number="42">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 8, maxParallel: 50);</code>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line number="44">
+            <code>  /// 50 tasks per worker, 1 to 16 workers.</code>
+        </line>
+        <line number="45">
+            <code>  static const sixteenIoThreads =</code>
+        </line>
+        <line number="46">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 16, maxParallel: 50);</code>
+        </line>
+        <line number="47">
+            <code/>
+        </line>
+        <line number="48">
+            <code>  /// 1 task per worker, 1 worker.</code>
+        </line>
+        <line number="49">
+            <code>  static const oneCpuThread =</code>
+        </line>
+        <line number="50">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 1, maxParallel: 1);</code>
+        </line>
+        <line number="51">
+            <code/>
+        </line>
+        <line number="52">
+            <code>  /// 1 task per worker, 1 to 3 workers.</code>
+        </line>
+        <line number="53">
+            <code>  static const threeCpuThreads =</code>
+        </line>
+        <line number="54">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 3, maxParallel: 1);</code>
+        </line>
+        <line number="55">
+            <code/>
+        </line>
+        <line number="56">
+            <code>  /// 1 task per worker, 1 to 7 workers.</code>
+        </line>
+        <line number="57">
+            <code>  static const sevenCpuThreads =</code>
+        </line>
+        <line number="58">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 7, maxParallel: 1);</code>
+        </line>
+        <line number="59">
+            <code/>
+        </line>
+        <line number="60">
+            <code>  /// 1 task per worker, 1 to 15 workers.</code>
+        </line>
+        <line number="61">
+            <code>  static const fifteenCpuThreads =</code>
+        </line>
+        <line number="62">
+            <code>      ConcurrencySettings(minWorkers: 1, maxWorkers: 15, maxParallel: 1);</code>
+        </line>
+        <line number="63">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

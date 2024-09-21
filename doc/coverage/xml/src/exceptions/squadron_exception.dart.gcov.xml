@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.875" lines-covered="21" lines-valid="24" package="src/exceptions" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code>import 'dart:convert';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line number="7">
+            <code>import 'worker_exception.dart';</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line number="9">
+            <code>/// Base abstract class for exceptions in Squadron.</code>
+        </line>
+        <line number="10">
+            <code>abstract class SquadronException implements Exception {</code>
+        </line>
+        <line hits="19" number="11">
+            <code>  SquadronException.init(this.message, [this._stackTrace]) {</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="19" number="12">
+            <code>    if (_stackTrace == null) {</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code>      try {</code>
+        </line>
+        <line hits="26" number="14">
+            <code>        _stackTrace = StackTrace.current;</code>
+            <hit count="26" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="15">
+            <code>      } catch (_, st) {</code>
+        </line>
+        <line number="16">
+            <code>        // failed, take the opportunity to get the stack trace from this exception!</code>
+        </line>
+        <line hits="0" number="17">
+            <code>        _stackTrace = st;</code>
+        </line>
+        <line number="18">
+            <code>      }</code>
+        </line>
+        <line number="19">
+            <code>    }</code>
+        </line>
+        <line hits="9" number="20">
+            <code>  }</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line number="22">
+            <code>  /// This method returns [error] if it is a [SquadronException] (enriching it</code>
+        </line>
+        <line number="23">
+            <code>  /// with [command] if it is a [WorkerException]). Otherwise, it returns a new</code>
+        </line>
+        <line number="24">
+            <code>  /// [WorkerException] wrapping [error] and [stackTrace].</code>
+        </line>
+        <line hits="15" number="25">
+            <code>  static SquadronException from(Object error,</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="26">
+            <code>      [StackTrace? stackTrace, int? command]) {</code>
+        </line>
+        <line hits="15" number="27">
+            <code>    if (error is WorkerException) {</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="28">
+            <code>      if (command != null) error.setCommand(command);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="29">
+            <code>      return error;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="30">
+            <code>    } else if (error is SquadronException) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="31">
+            <code>      return error;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="32">
+            <code>    } else if (error is CanceledException) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="33">
+            <code>      return error.toSquadronException();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="34">
+            <code>    } else if (error is TimeoutException) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="35">
+            <code>      return error.toSquadronException();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="36">
+            <code>    } else {</code>
+        </line>
+        <line hits="9" number="37">
+            <code>      return WorkerException(error.toString(), stackTrace, command);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="38">
+            <code>    }</code>
+        </line>
+        <line hits="8" number="39">
+            <code>  }</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line number="41">
+            <code>  final String message;</code>
+        </line>
+        <line number="42">
+            <code/>
+        </line>
+        <line number="43">
+            <code>  /// The exception's [StackTrace].</code>
+        </line>
+        <line hits="16" number="44">
+            <code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="45">
+            <code>  StackTrace? _stackTrace;</code>
+        </line>
+        <line number="46">
+            <code/>
+        </line>
+        <line hits="2" number="47">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="48">
+            <code>  String toString() =&gt; jsonEncode(serialize());</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code/>
+        </line>
+        <line number="50">
+            <code>  /// Serializes the exception, i.e. returns a list of items that can cross thread boundaries.</code>
+        </line>
+        <line number="51">
+            <code>  List serialize();</code>
+        </line>
+        <line number="52">
+            <code/>
+        </line>
+        <line number="53">
+            <code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code>
+        </line>
+        <line hits="9" number="54">
+            <code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="55">
+            <code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="56">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

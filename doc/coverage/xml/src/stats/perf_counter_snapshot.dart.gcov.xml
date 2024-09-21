@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="perf_counter_snapshot.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="6" lines-valid="6" package="src/stats" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'perf_counter.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>/// A snapshot of a [PerfCounter]'s values.</code>
+        </line>
+        <line number="4">
+            <code>class PerfCounterSnapshot {</code>
+        </line>
+        <line number="5">
+            <code>  /// Creates a new snapshop from a the specified [counter].</code>
+        </line>
+        <line hits="2" number="6">
+            <code>  PerfCounterSnapshot(PerfCounter counter)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="7">
+            <code>      : name = counter.name,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="8">
+            <code>        maxTimeInMicroseconds = counter.maxTimeInMicroseconds,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="9">
+            <code>        totalTimeInMicroseconds = counter.totalTimeInMicroseconds,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="10">
+            <code>        totalCount = counter.totalCount,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="11">
+            <code>        totalErrors = counter.totalErrors;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="12">
+            <code/>
+        </line>
+        <line number="13">
+            <code>  /// The counter's name or label.</code>
+        </line>
+        <line number="14">
+            <code>  final String name;</code>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line number="16">
+            <code>  /// Maximum elapsed time for a single call (in microseconds).</code>
+        </line>
+        <line number="17">
+            <code>  final int maxTimeInMicroseconds;</code>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line number="19">
+            <code>  /// Total elapsed time (in microseconds).</code>
+        </line>
+        <line number="20">
+            <code>  final int totalTimeInMicroseconds;</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line number="22">
+            <code>  /// Total number of calls.</code>
+        </line>
+        <line number="23">
+            <code>  final int totalCount;</code>
+        </line>
+        <line number="24">
+            <code/>
+        </line>
+        <line number="25">
+            <code>  /// Total number of errors.</code>
+        </line>
+        <line number="26">
+            <code>  final int totalErrors;</code>
+        </line>
+        <line number="27">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

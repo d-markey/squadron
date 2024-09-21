@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_pool_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="20" lines-valid="20" package="src/pool" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import '../stats/worker_stat.dart';</code>
+        </line>
+        <line number="2">
+            <code>import '../worker/worker.dart';</code>
+        </line>
+        <line number="3">
+            <code>import '_worker_task.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'worker_pool.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>/// Class representing a [Worker] from a [WorkerPool].</code>
+        </line>
+        <line number="7">
+            <code>class PoolWorker&lt;W extends Worker&gt; {</code>
+        </line>
+        <line number="8">
+            <code>  /// Constructs a new [PoolWorker].</code>
+        </line>
+        <line hits="8" number="9">
+            <code>  PoolWorker(this.worker, this._maxWorkload) : _capacity = _maxWorkload;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code/>
+        </line>
+        <line number="11">
+            <code>  /// The [Worker] associated to this [PoolWorker].</code>
+        </line>
+        <line number="12">
+            <code>  final W worker;</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>  final int _maxWorkload;</code>
+        </line>
+        <line number="15">
+            <code>  int? _lastStart;</code>
+        </line>
+        <line number="16">
+            <code>  int _capacity;</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>  /// The current capacity of this [PoolWorker].</code>
+        </line>
+        <line hits="12" number="19">
+            <code>  int get capacity =&gt; _capacity;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>  /// Whether this [PoolWorker] is stopped or doing nothing.</code>
+        </line>
+        <line hits="7" number="22">
+            <code>  bool get isIdle =&gt; worker.isStopped || _capacity == _maxWorkload;</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code/>
+        </line>
+        <line number="24">
+            <code>  /// Run the specified [task] in the [worker].</code>
+        </line>
+        <line hits="8" number="25">
+            <code>  Future&lt;void&gt; run(WorkerTask task) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="26">
+            <code>    _lastStart = DateTime.now().millisecondsSinceEpoch;</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="27">
+            <code>    _capacity--;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20" number="28">
+            <code>    return task.run(worker).whenComplete(() {</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12" number="29">
+            <code>      _capacity++;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="30">
+            <code>      if (_capacity == _maxWorkload) {</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="31">
+            <code>        _lastStart = null;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="32">
+            <code>      }</code>
+        </line>
+        <line hits="4" number="33">
+            <code>    });</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="34">
+            <code>  }</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).</code>
+        </line>
+        <line hits="6" number="37">
+            <code>  static int compareCapacityDesc(PoolWorker a, PoolWorker b) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="21" number="38">
+            <code>    if (a.capacity != b.capacity) return b.capacity.compareTo(a.capacity);</code>
+            <hit count="21" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="39">
+            <code>    if (a._lastStart == null) return 1;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="40">
+            <code>    if (b._lastStart == null) return -1;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12" number="41">
+            <code>    return a._lastStart!.compareTo(b._lastStart!);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="42">
+            <code>  }</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line hits="16" number="44">
+            <code>  static bool isStopped(PoolWorker w) =&gt; w.worker.isStopped;</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="45">
+            <code>  static WorkerStat getStats(PoolWorker w) =&gt; w.worker.stats;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="46">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/stats" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>/// Base statistics for worker.</code>
+        </line>
+        <line number="4">
+            <code>class WorkerStat {</code>
+        </line>
+        <line hits="10" number="5">
+            <code>  WorkerStat._(</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="6">
+            <code>      this.workerType,</code>
+        </line>
+        <line number="7">
+            <code>      this.workerHashCode,</code>
+        </line>
+        <line number="8">
+            <code>      this.isStopped,</code>
+        </line>
+        <line number="9">
+            <code>      this.status,</code>
+        </line>
+        <line number="10">
+            <code>      this.workload,</code>
+        </line>
+        <line number="11">
+            <code>      this.maxWorkload,</code>
+        </line>
+        <line number="12">
+            <code>      this.totalWorkload,</code>
+        </line>
+        <line number="13">
+            <code>      this.totalErrors,</code>
+        </line>
+        <line number="14">
+            <code>      this.upTime,</code>
+        </line>
+        <line number="15">
+            <code>      this.idleTime);</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line number="17">
+            <code>  /// The worker's runtime type.</code>
+        </line>
+        <line number="18">
+            <code>  final Type workerType;</code>
+        </line>
+        <line number="19">
+            <code/>
+        </line>
+        <line number="20">
+            <code>  /// The worker's hashCode.</code>
+        </line>
+        <line number="21">
+            <code>  final int workerHashCode;</code>
+        </line>
+        <line number="22">
+            <code/>
+        </line>
+        <line number="23">
+            <code>  /// Worker running flag.</code>
+        </line>
+        <line number="24">
+            <code>  final bool isStopped;</code>
+        </line>
+        <line number="25">
+            <code/>
+        </line>
+        <line number="26">
+            <code>  /// Worker status.</code>
+        </line>
+        <line number="27">
+            <code>  final String status;</code>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line number="29">
+            <code>  /// Current workload being processed by the worker.</code>
+        </line>
+        <line number="30">
+            <code>  final int workload;</code>
+        </line>
+        <line number="31">
+            <code/>
+        </line>
+        <line number="32">
+            <code>  /// Maximum concurrent workload processed by the worker.</code>
+        </line>
+        <line number="33">
+            <code>  final int maxWorkload;</code>
+        </line>
+        <line number="34">
+            <code/>
+        </line>
+        <line number="35">
+            <code>  /// Total workload processed by the worker.</code>
+        </line>
+        <line number="36">
+            <code>  final int totalWorkload;</code>
+        </line>
+        <line number="37">
+            <code/>
+        </line>
+        <line number="38">
+            <code>  /// Total errors raised during processing.</code>
+        </line>
+        <line number="39">
+            <code>  final int totalErrors;</code>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line number="41">
+            <code>  /// The worker's up-time.</code>
+        </line>
+        <line number="42">
+            <code>  Duration upTime;</code>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line number="44">
+            <code>  /// The worker's idle-time.</code>
+        </line>
+        <line number="45">
+            <code>  Duration idleTime;</code>
+        </line>
+        <line number="46">
+            <code>}</code>
+        </line>
+        <line number="47">
+            <code/>
+        </line>
+        <line number="48">
+            <code>@internal</code>
+        </line>
+        <line number="49">
+            <code>extension WorkerStatExt on WorkerStat {</code>
+        </line>
+        <line hits="5" number="50">
+            <code>  static WorkerStat create(</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="51">
+            <code>          Type workerType,</code>
+        </line>
+        <line number="52">
+            <code>          int workerHashCode,</code>
+        </line>
+        <line number="53">
+            <code>          bool isStopped,</code>
+        </line>
+        <line number="54">
+            <code>          String status,</code>
+        </line>
+        <line number="55">
+            <code>          int workload,</code>
+        </line>
+        <line number="56">
+            <code>          int maxWorkload,</code>
+        </line>
+        <line number="57">
+            <code>          int totalWorkload,</code>
+        </line>
+        <line number="58">
+            <code>          int totalErrors,</code>
+        </line>
+        <line number="59">
+            <code>          Duration upTime,</code>
+        </line>
+        <line number="60">
+            <code>          Duration idleTime) =&gt;</code>
+        </line>
+        <line hits="5" number="61">
+            <code>      WorkerStat._(workerType, workerHashCode, isStopped, status, workload,</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="62">
+            <code>          maxWorkload, totalWorkload, totalErrors, upTime, idleTime);</code>
+        </line>
+        <line number="63">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

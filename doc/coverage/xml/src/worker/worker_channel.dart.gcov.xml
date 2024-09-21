@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src/worker" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line number="4">
+            <code/>
+        </line>
+        <line number="5">
+            <code>import '../_impl/xplat/_worker_channel.dart'</code>
+        </line>
+        <line number="6">
+            <code>    if (dart.library.io) '../_impl/native/_worker_channel.dart'</code>
+        </line>
+        <line number="7">
+            <code>    if (dart.library.html) '../_impl/web/_worker_channel.dart'</code>
+        </line>
+        <line number="8">
+            <code>    if (dart.library.js_interop) '../_impl/web/_worker_channel.dart' as impl;</code>
+        </line>
+        <line number="9">
+            <code>import '../channel.dart';</code>
+        </line>
+        <line number="10">
+            <code>import '../typedefs.dart';</code>
+        </line>
+        <line number="11">
+            <code>import 'worker.dart';</code>
+        </line>
+        <line number="12">
+            <code>import 'worker_request.dart';</code>
+        </line>
+        <line number="13">
+            <code>import 'worker_response.dart';</code>
+        </line>
+        <line number="14">
+            <code/>
+        </line>
+        <line number="15">
+            <code>typedef PostRequest = void Function(WorkerRequest req);</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line number="17">
+            <code>/// A [WorkerChannel] supports communication from a platform worker to the</code>
+        </line>
+        <line number="18">
+            <code>/// client that posted the [WorkerRequest]. It is used to send [WorkerResponse]</code>
+        </line>
+        <line number="19">
+            <code>/// back to the client.</code>
+        </line>
+        <line number="20">
+            <code>abstract interface class WorkerChannel {</code>
+        </line>
+        <line number="21">
+            <code>  /// Connects the [Channel] with the Squadron [Worker]. [channelInfo] is an</code>
+        </line>
+        <line number="22">
+            <code>  /// opaque object than can be deserialized as a [Channel]. This method must</code>
+        </line>
+        <line number="23">
+            <code>  /// be called by the worker upon startup.</code>
+        </line>
+        <line number="24">
+            <code>  void connect(PlatformChannel channelInfo);</code>
+        </line>
+        <line number="25">
+            <code/>
+        </line>
+        <line number="26">
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line number="27">
+            <code>  /// This method must be called from the worker only. On Web patforms, this</code>
+        </line>
+        <line number="28">
+            <code>  /// version does not check arguments for transferable objects.</code>
+        </line>
+        <line number="29">
+            <code>  void reply(dynamic data);</code>
+        </line>
+        <line number="30">
+            <code/>
+        </line>
+        <line number="31">
+            <code>  /// Sends a [WorkerResponse] with the specified data to the worker client.</code>
+        </line>
+        <line number="32">
+            <code>  /// This method must be called from the worker only. On Web patforms, this</code>
+        </line>
+        <line number="33">
+            <code>  /// version checks arguments for transferable objects.</code>
+        </line>
+        <line number="34">
+            <code>  void inspectAndReply(dynamic data);</code>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  /// Sends a [WorkerResponse.log] with the specified data to the worker</code>
+        </line>
+        <line number="37">
+            <code>  /// client.</code>
+        </line>
+        <line number="38">
+            <code>  void log(LogEvent message);</code>
+        </line>
+        <line number="39">
+            <code/>
+        </line>
+        <line number="40">
+            <code>  /// Checks if [stream] can be streamed back to the worker client.</code>
+        </line>
+        <line number="41">
+            <code>  bool canStream(Stream&lt;dynamic&gt; stream);</code>
+        </line>
+        <line number="42">
+            <code/>
+        </line>
+        <line number="43">
+            <code>  /// Sends a [WorkerResponse.closeStream] to the worker client.</code>
+        </line>
+        <line number="44">
+            <code>  void closeStream();</code>
+        </line>
+        <line number="45">
+            <code/>
+        </line>
+        <line number="46">
+            <code>  /// Sends a [WorkerResponse] with the specified error to the worker client.</code>
+        </line>
+        <line number="47">
+            <code>  void error(Object err, [StackTrace? stacktrace, int? command]);</code>
+        </line>
+        <line number="48">
+            <code/>
+        </line>
+        <line number="49">
+            <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
+        </line>
+        <line hits="9" number="50">
+            <code>  static WorkerChannel? deserialize(PlatformChannel? channelInfo,</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="51">
+            <code>          [Logger? logger]) =&gt;</code>
+        </line>
+        <line hits="9" number="52">
+            <code>      impl.deserialize(channelInfo, logger);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="53">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

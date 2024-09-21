@@ -2,18 +2,17 @@
 <!--
 	Copyright (C) 2012  Rick Brown
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+		http://www.apache.org/licenses/LICENSE-2.0
 
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 -->
 <html>
 	<head>
@@ -22,22 +21,27 @@
 	<body>
 		<h1>JGenHtml - Code Coverage Report</h1>
 		<hr/>
-			<h2>Viewing the report</h2>
-			JGenHtml produces two versions of the same report:
-			<ol>
-				<li><a href="xml/index.xml">XML + XSLT</a></li>
-				<li><a href="html/index.html">HTML</a></li>
-			</ol>
+		<h2>Viewing the report</h2>
+		<p>JGenHtml produces two versions of the same report:</p>
+		<ol>
+			<li><a href="xml/index.xml">XML + XSLT</a></li>
+			<li><a href="html/index.html">HTML</a></li>
+		</ol>
 
-			<h2>Why are there two versions and when to use which?</h2>
-			<p>Ideally there would be only one version, the XML + XSLT version. The main advantages of this format over HTML are:</p>
-			<ul>
-				<li>The XML pages are smaller than the corresponding HTML versions.</li>
-				<li>XML is both human and machine readable.</li>
-			</ul>
-			<p>The problem with client side XSLT is that support for it on the "file:" protocol is problematic in many browsers.</p>
-			<p>You can use either version anywhere, but the HTML version would be best on the "file:" protocol while the XML version would be best over http.</p>
-			<p>Note: to support client side XSLT on the "file:" protocol the Google Chrome browser needs to be started with the command line flag <code>--allow-file-access-from-files</code></p>
-		<hr>
+		<h2>Why are there two versions and when to use which?</h2>
+		<p>Ideally there would be only one version, the XML + XSLT version. The main advantages of this format over HTML are:</p>
+		<ul>
+			<li>The XML pages are smaller than the corresponding HTML versions.</li>
+			<li>XML is both human and machine readable.</li>
+		</ul>
+		<p>The problem with client side XSLT is that support for it on the "file:" protocol is problematic in many browsers.</p>
+		<p>You can use either version anywhere, but the HTML version would be best on the "file:" protocol while the XML version would be best over http.</p>
+		<p>Note: to support client side XSLT on the "file:" protocol the Google Chrome browser needs to be started with the command line flag <code>--allow-file-access-from-files</code></p>
+		<h2>How to produce HTML only</h2>
+		<p>You can prevent the generation of the XML version of the report (and this page).</p>
+		<p>This will give you a directory structure just like the one produced by the genhtml tool that ships with lcov.</p>
+		<p>To do this set the following preference in your <a href="http://linux.die.net/man/5/lcovrc">lcovrc config file</a>:</p>
+		<code>jgenhtml_html_only = 1</code>
+		<hr/>
 	</body>
 </html>

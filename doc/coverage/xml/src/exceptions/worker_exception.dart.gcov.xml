@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="worker_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="18" lines-valid="18" package="src/exceptions" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>/// Exception to keep track of errors encountered in a worker.</code>
+        </line>
+        <line number="7">
+            <code>class WorkerException extends SquadronException {</code>
+        </line>
+        <line number="8">
+            <code>  /// Creates a new [WorkerException] to capture error context.</code>
+        </line>
+        <line hits="10" number="9">
+            <code>  WorkerException(super.message, [super.stackTrace, int? command])</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code>      : _command = command,</code>
+        </line>
+        <line hits="10" number="11">
+            <code>        super.init();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="12">
+            <code/>
+        </line>
+        <line hits="5" number="13">
+            <code>  @override</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12" number="14">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="15">
+            <code>        $workerExceptionType,</code>
+        </line>
+        <line hits="7" number="16">
+            <code>        message,</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12" number="17">
+            <code>        stackTrace?.toString(),</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7" number="18">
+            <code>        _command,</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="19">
+            <code>      ]);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>  /// Command.</code>
+        </line>
+        <line hits="6" number="22">
+            <code>  int? get command =&gt; _command;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code>  int? _command;</code>
+        </line>
+        <line number="24">
+            <code>}</code>
+        </line>
+        <line number="25">
+            <code/>
+        </line>
+        <line number="26">
+            <code>const _$type = 0;</code>
+        </line>
+        <line number="27">
+            <code>const _$message = 1;</code>
+        </line>
+        <line number="28">
+            <code>const _$stackTrace = 2;</code>
+        </line>
+        <line number="29">
+            <code>const _$command = 3;</code>
+        </line>
+        <line number="30">
+            <code/>
+        </line>
+        <line number="31">
+            <code>@internal</code>
+        </line>
+        <line number="32">
+            <code>extension WorkerExceptionExt on WorkerException {</code>
+        </line>
+        <line hits="4" number="33">
+            <code>  void setCommand(int command) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="34">
+            <code>    _command = command;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="35">
+            <code>  }</code>
+        </line>
+        <line number="36">
+            <code/>
+        </line>
+        <line hits="11" number="37">
+            <code>  static WorkerException? deserialize(List data) =&gt;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="38">
+            <code>      (data[_$type] == $workerExceptionType)</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="39">
+            <code>          ? WorkerException(</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="40">
+            <code>              data[_$message],</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="41">
+            <code>              SquadronException.loadStackTrace(data[_$stackTrace]),</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="42">
+            <code>              (data[_$command] as num?)?.toInt(),</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code>            )</code>
+        </line>
+        <line hits="6" number="44">
+            <code>          : null;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="45">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

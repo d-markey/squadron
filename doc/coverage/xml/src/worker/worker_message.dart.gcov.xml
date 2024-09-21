@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8333333" lines-covered="5" lines-valid="6" package="src/worker" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import '../_impl/xplat/_time_stamp.dart';</code>
+        </line>
+        <line number="4">
+            <code/>
+        </line>
+        <line number="5">
+            <code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code>
+        </line>
+        <line number="6">
+            <code>extension type WorkerMessage(List data) {</code>
+        </line>
+        <line number="7">
+            <code>  /// [travelTime] is set by the receiving end and measures the time (in</code>
+        </line>
+        <line number="8">
+            <code>  /// microseconds) it took between the moment the message was serialized and</code>
+        </line>
+        <line number="9">
+            <code>  /// the moment it was deserialized.</code>
+        </line>
+        <line hits="0" number="10">
+            <code>  int? get travelTime =&gt; data[_$traveltime];</code>
+        </line>
+        <line number="11">
+            <code>}</code>
+        </line>
+        <line number="12">
+            <code/>
+        </line>
+        <line number="13">
+            <code>const _$traveltime = 0;</code>
+        </line>
+        <line number="14">
+            <code/>
+        </line>
+        <line number="15">
+            <code>@internal</code>
+        </line>
+        <line number="16">
+            <code>extension WorkerMessageExt on WorkerMessage {</code>
+        </line>
+        <line hits="10" number="17">
+            <code>  void unwrapTravelTime() {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="29" number="18">
+            <code>    final ts = (data[_$traveltime] as num?)?.toInt();</code>
+            <hit count="29" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="19">
+            <code>    if (ts != null) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="38" number="20">
+            <code>      data[_$traveltime] = microsecTimeStamp() - ts;</code>
+            <hit count="38" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="21">
+            <code>    }</code>
+        </line>
+        <line hits="1" number="22">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

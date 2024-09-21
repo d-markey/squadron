@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="num_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="14" lines-valid="15" package="src/converters" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'cast_converter.dart';</code>
+        </line>
+        <line number="2">
+            <code>import 'converter.dart';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>final class NumConverter extends CastConverter {</code>
+        </line>
+        <line hits="11" number="5">
+            <code>  const NumConverter();</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line number="7">
+            <code>  static const instance = NumConverter();</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line hits="1" number="9">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="10">
+            <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; _numCastors[T] as Cast&lt;T&gt;? ?? super.value&lt;T&gt;();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line hits="2" number="12">
+            <code>  static int _toInt(dynamic x) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="13">
+            <code>    if (x is int &amp;&amp; x.isFinite) return x;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="14">
+            <code>    final y = (x as num).toDouble();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="15">
+            <code>    if (!y.isFinite) return double.nan as int; // intended type error</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="16">
+            <code>    final z = y.toInt(), d = y - z;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="17">
+            <code>    if (d != 0) return double.nan as int; // intended type error</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="18">
+            <code>    return z;</code>
+        </line>
+        <line hits="1" number="19">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line hits="3" number="21">
+            <code>  static double _toDbl(dynamic x) =&gt; (x as num).toDouble();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="22">
+            <code/>
+        </line>
+        <line hits="4" number="23">
+            <code>  static final Map&lt;Type, Cast&gt; _numCastors = {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="24">
+            <code>    int: _toInt,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="25">
+            <code>    double: _toDbl,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="26">
+            <code>  };</code>
+        </line>
+        <line number="27">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

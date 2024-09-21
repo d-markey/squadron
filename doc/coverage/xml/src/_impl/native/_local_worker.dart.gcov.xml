@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9375" lines-covered="15" lines-valid="16" package="src/_impl/native" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code>import 'dart:isolate';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>import '../../channel.dart';</code>
+        </line>
+        <line number="5">
+            <code>import '../../exceptions/exception_manager.dart';</code>
+        </line>
+        <line number="6">
+            <code>import '../../local_worker/local_worker.dart';</code>
+        </line>
+        <line number="7">
+            <code>import '../../worker_service.dart';</code>
+        </line>
+        <line number="8">
+            <code>import '../xplat/_worker_runner.dart';</code>
+        </line>
+        <line number="9">
+            <code>import '_worker_runner.dart';</code>
+        </line>
+        <line number="10">
+            <code/>
+        </line>
+        <line number="11">
+            <code>base class _VmLocalWorker&lt;W extends WorkerService&gt; extends LocalWorker&lt;W&gt; {</code>
+        </line>
+        <line hits="1" number="12">
+            <code>  _VmLocalWorker._(super.service, ExceptionManager exceptionManager) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="13">
+            <code>    final runner = WorkerRunner.use(this);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="14">
+            <code>    _port.listen(runner.handle);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="15">
+            <code>    _channel = Channel.deserialize(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="16">
+            <code>        _port.sendPort, runner.internalLogger, exceptionManager)!;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="17">
+            <code>  }</code>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line number="19">
+            <code>  final _port = ReceivePort();</code>
+        </line>
+        <line number="20">
+            <code>  late Channel? _channel;</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line hits="1" number="22">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="23">
+            <code>  Channel? get channel =&gt; _channel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="24">
+            <code/>
+        </line>
+        <line hits="1" number="25">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="26">
+            <code>  ExceptionManager get exceptionManager =&gt;</code>
+        </line>
+        <line hits="2" number="27">
+            <code>      (_exceptionManager ??= ExceptionManager());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code>  ExceptionManager? _exceptionManager;</code>
+        </line>
+        <line number="29">
+            <code/>
+        </line>
+        <line hits="1" number="30">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="31">
+            <code>  void stop() {</code>
+        </line>
+        <line hits="2" number="32">
+            <code>    _port.close();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="33">
+            <code>    _channel?.close();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="34">
+            <code>    _channel = null;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="35">
+            <code>  }</code>
+        </line>
+        <line number="36">
+            <code/>
+        </line>
+        <line hits="0" number="37">
+            <code>  @override</code>
+        </line>
+        <line number="38">
+            <code>  FutureOr&lt;void&gt; start() {}</code>
+        </line>
+        <line number="39">
+            <code>}</code>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line number="41">
+            <code>/// Creates a [LocalWorker] on a native platform.</code>
+        </line>
+        <line hits="1" number="42">
+            <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W extends WorkerService&gt;(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code>        W service, ExceptionManager exceptionManager) =&gt;</code>
+        </line>
+        <line hits="1" number="44">
+            <code>    _VmLocalWorker._(service, exceptionManager);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

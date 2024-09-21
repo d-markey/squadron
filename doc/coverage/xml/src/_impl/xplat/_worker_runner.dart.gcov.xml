@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8503401" lines-covered="125" lines-valid="147" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code>import 'dart:isolate';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>import 'package:logger/logger.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line number="7">
+            <code>import '../../local_worker/local_worker.dart';</code>
+        </line>
+        <line number="8">
+            <code>import '../../tokens/_cancelation_token_ref.dart';</code>
+        </line>
+        <line number="9">
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
+        </line>
+        <line number="10">
+            <code>import '../../typedefs.dart';</code>
+        </line>
+        <line number="11">
+            <code>import '../../worker/worker_channel.dart';</code>
+        </line>
+        <line number="12">
+            <code>import '../../worker/worker_request.dart';</code>
+        </line>
+        <line number="13">
+            <code>import '../../worker_service.dart';</code>
+        </line>
+        <line number="14">
+            <code>import '_internal_logger.dart';</code>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line number="16">
+            <code>class WorkerRunner {</code>
+        </line>
+        <line number="17">
+            <code>  /// Constructs a new worker runner.</code>
+        </line>
+        <line hits="10" number="18">
+            <code>  WorkerRunner(this._terminate);</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code/>
+        </line>
+        <line number="20">
+            <code>  void Function(WorkerRunner) _terminate;</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line number="22">
+            <code>  final internalLogger = InternalLogger();</code>
+        </line>
+        <line number="23">
+            <code/>
+        </line>
+        <line hits="1" number="24">
+            <code>  Map&lt;int, CommandHandler&gt;? _operations;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="25">
+            <code>  ServiceInstaller? _installer;</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line hits="1" number="27">
+            <code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line number="29">
+            <code>  bool _terminationRequested = false;</code>
+        </line>
+        <line number="30">
+            <code>  int _executing = 0;</code>
+        </line>
+        <line number="31">
+            <code/>
+        </line>
+        <line hits="1" number="32">
+            <code>  final _streamCancelers = &lt;int, SquadronCallback&gt;{};</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="33">
+            <code>  int _streamId = 0;</code>
+        </line>
+        <line number="34">
+            <code/>
+        </line>
+        <line number="35">
+            <code>  void Function(OutputEvent)? _logForwarder;</code>
+        </line>
+        <line number="36">
+            <code/>
+        </line>
+        <line number="37">
+            <code>  /// Constructs a new worker runner for a [localWorker].</code>
+        </line>
+        <line hits="2" number="38">
+            <code>  factory WorkerRunner.use(LocalWorker localWorker) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="39">
+            <code>    final runner = WorkerRunner((r) =&gt; r._operations?.clear());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="40">
+            <code>    runner._operations = {...localWorker.service.operations};</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="41">
+            <code>    return runner;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="42">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line number="44">
+            <code>  /// Called by the platform worker upon startup, in response to a start</code>
+        </line>
+        <line number="45">
+            <code>  /// [WorkerRequest]. [channelInfo] is an opaque object sent back from the</code>
+        </line>
+        <line number="46">
+            <code>  /// platform worker to the Squadron [Worker] and used to communicate with the</code>
+        </line>
+        <line number="47">
+            <code>  /// platform worker. Typically, [channelInfo] would be a [SendPort] (native)</code>
+        </line>
+        <line number="48">
+            <code>  /// or a [MessagePort] (browser). [initializer] is called to build the</code>
+        </line>
+        <line number="49">
+            <code>  /// [WorkerService] associated to the worker. The runner's [_operations] map</code>
+        </line>
+        <line number="50">
+            <code>  /// will be set with operations from the service.</code>
+        </line>
+        <line hits="9" number="51">
+            <code>  Future&lt;void&gt; connect(WorkerRequest? startRequest, PlatformChannel channelInfo,</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code>      WorkerInitializer initializer) async {</code>
+        </line>
+        <line number="53">
+            <code>    WorkerChannel? channel;</code>
+        </line>
+        <line number="54">
+            <code>    try {</code>
+        </line>
+        <line hits="18" number="55">
+            <code>      startRequest?.unwrapInPlace(internalLogger);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="56">
+            <code>      channel = startRequest?.channel;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="57">
+            <code/>
+        </line>
+        <line number="58">
+            <code>      if (startRequest == null) {</code>
+        </line>
+        <line hits="2" number="59">
+            <code>        throw SquadronErrorExt.create('Missing connection request');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="60">
+            <code>      } else if (channel == null) {</code>
+        </line>
+        <line hits="0" number="61">
+            <code>        throw SquadronErrorExt.create('Missing client for connection request');</code>
+        </line>
+        <line number="62">
+            <code>      }</code>
+        </line>
+        <line number="63">
+            <code/>
+        </line>
+        <line hits="9" number="64">
+            <code>      if (_logForwarder == null) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="65">
+            <code>        final logger = channel.log;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="36" number="66">
+            <code>        _logForwarder = (event) =&gt; logger(event.origin);</code>
+            <hit count="36" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="67">
+            <code>        Logger.addOutputListener(_logForwarder!);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="68">
+            <code>      }</code>
+        </line>
+        <line number="69">
+            <code/>
+        </line>
+        <line hits="9" number="70">
+            <code>      if (!startRequest.isConnection) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="71">
+            <code>        throw SquadronErrorExt.create('Connection request expected');</code>
+        </line>
+        <line hits="9" number="72">
+            <code>      } else if (_operations != null) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="73">
+            <code>        throw SquadronErrorExt.create('Already connected');</code>
+        </line>
+        <line number="74">
+            <code>      }</code>
+        </line>
+        <line number="75">
+            <code/>
+        </line>
+        <line hits="9" number="76">
+            <code>      final service = await initializer(startRequest);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="54" number="77">
+            <code>      if (service.operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code>
+            <hit count="54" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="78">
+            <code>        throw SquadronErrorExt.create(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="79">
+            <code>          'Invalid command identifier in service operations map; command ids must be &gt; 0',</code>
+        </line>
+        <line number="80">
+            <code>        );</code>
+        </line>
+        <line number="81">
+            <code>      }</code>
+        </line>
+        <line number="82">
+            <code/>
+        </line>
+        <line hits="27" number="83">
+            <code>      _operations = {...service.operations};</code>
+            <hit count="27" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="84">
+            <code/>
+        </line>
+        <line hits="9" number="85">
+            <code>      if (service is ServiceInstaller) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="86">
+            <code>        _installer = service as ServiceInstaller;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="87">
+            <code>        await _installer!.install();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="88">
+            <code>      }</code>
+        </line>
+        <line number="89">
+            <code/>
+        </line>
+        <line hits="9" number="90">
+            <code>      channel.connect(channelInfo);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="91">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="8" number="92">
+            <code>      internalLogger.e(() =&gt; 'Connection failed: $ex');</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="93">
+            <code>      channel?.error(ex, st);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="94">
+            <code>      _exit();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="95">
+            <code>    }</code>
+        </line>
+        <line number="96">
+            <code>  }</code>
+        </line>
+        <line number="97">
+            <code/>
+        </line>
+        <line number="98">
+            <code>  /// [WorkerRequest] handler dispatching commands according to the</code>
+        </line>
+        <line number="99">
+            <code>  /// [_operations] map. Make sure this method doesn't throw.</code>
+        </line>
+        <line hits="10" number="100">
+            <code>  void processRequest(WorkerRequest request) async {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="101">
+            <code>    WorkerChannel? channel;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="102">
+            <code>    try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="19" number="103">
+            <code>      request.unwrapInPlace(internalLogger);</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="104">
+            <code>      channel = request.channel;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="105">
+            <code/>
+        </line>
+        <line number="106">
+            <code>      // ==== these requests do not send a response ====</code>
+        </line>
+        <line number="107">
+            <code/>
+        </line>
+        <line hits="9" number="108">
+            <code>      if (request.isTermination) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="109">
+            <code>        // terminate the worker</code>
+        </line>
+        <line hits="9" number="110">
+            <code>        return _shutdown();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="111">
+            <code>      } else if (request.isTokenCancelation) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="112">
+            <code>        // cancel a token</code>
+        </line>
+        <line hits="2" number="113">
+            <code>        final token = request.cancelToken!;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="114">
+            <code>        return _getTokenRef(token).update(token);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="115">
+            <code>      } else if (request.isStreamCancelation) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="116">
+            <code>        // cancel a stream</code>
+        </line>
+        <line hits="9" number="117">
+            <code>        final canceler = _streamCancelers[request.streamId];</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="118">
+            <code>        return canceler?.call();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="119">
+            <code>      }</code>
+        </line>
+        <line number="120">
+            <code/>
+        </line>
+        <line number="121">
+            <code>      // make sure the worker is connected</code>
+        </line>
+        <line number="122">
+            <code/>
+        </line>
+        <line hits="9" number="123">
+            <code>      if (request.isConnection) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="124">
+            <code>        // connection requests are handled by connect().</code>
+        </line>
+        <line hits="0" number="125">
+            <code>        throw SquadronErrorExt.create(</code>
+        </line>
+        <line hits="0" number="126">
+            <code>            'Unexpected connection request: $request');</code>
+        </line>
+        <line hits="10" number="127">
+            <code>      } else if (_operations == null) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="128">
+            <code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code>
+        </line>
+        <line hits="0" number="129">
+            <code>        throw SquadronErrorExt.create('Worker service is not ready');</code>
+        </line>
+        <line number="130">
+            <code>      }</code>
+        </line>
+        <line number="131">
+            <code/>
+        </line>
+        <line number="132">
+            <code>      // ==== other requests require a client to send the response ====</code>
+        </line>
+        <line number="133">
+            <code/>
+        </line>
+        <line number="134">
+            <code>      if (channel == null) {</code>
+        </line>
+        <line hits="0" number="135">
+            <code>        throw SquadronErrorExt.create('Missing client for request: $request');</code>
+        </line>
+        <line number="136">
+            <code>      }</code>
+        </line>
+        <line number="137">
+            <code/>
+        </line>
+        <line hits="9" number="138">
+            <code>      final token = request.cancelToken;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="139">
+            <code>      token?.throwIfCanceled();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="140">
+            <code/>
+        </line>
+        <line number="141">
+            <code>      // start monitoring execution</code>
+        </line>
+        <line hits="9" number="142">
+            <code>      final tokenRef = _begin(request);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="143">
+            <code>      try {</code>
+        </line>
+        <line number="144">
+            <code>        // find the operation matching the request command</code>
+        </line>
+        <line hits="28" number="145">
+            <code>        final cmd = request.command, op = _operations![cmd];</code>
+            <hit count="28" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="146">
+            <code>        if (op == null) {</code>
+        </line>
+        <line hits="2" number="147">
+            <code>          throw SquadronErrorExt.create('Unknown command: $cmd');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="148">
+            <code>        }</code>
+        </line>
+        <line number="149">
+            <code/>
+        </line>
+        <line number="150">
+            <code>        // process</code>
+        </line>
+        <line hits="10" number="151">
+            <code>        var result = op(request);</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="152">
+            <code>        if (result is Future) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="153">
+            <code>          result = await result;</code>
+        </line>
+        <line number="154">
+            <code>        }</code>
+        </line>
+        <line number="155">
+            <code/>
+        </line>
+        <line hits="10" number="156">
+            <code>        final reply = request.reply!;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="157">
+            <code>        if (result is Stream &amp;&amp; channel.canStream(result)) {</code>
+            <hit count="16" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="158">
+            <code>          // result is a stream: forward data to the client</code>
+        </line>
+        <line hits="6" number="159">
+            <code>          final replyWithError = channel.error;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="160">
+            <code>          void postError(Object exception, [StackTrace? stackTrace]) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="161">
+            <code>            replyWithError(exception, stackTrace, cmd);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="162">
+            <code>          }</code>
+        </line>
+        <line number="163">
+            <code/>
+        </line>
+        <line hits="6" number="164">
+            <code>          void post(data) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="165">
+            <code>            try {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="166">
+            <code>              reply(data);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="167">
+            <code>            } catch (ex, st) {</code>
+        </line>
+        <line hits="0" number="168">
+            <code>              postError(ex, st);</code>
+        </line>
+        <line number="169">
+            <code>            }</code>
+        </line>
+        <line hits="1" number="170">
+            <code>          }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="171">
+            <code/>
+        </line>
+        <line hits="6" number="172">
+            <code>          await _pipe(result, channel, post, postError, token);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="173">
+            <code>        } else {</code>
+        </line>
+        <line number="174">
+            <code>          // result is a value: send to the client</code>
+        </line>
+        <line hits="9" number="175">
+            <code>          reply(result);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="176">
+            <code>        }</code>
+        </line>
+        <line number="177">
+            <code>      } finally {</code>
+        </line>
+        <line number="178">
+            <code>        // stop monitoring execution</code>
+        </line>
+        <line hits="9" number="179">
+            <code>        _done(tokenRef);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="180">
+            <code>      }</code>
+        </line>
+        <line hits="1" number="181">
+            <code>    } catch (ex, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="182">
+            <code>      if (channel != null) {</code>
+        </line>
+        <line hits="6" number="183">
+            <code>        channel.error(ex, st, request.command);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="184">
+            <code>      } else {</code>
+        </line>
+        <line hits="3" number="185">
+            <code>        internalLogger.e('Unhandled error: $ex');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="186">
+            <code>      }</code>
+        </line>
+        <line number="187">
+            <code>    }</code>
+        </line>
+        <line hits="1" number="188">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="189">
+            <code/>
+        </line>
+        <line hits="10" number="190">
+            <code>  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =&gt;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="191">
+            <code>      (token == null)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="192">
+            <code>          ? CancelationTokenReference.noToken</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="193">
+            <code>          : _cancelTokens.putIfAbsent(</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="194">
+            <code>              token.id, () =&gt; CancelationTokenReference(token.id));</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="195">
+            <code/>
+        </line>
+        <line number="196">
+            <code>  /// Starts monitoring execution of this [request]. If the request contains a</code>
+        </line>
+        <line number="197">
+            <code>  /// cancelation token, it is overridden with a [CancelationTokenReference]</code>
+        </line>
+        <line number="198">
+            <code>  /// and this reference is returned to the sender. Otherwise, returns</code>
+        </line>
+        <line number="199">
+            <code>  /// [CancelationTokenReference.noToken].</code>
+        </line>
+        <line hits="9" number="200">
+            <code>  CancelationTokenReference _begin(WorkerRequest request) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="201">
+            <code>    _executing++;</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="19" number="202">
+            <code>    final token = _getTokenRef(request.cancelToken);</code>
+            <hit count="19" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="203">
+            <code>    token.usedBy(request);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="204">
+            <code>    return token;</code>
+        </line>
+        <line number="205">
+            <code>  }</code>
+        </line>
+        <line number="206">
+            <code/>
+        </line>
+        <line number="207">
+            <code>  /// Stops monitoring execution and releases the [tokenRef].</code>
+        </line>
+        <line hits="9" number="208">
+            <code>  void _done(CancelationTokenReference tokenRef) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="209">
+            <code>    tokenRef.release();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="210">
+            <code>    if (tokenRef.refCount == 0) {</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="211">
+            <code>      _cancelTokens.remove(tokenRef.id);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="212">
+            <code>    }</code>
+        </line>
+        <line hits="18" number="213">
+            <code>    _executing--;</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="14" number="214">
+            <code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="215">
+            <code>      _unmount();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="216">
+            <code>    }</code>
+        </line>
+        <line number="217">
+            <code>  }</code>
+        </line>
+        <line number="218">
+            <code/>
+        </line>
+        <line number="219">
+            <code>  /// Forwards stream events to client.</code>
+        </line>
+        <line hits="6" number="220">
+            <code>  Future&lt;void&gt; _pipe(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="221">
+            <code>    Stream&lt;dynamic&gt; stream,</code>
+        </line>
+        <line number="222">
+            <code>    WorkerChannel channel,</code>
+        </line>
+        <line number="223">
+            <code>    void Function(dynamic) post,</code>
+        </line>
+        <line number="224">
+            <code>    void Function(Object exception, [StackTrace? stackTrace]) postError,</code>
+        </line>
+        <line number="225">
+            <code>    SquadronCancelationToken? token,</code>
+        </line>
+        <line number="226">
+            <code>  ) {</code>
+        </line>
+        <line hits="1" number="227">
+            <code>    late final StreamSubscription subscription;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="228">
+            <code>    final done = Completer();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="229">
+            <code/>
+        </line>
+        <line hits="1" number="230">
+            <code>    late final int streamId;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="231">
+            <code/>
+        </line>
+        <line number="232">
+            <code>    // send endOfStream to client</code>
+        </line>
+        <line hits="6" number="233">
+            <code>    Future&lt;void&gt; onDone() async {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="234">
+            <code>      _unregisterStreamCanceler(streamId);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="235">
+            <code>      channel.closeStream();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="236">
+            <code>      await subscription.cancel();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="237">
+            <code>      done.complete();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="238">
+            <code>    }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="239">
+            <code/>
+        </line>
+        <line number="240">
+            <code>    final bool Function() checkToken;</code>
+        </line>
+        <line number="241">
+            <code>    if (token == null) {</code>
+        </line>
+        <line hits="6" number="242">
+            <code>      checkToken = () =&gt; true;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="243">
+            <code>    } else {</code>
+        </line>
+        <line hits="2" number="244">
+            <code>      checkToken = () {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="245">
+            <code>        final ex = token.exception;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="246">
+            <code>        if (ex != null) {</code>
+        </line>
+        <line hits="0" number="247">
+            <code>          postError(ex);</code>
+        </line>
+        <line hits="0" number="248">
+            <code>          onDone();</code>
+        </line>
+        <line number="249">
+            <code>        }</code>
+        </line>
+        <line hits="0" number="250">
+            <code>        return (ex == null);</code>
+        </line>
+        <line hits="0" number="251">
+            <code>      };</code>
+        </line>
+        <line number="252">
+            <code>    }</code>
+        </line>
+        <line number="253">
+            <code/>
+        </line>
+        <line number="254">
+            <code>    // register stream canceler callback and connect stream with client</code>
+        </line>
+        <line hits="6" number="255">
+            <code>    streamId = _registerStreamCanceler(onDone);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="256">
+            <code>    post(streamId);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="257">
+            <code>    if (checkToken()) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="258">
+            <code>      // start forwarding messages to the client</code>
+        </line>
+        <line hits="6" number="259">
+            <code>      subscription = stream.listen(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="260">
+            <code>        (data) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="261">
+            <code>          if (checkToken()) post(data);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="262">
+            <code>        },</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="263">
+            <code>        onError: (ex, st) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="264">
+            <code>          if (checkToken()) postError(ex, st);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="265">
+            <code>        },</code>
+        </line>
+        <line number="266">
+            <code>        onDone: onDone,</code>
+        </line>
+        <line number="267">
+            <code>        cancelOnError: false,</code>
+        </line>
+        <line number="268">
+            <code>      );</code>
+        </line>
+        <line number="269">
+            <code>    }</code>
+        </line>
+        <line number="270">
+            <code/>
+        </line>
+        <line hits="6" number="271">
+            <code>    return done.future;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="272">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="273">
+            <code/>
+        </line>
+        <line number="274">
+            <code>  /// Assigns a stream ID to the stream canceler callback and registers the</code>
+        </line>
+        <line number="275">
+            <code>  /// callback.</code>
+        </line>
+        <line hits="5" number="276">
+            <code>  int _registerStreamCanceler(SquadronCallback canceler) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="277">
+            <code>    final streamId = ++_streamId;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="278">
+            <code>    _streamCancelers[streamId] = canceler;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="279">
+            <code>    return streamId;</code>
+        </line>
+        <line number="280">
+            <code>  }</code>
+        </line>
+        <line number="281">
+            <code/>
+        </line>
+        <line number="282">
+            <code>  /// Unregisters the stream canceled callback associated to the [streamId].</code>
+        </line>
+        <line hits="5" number="283">
+            <code>  void _unregisterStreamCanceler(int streamId) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="284">
+            <code>    _streamCancelers.remove(streamId);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="285">
+            <code>  }</code>
+        </line>
+        <line number="286">
+            <code/>
+        </line>
+        <line number="287">
+            <code>  /// Terminates the worker if there is no pending execution. Otherwise, marks</code>
+        </line>
+        <line number="288">
+            <code>  /// the worker as terminating and termination will be effective when all</code>
+        </line>
+        <line number="289">
+            <code>  /// pending executions have completed.</code>
+        </line>
+        <line hits="9" number="290">
+            <code>  void _shutdown() {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="291">
+            <code>    _terminationRequested = true;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="292">
+            <code>    if (_executing == 0) {</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="293">
+            <code>      _unmount();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="294">
+            <code>    }</code>
+        </line>
+        <line number="295">
+            <code>  }</code>
+        </line>
+        <line number="296">
+            <code/>
+        </line>
+        <line number="297">
+            <code>  // should not throw</code>
+        </line>
+        <line hits="9" number="298">
+            <code>  void _unmount() async {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="299">
+            <code>    try {</code>
+        </line>
+        <line number="300">
+            <code>      // uninstall the service if necessary</code>
+        </line>
+        <line hits="10" number="301">
+            <code>      await _installer?.uninstall();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="302">
+            <code>    } catch (ex) {</code>
+        </line>
+        <line hits="3" number="303">
+            <code>      internalLogger.e('Service uninstallation failed with error: $ex');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="304">
+            <code>    } finally {</code>
+        </line>
+        <line hits="9" number="305">
+            <code>      _exit();</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="306">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="307">
+            <code>  }</code>
+        </line>
+        <line number="308">
+            <code/>
+        </line>
+        <line number="309">
+            <code>  // should not throw</code>
+        </line>
+        <line hits="9" number="310">
+            <code>  void _exit() {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="311">
+            <code>    try {</code>
+        </line>
+        <line hits="18" number="312">
+            <code>      _terminate(this);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="313">
+            <code>    } catch (ex) {</code>
+        </line>
+        <line hits="0" number="314">
+            <code>      internalLogger.e('Worker termination failed with error: $ex');</code>
+        </line>
+        <line number="315">
+            <code>    }</code>
+        </line>
+        <line hits="9" number="316">
+            <code>    if (_logForwarder != null) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="18" number="317">
+            <code>      Logger.removeOutputListener(_logForwarder!);</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="318">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="319">
+            <code>  }</code>
+        </line>
+        <line number="320">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

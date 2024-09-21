@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_entry_point_uri.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84210527" lines-covered="16" lines-valid="19" package="src/_impl/web" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:js_interop';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import 'package:using/using.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'package:web/web.dart' as web;</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import '../../exceptions/squadron_error.dart';</code>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line number="8">
+            <code>class EntryPointUri with Releasable {</code>
+        </line>
+        <line hits="11" number="9">
+            <code>  EntryPointUri._(this.uri, {required bool revoke}) : _revoke = revoke;</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code/>
+        </line>
+        <line number="11">
+            <code>  final String uri;</code>
+        </line>
+        <line number="12">
+            <code>  final bool _revoke;</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>  @override</code>
+        </line>
+        <line hits="1" number="15">
+            <code>  void release() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="16">
+            <code>    if (_revoke) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="17">
+            <code>      web.URL.revokeObjectURL(uri);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="18">
+            <code>    }</code>
+        </line>
+        <line hits="11" number="19">
+            <code>    super.release();</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="20">
+            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line hits="11" number="22">
+            <code>  factory EntryPointUri.from(Uri workerEntrypoint) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code>    final fileName =</code>
+        </line>
+        <line hits="11" number="24">
+            <code>        workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="25">
+            <code>            '';</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line hits="11" number="27">
+            <code>    if (fileName.endsWith('.js') || fileName.endsWith('.mjs')) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code>      // a JavaScript worker</code>
+        </line>
+        <line hits="11" number="29">
+            <code>      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="30">
+            <code>    } else if (fileName.endsWith('.wasm')) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="31">
+            <code>      // blob containing the JavaScript code to load and invoke the Web Assembly worker</code>
+        </line>
+        <line number="32">
+            <code>      final blob = web.Blob(</code>
+        </line>
+        <line hits="11" number="33">
+            <code>        [wasmLoaderScript(workerEntrypoint.toString()).toJS].toJS,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="34">
+            <code>        web.BlobPropertyBag(type: 'application/javascript'),</code>
+        </line>
+        <line number="35">
+            <code>      );</code>
+        </line>
+        <line hits="11" number="36">
+            <code>      return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="37">
+            <code>    } else if (workerEntrypoint.isScheme('data') ||</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="38">
+            <code>        workerEntrypoint.isScheme('javascript')) {</code>
+        </line>
+        <line number="39">
+            <code>      // something else, eg. inline JavaScript</code>
+        </line>
+        <line hits="1" number="40">
+            <code>      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="41">
+            <code>    } else {</code>
+        </line>
+        <line hits="0" number="42">
+            <code>      throw SquadronErrorExt.create('Invalid entry point URI');</code>
+        </line>
+        <line number="43">
+            <code>    }</code>
+        </line>
+        <line hits="11" number="44">
+            <code>  }</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="45">
+            <code/>
+        </line>
+        <line number="46">
+            <code>  static String wasmLoaderScript(String url) =&gt; '''(async function() {</code>
+        </line>
+        <line number="47">
+            <code>  const workerUri = new URL("${url.replaceAll('"', '\\"')}", self.location.origin).href;</code>
+        </line>
+        <line number="48">
+            <code>  try {</code>
+        </line>
+        <line number="49">
+            <code>    let dart2wasm_runtime; let moduleInstance;</code>
+        </line>
+        <line number="50">
+            <code>    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');</code>
+        </line>
+        <line number="51">
+            <code>    try {</code>
+        </line>
+        <line number="52">
+            <code>      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));</code>
+        </line>
+        <line number="53">
+            <code>      dart2wasm_runtime = await import(runtimeUri);</code>
+        </line>
+        <line number="54">
+            <code>      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});</code>
+        </line>
+        <line number="55">
+            <code>    } catch (exception) {</code>
+        </line>
+        <line number="56">
+            <code>      console.error(`Failed to fetch and instantiate wasm module \${workerUri}: \${exception}`);</code>
+        </line>
+        <line number="57">
+            <code>      console.error('See https://dart.dev/web/wasm for more information.');</code>
+        </line>
+        <line number="58">
+            <code>      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');</code>
+        </line>
+        <line number="59">
+            <code>    }</code>
+        </line>
+        <line number="60">
+            <code>    try {</code>
+        </line>
+        <line number="61">
+            <code>      await dart2wasm_runtime.invoke(moduleInstance);</code>
+        </line>
+        <line number="62">
+            <code>      console.log(`Succesfully loaded and invoked \${workerUri}`);</code>
+        </line>
+        <line number="63">
+            <code>    } catch (exception) {</code>
+        </line>
+        <line number="64">
+            <code>      console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);</code>
+        </line>
+        <line number="65">
+            <code>      throw new Error(exception.message ?? 'Unknown error when invoking worker module');</code>
+        </line>
+        <line number="66">
+            <code>    }</code>
+        </line>
+        <line number="67">
+            <code>  } catch (ex) {</code>
+        </line>
+        <line number="68">
+            <code>    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;</code>
+        </line>
+        <line number="69">
+            <code>    postMessage([ts, null, ["\$sqdrn", `Failed to load Web Worker from \${workerUri}: \${ex}`, null], null, null]);</code>
+        </line>
+        <line number="70">
+            <code>  }</code>
+        </line>
+        <line number="71">
+            <code>})()''';</code>
+        </line>
+        <line number="72">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

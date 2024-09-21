@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import '_impl/xplat/_platform.dart'</code>
+        </line>
+        <line number="2">
+            <code>    if (dart.library.io) '_impl/native/_platform.dart'</code>
+        </line>
+        <line number="3">
+            <code>    if (dart.library.html) '_impl/web/_platform.dart'</code>
+        </line>
+        <line number="4">
+            <code>    if (dart.library.js_interop) '_impl/web/_platform.dart' as impl;</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>class Squadron {</code>
+        </line>
+        <line hits="32" number="7">
+            <code>  static final converter = impl.getPlatformConverter();</code>
+            <hit count="32" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="8">
+            <code>  static final platformType = impl.getPlatformType();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line hits="12" number="10">
+            <code>  static Uri uri(String url) =&gt; impl.mapUrl(url);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="11">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.81789136" lines-covered="256" lines-valid="313" package="src/_impl/web" testname="lcov.info" version="1.6">
+    <sources>
+        <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="66" lines-valid="77" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="66" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_patch.dart" functions-hit="0" functions-valid="0" lines-hit="18" lines-valid="22" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="18" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_platform.dart" functions-hit="0" functions-valid="0" lines-hit="9" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="9" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_uri_checker.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_typedefs.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_channel_impl.dart" functions-hit="0" functions-valid="0" lines-hit="105" lines-valid="125" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="105" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_event_buffer.dart" functions-hit="0" functions-valid="0" lines-hit="15" lines-valid="17" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="15" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="9" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="9" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_worker_channel.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="26" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="10" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_entry_point_uri.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="16" name="&lt;unnamed&gt;"/>
+        </source>
+    </sources>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

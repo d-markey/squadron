@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_timeout_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="src/exceptions" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line number="2">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="3">
+            <code/>
+        </line>
+        <line number="4">
+            <code>import '_well_known_exceptions.dart';</code>
+        </line>
+        <line number="5">
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line number="6">
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line number="8">
+            <code>class SquadronTimeoutException extends SquadronCanceledException</code>
+        </line>
+        <line number="9">
+            <code>    implements TimeoutCanceledException {</code>
+        </line>
+        <line hits="6" number="10">
+            <code>  SquadronTimeoutException(String tokenId, String message, this.duration,</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="11">
+            <code>      [StackTrace? stackTrace])</code>
+        </line>
+        <line hits="6" number="12">
+            <code>      : super(tokenId, message, stackTrace);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>  @override</code>
+        </line>
+        <line number="15">
+            <code>  final Duration? duration;</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line hits="3" number="17">
+            <code>  @override</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7" number="18">
+            <code>  List serialize() =&gt; List.unmodifiable([</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code>        $timeoutExceptionType,</code>
+        </line>
+        <line hits="4" number="20">
+            <code>        tokenId,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="21">
+            <code>        message,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7" number="22">
+            <code>        stackTrace?.toString(),</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="23">
+            <code>        duration?.inMicroseconds,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="24">
+            <code>      ]);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="25">
+            <code>}</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line number="27">
+            <code>const _$type = 0;</code>
+        </line>
+        <line number="28">
+            <code>const _$tokenId = 1;</code>
+        </line>
+        <line number="29">
+            <code>const _$message = 2;</code>
+        </line>
+        <line number="30">
+            <code>const _$stackTrace = 3;</code>
+        </line>
+        <line number="31">
+            <code>const _$duration = 4;</code>
+        </line>
+        <line number="32">
+            <code/>
+        </line>
+        <line number="33">
+            <code>@internal</code>
+        </line>
+        <line number="34">
+            <code>extension SquadronTimeoutExceptionExt on SquadronTimeoutException {</code>
+        </line>
+        <line hits="5" number="35">
+            <code>  static SquadronTimeoutException? deserialize(List? props) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="36">
+            <code>    if (props == null) return null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="37">
+            <code>    if (props[_$type] != $timeoutExceptionType) return null;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="38">
+            <code>    final microSecs = (props[_$duration] as num?)?.toInt();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="39">
+            <code>    return SquadronTimeoutException(</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="40">
+            <code>      props[_$tokenId],</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="41">
+            <code>      props[_$message],</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="42">
+            <code>      (microSecs == null) ? null : Duration(microseconds: microSecs),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="43">
+            <code>      SquadronException.loadStackTrace(props[_$stackTrace]),</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="44">
+            <code>    );</code>
+        </line>
+        <line hits="2" number="45">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="46">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

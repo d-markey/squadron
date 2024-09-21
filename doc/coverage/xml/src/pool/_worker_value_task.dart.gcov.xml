@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="_worker_value_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="26" lines-valid="26" package="src/pool" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import '../exceptions/squadron_exception.dart';</code>
+        </line>
+        <line number="4">
+            <code>import '../stats/perf_counter.dart';</code>
+        </line>
+        <line number="5">
+            <code>import '../worker/worker.dart';</code>
+        </line>
+        <line number="6">
+            <code>import '_worker_task.dart';</code>
+        </line>
+        <line number="7">
+            <code>import 'value_task.dart';</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line number="9">
+            <code>final class WorkerValueTask&lt;T, W extends Worker&gt; extends WorkerTask&lt;T, W&gt;</code>
+        </line>
+        <line number="10">
+            <code>    implements ValueTask&lt;T&gt; {</code>
+        </line>
+        <line number="11">
+            <code>  /// Creates a new [ValueTask].</code>
+        </line>
+        <line hits="9" number="12">
+            <code>  WorkerValueTask(this._computer, PerfCounter? counter) : super(counter);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>  final Future&lt;T&gt; Function(W worker) _computer;</code>
+        </line>
+        <line number="15">
+            <code>  final _result = Completer&lt;T&gt;();</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line hits="3" number="17">
+            <code>  @override</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="18">
+            <code>  Future&lt;T&gt; get value =&gt; _result.future;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code/>
+        </line>
+        <line hits="4" number="20">
+            <code>  void _failure(SquadronException exception) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="21">
+            <code>    if (!_result.isCompleted) {</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="22">
+            <code>      _result.completeError(exception);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code>    }</code>
+        </line>
+        <line hits="2" number="24">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="25">
+            <code/>
+        </line>
+        <line hits="3" number="26">
+            <code>  void _success(dynamic data) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="27">
+            <code>    if (!_result.isCompleted) {</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="28">
+            <code>      _result.complete(data);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="29">
+            <code>    }</code>
+        </line>
+        <line number="30">
+            <code>  }</code>
+        </line>
+        <line number="31">
+            <code/>
+        </line>
+        <line hits="2" number="32">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="33">
+            <code>  void cancel([String? message]) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="34">
+            <code>    super.cancel(message);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="35">
+            <code>    _failure(canceledException!);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="36">
+            <code>  }</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="37">
+            <code/>
+        </line>
+        <line hits="3" number="38">
+            <code>  @override</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="39">
+            <code>  Future&lt;bool&gt; execute(W worker) async {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="40">
+            <code>    try {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="41">
+            <code>      throwIfCanceled();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="9" number="42">
+            <code>      final res = await _computer(worker);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="43">
+            <code>      _success(res);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="44">
+            <code>      return true;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="45">
+            <code>    } catch (ex, st) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="46">
+            <code>      _failure(SquadronException.from(ex, st));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="47">
+            <code>      return false;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="48">
+            <code>    }</code>
+        </line>
+        <line hits="3" number="49">
+            <code>  }</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="50">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>
