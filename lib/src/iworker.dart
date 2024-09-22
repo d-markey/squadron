@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
 import 'exceptions/exception_manager.dart';

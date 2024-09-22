@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 
 class InternalLogger extends Logger {
   InternalLogger()

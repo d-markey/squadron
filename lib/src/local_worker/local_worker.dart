@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
 import '../_impl/xplat/_local_worker.dart'

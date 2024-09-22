@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 
 import '../_impl/xplat/_worker_channel.dart'
     if (dart.library.io) '../_impl/native/_worker_channel.dart'

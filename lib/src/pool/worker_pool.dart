@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
 import '../concurrency_settings.dart';

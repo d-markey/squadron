@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 
 import '../../exceptions/squadron_error.dart';
 import '../../typedefs.dart';

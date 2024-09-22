@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:js_interop';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:web/web.dart' as web;
 
 import '../../channel.dart';

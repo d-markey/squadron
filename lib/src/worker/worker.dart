@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
