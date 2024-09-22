@@ -5,12 +5,15 @@
 # Conventional directory for build outputs.
 build/
 
+# Tests.
+test/
+
 # Code coverage outputs.
-doc/coverage/
 doc/browser-tests/
+doc/coverage/
 doc/workers/
 
-# Code coverage took.
+# Code coverage tool.
 tool/jgenhtml/
 
 # Omit committing pubspec.lock for library packages; see
