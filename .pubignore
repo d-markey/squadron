@@ -6,7 +6,9 @@
 build/
 
 # Code coverage outputs.
-coverage/
+doc/coverage/
+doc/browser-tests/
+doc/workers/
 
 # Code coverage took.
 tool/jgenhtml/
