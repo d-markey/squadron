@@ -4,36 +4,39 @@ import '../pool/worker_pool.dart';
 class SquadronService {
   const SquadronService({
     this.pool = true,
-    this.vm = true,
-    this.web = true,
-    this.wasm = false,
-    this.baseUrl = '',
-  });
+    this.targetPlatform = TargetPlatform.all,
+    String? baseUrl,
+  }) : baseUrl = baseUrl ?? '';
 
-  const SquadronService.web(
-      {bool pool = true, bool wasm = false, required String baseUrl})
-      : this(pool: pool, vm: false, web: true, wasm: wasm, baseUrl: baseUrl);
+  const SquadronService.web({bool pool = true, String? baseUrl})
+      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);
 
   const SquadronService.vm({bool pool = true})
-      : this(pool: pool, vm: true, web: false, wasm: false);
+      : this(pool: pool, targetPlatform: TargetPlatform.vm);
 
   /// Controls code generation of a [WorkerPool] exposing the target service class.
   /// `true` by default.
   final bool pool;
 
-  /// Controls code generation of a native entry point (for Isolate). `true` by
-  /// default.
-  final bool vm;
-
-  /// Controls code generation of a Web entry point (for Web Worker). `true` by
-  /// default.
-  final bool web;
-
-  /// Controls entry-point extension for Web worker URIs: '.js' if `false`, '.wasm'
-  /// if `true`. By default, JavaScript Web workers are used.
-  final bool wasm;
+  /// Controls code generation of a entry points for various platforms.
+  final int targetPlatform;
 
   /// For Web-based workers, indicates the [baseUrl] where the Web Worker will
   /// be exposed in production.
   final String baseUrl;
+}
+
+final class TargetPlatform {
+  static const vm = 1;
+  static const js = 2;
+  static const wasm = 4;
+
+  static const web = js | wasm;
+  static const all = vm | js | wasm;
+}
+
+extension TargetPlatformExt on int {
+  bool get hasVm => (this & TargetPlatform.vm) != 0;
+  bool get hasJs => (this & TargetPlatform.js) != 0;
+  bool get hasWasm => (this & TargetPlatform.wasm) != 0;
 }
