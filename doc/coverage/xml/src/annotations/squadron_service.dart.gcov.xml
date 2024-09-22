@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-21" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="5" package="src/annotations" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-22" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="8" package="src/annotations" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../pool/worker_pool.dart';</code>
@@ -20,102 +20,111 @@
             <code>    this.pool = true,</code>
         </line>
         <line number="7">
-            <code>    this.vm = true,</code>
+            <code>    this.targetPlatform = TargetPlatform.all,</code>
         </line>
         <line number="8">
-            <code>    this.web = true,</code>
+            <code>    String? baseUrl,</code>
         </line>
         <line number="9">
-            <code>    this.wasm = false,</code>
+            <code>  }) : baseUrl = baseUrl ?? '';</code>
         </line>
         <line number="10">
-            <code>    this.baseUrl = '',</code>
-        </line>
-        <line number="11">
-            <code>  });</code>
-        </line>
-        <line number="12">
             <code/>
         </line>
-        <line hits="0" number="13">
-            <code>  const SquadronService.web(</code>
+        <line hits="0" number="11">
+            <code>  const SquadronService.web({bool pool = true, String? baseUrl})</code>
         </line>
-        <line number="14">
-            <code>      {bool pool = true, bool wasm = false, required String baseUrl})</code>
+        <line hits="0" number="12">
+            <code>      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line hits="0" number="14">
+            <code>  const SquadronService.vm({bool pool = true})</code>
         </line>
         <line hits="0" number="15">
-            <code>      : this(pool: pool, vm: false, web: true, wasm: wasm, baseUrl: baseUrl);</code>
+            <code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code>
         </line>
         <line number="16">
             <code/>
         </line>
-        <line hits="0" number="17">
-            <code>  const SquadronService.vm({bool pool = true})</code>
-        </line>
-        <line hits="0" number="18">
-            <code>      : this(pool: pool, vm: true, web: false, wasm: false);</code>
-        </line>
-        <line number="19">
-            <code/>
-        </line>
-        <line number="20">
+        <line number="17">
             <code>  /// Controls code generation of a [WorkerPool] exposing the target service class.</code>
         </line>
-        <line number="21">
+        <line number="18">
             <code>  /// `true` by default.</code>
         </line>
-        <line number="22">
+        <line number="19">
             <code>  final bool pool;</code>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>  /// Controls code generation of a entry points for various platforms.</code>
+        </line>
+        <line number="22">
+            <code>  final int targetPlatform;</code>
         </line>
         <line number="23">
             <code/>
         </line>
         <line number="24">
-            <code>  /// Controls code generation of a native entry point (for Isolate). `true` by</code>
-        </line>
-        <line number="25">
-            <code>  /// default.</code>
-        </line>
-        <line number="26">
-            <code>  final bool vm;</code>
-        </line>
-        <line number="27">
-            <code/>
-        </line>
-        <line number="28">
-            <code>  /// Controls code generation of a Web entry point (for Web Worker). `true` by</code>
-        </line>
-        <line number="29">
-            <code>  /// default.</code>
-        </line>
-        <line number="30">
-            <code>  final bool web;</code>
-        </line>
-        <line number="31">
-            <code/>
-        </line>
-        <line number="32">
-            <code>  /// Controls entry-point extension for Web worker URIs: '.js' if `false`, '.wasm'</code>
-        </line>
-        <line number="33">
-            <code>  /// if `true`. By default, JavaScript Web workers are used.</code>
-        </line>
-        <line number="34">
-            <code>  final bool wasm;</code>
-        </line>
-        <line number="35">
-            <code/>
-        </line>
-        <line number="36">
             <code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code>
         </line>
-        <line number="37">
+        <line number="25">
             <code>  /// be exposed in production.</code>
         </line>
-        <line number="38">
+        <line number="26">
             <code>  final String baseUrl;</code>
         </line>
-        <line number="39">
+        <line number="27">
+            <code>}</code>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line number="29">
+            <code>final class TargetPlatform {</code>
+        </line>
+        <line number="30">
+            <code>  static const vm = 1;</code>
+        </line>
+        <line number="31">
+            <code>  static const js = 2;</code>
+        </line>
+        <line number="32">
+            <code>  static const wasm = 4;</code>
+        </line>
+        <line number="33">
+            <code/>
+        </line>
+        <line number="34">
+            <code>  static const web = js | wasm;</code>
+        </line>
+        <line number="35">
+            <code>  static const all = vm | js | wasm;</code>
+        </line>
+        <line number="36">
+            <code>}</code>
+        </line>
+        <line number="37">
+            <code/>
+        </line>
+        <line number="38">
+            <code>extension TargetPlatformExt on int {</code>
+        </line>
+        <line hits="0" number="39">
+            <code>  bool get hasVm =&gt; (this &amp; TargetPlatform.vm) != 0;</code>
+        </line>
+        <line hits="0" number="40">
+            <code>  bool get hasJs =&gt; (this &amp; TargetPlatform.js) != 0;</code>
+        </line>
+        <line hits="0" number="41">
+            <code>  bool get hasWasm =&gt; (this &amp; TargetPlatform.wasm) != 0;</code>
+        </line>
+        <line number="42">
             <code>}</code>
         </line>
     </lines>
