@@ -11,7 +11,7 @@
             <code/>
         </line>
         <line number="4">
-            <code>import 'package:logger/logger.dart';</code>
+            <code>import 'package:logger/web.dart';</code>
         </line>
         <line number="5">
             <code>import 'package:meta/meta.dart';</code>
