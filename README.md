@@ -31,6 +31,8 @@ Supports native, JavaScript & Web Assembly platforms.
 </td>
 </tr></table>
 
+[View latest documentation on GitHub](https://github.com/d-markey/squadron/blob/main/README.md)
+
 ## <a name="getting_started"></a>Getting Started
 
 1. Update your `pubspec.yaml` file to add dependencies to `squadron` and `squadron_builder`:
@@ -116,12 +118,67 @@ void main() async {
 
 ## <a name="web"></a>Building for the Web
 
-If your app runs in a browser, you must compile your code to JavaScript or Wasm.
+If your app runs in a browser, you must compile your code to JavaScript or Web Assembly. When compiling to only one of Javascript or Web Assembly, you must make sure your service `@SquadronService()` annotation only references the corresponding `TargetPlatform.js` or `TargetPlatform.wasm`.
 
 ```
 dart compile js .\hello_world.web.g.dart -o ..\web\workers\hello_world.web.g.dart.js
 dart compile wasm .\hello_world.web.g.dart -o ..\web\workers\hello_world.web.g.dart.wasm
 ```
+
+You can also compile for both targets: at runtime, Squadron will use the workers matching your app's platform. In that case, make sure your service annotation targets platforms `TargetPlatform.js | TargetPlatform.wasm` (Squadron also provides shortcut `TargetPlatform.web`; `TargetPlatform.all` will generate code for native, JavaScript and Web Assembly targets).
+
+## <a name="types"></a>Type System
+
+There are a few constraints to multithreading in Dart:
+* Dart threads do not share memory: values passed from one side to the other will typically be cloned. Depending on the implementation, this can impact performance.
+* Service methods arguments and return values need to cross thread-boundaries. On Web platforms, the Dart runtime delegates this to the browser which is not aware of Dart's type system. Extra-work is necessary to regain strongly typed data when receiving data.
+
+Squadron provides `Converter`s to "convert" data on the receiving-end to regain strong types and enable statically type-safe code. By default, native platforms use the `CastConverter` (typically casting data) while Web platforms rely on `NumConverter` (also casting data with special care for `int`s)
+
+## <a name="types_native"></a>Native Platforms
+
+On native platforms, it is generally safe to not bother about custom types and cloning. The Dart VM will take care of copying data when necessary, optimize data-transfer when possible (eg. `String`s do not require copying), and the object's type is retained.
+
+There are a few constraints on what type of data can be transferred, please refer to [SendPort.send()](https://api.dart.dev/dart-isolate/SendPort/send.html) documentation for more information.
+
+On native platforms, Squadron uses a default `CastConverter` that typically casts data on the receiving end.
+
+## <a name="types_web"></a>Web Platforms
+
+Web platforms have stronger constraints when it comes to transferable objects: for more information, please refer to [Transferable objects](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) documentation or the [HTML specification for transferable objects](https://html.spec.whatwg.org/multipage/structured-data.html#transferable-objects). There may also be differences between browser flavors and versions.
+
+On Web plaforms, Squadron uses a default `NumConverter` that takes care of handling Dart's `int` and `double` values. Note that JavaScript only supports doubles really, so integral doubles such as `1.0` are considered integers on JavaScript platforms. Web Assembly platforms support both `int` and `double` as two different types. As a result, integer values sent to Web Assembly worker are received as `double`s and must be cast again to `int` on the receiving end.
+
+More importantly, custom-types will require marshaling so they can be transferred across worker boundaries. Squadron is not too opinionated and there are various ways to achieve this: eg. using JSON (together with `json_serializer`), by implementing `marshal`/`unmarshal` methods in your data classes, or by using [Squadron marshalers](https://pub.dev/documentation/squadron/latest/squadron/SquadronMarshaler-class.html).
+
+For instance, to transfer a Dart `BigInt`:
+
+```dart
+class BigIntMarshaler implements GenericMarshaler<BigInt> {
+  // "const" so it can be used to annotate parameters and return values
+  const BigIntMarshaler();
+
+  @override
+  dynamic marshal(BigInt data) => data.toString();
+
+  @override
+  BigInt unmarshal(dynamic data) => BigInt.parse(data);
+} 
+```
+
+Apply the marshaler by annotating `BigInt` parameters and return values:
+
+```dart
+@SquadronService(baseUrl: '~/workers', targetPlatform: TargetPlatform.web)
+base class BigIntService {
+  @SquadronMethod()
+  @BigIntMarshaler()
+  FutureOr<BigInt> add(@BigIntMarshaler() BigInt a, @BigIntMarshaler() BigInt b)
+    => a + b;
+}
+```
+
+`squadron_builder` will implement proper conversion.
 
 ## <a name="thanks"></a>Thanks!
 

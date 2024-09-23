@@ -1,3 +1,11 @@
+## 6.0.2
+
+- Update documentation.
+
+## 6.0.1
+
+- Fix wasm compatibility issues reported by pub.dev.
+
 ## 6.0.0
 
 - /!\ BREAKING CHANGES /!\

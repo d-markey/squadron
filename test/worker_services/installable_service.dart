@@ -22,6 +22,7 @@ class InstallableService with ServiceInstaller implements WorkerService {
 
   @override
   FutureOr<void> install() async {
+    super.install();
     await Future.delayed(TestDelays.delay);
     if (_throwOnInstall) {
       channelLogger?.t('intended failure on install');
@@ -33,6 +34,7 @@ class InstallableService with ServiceInstaller implements WorkerService {
 
   @override
   FutureOr<void> uninstall() async {
+    super.uninstall();
     await Future.delayed(TestDelays.delay);
     if (_throwOnUninstall) {
       channelLogger?.t('intended failure on uninstall');
