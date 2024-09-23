@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 
 import '../../exceptions/squadron_error.dart';

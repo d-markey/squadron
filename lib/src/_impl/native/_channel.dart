@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate' as vm;
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 
 import '../../channel.dart' show Channel;
 import '../../channel.dart';
