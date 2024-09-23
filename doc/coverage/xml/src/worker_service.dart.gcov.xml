@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-23" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="2" lines-valid="4" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-23" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -67,8 +67,9 @@
         <line number="22">
             <code>  /// be available.</code>
         </line>
-        <line hits="0" number="23">
+        <line hits="1" number="23">
             <code>  FutureOr&lt;void&gt; install() {}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="24">
             <code/>
@@ -85,8 +86,9 @@
         <line number="28">
             <code>  /// Also, [Worker.stop] does not wait for this method to complete.</code>
         </line>
-        <line hits="0" number="29">
+        <line hits="1" number="29">
             <code>  FutureOr&lt;void&gt; uninstall() {}</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="30">
             <code>}</code>
