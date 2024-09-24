@@ -10763,7 +10763,7 @@
       return type$.List_dynamic._is(x) ? x : J.toList$0$ax(type$.Iterable_dynamic._as(x));
     },
     Converter__td(view, $T) {
-      return new A.Converter__td_closure(view, $T);
+      return new A.Converter__td_closure($T, view);
     },
     Converter0: function Converter0() {
     },
@@ -10801,8 +10801,8 @@
       _.V = t3;
     },
     Converter__td_closure: function Converter__td_closure(t0, t1) {
-      this.view = t0;
-      this.T = t1;
+      this.T = t0;
+      this.view = t1;
     },
     InPlaceConverter__toList(cast, $T) {
       return new A.InPlaceConverter__toList_closure(cast, $T);
@@ -36906,17 +36906,13 @@
   };
   A.Converter__td_closure.prototype = {
     call$1(x) {
-      var t1 = this.T,
-        t2 = t1._is(x) ? x : null;
-      if (t2 == null) {
-        if (x == null)
-          t1 = null;
-        else
-          t1 = type$.ByteBuffer._is(x) ? x : J.get$buffer$x(type$.TypedData._as(t1._as(x)));
-        t1.toString;
+      var t1 = this.T;
+      if (t1._is(x))
+        t1 = x;
+      else {
+        t1 = type$.ByteBuffer._is(x) ? x : J.get$buffer$x(type$.TypedData._as(t1._as(x)));
         t1 = this.view.call$1(t1);
-      } else
-        t1 = t2;
+      }
       return t1;
     },
     $signature() {
@@ -38283,7 +38279,7 @@
   A.NumConverter.prototype = {
     value$1$0(_, $T) {
       var t1 = $T._eval$1("0(@)?")._as($.$get$NumConverter__numCastors().$index(0, A.createRuntimeType($T)));
-      return t1 == null ? this.super$CastConverter$value(0, $T) : t1;
+      return t1 == null ? A.instantiate1(A.converter_Converter_identity$closure(), $T) : t1;
     }
   };
   A.ExceptionManager.prototype = {
@@ -65781,8 +65777,6 @@
     _ = A.TypeMatcher.prototype;
     _.super$TypeMatcher$describe = _.describe$1;
     _.super$TypeMatcher$matches = _.matches$2;
-    _ = A.CastConverter.prototype;
-    _.super$CastConverter$value = _.value$1$0;
     _ = A.WorkerTask.prototype;
     _.super$WorkerTask$cancel = _.cancel$1;
     _ = A.Releasable.prototype;
@@ -66263,8 +66257,7 @@
     _inheritMany(A.Logger, [A.InternalLogger, A.MemoryLogger]);
     _inheritMany(A.LogOutput, [A._NoLogOutput, A.NoOutput]);
     _inheritMany(A.LogPrinter, [A._DummyPrinter, A.EmptyPrinter]);
-    _inheritMany(A.Converter0, [A.CastConverter, A.InPlaceConverter, A.LazyInPlaceConverter]);
-    _inherit(A.NumConverter, A.CastConverter);
+    _inheritMany(A.Converter0, [A.CastConverter, A.InPlaceConverter, A.LazyInPlaceConverter, A.NumConverter]);
     _inheritMany(A.SquadronException, [A.SquadronCanceledException, A.SquadronError, A.WorkerException]);
     _inheritMany(A.SquadronCanceledException, [A.SquadronCanceledExceptions, A.SquadronTimeoutException]);
     _inheritMany(A.WorkerTask, [A.WorkerStreamTask, A.WorkerValueTask]);

@@ -1,7 +1,8 @@
-import '../../converters/cast_converter.dart';
+import '../../converters/converter.dart';
+import '../../converters/direct_cast_converter.dart';
 import '../../squadron_platform_type.dart';
 
-CastConverter getPlatformConverter() => CastConverter.instance;
+Converter getPlatformConverter() => DirectCastConverter.instance;
 
 SquadronPlatformType getPlatformType() => SquadronPlatformType.unknown;
 

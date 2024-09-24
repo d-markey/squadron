@@ -1,13 +1,12 @@
-import 'cast_converter.dart';
 import 'converter.dart';
 
-final class NumConverter extends CastConverter {
+final class NumConverter extends Converter {
   const NumConverter();
 
   static const instance = NumConverter();
 
   @override
-  Cast<T> value<T>() => _numCastors[T] as Cast<T>? ?? super.value<T>();
+  Cast<T> value<T>() => _numCastors[T] as Cast<T>? ?? Converter.identity<T>;
 
   static int _toInt(dynamic x) {
     if (x is int && x.isFinite) return x;

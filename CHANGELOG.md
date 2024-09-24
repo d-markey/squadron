@@ -1,3 +1,7 @@
+## 6.0.3
+
+- Use `DirectCastConverter` on native platforms.
+
 ## 6.0.2
 
 - Update documentation.

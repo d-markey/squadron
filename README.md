@@ -133,7 +133,7 @@ There are a few constraints to multithreading in Dart:
 * Dart threads do not share memory: values passed from one side to the other will typically be cloned. Depending on the implementation, this can impact performance.
 * Service methods arguments and return values need to cross thread-boundaries. On Web platforms, the Dart runtime delegates this to the browser which is not aware of Dart's type system. Extra-work is necessary to regain strongly typed data when receiving data.
 
-Squadron provides `Converter`s to "convert" data on the receiving-end to regain strong types and enable statically type-safe code. By default, native platforms use the `CastConverter` (typically casting data) while Web platforms rely on `NumConverter` (also casting data with special care for `int`s)
+Squadron provides `Converter`s to "convert" data on the receiving-end to regain strong types and enable statically type-safe code. By default, native platforms use the `DirectCastConverter` (casting data) while Web platforms rely on `CastConverter` (casting data as well as items in `List`/`Set`/`Map`) or `NumConverter` (adding special handling of `int`/`double` values).
 
 ## <a name="types_native"></a>Native Platforms
 
@@ -141,17 +141,17 @@ On native platforms, it is generally safe to not bother about custom types and c
 
 There are a few constraints on what type of data can be transferred, please refer to [SendPort.send()](https://api.dart.dev/dart-isolate/SendPort/send.html) documentation for more information.
 
-On native platforms, Squadron uses a default `CastConverter` that typically casts data on the receiving end.
+On native platforms, Squadron uses a default `DirectCastConverter` that casts data on the receiving end.
 
 ## <a name="types_web"></a>Web Platforms
 
 Web platforms have stronger constraints when it comes to transferable objects: for more information, please refer to [Transferable objects](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) documentation or the [HTML specification for transferable objects](https://html.spec.whatwg.org/multipage/structured-data.html#transferable-objects). There may also be differences between browser flavors and versions.
 
-On Web plaforms, Squadron uses a default `NumConverter` that takes care of handling Dart's `int` and `double` values. Note that JavaScript only supports doubles really, so integral doubles such as `1.0` are considered integers on JavaScript platforms. Web Assembly platforms support both `int` and `double` as two different types. As a result, integer values sent to Web Assembly worker are received as `double`s and must be cast again to `int` on the receiving end.
+On Web plaforms, Squadron uses a default `CastConverter` (JavaScript runtime) or `NumConverter` (Web Assembly runtime). On Web Assembly platforms may receive `int` values as `double` values because JavaScript only supports doubles and [Dart's `int` is actually a subtype of `double`](https://dart.dev/guides/language/numbers#types-and-type-checking). As a result, integer values sent to Web Assembly worker must be cast again to `int` on the receiving end.
 
-More importantly, custom-types will require marshaling so they can be transferred across worker boundaries. Squadron is not too opinionated and there are various ways to achieve this: eg. using JSON (together with `json_serializer`), by implementing `marshal`/`unmarshal` methods in your data classes, or by using [Squadron marshalers](https://pub.dev/documentation/squadron/latest/squadron/SquadronMarshaler-class.html).
+More importantly, custom-types will require marshaling so they can be transferred across worker boundaries. Squadron is not too opinionated and there are various ways to achieve this: eg. using JSON (together with `json_serializer` for instance), by implementing `marshal()`/`unmarshal()` or `toJson()`/`fromJson()` methods in your data classes, or by using [Squadron marshalers](https://pub.dev/documentation/squadron/latest/squadron/SquadronMarshaler-class.html).
 
-For instance, to transfer a Dart `BigInt`:
+For instance, to transfer a Dart `BigInt` instance:
 
 ```dart
 class BigIntMarshaler implements GenericMarshaler<BigInt> {

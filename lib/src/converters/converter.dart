@@ -56,14 +56,12 @@ abstract base class Converter {
   // typed data
   Cast<T> typedData<T>() => _typeDataCastors[T] as Cast<T>;
 
-  static ByteBuffer? _buffer<T>(dynamic x) => (x == null)
-      ? null
-      : (x is ByteBuffer)
-          ? x
-          : ((x as T) as TypedData).buffer;
+  static ByteBuffer? _buffer<T>(dynamic x) =>
+      // double cast is necessary to ensure T is the expected type
+      (x is ByteBuffer) ? x : ((x as T) as TypedData).buffer;
 
   static Cast<T> _td<T>(T Function(ByteBuffer) view) =>
-      (x) => Converter.tryCast<T>(x) ?? view(_buffer<T>(x)!);
+      (x) => (x is T) ? x : view(_buffer<T>(x)!);
 
   static final Map<Type, Cast> _typeDataCastors = {
     ByteData: _td<ByteData>(ByteData.view),

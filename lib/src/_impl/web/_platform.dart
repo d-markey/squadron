@@ -1,9 +1,10 @@
 import '../../converters/cast_converter.dart';
+import '../../converters/converter.dart';
 import '../../converters/num_converter.dart';
 import '../../squadron_platform_type.dart';
 import '_patch.dart';
 
-CastConverter getPlatformConverter() => (1.toDouble() is int)
+Converter getPlatformConverter() => (1.toDouble() is int)
     ? CastConverter.instance // JavaScript
     : NumConverter.instance; // Web Assembly
 
