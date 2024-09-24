@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-23" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6666667" lines-covered="2" lines-valid="3" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6666667" lines-covered="2" lines-valid="3" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import '../../converters/cast_converter.dart';</code>
+            <code>import '../../converters/converter.dart';</code>
         </line>
         <line number="2">
-            <code>import '../../squadron_platform_type.dart';</code>
+            <code>import '../../converters/direct_cast_converter.dart';</code>
         </line>
         <line number="3">
+            <code>import '../../squadron_platform_type.dart';</code>
+        </line>
+        <line number="4">
             <code/>
         </line>
-        <line hits="8" number="4">
-            <code>CastConverter getPlatformConverter() =&gt; CastConverter.instance;</code>
+        <line hits="8" number="5">
+            <code>Converter getPlatformConverter() =&gt; DirectCastConverter.instance;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="5">
+        <line number="6">
             <code/>
         </line>
-        <line hits="2" number="6">
+        <line hits="2" number="7">
             <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="7">
+        <line number="8">
             <code/>
         </line>
-        <line hits="0" number="8">
+        <line hits="0" number="9">
             <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
         </line>
     </lines>

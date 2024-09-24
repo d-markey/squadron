@@ -1,78 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-23" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../../converters/cast_converter.dart';</code>
         </line>
         <line number="2">
-            <code>import '../../converters/num_converter.dart';</code>
+            <code>import '../../converters/converter.dart';</code>
         </line>
         <line number="3">
-            <code>import '../../squadron_platform_type.dart';</code>
+            <code>import '../../converters/num_converter.dart';</code>
         </line>
         <line number="4">
-            <code>import '_patch.dart';</code>
+            <code>import '../../squadron_platform_type.dart';</code>
         </line>
         <line number="5">
-            <code/>
+            <code>import '_patch.dart';</code>
         </line>
         <line number="6">
-            <code>CastConverter getPlatformConverter() =&gt; (1.toDouble() is int)</code>
+            <code/>
         </line>
-        <line hits="8" number="7">
+        <line number="7">
+            <code>Converter getPlatformConverter() =&gt; (1.toDouble() is int)</code>
+        </line>
+        <line hits="8" number="8">
             <code>    ? CastConverter.instance // JavaScript</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="8">
+        <line number="9">
             <code>    : NumConverter.instance; // Web Assembly</code>
         </line>
-        <line number="9">
+        <line number="10">
             <code/>
         </line>
-        <line number="10">
+        <line number="11">
             <code>SquadronPlatformType getPlatformType() =&gt; (1.toDouble() is int)</code>
         </line>
-        <line hits="2" number="11">
+        <line hits="2" number="12">
             <code>    ? SquadronPlatformType.js // JavaScript</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="12">
+        <line number="13">
             <code>    : SquadronPlatformType.wasm; // Web Assembly</code>
         </line>
-        <line number="13">
+        <line number="14">
             <code/>
         </line>
-        <line hits="12" number="14">
+        <line hits="12" number="15">
             <code>Uri mapUrl(String url) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="15">
+        <line hits="12" number="16">
             <code>  if (url.startsWith('~')) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="16">
+        <line hits="12" number="17">
             <code>    final root = getHome();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="17">
+        <line hits="12" number="18">
             <code>    if (root != null) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="18">
+        <line hits="12" number="19">
             <code>      url = '$root${url.substring(1)}';</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="19">
+        <line number="20">
             <code>    }</code>
         </line>
-        <line number="20">
+        <line number="21">
             <code>  }</code>
         </line>
-        <line hits="12" number="21">
+        <line hits="12" number="22">
             <code>  return Uri.parse(url);</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="22">
+        <line hits="12" number="23">
             <code>}</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>

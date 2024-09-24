@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-23" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9622642" lines-covered="51" lines-valid="53" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9423077" lines-covered="49" lines-valid="52" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:typed_data';</code>
@@ -16,45 +16,44 @@
         <line number="5">
             <code>abstract base class Converter {</code>
         </line>
-        <line hits="23" number="6">
+        <line hits="34" number="6">
             <code>  const Converter();</code>
-            <hit count="23" name="&lt;unnamed&gt;"/>
+            <hit count="34" name="&lt;unnamed&gt;"/>
         </line>
         <line number="7">
             <code/>
         </line>
-        <line hits="6" number="8">
+        <line hits="4" number="8">
             <code>  static bool isIdentity&lt;T&gt;(Cast&lt;T&gt;? cast) =&gt;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="9">
+        <line hits="4" number="9">
             <code>      (cast == null) || (cast == identity&lt;T&gt;);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="16" number="11">
+        <line hits="17" number="11">
             <code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="17" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
         </line>
-        <line hits="3" number="13">
+        <line hits="0" number="13">
             <code>  static T? tryCast&lt;T&gt;(dynamic x) =&gt; (x is T) ? x : null;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="14">
             <code/>
         </line>
-        <line hits="3" number="15">
+        <line hits="2" number="15">
             <code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="16">
+        <line hits="3" number="16">
             <code>      (x is List) ? x : (x as Iterable).toList();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="17">
             <code/>
@@ -110,21 +109,21 @@
         <line number="32">
             <code>  // list</code>
         </line>
-        <line hits="3" number="33">
+        <line hits="2" number="33">
             <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="34">
+        <line hits="2" number="34">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="35">
+        <line hits="2" number="35">
             <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="36">
+        <line hits="4" number="36">
             <code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5" number="37">
             <code>        : ((x) =&gt; Converter.toList(x).map&lt;T&gt;(op).toList());</code>
@@ -162,21 +161,21 @@
         <line number="46">
             <code>  // map</code>
         </line>
-        <line hits="6" number="47">
+        <line hits="4" number="47">
             <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="48">
+        <line hits="5" number="48">
             <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="49">
+        <line hits="5" number="49">
             <code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="50">
+        <line hits="5" number="50">
             <code>      return ((x) =&gt; (x as Map).cast&lt;K, V&gt;());</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code>    } else {</code>
@@ -206,105 +205,98 @@
             <code/>
         </line>
         <line hits="1" number="59">
-            <code>  static ByteBuffer? _buffer&lt;T&gt;(dynamic x) =&gt; (x == null)</code>
+            <code>  static ByteBuffer? _buffer&lt;T&gt;(dynamic x) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="60">
-            <code>      ? null</code>
+            <code>      // double cast is necessary to ensure T is the expected type</code>
         </line>
         <line hits="2" number="61">
-            <code>      : (x is ByteBuffer)</code>
+            <code>      (x is ByteBuffer) ? x : ((x as T) as TypedData).buffer;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
-            <code>          ? x</code>
-        </line>
-        <line hits="1" number="63">
-            <code>          : ((x as T) as TypedData).buffer;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="64">
             <code/>
         </line>
-        <line hits="2" number="65">
+        <line hits="2" number="63">
             <code>  static Cast&lt;T&gt; _td&lt;T&gt;(T Function(ByteBuffer) view) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="66">
-            <code>      (x) =&gt; Converter.tryCast&lt;T&gt;(x) ?? view(_buffer&lt;T&gt;(x)!);</code>
+        <line hits="4" number="64">
+            <code>      (x) =&gt; (x is T) ? x : view(_buffer&lt;T&gt;(x)!);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="67">
+        <line number="65">
             <code/>
         </line>
-        <line hits="4" number="68">
+        <line hits="4" number="66">
             <code>  static final Map&lt;Type, Cast&gt; _typeDataCastors = {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="69">
+        <line hits="2" number="67">
             <code>    ByteData: _td&lt;ByteData&gt;(ByteData.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="70">
+        <line hits="2" number="68">
             <code>    Uint8ClampedList: _td&lt;Uint8ClampedList&gt;(Uint8ClampedList.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="71">
+        <line hits="2" number="69">
             <code>    Uint8List: _td&lt;Uint8List&gt;(Uint8List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="72">
+        <line hits="2" number="70">
             <code>    Int8List: _td&lt;Int8List&gt;(Int8List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="73">
+        <line hits="2" number="71">
             <code>    Uint16List: _td&lt;Uint16List&gt;(Uint16List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="74">
+        <line hits="2" number="72">
             <code>    Int16List: _td&lt;Int16List&gt;(Int16List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="75">
+        <line hits="2" number="73">
             <code>    Uint32List: _td&lt;Uint32List&gt;(Uint32List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="76">
+        <line hits="2" number="74">
             <code>    Int32List: _td&lt;Int32List&gt;(Int32List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="77">
+        <line hits="2" number="75">
             <code>    Int32x4List: _td&lt;Int32x4List&gt;(Int32x4List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="78">
+        <line hits="2" number="76">
             <code>    Uint64List: _td&lt;Uint64List&gt;(Uint64List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="79">
+        <line hits="2" number="77">
             <code>    Int64List: _td&lt;Int64List&gt;(Int64List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="80">
+        <line hits="2" number="78">
             <code>    Float32List: _td&lt;Float32List&gt;(Float32List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="81">
+        <line hits="2" number="79">
             <code>    Float32x4List: _td&lt;Float32x4List&gt;(Float32x4List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="82">
+        <line hits="2" number="80">
             <code>    Float64List: _td&lt;Float64List&gt;(Float64List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="83">
+        <line hits="2" number="81">
             <code>    Float64x2List: _td&lt;Float64x2List&gt;(Float64x2List.view),</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="84">
+        <line number="82">
             <code>  };</code>
         </line>
-        <line number="85">
+        <line number="83">
             <code>}</code>
         </line>
     </lines>
