@@ -205,7 +205,7 @@ On Web platforms, things are different because the data was handed over to the b
 
 To handle `List` and `Map` objects as efficiencly as possible, converters provided by Squadron optimize the process when the item type is a base type that can be handled by a simple cast. Eg. when a service method works with a `List<String>`, it is received/sent as a `List<dynamic>` and will be "promoted" back to `List<String>` by simply calling `list.cast<String>()`. For `Map<K, V>` objects where `K` and `V` are base types, the received `Map<dynamic, dynamic>` will be cast back to `Map<K, V>` with `map.cast<K, V>()`. In these scenarios, cast operations are deferred until an item is accessed. Dart's static type-safety checks guarantee the cast will succeed.
 
-When list and maps contain elements that cannot be cast, additional processing is required. **For instance, a `List<int>` object sent to a Web Assembly worker will be received as a `List<dynamic>` containing `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used.
+When lists and maps contain elements that cannot be cast, additional processing is required. **For instance, a `List<int>` object sent to a Web Assembly worker will be received as a `List<dynamic>` containing `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used.
 
 Under such circumstances, list elements must be processed individually and converted back; eg. `NumConverter` handles this specific example as `list.map(_toInt).toList()` where `_toInt` is a function that returns the input value as an `int` after checking it is effectively an `int` or an integral `double`.
 
@@ -213,7 +213,7 @@ For large collections or complex structures (nested lists/maps), this process ma
 
 It can be optimized in various ways:
 
-* using `Int32List` and other typed data: under the hood, Squadron converters works with the underlying `ByteBuffer` which guarantees type-safety and hopefully commes with efficient cloning.
+* using `Int32List` and other typed data: under the hood, Squadron converters works with the underlying `ByteBuffer` which guarantees type-safety and hopefully comes with efficient cloning.
 
 * alternatively, it is possible to assign the ambiant converter `Squadron.converter` with a specialized/optimized converter. Squadron provides two additional converters that could be useful:
 
@@ -351,7 +351,7 @@ class Car {
 * [Saad Ardati](https://github.com/SaadArdati) for his patience and feedback when implementing Squadron into his Flutter application.
 * [Martin Fink](https://github.com/martin-robert-fink) for the feedback on Squadron's first `Stream` implementation -- this has resulted in huge progress and a major improvement.
 * [Klemen Tusar](https://github.com/techouse) for providing a [sample Chopper JSON decoder](https://hadrien-lejard.gitbook.io/chopper/faq#decoding-json-using-isolates) leveraging Squadron.
-* [James O'Leary](https://github.com/jpohhhh) for sponsorship, very much appreciated.
+* [James O'Leary](https://github.com/jpohhhh) for sponsorship and contribution, very much appreciated.
 
 
 
