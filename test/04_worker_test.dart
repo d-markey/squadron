@@ -116,10 +116,11 @@ void execute(TestContext? tc) {
             await InstallableWorker(tc).useAsync((w) async {
               w.channelLogger = memoryLogger;
               await w.start();
+
+              expect(await w.isInstalled(), isTrue);
               expect(logs, doesNotMention('intended failure'));
               expect(logs, mentions('service installed'));
 
-              expect(await w.isInstalled(), isTrue);
               expect(await w.isUninstalled(), isFalse);
 
               // stopping the worker uninstalls the service
@@ -157,10 +158,11 @@ void execute(TestContext? tc) {
             await InstallableWorker.throwOnUninstall(tc).useAsync((w) async {
               w.channelLogger = memoryLogger;
               await w.start();
+
+              expect(await w.isInstalled(), isTrue);
               expect(logs, doesNotMention('intended failure'));
               expect(logs, mentions('service installed'));
 
-              expect(await w.isInstalled(), isTrue);
               expect(await w.isUninstalled(), isFalse);
 
               // stopping the worker uninstalls the service

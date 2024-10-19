@@ -39,6 +39,7 @@ Future<Channel> openChannel(
 ]) async {
   final completer = Completer<Channel>();
   final ready = Completer<bool>();
+  Channel? channel;
 
   final com = web.MessageChannel();
   final webEntryPoint = EntryPointUri.from(entryPoint);
@@ -121,9 +122,13 @@ Future<Channel> openChannel(
       if (error != null) {
         logger?.e(() => 'Connection to Web Worker failed: $error');
         fail(error);
+      } else if (response.endOfStream) {
+        logger?.w('Disconnecting from Isolate');
+        channel?.close();
       } else if (!completer.isCompleted) {
         logger?.t('Connected to Web Worker');
-        success(_WebChannel._(response.result, logger, exceptionManager));
+        channel = _WebChannel._(response.result, logger, exceptionManager);
+        success(channel!);
       } else {
         logger?.d(() => 'Unexpected response: $response');
       }
@@ -145,11 +150,15 @@ Future<Channel> openChannel(
           'Failed to post connection request: $ex', st);
     }
 
-    final channel = await completer.future;
-    await hook?.call(worker);
-
-    logger?.t('Created Web Worker for $entryPoint');
-    return channel;
+    try {
+      final channel = await completer.future;
+      await hook?.call(worker);
+      logger?.t('Created Web Worker for $entryPoint');
+      return channel;
+    } catch (ex) {
+      logger?.e(() => 'Connection to Isolate failed: $ex');
+      rethrow;
+    }
   } catch (ex, st) {
     ready.future.ignore();
     completer.future.ignore();

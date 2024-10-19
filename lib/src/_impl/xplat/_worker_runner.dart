@@ -49,6 +49,7 @@ class WorkerRunner {
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
     WorkerChannel? channel;
+    bool connected = false;
     try {
       startRequest?.unwrapInPlace(internalLogger);
       channel = startRequest?.channel;
@@ -79,33 +80,39 @@ class WorkerRunner {
         );
       }
 
-      if (_service is ServiceInstaller) {
-        _installCompleter = Completer();
-      }
+      // if (_service is ServiceInstaller) {
+      //   _installCompleter = Completer();
+      // }
 
       channel.connect(channelInfo);
+      connected = true;
 
-      if (_installCompleter != null) {
-        _installCompleter!.complete((_service as ServiceInstaller).install());
+      // if (_installCompleter != null) {
+      if (_service is ServiceInstaller) {
+        // _installCompleter!.complete((_service as ServiceInstaller).install());
+        await (_service as ServiceInstaller).install();
       }
     } catch (ex, st) {
       internalLogger.e(() => 'Connection failed: $ex');
       channel?.error(ex, st);
+      if (connected) {
+        channel?.closeStream();
+      }
       _exit();
     }
   }
 
-  Completer<void>? _installCompleter;
+  // Completer<void>? _installCompleter;
 
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_service] map. Make sure this method doesn't throw.
   void processRequest(WorkerRequest request) async {
-    final pendingInstallation = _installCompleter?.future;
-    if (pendingInstallation != null) {
-      // make sure service installation is complete
-      await pendingInstallation;
-      _installCompleter = null;
-    }
+    // final pendingInstallation = _installCompleter?.future;
+    // if (pendingInstallation != null) {
+    //   // make sure service installation is complete
+    //   await pendingInstallation;
+    //   _installCompleter = null;
+    // }
     WorkerChannel? channel;
     try {
       request.unwrapInPlace(internalLogger);

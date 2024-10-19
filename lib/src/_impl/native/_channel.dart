@@ -34,6 +34,7 @@ Future<Channel> openChannel(
   PlatformThreadHook? hook,
 ]) async {
   final completer = Completer<Channel>();
+  Channel? channel;
 
   void failure(Object error, [StackTrace? stackTrace]) {
     if (!completer.isCompleted) {
@@ -54,6 +55,7 @@ Future<Channel> openChannel(
   exitPort.listen((message) {
     failure(SquadronErrorExt.create('Connection to worker failed'));
     logger?.t('Isolate terminated.');
+    channel?.close();
     receiver.close();
     errorPort.close();
     exitPort.close();
@@ -91,9 +93,13 @@ Future<Channel> openChannel(
     if (error != null) {
       logger?.e(() => 'Connection to Isolate failed: ${response.error}');
       failure(error);
+    } else if (response.endOfStream) {
+      logger?.w('Disconnecting from Isolate');
+      channel?.close();
     } else if (!completer.isCompleted) {
       logger?.t('Connected to Isolate');
-      success(_VmChannel._(response.result, logger, exceptionManager));
+      channel = _VmChannel._(response.result, logger, exceptionManager);
+      success(channel!);
     } else {
       logger?.e(() => 'Unexpected response: $response');
     }
