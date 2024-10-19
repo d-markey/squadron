@@ -20,8 +20,7 @@ class WorkerRunner {
 
   final internalLogger = InternalLogger();
 
-  Map<int, CommandHandler>? _operations;
-  ServiceInstaller? _installer;
+  WorkerService? _service;
 
   final _cancelTokens = <String, CancelationTokenReference>{};
 
@@ -35,8 +34,8 @@ class WorkerRunner {
 
   /// Constructs a new worker runner for a [localWorker].
   factory WorkerRunner.use(LocalWorker localWorker) {
-    final runner = WorkerRunner((r) => r._operations?.clear());
-    runner._operations = {...localWorker.service.operations};
+    final runner = WorkerRunner((_) {});
+    runner._service = localWorker;
     return runner;
   }
 
@@ -45,7 +44,7 @@ class WorkerRunner {
   /// platform worker to the Squadron [Worker] and used to communicate with the
   /// platform worker. Typically, [channelInfo] would be a [SendPort] (native)
   /// or a [MessagePort] (browser). [initializer] is called to build the
-  /// [WorkerService] associated to the worker. The runner's [_operations] map
+  /// [WorkerService] associated to the worker. The runner's [_service] map
   /// will be set with operations from the service.
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
@@ -68,25 +67,27 @@ class WorkerRunner {
 
       if (!startRequest.isConnection) {
         throw SquadronErrorExt.create('Connection request expected');
-      } else if (_operations != null) {
+      } else if (_service != null) {
         throw SquadronErrorExt.create('Already connected');
       }
 
-      final service = await initializer(startRequest);
-      if (service.operations.keys.where((k) => k <= 0).isNotEmpty) {
+      _service = await initializer(startRequest);
+
+      if (_service!.operations.keys.where((k) => k <= 0).isNotEmpty) {
         throw SquadronErrorExt.create(
           'Invalid command identifier in service operations map; command ids must be > 0',
         );
       }
 
-      _operations = {...service.operations};
-
-      if (service is ServiceInstaller) {
-        _installer = service as ServiceInstaller;
-        await _installer!.install();
+      if (_service is ServiceInstaller) {
+        _installCompleter = Completer();
       }
 
       channel.connect(channelInfo);
+
+      if (_installCompleter != null) {
+        _installCompleter!.complete((_service as ServiceInstaller).install());
+      }
     } catch (ex, st) {
       internalLogger.e(() => 'Connection failed: $ex');
       channel?.error(ex, st);
@@ -94,9 +95,17 @@ class WorkerRunner {
     }
   }
 
+  Completer<void>? _installCompleter;
+
   /// [WorkerRequest] handler dispatching commands according to the
-  /// [_operations] map. Make sure this method doesn't throw.
+  /// [_service] map. Make sure this method doesn't throw.
   void processRequest(WorkerRequest request) async {
+    final pendingInstallation = _installCompleter?.future;
+    if (pendingInstallation != null) {
+      // make sure service installation is complete
+      await pendingInstallation;
+      _installCompleter = null;
+    }
     WorkerChannel? channel;
     try {
       request.unwrapInPlace(internalLogger);
@@ -123,7 +132,7 @@ class WorkerRunner {
         // connection requests are handled by connect().
         throw SquadronErrorExt.create(
             'Unexpected connection request: $request');
-      } else if (_operations == null) {
+      } else if (_service == null) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
         throw SquadronErrorExt.create('Worker service is not ready');
       }
@@ -141,7 +150,7 @@ class WorkerRunner {
       final tokenRef = _begin(request);
       try {
         // find the operation matching the request command
-        final cmd = request.command, op = _operations![cmd];
+        final cmd = request.command, op = _service?.operations[cmd];
         if (op == null) {
           throw SquadronErrorExt.create('Unknown command: $cmd');
         }
@@ -297,7 +306,9 @@ class WorkerRunner {
   void _unmount() async {
     try {
       // uninstall the service if necessary
-      await _installer?.uninstall();
+      if (_service is ServiceInstaller) {
+        await (_service as ServiceInstaller).uninstall();
+      }
     } catch (ex) {
       internalLogger.e('Service uninstallation failed with error: $ex');
     } finally {

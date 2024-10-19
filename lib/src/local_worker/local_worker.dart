@@ -27,18 +27,18 @@ import '../worker_service.dart';
 ///
 /// Local workers wrap around a [WorkerService]. Messages sent to the local
 /// worker are deserialized as [WorkerRequest]s and dispatched to a handler
-/// defined in the [service]'s [WorkerService.operations] map according to the
+/// defined in the [_service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
 abstract base class LocalWorker<W extends WorkerService>
     with Releasable
     implements WorkerService, IWorker {
-  LocalWorker(this.service);
+  LocalWorker(this._service);
 
   factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =>
       impl.createLocalWorker<W>(
           service, exceptionManager ?? ExceptionManager());
 
-  final W service;
+  final W _service;
 
   @override
   void release() {
@@ -69,7 +69,7 @@ abstract base class LocalWorker<W extends WorkerService>
   @override
   void stop();
 
-  /// Local Workers do not need an [operations] map.
+  /// Forward to underlying service.
   @override
-  final Map<int, CommandHandler> operations = WorkerService.noOperations;
+  Map<int, CommandHandler> get operations => _service.operations;
 }

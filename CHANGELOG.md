@@ -1,3 +1,8 @@
+## 6.0.4
+
+- Change `token` type to `CancelationToken` in `LocalWorkerClient.send()`.
+- Add support for annotating service classes to be used as local workers.
+
 ## 6.0.3
 
 - Use `DirectCastConverter` on native platforms.

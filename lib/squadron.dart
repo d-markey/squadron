@@ -1,5 +1,6 @@
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
+export 'src/annotations/target_platform.dart';
 export 'src/bootstrapper.dart';
 export 'src/channel.dart';
 export 'src/concurrency_settings.dart';

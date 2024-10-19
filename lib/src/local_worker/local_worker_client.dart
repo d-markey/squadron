@@ -29,7 +29,7 @@ class LocalWorkerClient with Releasable implements WorkerService {
   /// Sends a command to the [LocalWorker].
   Future<dynamic> send(int command,
           {List args = const [],
-          SquadronCancelationToken? token,
+          CancelationToken? token,
           bool inspectRequest = false,
           bool inspectResponse = false}) =>
       channel.sendRequest(command, args,
