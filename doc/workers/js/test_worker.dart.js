@@ -1478,9 +1478,6 @@
     JsLinkedHashMap_values_closure: function JsLinkedHashMap_values_closure(t0) {
       this.$this = t0;
     },
-    JsLinkedHashMap_addAll_closure: function JsLinkedHashMap_addAll_closure(t0) {
-      this.$this = t0;
-    },
     LinkedHashMapCell: function LinkedHashMapCell(t0, t1) {
       var _ = this;
       _.hashMapCellKey = t0;
@@ -4001,9 +3998,6 @@
       delete table["<non-identifier-key>"];
       return table;
     },
-    LinkedHashMap_LinkedHashMap($K, $V) {
-      return new A.JsLinkedHashMap($K._eval$1("@<0>")._bind$1($V)._eval$1("JsLinkedHashMap<1,2>"));
-    },
     LinkedHashMap_LinkedHashMap$_empty($K, $V) {
       return new A.JsLinkedHashMap($K._eval$1("@<0>")._bind$1($V)._eval$1("JsLinkedHashMap<1,2>"));
     },
@@ -5013,7 +5007,7 @@
     },
     _WebWorkerChannel: function _WebWorkerChannel(t0, t1) {
       this._sendPort = t0;
-      this.__worker_channel$_logger = t1;
+      this._logger = t1;
     },
     _WebWorkerChannel__postResponse_closure: function _WebWorkerChannel__postResponse_closure(t0, t1) {
       this.res = t0;
@@ -5047,13 +5041,13 @@
       var _ = this;
       _._terminate = t0;
       _.internalLogger = t1;
-      _._installer = _._operations = null;
+      _._service = null;
       _._cancelTokens = t2;
       _._terminationRequested = false;
       _._executing = 0;
       _._streamCancelers = t3;
       _._streamId = 0;
-      _._logForwarder = null;
+      _._installResult = _._installCompleter = _._logForwarder = null;
     },
     WorkerRunner_connect_closure: function WorkerRunner_connect_closure(t0) {
       this.logger = t0;
@@ -5294,7 +5288,7 @@
     },
     TestService: function TestService(t0, t1) {
       var _ = this;
-      _._logger = t0;
+      _._test_service$_logger = t0;
       _._pendingInfiniteWithErrors = 0;
       _._invalid = t1;
       _.__TestService_operations_FI = $;
@@ -6372,9 +6366,6 @@
         return false;
       return strings[key] != null;
     },
-    addAll$1(_, other) {
-      A._instanceType(this)._eval$1("Map<1,2>")._as(other).forEach$1(0, new A.JsLinkedHashMap_addAll_closure(this));
-    },
     $index(_, key) {
       var strings, cell, t1, nums, _null = null;
       if (typeof key == "string") {
@@ -6406,7 +6397,7 @@
       return bucket[index].hashMapCellValue;
     },
     $indexSet(_, key, value) {
-      var strings, nums, _this = this,
+      var strings, nums, rest, hash, bucket, index, _this = this,
         t1 = A._instanceType(_this);
       t1._precomputed1._as(key);
       t1._rest[1]._as(value);
@@ -6416,27 +6407,21 @@
       } else if (typeof key == "number" && (key & 0x3fffffff) === key) {
         nums = _this.__js_helper$_nums;
         _this.__js_helper$_addHashTableEntry$3(nums == null ? _this.__js_helper$_nums = _this._newHashTable$0() : nums, key, value);
-      } else
-        _this.internalSet$2(key, value);
-    },
-    internalSet$2(key, value) {
-      var rest, hash, bucket, index, _this = this,
-        t1 = A._instanceType(_this);
-      t1._precomputed1._as(key);
-      t1._rest[1]._as(value);
-      rest = _this.__js_helper$_rest;
-      if (rest == null)
-        rest = _this.__js_helper$_rest = _this._newHashTable$0();
-      hash = _this.internalComputeHashCode$1(key);
-      bucket = rest[hash];
-      if (bucket == null)
-        rest[hash] = [_this._newLinkedCell$2(key, value)];
-      else {
-        index = _this.internalFindBucketIndex$2(bucket, key);
-        if (index >= 0)
-          bucket[index].hashMapCellValue = value;
-        else
-          bucket.push(_this._newLinkedCell$2(key, value));
+      } else {
+        rest = _this.__js_helper$_rest;
+        if (rest == null)
+          rest = _this.__js_helper$_rest = _this._newHashTable$0();
+        hash = _this.internalComputeHashCode$1(key);
+        bucket = rest[hash];
+        if (bucket == null)
+          rest[hash] = [_this._newLinkedCell$2(key, value)];
+        else {
+          index = _this.internalFindBucketIndex$2(bucket, key);
+          if (index >= 0)
+            bucket[index].hashMapCellValue = value;
+          else
+            bucket.push(_this._newLinkedCell$2(key, value));
+        }
       }
     },
     putIfAbsent$2(key, ifAbsent) {
@@ -6577,16 +6562,6 @@
     },
     $signature() {
       return A._instanceType(this.$this)._eval$1("2(1)");
-    }
-  };
-  A.JsLinkedHashMap_addAll_closure.prototype = {
-    call$2(key, value) {
-      var t1 = this.$this,
-        t2 = A._instanceType(t1);
-      t1.$indexSet(0, t2._precomputed1._as(key), t2._rest[1]._as(value));
-    },
-    $signature() {
-      return A._instanceType(this.$this)._eval$1("~(1,2)");
     }
   };
   A.LinkedHashMapCell.prototype = {};
@@ -10194,7 +10169,7 @@
       } catch (exception) {
         ex = A.unwrapException(exception);
         st = A.getTraceFromException(exception);
-        this.__worker_channel$_logger.e$1(new A._WebWorkerChannel__postResponse_closure(res, ex));
+        this._logger.e$1(new A._WebWorkerChannel__postResponse_closure(res, ex));
         throw A.wrapException(A.SquadronError$_("Failed to post response: " + A.S(ex), st));
       }
     },
@@ -10214,7 +10189,7 @@
       } catch (exception) {
         ex = A.unwrapException(exception);
         st = A.getTraceFromException(exception);
-        this.__worker_channel$_logger.e$1(new A._WebWorkerChannel__inspectAndPostResponse_closure(res, ex));
+        this._logger.e$1(new A._WebWorkerChannel__inspectAndPostResponse_closure(res, ex));
         throw A.wrapException(A.SquadronError$_("Failed to post response: " + A.S(ex), st));
       }
     },
@@ -10284,7 +10259,7 @@
     connect$body$WorkerRunner(startRequest, channelInfo, initializer) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
-        $async$handler = 1, $async$currentError, $async$self = this, logger, service, t1, ex, st, t2, channel0, t3, exception, channel, $async$exception;
+        $async$handler = 1, $async$currentError, $async$self = this, logger, ex, st, t2, channel, t3, exception, t1, $async$exception;
       var $async$connect$3 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -10294,15 +10269,16 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              channel = null;
+              t1 = {};
+              t1.channel = null;
               $async$handler = 3;
               A.WorkerRequestExt_unwrapInPlace(startRequest, $async$self.internalLogger);
               t2 = J.getInterceptor$ax(startRequest);
-              channel0 = type$.nullable_WorkerChannel._as(t2.$index(startRequest, 1));
-              channel = channel0;
+              channel = type$.nullable_WorkerChannel._as(t2.$index(startRequest, 1));
+              t1.channel = channel;
               if (channel == null) {
-                t1 = A.SquadronError$_("Missing client for connection request", null);
-                throw A.wrapException(t1);
+                t2 = A.SquadronError$_("Missing client for connection request", null);
+                throw A.wrapException(t2);
               }
               if ($async$self._logForwarder == null) {
                 logger = channel.get$log();
@@ -10312,11 +10288,11 @@
                 $.Logger__outputCallbacks.add$1(0, t3);
               }
               if (A._asInt(t2.$index(startRequest, 2)) !== -1) {
-                t1 = A.SquadronError$_("Connection request expected", null);
-                throw A.wrapException(t1);
-              } else if ($async$self._operations != null) {
-                t1 = A.SquadronError$_("Already connected", null);
-                throw A.wrapException(t1);
+                t2 = A.SquadronError$_("Connection request expected", null);
+                throw A.wrapException(t2);
+              } else if ($async$self._service != null) {
+                t2 = A.SquadronError$_("Already connected", null);
+                throw A.wrapException(t2);
               }
               t2 = initializer.call$1(startRequest);
               t3 = type$.WorkerService;
@@ -10324,18 +10300,13 @@
               return A._asyncAwait(type$.Future_WorkerService._is(t2) ? t2 : A._Future$value(t3._as(t2), t3), $async$connect$3);
             case 6:
               // returning from await.
-              service = $async$result;
-              t2 = service.get$operations();
+              $async$self.set$_service($async$result);
+              t2 = $async$self._service.get$operations();
               t3 = A._instanceType(t2)._eval$1("LinkedHashMapKeyIterable<1>");
               if (!new A.WhereIterable(new A.LinkedHashMapKeyIterable(t2, t3), t3._eval$1("bool(Iterable.E)")._as(new A.WorkerRunner_connect_closure0()), t3._eval$1("WhereIterable<Iterable.E>")).get$isEmpty(0)) {
-                t1 = A.SquadronError$_("Invalid command identifier in service operations map; command ids must be > 0", null);
-                throw A.wrapException(t1);
+                t2 = A.SquadronError$_("Invalid command identifier in service operations map; command ids must be > 0", null);
+                throw A.wrapException(t2);
               }
-              t2 = service.get$operations();
-              t3 = A.LinkedHashMap_LinkedHashMap(type$.int, type$.dynamic_Function_List_dynamic);
-              t3.addAll$1(0, t2);
-              t1 = t3;
-              $async$self.set$_operations(t1);
               channel._inspectAndPostResponse$1([A.microsecTimeStamp(null), channelInfo, null, null, null]);
               $async$handler = 1;
               // goto after finally
@@ -10348,7 +10319,7 @@
               ex = A.unwrapException($async$exception);
               st = A.getTraceFromException($async$exception);
               $async$self.internalLogger.e$1(new A.WorkerRunner_connect_closure1(ex));
-              t1 = channel;
+              t1 = t1.channel;
               if (t1 != null) {
                 ex = A.SquadronException_from(type$.Object._as(ex), type$.nullable_StackTrace._as(st), null);
                 t1._postResponse$1([A.microsecTimeStamp(null), null, ex, null, null]);
@@ -10379,7 +10350,7 @@
     processRequest$body$WorkerRunner(request) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, token, canceler, token0, tokenRef, cmd, op, result, reply, replyWithError, postError, post, ex, st, t1, t2, ex0, t3, t4, exception, channel, $async$exception;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, pendingInstallation, token, canceler, token0, tokenRef, cmd, op, result, reply, replyWithError, postError, post, ex, st, t1, t2, t3, ex0, t4, exception, channel, $async$exception;
       var $async$processRequest$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -10403,7 +10374,24 @@
                 // goto return
                 $async$goto = 1;
                 break;
-              } else if (A._asInt(t1.$index(request, 2)) === -3) {
+              }
+              t3 = $async$self._installCompleter;
+              pendingInstallation = t3 == null ? null : t3.future;
+              $async$goto = pendingInstallation != null ? 7 : 8;
+              break;
+            case 7:
+              // then
+              $async$goto = 9;
+              return A._asyncAwait(pendingInstallation, $async$processRequest$1);
+            case 9:
+              // returning from await.
+              $async$self._installCompleter = null;
+            case 8:
+              // join
+              t3 = $async$self._installResult;
+              if (t3 != null)
+                throw A.wrapException(t3);
+              if (A._asInt(t1.$index(request, 2)) === -3) {
                 t1 = type$.nullable_SquadronCancelationToken._as(t1.$index(request, 4));
                 t1.toString;
                 token = t1;
@@ -10429,7 +10417,7 @@
               if (A._asInt(t1.$index(request, 2)) === -1) {
                 t1 = A.SquadronError$_("Unexpected connection request: " + A.S(request), null);
                 throw A.wrapException(t1);
-              } else if ($async$self._operations == null) {
+              } else if ($async$self._service == null) {
                 t1 = A.SquadronError$_("Worker service is not ready", null);
                 throw A.wrapException(t1);
               }
@@ -10452,24 +10440,25 @@
               } else if (t3._as(t1.$index(request, 4)) != null)
                 A.throwExpression(A.SquadronError$_("Token reference mismatch", null));
               tokenRef = token;
-              $async$handler = 7;
+              $async$handler = 10;
               cmd = A._asInt(t1.$index(request, 2));
-              op = $async$self._operations.$index(0, cmd);
+              t3 = $async$self._service;
+              op = t3 == null ? null : t3.get$operations().$index(0, cmd);
               if (op == null) {
                 t1 = A.SquadronError$_("Unknown command: " + A.S(cmd), null);
                 throw A.wrapException(t1);
               }
               result = op.call$1(request);
-              $async$goto = result instanceof A._Future ? 10 : 11;
+              $async$goto = result instanceof A._Future ? 13 : 14;
               break;
-            case 10:
+            case 13:
               // then
-              $async$goto = 12;
+              $async$goto = 15;
               return A._asyncAwait(result, $async$processRequest$1);
-            case 12:
+            case 15:
               // returning from await.
               result = $async$result;
-            case 11:
+            case 14:
               // join
               if (A._asBool(t1.$index(request, 6))) {
                 t1 = t2._as(t1.$index(request, 1));
@@ -10483,33 +10472,33 @@
               t1 = result instanceof A.Stream;
               if (t1)
                 type$.Stream_dynamic._as(result);
-              $async$goto = t1 ? 13 : 15;
+              $async$goto = t1 ? 16 : 18;
               break;
-            case 13:
+            case 16:
               // then
               replyWithError = channel.get$error();
               postError = new A.WorkerRunner_processRequest_postError(replyWithError, cmd);
               post = new A.WorkerRunner_processRequest_post(reply, postError);
-              $async$goto = 16;
+              $async$goto = 19;
               return A._asyncAwait($async$self._pipe$5(result, channel, post, postError, token0), $async$processRequest$1);
-            case 16:
+            case 19:
               // returning from await.
               // goto join
-              $async$goto = 14;
+              $async$goto = 17;
               break;
-            case 15:
+            case 18:
               // else
               reply.call$1(result);
-            case 14:
+            case 17:
               // join
-              $async$next.push(9);
+              $async$next.push(12);
               // goto finally
-              $async$goto = 8;
+              $async$goto = 11;
               break;
-            case 7:
+            case 10:
               // uncaught
               $async$next = [4];
-            case 8:
+            case 11:
               // finally
               $async$handler = 4;
               t1 = type$.CancelationTokenReference._as(tokenRef);
@@ -10523,7 +10512,7 @@
               // goto the next finally handler
               $async$goto = $async$next.pop();
               break;
-            case 9:
+            case 12:
               // after finally
               $async$handler = 2;
               // goto after finally
@@ -10587,53 +10576,23 @@
     _unmount$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.void),
-        $async$handler = 1, $async$currentError, $async$next = [], $async$self = this, ex, t1, exception, $async$exception;
+        $async$next = [], $async$self = this, ex, exception;
       var $async$_unmount$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1) {
-          $async$currentError = $async$result;
-          $async$goto = $async$handler;
-        }
+        if ($async$errorCode === 1)
+          return A._asyncRethrow($async$result, $async$completer);
         while (true)
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$handler = 3;
-              t1 = A._Future$value(null, type$.void);
-              $async$goto = 6;
-              return A._asyncAwait(t1, $async$_unmount$0);
-            case 6:
-              // returning from await.
-              $async$next.push(5);
-              // goto finally
-              $async$goto = 4;
-              break;
-            case 3:
-              // catch
-              $async$handler = 2;
-              $async$exception = $async$currentError;
-              ex = A.unwrapException($async$exception);
-              $async$self.internalLogger.e$1("Service uninstallation failed with error: " + A.S(ex));
-              $async$next.push(5);
-              // goto finally
-              $async$goto = 4;
-              break;
-            case 2:
-              // uncaught
-              $async$next = [1];
-            case 4:
-              // finally
-              $async$handler = 1;
-              $async$self._exit$0();
-              // goto the next finally handler
-              $async$goto = $async$next.pop();
-              break;
-            case 5:
-              // after finally
+              try {
+              } catch (exception) {
+                ex = A.unwrapException(exception);
+                $async$self.internalLogger.e$1("Service uninstallation failed with error: " + A.S(ex));
+              } finally {
+                $async$self._exit$0();
+              }
               // implicit return
               return A._asyncReturn(null, $async$completer);
-            case 1:
-              // rethrow
-              return A._asyncRethrow($async$currentError, $async$completer);
           }
       });
       return A._asyncStartSync($async$_unmount$0, $async$completer);
@@ -10650,8 +10609,8 @@
       if (t1 != null)
         $.Logger__outputCallbacks.remove$1(0, t1);
     },
-    set$_operations(_operations) {
-      this._operations = type$.nullable_Map_of_int_and_dynamic_Function_List_dynamic._as(_operations);
+    set$_service(_service) {
+      this._service = type$.nullable_WorkerService._as(_service);
     },
     set$_logForwarder(_logForwarder) {
       this._logForwarder = type$.nullable_void_Function_OutputEvent._as(_logForwarder);
@@ -10929,7 +10888,7 @@
   };
   A.TestService.prototype = {
     setLevel$1(level) {
-      this._logger._test_logger$_filter._level = type$.Level._as(new A.WhereIterable(B.List_Ah0, type$.bool_Function_Level._as(new A.TestService_setLevel_closure(level)), type$.WhereIterable_Level).get$first(0));
+      this._test_service$_logger._test_logger$_filter._level = type$.Level._as(new A.WhereIterable(B.List_Ah0, type$.bool_Function_Level._as(new A.TestService_setLevel_closure(level)), type$.WhereIterable_Level).get$first(0));
     },
     io$1$ms(ms) {
       var $async$goto = 0,
@@ -11416,7 +11375,7 @@
     call$1(r) {
       var t1, _null = null;
       type$.List_dynamic._as(r);
-      t1 = this.$this._logger;
+      t1 = this.$this._test_service$_logger;
       t1.t$1("trace test in worker");
       t1.log$5$error$stackTrace$time(B.Level_2000_debug, "debug test in worker", _null, _null, _null);
       t1.log$5$error$stackTrace$time(B.Level_3000_info, "info test in worker", _null, _null, _null);
@@ -11686,7 +11645,7 @@
     _inheritMany(A.TearOffClosure, [A.StaticClosure, A.BoundClosure]);
     _inherit(A._AssertionError, A.AssertionError);
     _inheritMany(A.MapBase, [A.JsLinkedHashMap, A._HashMap]);
-    _inheritMany(A.Closure2Args, [A.JsLinkedHashMap_addAll_closure, A.initHooks_closure0, A._awaitOnObject_closure0, A._wrapJsFunctionForAsync_closure, A.Future_wait_handleError, A._Future__chainForeignFuture_closure0, A._AddStreamState_makeErrorHandler_closure, A.MapBase_mapToString_closure, A._JsonStringifier_writeMap_closure, A._JsonPrettyPrintMixin_writeMap_closure, A._BigIntImpl_hashCode_combine, A.WorkerRunner__pipe_closure2]);
+    _inheritMany(A.Closure2Args, [A.initHooks_closure0, A._awaitOnObject_closure0, A._wrapJsFunctionForAsync_closure, A.Future_wait_handleError, A._Future__chainForeignFuture_closure0, A._AddStreamState_makeErrorHandler_closure, A.MapBase_mapToString_closure, A._JsonStringifier_writeMap_closure, A._JsonPrettyPrintMixin_writeMap_closure, A._BigIntImpl_hashCode_combine, A.WorkerRunner__pipe_closure2]);
     _inheritMany(A.NativeTypedData, [A.NativeByteData, A.NativeTypedArray]);
     _inheritMany(A.NativeTypedArray, [A._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, A._NativeTypedArrayOfInt_NativeTypedArray_ListMixin]);
     _inherit(A._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, A._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin);
@@ -11833,12 +11792,12 @@
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_JSObject: findType("JSObject?"),
       nullable_List_dynamic: findType("List<@>?"),
-      nullable_Map_of_int_and_dynamic_Function_List_dynamic: findType("Map<int,@(List<@>)>?"),
       nullable_Object: findType("Object?"),
       nullable_SquadronCancelationToken: findType("SquadronCancelationToken?"),
       nullable_SquadronException: findType("SquadronException?"),
       nullable_StackTrace: findType("StackTrace?"),
       nullable_WorkerChannel: findType("WorkerChannel?"),
+      nullable_WorkerService: findType("WorkerService?"),
       nullable__DelayedEvent_dynamic: findType("_DelayedEvent<@>?"),
       nullable__FutureListener_dynamic_dynamic: findType("_FutureListener<@,@>?"),
       nullable__LinkedHashSetCell: findType("_LinkedHashSetCell?"),

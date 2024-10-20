@@ -251,6 +251,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_transferables.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_worker_runner.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_method.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_service.dart
+file:///C:/_Projects/github/squadron/lib/src/annotations/target_platform.dart
 file:///C:/_Projects/github/squadron/lib/src/bootstrapper.dart
 file:///C:/_Projects/github/squadron/lib/src/channel.dart
 file:///C:/_Projects/github/squadron/lib/src/concurrency_settings.dart
