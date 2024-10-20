@@ -1,7 +1,7 @@
 ## 6.0.4
 
+- Breaking change: the connection channel is provided to caller before the service is installed (when the service is mixed in with `ServiceInstaller`); if service installation fails, the channel is closed and the caller is notified with an error and an `endOfStream` response.
 - Change `token` type to `CancelationToken` in `LocalWorkerClient.send()`.
-- Reworked service installation: connection channel is provided before the service is installed; if service installation fails, the channel is closed and the caller is notified with an `endOfStream` response.
 - Add support for annotating service classes to be used as local workers.
 
 ## 6.0.3

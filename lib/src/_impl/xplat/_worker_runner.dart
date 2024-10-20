@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:logger/web.dart';
 
+import '../../../squadron.dart';
 import '../../exceptions/squadron_error.dart';
-import '../../local_worker/local_worker.dart';
 import '../../tokens/_cancelation_token_ref.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../typedefs.dart';
-import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
-import '../../worker_service.dart';
 import '_internal_logger.dart';
 
 class WorkerRunner {
@@ -34,7 +31,10 @@ class WorkerRunner {
 
   /// Constructs a new worker runner for a [localWorker].
   factory WorkerRunner.use(LocalWorker localWorker) {
-    final runner = WorkerRunner((_) {});
+    final runner = WorkerRunner((r) {
+      r.internalLogger.t('Terminating local Worker');
+      r._service = null;
+    });
     runner._service = localWorker;
     return runner;
   }
@@ -49,7 +49,6 @@ class WorkerRunner {
   Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
     WorkerChannel? channel;
-    bool connected = false;
     try {
       startRequest?.unwrapInPlace(internalLogger);
       channel = startRequest?.channel;
@@ -80,50 +79,59 @@ class WorkerRunner {
         );
       }
 
-      // if (_service is ServiceInstaller) {
-      //   _installCompleter = Completer();
-      // }
-
       channel.connect(channelInfo);
-      connected = true;
 
-      // if (_installCompleter != null) {
       if (_service is ServiceInstaller) {
-        // _installCompleter!.complete((_service as ServiceInstaller).install());
-        await (_service as ServiceInstaller).install();
+        _installCompleter = Completer()
+          ..complete((() async {
+            try {
+              await (_service as ServiceInstaller).install();
+            } catch (ex, st) {
+              internalLogger.e(() => 'Service installation failed: $ex');
+              channel?.error(ex, st);
+              channel?.closeStream();
+              _installResult = SquadronException.from(ex, st);
+            }
+          })());
       }
     } catch (ex, st) {
       internalLogger.e(() => 'Connection failed: $ex');
       channel?.error(ex, st);
-      if (connected) {
-        channel?.closeStream();
-      }
       _exit();
     }
   }
 
-  // Completer<void>? _installCompleter;
+  Completer<void>? _installCompleter;
+  SquadronException? _installResult;
 
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_service] map. Make sure this method doesn't throw.
   void processRequest(WorkerRequest request) async {
-    // final pendingInstallation = _installCompleter?.future;
-    // if (pendingInstallation != null) {
-    //   // make sure service installation is complete
-    //   await pendingInstallation;
-    //   _installCompleter = null;
-    // }
     WorkerChannel? channel;
     try {
       request.unwrapInPlace(internalLogger);
       channel = request.channel;
 
-      // ==== these requests do not send a response ====
-
       if (request.isTermination) {
         // terminate the worker
         return _shutdown();
-      } else if (request.isTokenCancelation) {
+      }
+
+      // check installation result if necessary
+      final pendingInstallation = _installCompleter?.future;
+      if (pendingInstallation != null) {
+        await pendingInstallation;
+        _installCompleter = null;
+      }
+
+      if (_installResult != null) {
+        // service installation failed
+        throw _installResult!;
+      }
+
+      // ==== these requests do not send a response ====
+
+      if (request.isTokenCancelation) {
         // cancel a token
         final token = request.cancelToken!;
         return _getTokenRef(token).update(token);
@@ -314,7 +322,16 @@ class WorkerRunner {
     try {
       // uninstall the service if necessary
       if (_service is ServiceInstaller) {
-        await (_service as ServiceInstaller).uninstall();
+        // check installation result
+        final pendingInstallation = _installCompleter?.future;
+        if (pendingInstallation != null) {
+          await pendingInstallation;
+          _installCompleter = null;
+        }
+        if (_installResult == null) {
+          // uninstall iif the service installed succesfuly
+          await (_service as ServiceInstaller).uninstall();
+        }
       }
     } catch (ex) {
       internalLogger.e('Service uninstallation failed with error: $ex');

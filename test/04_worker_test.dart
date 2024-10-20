@@ -135,14 +135,7 @@ void execute(TestContext? tc) {
           tc.test('- error on installation', () async {
             await InstallableWorker.throwOnInstall(tc).useAsync((w) async {
               w.channelLogger = memoryLogger;
-              try {
-                final res = await w.start();
-                throw unexpectedSuccess('start()', res);
-              } on WorkerException catch (ex) {
-                expect(ex, reports('this exception is reported'));
-                expect(logs, mentions('intended failure'));
-                expect(logs, doesNotMention('service installed'));
-              }
+              await w.start();
 
               try {
                 final res = await w.isInstalled();
