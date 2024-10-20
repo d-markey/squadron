@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9076923" lines-covered="59" lines-valid="65" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-10-20" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9076923" lines-covered="59" lines-valid="65" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -186,13 +186,13 @@
         <line number="59">
             <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
         </line>
-        <line hits="15" number="60">
+        <line hits="18" number="60">
             <code>  static WorkerResponse closeStream() =&gt; WorkerResponse._([</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="61">
+        <line hits="7" number="61">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
             <code>        null, // 1 - result</code>
@@ -215,9 +215,9 @@
         <line number="68">
             <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
         </line>
-        <line hits="15" number="69">
+        <line hits="28" number="69">
             <code>  bool get endOfStream =&gt; data[_$endOfStream];</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="28" name="&lt;unnamed&gt;"/>
         </line>
         <line number="70">
             <code/>
@@ -225,9 +225,9 @@
         <line number="71">
             <code>  /// The [WorkerResponse] exception, if any.</code>
         </line>
-        <line hits="29" number="72">
+        <line hits="30" number="72">
             <code>  SquadronException? get error =&gt; data[_$error];</code>
-            <hit count="29" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="73">
             <code/>
@@ -238,17 +238,17 @@
         <line number="75">
             <code>  /// [WorkerResponse] contains an error, an the [error] exception is thrown.</code>
         </line>
-        <line hits="19" number="76">
+        <line hits="20" number="76">
             <code>  dynamic get result {</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="9" number="77">
             <code>    final err = error;</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="78">
+        <line hits="11" number="78">
             <code>    if (err != null) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="79">
             <code>      throw err;</code>
@@ -256,16 +256,16 @@
         <line number="80">
             <code>    } else {</code>
         </line>
-        <line hits="19" number="81">
+        <line hits="20" number="81">
             <code>      return data[_$result];</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="82">
             <code>    }</code>
         </line>
-        <line hits="10" number="83">
+        <line hits="11" number="83">
             <code>  }</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="84">
             <code>}</code>
@@ -306,21 +306,21 @@
         <line number="96">
             <code>  /// used for log messages only).</code>
         </line>
-        <line hits="20" number="97">
+        <line hits="21" number="97">
             <code>  bool unwrapInPlace(Channel channel) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="98">
             <code>    unwrapTravelTime();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="29" number="99">
+        <line hits="30" number="99">
             <code>    final log = _LogEventSerializationExt.deserialize(data[_$log]);</code>
-            <hit count="29" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="100">
+        <line hits="12" number="100">
             <code>    if (log != null) {</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="24" number="101">
             <code>      channel.logger?.log(log.level, log.message,</code>
@@ -337,24 +337,24 @@
         <line number="104">
             <code>    } else {</code>
         </line>
-        <line hits="47" number="105">
+        <line hits="48" number="105">
             <code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code>
-            <hit count="47" name="&lt;unnamed&gt;"/>
+            <hit count="48" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="106">
+        <line hits="21" number="106">
             <code>      data[_$endOfStream] ??= false;</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="107">
+        <line hits="12" number="107">
             <code>      return true;</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="108">
             <code>    }</code>
         </line>
-        <line hits="11" number="109">
+        <line hits="12" number="109">
             <code>  }</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="110">
             <code/>
@@ -395,13 +395,13 @@
         <line number="120">
             <code/>
         </line>
-        <line hits="20" number="121">
+        <line hits="21" number="121">
             <code>  static WorkerResponse from(List data) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="29" number="122">
+        <line hits="30" number="122">
             <code>    if (data.length != 5) {</code>
-            <hit count="29" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="123">
             <code>      throw SquadronErrorExt.create('Invalid worker response');</code>
@@ -409,13 +409,13 @@
         <line number="124">
             <code>    }</code>
         </line>
-        <line hits="20" number="125">
+        <line hits="21" number="125">
             <code>    return WorkerResponse._(data);</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="126">
+        <line hits="12" number="126">
             <code>  }</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="127">
             <code>}</code>

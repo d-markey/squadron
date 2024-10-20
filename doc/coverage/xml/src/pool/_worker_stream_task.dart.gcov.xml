@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85" lines-covered="34" lines-valid="40" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-10-20" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85" lines-covered="34" lines-valid="40" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -131,9 +131,9 @@
         <line number="39">
             <code/>
         </line>
-        <line hits="4" number="40">
+        <line hits="5" number="40">
             <code>  late final ForwardStreamController&lt;T&gt; _controller;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="41">
             <code/>
@@ -167,16 +167,16 @@
         <line number="49">
             <code/>
         </line>
-        <line hits="16" number="50">
+        <line hits="17" number="50">
             <code>  void _onData(T data) =&gt; _controller.add(data);</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="17" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code/>
         </line>
-        <line hits="15" number="52">
+        <line hits="16" number="52">
             <code>  void _onError(ex, st) =&gt; _controller.addError(SquadronException.from(ex, st));</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
         <line number="53">
             <code/>

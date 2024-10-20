@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-09-24</dd>
+                    <dd>2024-10-20</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -238,10 +238,10 @@
                     <td>59</td><td></td><td></td><td><code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 60" id="line60">
-                    <td>60</td><td></td><td>15</td><td><code>  static WorkerResponse closeStream() =&gt; WorkerResponse._([</code></td>
+                    <td>60</td><td></td><td>18</td><td><code>  static WorkerResponse closeStream() =&gt; WorkerResponse._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>6</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>61</td><td></td><td>7</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 62" id="line62">
                     <td>62</td><td></td><td></td><td><code>        null, // 1 - result</code></td>
@@ -265,7 +265,7 @@
                     <td>68</td><td></td><td></td><td><code>  /// Flag indicating the end of the [Stream]ing operation.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>15</td><td><code>  bool get endOfStream =&gt; data[_$endOfStream];</code></td>
+                    <td>69</td><td></td><td>28</td><td><code>  bool get endOfStream =&gt; data[_$endOfStream];</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
                     <td>70</td><td></td><td></td><td><code></code></td>
@@ -274,7 +274,7 @@
                     <td>71</td><td></td><td></td><td><code>  /// The [WorkerResponse] exception, if any.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>29</td><td><code>  SquadronException? get error =&gt; data[_$error];</code></td>
+                    <td>72</td><td></td><td>30</td><td><code>  SquadronException? get error =&gt; data[_$error];</code></td>
                 </tr>
                 <tr class="noop" title="Line 73" id="line73">
                     <td>73</td><td></td><td></td><td><code></code></td>
@@ -286,13 +286,13 @@
                     <td>75</td><td></td><td></td><td><code>  /// [WorkerResponse] contains an error, an the [error] exception is thrown.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>19</td><td><code>  dynamic get result {</code></td>
+                    <td>76</td><td></td><td>20</td><td><code>  dynamic get result {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
                     <td>77</td><td></td><td>9</td><td><code>    final err = error;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>10</td><td><code>    if (err != null) {</code></td>
+                    <td>78</td><td></td><td>11</td><td><code>    if (err != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 79" id="line79">
                     <td>79</td><td></td><td>0</td><td><code>      throw err;</code></td>
@@ -301,13 +301,13 @@
                     <td>80</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 81" id="line81">
-                    <td>81</td><td></td><td>19</td><td><code>      return data[_$result];</code></td>
+                    <td>81</td><td></td><td>20</td><td><code>      return data[_$result];</code></td>
                 </tr>
                 <tr class="noop" title="Line 82" id="line82">
                     <td>82</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>10</td><td><code>  }</code></td>
+                    <td>83</td><td></td><td>11</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
                     <td>84</td><td></td><td></td><td><code>}</code></td>
@@ -349,16 +349,16 @@
                     <td>96</td><td></td><td></td><td><code>  /// used for log messages only).</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>20</td><td><code>  bool unwrapInPlace(Channel channel) {</code></td>
+                    <td>97</td><td></td><td>21</td><td><code>  bool unwrapInPlace(Channel channel) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
                     <td>98</td><td></td><td>10</td><td><code>    unwrapTravelTime();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>29</td><td><code>    final log = _LogEventSerializationExt.deserialize(data[_$log]);</code></td>
+                    <td>99</td><td></td><td>30</td><td><code>    final log = _LogEventSerializationExt.deserialize(data[_$log]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>11</td><td><code>    if (log != null) {</code></td>
+                    <td>100</td><td></td><td>12</td><td><code>    if (log != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 101" id="line101">
                     <td>101</td><td></td><td>24</td><td><code>      channel.logger?.log(log.level, log.message,</code></td>
@@ -373,19 +373,19 @@
                     <td>104</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 105" id="line105">
-                    <td>105</td><td></td><td>47</td><td><code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code></td>
+                    <td>105</td><td></td><td>48</td><td><code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>20</td><td><code>      data[_$endOfStream] ??= false;</code></td>
+                    <td>106</td><td></td><td>21</td><td><code>      data[_$endOfStream] ??= false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>11</td><td><code>      return true;</code></td>
+                    <td>107</td><td></td><td>12</td><td><code>      return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
                     <td>108</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>11</td><td><code>  }</code></td>
+                    <td>109</td><td></td><td>12</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 110" id="line110">
                     <td>110</td><td></td><td></td><td><code></code></td>
@@ -421,10 +421,10 @@
                     <td>120</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>20</td><td><code>  static WorkerResponse from(List data) {</code></td>
+                    <td>121</td><td></td><td>21</td><td><code>  static WorkerResponse from(List data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>29</td><td><code>    if (data.length != 5) {</code></td>
+                    <td>122</td><td></td><td>30</td><td><code>    if (data.length != 5) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 123" id="line123">
                     <td>123</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Invalid worker response');</code></td>
@@ -433,10 +433,10 @@
                     <td>124</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>20</td><td><code>    return WorkerResponse._(data);</code></td>
+                    <td>125</td><td></td><td>21</td><td><code>    return WorkerResponse._(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>11</td><td><code>  }</code></td>
+                    <td>126</td><td></td><td>12</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 127" id="line127">
                     <td>127</td><td></td><td></td><td><code>}</code></td>

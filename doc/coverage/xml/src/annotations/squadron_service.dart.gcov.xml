@@ -1,130 +1,128 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-09-24" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="8" package="src/annotations" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-10-20" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.16666667" lines-covered="1" lines-valid="6" package="src/annotations" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../pool/worker_pool.dart';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import 'target_platform.dart';</code>
         </line>
         <line number="3">
-            <code>/// Annotation for service classes to be wrapped as workers.</code>
+            <code/>
         </line>
         <line number="4">
-            <code>class SquadronService {</code>
+            <code>const localService = SquadronService.local();</code>
         </line>
-        <line hits="0" number="5">
-            <code>  const SquadronService({</code>
+        <line number="5">
+            <code/>
         </line>
         <line number="6">
-            <code>    this.pool = true,</code>
+            <code>/// Annotation for service classes to be wrapped as workers.</code>
         </line>
         <line number="7">
-            <code>    this.targetPlatform = TargetPlatform.all,</code>
+            <code>class SquadronService {</code>
         </line>
-        <line number="8">
-            <code>    String? baseUrl,</code>
+        <line hits="0" number="8">
+            <code>  const SquadronService({</code>
         </line>
         <line number="9">
-            <code>  }) : baseUrl = baseUrl ?? '';</code>
+            <code>    this.pool = true,</code>
         </line>
         <line number="10">
-            <code/>
+            <code>    this.targetPlatform = TargetPlatform.all,</code>
         </line>
-        <line hits="0" number="11">
-            <code>  const SquadronService.web({bool pool = true, String? baseUrl})</code>
+        <line number="11">
+            <code>    String? baseUrl,</code>
         </line>
-        <line hits="0" number="12">
-            <code>      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);</code>
+        <line number="12">
+            <code>  })  : baseUrl = baseUrl ?? '',</code>
         </line>
         <line number="13">
-            <code/>
+            <code>        local = false;</code>
         </line>
-        <line hits="0" number="14">
-            <code>  const SquadronService.vm({bool pool = true})</code>
+        <line number="14">
+            <code/>
         </line>
         <line hits="0" number="15">
-            <code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code>
+            <code>  const SquadronService.web({bool pool = true, String? baseUrl})</code>
         </line>
-        <line number="16">
-            <code/>
+        <line hits="0" number="16">
+            <code>      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);</code>
         </line>
         <line number="17">
-            <code>  /// Controls code generation of a [WorkerPool] exposing the target service class.</code>
+            <code/>
         </line>
-        <line number="18">
-            <code>  /// `true` by default.</code>
+        <line hits="0" number="18">
+            <code>  const SquadronService.vm({bool pool = true})</code>
         </line>
-        <line number="19">
-            <code>  final bool pool;</code>
+        <line hits="0" number="19">
+            <code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code>
         </line>
         <line number="20">
             <code/>
         </line>
-        <line number="21">
-            <code>  /// Controls code generation of a entry points for various platforms.</code>
+        <line hits="11" number="21">
+            <code>  const SquadronService.local()</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="22">
-            <code>  final int targetPlatform;</code>
+            <code>      : pool = false,</code>
         </line>
         <line number="23">
-            <code/>
+            <code>        local = true,</code>
         </line>
         <line number="24">
-            <code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code>
+            <code>        targetPlatform = TargetPlatform.all,</code>
         </line>
         <line number="25">
-            <code>  /// be exposed in production.</code>
+            <code>        baseUrl = '';</code>
         </line>
         <line number="26">
-            <code>  final String baseUrl;</code>
+            <code/>
         </line>
         <line number="27">
-            <code>}</code>
+            <code>  /// Controls code generation of a [WorkerPool] exposing the target service class.</code>
         </line>
         <line number="28">
-            <code/>
+            <code>  /// `true` by default.</code>
         </line>
         <line number="29">
-            <code>final class TargetPlatform {</code>
+            <code>  final bool pool;</code>
         </line>
         <line number="30">
-            <code>  static const vm = 1;</code>
-        </line>
-        <line number="31">
-            <code>  static const js = 2;</code>
-        </line>
-        <line number="32">
-            <code>  static const wasm = 4;</code>
-        </line>
-        <line number="33">
             <code/>
         </line>
+        <line number="31">
+            <code>  /// Controls code generation of a [LocalWorkerClient] exposing the target service class.</code>
+        </line>
+        <line number="32">
+            <code>  /// `false` by default.</code>
+        </line>
+        <line number="33">
+            <code>  final bool local;</code>
+        </line>
         <line number="34">
-            <code>  static const web = js | wasm;</code>
+            <code/>
         </line>
         <line number="35">
-            <code>  static const all = vm | js | wasm;</code>
+            <code>  /// Controls code generation of a entry points for various platforms.</code>
         </line>
         <line number="36">
-            <code>}</code>
+            <code>  final int targetPlatform;</code>
         </line>
         <line number="37">
             <code/>
         </line>
         <line number="38">
-            <code>extension TargetPlatformExt on int {</code>
+            <code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code>
         </line>
-        <line hits="0" number="39">
-            <code>  bool get hasVm =&gt; (this &amp; TargetPlatform.vm) != 0;</code>
+        <line number="39">
+            <code>  /// be exposed in production.</code>
         </line>
-        <line hits="0" number="40">
-            <code>  bool get hasJs =&gt; (this &amp; TargetPlatform.js) != 0;</code>
+        <line number="40">
+            <code>  final String baseUrl;</code>
         </line>
-        <line hits="0" number="41">
-            <code>  bool get hasWasm =&gt; (this &amp; TargetPlatform.wasm) != 0;</code>
-        </line>
-        <line number="42">
+        <line number="41">
             <code>}</code>
         </line>
     </lines>
