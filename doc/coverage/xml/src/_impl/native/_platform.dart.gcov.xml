@@ -13,9 +13,9 @@
         <line number="4">
             <code/>
         </line>
-        <line hits="8" number="5">
+        <line hits="9" number="5">
             <code>Converter getPlatformConverter() =&gt; DirectCastConverter.instance;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
             <code/>
