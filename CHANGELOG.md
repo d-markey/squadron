@@ -1,3 +1,8 @@
+## 6.1.1
+
+- `Squadron.converter` should be modifiable but it was declared `final`: implement getter and setter.
+- Interested artefacts can register callbacks with `Squadron.onConverterChanged()` to be notified after the converter has been updated.
+
 ## 6.1.0
 
 - Implement specific marshaler for `TypedData` (used by `squadron_builder` >= 6.1.0). 

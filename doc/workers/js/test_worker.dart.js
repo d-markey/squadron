@@ -11559,7 +11559,7 @@
   };
   A.main_closure.prototype = {
     call$1(startReq) {
-      switch ($.$get$Squadron_converter().value$1$0(type$.int).call$1(J.$index$ax(type$.List_dynamic._as(J.$index$ax(startReq, 3)), 0))) {
+      switch ($.$get$Squadron__converter().value$1$0(type$.int).call$1(J.$index$ax(type$.List_dynamic._as(J.$index$ax(startReq, 3)), 0))) {
         case 1:
           throw A.wrapException(A.Exception_Exception("Intentional failure"));
         case 2:
@@ -12088,8 +12088,9 @@
         A.throwExpression(A.ArgumentError$("(2020, 2, 2, 0, 0, 0, 0, 0)", null));
       return new A.DateTime(t1, 0, true);
     });
-    _lazyFinal($, "Squadron_converter", "$get$Squadron_converter", () => B.C_CastConverter);
     _lazyFinal($, "Squadron_platformType", "$get$Squadron_platformType", () => B.SquadronPlatformType_JavaScript_js);
+    _lazyFinal($, "Squadron__platformConverter", "$get$Squadron__platformConverter", () => B.C_CastConverter);
+    _lazy($, "Squadron__converter", "$get$Squadron__converter", () => $.$get$Squadron__platformConverter());
     _lazyFinal($, "CancelationTokenReference_noToken", "$get$CancelationTokenReference_noToken", () => {
       var t1 = new A.CancelationTokenReference("", A.Completer_Completer(type$.SquadronCanceledException), false);
       t1._refCount = 1;

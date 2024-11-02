@@ -110,5 +110,61 @@ void execute(TestContext? tc) {
       testLazyInPlaceCastConverter(tc);
       testLazyInPlaceNumConverter(tc);
     });
+
+    tc.group('- Squadron converter', () {
+      final platformConverter = Squadron.converter;
+
+      tc.test('- Set', () {
+        final converter = LazyInPlaceConverter(platformConverter);
+
+        var success = false, called = 0;
+
+        void check() {
+          called++;
+          success = (Squadron.converter == converter);
+        }
+
+        final key = Squadron.onConverterChanged(check);
+        try {
+          expect(success, isFalse);
+
+          // update
+          Squadron.converter = converter;
+          expect(success, isTrue);
+          expect(called, 1);
+          expect(Squadron.converter, converter);
+
+          // no change
+          Squadron.converter = converter;
+          expect(success, isTrue);
+          expect(called, 1);
+          expect(Squadron.converter, converter);
+
+          // restore
+          Squadron.converter = platformConverter;
+          expect(success, isFalse);
+          expect(called, 2);
+          expect(Squadron.converter, platformConverter);
+
+          // update again
+          Squadron.converter = InPlaceConverter(platformConverter);
+          expect(success, isFalse);
+          expect(called, 3);
+          expect(Squadron.converter, isNot(converter));
+          expect(Squadron.converter, isNot(platformConverter));
+
+          // reset
+          success = true;
+          Squadron.unregisterConverterChanged(key);
+          Squadron.converter = null;
+          expect(success, isTrue);
+          expect(called, 3);
+          expect(Squadron.converter, platformConverter);
+        } finally {
+          Squadron.unregisterConverterChanged(key);
+          Squadron.converter = platformConverter;
+        }
+      });
+    });
   });
 }
