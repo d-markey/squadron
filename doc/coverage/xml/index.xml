@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-10-20" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8728201" lines-covered="2052" lines-valid="2351" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-02" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8742112" lines-covered="2078" lines-valid="2377" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="0" lines-valid="5" pathname="src/marshalers" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="26" lines-valid="31" pathname="src/marshalers" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="28" lines-valid="36" pathname="src" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="287" lines-valid="368" pathname="src/_impl/xplat" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="563" lines-valid="571" pathname="src/converters" prefix="/home/runner/work/squadron/squadron/lib/"/>
