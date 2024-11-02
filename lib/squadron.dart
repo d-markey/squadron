@@ -27,6 +27,7 @@ export 'src/local_worker/local_worker_client.dart';
 export 'src/marshalers/generic_marshaler.dart';
 export 'src/marshalers/identity_marshaler.dart';
 export 'src/marshalers/squadron_marshaler.dart';
+export 'src/marshalers/typed_data_marshaler.dart';
 export 'src/pool/stream_task.dart';
 export 'src/pool/task.dart';
 export 'src/pool/value_task.dart';

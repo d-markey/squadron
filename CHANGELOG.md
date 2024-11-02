@@ -1,3 +1,7 @@
+## 6.1.0
+
+- Implement specific marshaler for `TypedData` (used by `squadron_builder` >= 6.1.0). 
+
 ## 6.0.4
 
 - Breaking change: the connection channel is provided to caller before the service is installed (when the service is mixed in with `ServiceInstaller`); if service installation fails, the channel is closed and the caller is notified with an error and an `endOfStream` response.
