@@ -1,4 +1,4 @@
-import '../../squadron.dart';
+import 'converter.dart';
 
 base class CastConverter extends Converter {
   const CastConverter();

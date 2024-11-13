@@ -143,7 +143,7 @@ There are a few constraints to multithreading in Dart:
 
 Data sent through Squadron are handled as `dynamic` types: to recover strong types and guarantee type-safety in your code, Squadron provides `Converter`s to "convert" data on the receiving-end:
 
-* native platforms use a `DirectCastConverter` that simply casts data;
+* native platforms use a `CastConverter` that will try its best to just cast data and avoid inspecting collection contents. This may not always be possible and it could impact performance.
 
 * on Web platforms, objects sent to/from a Web Worker leave Dart's realm when they go through the browser's `postMessage()` function, losing their Dart type in the process. They must therefore re-enter Dart's type-system on the receiving end. Squadron provides a `CastConverter` (converting data as well as items in `List`/`Set`/`Map` objects) and a `NumConverter` (adding special handling for `int`/`double` values) depending on the underlying runtime (JavaScript or Web Assembly).
 
@@ -153,7 +153,9 @@ On native platforms, it is generally safe to not bother about custom types and c
 
 There are a few constraints on what type of data can be transferred, please refer to [SendPort.send()](https://api.dart.dev/dart-isolate/SendPort/send.html) documentation for more information.
 
-On native platforms, Squadron uses a default `DirectCastConverter` that simply casts data on the receiving end.
+On native platforms, Squadron uses a default `CastConverter` that will try to simply cast data on the receiving end.
+
+However, when there are nested conversions (eg. `nullable<T>(nestedConversion)` or `list<T>(nestedConversion)`), casting is only possible when the nested conversion is the identity (`(x) => x as T`). In other situations, the conversion must be applied and this could impact performance in complex data structures (such as maps / lists). See Optimizing Conversions for more information.
 
 ### <a name="types_web"></a>Web Platforms
 
@@ -213,7 +215,7 @@ For large collections or complex structures (nested lists/maps), this process ma
 
 It can be optimized in various ways:
 
-* using `Int32List` and other typed data: under the hood, Squadron converters works with the underlying `ByteBuffer` which guarantees type-safety and hopefully comes with efficient cloning.
+* using `Int32List` and other typed data: use `TypedDataMarshaler<T>` in combination with Squadron's converter when necessary (eg: when the typed data is nullable or wrapped in a map/list). `TypedDataMarshaler<T>` works with the underlying `ByteBuffer` and guarantees type-safety; it is hoped that `ByteBuffer` comes with efficient cloning.
 
 * alternatively, it is possible to assign the ambiant converter `Squadron.converter` with a specialized/optimized converter. Squadron provides two additional converters that could be useful:
 

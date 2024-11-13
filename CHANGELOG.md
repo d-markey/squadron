@@ -1,3 +1,8 @@
+## 6.1.2
+
+- Remove `DirectCastConverter` and use `CastConverter` instead. Fixes https://github.com/d-markey/squadron_builder/issues/22.
+- Remove method `Converter.td<T>()` for handling typed data. Instead, conversion should be based on `TypedDataMarshaler<T>`, combined with `Squadron.converter` when necessary (eg. when the typed data list is nested in a map / list).
+
 ## 6.1.1
 
 - `Squadron.converter` should be modifiable but it was declared `final`: implement getter and setter.
