@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-02" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import '../../squadron.dart';</code>
+            <code>import 'converter.dart';</code>
         </line>
         <line number="2">
             <code/>
@@ -23,9 +23,9 @@
         <line number="7">
             <code/>
         </line>
-        <line hits="1" number="8">
+        <line hits="9" number="8">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="9" number="9">
             <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; Converter.identity&lt;T&gt;;</code>

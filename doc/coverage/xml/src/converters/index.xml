@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-02" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9859895" lines-covered="563" lines-valid="571" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9907919" lines-covered="538" lines-valid="543" package="src/converters" testname="lcov.info" version="1.6">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="num_converter.dart" functions-hit="0" functions-valid="0" lines-hit="14" lines-valid="15" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="14" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="lazy_in_place_map.dart" functions-hit="0" functions-valid="0" lines-hit="90" lines-valid="90" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="90" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="direct_cast_converter.dart" functions-hit="0" functions-valid="0" lines-hit="4" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="4" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="cast_converter.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="3" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="3" name="&lt;unnamed&gt;"/>
@@ -22,8 +19,8 @@
         <source branches-hit="0" branches-valid="0" filename="in_place_converter.dart" functions-hit="0" functions-valid="0" lines-hit="34" lines-valid="34" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="34" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="converter.dart" functions-hit="0" functions-valid="0" lines-hit="49" lines-valid="52" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="49" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="converter.dart" functions-hit="0" functions-valid="0" lines-hit="28" lines-valid="30" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="28" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
