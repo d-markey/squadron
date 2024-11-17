@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84" lines-covered="105" lines-valid="125" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-17" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84" lines-covered="105" lines-valid="125" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of '_channel.dart';</code>
@@ -579,9 +579,9 @@
         <line number="168">
             <code>  @override</code>
         </line>
-        <line hits="8" number="169">
+        <line hits="9" number="169">
             <code>  Future&lt;dynamic&gt; sendRequest(</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="170">
             <code>    int command,</code>
@@ -604,35 +604,35 @@
         <line number="176">
             <code>    final completer = Completer();</code>
         </line>
-        <line hits="8" number="177">
+        <line hits="9" number="177">
             <code>    late final StreamSubscription sub;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="178">
             <code/>
         </line>
-        <line hits="8" number="179">
+        <line hits="9" number="179">
             <code>    void $success(dynamic data) async {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="180">
+        <line hits="9" number="180">
             <code>      await sub.cancel();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="181">
+        <line hits="9" number="181">
             <code>      if (!completer.isCompleted) completer.complete(data);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="182">
+        <line hits="9" number="182">
             <code>    }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="183">
             <code/>
         </line>
-        <line hits="8" number="184">
+        <line hits="9" number="184">
             <code>    void $fail(Object ex, [StackTrace? st]) async {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4" number="185">
             <code>      await sub.cancel();</code>
@@ -649,9 +649,9 @@
         <line number="188">
             <code/>
         </line>
-        <line hits="8" number="189">
+        <line hits="9" number="189">
             <code>    void $done() async {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="190">
             <code>      await sub.cancel();</code>
@@ -680,25 +680,25 @@
         <line number="198">
             <code>        com.port2, command, args, token, inspectResponse);</code>
         </line>
-        <line hits="8" number="199">
+        <line hits="9" number="199">
             <code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="200">
+        <line hits="9" number="200">
             <code>    sub = _getResponseStream(com, req, post, streaming: false)</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="201">
+        <line hits="9" number="201">
             <code>        .listen($success, onError: $fail, onDone: $done);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="202">
+        <line hits="9" number="202">
             <code>    return completer.future;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="203">
+        <line hits="9" number="203">
             <code>  }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="204">
             <code/>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-11-13</dd>
+                    <dd>2024-11-17</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -565,7 +565,7 @@
                     <td>168</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 169" id="line169">
-                    <td>169</td><td></td><td>8</td><td><code>  Future&lt;dynamic&gt; sendRequest(</code></td>
+                    <td>169</td><td></td><td>9</td><td><code>  Future&lt;dynamic&gt; sendRequest(</code></td>
                 </tr>
                 <tr class="noop" title="Line 170" id="line170">
                     <td>170</td><td></td><td></td><td><code>    int command,</code></td>
@@ -589,28 +589,28 @@
                     <td>176</td><td></td><td></td><td><code>    final completer = Completer();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 177" id="line177">
-                    <td>177</td><td></td><td>8</td><td><code>    late final StreamSubscription sub;</code></td>
+                    <td>177</td><td></td><td>9</td><td><code>    late final StreamSubscription sub;</code></td>
                 </tr>
                 <tr class="noop" title="Line 178" id="line178">
                     <td>178</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 179" id="line179">
-                    <td>179</td><td></td><td>8</td><td><code>    void $success(dynamic data) async {</code></td>
+                    <td>179</td><td></td><td>9</td><td><code>    void $success(dynamic data) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 180" id="line180">
-                    <td>180</td><td></td><td>8</td><td><code>      await sub.cancel();</code></td>
+                    <td>180</td><td></td><td>9</td><td><code>      await sub.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 181" id="line181">
-                    <td>181</td><td></td><td>8</td><td><code>      if (!completer.isCompleted) completer.complete(data);</code></td>
+                    <td>181</td><td></td><td>9</td><td><code>      if (!completer.isCompleted) completer.complete(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 182" id="line182">
-                    <td>182</td><td></td><td>8</td><td><code>    }</code></td>
+                    <td>182</td><td></td><td>9</td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 183" id="line183">
                     <td>183</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 184" id="line184">
-                    <td>184</td><td></td><td>8</td><td><code>    void $fail(Object ex, [StackTrace? st]) async {</code></td>
+                    <td>184</td><td></td><td>9</td><td><code>    void $fail(Object ex, [StackTrace? st]) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 185" id="line185">
                     <td>185</td><td></td><td>4</td><td><code>      await sub.cancel();</code></td>
@@ -625,7 +625,7 @@
                     <td>188</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 189" id="line189">
-                    <td>189</td><td></td><td>8</td><td><code>    void $done() async {</code></td>
+                    <td>189</td><td></td><td>9</td><td><code>    void $done() async {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 190" id="line190">
                     <td>190</td><td></td><td>0</td><td><code>      await sub.cancel();</code></td>
@@ -655,19 +655,19 @@
                     <td>198</td><td></td><td></td><td><code>        com.port2, command, args, token, inspectResponse);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 199" id="line199">
-                    <td>199</td><td></td><td>8</td><td><code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code></td>
+                    <td>199</td><td></td><td>9</td><td><code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 200" id="line200">
-                    <td>200</td><td></td><td>8</td><td><code>    sub = _getResponseStream(com, req, post, streaming: false)</code></td>
+                    <td>200</td><td></td><td>9</td><td><code>    sub = _getResponseStream(com, req, post, streaming: false)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 201" id="line201">
-                    <td>201</td><td></td><td>8</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
+                    <td>201</td><td></td><td>9</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 202" id="line202">
-                    <td>202</td><td></td><td>8</td><td><code>    return completer.future;</code></td>
+                    <td>202</td><td></td><td>9</td><td><code>    return completer.future;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 203" id="line203">
-                    <td>203</td><td></td><td>8</td><td><code>  }</code></td>
+                    <td>203</td><td></td><td>9</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 204" id="line204">
                     <td>204</td><td></td><td></td><td><code></code></td>

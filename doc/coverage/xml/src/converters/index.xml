@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9907919" lines-covered="538" lines-valid="543" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-17" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9926605" lines-covered="541" lines-valid="545" package="src/converters" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="num_converter.dart" functions-hit="0" functions-valid="0" lines-hit="14" lines-valid="15" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="14" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="num_converter.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="17" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="lazy_in_place_map.dart" functions-hit="0" functions-valid="0" lines-hit="90" lines-valid="90" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="90" name="&lt;unnamed&gt;"/>

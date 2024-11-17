@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="28" lines-valid="30" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-17" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="28" lines-valid="30" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>typedef Cast&lt;T&gt; = T Function(dynamic);</code>
@@ -28,20 +28,20 @@
         <line number="8">
             <code/>
         </line>
-        <line hits="16" number="9">
+        <line hits="18" number="9">
             <code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="3" number="11">
+        <line hits="4" number="11">
             <code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="12">
-            <code>      (x is List) ? x : (x as Iterable).toList();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="12">
+            <code>      (x is List) ? x : (x as Iterable).toList();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code/>
@@ -67,29 +67,29 @@
         <line number="20">
             <code>  // nullable value</code>
         </line>
-        <line hits="2" number="21">
+        <line hits="4" number="21">
             <code>  Cast&lt;T?&gt; nullable&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="22">
+        <line hits="3" number="22">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="23">
-            <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="24">
-            <code>        ? value&lt;T?&gt;()</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="25">
-            <code>        : (($) =&gt; ($ == null) ? null : op($));</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="26">
+        <line hits="4" number="23">
+            <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="24">
+            <code>        ? value&lt;T?&gt;()</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="25">
+            <code>        : (($) =&gt; ($ == null) ? null : op($));</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="26">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="27">
             <code/>
@@ -97,29 +97,29 @@
         <line number="28">
             <code>  // list</code>
         </line>
-        <line hits="3" number="29">
+        <line hits="4" number="29">
             <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="30">
+        <line hits="4" number="30">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="31">
+        <line hits="4" number="31">
             <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="32">
+        <line hits="8" number="32">
             <code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5" number="33">
             <code>        : ((x) =&gt; Converter.toList(x).map&lt;T&gt;(op).toList());</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="34">
+        <line hits="2" number="34">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="35">
             <code/>
@@ -168,9 +168,9 @@
         <line number="47">
             <code>    } else {</code>
         </line>
-        <line hits="7" number="48">
+        <line hits="8" number="48">
             <code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v))));</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="49">
             <code>    }</code>

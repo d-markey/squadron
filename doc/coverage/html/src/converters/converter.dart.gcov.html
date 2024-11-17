@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-11-13</dd>
+                    <dd>2024-11-17</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -85,16 +85,16 @@
                     <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>16</td><td><code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code></td>
+                    <td>9</td><td></td><td>18</td><td><code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
                     <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>3</td><td><code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code></td>
+                    <td>11</td><td></td><td>4</td><td><code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>4</td><td><code>      (x is List) ? x : (x as Iterable).toList();</code></td>
+                    <td>12</td><td></td><td>5</td><td><code>      (x is List) ? x : (x as Iterable).toList();</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code></code></td>
@@ -121,22 +121,22 @@
                     <td>20</td><td></td><td></td><td><code>  // nullable value</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>2</td><td><code>  Cast&lt;T?&gt; nullable&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                    <td>21</td><td></td><td>4</td><td><code>  Cast&lt;T?&gt; nullable&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>2</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                    <td>22</td><td></td><td>3</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>2</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
+                    <td>23</td><td></td><td>4</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>2</td><td><code>        ? value&lt;T?&gt;()</code></td>
+                    <td>24</td><td></td><td>4</td><td><code>        ? value&lt;T?&gt;()</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>3</td><td><code>        : (($) =&gt; ($ == null) ? null : op($));</code></td>
+                    <td>25</td><td></td><td>6</td><td><code>        : (($) =&gt; ($ == null) ? null : op($));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>26</td><td></td><td>2</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
                     <td>27</td><td></td><td></td><td><code></code></td>
@@ -145,22 +145,22 @@
                     <td>28</td><td></td><td></td><td><code>  // list</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>3</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                    <td>29</td><td></td><td>4</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>3</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                    <td>30</td><td></td><td>4</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>3</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
+                    <td>31</td><td></td><td>4</td><td><code>    return Converter.isIdentity&lt;T&gt;(op)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>7</td><td><code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code></td>
+                    <td>32</td><td></td><td>8</td><td><code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
                     <td>33</td><td></td><td>5</td><td><code>        : ((x) =&gt; Converter.toList(x).map&lt;T&gt;(op).toList());</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>34</td><td></td><td>2</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code></code></td>
@@ -202,7 +202,7 @@
                     <td>47</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>7</td><td><code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v))));</code></td>
+                    <td>48</td><td></td><td>8</td><td><code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v))));</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
                     <td>49</td><td></td><td></td><td><code>    }</code></td>

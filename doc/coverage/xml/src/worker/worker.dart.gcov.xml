@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-13" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93939394" lines-covered="124" lines-valid="132" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-11-17" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93939394" lines-covered="124" lines-valid="132" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -428,9 +428,9 @@
         <line number="128">
             <code/>
         </line>
-        <line hits="13" number="129">
+        <line hits="14" number="129">
             <code>  void _enter() {</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="18" number="130">
             <code>    _workload++;</code>
@@ -447,9 +447,9 @@
         <line number="133">
             <code>    }</code>
         </line>
-        <line hits="4" number="134">
+        <line hits="5" number="134">
             <code>  }</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="135">
             <code/>
@@ -480,9 +480,9 @@
         <line number="142">
             <code>  /// Sends a workload to the worker.</code>
         </line>
-        <line hits="16" number="143">
+        <line hits="18" number="143">
             <code>  Future&lt;dynamic&gt; send(</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="144">
             <code>    int command, {</code>
@@ -502,9 +502,9 @@
         <line number="149">
             <code>  }) async {</code>
         </line>
-        <line hits="8" number="150">
+        <line hits="9" number="150">
             <code>    token?.throwIfCanceled();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="151">
             <code/>
@@ -512,16 +512,16 @@
         <line number="152">
             <code>    // get the channel, start the worker if necessary</code>
         </line>
-        <line hits="19" number="153">
+        <line hits="22" number="153">
             <code>    final channel = _channel ?? await start();</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line number="154">
             <code/>
         </line>
-        <line hits="8" number="155">
+        <line hits="9" number="155">
             <code>    final completer = ForwardCompleter();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="156">
             <code/>
@@ -544,17 +544,17 @@
         <line number="162">
             <code/>
         </line>
-        <line hits="12" number="163">
+        <line hits="14" number="163">
             <code>    _enter();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="164">
             <code>    try {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="16" number="165">
+        <line hits="18" number="165">
             <code>      final res = await channel.sendRequest(</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="166">
             <code>        command,</code>
@@ -574,9 +574,9 @@
         <line number="171">
             <code>      );</code>
         </line>
-        <line hits="8" number="172">
+        <line hits="9" number="172">
             <code>      completer.success(res);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="173">
             <code>    } catch (ex, st) {</code>
@@ -593,9 +593,9 @@
         <line number="176">
             <code>    } finally {</code>
         </line>
-        <line hits="12" number="177">
+        <line hits="14" number="177">
             <code>      _leave();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
         <line number="178">
             <code>    }</code>
@@ -603,13 +603,13 @@
         <line number="179">
             <code/>
         </line>
-        <line hits="16" number="180">
+        <line hits="18" number="180">
             <code>    return completer.future;</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="181">
+        <line hits="9" number="181">
             <code>  }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="182">
             <code/>
@@ -711,9 +711,9 @@
             <code>        if (controller.isClosed) return;</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="210">
+        <line hits="10" number="210">
             <code>        _enter();</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="211">
             <code>        controller.attachSubscription(channel</code>
