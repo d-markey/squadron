@@ -10,7 +10,13 @@ final class NumConverter extends Converter {
 
   static int _toInt(dynamic x) {
     if (x is int && x.isFinite) return x;
-    final y = (x as num).toDouble();
+    double y;
+    if (x is num) {
+      y = x.toDouble();
+    } else {
+      // seems like Map<int, V> are received as Map<JSString, V> on wasm
+      y = double.tryParse(x.toString())!;
+    }
     if (!y.isFinite) return double.nan as int; // intended type error
     final z = y.toInt(), d = y - z;
     if (d != 0) return double.nan as int; // intended type error

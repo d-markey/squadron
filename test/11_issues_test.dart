@@ -71,6 +71,16 @@ void execute(TestContext? tc) {
           });
         });
       });
+
+      tc.group('- #23 - Conversions', () {
+        tc.test('- Squadron Worker', () async {
+          await IssuesWorker(tc).useAsync((w) async {
+            await w.issue_23([0], columnWidths: const {1: 125});
+            await w.issue_23([0], columnWidths: const {2: 125});
+            await w.issue_23([0], columnWidths: {-12: 125});
+          });
+        });
+      });
     });
   });
 }

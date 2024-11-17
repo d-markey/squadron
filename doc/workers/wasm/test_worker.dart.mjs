@@ -55,6 +55,12 @@ export const instantiate = async (modulePromise, importObjectPromise) => {
 _49: v => v.toString(),
 _61: Date.now,
 _63: s => new Date(s * 1000).getTimezoneOffset() * 60 ,
+_64: s => {
+      if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(s)) {
+        return NaN;
+      }
+      return parseFloat(s);
+    },
 _65: () => {
           let stackString = new Error().stack.toString();
           let frames = stackString.split('\n');

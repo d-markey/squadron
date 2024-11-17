@@ -53,8 +53,15 @@ export const instantiate = async (modulePromise, importObjectPromise) => {
     const dart2wasm = {
 
 _49: v => v.toString(),
+_50: (d, digits) => d.toFixed(digits),
 _61: Date.now,
 _63: s => new Date(s * 1000).getTimezoneOffset() * 60 ,
+_64: s => {
+      if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(s)) {
+        return NaN;
+      }
+      return parseFloat(s);
+    },
 _65: () => {
           let stackString = new Error().stack.toString();
           let frames = stackString.split('\n');
@@ -67,6 +74,7 @@ _65: () => {
 _85: s => JSON.stringify(s),
 _86: s => printToConsole(s),
 _87: a => a.join(''),
+_93: s => s.trim(),
 _97: (s, p, i) => s.indexOf(p, i),
 _103: (a, i) => a.push(i),
 _114: a => a.length,
@@ -82,8 +90,10 @@ _126: (o, start, length) => new Int32Array(o.buffer, o.byteOffset + start, lengt
 _129: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
 _130: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
 _133: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
+_134: o => o.byteLength,
 _137: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
 _138: (b, o) => new DataView(b, o),
+_139: (b, o, l) => new DataView(b, o, l),
 _140: Function.prototype.call.bind(DataView.prototype.getUint8),
 _141: Function.prototype.call.bind(DataView.prototype.setUint8),
 _142: Function.prototype.call.bind(DataView.prototype.getInt8),
@@ -96,6 +106,10 @@ _148: Function.prototype.call.bind(DataView.prototype.getUint32),
 _149: Function.prototype.call.bind(DataView.prototype.setUint32),
 _150: Function.prototype.call.bind(DataView.prototype.getInt32),
 _151: Function.prototype.call.bind(DataView.prototype.setInt32),
+_152: Function.prototype.call.bind(DataView.prototype.getBigUint64),
+_153: Function.prototype.call.bind(DataView.prototype.setBigUint64),
+_154: Function.prototype.call.bind(DataView.prototype.getBigInt64),
+_155: Function.prototype.call.bind(DataView.prototype.setBigInt64),
 _156: Function.prototype.call.bind(DataView.prototype.getFloat32),
 _158: Function.prototype.call.bind(DataView.prototype.getFloat64),
 _177: o => Object.keys(o),

@@ -1,3 +1,7 @@
+## 6.1.3
+
+- Handle weird case where `int` is received as `JSString` when worker was compiled to Web Assembly. Fixes https://github.com/d-markey/squadron_builder/issues/23.
+
 ## 6.1.2
 
 - Remove `DirectCastConverter` and use `CastConverter` instead. Fixes https://github.com/d-markey/squadron_builder/issues/22.
