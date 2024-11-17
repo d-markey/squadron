@@ -72,7 +72,9 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.group('- #23 - Conversions', () {
+      tc.group(
+          '- #23 - Handle case where Map<int, _> is received as Map<JSString, _> in wasm worker',
+          () {
         tc.test('- Squadron Worker', () async {
           await IssuesWorker(tc).useAsync((w) async {
             await w.issue_23([0], columnWidths: const {1: 125});

@@ -13543,7 +13543,7 @@
       this.$$toNullableInt = t1;
     },
     testNumConverter____closure28: function testNumConverter____closure28(t0) {
-      this.$$toInt = t0;
+      this.$$toNullableInt = t0;
     },
     testNumConverter____closure29: function testNumConverter____closure29(t0) {
       this.$$toNullableInt = t0;
@@ -48574,7 +48574,7 @@
     call$0() {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$self = this, t1;
+        $async$self = this, t1, t2;
       var $async$call$0 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -48582,13 +48582,16 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              t1 = $.$get$_throwsTypeError();
+              A.expect($async$self.$$toInt.call$1("1"), 1, null);
+              t1 = $async$self.$$toNullableInt;
+              A.expect(t1.call$1("1"), 1, null);
+              t2 = $.$get$_throwsTypeError();
               $async$goto = 2;
-              return A._asyncAwait(A._expect(new A.testNumConverter____closure28($async$self.$$toInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure28(t1), t2, null, null, null, false), $async$call$0);
             case 2:
               // returning from await.
               $async$goto = 3;
-              return A._asyncAwait(A._expect(new A.testNumConverter____closure29($async$self.$$toNullableInt), t1, null, null, null, false), $async$call$0);
+              return A._asyncAwait(A._expect(new A.testNumConverter____closure29(t1), t2, null, null, null, false), $async$call$0);
             case 3:
               // returning from await.
               // implicit return
@@ -48601,13 +48604,13 @@
   };
   A.testNumConverter____closure28.prototype = {
     call$0() {
-      return this.$$toInt.call$1("1");
+      return this.$$toNullableInt.call$1("1.1");
     },
-    $signature: 3
+    $signature: 4
   };
   A.testNumConverter____closure29.prototype = {
     call$0() {
-      return this.$$toNullableInt.call$1("1");
+      return this.$$toNullableInt.call$1("garbage");
     },
     $signature: 4
   };
@@ -64813,7 +64816,7 @@
     call$0() {
       var t1 = this.tc;
       t1.group$2("- #8 - Exceptions from Streams must come through onError", new A.execute___closure1(t1));
-      t1.group$2("- #23 - Conversions", new A.execute___closure2(t1));
+      t1.group$2("- #23 - Handle case where Map<int, _> is received as Map<JSString, _> in wasm worker", new A.execute___closure2(t1));
     },
     $signature: 1
   };
