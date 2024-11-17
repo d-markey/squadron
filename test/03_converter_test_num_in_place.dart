@@ -54,8 +54,10 @@ void testInPlaceNumConverter(TestContext tc) {
       });
 
       tc.test('- String', () async {
-        await expectLater(() => $toInt('1'), _throwsTypeError);
-        await expectLater(() => $toNullableInt('1'), _throwsTypeError);
+        expect($toInt('1'), 1);
+        expect($toNullableInt('1'), 1);
+        await expectLater(() => $toNullableInt('1.1'), _throwsTypeError);
+        await expectLater(() => $toNullableInt('garbage'), _throwsTypeError);
       });
 
       tc.test('- Object', () async {
