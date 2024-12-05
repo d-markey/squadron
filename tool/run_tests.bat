@@ -50,7 +50,7 @@ IF "%__REBUILD__%" == "1" (
 
 RMDIR .\test\coverage /s /q
 MKDIR .\test\coverage
-CALL dart run test -j 1 --coverage=.\test\coverage %__ARGS__%
+CALL dart test -j 1 --coverage=.\test\coverage %__ARGS__%
 IF "%__COV__%" == "1" (
     CALL dart run coverage:format_coverage --packages=.\.dart_tool\package_config.json --report-on=lib --lcov -o .\test\coverage\lcov.info -i .\test\coverage
     RMDIR .\doc\coverage /s /q
