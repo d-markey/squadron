@@ -199,12 +199,24 @@ void execute(TestContext? tc) {
         expect(res, src);
       }, skip: tc.clientPlatform.isJs);
 
+      void $dblExpect(double res, double src) {
+        if (src.isNaN) {
+          expect(res, isNaN);
+        } else {
+          expect(res, src);
+        }
+      }
+
       tc.test('- Float32List', () {
         final src = Float32List(4);
         rndFill(src.buffer);
         final marshaler = TypedDataMarshaler<Float32List>();
         final res = marshaler.unmarshal(marshaler.marshal(src));
-        expect(res, src);
+        expect(identical(res, src), isFalse);
+        expect(res.length, src.length);
+        for (var i = 0; i < src.length; i++) {
+          $dblExpect(res[i], src[i]);
+        }
       });
 
       tc.test('- Float64List', () {
@@ -212,7 +224,11 @@ void execute(TestContext? tc) {
         rndFill(src.buffer);
         final marshaler = TypedDataMarshaler<Float64List>();
         final res = marshaler.unmarshal(marshaler.marshal(src));
-        expect(res, src);
+        expect(identical(res, src), isFalse);
+        expect(res.length, src.length);
+        for (var i = 0; i < src.length; i++) {
+          $dblExpect(res[i], src[i]);
+        }
       });
 
       tc.test('- Float32x4List', () {
@@ -224,10 +240,10 @@ void execute(TestContext? tc) {
         expect(res.lengthInBytes, src.lengthInBytes);
         for (var i = 0; i < src.length; i++) {
           final s = src[i], r = res[i];
-          expect(s.w, r.w);
-          expect(s.x, r.x);
-          expect(s.y, r.y);
-          expect(s.z, r.z);
+          $dblExpect(s.w, r.w);
+          $dblExpect(s.x, r.x);
+          $dblExpect(s.y, r.y);
+          $dblExpect(s.z, r.z);
         }
       });
 
@@ -240,8 +256,8 @@ void execute(TestContext? tc) {
         expect(res.lengthInBytes, src.lengthInBytes);
         for (var i = 0; i < src.length; i++) {
           final s = src[i], r = res[i];
-          expect(s.x, r.x);
-          expect(s.y, r.y);
+          $dblExpect(s.x, r.x);
+          $dblExpect(s.y, r.y);
         }
       });
     });
