@@ -1,151 +1,129 @@
-import 'dart:html';
+import 'dart:async';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
+import 'package:test/test.dart';
+import 'package:web/web.dart';
 
-import '../classes/test_context.dart';
-import 'test_runner.dart';
-
-@JS()
-external get dartPrint;
-
-@JS()
-external set dartPrint(dynamic print);
+import 'html_helpers.dart';
+import 'runner_message.dart';
+import 'test_runner.dart' as runner;
 
 void main() async {
-  await discoverTests();
+  final testRunner = document.findById<HTMLIFrameElement>('test-runner')!;
 
-  final origin = window.location.origin;
-  final testRunner = querySelector('#test-runner') as IFrameElement;
+  void $notify(JSAny? message) {
+    testRunner.notify(message);
+  }
 
-  dartPrint = allowInterop((dynamic message) {
-    testRunner.contentWindow
-        ?.postMessage(message?.toString() ?? '(null)', origin);
+  final logStatus = document.findById<HTMLSpanElement>('log-status')!;
+  void $setStatus(Object? status) {
+    logStatus.innerText = ' - ${status ?? '(null)'}';
+  }
+
+  var testRunnerCompleter = Completer<void>();
+
+  window.onMessage.listen((m) {
+    final msg = m.data.toRunnerMessage;
+    if (msg == RunnerMessage.ready) {
+      if (!testRunnerCompleter.isCompleted) {
+        testRunnerCompleter.complete();
+      }
+    } else {
+      $setStatus(msg.message);
+    }
   });
 
-  final logStatus = querySelector('#log-status')!;
+  final wasmClient = document.createCheckbox(id: 'wasm-client');
+  final wasmWorkers = document.createCheckbox(id: 'wasm-workers');
 
-  void setStatus(String status) {
-    logStatus.innerText = ' - $status';
+  String $getTestRunnerUrl() {
+    final client = wasmClient.checked ? 'wasm' : 'js';
+    final workers = wasmWorkers.checked ? 'wasm' : 'js';
+    return 'test_runner_${client}2$workers.html';
   }
 
-  window.onMessage.listen((m) => setStatus(m.data?.toString() ?? '(null)'));
+  final tests = <String, HTMLInputElement>{};
 
-  final logHeader = querySelector('#log-header')!;
-
-  final separator = Element.span()..text = ' - ';
-  logHeader.append(separator);
-
-  String getTestRunnerUrl() {
-    final client =
-        ((querySelector('#wasm-client') as CheckboxInputElement).checked ==
-                true)
-            ? 'test_runner_wasm'
-            : 'test_runner_js';
-
-    final workers =
-        ((querySelector('#wasm-workers') as CheckboxInputElement).checked ==
-                true)
-            ? 'wasm'
-            : 'js';
-
-    return '${client}2$workers.html';
-  }
-
-  final clearLink = Element.a() as AnchorElement
-    ..text = 'Clear'
-    ..href = '#'
-    ..onClick.listen((e) async {
-      testRunner.src = getTestRunnerUrl();
-      await Future.delayed(Duration.zero);
-      print('Ready');
-      print('');
-    });
-  logHeader.append(clearLink);
-
-  final buttonBar = querySelector('#button-bar')!;
-  final testList = querySelector('#test-list')!;
-
-  void executeTests([MouseEvent? _]) async {
+  void $launch([MouseEvent? _]) async {
     final testIds = <String>[];
-    for (var test in testList.children.whereType<CheckboxInputElement>()) {
-      if (test.checked == true) {
-        testIds.add(Uri.encodeQueryComponent(test.id));
+    for (var entry in tests.entries) {
+      if (entry.value.checked) {
+        testIds.add(entry.key);
       }
     }
-
-    testRunner.src = '${getTestRunnerUrl()}?${testIds.join('&')}';
-  }
-
-  void selectAll([MouseEvent? _]) async {
-    for (var test in testList.children.whereType<CheckboxInputElement>()) {
-      test.checked = true;
+    if (testIds.isNotEmpty) {
+      testRunnerCompleter = Completer();
+      testRunnerCompleter.future.then((_) {
+        $notify(RunnerMessage.launch(testIds).toJS);
+      });
+      testRunner.src = $getTestRunnerUrl();
     }
   }
 
-  void deselectAll([MouseEvent? _]) async {
-    for (var test in testList.children.whereType<CheckboxInputElement>()) {
-      test.checked = false;
+  void $selectAll([MouseEvent? _]) {
+    for (var checkbox in tests.values) {
+      checkbox.checked = true;
     }
   }
 
-  void toggle([MouseEvent? _]) async {
-    for (var test in testList.children.whereType<CheckboxInputElement>()) {
-      test.checked = !(test.checked ?? false);
+  void $deselectAll([MouseEvent? _]) {
+    for (var checkbox in tests.values) {
+      checkbox.checked = false;
     }
   }
 
-  void cancel([MouseEvent? _]) {
-    testRunner.contentWindow?.postMessage(TestContext.cancelled, origin);
+  void $toggle([MouseEvent? _]) {
+    for (var checkbox in tests.values) {
+      checkbox.checked = !checkbox.checked;
+    }
   }
 
-  buttonBar.append(ButtonElement()
-    ..text = 'Run selected tests'
-    ..onClick.listen(executeTests));
+  Future<void> $cancel([MouseEvent? _]) async {
+    $notify(RunnerMessage.cancelled.toJS);
+    await pumpEventQueue();
+  }
 
-  buttonBar.append(ButtonElement()
-    ..text = 'Select All'
-    ..onClick.listen(selectAll));
+  void $clear([MouseEvent? _]) async {
+    await $cancel();
+    testRunner.src = $getTestRunnerUrl();
+    $setStatus('Ready');
+    $notify('Ready'.toJS);
+    $notify(''.toJS);
+  }
 
-  buttonBar.append(ButtonElement()
-    ..text = 'Deselect All'
-    ..onClick.listen(deselectAll));
+  final logHeader = document.findById<HTMLSpanElement>('log-header')!;
+  logHeader.appendSpan(text: ' - ');
+  logHeader.appendAnchor(text: 'Clear', href: '#', onClick: $clear);
 
-  buttonBar.append(ButtonElement()
-    ..text = 'Toggle'
-    ..onClick.listen(toggle));
+  final buttonBar = document.findById<HTMLDivElement>('button-bar')!;
+  buttonBar.appendButton(label: 'Run selected tests', onClick: $launch);
+  buttonBar.appendButton(label: 'Select All', onClick: $selectAll);
+  buttonBar.appendButton(label: 'Deselect All', onClick: $deselectAll);
+  buttonBar.appendButton(label: 'Toggle', onClick: $toggle);
+  buttonBar.appendButton(label: 'Cancel', onClick: $cancel);
+  buttonBar.appendChild(wasmWorkers);
+  buttonBar.appendLabel(text: 'Web Assembly Workers', target: wasmWorkers);
+  buttonBar.appendChild(wasmClient);
+  buttonBar.appendLabel(text: 'Web Assembly Client', target: wasmClient);
 
-  buttonBar.append(ButtonElement()
-    ..text = 'Cancel'
-    ..onClick.listen(cancel));
+  $setStatus('Test discovery in progress...');
+  $notify('Test discovery in progress...'.toJS);
 
-  buttonBar.append(CheckboxInputElement()
-    ..id = 'wasm-workers'
-    ..checked = false);
-  buttonBar.append(LabelElement()
-    ..text = 'Web Assembly Workers'
-    ..htmlFor = 'wasm-workers');
-
-  buttonBar.append(CheckboxInputElement()
-    ..id = 'wasm-client'
-    ..checked = false);
-  buttonBar.append(LabelElement()
-    ..text = 'Web Assembly Client'
-    ..htmlFor = 'wasm-client');
+  final rootGroups = await runner.discover();
 
   var n = 0;
-  for (var label in TestContext.rootGroups) {
-    if (n++ > 0) {
-      testList.appendHtml(' | ');
-    }
-    testList.append(CheckboxInputElement()
-      ..id = label
-      ..checked = true);
-    testList.append(LabelElement()
-      ..text = label
-      ..htmlFor = label);
+  final testList = document.findById<HTMLDivElement>('test-list')!;
+  for (var g in rootGroups) {
+    if (n++ > 0) testList.appendSpan(text: ' | ');
+    final label = '${g.label} (${g.tests} tests)';
+    final checkbox = document.createCheckbox(id: CSS.escape(g.label));
+    checkbox.checked = true;
+    tests[g.label] = checkbox;
+    testList.appendChild(checkbox);
+    testList.appendLabel(text: label, target: checkbox);
   }
 
-  setStatus('Ready');
-  print('Ready');
-  print('');
+  $setStatus('Ready');
+  $notify('Ready'.toJS);
+  $notify(''.toJS);
 }

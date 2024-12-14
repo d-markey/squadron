@@ -9,8 +9,7 @@ export 'src/converters/converter.dart';
 export 'src/converters/in_place_converter.dart';
 export 'src/converters/lazy_in_place_converter.dart';
 export 'src/converters/num_converter.dart';
-export 'src/exceptions/exception_manager.dart'
-    hide SquadronExceptionDeserializer;
+export 'src/exceptions/exception_manager.dart';
 export 'src/exceptions/squadron_canceled_exception.dart'
     hide SquadronCanceledExceptionExt;
 export 'src/exceptions/squadron_canceled_exceptions.dart'
@@ -19,7 +18,10 @@ export 'src/exceptions/squadron_error.dart' hide SquadronErrorExt;
 export 'src/exceptions/squadron_exception.dart';
 export 'src/exceptions/squadron_timeout_exception.dart'
     hide SquadronTimeoutExceptionExt;
-export 'src/exceptions/task_canceled_exception.dart';
+export 'src/exceptions/task_canceled_exception.dart'
+    hide TaskCanceledExceptionExt;
+export 'src/exceptions/task_terminated_exception.dart'
+    hide TaskTerminatedExceptionExt;
 export 'src/exceptions/worker_exception.dart' hide WorkerExceptionExt;
 export 'src/iworker.dart';
 export 'src/local_worker/local_worker.dart';

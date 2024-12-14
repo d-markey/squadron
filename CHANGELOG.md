@@ -1,3 +1,8 @@
+## 6.1.4-wip
+
+- Work in progress
+- Implement `Worker.terminate()` to enable immediate termination of a worker.
+
 ## 6.1.3
 
 - Handle weird case where `int` is received as `JSString` when worker was compiled to Web Assembly. Fixes https://github.com/d-markey/squadron_builder/issues/23.

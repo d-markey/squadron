@@ -13,7 +13,14 @@ abstract class LocalService implements WorkerService {
 }
 
 class LocalServiceImpl extends LocalService {
-  LocalServiceImpl();
+  LocalServiceImpl() {
+    operations.addAll({
+      LocalService.getIdCommand: (req) => getId(),
+      LocalService.throwExceptionCommand: (req) => throwException(),
+      LocalService.sequenceCommand: (req) =>
+          sequence(Squadron.converter.value<int>()(req.args[0])),
+    });
+  }
 
   @override
   String getId() => 'LocalService running as "$threadId"';
@@ -26,10 +33,5 @@ class LocalServiceImpl extends LocalService {
       Stream.fromIterable(Iterable.generate(count));
 
   @override
-  late final Map<int, CommandHandler> operations = {
-    LocalService.getIdCommand: (req) => getId(),
-    LocalService.throwExceptionCommand: (req) => throwException(),
-    LocalService.sequenceCommand: (req) =>
-        sequence(Squadron.converter.value<int>()(req.args[0])),
-  };
+  final Map<int, CommandHandler> operations = {};
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:cancelation_token/cancelation_token.dart';
+import 'package:meta/meta.dart';
 
+import '_builtin_exceptions.dart';
 import 'squadron_error.dart';
 
 class TaskCanceledException implements SquadronError, CanceledException {
@@ -17,5 +19,17 @@ class TaskCanceledException implements SquadronError, CanceledException {
   String toString() => jsonEncode(serialize());
 
   @override
-  List serialize() => throw UnimplementedError();
+  List serialize() => List.unmodifiable([$taskCanceledExceptionType, message]);
+}
+
+const _$type = 0;
+const _$message = 1;
+
+@internal
+extension TaskCanceledExceptionExt on TaskCanceledException {
+  static TaskCanceledException? deserialize(List? props) {
+    if (props == null) return null;
+    if (props[_$type] != $taskCanceledExceptionType) return null;
+    return TaskCanceledException(props[_$message]);
+  }
 }

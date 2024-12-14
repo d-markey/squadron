@@ -4,47 +4,42 @@
 library;
 
 import 'package:logger/logger.dart';
-import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 
 import 'classes/memory_logger.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
-import 'worker_services/test_service_worker.dart';
+import 'worker_services/log_service_worker.dart';
 
-void main() {
-  TestContext.init('~').then(execute);
-  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
-}
+Future<void> main() => TestContext.run(execute);
 
-String testScript = '02_logging_test.dart';
+const testScript = '02_logging_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
 
-  tc.run(() {
+  tc.launch(() {
     tc.group("- Logging", () {
-      final logs = <String>[];
-      final memoryLogger = MemoryLogger(logs);
-      late TestWorker worker;
+      final logger = MemoryLogger();
+      late LogWorker worker;
 
-      setUpAll(() async {
-        worker = TestWorker(tc);
-        worker.channelLogger = memoryLogger;
+      tc.setUpAll(() async {
+        worker = LogWorker(tc);
+        worker.channelLogger = logger;
         await worker.start();
       });
 
-      tearDownAll(() {
+      tc.tearDownAll(() {
         worker.stop();
       });
 
       setUp(() {
-        memoryLogger.clear();
-        memoryLogger.level = Level.all;
+        logger.clear();
+        logger.level = Level.all;
       });
 
       tearDown(() {
-        memoryLogger.clear();
+        logger.clear();
       });
 
       tc.test('off', () async {
@@ -52,12 +47,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, doesNotMention('debug'));
-        expect(logs, doesNotMention('info'));
-        expect(logs, doesNotMention('warning'));
-        expect(logs, doesNotMention('error'));
-        expect(logs, doesNotMention('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, doesNotMention('debug'));
+        expect(logger.logs, doesNotMention('info'));
+        expect(logger.logs, doesNotMention('warning'));
+        expect(logger.logs, doesNotMention('error'));
+        expect(logger.logs, doesNotMention('fatal'));
       });
 
       tc.test('>= fatal', () async {
@@ -65,12 +60,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, doesNotMention('debug'));
-        expect(logs, doesNotMention('info'));
-        expect(logs, doesNotMention('warning'));
-        expect(logs, doesNotMention('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, doesNotMention('debug'));
+        expect(logger.logs, doesNotMention('info'));
+        expect(logger.logs, doesNotMention('warning'));
+        expect(logger.logs, doesNotMention('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('>= error', () async {
@@ -78,12 +73,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, doesNotMention('debug'));
-        expect(logs, doesNotMention('info'));
-        expect(logs, doesNotMention('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, doesNotMention('debug'));
+        expect(logger.logs, doesNotMention('info'));
+        expect(logger.logs, doesNotMention('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('>= warning', () async {
@@ -91,12 +86,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, doesNotMention('debug'));
-        expect(logs, doesNotMention('info'));
-        expect(logs, mentions('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, doesNotMention('debug'));
+        expect(logger.logs, doesNotMention('info'));
+        expect(logger.logs, mentions('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('>= info', () async {
@@ -104,12 +99,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, doesNotMention('debug'));
-        expect(logs, mentions('info'));
-        expect(logs, mentions('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, doesNotMention('debug'));
+        expect(logger.logs, mentions('info'));
+        expect(logger.logs, mentions('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('>= debug', () async {
@@ -117,12 +112,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, doesNotMention('trace'));
-        expect(logs, mentions('debug'));
-        expect(logs, mentions('info'));
-        expect(logs, mentions('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, doesNotMention('trace'));
+        expect(logger.logs, mentions('debug'));
+        expect(logger.logs, mentions('info'));
+        expect(logger.logs, mentions('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('>= trace', () async {
@@ -130,12 +125,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, mentions('trace'));
-        expect(logs, mentions('debug'));
-        expect(logs, mentions('info'));
-        expect(logs, mentions('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, mentions('trace'));
+        expect(logger.logs, mentions('debug'));
+        expect(logger.logs, mentions('info'));
+        expect(logger.logs, mentions('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
 
       tc.test('all', () async {
@@ -143,12 +138,12 @@ void execute(TestContext? tc) {
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
         await pumpEventQueue();
-        expect(logs, mentions('trace'));
-        expect(logs, mentions('debug'));
-        expect(logs, mentions('info'));
-        expect(logs, mentions('warning'));
-        expect(logs, mentions('error'));
-        expect(logs, mentions('fatal'));
+        expect(logger.logs, mentions('trace'));
+        expect(logger.logs, mentions('debug'));
+        expect(logger.logs, mentions('info'));
+        expect(logger.logs, mentions('warning'));
+        expect(logger.logs, mentions('error'));
+        expect(logger.logs, mentions('fatal'));
       });
     });
   });

@@ -1,72 +1,50 @@
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';
-import 'package:test/test.dart';
 
 import '../classes/test_context.dart';
-import 'tests_wasm.dart' if (dart.library.html) 'tests_js.dart';
+import 'test_suites.dart';
 
-String getTestId(String label) => '\$${label.replaceAll(' ', '-')}';
+Future<TestContext?> init({SquadronPlatformType? workerPlatform}) =>
+    TestContext.init(
+      RunMode.launch,
+      '~/..',
+      workerPlatform ?? Squadron.platformType,
+    );
 
-Iterable<String> get testGroups => TestContext.rootGroups;
-
-Future<void> discoverTests() async {
-  final testContext = (await TestContext.init('~/..', Squadron.platformType))!;
-  for (var executor in executors.entries) {
-    print('Discover from script ${executor.value.script}');
-    testContext.discover(executor.value.runner);
+Future<Iterable<({String label, int tests})>> discover() async {
+  final context = await TestContext.init(
+    RunMode.discover,
+    '~/..',
+    Squadron.platformType,
+  );
+  if (context == null) {
+    print('Failed to initialize a test context');
+    return const [];
   }
-  await testContext.done;
-  await pumpEventQueue();
-  await pumpEventQueue();
+
+  for (var testSuite in testSuites) {
+    context.discover(testSuite.runner);
+  }
+  await context.waitForCompletion();
+
+  return context.rootGroups;
 }
 
-Future<TestContext?> runTests(
-    Iterable<String> testLabels, SquadronPlatformType platform) async {
-  if (testLabels.isNotEmpty) {
-    final testContext = await TestContext.init('~/..', platform);
-    if (testContext == null) {
-      throw UnsupportedError('Unsupported platform ${platform.label}');
-    }
+void launch(TestContext context, Iterable<String> testLabels) {
+  if (testLabels.isEmpty) return;
 
-    for (var testLabel in testLabels) {
-      testContext.onlyTests.add(
-        RegExp('${RegExp.escape(testLabel)}.*', caseSensitive: false),
-      );
-    }
-
-    print(
-        'Selected tests: ${testContext.onlyTests.map((r) => r.display()).join(', ')}');
-    print('Test client running on ${testContext.clientPlatformName}');
-    print('Workers running on ${testContext.workerPlatformName}');
-
-    for (var entryPoint in testContext.entryPoints.defined) {
-      print('Worker $entryPoint');
-    }
-
-    for (var executor in executors.entries) {
-      print('Run from script ${executor.value.script}');
-      executor.value.runner(testContext);
-      reportStatus('${testContext.pending} tests pending...');
-    }
-
-    Timer.periodic(Duration(milliseconds: 250), (t) {
-      if (testContext.pending == 0) {
-        t.cancel();
-      } else {
-        reportStatus('${testContext.pending} tests pending...');
-      }
-    });
-
-    testContext.done
-        .then((canceled) => reportStatus(canceled ? 'Cancelled' : 'Done'));
-
-    return testContext;
-  } else {
-    return null;
+  for (var testLabel in testLabels) {
+    context.onlyTests.add(
+      RegExp('^${RegExp.escape(testLabel)}.*', caseSensitive: false),
+    );
   }
-}
 
-extension _DisplayExt on Pattern {
-  String display() => (this is RegExp) ? (this as RegExp).pattern : toString();
+  print('Selected tests: ${testLabels.join(', ')}');
+  print('Test client running on ${context.clientPlatformName}');
+  print('Workers running on ${context.workerPlatformName}');
+
+  for (var testSuite in testSuites) {
+    testSuite.runner(context);
+  }
 }

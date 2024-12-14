@@ -6,10 +6,15 @@ import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
 import '../_impl/xplat/_forward_stream_controller.dart';
+import '../_impl/xplat/_platform.dart'
+    if (dart.library.io) '../_impl/native/_platform.dart'
+    if (dart.library.html) '../_impl/web/_platform.dart'
+    if (dart.library.js_interop) '../_impl/web/_platform.dart' as impl;
 import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
+import '../exceptions/task_terminated_exception.dart';
 import '../exceptions/worker_exception.dart';
 import '../iworker.dart';
 import '../stats/worker_stat.dart';
@@ -50,7 +55,9 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
       (_exceptionManager ??= ExceptionManager());
   ExceptionManager? _exceptionManager;
 
-  final PlatformThreadHook? _threadHook;
+  PlatformThreadHook? _threadHook;
+
+  PlatformThread? _platformThread;
 
   /// The [Worker]'s start arguments.
   final List args;
@@ -126,14 +133,18 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   Channel? _channel;
   Future<Channel>? _openChannel;
 
-  void _enter() {
+  final _pendingTasks = <Object>[];
+
+  void _enter(Object task) {
+    _pendingTasks.add(task);
     _workload++;
     if (_workload > _maxWorkload) {
       _maxWorkload = _workload;
     }
   }
 
-  void _leave() {
+  void _leave(Object task) {
+    _pendingTasks.remove(task);
     _workload--;
     _totalWorkload++;
     _idle = microsecTimeStamp();
@@ -160,7 +171,9 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
       completer.failure(SquadronException.from(ex, null, command));
     });
 
-    _enter();
+    _enter(completer);
+    completer.future.whenComplete(() => _leave(completer));
+
     try {
       final res = await channel.sendRequest(
         command,
@@ -173,8 +186,6 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     } catch (ex, st) {
       _totalErrors++;
       completer.failure(SquadronException.from(ex, st, command));
-    } finally {
-      _leave();
     }
 
     return completer.future;
@@ -207,7 +218,8 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
         squadronToken?.throwIfCanceled();
         final channel = _channel ?? await start();
         if (controller.isClosed) return;
-        _enter();
+        _enter(controller);
+        controller.done.whenComplete(() => _leave(controller));
         controller.attachSubscription(channel
             .sendStreamingRequest(
               command,
@@ -223,9 +235,9 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
               onDone: controller.close,
               cancelOnError: false,
             ));
-        controller.done.whenComplete(_leave);
       } catch (ex, st) {
         _totalErrors++;
+        controller.subscription?.cancel();
         controller.addError(SquadronException.from(ex, st, command));
         controller.close();
       }
@@ -240,8 +252,16 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     if (_stopped != null) {
       throw WorkerException('Invalid state: worker is stopped');
     }
+
+    FutureOr<void> threadHook(PlatformThread thread) {
+      _platformThread = thread;
+      final res = _threadHook?.call(thread);
+      _threadHook = null;
+      return res;
+    }
+
     _openChannel ??= Channel.open(
-        exceptionManager, channelLogger, _entryPoint, args, _threadHook);
+        exceptionManager, channelLogger, _entryPoint, args, threadHook);
     final channel = _channel ?? await _openChannel;
     if (_channel == null) {
       _channel = channel;
@@ -259,6 +279,40 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
       _openChannel = null;
       _channel?.close();
       _channel = null;
+    }
+    Future.wait(
+      _pendingTasks.map((t) {
+        if (t is ForwardCompleter) return t.future;
+        if (t is ForwardStreamController) return t.done;
+        return null;
+      }).nonNulls,
+      cleanUp: (_) => _shutdown(),
+    ).ignore();
+  }
+
+  void _shutdown() {
+    if (_platformThread != null) {
+      channelLogger?.d('Terminate worker thread');
+      impl.terminate(_platformThread!);
+      _platformThread = null;
+    }
+  }
+
+  /// Terminates this worker.
+  void terminate() {
+    // stop now
+    stop();
+    // terminate all tasks
+    final error = TaskTerminatedException('Worker has been killed');
+    final pendingTasks = _pendingTasks.toList();
+    for (var task in pendingTasks) {
+      if (task is ForwardCompleter) {
+        task.failure(error);
+      } else if (task is ForwardStreamController) {
+        task.subscription?.cancel();
+        task.addError(error);
+        task.close().ignore();
+      }
     }
   }
 

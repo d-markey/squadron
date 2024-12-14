@@ -18,11 +18,12 @@ part '03_converter_test_num.dart';
 part '03_converter_test_num_in_place.dart';
 part '03_converter_test_num_lazy_in_place.dart';
 
-void main() {
-  TestContext.init('~').then(execute);
-}
+Future<void> main() => TestContext.run(
+      execute,
+      mixedContext: false /* this test suite has no workers */,
+    );
 
-String testScript = '03_converter_test.dart';
+const testScript = '03_converter_test.dart';
 
 final _listOfInts = [1, 2, 3, 4];
 final _listOfIntsWithIntegralDouble = [1, 2, 3.toDouble(), 4];
@@ -70,7 +71,7 @@ void _unexpectedFailureIfJs(String message, [dynamic ex]) {
 void execute(TestContext? tc) {
   if (tc == null) return;
 
-  tc.run(() {
+  tc.launch(() {
     tc.group('- Lazy lists', () {
       testLazyLists(tc);
     });
@@ -88,13 +89,14 @@ void execute(TestContext? tc) {
         // making sure those assumptions hold over time
         expect(1.1, isNotA<int>());
         expect(1.1, isA<double>());
-        expect(1.toDouble(), isA<double>());
+        dynamic one = 1.0;
+        expect(one, isA<double>());
         if (Squadron.platformType.isJs) {
-          expect(1.toDouble(), isA<int>());
-          expect(1.toDouble() as int, 1);
+          expect(one, isA<int>());
+          expect(one as int, 1);
         } else {
-          expect(1.toDouble(), isNotA<int>());
-          await expectLater(() => 1.toDouble() as int, _throwsTypeError);
+          expect(one, isNotA<int>());
+          await expectLater(() => one as int, _throwsTypeError);
         }
       });
 

@@ -34,9 +34,9 @@ Future<Channel> openChannel(
   EntryPoint entryPoint,
   ExceptionManager exceptionManager,
   Logger? logger,
-  List startArguments, [
-  PlatformThreadHook? hook,
-]) async {
+  List startArguments,
+  PlatformThreadHook hook,
+) async {
   final completer = Completer<Channel>();
   final ready = Completer<bool>();
   Channel? channel;
@@ -123,7 +123,7 @@ Future<Channel> openChannel(
         logger?.e(() => 'Connection to Web Worker failed: $error');
         fail(error);
       } else if (response.endOfStream) {
-        logger?.w('Disconnecting from Isolate');
+        logger?.w('Disconnecting from Web Worker');
         channel?.close();
       } else if (!completer.isCompleted) {
         logger?.t('Connected to Web Worker');
@@ -152,11 +152,11 @@ Future<Channel> openChannel(
 
     try {
       final channel = await completer.future;
-      await hook?.call(worker);
+      await hook.call(worker);
       logger?.t('Created Web Worker for $entryPoint');
       return channel;
     } catch (ex) {
-      logger?.e(() => 'Connection to Isolate failed: $ex');
+      logger?.e(() => 'Connection to Web Worker failed: $ex');
       rethrow;
     }
   } catch (ex, st) {
@@ -173,8 +173,11 @@ Future<Channel> openChannel(
 }
 
 /// Creates a [_WebChannel] from a [web.MessagePort].
-Channel? deserialize(PlatformChannel? channelInfo,
-        [Logger? logger, ExceptionManager? exceptionManager]) =>
+Channel? deserialize(
+  PlatformChannel? channelInfo, [
+  Logger? logger,
+  ExceptionManager? exceptionManager,
+]) =>
     (channelInfo == null)
         ? null
         : _WebChannel._(

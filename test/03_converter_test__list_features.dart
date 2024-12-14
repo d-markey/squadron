@@ -20,7 +20,7 @@ void testLazyLists(TestContext tc) {
 
     for (var feature in _dblTests.entries) {
       final dc = $initDataContext(data, _dbl);
-      feature.test(tc, dc);
+      feature.check(tc, dc);
     }
   });
 
@@ -31,7 +31,7 @@ void testLazyLists(TestContext tc) {
 
     for (var feature in _ndblTests.entries) {
       final dc = $initDataContext(data, _ndbl);
-      feature.test(tc, dc);
+      feature.check(tc, dc);
     }
   });
 
@@ -42,7 +42,7 @@ void testLazyLists(TestContext tc) {
 
     for (var feature in _nintTests.entries) {
       final dc = $initDataContext(data, _nint);
-      feature.test(tc, dc);
+      feature.check(tc, dc);
     }
   });
 }
@@ -580,7 +580,7 @@ class _Features<T> {
 }
 
 extension _FeatureTestExt<T> on MapEntry<String, _FeatureTest<T>> {
-  void test(TestContext tc, _DataContext<T> data) {
+  void check(TestContext tc, _DataContext<T> data) {
     tc.test('- $key', () {
       expect(data.lazy, data.ref);
       checkOutcome(key, data.lazy, data.ref, value);

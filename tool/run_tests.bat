@@ -44,8 +44,7 @@ GOTO parse
 :endparse
 
 IF "%__REBUILD__%" == "1" (
-    CALL .\tool\compile_test_workers_js.bat
-    CALL .\tool\compile_test_workers_wasm.bat
+    CALL dart run .\tool\compile_tests.dart js wasm
 )
 
 RMDIR .\test\coverage /s /q

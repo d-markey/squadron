@@ -94,7 +94,7 @@ class WorkerRunner {
               internalLogger.e(() => 'Service installation failed: $ex');
               channel?.error(ex, st);
               channel?.closeStream();
-              _installResult = SquadronException.from(ex, st);
+              _installError = SquadronException.from(ex, st);
             }
           })());
       }
@@ -106,7 +106,7 @@ class WorkerRunner {
   }
 
   Completer<void>? _installCompleter;
-  SquadronException? _installResult;
+  SquadronException? _installError;
 
   /// [WorkerRequest] handler dispatching commands according to the
   /// [_service] map. Make sure this method doesn't throw.
@@ -128,9 +128,9 @@ class WorkerRunner {
         _installCompleter = null;
       }
 
-      if (_installResult != null) {
+      if (_installError != null) {
         // service installation failed
-        throw _installResult!;
+        throw _installError!;
       }
 
       // ==== these requests do not send a response ====
@@ -332,7 +332,7 @@ class WorkerRunner {
           await pendingInstallation;
           _installCompleter = null;
         }
-        if (_installResult == null) {
+        if (_installError == null) {
           // uninstall iif the service installed succesfuly
           await (_service as ServiceInstaller).uninstall();
         }

@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import '_well_known_exceptions.dart';
+import '_builtin_exceptions.dart';
 import 'squadron_exception.dart';
 
 /// Exception to keep track of errors encountered in a worker.

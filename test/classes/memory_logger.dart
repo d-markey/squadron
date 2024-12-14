@@ -3,9 +3,8 @@ import 'package:logger/logger.dart';
 import 'test_logger.dart';
 
 class MemoryLogger extends Logger {
-  MemoryLogger(List<String> logs, [LogFilter? filter])
-      : _logs = logs,
-        _filter = filter ?? ProductionFilter(),
+  MemoryLogger([LogFilter? filter])
+      : _filter = filter ?? ProductionFilter(),
         super(
             filter: filter,
             output: NoOutput(),
@@ -17,7 +16,9 @@ class MemoryLogger extends Logger {
   Level get level => _filter.level!;
   set level(Level value) => _filter.level = value;
 
-  final List<String> _logs;
+  final _logs = <String>[];
+
+  Iterable<String> get logs => _logs.where((_) => true);
 
   void clear() => _logs.clear();
 

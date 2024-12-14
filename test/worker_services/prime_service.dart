@@ -6,7 +6,13 @@ import 'package:squadron/squadron.dart';
 import 'cache_service.dart';
 
 class PrimeService implements WorkerService {
-  PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache);
+  PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache) {
+    operations.addAll({
+      isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
+      getPrimesCommand: (r) =>
+          getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),
+    });
+  }
 
   static FutureOr<bool> Function(int) _checkWith(Cache? cache) {
     if (cache == null) {
@@ -38,11 +44,7 @@ class PrimeService implements WorkerService {
   static const getPrimesCommand = 2;
 
   @override
-  late final Map<int, CommandHandler> operations = {
-    isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
-    getPrimesCommand: (r) =>
-        getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),
-  };
+  final Map<int, CommandHandler> operations = {};
 
   static Iterable<int> _getPrimeCandidates(int min, int max) sync* {
     bool inRange(int p) => (min <= p && p <= max);

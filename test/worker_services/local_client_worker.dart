@@ -21,7 +21,14 @@ abstract class LocalClientService {
 class LocalClientServiceImpl
     with Releasable
     implements LocalClientService, WorkerService {
-  LocalClientServiceImpl(this._localClient);
+  LocalClientServiceImpl(this._localClient) {
+    operations.addAll({
+      LocalClientService.checkIdsCommand: (req) => checkIds(),
+      LocalClientService.checkExceptionCommand: (req) => checkException(),
+      LocalClientService.checkSequenceCommand: (req) =>
+          checkSequence(Squadron.converter.value<int>()(req.args[0])),
+    });
+  }
 
   @override
   void release() {
@@ -55,12 +62,7 @@ class LocalClientServiceImpl
   }
 
   @override
-  late final Map<int, CommandHandler> operations = {
-    LocalClientService.checkIdsCommand: (req) => checkIds(),
-    LocalClientService.checkExceptionCommand: (req) => checkException(),
-    LocalClientService.checkSequenceCommand: (req) =>
-        checkSequence(Squadron.converter.value<int>()(req.args[0])),
-  };
+  final Map<int, CommandHandler> operations = {};
 }
 
 base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>

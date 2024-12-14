@@ -18,6 +18,6 @@ bool get isCrossOriginIsolated =>
     throw UnsupportedError('Unsupported platform');
 
 extension TestEntryPointsExt on TestEntryPoints {
-  Future<void> set(String root, SquadronPlatformType platform) async =>
+  Future<void> set(String? root, SquadronPlatformType platform) async =>
       throw UnsupportedError('Unsupported platform');
 }

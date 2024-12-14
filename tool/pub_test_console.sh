@@ -12,19 +12,14 @@ publish() { # arguments: folder
     cp ./test/$1/*.deps ./doc/$1
 }
 
-dart compile js   -O4 -o ./test/browser-tests/index.dart.js                   ./test/browser-tests/index.dart
-dart compile js   -O4 -o ./test/browser-tests/test_runner_js2js.dart.js       ./test/browser-tests/test_runner_js2js.dart
-dart compile js   -O4 -o ./test/browser-tests/test_runner_js2wasm.dart.js     ./test/browser-tests/test_runner_js2wasm.dart
-dart compile wasm -O4 -o ./test/browser-tests/test_runner_wasm2js.dart.wasm   ./test/browser-tests/test_runner_wasm2js.dart
-dart compile wasm -O4 -o ./test/browser-tests/test_runner_wasm2wasm.dart.wasm ./test/browser-tests/test_runner_wasm2wasm.dart
+dart run ./tool/clean_tests.dart
+dart run ./tool/compile_tests.dart
+
+git checkout gh-pages
 
 publish browser_tests
 publish workers/js
 publish workers/wasm
-
-git stash
-git checkout gh-pages
-git stash apply
 
 git config --global user.name 'd-markey'
 git config --global user.email 'd-markey@users.noreply.github.com'

@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:squadron/src/worker/worker_response.dart';
 
-// this is a regular Web Worker
+// this is a regular Web Worker with legacy dart:html library
 
 void main() {
   final scope = DedicatedWorkerGlobalScope.instance;

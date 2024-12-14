@@ -26,6 +26,7 @@ GOTO parse
 :endparse
 
 IF "%__REBUILD__%" == "1" (
+    CALL .\tool\clean_all_tests.bat
     CALL .\tool\compile_all_tests.bat
 )
 

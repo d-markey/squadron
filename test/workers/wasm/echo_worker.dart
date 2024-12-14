@@ -3,7 +3,7 @@ import 'dart:js_interop';
 import 'package:squadron/src/worker/worker_response.dart';
 import 'package:web/web.dart';
 
-// this is a regular Web Worker
+// this is a regular Web Worker with latest dart:js_interop library
 
 @JS()
 external DedicatedWorkerGlobalScope get self;
@@ -15,5 +15,5 @@ void main() {
     scope.postMessage('ECHO "$data"'.toJS);
   }.toJS;
   // post a message indicating that the Web worker is up and running
-  scope.postMessage(WorkerResponse.ready().wrapInPlace().jsify());
+  self.postMessage(WorkerResponse.ready().wrapInPlace().jsify());
 }

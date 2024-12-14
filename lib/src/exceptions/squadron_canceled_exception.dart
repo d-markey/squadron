@@ -1,7 +1,7 @@
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:meta/meta.dart';
 
-import '_well_known_exceptions.dart';
+import '_builtin_exceptions.dart';
 import 'squadron_canceled_exceptions.dart';
 import 'squadron_exception.dart';
 import 'squadron_timeout_exception.dart';

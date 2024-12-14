@@ -10,12 +10,9 @@ import 'package:using/using.dart';
 import 'classes/test_context.dart';
 import 'worker_services/not_a_worker_service.dart';
 
-void main() {
-  TestContext.init('~').then(execute);
-  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
-}
+Future<void> main() => TestContext.run(execute);
 
-String testScript = '00_not_a_worker_test.dart';
+const testScript = '00_not_a_worker_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
@@ -26,7 +23,7 @@ void execute(TestContext? tc) {
   // print('  * hasImageCodecs = ${tc.hasImageCodecs}');
   // print('  * isCrossOriginIsolated = ${tc.isCrossOriginIsolated}');
 
-  tc.run(() {
+  tc.launch(() {
     tc.group('- Not a worker', () {
       tc.test("- Native worker", () async {
         await NotAWorker(tc).useAsync((w) async {

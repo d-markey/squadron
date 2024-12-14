@@ -13,7 +13,10 @@ class TestEntryPoints {
   EntryPoint? local;
   EntryPoint? prime;
 
+  EntryPoint? log;
   EntryPoint? test;
+
+  EntryPoint? errors;
   EntryPoint? failedInit;
   EntryPoint? invalidCommand;
   EntryPoint? missingStartRequest;
@@ -28,7 +31,9 @@ class TestEntryPoints {
         issues,
         local,
         prime,
+        log,
         test,
+        errors,
         failedInit,
         invalidCommand,
         missingStartRequest,

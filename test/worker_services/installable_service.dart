@@ -10,7 +10,12 @@ class InstallableService with ServiceInstaller implements WorkerService {
   InstallableService(
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : _throwOnInstall = throwOnInstall,
-        _throwOnUninstall = throwOnUninstall;
+        _throwOnUninstall = throwOnUninstall {
+    operations.addAll({
+      cmdIsInstalled: (r) => isInstalled(),
+      cmdIsUninstalled: (r) => isUninstalled(),
+    });
+  }
 
   Logger? channelLogger = TestLogger(ProductionFilter());
 
@@ -23,7 +28,6 @@ class InstallableService with ServiceInstaller implements WorkerService {
   @override
   FutureOr<void> install() async {
     super.install();
-    await Future.delayed(TestDelays.delay);
     if (_throwOnInstall) {
       channelLogger?.t('intended failure on install');
       throw Exception('this exception is reported');
@@ -35,7 +39,6 @@ class InstallableService with ServiceInstaller implements WorkerService {
   @override
   FutureOr<void> uninstall() async {
     super.uninstall();
-    await Future.delayed(TestDelays.delay);
     if (_throwOnUninstall) {
       channelLogger?.t('intended failure on uninstall');
       throw Exception('this exception is intentionally not reported');
@@ -60,8 +63,5 @@ class InstallableService with ServiceInstaller implements WorkerService {
 
   // command IDs --> command implementations
   @override
-  Map<int, CommandHandler> get operations => {
-        cmdIsInstalled: (r) => isInstalled(),
-        cmdIsUninstalled: (r) => isUninstalled(),
-      };
+  final Map<int, CommandHandler> operations = {};
 }

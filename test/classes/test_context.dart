@@ -4,13 +4,21 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart' as env;
 
 import '_test_context_stub.dart'
-    if (dart.library.io) '../workers/vm/_test_context.dart'
-    if (dart.library.html) '../workers/js/_test_context.dart'
-    if (dart.library.js_interop) '../workers/wasm/_test_context.dart' as impl;
+    if (dart.library.io) '_test_context_vm.dart'
+    if (dart.library.js_interop) '_test_context_web.dart' as impl;
+import 'platform.dart';
 import 'test_entry_points.dart';
+import 'test_exception.dart';
+import 'test_result.dart';
+import 'test_timeout.dart';
+
+enum RunMode {
+  discover,
+  launch,
+}
 
 class TestContext {
-  TestContext._(this.workerPlatform);
+  TestContext._(this.runMode, this.workerPlatform);
 
   bool get hasImageCodecs => impl.hasImageCodecs;
 
@@ -20,10 +28,29 @@ class TestContext {
 
   bool get isCrossOriginIsolated => impl.isCrossOriginIsolated;
 
-  static Future<TestContext?> init(String root,
-      [SquadronPlatformType? workerPlatform]) async {
+  static const _mixedTargets = {
+    SquadronPlatformType.js: SquadronPlatformType.wasm,
+    SquadronPlatformType.wasm: SquadronPlatformType.js,
+  };
+
+  static Future<void> run(
+    void Function(TestContext?) executor, {
+    bool mixedContext = true,
+  }) async {
+    final init = [TestContext.init(RunMode.launch, '~')];
+    if (mixedContext) {
+      final mixedTarget = _mixedTargets[Squadron.platformType];
+      if (mixedTarget != null && mixedTarget != Squadron.platformType) {
+        init.add(TestContext.init(RunMode.launch, '~', mixedTarget));
+      }
+    }
+    await Future.wait(init).then((contexts) => contexts.forEach(executor));
+  }
+
+  static Future<TestContext?> init(RunMode runMode,
+      [String? root, SquadronPlatformType? workerPlatform]) async {
     workerPlatform ??= impl.platform;
-    final testContext = TestContext._(workerPlatform);
+    final testContext = TestContext._(runMode, workerPlatform);
     try {
       await testContext.entryPoints.set(root, workerPlatform);
       return testContext;
@@ -32,54 +59,36 @@ class TestContext {
     }
   }
 
-  static const cancelled = '@@CANCELLED@@';
+  final RunMode runMode;
 
-  Completer<void>? _completer;
-  int _pending = 0;
-  bool _canceled = false;
-  bool _discovery = false;
+  final testResults = <TestResult>[];
 
-  int get pending => _pending;
+  bool _cancelled = false;
+  bool get isCancelled => _cancelled;
 
-  void _checkDone() {
-    _pending -= 1;
-    if (_pending == 0 && _completer?.isCompleted == false) {
-      _completer!.complete();
-      _completer = null;
-    }
-  }
+  int get pending => testResults.where((r) => r.isPending).length;
 
-  Future<bool> get done =>
-      _completer?.future.then((_) => _canceled) ?? Future.value(_canceled);
+  Future<void> waitForCompletion() =>
+      Future.wait(testResults.map((r) => r.completion));
 
   void cancel() {
-    if (_completer?.isCompleted == false) {
-      _canceled = true;
-      _completer!.complete();
-      _completer = null;
+    _cancelled = true;
+    for (var t in testResults) {
+      t.cancel();
     }
-  }
-
-  void run(void Function() testSuite) {
-    if (_completer == null) {
-      _canceled = false;
-      _completer = Completer();
-      testResults.clear();
-    }
-    env.group(
-      '${clientPlatform.label} client / ${workerPlatform.label} workers',
-      testSuite,
-    );
   }
 
   void discover(void Function(TestContext) testSuite) {
-    if (_completer == null) {
-      _discovery = true;
-      _completer = Completer();
-      _completer!.future.whenComplete(() => _discovery = false);
+    if (runMode != RunMode.discover) {
+      throw UnsupportedError('Test context was not initialized for discovery');
     }
     testSuite(this);
   }
+
+  void launch(void Function() testSuite) => env.group(
+        '${clientPlatform.label} client / ${workerPlatform.label} workers',
+        testSuite,
+      );
 
   SquadronPlatformType get clientPlatform => impl.platform;
   String get clientPlatformName =>
@@ -93,145 +102,124 @@ class TestContext {
 
   final onlyTests = <Pattern>{};
 
-  final testResults = <String, TestResult>{};
+  String get platforms => '${clientPlatform.label}/${workerPlatform.label}';
 
   String _testPath = '';
 
-  String get platforms => '${clientPlatform.label}/${workerPlatform.label}';
-
-  void skip(String label, dynamic Function() body, {bool skip = false}) {
-    final savedPath = _testPath;
-    if (_testPath.isNotEmpty) _testPath += ' ';
-    _testPath += label;
-    if (_discovery) {
-      _pending += 1;
-      _knownTests.add(_testPath);
-      env.pumpEventQueue().whenComplete(_checkDone);
-    } else {
-      _pending += 1;
-      final currentTest = _testPath;
-      Future(() {
-        print('[$platforms] Skip test "$currentTest"');
-        _checkDone();
-      });
-    }
-    _testPath = savedPath;
+  TestResult _enterTest(String label) {
+    final result = TestResult(_testPath, label);
+    _testPath = result.testPath;
+    return result;
   }
 
-  void test(String label, dynamic Function() body, {bool skip = false}) {
-    final savedPath = _testPath;
-    if (_testPath.isNotEmpty) _testPath += ' ';
-    _testPath += label;
-    if (_discovery) {
-      _pending += 1;
-      _knownTests.add(_testPath);
-      env.pumpEventQueue().whenComplete(_checkDone);
+  TestResult _enterGroup(String label) {
+    final result = TestResult(_testPath, label);
+    _testPath = result.testPath;
+    return result;
+  }
+
+  void _leave(TestResult result) {
+    _testPath = result.parentPath;
+  }
+
+  void setUpAll(dynamic Function() callback) {
+    if (runMode == RunMode.discover) return;
+    env.setUpAll(callback);
+  }
+
+  void tearDownAll(dynamic Function() callback) {
+    if (runMode == RunMode.discover) return;
+    env.tearDownAll(callback);
+  }
+
+  void skip(String label, dynamic Function() body, {bool skip = false}) {
+    final result = _enterTest(label);
+    testResults.add(result);
+    if (runMode == RunMode.discover) {
+      _knownTests.add(result.testPath);
     } else {
-      _pending += 1;
-      final currentTest = _testPath;
-      if (!skip &&
-          (onlyTests.isEmpty ||
-              onlyTests.any((t) => t.allMatches(currentTest).isNotEmpty))) {
-        env.test(label, () async {
-          try {
-            if (_canceled) {
-              print('[$platforms] Test "$currentTest" cancelled');
-              testResults[currentTest] = TestResult.cancelled();
-            } else {
-              await Future.any([
-                Future(() async {
-                  await body();
-                  testResults[currentTest] = TestResult.success();
-                }),
-                Future.delayed(
-                  Duration(seconds: 27),
-                  () => throw TestTimeOutException(
-                      '[$platforms] Test "$currentTest" timed out'),
-                )
-              ]);
-            }
-          } catch (ex, st) {
-            testResults[currentTest] = TestResult.error(ex, st);
-            rethrow;
-          } finally {
-            _checkDone();
-          }
-        });
-      } else {
-        Future(() {
-          print('[$platforms] Skip test "$currentTest"');
-          _checkDone();
-        });
-      }
+      print('[$platforms] Skip test "${result.testPath}"');
     }
-    _testPath = savedPath;
+    result.skip();
+    _leave(result);
+  }
+
+  bool _skipTest(bool skip, TestResult result) =>
+      skip || (onlyTests.isNotEmpty && !onlyTests.any(result.isMatch));
+
+  void test(String label, dynamic Function() body, {bool skip = false}) {
+    final result = _enterTest(label);
+    testResults.add(result);
+    if (runMode == RunMode.discover) {
+      _knownTests.add(result.testPath);
+      result.pass();
+    } else if (_skipTest(skip, result)) {
+      print('[$platforms] Skip test "${result.testPath}"');
+      result.skip();
+    } else if (_cancelled) {
+      print('[$platforms] Test "${result.testPath}" cancelled');
+      result.cancel();
+    } else {
+      env.test(label, () async {
+        if (_cancelled) {
+          print('[$platforms] Test "${result.testPath}" cancelled');
+          result.cancel();
+          throw TestCancelledException();
+        } else {
+          final timeout = TestTimeout(Duration(seconds: 25));
+          await Future.any([
+            Future.value(body()),
+            timeout.completion,
+          ]).catchError((ex, st) {
+            result.fail(ex, st);
+            Error.throwWithStackTrace(ex, st);
+          }).whenComplete(() {
+            timeout.cancel();
+            result.pass();
+          });
+        }
+      });
+    }
+    _leave(result);
   }
 
   void group(String label, dynamic Function() body, {bool skip = false}) {
-    final savedPath = _testPath;
-    if (_testPath.isNotEmpty) _testPath += ' ';
-    _testPath += label;
-    if (_discovery) {
-      _knownGroups.add(_testPath);
+    final result = _enterGroup(label);
+    if (runMode == RunMode.discover) {
+      _knownGroups.add(result.testPath);
       body();
+    } else if (_skipTest(skip, result)) {
+      // print('[$platforms] Skip group "${result.testPath}"');
     } else {
-      if (!skip) {
-        env.group(label, body);
-      } else {
-        print('[$platforms] Skip group "$label"');
-      }
+      env.group(label, body);
     }
-    _testPath = savedPath;
+    _leave(result);
   }
 
-  static final _knownGroups = <String>{};
+  final _knownGroups = <String>{};
 
-  static Iterable<String> get knownGroups => _knownGroups.where(
+  Iterable<String> get knownGroups => _knownGroups.where(
       (_) => true); // force iterable to avoid exposing the underlying list
 
-  static Iterable<String> get rootGroups sync* {
+  Iterable<({String label, int tests})> get rootGroups sync* {
     for (var group in _knownGroups) {
       if (_knownGroups.any((g) => g != group && group.startsWith(g))) {
         continue;
       }
-      yield group;
+      final count = _knownTests.where((t) => t.startsWith(group)).length;
+      yield (label: group, tests: count);
     }
   }
 
-  static final _knownTests = <String>{};
+  final _knownTests = <String>{};
 
-  static Iterable<String> get knownTests => _knownTests.where(
+  Iterable<String> get knownTests => _knownTests.where(
       (_) => true); // force iterable to avoid exposing the underlying list
 }
 
-abstract class TestException implements Exception {
-  TestException(this.message);
+typedef ExceptionHandler = void Function(Object ex, [StackTrace? st]);
 
-  final String message;
-
-  @override
-  String toString() => '$runtimeType: $message';
-}
-
-class TestCancelledException extends TestException {
-  TestCancelledException([super.message = 'Cancelled']);
-}
-
-class TestTimeOutException extends TestException {
-  TestTimeOutException([super.message = 'Timeout']);
-}
-
-class TestResult {
-  TestResult._(this.success, this.error, this.stackTrace);
-
-  TestResult.success() : this._(true, null, null);
-
-  TestResult.cancelled() : this._(false, TestCancelledException(), null);
-
-  TestResult.error(Object error, [StackTrace? stackTrace])
-      : this._(false, error, stackTrace);
-
-  final bool success;
-  final Object? error;
-  final StackTrace? stackTrace;
-}
+ExceptionHandler uncaughtExceptionHandler(String info) => (ex, [st]) {
+      $log('[$info] EXCEPTION $ex');
+      $log('[$info] STACKTRACE: $st');
+    };

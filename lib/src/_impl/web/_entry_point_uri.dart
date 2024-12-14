@@ -24,20 +24,21 @@ class EntryPointUri with Releasable {
         workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??
             '';
 
-    if (fileName.endsWith('.js') || fileName.endsWith('.mjs')) {
+    final url = workerEntrypoint.toString();
+    if (fileName.endsWith('.js')) {
       // a JavaScript worker
-      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);
+      return EntryPointUri._(url, revoke: false);
     } else if (fileName.endsWith('.wasm')) {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
       final blob = web.Blob(
-        [wasmLoaderScript(workerEntrypoint.toString()).toJS].toJS,
+        [wasmLoaderScript(url).toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
       return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
     } else if (workerEntrypoint.isScheme('data') ||
         workerEntrypoint.isScheme('javascript')) {
       // something else, eg. inline JavaScript
-      return EntryPointUri._(workerEntrypoint.toString(), revoke: false);
+      return EntryPointUri._(url, revoke: false);
     } else {
       throw SquadronErrorExt.create('Invalid entry point URI');
     }
@@ -59,14 +60,14 @@ class EntryPointUri with Releasable {
     }
     try {
       await dart2wasm_runtime.invoke(moduleInstance);
-      console.log(`Succesfully loaded and invoked \${workerUri}`);
+      //console.log(`Succesfully loaded and invoked \${workerUri}`);
     } catch (exception) {
       console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
       throw new Error(exception.message ?? 'Unknown error when invoking worker module');
     }
   } catch (ex) {
     const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;
-    postMessage([ts, null, ["\$sqdrn", `Failed to load Web Worker from \${workerUri}: \${ex}`, null], null, null]);
+    postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null], null, null]);
   }
 })()''';
 }

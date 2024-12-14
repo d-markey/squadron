@@ -2,6 +2,8 @@ platforms:
   - vm
   - chrome
 
+js_trace: true
 chain_stack_traces: true
+concurrency: 1
 
-custom_html_template_path: test/templates/squadron_js_test_template.html.tpl
+custom_html_template_path: test/templates/squadron_test_template.html.tpl

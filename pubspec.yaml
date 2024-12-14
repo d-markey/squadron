@@ -1,6 +1,6 @@
 name: squadron
 description: Multithreading and worker thread pool for Dart / Flutter, to offload CPU-bound and heavy I/O tasks to Isolate or Web Worker threads.
-version: 6.1.3
+version: 6.1.4-wip
 repository: https://github.com/d-markey/squadron
 
 environment:
@@ -20,6 +20,8 @@ dev_dependencies:
   js: ^0.7.1
   lints: ^4.0.0
   test: ^1.25.8
+  path: ^1.9.1
+  synchronize: ^1.1.1
 
 topics:
   - concurrency

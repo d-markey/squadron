@@ -5,51 +5,31 @@ library;
 
 import 'dart:async';
 
-import 'package:logger/logger.dart';
+import 'package:logger/web.dart';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
 import 'classes/custom_exception.dart';
 import 'classes/memory_logger.dart';
-import 'classes/platform.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
 import 'worker_services/delays.dart';
 import 'worker_services/installable_service_worker.dart';
-import 'worker_services/missing_worker_service.dart';
-import 'worker_services/test_service.dart';
 import 'worker_services/test_service_worker.dart';
 
-void main() {
-  TestContext.init('~').then(execute);
-  TestContext.init('~', SquadronPlatformType.wasm).then(execute);
-}
+Future<void> main() => TestContext.run(execute);
 
-String testScript = '04_worker_test.dart';
+const testScript = '04_worker_test.dart';
 
 void execute(TestContext? tc) {
   if (tc == null) return;
 
-  tc.run(() {
+  tc.launch(() {
     tc.group("- Squadron Worker", () {
-      tc.group('- start/stop', () {
-        final logs = <String>[];
-        final memoryLogger = MemoryLogger(logs);
-
-        setUp(() {
-          memoryLogger.clear();
-          memoryLogger.level = Level.all;
-        });
-
-        tearDown(() {
-          memoryLogger.clear();
-        });
-
+      tc.group('- start/stop/terminate', () {
         tc.test('- start & stop', () async {
           await TestWorker(tc).useAsync((w) async {
-            w.channelLogger = memoryLogger;
-
             expect(w.isConnected, isFalse);
             expect(w.upTime, Duration.zero);
             expect(w.idleTime, Duration.zero);
@@ -76,6 +56,87 @@ void execute(TestContext? tc) {
           });
         });
 
+        tc.test('- start & terminate - sync', () async {
+          await TestWorker(tc).useAsync((w) async {
+            expect(w.isConnected, isFalse);
+            expect(w.upTime, Duration.zero);
+            expect(w.idleTime, Duration.zero);
+            expect(w.isStopped, isFalse);
+
+            final channel = await w.start();
+            expect(channel, isNotNull);
+            expect(w.isConnected, isTrue);
+
+            await Future.delayed(TestDelays.delay * 2);
+            expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay));
+            expect(w.isStopped, isFalse);
+            expect(w.idleTime, lessThanOrEqualTo(w.upTime));
+
+            final duration = TestDelays.delay * 6;
+            Future.delayed(duration * 0.5, () {
+              w.terminate();
+              expect(w.isStopped, isTrue);
+            });
+
+            try {
+              await w.cpu(ms: duration.inMilliseconds);
+              throw unexpectedSuccess('cpu completed after termination');
+            } on TaskTerminatedException catch (ex) {
+              // the "cpu" task has been terminated
+              print('cpu() has been terminated: $ex');
+            }
+
+            expect(w.isStopped, isTrue);
+            final upTime = w.upTime;
+            expect(w.isConnected, isFalse);
+            expect(w.upTime, greaterThan(Duration.zero));
+
+            await Future.delayed(TestDelays.delay);
+            expect(w.upTime, upTime);
+            expect(w.idleTime, greaterThan(TestDelays.delay));
+          });
+        });
+
+        tc.test('- start & terminate - async', () async {
+          await TestWorker(tc).useAsync((w) async {
+            expect(w.isConnected, isFalse);
+            expect(w.upTime, Duration.zero);
+            expect(w.idleTime, Duration.zero);
+            expect(w.isStopped, isFalse);
+
+            final channel = await w.start();
+            expect(channel, isNotNull);
+            expect(w.isConnected, isTrue);
+
+            await Future.delayed(TestDelays.delay * 2);
+            expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay));
+            expect(w.isStopped, isFalse);
+            expect(w.idleTime, lessThanOrEqualTo(w.upTime));
+
+            final duration = TestDelays.delay * 6;
+            Future.delayed(duration * 0.5, () {
+              w.terminate();
+              expect(w.isStopped, isTrue);
+            });
+
+            try {
+              await w.io(ms: duration.inMilliseconds);
+              throw unexpectedSuccess('io completed after termination');
+            } on TaskTerminatedException {
+              // the "cpu" task has been terminated
+            }
+
+            expect(w.isStopped, isTrue);
+            final upTime = w.upTime;
+            expect(w.isConnected, isFalse);
+            expect(w.upTime, greaterThan(Duration.zero));
+
+            await Future.delayed(TestDelays.delay);
+            expect(w.upTime, upTime);
+            expect(w.idleTime, greaterThan(w.upTime));
+          });
+        }, skip: true);
+
         tc.test('- hook', () async {
           String? status;
           void hook(PlatformThread pw) {
@@ -83,11 +144,9 @@ void execute(TestContext? tc) {
           }
 
           await TestWorker(tc, hook: hook).useAsync((w) async {
-            w.channelLogger = memoryLogger;
             expect(status, isNull);
             await w.start();
             expect(status, matches('hook called'));
-            expect(logs, mentions(''));
           });
         });
 
@@ -99,7 +158,6 @@ void execute(TestContext? tc) {
           }
 
           await TestWorker(tc, hook: hook).useAsync((w) async {
-            w.channelLogger = memoryLogger;
             expect(status, isNull);
             try {
               final res = await w.start();
@@ -114,27 +172,33 @@ void execute(TestContext? tc) {
         tc.group('- install', () {
           tc.test('- no error', () async {
             await InstallableWorker(tc).useAsync((w) async {
-              w.channelLogger = memoryLogger;
+              final logger = MemoryLogger();
+              logger.level = Level.all;
+              w.channelLogger = logger;
               await w.start();
 
               expect(await w.isInstalled(), isTrue);
-              expect(logs, doesNotMention('intended failure'));
-              expect(logs, mentions('service installed'));
-
               expect(await w.isUninstalled(), isFalse);
+
+              // log forwarding is asynchronous, make sure they have time to arrive
+              await pumpEventQueue();
+              expect(logger.logs, mentions('service installed'));
+              expect(logger.logs, doesNotMention('intended failure'));
 
               // stopping the worker uninstalls the service
               w.stop();
 
-              await Future.delayed(TestDelays.delay * 1.5);
-              expect(logs, mentions('service uninstalled'));
-              expect(logs, doesNotMention('intended failure'));
+              // log forwarding is asynchronous, make sure they have time to arrive
+              await pumpEventQueue();
+              expect(logger.logs, mentions('service uninstalled'));
+              expect(logger.logs, doesNotMention('intended failure'));
             });
           });
 
           tc.test('- error on installation', () async {
             await InstallableWorker.throwOnInstall(tc).useAsync((w) async {
-              w.channelLogger = memoryLogger;
+              final logger = MemoryLogger();
+              w.channelLogger = logger;
               await w.start();
 
               try {
@@ -142,28 +206,35 @@ void execute(TestContext? tc) {
                 throw unexpectedSuccess('isInstalled()', res);
               } on WorkerException catch (ex) {
                 expect(ex, reports('this exception is reported'));
-                expect(logs, doesNotMention('service installed'));
+                // log forwarding is asynchronous, make sure they have time to arrive
+                await pumpEventQueue();
+                expect(logger.logs, doesNotMention('service installed'));
               }
+              print('success');
             });
           });
 
           tc.test('- error on uninstallation', () async {
             await InstallableWorker.throwOnUninstall(tc).useAsync((w) async {
-              w.channelLogger = memoryLogger;
+              final logger = MemoryLogger();
+              w.channelLogger = logger;
               await w.start();
 
-              expect(await w.isInstalled(), isTrue);
-              expect(logs, doesNotMention('intended failure'));
-              expect(logs, mentions('service installed'));
+              // log forwarding is asynchronous, make sure they have time to arrive
+              await pumpEventQueue();
+              expect(logger.logs, mentions('service installed'));
+              expect(logger.logs, doesNotMention('intended failure'));
 
+              expect(await w.isInstalled(), isTrue);
               expect(await w.isUninstalled(), isFalse);
 
               // stopping the worker uninstalls the service
               w.stop();
 
-              await Future.delayed(TestDelays.delay * 1.5);
-              expect(logs, mentions('intended failure'));
-              expect(logs, doesNotMention('service uninstalled'));
+              // log forwarding is asynchronous, make sure they have time to arrive
+              await pumpEventQueue();
+              expect(logger.logs, mentions('intended failure'));
+              expect(logger.logs, doesNotMention('service uninstalled'));
             });
           });
         });
@@ -186,35 +257,6 @@ void execute(TestContext? tc) {
             } on WorkerException catch (ex) {
               expect(ex, reports('worker is stopped'));
             }
-          });
-        });
-      });
-
-      tc.group('- initialization error', () {
-        tc.test('- not found', () async {
-          await MissingWorker(tc).useAsync((w) async {
-            await expectLater(w.start(), failsWith<SquadronError>());
-          });
-        }, skip: tc.entryPoints.missingWorker == null);
-
-        tc.test('- failed init', () async {
-          await TestWorker.throws(tc).useAsync((w) async {
-            await expectLater(w.start(), failsWith<WorkerException>());
-            await expectLater(w.ping(), failsWith<WorkerException>());
-          });
-        });
-
-        tc.test('- missing start request', () async {
-          await TestWorker.missingStartRequest(tc).useAsync((w) async {
-            await expectLater(w.start(), failsWith<SquadronError>());
-            await expectLater(w.ping(), failsWith<SquadronError>());
-          });
-        }, skip: tc.entryPoints.missingStartRequest == null);
-
-        tc.test('- invalid command ID', () async {
-          await TestWorker.invalid(tc).useAsync((w) async {
-            await expectLater(w.start(), failsWith<SquadronError>());
-            await expectLater(w.ping(), failsWith<SquadronError>());
           });
         });
       });
@@ -381,137 +423,6 @@ void execute(TestContext? tc) {
             expect(w.totalWorkload, 8);
             expect(w.upTime, greaterThanOrEqualTo(TestDelays.delay * 16));
             expect(w.upTime, lessThan(TestDelays.delay * 19));
-          });
-        });
-
-        tc.group('- error handling', () {
-          late final TestWorker worker;
-
-          setUpAll(() async {
-            worker = TestWorker(tc);
-            await worker.start();
-          });
-
-          tearDownAll(() {
-            worker.stop();
-          });
-
-          tc.test('- Exception', () async {
-            final errors = worker.stats.totalErrors;
-            try {
-              final res = await worker.throwException();
-              throw unexpectedSuccess('throwException()', res);
-            } on WorkerException catch (ex) {
-              expect(ex, reports('intentional exception'));
-              expect(ex.stackTrace, hasCalled('throwException'));
-            }
-            expect(worker.stats.totalErrors, errors + 1);
-          });
-
-          tc.test('- WorkerException', () async {
-            final errors = worker.stats.totalErrors;
-            try {
-              final res = await worker.throwWorkerException();
-              throw unexpectedSuccess('throwWorkerException()', res);
-            } on WorkerException catch (ex) {
-              expect(ex, reports('intentional worker exception'));
-              expect(ex.stackTrace, hasCalled('throwWorkerException'));
-            }
-            expect(worker.stats.totalErrors, errors + 1);
-          });
-
-          tc.test('- TaskTimeOutException', () async {
-            final errors = worker.stats.totalErrors;
-            try {
-              final res = await worker.throwTaskTimeOutException();
-              throw unexpectedSuccess('throwTaskTimeOutException()', res);
-            } on SquadronTimeoutException catch (ex) {
-              expect(ex, reports('intentional timeout exception'));
-            }
-            expect(worker.stats.totalErrors, errors + 1);
-          });
-
-          tc.test('- CanceledException', () async {
-            final errors = worker.stats.totalErrors;
-            try {
-              final res = await worker.throwCanceledException();
-              throw unexpectedSuccess('throwCanceledException()', res);
-            } on SquadronCanceledException catch (ex) {
-              expect(ex, reports('intentional canceled exception'));
-            }
-            expect(worker.stats.totalErrors, errors + 1);
-          });
-
-          tc.test('- CustomException (unregistered)', () async {
-            final errors = worker.stats.totalErrors;
-            try {
-              final res = await worker.throwCustomException();
-              throw unexpectedSuccess('throwCustomException()', res);
-            } on WorkerException catch (ex) {
-              expect(ex, isNotA<CustomException>());
-              expect(ex, reports('Failed to deserialize'));
-              expect(ex, reports('CUSTOM'));
-            }
-            expect(worker.stats.totalErrors, errors + 1);
-          });
-
-          tc.test('- CustomException (registered)', () async {
-            try {
-              worker.exceptionManager.register(
-                CustomException.typeId,
-                CustomException.deserialize,
-              );
-              final errors = worker.stats.totalErrors;
-              try {
-                final res = await worker.throwCustomException();
-                throw unexpectedSuccess('throwCustomException()', res);
-              } on CustomException catch (ex) {
-                expect(ex, reports('intentional CUSTOM exception'));
-                expect(ex.stackTrace, hasCalled('throwCustomException'));
-                expect(ex.command, TestService.throwCustomExceptionCommand);
-              }
-              expect(worker.stats.totalErrors, errors + 1);
-            } finally {
-              worker.exceptionManager.unregister(CustomException.typeId);
-            }
-          });
-
-          tc.test('- invalid request', () async {
-            expect(await worker.sendBack([1]), [1]);
-
-            try {
-              final res = await worker.sendBack(getUnsendable());
-              throw unexpectedSuccess('forward()', res);
-            } on SquadronError catch (ex) {
-              expect(ex, reports('Failed to post request'));
-            }
-
-            // ensure worker is still alive
-            expect(await worker.ping(), isTrue);
-          });
-
-          tc.test('- invalid response', () async {
-            try {
-              final res = await worker.invalidResponse();
-              throw unexpectedSuccess('invalidResponse()', res);
-            } on SquadronError catch (ex) {
-              expect(ex, reports('Failed to post response'));
-            }
-
-            // ensure worker is still alive
-            expect(await worker.ping(), isTrue);
-          });
-
-          tc.test('- missing operation', () async {
-            try {
-              await worker.missing();
-              throw unexpectedSuccess('missing()', null);
-            } on SquadronError catch (ex) {
-              expect(ex, reports(('Unknown command')));
-            }
-
-            // ensure worker is still alive
-            expect(await worker.ping(), isTrue);
           });
         });
       });

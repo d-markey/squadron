@@ -4,6 +4,23 @@ import 'dart:typed_data';
 import 'package:squadron/squadron.dart';
 
 class IssuesService implements WorkerService {
+  IssuesService() {
+    operations.addAll({
+      cmdIssue_8: (r) => issue_8(
+            $X.listOfInt(r.args[0]),
+          ),
+      cmdIssue_23: (r) => issue_23(
+            $X.listOfInt(r.args[0]),
+            title: r.args[1],
+            isLandscape: r.args[2],
+            columns: $X.nullableListOfString(r.args[3]),
+            columnWidths: $X.nullableMapOfIntDouble(r.args[4]),
+            fontData: $X.nullableBytedata(r.args[5]),
+            titleFonts: $X.nullableMapOfIntBytedata(r.args[6]),
+            dataFonts: $X.nullableMapOfIntBytedata(r.args[7]),
+          ),
+    });
+  }
   Stream<Map<String, int>> issue_8(List<int> nums) async* {
     int id = 0;
     for (var n in nums) {
@@ -32,21 +49,7 @@ class IssuesService implements WorkerService {
 
   // command IDs --> command implementations
   @override
-  Map<int, CommandHandler> get operations => {
-        cmdIssue_8: (r) => issue_8(
-              $X.listOfInt(r.args[0]),
-            ),
-        cmdIssue_23: (r) => issue_23(
-              $X.listOfInt(r.args[0]),
-              title: r.args[1],
-              isLandscape: r.args[2],
-              columns: $X.nullableListOfString(r.args[3]),
-              columnWidths: $X.nullableMapOfIntDouble(r.args[4]),
-              fontData: $X.nullableBytedata(r.args[5]),
-              titleFonts: $X.nullableMapOfIntBytedata(r.args[6]),
-              dataFonts: $X.nullableMapOfIntBytedata(r.args[7]),
-            ),
-      };
+  final Map<int, CommandHandler> operations = {};
 }
 
 class $X {

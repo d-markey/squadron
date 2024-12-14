@@ -1,12 +1,8 @@
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/custom_exception.dart';
-import '../classes/platform.dart';
-import '../classes/test_logger.dart';
 import 'biging_marshaler.dart';
 import 'delays.dart';
 
@@ -17,21 +13,35 @@ class TestService implements WorkerService {
 
   TestService({bool invalid = false})
       : _invalid = invalid,
-        super();
-
-  final _logger = TestLogger(ProductionFilter());
-
-  void setLevel(int level) {
-    _logger.level = Level.values.where((l) => l.value == level).first;
-  }
-
-  void log() {
-    _logger.t('trace test in worker');
-    _logger.d('debug test in worker');
-    _logger.i('info test in worker');
-    _logger.w('warning test in worker');
-    _logger.e('error test in worker');
-    _logger.f('fatal test in worker');
+        super() {
+    operations.addAll({
+      if (_invalid) invalidCommand1: (r) => null,
+      if (_invalid) invalidCommand0: (r) => null,
+      ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
+      cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
+      delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
+      pingCommand: (r) => ping(),
+      finiteCommand: (r) => finite((r.args[0] as num).toInt()),
+      infiniteCommand: (r) => infinite(),
+      clockCommand: (r) =>
+          clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
+      cancelableInfiniteCpuCommand: (r) =>
+          cancelableInfiniteCpu(r.cancelToken!),
+      getPendingInfiniteWithErrorsCommand: (r) =>
+          getPendingInfiniteWithErrors(),
+      infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
+      bigIntAddCommand: (r) async {
+        final marshalIn = r.args[2] as bool;
+        final marshalOut = r.args[3] as bool;
+        final bigIntMarshaler = BigIntMarshaler();
+        final a = marshalIn ? bigIntMarshaler.unmarshal(r.args[0]) : r.args[0];
+        final b = marshalIn ? bigIntMarshaler.unmarshal(r.args[1]) : r.args[1];
+        final res =
+            await bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
+        return marshalOut ? bigIntMarshaler.marshal(res) : res;
+      },
+      platformTypeCommand: (r) => getPlatformType().toString(),
+    });
   }
 
   Future<void> io({required int ms}) async =>
@@ -46,26 +56,6 @@ class TestService implements WorkerService {
     await Future.delayed(TestDelays.delay);
     return n;
   }
-
-  void throwException() => throw Exception('intentional exception');
-
-  void throwWorkerException() =>
-      throw WorkerException('intentional worker exception');
-
-  void throwTaskTimeOutException() =>
-      throw TimeoutException('intentional timeout exception');
-
-  void throwCanceledException() =>
-      throw CanceledException('intentional canceled exception');
-
-  void throwCustomException() =>
-      throw CustomException('intentional CUSTOM exception');
-
-  FutureOr<dynamic> sendBack(dynamic data) => data;
-
-  void missing() {}
-
-  FutureOr<dynamic> invalidResponse() => getUnsendable();
 
   FutureOr<bool> ping() => true;
 
@@ -178,65 +168,19 @@ class TestService implements WorkerService {
 
   static const invalidCommand1 = -1; // command IDs must be > 0
   static const invalidCommand0 = 0; // command IDs must be > 0
-
-  static const setLevelCommand = 1;
-  static const logCommand = 2;
   static const ioCommand = 11;
   static const cpuCommand = 12;
   static const delayedCommand = 13;
-  static const throwExceptionCommand = 21;
-  static const throwWorkerExceptionCommand = 22;
-  static const throwTaskTimeOutExceptionCommand = 23;
-  static const throwCanceledExceptionCommand = 24;
-  static const throwCustomExceptionCommand = 25;
-  static const sendBackCommand = 31;
-  static const missingCommand = 32;
-  static const invalidResponseCommand = 33;
-  static const pingCommand = 34;
-  static const finiteCommand = 41;
-  static const infiniteCommand = 42;
-  static const clockCommand = 43;
-  static const cancelableInfiniteCpuCommand = 44;
-  static const getPendingInfiniteWithErrorsCommand = 45;
-  static const infiniteWithErrorsCommand = 46;
-  static const bigIntAddCommand = 51;
-  static const platformTypeCommand = 61;
+  static const pingCommand = 21;
+  static const finiteCommand = 31;
+  static const infiniteCommand = 32;
+  static const clockCommand = 33;
+  static const cancelableInfiniteCpuCommand = 34;
+  static const getPendingInfiniteWithErrorsCommand = 35;
+  static const infiniteWithErrorsCommand = 36;
+  static const bigIntAddCommand = 41;
+  static const platformTypeCommand = 51;
 
   @override
-  late final Map<int, CommandHandler> operations = {
-    if (_invalid) invalidCommand1: (r) => null,
-    if (_invalid) invalidCommand0: (r) => null,
-    setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
-    logCommand: (r) => log(),
-    ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
-    cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
-    delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
-    throwExceptionCommand: (r) => throwException(),
-    throwWorkerExceptionCommand: (r) => throwWorkerException(),
-    throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
-    throwCanceledExceptionCommand: (r) => throwCanceledException(),
-    throwCustomExceptionCommand: (r) => throwCustomException(),
-    sendBackCommand: (r) => sendBack(r.args[0]),
-    invalidResponseCommand: (r) => invalidResponse(),
-    /* missingCommand */
-    pingCommand: (r) => ping(),
-    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
-    infiniteCommand: (r) => infinite(),
-    clockCommand: (r) =>
-        clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
-    cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
-    getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
-    infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
-    bigIntAddCommand: (r) async {
-      final marshalIn = r.args[2] as bool;
-      final marshalOut = r.args[3] as bool;
-      final bigIntMarshaler = BigIntMarshaler();
-      final a = marshalIn ? bigIntMarshaler.unmarshal(r.args[0]) : r.args[0];
-      final b = marshalIn ? bigIntMarshaler.unmarshal(r.args[1]) : r.args[1];
-      final res =
-          await bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
-      return marshalOut ? bigIntMarshaler.marshal(res) : res;
-    },
-    platformTypeCommand: (r) => getPlatformType().toString(),
-  };
+  final Map<int, CommandHandler> operations = {};
 }

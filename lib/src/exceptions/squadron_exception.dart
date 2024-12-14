@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:cancelation_token/cancelation_token.dart';
 
-import '_well_known_exceptions.dart';
+import '_builtin_exceptions.dart';
 import 'worker_exception.dart';
 
 /// Base abstract class for exceptions in Squadron.

@@ -30,9 +30,9 @@ Future<Channel> openChannel(
   EntryPoint entryPoint,
   ExceptionManager exceptionManager,
   Logger? logger,
-  List startArguments, [
-  PlatformThreadHook? hook,
-]) async {
+  List startArguments,
+  PlatformThreadHook hook,
+) async {
   final completer = Completer<Channel>();
   Channel? channel;
 
@@ -91,7 +91,7 @@ Future<Channel> openChannel(
 
     final error = response.error;
     if (error != null) {
-      logger?.e(() => 'Connection to Isolate failed: ${response.error}');
+      logger?.e(() => 'Connection to Isolate failed: $error');
       failure(error);
     } else if (response.endOfStream) {
       logger?.w('Disconnecting from Isolate');
@@ -117,7 +117,7 @@ Future<Channel> openChannel(
 
   try {
     final channel = await completer.future;
-    await hook?.call(isolate);
+    await hook.call(isolate);
     logger?.t('Created Isolate');
     return channel;
   } catch (ex) {
@@ -128,8 +128,11 @@ Future<Channel> openChannel(
 }
 
 /// Creates a [_VmChannel] from a [SendPort].
-Channel? deserialize(PlatformChannel? channelInfo,
-        [Logger? logger, ExceptionManager? exceptionManager]) =>
+Channel? deserialize(
+  PlatformChannel? channelInfo, [
+  Logger? logger,
+  ExceptionManager? exceptionManager,
+]) =>
     (channelInfo == null)
         ? null
         : _VmChannel._(

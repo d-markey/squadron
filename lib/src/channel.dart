@@ -58,14 +58,21 @@ abstract interface class Channel {
   /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest]
   /// with [startArguments]. The future must not complete before the worker is
   /// ready to serve requests.
-  static Future<Channel> open(ExceptionManager exceptionManager, Logger? logger,
-          EntryPoint entryPoint, List startArguments,
-          [PlatformThreadHook? hook]) =>
+  static Future<Channel> open(
+    ExceptionManager exceptionManager,
+    Logger? logger,
+    EntryPoint entryPoint,
+    List startArguments,
+    PlatformThreadHook hook,
+  ) =>
       impl.openChannel(
           entryPoint, exceptionManager, logger, startArguments, hook);
 
   /// Deserializes a [Channel] from an opaque [channelInfo].
-  static Channel? deserialize(PlatformChannel? channelInfo,
-          [Logger? logger, ExceptionManager? exceptionManager]) =>
+  static Channel? deserialize(
+    PlatformChannel? channelInfo, [
+    Logger? logger,
+    ExceptionManager? exceptionManager,
+  ]) =>
       impl.deserialize(channelInfo, logger, exceptionManager);
 }

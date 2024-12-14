@@ -1,34 +1,20 @@
-import 'package:meta/meta.dart';
-
-import '_well_known_exceptions.dart';
-import 'squadron_canceled_exception.dart';
-import 'squadron_canceled_exceptions.dart';
+import '_builtin_exceptions.dart';
 import 'squadron_error.dart';
 import 'squadron_exception.dart';
-import 'squadron_timeout_exception.dart';
 import 'worker_exception.dart';
 
 typedef WorkerExceptionDeserializer = WorkerException? Function(List props);
 
-@internal
-typedef SquadronExceptionDeserializer = SquadronException? Function(List props);
-
 class ExceptionManager {
   ExceptionManager();
 
-  final _deserializers = <String, SquadronExceptionDeserializer>{
-    $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,
-    $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,
-    $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,
-    $squadronErrorType: SquadronErrorExt.deserialize,
-    $workerExceptionType: WorkerExceptionExt.deserialize,
-  };
+  final _deserializers = Map.from(builtinExceptions);
 
   /// Registers a deserializer for a custom [WorkerException]. If the deserializer is
   /// already registered, registering it again will have no effect.
   void register(
       String exceptionTypeId, WorkerExceptionDeserializer deserializer) {
-    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {
+    if (builtinExceptions.containsKey(exceptionTypeId)) {
       throw SquadronErrorExt.create(
         'Invalid exception type ID: $exceptionTypeId is reserved.',
       );
@@ -41,7 +27,7 @@ class ExceptionManager {
   /// was provided to [register] must be provided to this method; avoid passing lambdas,
   /// prefer passing static methods or top-level functions instead.
   void unregister(String exceptionTypeId) {
-    if ($reservedExceptionTypeIds.contains(exceptionTypeId)) {
+    if (builtinExceptions.containsKey(exceptionTypeId)) {
       throw SquadronErrorExt.create(
         'Invalid exception type ID: $exceptionTypeId is reserved.',
       );
