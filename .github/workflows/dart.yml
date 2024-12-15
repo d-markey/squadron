@@ -39,7 +39,7 @@ jobs:
 
       # Compile Web workers
       - name: Compile Web workers
-        run: bash ./tool/compile_test_workers.sh
+        run: bash ./tool/compile_tests.sh
 
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
