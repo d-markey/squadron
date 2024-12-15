@@ -12,6 +12,7 @@ on:
   pull_request:
     branches: [main]
     paths: ["lib/**", "test/**", "tool/**", "pubspec.yaml"]
+  workflow_dispatch:
 
 jobs:
   build:
