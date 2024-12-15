@@ -4,7 +4,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../../jgenhtml.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info task_canceled_exception.dart</title>
+        <title>LCOV - lcov.info task_terminated_exception.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,7 +13,7 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../index.html">top level</a> - <a href="index.html">src/exceptions</a> - task_canceled_exception.dart
+                        <a href="../../index.html">top level</a> - <a href="index.html">src/exceptions</a> - task_terminated_exception.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>1</td><td>12</td><td class="low">8.3%</td>
+                            <th scope="row">Lines</th><td>1</td><td>13</td><td class="low">7.7%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -82,88 +82,106 @@
                     <td>7</td><td></td><td></td><td><code>import 'squadron_error.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                    <td>8</td><td></td><td></td><td><code>import 'squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>class TaskCanceledException implements SquadronError, CanceledException {</code></td>
+                    <td>9</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>4</td><td><code>  TaskCanceledException(String? message) : message = message ?? 'Task canceled';</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code>class TaskTerminatedException implements SquadronError, CanceledException {</code></td>
                 </tr>
-                <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 11" id="line11">
+                    <td>11</td><td></td><td>2</td><td><code>  TaskTerminatedException(this.message, [this.stackTrace]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>  @override</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>  final String message;</code></td>
+                    <td>13</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code></code></td>
+                    <td>14</td><td></td><td></td><td><code>  final String message;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>0</td><td><code>  StackTrace? get stackTrace =&gt; null;</code></td>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code></code></td>
+                    <td>17</td><td></td><td></td><td><code>  final StackTrace? stackTrace;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>0</td><td><code>  String toString() =&gt; jsonEncode(serialize());</code></td>
+                    <td>19</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>0</td><td><code>  String toString() =&gt; jsonEncode(serialize());</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>0</td><td><code>  List serialize() =&gt; List.unmodifiable([$taskCanceledExceptionType, message]);</code></td>
+                    <td>22</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 23" id="line23">
+                    <td>23</td><td></td><td>0</td><td><code>  List serialize() =&gt; List.unmodifiable(</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>0</td><td><code>      [$taskTerminatedExceptionType, message, stackTrace?.toString()]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>const _$type = 0;</code></td>
+                    <td>25</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>const _$message = 1;</code></td>
+                    <td>26</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code></code></td>
+                    <td>27</td><td></td><td></td><td><code>const _$type = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>28</td><td></td><td></td><td><code>const _$message = 1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>extension TaskCanceledExceptionExt on TaskCanceledException {</code></td>
+                    <td>29</td><td></td><td></td><td><code>const _$stackTrace = 2;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>0</td><td><code>  static TaskCanceledException? deserialize(List? props) {</code></td>
+                <tr class="noop" title="Line 30" id="line30">
+                    <td>30</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>0</td><td><code>    if (props == null) return null;</code></td>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>0</td><td><code>    if (props[_$type] != $taskCanceledExceptionType) return null;</code></td>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>extension TaskTerminatedExceptionExt on TaskTerminatedException {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>0</td><td><code>    return TaskCanceledException(props[_$message]);</code></td>
+                    <td>33</td><td></td><td>0</td><td><code>  static TaskTerminatedException? deserialize(List? props) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>0</td><td><code>  }</code></td>
+                    <td>34</td><td></td><td>0</td><td><code>    if (props == null) return null;</code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineNoCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>0</td><td><code>    if (props[_$type] != $taskTerminatedExceptionType) return null;</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 36" id="line36">
+                    <td>36</td><td></td><td>0</td><td><code>    return TaskTerminatedException(</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>0</td><td><code>      props[_$message],</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>0</td><td><code>      SquadronException.loadStackTrace(props[_$stackTrace]),</code></td>
+                </tr>
+                <tr class="noop" title="Line 39" id="line39">
+                    <td>39</td><td></td><td></td><td><code>    );</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 40" id="line40">
+                    <td>40</td><td></td><td>0</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

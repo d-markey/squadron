@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-05" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9444444" lines-covered="17" lines-valid="18" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9444444" lines-covered="17" lines-valid="18" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '_impl/xplat/_platform.dart'</code>
@@ -31,9 +31,9 @@
         <line number="10">
             <code>  /// Gets the current platform type.</code>
         </line>
-        <line hits="8" number="11">
+        <line hits="48" number="11">
             <code>  static final platformType = impl.getPlatformType();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="48" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
@@ -60,13 +60,13 @@
         <line number="19">
             <code/>
         </line>
-        <line hits="36" number="20">
+        <line hits="40" number="20">
             <code>  static final _platformConverter = impl.getPlatformConverter();</code>
-            <hit count="36" name="&lt;unnamed&gt;"/>
+            <hit count="40" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="36" number="21">
+        <line hits="40" number="21">
             <code>  static Converter _converter = _platformConverter;</code>
-            <hit count="36" name="&lt;unnamed&gt;"/>
+            <hit count="40" name="&lt;unnamed&gt;"/>
         </line>
         <line number="22">
             <code/>
@@ -74,9 +74,9 @@
         <line number="23">
             <code>  /// Gets the current converter.</code>
         </line>
-        <line hits="27" number="24">
+        <line hits="30" number="24">
             <code>  static Converter get converter =&gt; _converter;</code>
-            <hit count="27" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="25">
             <code/>

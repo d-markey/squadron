@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_builtin_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="src/exceptions" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import 'package:cancelation_token/cancelation_token.dart';</code>
+        </line>
+        <line number="4">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="5">
+            <code/>
+        </line>
+        <line number="6">
+            <code>import 'squadron_canceled_exception.dart';</code>
+        </line>
+        <line number="7">
+            <code>import 'squadron_canceled_exceptions.dart';</code>
+        </line>
+        <line number="8">
+            <code>import 'squadron_error.dart';</code>
+        </line>
+        <line number="9">
+            <code>import 'squadron_exception.dart';</code>
+        </line>
+        <line number="10">
+            <code>import 'squadron_timeout_exception.dart';</code>
+        </line>
+        <line number="11">
+            <code>import 'task_canceled_exception.dart';</code>
+        </line>
+        <line number="12">
+            <code>import 'task_terminated_exception.dart';</code>
+        </line>
+        <line number="13">
+            <code>import 'worker_exception.dart';</code>
+        </line>
+        <line number="14">
+            <code/>
+        </line>
+        <line number="15">
+            <code>const $squadronErrorType = '\$!';</code>
+        </line>
+        <line number="16">
+            <code>const $workerExceptionType = '\$#';</code>
+        </line>
+        <line number="17">
+            <code>const $canceledExceptionType = '\$C';</code>
+        </line>
+        <line number="18">
+            <code>const $canceledExceptionsType = '\$C*';</code>
+        </line>
+        <line number="19">
+            <code>const $taskCanceledExceptionType = '\$C1';</code>
+        </line>
+        <line number="20">
+            <code>const $taskTerminatedExceptionType = '\$K';</code>
+        </line>
+        <line number="21">
+            <code>const $timeoutExceptionType = '\$T';</code>
+        </line>
+        <line number="22">
+            <code/>
+        </line>
+        <line number="23">
+            <code>@internal</code>
+        </line>
+        <line number="24">
+            <code>typedef SquadronExceptionDeserializer = SquadronException? Function(List props);</code>
+        </line>
+        <line number="25">
+            <code/>
+        </line>
+        <line hits="33" number="26">
+            <code>final builtinExceptions = &lt;String, SquadronExceptionDeserializer&gt;{</code>
+            <hit count="33" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="27">
+            <code>  $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,</code>
+        </line>
+        <line number="28">
+            <code>  $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,</code>
+        </line>
+        <line number="29">
+            <code>  $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,</code>
+        </line>
+        <line number="30">
+            <code>  $taskCanceledExceptionType: TaskCanceledExceptionExt.deserialize,</code>
+        </line>
+        <line number="31">
+            <code>  $taskTerminatedExceptionType: TaskTerminatedExceptionExt.deserialize,</code>
+        </line>
+        <line number="32">
+            <code>  $squadronErrorType: SquadronErrorExt.deserialize,</code>
+        </line>
+        <line number="33">
+            <code>  $workerExceptionType: WorkerExceptionExt.deserialize,</code>
+        </line>
+        <line number="34">
+            <code>};</code>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>@internal</code>
+        </line>
+        <line number="37">
+            <code>extension CanceledConversionExt on CanceledException {</code>
+        </line>
+        <line hits="2" number="38">
+            <code>  SquadronException toSquadronException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="39">
+            <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
+        </line>
+        <line hits="2" number="40">
+            <code>      SquadronCanceledException.from(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="41">
+            <code>        tokenId ?? '',</code>
+        </line>
+        <line number="42">
+            <code>        this,</code>
+        </line>
+        <line number="43">
+            <code>        stackTrace,</code>
+        </line>
+        <line number="44">
+            <code>      );</code>
+        </line>
+        <line number="45">
+            <code>}</code>
+        </line>
+        <line number="46">
+            <code/>
+        </line>
+        <line number="47">
+            <code>@internal</code>
+        </line>
+        <line number="48">
+            <code>extension TimeoutConversionExt on TimeoutException {</code>
+        </line>
+        <line hits="2" number="49">
+            <code>  SquadronException toSquadronException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="50">
+            <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
+        </line>
+        <line hits="2" number="51">
+            <code>      SquadronTimeoutException(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code>        tokenId ?? '',</code>
+        </line>
+        <line hits="2" number="53">
+            <code>        message ?? 'Operation timeout',</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="54">
+            <code>        duration,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="55">
+            <code>        stackTrace,</code>
+        </line>
+        <line number="56">
+            <code>      );</code>
+        </line>
+        <line number="57">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

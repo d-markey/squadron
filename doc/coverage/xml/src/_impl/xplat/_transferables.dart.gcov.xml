@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-05" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8787879" lines-covered="29" lines-valid="33" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_transferables.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8787879" lines-covered="29" lines-valid="33" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../../exceptions/squadron_error.dart';</code>
@@ -16,32 +16,32 @@
         <line number="5">
             <code/>
         </line>
-        <line hits="9" number="6">
+        <line hits="10" number="6">
             <code>  static List&lt;Object&gt;? get(List args) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="7">
+        <line hits="10" number="7">
             <code>    final objects = _get(args, &lt;Object&gt;{}).toList();</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="8">
+        <line hits="10" number="8">
             <code>    return objects.isEmpty ? null : objects;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="9">
+        <line hits="10" number="9">
             <code>  }</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="9" number="11">
+        <line hits="10" number="11">
             <code>  static bool _isBaseType(Object? data) =&gt;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="12">
+        <line hits="10" number="12">
             <code>      (data == null || data is String || data is num || data is bool);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code/>
@@ -49,42 +49,42 @@
         <line number="14">
             <code>  static bool _isListOfBaseType(Object? data) =&gt;</code>
         </line>
-        <line hits="9" number="15">
+        <line hits="10" number="15">
             <code>      (data is List&lt;String&gt; || data is List&lt;num&gt; || data is List&lt;bool&gt;);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="16">
             <code/>
         </line>
-        <line hits="9" number="17">
+        <line hits="10" number="17">
             <code>  static bool _isSafeForTransfer(Object? data) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="18">
+        <line hits="10" number="18">
             <code>    if (_isBaseType(data)) return true;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="19">
             <code>    if (_isListOfBaseType(data)) return true;</code>
         </line>
-        <line hits="9" number="20">
+        <line hits="10" number="20">
             <code>    if (data is List &amp;&amp; data.every(_isSafeForTransfer)) return true;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="21">
+        <line hits="10" number="21">
             <code>    return false;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="22">
+        <line hits="10" number="22">
             <code>  }</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code/>
         </line>
-        <line hits="9" number="24">
+        <line hits="10" number="24">
             <code>  static bool _isNotSafeForTransfer(Object? data) =&gt; !_isSafeForTransfer(data);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="25">
             <code/>
@@ -92,25 +92,25 @@
         <line number="26">
             <code>  /// Excludes base type values from [list].</code>
         </line>
-        <line hits="9" number="27">
+        <line hits="10" number="27">
             <code>  static Iterable&lt;Object&gt; _getObjects(Iterable list, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="28">
+        <line hits="10" number="28">
             <code>    for (var o in list.where(_isNotSafeForTransfer)) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="29">
+        <line hits="10" number="29">
             <code>      if (!seen.contains(o)) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="30">
+        <line hits="10" number="30">
             <code>        seen.add(o);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="31">
+        <line hits="10" number="31">
             <code>        yield o as Object;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="32">
             <code>      }</code>
@@ -118,9 +118,9 @@
         <line number="33">
             <code>    }</code>
         </line>
-        <line hits="9" number="34">
+        <line hits="10" number="34">
             <code>  }</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="35">
             <code/>
@@ -155,32 +155,32 @@
         <line number="45">
             <code>  /// no effort to ensure these objects really are transferable.</code>
         </line>
-        <line hits="9" number="46">
+        <line hits="10" number="46">
             <code>  static Iterable&lt;Object&gt; _get(List message, Set&lt;Object&gt; seen) sync* {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="47">
+        <line hits="10" number="47">
             <code>    if (_isSafeForTransfer(message)) return;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="48">
+        <line hits="10" number="48">
             <code>    final toBeInspected = _getObjects(message, seen).toList();</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="49">
             <code>    var i = 0;</code>
         </line>
-        <line hits="9" number="50">
+        <line hits="10" number="50">
             <code>    while (i &lt; toBeInspected.length) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="51">
+        <line hits="10" number="51">
             <code>      final arg = toBeInspected[i++];</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="52">
+        <line hits="10" number="52">
             <code>      if (arg is Map) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="53">
             <code>        _checkKeys(arg);</code>
@@ -188,9 +188,9 @@
         <line hits="0" number="54">
             <code>        toBeInspected.addAll(_getObjects(arg.values, seen));</code>
         </line>
-        <line hits="9" number="55">
+        <line hits="10" number="55">
             <code>      } else if (arg is Iterable) {</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4" number="56">
             <code>        toBeInspected.addAll(_getObjects(arg, seen));</code>
@@ -199,9 +199,9 @@
         <line number="57">
             <code>      } else {</code>
         </line>
-        <line hits="9" number="58">
+        <line hits="10" number="58">
             <code>        yield arg;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="59">
             <code>      }</code>
@@ -209,9 +209,9 @@
         <line number="60">
             <code>    }</code>
         </line>
-        <line hits="9" number="61">
+        <line hits="10" number="61">
             <code>  }</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
             <code>}</code>

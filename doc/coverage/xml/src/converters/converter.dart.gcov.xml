@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-05" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="28" lines-valid="30" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="28" lines-valid="30" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>typedef Cast&lt;T&gt; = T Function(dynamic);</code>
@@ -10,9 +10,9 @@
         <line number="3">
             <code>abstract base class Converter {</code>
         </line>
-        <line hits="23" number="4">
+        <line hits="25" number="4">
             <code>  const Converter();</code>
-            <hit count="23" name="&lt;unnamed&gt;"/>
+            <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
         <line number="5">
             <code/>
@@ -28,9 +28,9 @@
         <line number="8">
             <code/>
         </line>
-        <line hits="18" number="9">
+        <line hits="20" number="9">
             <code>  static T identity&lt;T&gt;(dynamic x) =&gt; x as T;</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>

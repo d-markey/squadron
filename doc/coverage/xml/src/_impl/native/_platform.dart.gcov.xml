@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-05" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6666667" lines-covered="2" lines-valid="3" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.4" lines-covered="2" lines-valid="5" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import '../../converters/cast_converter.dart';</code>
+            <code>import 'dart:isolate';</code>
         </line>
         <line number="2">
-            <code>import '../../converters/converter.dart';</code>
+            <code/>
         </line>
         <line number="3">
-            <code>import '../../squadron_platform_type.dart';</code>
+            <code>import '../../converters/cast_converter.dart';</code>
         </line>
         <line number="4">
-            <code/>
+            <code>import '../../converters/converter.dart';</code>
         </line>
-        <line hits="9" number="5">
-            <code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line number="5">
+            <code>import '../../squadron_platform_type.dart';</code>
         </line>
         <line number="6">
+            <code>import '_typedefs.dart';</code>
+        </line>
+        <line number="7">
             <code/>
         </line>
-        <line hits="2" number="7">
+        <line hits="10" number="8">
+            <code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line hits="12" number="10">
             <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="8">
+        <line number="11">
             <code/>
         </line>
-        <line hits="0" number="9">
+        <line hits="0" number="12">
             <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line hits="0" number="14">
+            <code>void terminate(PlatformThread thread) {</code>
+        </line>
+        <line hits="0" number="15">
+            <code>  thread.kill(priority: Isolate.immediate);</code>
+        </line>
+        <line number="16">
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

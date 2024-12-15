@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-05" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../../converters/cast_converter.dart';</code>
@@ -17,67 +17,92 @@
             <code>import '_patch.dart';</code>
         </line>
         <line number="6">
-            <code/>
+            <code>import '_typedefs.dart';</code>
         </line>
         <line number="7">
-            <code>Converter getPlatformConverter() =&gt; (1.toDouble() is int)</code>
+            <code/>
         </line>
-        <line hits="9" number="8">
-            <code>    ? CastConverter.instance // JavaScript</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line number="8">
+            <code>const double _one = 1.0;</code>
         </line>
         <line number="9">
-            <code>    : NumConverter.instance; // Web Assembly</code>
+            <code>final _platformType = (_one is int)</code>
         </line>
         <line number="10">
-            <code/>
+            <code>    ? SquadronPlatformType.js // JavaScript</code>
         </line>
         <line number="11">
-            <code>SquadronPlatformType getPlatformType() =&gt; (1.toDouble() is int)</code>
-        </line>
-        <line hits="2" number="12">
-            <code>    ? SquadronPlatformType.js // JavaScript</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="13">
             <code>    : SquadronPlatformType.wasm; // Web Assembly</code>
         </line>
-        <line number="14">
+        <line number="12">
             <code/>
         </line>
-        <line hits="12" number="15">
+        <line hits="2" number="13">
+            <code>Converter getPlatformConverter() =&gt; _platformType.isJs</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="14">
+            <code>    ? CastConverter.instance // JavaScript</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="15">
+            <code>    : NumConverter.instance; // Web Assembly</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line hits="12" number="17">
+            <code>SquadronPlatformType getPlatformType() =&gt; _platformType;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line hits="12" number="19">
             <code>Uri mapUrl(String url) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="16">
+        <line hits="12" number="20">
             <code>  if (url.startsWith('~')) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="17">
+        <line hits="12" number="21">
             <code>    final root = getHome();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="18">
+        <line hits="12" number="22">
             <code>    if (root != null) {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="19">
+        <line hits="12" number="23">
             <code>      url = '$root${url.substring(1)}';</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="20">
+        <line number="24">
             <code>    }</code>
         </line>
-        <line number="21">
+        <line number="25">
             <code>  }</code>
         </line>
-        <line hits="12" number="22">
-            <code>  return Uri.parse(url);</code>
+        <line hits="12" number="26">
+            <code>  return Uri.parse(url).normalizePath();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="23">
+        <line hits="12" number="27">
             <code>}</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line number="29">
+            <code>void terminate(PlatformThread thread) {</code>
+        </line>
+        <line number="30">
+            <code>  thread.terminate();</code>
+        </line>
+        <line number="31">
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

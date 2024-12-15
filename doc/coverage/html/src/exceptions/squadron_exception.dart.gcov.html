@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -76,7 +76,7 @@
                     <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>import '_well_known_exceptions.dart';</code></td>
+                    <td>6</td><td></td><td></td><td><code>import '_builtin_exceptions.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
                     <td>7</td><td></td><td></td><td><code>import 'worker_exception.dart';</code></td>
@@ -91,16 +91,16 @@
                     <td>10</td><td></td><td></td><td><code>abstract class SquadronException implements Exception {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>20</td><td><code>  SquadronException.init(this.message, [this._stackTrace]) {</code></td>
+                    <td>11</td><td></td><td>19</td><td><code>  SquadronException.init(this.message, [this._stackTrace]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>20</td><td><code>    if (_stackTrace == null) {</code></td>
+                    <td>12</td><td></td><td>19</td><td><code>    if (_stackTrace == null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>26</td><td><code>        _stackTrace = StackTrace.current;</code></td>
+                    <td>14</td><td></td><td>27</td><td><code>        _stackTrace = StackTrace.current;</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 15" id="line15">
                     <td>15</td><td></td><td>0</td><td><code>      } catch (_, st) {</code></td>
@@ -118,7 +118,7 @@
                     <td>19</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>10</td><td><code>  }</code></td>
+                    <td>20</td><td></td><td>8</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code></code></td>
@@ -142,25 +142,25 @@
                     <td>27</td><td></td><td>16</td><td><code>    if (error is WorkerException) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>9</td><td><code>      if (command != null) error.setCommand(command);</code></td>
+                    <td>28</td><td></td><td>11</td><td><code>      if (command != null) error.setCommand(command);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>5</td><td><code>      return error;</code></td>
+                    <td>29</td><td></td><td>6</td><td><code>      return error;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>9</td><td><code>    } else if (error is SquadronException) {</code></td>
+                    <td>30</td><td></td><td>12</td><td><code>    } else if (error is SquadronException) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>5</td><td><code>      return error;</code></td>
+                    <td>31</td><td></td><td>4</td><td><code>      return error;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>5</td><td><code>    } else if (error is CanceledException) {</code></td>
+                    <td>32</td><td></td><td>6</td><td><code>    } else if (error is CanceledException) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
                     <td>33</td><td></td><td>2</td><td><code>      return error.toSquadronException();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>5</td><td><code>    } else if (error is TimeoutException) {</code></td>
+                    <td>34</td><td></td><td>6</td><td><code>    } else if (error is TimeoutException) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
                     <td>35</td><td></td><td>2</td><td><code>      return error.toSquadronException();</code></td>
@@ -169,13 +169,13 @@
                     <td>36</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>9</td><td><code>      return WorkerException(error.toString(), stackTrace, command);</code></td>
+                    <td>37</td><td></td><td>11</td><td><code>      return WorkerException(error.toString(), stackTrace, command);</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
                     <td>38</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>9</td><td><code>  }</code></td>
+                    <td>39</td><td></td><td>8</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
                     <td>40</td><td></td><td></td><td><code></code></td>
@@ -190,7 +190,7 @@
                     <td>43</td><td></td><td></td><td><code>  /// The exception's [StackTrace].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>16</td><td><code>  StackTrace? get stackTrace =&gt; _stackTrace;</code></td>
+                    <td>44</td><td></td><td>19</td><td><code>  StackTrace? get stackTrace =&gt; _stackTrace;</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 45" id="line45">
                     <td>45</td><td></td><td>0</td><td><code>  StackTrace? _stackTrace;</code></td>
@@ -199,10 +199,10 @@
                     <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>2</td><td><code>  @override</code></td>
+                    <td>47</td><td></td><td>3</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>5</td><td><code>  String toString() =&gt; jsonEncode(serialize());</code></td>
+                    <td>48</td><td></td><td>7</td><td><code>  String toString() =&gt; jsonEncode(serialize());</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
                     <td>49</td><td></td><td></td><td><code></code></td>
@@ -220,10 +220,10 @@
                     <td>53</td><td></td><td></td><td><code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>9</td><td><code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code></td>
+                    <td>54</td><td></td><td>10</td><td><code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>6</td><td><code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code></td>
+                    <td>55</td><td></td><td>7</td><td><code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
                     <td>56</td><td></td><td></td><td><code>}</code></td>

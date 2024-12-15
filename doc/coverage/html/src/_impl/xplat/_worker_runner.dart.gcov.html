@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -112,7 +112,7 @@
                     <td>17</td><td></td><td></td><td><code>  /// Constructs a new worker runner.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>10</td><td><code>  WorkerRunner(this._terminate);</code></td>
+                    <td>18</td><td></td><td>11</td><td><code>  WorkerRunner(this._terminate);</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code></code></td>
@@ -217,7 +217,7 @@
                     <td>52</td><td></td><td></td><td><code>  /// will be set with operations from the service.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>9</td><td><code>  Future&lt;void&gt; connect(WorkerRequest? startRequest, PlatformChannel channelInfo,</code></td>
+                    <td>53</td><td></td><td>10</td><td><code>  Future&lt;void&gt; connect(WorkerRequest? startRequest, PlatformChannel channelInfo,</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
                     <td>54</td><td></td><td></td><td><code>      WorkerInitializer initializer) async {</code></td>
@@ -229,10 +229,10 @@
                     <td>56</td><td></td><td></td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>18</td><td><code>      startRequest?.unwrapInPlace(internalLogger);</code></td>
+                    <td>57</td><td></td><td>20</td><td><code>      startRequest?.unwrapInPlace(internalLogger);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>9</td><td><code>      channel = startRequest?.channel;</code></td>
+                    <td>58</td><td></td><td>10</td><td><code>      channel = startRequest?.channel;</code></td>
                 </tr>
                 <tr class="noop" title="Line 59" id="line59">
                     <td>59</td><td></td><td></td><td><code></code></td>
@@ -256,16 +256,16 @@
                     <td>65</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>9</td><td><code>      if (_logForwarder == null) {</code></td>
+                    <td>66</td><td></td><td>10</td><td><code>      if (_logForwarder == null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>9</td><td><code>        final logger = channel.log;</code></td>
+                    <td>67</td><td></td><td>10</td><td><code>        final logger = channel.log;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>36</td><td><code>        _logForwarder = (event) =&gt; logger(event.origin);</code></td>
+                    <td>68</td><td></td><td>40</td><td><code>        _logForwarder = (event) =&gt; logger(event.origin);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>18</td><td><code>        Logger.addOutputListener(_logForwarder!);</code></td>
+                    <td>69</td><td></td><td>20</td><td><code>        Logger.addOutputListener(_logForwarder!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
                     <td>70</td><td></td><td></td><td><code>      }</code></td>
@@ -274,13 +274,13 @@
                     <td>71</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>9</td><td><code>      if (!startRequest.isConnection) {</code></td>
+                    <td>72</td><td></td><td>10</td><td><code>      if (!startRequest.isConnection) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 73" id="line73">
                     <td>73</td><td></td><td>0</td><td><code>        throw SquadronErrorExt.create('Connection request expected');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>9</td><td><code>      } else if (_service != null) {</code></td>
+                    <td>74</td><td></td><td>10</td><td><code>      } else if (_service != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 75" id="line75">
                     <td>75</td><td></td><td>0</td><td><code>        throw SquadronErrorExt.create('Already connected');</code></td>
@@ -292,13 +292,13 @@
                     <td>77</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>18</td><td><code>      _service = await initializer(startRequest);</code></td>
+                    <td>78</td><td></td><td>20</td><td><code>      _service = await initializer(startRequest);</code></td>
                 </tr>
                 <tr class="noop" title="Line 79" id="line79">
                     <td>79</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>63</td><td><code>      if (_service!.operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code></td>
+                    <td>80</td><td></td><td>70</td><td><code>      if (_service!.operations.keys.where((k) =&gt; k &lt;= 0).isNotEmpty) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 81" id="line81">
                     <td>81</td><td></td><td>2</td><td><code>        throw SquadronErrorExt.create(</code></td>
@@ -316,13 +316,13 @@
                     <td>85</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>9</td><td><code>      channel.connect(channelInfo);</code></td>
+                    <td>86</td><td></td><td>10</td><td><code>      channel.connect(channelInfo);</code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
                     <td>87</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>18</td><td><code>      if (_service is ServiceInstaller) {</code></td>
+                    <td>88</td><td></td><td>20</td><td><code>      if (_service is ServiceInstaller) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 89" id="line89">
                     <td>89</td><td></td><td>2</td><td><code>        _installCompleter = Completer()</code></td>
@@ -349,7 +349,7 @@
                     <td>96</td><td></td><td>1</td><td><code>              channel?.closeStream();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>2</td><td><code>              _installResult = SquadronException.from(ex, st);</code></td>
+                    <td>97</td><td></td><td>2</td><td><code>              _installError = SquadronException.from(ex, st);</code></td>
                 </tr>
                 <tr class="noop" title="Line 98" id="line98">
                     <td>98</td><td></td><td></td><td><code>            }</code></td>
@@ -385,7 +385,7 @@
                     <td>108</td><td></td><td></td><td><code>  Completer&lt;void&gt;? _installCompleter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 109" id="line109">
-                    <td>109</td><td></td><td></td><td><code>  SquadronException? _installResult;</code></td>
+                    <td>109</td><td></td><td></td><td><code>  SquadronException? _installError;</code></td>
                 </tr>
                 <tr class="noop" title="Line 110" id="line110">
                     <td>110</td><td></td><td></td><td><code></code></td>
@@ -397,7 +397,7 @@
                     <td>112</td><td></td><td></td><td><code>  /// [_service] map. Make sure this method doesn't throw.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 113" id="line113">
-                    <td>113</td><td></td><td>10</td><td><code>  void processRequest(WorkerRequest request) async {</code></td>
+                    <td>113</td><td></td><td>11</td><td><code>  void processRequest(WorkerRequest request) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 114" id="line114">
                     <td>114</td><td></td><td>1</td><td><code>    WorkerChannel? channel;</code></td>
@@ -406,22 +406,22 @@
                     <td>115</td><td></td><td>1</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>19</td><td><code>      request.unwrapInPlace(internalLogger);</code></td>
+                    <td>116</td><td></td><td>21</td><td><code>      request.unwrapInPlace(internalLogger);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 117" id="line117">
-                    <td>117</td><td></td><td>9</td><td><code>      channel = request.channel;</code></td>
+                    <td>117</td><td></td><td>10</td><td><code>      channel = request.channel;</code></td>
                 </tr>
                 <tr class="noop" title="Line 118" id="line118">
                     <td>118</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>9</td><td><code>      if (request.isTermination) {</code></td>
+                    <td>119</td><td></td><td>10</td><td><code>      if (request.isTermination) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 120" id="line120">
                     <td>120</td><td></td><td></td><td><code>        // terminate the worker</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>9</td><td><code>        return _shutdown();</code></td>
+                    <td>121</td><td></td><td>10</td><td><code>        return _shutdown();</code></td>
                 </tr>
                 <tr class="noop" title="Line 122" id="line122">
                     <td>122</td><td></td><td></td><td><code>      }</code></td>
@@ -433,7 +433,7 @@
                     <td>124</td><td></td><td></td><td><code>      // check installation result if necessary</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>10</td><td><code>      final pendingInstallation = _installCompleter?.future;</code></td>
+                    <td>125</td><td></td><td>11</td><td><code>      final pendingInstallation = _installCompleter?.future;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
                     <td>126</td><td></td><td>1</td><td><code>      if (pendingInstallation != null) {</code></td>
@@ -451,13 +451,13 @@
                     <td>130</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>10</td><td><code>      if (_installResult != null) {</code></td>
+                    <td>131</td><td></td><td>11</td><td><code>      if (_installError != null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 132" id="line132">
                     <td>132</td><td></td><td></td><td><code>        // service installation failed</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>1</td><td><code>        throw _installResult!;</code></td>
+                    <td>133</td><td></td><td>1</td><td><code>        throw _installError!;</code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
                     <td>134</td><td></td><td></td><td><code>      }</code></td>
@@ -472,7 +472,7 @@
                     <td>137</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>9</td><td><code>      if (request.isTokenCancelation) {</code></td>
+                    <td>138</td><td></td><td>10</td><td><code>      if (request.isTokenCancelation) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 139" id="line139">
                     <td>139</td><td></td><td></td><td><code>        // cancel a token</code></td>
@@ -484,7 +484,7 @@
                     <td>141</td><td></td><td>4</td><td><code>        return _getTokenRef(token).update(token);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>9</td><td><code>      } else if (request.isStreamCancelation) {</code></td>
+                    <td>142</td><td></td><td>10</td><td><code>      } else if (request.isStreamCancelation) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 143" id="line143">
                     <td>143</td><td></td><td></td><td><code>        // cancel a stream</code></td>
@@ -508,7 +508,7 @@
                     <td>149</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>9</td><td><code>      if (request.isConnection) {</code></td>
+                    <td>150</td><td></td><td>10</td><td><code>      if (request.isConnection) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 151" id="line151">
                     <td>151</td><td></td><td></td><td><code>        // connection requests are handled by connect().</code></td>
@@ -520,7 +520,7 @@
                     <td>153</td><td></td><td>0</td><td><code>            'Unexpected connection request: $request');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 154" id="line154">
-                    <td>154</td><td></td><td>10</td><td><code>      } else if (_service == null) {</code></td>
+                    <td>154</td><td></td><td>11</td><td><code>      } else if (_service == null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 155" id="line155">
                     <td>155</td><td></td><td></td><td><code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code></td>
@@ -553,7 +553,7 @@
                     <td>164</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 165" id="line165">
-                    <td>165</td><td></td><td>9</td><td><code>      final token = request.cancelToken;</code></td>
+                    <td>165</td><td></td><td>10</td><td><code>      final token = request.cancelToken;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
                     <td>166</td><td></td><td>2</td><td><code>      token?.throwIfCanceled();</code></td>
@@ -565,7 +565,7 @@
                     <td>168</td><td></td><td></td><td><code>      // start monitoring execution</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 169" id="line169">
-                    <td>169</td><td></td><td>9</td><td><code>      final tokenRef = _begin(request);</code></td>
+                    <td>169</td><td></td><td>10</td><td><code>      final tokenRef = _begin(request);</code></td>
                 </tr>
                 <tr class="noop" title="Line 170" id="line170">
                     <td>170</td><td></td><td></td><td><code>      try {</code></td>
@@ -574,7 +574,7 @@
                     <td>171</td><td></td><td></td><td><code>        // find the operation matching the request command</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 172" id="line172">
-                    <td>172</td><td></td><td>37</td><td><code>        final cmd = request.command, op = _service?.operations[cmd];</code></td>
+                    <td>172</td><td></td><td>41</td><td><code>        final cmd = request.command, op = _service?.operations[cmd];</code></td>
                 </tr>
                 <tr class="noop" title="Line 173" id="line173">
                     <td>173</td><td></td><td></td><td><code>        if (op == null) {</code></td>
@@ -592,10 +592,10 @@
                     <td>177</td><td></td><td></td><td><code>        // process</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 178" id="line178">
-                    <td>178</td><td></td><td>10</td><td><code>        var result = op(request);</code></td>
+                    <td>178</td><td></td><td>11</td><td><code>        var result = op(request);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 179" id="line179">
-                    <td>179</td><td></td><td>10</td><td><code>        if (result is Future) {</code></td>
+                    <td>179</td><td></td><td>11</td><td><code>        if (result is Future) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 180" id="line180">
                     <td>180</td><td></td><td>0</td><td><code>          result = await result;</code></td>
@@ -607,10 +607,10 @@
                     <td>182</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 183" id="line183">
-                    <td>183</td><td></td><td>10</td><td><code>        final reply = request.reply!;</code></td>
+                    <td>183</td><td></td><td>11</td><td><code>        final reply = request.reply!;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 184" id="line184">
-                    <td>184</td><td></td><td>16</td><td><code>        if (result is Stream &amp;&amp; channel.canStream(result)) {</code></td>
+                    <td>184</td><td></td><td>17</td><td><code>        if (result is Stream &amp;&amp; channel.canStream(result)) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 185" id="line185">
                     <td>185</td><td></td><td></td><td><code>          // result is a stream: forward data to the client</code></td>
@@ -664,7 +664,7 @@
                     <td>201</td><td></td><td></td><td><code>          // result is a value: send to the client</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 202" id="line202">
-                    <td>202</td><td></td><td>10</td><td><code>          reply(result);</code></td>
+                    <td>202</td><td></td><td>11</td><td><code>          reply(result);</code></td>
                 </tr>
                 <tr class="noop" title="Line 203" id="line203">
                     <td>203</td><td></td><td></td><td><code>        }</code></td>
@@ -676,7 +676,7 @@
                     <td>205</td><td></td><td></td><td><code>        // stop monitoring execution</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 206" id="line206">
-                    <td>206</td><td></td><td>9</td><td><code>        _done(tokenRef);</code></td>
+                    <td>206</td><td></td><td>10</td><td><code>        _done(tokenRef);</code></td>
                 </tr>
                 <tr class="noop" title="Line 207" id="line207">
                     <td>207</td><td></td><td></td><td><code>      }</code></td>
@@ -688,7 +688,7 @@
                     <td>209</td><td></td><td></td><td><code>      if (channel != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 210" id="line210">
-                    <td>210</td><td></td><td>6</td><td><code>        channel.error(ex, st, request.command);</code></td>
+                    <td>210</td><td></td><td>8</td><td><code>        channel.error(ex, st, request.command);</code></td>
                 </tr>
                 <tr class="noop" title="Line 211" id="line211">
                     <td>211</td><td></td><td></td><td><code>      } else {</code></td>
@@ -709,13 +709,13 @@
                     <td>216</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 217" id="line217">
-                    <td>217</td><td></td><td>10</td><td><code>  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =&gt;</code></td>
+                    <td>217</td><td></td><td>11</td><td><code>  CancelationTokenReference _getTokenRef(SquadronCancelationToken? token) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 218" id="line218">
                     <td>218</td><td></td><td>1</td><td><code>      (token == null)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 219" id="line219">
-                    <td>219</td><td></td><td>10</td><td><code>          ? CancelationTokenReference.noToken</code></td>
+                    <td>219</td><td></td><td>11</td><td><code>          ? CancelationTokenReference.noToken</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 220" id="line220">
                     <td>220</td><td></td><td>4</td><td><code>          : _cancelTokens.putIfAbsent(</code></td>
@@ -739,16 +739,16 @@
                     <td>226</td><td></td><td></td><td><code>  /// [CancelationTokenReference.noToken].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 227" id="line227">
-                    <td>227</td><td></td><td>9</td><td><code>  CancelationTokenReference _begin(WorkerRequest request) {</code></td>
+                    <td>227</td><td></td><td>10</td><td><code>  CancelationTokenReference _begin(WorkerRequest request) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 228" id="line228">
-                    <td>228</td><td></td><td>18</td><td><code>    _executing++;</code></td>
+                    <td>228</td><td></td><td>20</td><td><code>    _executing++;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 229" id="line229">
-                    <td>229</td><td></td><td>19</td><td><code>    final token = _getTokenRef(request.cancelToken);</code></td>
+                    <td>229</td><td></td><td>21</td><td><code>    final token = _getTokenRef(request.cancelToken);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 230" id="line230">
-                    <td>230</td><td></td><td>9</td><td><code>    token.usedBy(request);</code></td>
+                    <td>230</td><td></td><td>10</td><td><code>    token.usedBy(request);</code></td>
                 </tr>
                 <tr class="noop" title="Line 231" id="line231">
                     <td>231</td><td></td><td></td><td><code>    return token;</code></td>
@@ -763,13 +763,13 @@
                     <td>234</td><td></td><td></td><td><code>  /// Stops monitoring execution and releases the [tokenRef].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 235" id="line235">
-                    <td>235</td><td></td><td>9</td><td><code>  void _done(CancelationTokenReference tokenRef) {</code></td>
+                    <td>235</td><td></td><td>10</td><td><code>  void _done(CancelationTokenReference tokenRef) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 236" id="line236">
-                    <td>236</td><td></td><td>10</td><td><code>    tokenRef.release();</code></td>
+                    <td>236</td><td></td><td>11</td><td><code>    tokenRef.release();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 237" id="line237">
-                    <td>237</td><td></td><td>18</td><td><code>    if (tokenRef.refCount == 0) {</code></td>
+                    <td>237</td><td></td><td>20</td><td><code>    if (tokenRef.refCount == 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 238" id="line238">
                     <td>238</td><td></td><td>6</td><td><code>      _cancelTokens.remove(tokenRef.id);</code></td>
@@ -778,10 +778,10 @@
                     <td>239</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 240" id="line240">
-                    <td>240</td><td></td><td>18</td><td><code>    _executing--;</code></td>
+                    <td>240</td><td></td><td>20</td><td><code>    _executing--;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 241" id="line241">
-                    <td>241</td><td></td><td>14</td><td><code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code></td>
+                    <td>241</td><td></td><td>15</td><td><code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 242" id="line242">
                     <td>242</td><td></td><td>2</td><td><code>      _unmount();</code></td>
@@ -1009,16 +1009,16 @@
                     <td>316</td><td></td><td></td><td><code>  /// pending executions have completed.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 317" id="line317">
-                    <td>317</td><td></td><td>9</td><td><code>  void _shutdown() {</code></td>
+                    <td>317</td><td></td><td>10</td><td><code>  void _shutdown() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 318" id="line318">
-                    <td>318</td><td></td><td>9</td><td><code>    _terminationRequested = true;</code></td>
+                    <td>318</td><td></td><td>10</td><td><code>    _terminationRequested = true;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 319" id="line319">
-                    <td>319</td><td></td><td>18</td><td><code>    if (_executing == 0) {</code></td>
+                    <td>319</td><td></td><td>20</td><td><code>    if (_executing == 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 320" id="line320">
-                    <td>320</td><td></td><td>8</td><td><code>      _unmount();</code></td>
+                    <td>320</td><td></td><td>9</td><td><code>      _unmount();</code></td>
                 </tr>
                 <tr class="noop" title="Line 321" id="line321">
                     <td>321</td><td></td><td></td><td><code>    }</code></td>
@@ -1033,7 +1033,7 @@
                     <td>324</td><td></td><td></td><td><code>  // should not throw</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 325" id="line325">
-                    <td>325</td><td></td><td>9</td><td><code>  void _unmount() async {</code></td>
+                    <td>325</td><td></td><td>10</td><td><code>  void _unmount() async {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 326" id="line326">
                     <td>326</td><td></td><td>0</td><td><code>    try {</code></td>
@@ -1042,7 +1042,7 @@
                     <td>327</td><td></td><td></td><td><code>      // uninstall the service if necessary</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 328" id="line328">
-                    <td>328</td><td></td><td>18</td><td><code>      if (_service is ServiceInstaller) {</code></td>
+                    <td>328</td><td></td><td>20</td><td><code>      if (_service is ServiceInstaller) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 329" id="line329">
                     <td>329</td><td></td><td></td><td><code>        // check installation result</code></td>
@@ -1063,7 +1063,7 @@
                     <td>334</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 335" id="line335">
-                    <td>335</td><td></td><td>1</td><td><code>        if (_installResult == null) {</code></td>
+                    <td>335</td><td></td><td>1</td><td><code>        if (_installError == null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 336" id="line336">
                     <td>336</td><td></td><td></td><td><code>          // uninstall iif the service installed succesfuly</code></td>
@@ -1087,7 +1087,7 @@
                     <td>342</td><td></td><td></td><td><code>    } finally {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 343" id="line343">
-                    <td>343</td><td></td><td>9</td><td><code>      _exit();</code></td>
+                    <td>343</td><td></td><td>10</td><td><code>      _exit();</code></td>
                 </tr>
                 <tr class="noop" title="Line 344" id="line344">
                     <td>344</td><td></td><td></td><td><code>    }</code></td>
@@ -1102,13 +1102,13 @@
                     <td>347</td><td></td><td></td><td><code>  // should not throw</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 348" id="line348">
-                    <td>348</td><td></td><td>9</td><td><code>  void _exit() {</code></td>
+                    <td>348</td><td></td><td>10</td><td><code>  void _exit() {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 349" id="line349">
                     <td>349</td><td></td><td>0</td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 350" id="line350">
-                    <td>350</td><td></td><td>18</td><td><code>      _terminate(this);</code></td>
+                    <td>350</td><td></td><td>20</td><td><code>      _terminate(this);</code></td>
                 </tr>
                 <tr class="noop" title="Line 351" id="line351">
                     <td>351</td><td></td><td></td><td><code>    } catch (ex) {</code></td>
@@ -1120,10 +1120,10 @@
                     <td>353</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 354" id="line354">
-                    <td>354</td><td></td><td>9</td><td><code>    if (_logForwarder != null) {</code></td>
+                    <td>354</td><td></td><td>10</td><td><code>    if (_logForwarder != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 355" id="line355">
-                    <td>355</td><td></td><td>18</td><td><code>      Logger.removeOutputListener(_logForwarder!);</code></td>
+                    <td>355</td><td></td><td>20</td><td><code>      Logger.removeOutputListener(_logForwarder!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 356" id="line356">
                     <td>356</td><td></td><td></td><td><code>    }</code></td>

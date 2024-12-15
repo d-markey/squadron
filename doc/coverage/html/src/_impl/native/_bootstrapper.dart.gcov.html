@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -82,25 +82,25 @@
                     <td>7</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>9</td><td><code>void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {</code></td>
+                    <td>8</td><td></td><td>10</td><td><code>void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>9</td><td><code>  final workerPort = ReceivePort();</code></td>
+                    <td>9</td><td></td><td>10</td><td><code>  final workerPort = ReceivePort();</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
                     <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>18</td><td><code>  final runner = WorkerRunner((r) {</code></td>
+                    <td>11</td><td></td><td>20</td><td><code>  final runner = WorkerRunner((r) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>18</td><td><code>    r.internalLogger.t('Terminating Isolate');</code></td>
+                    <td>12</td><td></td><td>20</td><td><code>    r.internalLogger.t('Terminating Isolate');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>9</td><td><code>    workerPort.close();</code></td>
+                    <td>13</td><td></td><td>10</td><td><code>    workerPort.close();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>18</td><td><code>    Isolate.current.kill(priority: Isolate.beforeNextEvent);</code></td>
+                    <td>14</td><td></td><td>20</td><td><code>    Isolate.current.kill(priority: Isolate.beforeNextEvent);</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code>  });</code></td>
@@ -109,10 +109,10 @@
                     <td>16</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>18</td><td><code>  workerPort.listen(runner.handle);</code></td>
+                    <td>17</td><td></td><td>20</td><td><code>  workerPort.listen(runner.handle);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>18</td><td><code>  runner.connect(command, workerPort.sendPort, initializer);</code></td>
+                    <td>18</td><td></td><td>20</td><td><code>  runner.connect(command, workerPort.sendPort, initializer);</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code>}</code></td>

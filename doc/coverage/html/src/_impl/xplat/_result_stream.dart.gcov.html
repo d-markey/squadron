@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -91,7 +91,7 @@
                     <td>10</td><td></td><td></td><td><code>class ResultStream {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>18</td><td><code>  ResultStream(</code></td>
+                    <td>11</td><td></td><td>20</td><td><code>  ResultStream(</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
                     <td>12</td><td></td><td></td><td><code>    Channel channel,</code></td>
@@ -112,7 +112,7 @@
                     <td>17</td><td></td><td>5</td><td><code>    final streamIdCompleter = streaming ? Completer&lt;int?&gt;() : null;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>18</td><td><code>    final command = req.command, token = req.cancelToken;</code></td>
+                    <td>18</td><td></td><td>20</td><td><code>    final command = req.command, token = req.cancelToken;</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code></code></td>
@@ -121,13 +121,13 @@
                     <td>20</td><td></td><td>15</td><td><code>    void $decodeStreamOfResponses(WorkerResponse res) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>11</td><td><code>      if (!res.unwrapInPlace(channel)) return;</code></td>
+                    <td>21</td><td></td><td>10</td><td><code>      if (!res.unwrapInPlace(channel)) return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
                     <td>22</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>11</td><td><code>      final hasStreamId = streamIdCompleter!.isCompleted;</code></td>
+                    <td>23</td><td></td><td>10</td><td><code>      final hasStreamId = streamIdCompleter!.isCompleted;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
                     <td>24</td><td></td><td>5</td><td><code>      if (res.endOfStream) {</code></td>
@@ -169,7 +169,7 @@
                     <td>36</td><td></td><td>5</td><td><code>      final error = res.error;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>6</td><td><code>      if (error == null &amp;&amp; !hasStreamId) {</code></td>
+                    <td>37</td><td></td><td>5</td><td><code>      if (error == null &amp;&amp; !hasStreamId) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
                     <td>38</td><td></td><td></td><td><code>        // the first result from a streaming operation is the stream ID</code></td>
@@ -178,7 +178,7 @@
                     <td>39</td><td></td><td>20</td><td><code>        streamIdCompleter.complete((res.result as num).toInt());</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>6</td><td><code>      } else if (error != null) {</code></td>
+                    <td>40</td><td></td><td>5</td><td><code>      } else if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 41" id="line41">
                     <td>41</td><td></td><td>10</td><td><code>        _controller.addError(error);</code></td>
@@ -208,7 +208,7 @@
                     <td>49</td><td></td><td>0</td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>21</td><td><code>          _controller.add(res.result);</code></td>
+                    <td>50</td><td></td><td>20</td><td><code>          _controller.add(res.result);</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 51" id="line51">
                     <td>51</td><td></td><td>0</td><td><code>        } catch (ex, st) {</code></td>
@@ -226,10 +226,10 @@
                     <td>55</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>8</td><td><code>      final canceled = token?.exception;</code></td>
+                    <td>56</td><td></td><td>7</td><td><code>      final canceled = token?.exception;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>6</td><td><code>      if (canceled != null) {</code></td>
+                    <td>57</td><td></td><td>5</td><td><code>      if (canceled != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 58" id="line58">
                     <td>58</td><td></td><td>0</td><td><code>        _controller.addError(canceled);</code></td>
@@ -241,28 +241,28 @@
                     <td>60</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>6</td><td><code>    }</code></td>
+                    <td>61</td><td></td><td>5</td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 62" id="line62">
                     <td>62</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 63" id="line63">
-                    <td>63</td><td></td><td>18</td><td><code>    void $decodeSingleResponse(WorkerResponse res) {</code></td>
+                    <td>63</td><td></td><td>20</td><td><code>    void $decodeSingleResponse(WorkerResponse res) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>18</td><td><code>      if (!res.unwrapInPlace(channel)) return;</code></td>
+                    <td>64</td><td></td><td>20</td><td><code>      if (!res.unwrapInPlace(channel)) return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 65" id="line65">
                     <td>65</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 66" id="line66">
-                    <td>66</td><td></td><td>9</td><td><code>      final error = res.error;</code></td>
+                    <td>66</td><td></td><td>10</td><td><code>      final error = res.error;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>9</td><td><code>      if (error != null) {</code></td>
+                    <td>67</td><td></td><td>10</td><td><code>      if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>10</td><td><code>        _controller.addError(error);</code></td>
+                    <td>68</td><td></td><td>13</td><td><code>        _controller.addError(error);</code></td>
                 </tr>
                 <tr class="noop" title="Line 69" id="line69">
                     <td>69</td><td></td><td></td><td><code>      } else {</code></td>
@@ -271,7 +271,7 @@
                     <td>70</td><td></td><td>0</td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>36</td><td><code>          _controller.add(res.result);</code></td>
+                    <td>71</td><td></td><td>40</td><td><code>          _controller.add(res.result);</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 72" id="line72">
                     <td>72</td><td></td><td>0</td><td><code>        } catch (ex, st) {</code></td>
@@ -289,16 +289,16 @@
                     <td>76</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>27</td><td><code>      _controller.close();</code></td>
+                    <td>77</td><td></td><td>30</td><td><code>      _controller.close();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>9</td><td><code>    }</code></td>
+                    <td>78</td><td></td><td>10</td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 79" id="line79">
                     <td>79</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>12</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code></td>
+                    <td>80</td><td></td><td>13</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 81" id="line81">
                     <td>81</td><td></td><td>3</td><td><code>      streamIdCompleter as Completer&lt;int?&gt;;</code></td>
@@ -361,13 +361,13 @@
                     <td>100</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 101" id="line101">
-                    <td>101</td><td></td><td>18</td><td><code>    Future&lt;void&gt; $onCancel() async {</code></td>
+                    <td>101</td><td></td><td>20</td><td><code>    Future&lt;void&gt; $onCancel() async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>27</td><td><code>      final sub = _controller.subscription;</code></td>
+                    <td>102</td><td></td><td>30</td><td><code>      final sub = _controller.subscription;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 103" id="line103">
-                    <td>103</td><td></td><td>9</td><td><code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code></td>
+                    <td>103</td><td></td><td>10</td><td><code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 104" id="line104">
                     <td>104</td><td></td><td></td><td><code>        // this is a streaming operation and the subscription is active, so</code></td>
@@ -394,13 +394,13 @@
                     <td>111</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>9</td><td><code>    }</code></td>
+                    <td>112</td><td></td><td>10</td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 113" id="line113">
                     <td>113</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 114" id="line114">
-                    <td>114</td><td></td><td>10</td><td><code>    void $closeWithError(Object error, StackTrace? st) {</code></td>
+                    <td>114</td><td></td><td>11</td><td><code>    void $closeWithError(Object error, StackTrace? st) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 115" id="line115">
                     <td>115</td><td></td><td>5</td><td><code>      _controller.addError(SquadronException.from(error, st, command));</code></td>
@@ -415,31 +415,31 @@
                     <td>118</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>18</td><td><code>    void $onListen() {</code></td>
+                    <td>119</td><td></td><td>20</td><td><code>    void $onListen() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 120" id="line120">
-                    <td>120</td><td></td><td>9</td><td><code>      try {</code></td>
+                    <td>120</td><td></td><td>10</td><td><code>      try {</code></td>
                 </tr>
                 <tr class="noop" title="Line 121" id="line121">
                     <td>121</td><td></td><td></td><td><code>        // do not send the request if the token is already canceled</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 122" id="line122">
-                    <td>122</td><td></td><td>11</td><td><code>        token?.throwIfCanceled();</code></td>
+                    <td>122</td><td></td><td>12</td><td><code>        token?.throwIfCanceled();</code></td>
                 </tr>
                 <tr class="noop" title="Line 123" id="line123">
                     <td>123</td><td></td><td></td><td><code>        // send the request and start decoding responses</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>45</td><td><code>        _controller.attachSubscription(sendRequest().listen(</code></td>
+                    <td>124</td><td></td><td>50</td><td><code>        _controller.attachSubscription(sendRequest().listen(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>9</td><td><code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code></td>
+                    <td>125</td><td></td><td>10</td><td><code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>9</td><td><code>          onError: $closeWithError,</code></td>
+                    <td>126</td><td></td><td>10</td><td><code>          onError: $closeWithError,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>27</td><td><code>          onDone: _controller.close,</code></td>
+                    <td>127</td><td></td><td>30</td><td><code>          onDone: _controller.close,</code></td>
                 </tr>
                 <tr class="noop" title="Line 128" id="line128">
                     <td>128</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
@@ -457,13 +457,13 @@
                     <td>132</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>9</td><td><code>    }</code></td>
+                    <td>133</td><td></td><td>10</td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
                     <td>134</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 135" id="line135">
-                    <td>135</td><td></td><td>23</td><td><code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code></td>
+                    <td>135</td><td></td><td>25</td><td><code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code></td>
                 </tr>
                 <tr class="noop" title="Line 136" id="line136">
                     <td>136</td><td></td><td></td><td><code>      onListen: $onListen,</code></td>
@@ -475,7 +475,7 @@
                     <td>138</td><td></td><td></td><td><code>    );</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>9</td><td><code>  }</code></td>
+                    <td>139</td><td></td><td>10</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 140" id="line140">
                     <td>140</td><td></td><td></td><td><code></code></td>
@@ -487,7 +487,7 @@
                     <td>142</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 143" id="line143">
-                    <td>143</td><td></td><td>27</td><td><code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code></td>
+                    <td>143</td><td></td><td>30</td><td><code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 144" id="line144">
                     <td>144</td><td></td><td></td><td><code></code></td>

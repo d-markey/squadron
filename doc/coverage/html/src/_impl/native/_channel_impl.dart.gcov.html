@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -73,7 +73,7 @@
                     <td>4</td><td></td><td></td><td><code>final class _VmChannel implements Channel {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 5" id="line5">
-                    <td>5</td><td></td><td>9</td><td><code>  _VmChannel._(this._sendPort, this.logger, this.exceptionManager);</code></td>
+                    <td>5</td><td></td><td>10</td><td><code>  _VmChannel._(this._sendPort, this.logger, this.exceptionManager);</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
                     <td>6</td><td></td><td></td><td><code></code></td>
@@ -139,10 +139,10 @@
                     <td>26</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>9</td><td><code>  void _postRequest(WorkerRequest req) {</code></td>
+                    <td>27</td><td></td><td>10</td><td><code>  void _postRequest(WorkerRequest req) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>9</td><td><code>    if (_closed) {</code></td>
+                    <td>28</td><td></td><td>10</td><td><code>    if (_closed) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 29" id="line29">
                     <td>29</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Channel is closed');</code></td>
@@ -154,10 +154,10 @@
                     <td>31</td><td></td><td></td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>11</td><td><code>      req.cancelToken?.ensureStarted();</code></td>
+                    <td>32</td><td></td><td>12</td><td><code>      req.cancelToken?.ensureStarted();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>27</td><td><code>      _sendPort.send(req.wrapInPlace());</code></td>
+                    <td>33</td><td></td><td>30</td><td><code>      _sendPort.send(req.wrapInPlace());</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
                     <td>34</td><td></td><td></td><td><code>    } catch (ex, st) {</code></td>
@@ -181,19 +181,19 @@
                     <td>40</td><td></td><td></td><td><code>  /// Sends a termination [WorkerRequest] to the [vm.Isolate].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>9</td><td><code>  @override</code></td>
+                    <td>41</td><td></td><td>10</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
                     <td>42</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; close() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>9</td><td><code>    if (!_closed) {</code></td>
+                    <td>43</td><td></td><td>10</td><td><code>    if (!_closed) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>18</td><td><code>      _postRequest(WorkerRequest.stop());</code></td>
+                    <td>44</td><td></td><td>20</td><td><code>      _postRequest(WorkerRequest.stop());</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>9</td><td><code>      _closed = true;</code></td>
+                    <td>45</td><td></td><td>10</td><td><code>      _closed = true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code>    }</code></td>
@@ -253,7 +253,7 @@
                     <td>64</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>9</td><td><code>  Stream&lt;dynamic&gt; _getResponseStream(</code></td>
+                    <td>65</td><td></td><td>10</td><td><code>  Stream&lt;dynamic&gt; _getResponseStream(</code></td>
                 </tr>
                 <tr class="noop" title="Line 66" id="line66">
                     <td>66</td><td></td><td></td><td><code>    vm.ReceivePort port,</code></td>
@@ -271,7 +271,7 @@
                     <td>70</td><td></td><td></td><td><code>  }) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>9</td><td><code>    final command = req.command;</code></td>
+                    <td>71</td><td></td><td>10</td><td><code>    final command = req.command;</code></td>
                 </tr>
                 <tr class="noop" title="Line 72" id="line72">
                     <td>72</td><td></td><td></td><td><code></code></td>
@@ -280,7 +280,7 @@
                     <td>73</td><td></td><td></td><td><code>    // send the request, return a stream of responses</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>9</td><td><code>    Stream&lt;WorkerResponse&gt; $sendRequest() {</code></td>
+                    <td>74</td><td></td><td>10</td><td><code>    Stream&lt;WorkerResponse&gt; $sendRequest() {</code></td>
                 </tr>
                 <tr class="noop" title="Line 75" id="line75">
                     <td>75</td><td></td><td></td><td><code>      late final ForwardStreamController&lt;WorkerResponse&gt; controller;</code></td>
@@ -289,10 +289,10 @@
                     <td>76</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>9</td><td><code>      void $forwardMessage(WorkerResponse msg) {</code></td>
+                    <td>77</td><td></td><td>10</td><td><code>      void $forwardMessage(WorkerResponse msg) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>18</td><td><code>        if (!controller.isClosed) controller.add(msg);</code></td>
+                    <td>78</td><td></td><td>20</td><td><code>        if (!controller.isClosed) controller.add(msg);</code></td>
                 </tr>
                 <tr class="noop" title="Line 79" id="line79">
                     <td>79</td><td></td><td></td><td><code>      }</code></td>
@@ -319,13 +319,13 @@
                     <td>86</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 87" id="line87">
-                    <td>87</td><td></td><td>18</td><td><code>      controller = ForwardStreamController(onListen: () {</code></td>
+                    <td>87</td><td></td><td>20</td><td><code>      controller = ForwardStreamController(onListen: () {</code></td>
                 </tr>
                 <tr class="noop" title="Line 88" id="line88">
                     <td>88</td><td></td><td></td><td><code>        // do nothing if the controller is closed already</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 89" id="line89">
-                    <td>89</td><td></td><td>9</td><td><code>        if (controller.isClosed) return;</code></td>
+                    <td>89</td><td></td><td>10</td><td><code>        if (controller.isClosed) return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 90" id="line90">
                     <td>90</td><td></td><td></td><td><code></code></td>
@@ -334,7 +334,7 @@
                     <td>91</td><td></td><td></td><td><code>        // bind the controller</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 92" id="line92">
-                    <td>92</td><td></td><td>27</td><td><code>        controller.attachSubscription(port.cast&lt;WorkerResponse&gt;().listen(</code></td>
+                    <td>92</td><td></td><td>30</td><td><code>        controller.attachSubscription(port.cast&lt;WorkerResponse&gt;().listen(</code></td>
                 </tr>
                 <tr class="noop" title="Line 93" id="line93">
                     <td>93</td><td></td><td></td><td><code>              $forwardMessage,</code></td>
@@ -343,7 +343,7 @@
                     <td>94</td><td></td><td></td><td><code>              onError: $forwardError,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 95" id="line95">
-                    <td>95</td><td></td><td>9</td><td><code>              onDone: controller.close,</code></td>
+                    <td>95</td><td></td><td>10</td><td><code>              onDone: controller.close,</code></td>
                 </tr>
                 <tr class="noop" title="Line 96" id="line96">
                     <td>96</td><td></td><td></td><td><code>              cancelOnError: false,</code></td>
@@ -361,7 +361,7 @@
                     <td>100</td><td></td><td></td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 101" id="line101">
-                    <td>101</td><td></td><td>9</td><td><code>          post(req);</code></td>
+                    <td>101</td><td></td><td>10</td><td><code>          post(req);</code></td>
                 </tr>
                 <tr class="noop" title="Line 102" id="line102">
                     <td>102</td><td></td><td></td><td><code>        } catch (ex, st) {</code></td>
@@ -379,7 +379,7 @@
                     <td>106</td><td></td><td></td><td><code>      });</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>9</td><td><code>      return controller.stream;</code></td>
+                    <td>107</td><td></td><td>10</td><td><code>      return controller.stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
                     <td>108</td><td></td><td></td><td><code>    }</code></td>
@@ -391,7 +391,7 @@
                     <td>110</td><td></td><td></td><td><code>    // return a stream of decoded responses</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 111" id="line111">
-                    <td>111</td><td></td><td>18</td><td><code>    return ResultStream(this, req, $sendRequest, streaming).stream;</code></td>
+                    <td>111</td><td></td><td>20</td><td><code>    return ResultStream(this, req, $sendRequest, streaming).stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 112" id="line112">
                     <td>112</td><td></td><td></td><td><code>  }</code></td>
@@ -406,7 +406,7 @@
                     <td>115</td><td></td><td></td><td><code>  /// [Isolate]. This method expects a single value from the [Isolate]</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>9</td><td><code>  @override</code></td>
+                    <td>116</td><td></td><td>10</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
                     <td>117</td><td></td><td></td><td><code>  Future&lt;dynamic&gt; sendRequest(</code></td>
@@ -430,7 +430,7 @@
                     <td>123</td><td></td><td></td><td><code>  }) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>9</td><td><code>    final completer = Completer();</code></td>
+                    <td>124</td><td></td><td>10</td><td><code>    final completer = Completer();</code></td>
                 </tr>
                 <tr class="noop" title="Line 125" id="line125">
                     <td>125</td><td></td><td></td><td><code>    late final StreamSubscription sub;</code></td>
@@ -439,13 +439,13 @@
                     <td>126</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>9</td><td><code>    void $success(dynamic data) async {</code></td>
+                    <td>127</td><td></td><td>10</td><td><code>    void $success(dynamic data) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>9</td><td><code>      await sub.cancel();</code></td>
+                    <td>128</td><td></td><td>10</td><td><code>      await sub.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>18</td><td><code>      if (!completer.isCompleted) completer.complete(data);</code></td>
+                    <td>129</td><td></td><td>20</td><td><code>      if (!completer.isCompleted) completer.complete(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 130" id="line130">
                     <td>130</td><td></td><td></td><td><code>    }</code></td>
@@ -454,13 +454,13 @@
                     <td>131</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 132" id="line132">
-                    <td>132</td><td></td><td>3</td><td><code>    void $fail(Object ex, [StackTrace? st]) async {</code></td>
+                    <td>132</td><td></td><td>4</td><td><code>    void $fail(Object ex, [StackTrace? st]) async {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>3</td><td><code>      await sub.cancel();</code></td>
+                    <td>133</td><td></td><td>4</td><td><code>      await sub.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 134" id="line134">
-                    <td>134</td><td></td><td>6</td><td><code>      if (!completer.isCompleted) completer.completeError(ex, st);</code></td>
+                    <td>134</td><td></td><td>8</td><td><code>      if (!completer.isCompleted) completer.completeError(ex, st);</code></td>
                 </tr>
                 <tr class="noop" title="Line 135" id="line135">
                     <td>135</td><td></td><td></td><td><code>    }</code></td>
@@ -490,22 +490,22 @@
                     <td>143</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>9</td><td><code>    final receiver = vm.ReceivePort();</code></td>
+                    <td>144</td><td></td><td>10</td><td><code>    final receiver = vm.ReceivePort();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 145" id="line145">
-                    <td>145</td><td></td><td>9</td><td><code>    final req = WorkerRequest.userCommand(</code></td>
+                    <td>145</td><td></td><td>10</td><td><code>    final req = WorkerRequest.userCommand(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 146" id="line146">
-                    <td>146</td><td></td><td>9</td><td><code>        receiver.sendPort, command, args, token, inspectResponse);</code></td>
+                    <td>146</td><td></td><td>10</td><td><code>        receiver.sendPort, command, args, token, inspectResponse);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>18</td><td><code>    sub = _getResponseStream(receiver, req, _postRequest, streaming: false)</code></td>
+                    <td>147</td><td></td><td>20</td><td><code>    sub = _getResponseStream(receiver, req, _postRequest, streaming: false)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>9</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
+                    <td>148</td><td></td><td>10</td><td><code>        .listen($success, onError: $fail, onDone: $done);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>9</td><td><code>    return completer.future;</code></td>
+                    <td>149</td><td></td><td>10</td><td><code>    return completer.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 150" id="line150">
                     <td>150</td><td></td><td></td><td><code>  }</code></td>

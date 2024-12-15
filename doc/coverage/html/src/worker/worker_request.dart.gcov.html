@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-05</dd>
+                    <dd>2024-12-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -130,16 +130,16 @@
                     <td>23</td><td></td><td></td><td><code>  /// Creates a new request with the specified [command] ID and optional arguments.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>9</td><td><code>  static WorkerRequest userCommand(PlatformChannel channelInfo, int command,</code></td>
+                    <td>24</td><td></td><td>10</td><td><code>  static WorkerRequest userCommand(PlatformChannel channelInfo, int command,</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
                     <td>25</td><td></td><td></td><td><code>          List args, SquadronCancelationToken? token, bool inspectResponse) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>18</td><td><code>      WorkerRequest._([</code></td>
+                    <td>26</td><td></td><td>20</td><td><code>      WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>18</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>27</td><td></td><td>20</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
                     <td>28</td><td></td><td></td><td><code>        channelInfo, // 1 - channel</code></td>
@@ -169,13 +169,13 @@
                     <td>36</td><td></td><td></td><td><code>  /// Creates a new start request.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>10</td><td><code>  static WorkerRequest start(PlatformChannel channelInfo, List args) =&gt;</code></td>
+                    <td>37</td><td></td><td>11</td><td><code>  static WorkerRequest start(PlatformChannel channelInfo, List args) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>20</td><td><code>      WorkerRequest._([</code></td>
+                    <td>38</td><td></td><td>22</td><td><code>      WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>19</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>39</td><td></td><td>21</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
                     <td>40</td><td></td><td></td><td><code>        channelInfo, // 1 - channel</code></td>
@@ -274,10 +274,10 @@
                     <td>71</td><td></td><td></td><td><code>  /// Creates a new termination request.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>27</td><td><code>  static WorkerRequest stop() =&gt; WorkerRequest._([</code></td>
+                    <td>72</td><td></td><td>30</td><td><code>  static WorkerRequest stop() =&gt; WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>18</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>73</td><td></td><td>20</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 74" id="line74">
                     <td>74</td><td></td><td></td><td><code>        null, // 1 - channel</code></td>
@@ -307,7 +307,7 @@
                     <td>82</td><td></td><td></td><td><code>  /// The client's [WorkerChannel]. Only valid on the receiving end.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>19</td><td><code>  WorkerChannel? get channel =&gt; data[_$channel];</code></td>
+                    <td>83</td><td></td><td>21</td><td><code>  WorkerChannel? get channel =&gt; data[_$channel];</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
                     <td>84</td><td></td><td></td><td><code></code></td>
@@ -316,10 +316,10 @@
                     <td>85</td><td></td><td></td><td><code>  /// The channel method to be used for sending data back.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>9</td><td><code>  void Function(dynamic)? get reply =&gt;</code></td>
+                    <td>86</td><td></td><td>10</td><td><code>  void Function(dynamic)? get reply =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 87" id="line87">
-                    <td>87</td><td></td><td>30</td><td><code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code></td>
+                    <td>87</td><td></td><td>33</td><td><code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code></td>
                 </tr>
                 <tr class="noop" title="Line 88" id="line88">
                     <td>88</td><td></td><td></td><td><code></code></td>
@@ -328,7 +328,7 @@
                     <td>89</td><td></td><td></td><td><code>  /// The client's channel info.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>9</td><td><code>  PlatformChannel? get channelInfo =&gt; data[_$channel];</code></td>
+                    <td>90</td><td></td><td>10</td><td><code>  PlatformChannel? get channelInfo =&gt; data[_$channel];</code></td>
                 </tr>
                 <tr class="noop" title="Line 91" id="line91">
                     <td>91</td><td></td><td></td><td><code></code></td>
@@ -337,7 +337,7 @@
                     <td>92</td><td></td><td></td><td><code>  /// Cancelation token.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 93" id="line93">
-                    <td>93</td><td></td><td>27</td><td><code>  SquadronCancelationToken? get cancelToken =&gt; data[_$token];</code></td>
+                    <td>93</td><td></td><td>30</td><td><code>  SquadronCancelationToken? get cancelToken =&gt; data[_$token];</code></td>
                 </tr>
                 <tr class="noop" title="Line 94" id="line94">
                     <td>94</td><td></td><td></td><td><code></code></td>
@@ -355,7 +355,7 @@
                     <td>98</td><td></td><td></td><td><code>  /// The [command]'s ID.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>27</td><td><code>  int get command =&gt; data[_$command];</code></td>
+                    <td>99</td><td></td><td>30</td><td><code>  int get command =&gt; data[_$command];</code></td>
                 </tr>
                 <tr class="noop" title="Line 100" id="line100">
                     <td>100</td><td></td><td></td><td><code></code></td>
@@ -364,7 +364,7 @@
                     <td>101</td><td></td><td></td><td><code>  /// The command's arguments, if any.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>19</td><td><code>  List get args =&gt; data[_$args];</code></td>
+                    <td>102</td><td></td><td>21</td><td><code>  List get args =&gt; data[_$args];</code></td>
                 </tr>
                 <tr class="noop" title="Line 103" id="line103">
                     <td>103</td><td></td><td></td><td><code></code></td>
@@ -376,7 +376,7 @@
                     <td>105</td><td></td><td></td><td><code>  /// Web Workers, ownership of these objects must be transfered across threads.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>19</td><td><code>  bool get inspectResponse =&gt; data[_$inspectResponse];</code></td>
+                    <td>106</td><td></td><td>21</td><td><code>  bool get inspectResponse =&gt; data[_$inspectResponse];</code></td>
                 </tr>
                 <tr class="noop" title="Line 107" id="line107">
                     <td>107</td><td></td><td></td><td><code></code></td>
@@ -385,7 +385,7 @@
                     <td>108</td><td></td><td></td><td><code>  /// flag for start requests.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>27</td><td><code>  bool get isConnection =&gt; (command == _connectCommand);</code></td>
+                    <td>109</td><td></td><td>30</td><td><code>  bool get isConnection =&gt; (command == _connectCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 110" id="line110">
                     <td>110</td><td></td><td></td><td><code></code></td>
@@ -394,7 +394,7 @@
                     <td>111</td><td></td><td></td><td><code>  /// flag for stream cancelation requests.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>27</td><td><code>  bool get isStreamCancelation =&gt; (command == _cancelStreamCommand);</code></td>
+                    <td>112</td><td></td><td>30</td><td><code>  bool get isStreamCancelation =&gt; (command == _cancelStreamCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 113" id="line113">
                     <td>113</td><td></td><td></td><td><code></code></td>
@@ -403,7 +403,7 @@
                     <td>114</td><td></td><td></td><td><code>  /// flag for cancelation requests.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 115" id="line115">
-                    <td>115</td><td></td><td>27</td><td><code>  bool get isTokenCancelation =&gt; (command == _cancelTokenCommand);</code></td>
+                    <td>115</td><td></td><td>30</td><td><code>  bool get isTokenCancelation =&gt; (command == _cancelTokenCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 116" id="line116">
                     <td>116</td><td></td><td></td><td><code></code></td>
@@ -412,7 +412,7 @@
                     <td>117</td><td></td><td></td><td><code>  /// flag for termination requests.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>27</td><td><code>  bool get isTermination =&gt; (command == _terminateCommand);</code></td>
+                    <td>118</td><td></td><td>30</td><td><code>  bool get isTermination =&gt; (command == _terminateCommand);</code></td>
                 </tr>
                 <tr class="noop" title="Line 119" id="line119">
                     <td>119</td><td></td><td></td><td><code></code></td>
@@ -469,28 +469,28 @@
                     <td>136</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>9</td><td><code>  void unwrapInPlace(InternalLogger? logger) {</code></td>
+                    <td>137</td><td></td><td>10</td><td><code>  void unwrapInPlace(InternalLogger? logger) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>10</td><td><code>    unwrapTravelTime();</code></td>
+                    <td>138</td><td></td><td>11</td><td><code>    unwrapTravelTime();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>28</td><td><code>    data[_$command] = (data[_$command] as num).toInt();</code></td>
+                    <td>139</td><td></td><td>31</td><td><code>    data[_$command] = (data[_$command] as num).toInt();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>22</td><td><code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code></td>
+                    <td>140</td><td></td><td>24</td><td><code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>28</td><td><code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code></td>
+                    <td>141</td><td></td><td>31</td><td><code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>28</td><td><code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code></td>
+                    <td>142</td><td></td><td>31</td><td><code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 143" id="line143">
-                    <td>143</td><td></td><td>10</td><td><code>    data[_$inspectResponse] ??= false;</code></td>
+                    <td>143</td><td></td><td>11</td><td><code>    data[_$inspectResponse] ??= false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>10</td><td><code>    data[_$args] ??= const [];</code></td>
+                    <td>144</td><td></td><td>11</td><td><code>    data[_$args] ??= const [];</code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
                     <td>145</td><td></td><td></td><td><code>  }</code></td>
@@ -502,13 +502,13 @@
                     <td>147</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerRequest].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>19</td><td><code>  List wrapInPlace() {</code></td>
+                    <td>148</td><td></td><td>21</td><td><code>  List wrapInPlace() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>19</td><td><code>    final token = data[_$token];</code></td>
+                    <td>149</td><td></td><td>21</td><td><code>    final token = data[_$token];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>11</td><td><code>    if (token is SquadronCancelationToken) {</code></td>
+                    <td>150</td><td></td><td>12</td><td><code>    if (token is SquadronCancelationToken) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 151" id="line151">
                     <td>151</td><td></td><td>6</td><td><code>      data[_$token] = token.serialize();</code></td>
@@ -517,19 +517,19 @@
                     <td>152</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 153" id="line153">
-                    <td>153</td><td></td><td>9</td><td><code>    return data;</code></td>
+                    <td>153</td><td></td><td>10</td><td><code>    return data;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 154" id="line154">
-                    <td>154</td><td></td><td>9</td><td><code>  }</code></td>
+                    <td>154</td><td></td><td>10</td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 155" id="line155">
                     <td>155</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>9</td><td><code>  static WorkerRequest from(List data) {</code></td>
+                    <td>156</td><td></td><td>10</td><td><code>  static WorkerRequest from(List data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 157" id="line157">
-                    <td>157</td><td></td><td>19</td><td><code>    if (data.length != 7) {</code></td>
+                    <td>157</td><td></td><td>21</td><td><code>    if (data.length != 7) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 158" id="line158">
                     <td>158</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Invalid worker request');</code></td>
@@ -538,7 +538,7 @@
                     <td>159</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 160" id="line160">
-                    <td>160</td><td></td><td>9</td><td><code>    return WorkerRequest._(data);</code></td>
+                    <td>160</td><td></td><td>10</td><td><code>    return WorkerRequest._(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 161" id="line161">
                     <td>161</td><td></td><td></td><td><code>  }</code></td>
