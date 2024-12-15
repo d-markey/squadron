@@ -81,9 +81,8 @@ void execute(TestContext? tc) {
             try {
               await w.cpu(ms: duration.inMilliseconds);
               throw unexpectedSuccess('cpu completed after termination');
-            } on TaskTerminatedException catch (ex) {
-              // the "cpu" task has been terminated
-              print('cpu() has been terminated: $ex');
+            } on TaskTerminatedException {
+              // expected: the "cpu" task has been terminated
             }
 
             expect(w.isStopped, isTrue);
@@ -210,7 +209,6 @@ void execute(TestContext? tc) {
                 await pumpEventQueue();
                 expect(logger.logs, doesNotMention('service installed'));
               }
-              print('success');
             });
           });
 

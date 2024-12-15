@@ -172,7 +172,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
     });
 
     _enter(completer);
-    completer.future.whenComplete(() => _leave(completer));
+    completer.future.whenComplete(() => _leave(completer)).ignore();
 
     try {
       final res = await channel.sendRequest(
@@ -219,7 +219,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
         final channel = _channel ?? await start();
         if (controller.isClosed) return;
         _enter(controller);
-        controller.done.whenComplete(() => _leave(controller));
+        controller.done.whenComplete(() => _leave(controller)).ignore();
         controller.attachSubscription(channel
             .sendStreamingRequest(
               command,

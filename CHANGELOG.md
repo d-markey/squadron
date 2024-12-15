@@ -1,7 +1,7 @@
-## 6.1.4-wip
+## 6.1.4
 
-- Work in progress
-- Implement `Worker.terminate()` to enable immediate termination of a worker.
+- Implement `Worker.terminate()` to enable immediate termination of workers.
+- Refactor tests + browser test console.
 
 ## 6.1.3
 
