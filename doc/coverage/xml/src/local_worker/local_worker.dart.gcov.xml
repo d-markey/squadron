@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.78571427" lines-covered="11" lines-valid="14" package="src/local_worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6875" lines-covered="11" lines-valid="16" package="src/local_worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -26,215 +26,233 @@
             <code>    if (dart.library.html) '../_impl/web/_local_worker.dart'</code>
         </line>
         <line number="9">
-            <code>    if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;</code>
+            <code>    if (dart.library.js) '../_impl/web/_local_worker.dart'</code>
         </line>
         <line number="10">
-            <code>import '../channel.dart';</code>
+            <code>    if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;</code>
         </line>
         <line number="11">
-            <code>import '../exceptions/exception_manager.dart';</code>
+            <code>import '../channel.dart';</code>
         </line>
         <line number="12">
-            <code>import '../iworker.dart';</code>
+            <code>import '../exceptions/exception_manager.dart';</code>
         </line>
         <line number="13">
-            <code>import '../worker/worker_request.dart';</code>
+            <code>import '../exceptions/task_terminated_exception.dart';</code>
         </line>
         <line number="14">
-            <code>import '../worker_service.dart';</code>
+            <code>import '../iworker.dart';</code>
         </line>
         <line number="15">
-            <code/>
+            <code>import '../worker/worker_request.dart';</code>
         </line>
         <line number="16">
-            <code>/// Base local worker class.</code>
+            <code>import '../worker_service.dart';</code>
         </line>
         <line number="17">
-            <code>///</code>
+            <code/>
         </line>
         <line number="18">
-            <code>/// Local workers are similar to other Workers except that they run in the</code>
+            <code>/// Base local worker class.</code>
         </line>
         <line number="19">
-            <code>/// context of the current thread. They do not create any platform thread</code>
-        </line>
-        <line number="20">
-            <code>/// (such as Isolate or Web Worker) but they provide a [channel] that can be</code>
-        </line>
-        <line number="21">
-            <code>/// shared with other workers to support communication between threads. One</code>
-        </line>
-        <line number="22">
-            <code>/// interesting use-case is accessing UI components or platform plugins in</code>
-        </line>
-        <line number="23">
-            <code>/// Flutter, where only code running in the main thread is allowed access to</code>
-        </line>
-        <line number="24">
-            <code>/// such features. Creating a [LocalWorker] in the main application and sharing</code>
-        </line>
-        <line number="25">
-            <code>/// its [channel] with other workers enables providing access to Flutter</code>
-        </line>
-        <line number="26">
-            <code>/// features.</code>
-        </line>
-        <line number="27">
             <code>///</code>
         </line>
+        <line number="20">
+            <code>/// Local workers are similar to other Workers except that they run in the</code>
+        </line>
+        <line number="21">
+            <code>/// context of the current thread. They do not create any platform thread</code>
+        </line>
+        <line number="22">
+            <code>/// (such as Isolate or Web Worker) but they provide a [channel] that can be</code>
+        </line>
+        <line number="23">
+            <code>/// shared with other workers to support communication between threads. One</code>
+        </line>
+        <line number="24">
+            <code>/// interesting use-case is accessing UI components or platform plugins in</code>
+        </line>
+        <line number="25">
+            <code>/// Flutter, where only code running in the main thread is allowed access to</code>
+        </line>
+        <line number="26">
+            <code>/// such features. Creating a [LocalWorker] in the main application and sharing</code>
+        </line>
+        <line number="27">
+            <code>/// its [channel] with other workers enables providing access to Flutter</code>
+        </line>
         <line number="28">
-            <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local</code>
+            <code>/// features.</code>
         </line>
         <line number="29">
-            <code>/// worker are deserialized as [WorkerRequest]s and dispatched to a handler</code>
+            <code>///</code>
         </line>
         <line number="30">
-            <code>/// defined in the [_service]'s [WorkerService.operations] map according to the</code>
+            <code>/// Local workers wrap around a [WorkerService]. Messages sent to the local</code>
         </line>
         <line number="31">
-            <code>/// [WorkerRequest.command].</code>
+            <code>/// worker are deserialized as [WorkerRequest]s and dispatched to a handler</code>
         </line>
         <line number="32">
-            <code>abstract base class LocalWorker&lt;W extends WorkerService&gt;</code>
+            <code>/// defined in the [_service]'s [WorkerService.operations] map according to the</code>
         </line>
         <line number="33">
-            <code>    with Releasable</code>
+            <code>/// [WorkerRequest.command].</code>
         </line>
         <line number="34">
+            <code>abstract base class LocalWorker&lt;W extends WorkerService&gt;</code>
+        </line>
+        <line number="35">
+            <code>    with Releasable</code>
+        </line>
+        <line number="36">
             <code>    implements WorkerService, IWorker {</code>
         </line>
-        <line hits="1" number="35">
+        <line hits="1" number="37">
             <code>  LocalWorker(this._service);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="36">
+        <line number="38">
             <code/>
         </line>
-        <line hits="2" number="37">
+        <line hits="2" number="39">
             <code>  factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="38">
+        <line hits="2" number="40">
             <code>      impl.createLocalWorker&lt;W&gt;(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="39">
+        <line hits="2" number="41">
             <code>          service, exceptionManager ?? ExceptionManager());</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="40">
-            <code/>
-        </line>
-        <line number="41">
-            <code>  final W _service;</code>
         </line>
         <line number="42">
             <code/>
         </line>
-        <line hits="1" number="43">
+        <line number="43">
+            <code>  final W _service;</code>
+        </line>
+        <line number="44">
+            <code/>
+        </line>
+        <line hits="1" number="45">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="44">
+        <line hits="1" number="46">
             <code>  void release() {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="45">
+        <line hits="1" number="47">
             <code>    stop();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="46">
+        <line hits="2" number="48">
             <code>    super.release();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="47">
+        <line hits="1" number="49">
             <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="48">
-            <code/>
-        </line>
-        <line number="49">
-            <code>  @override</code>
-        </line>
         <line number="50">
-            <code>  Logger? channelLogger;</code>
+            <code/>
         </line>
         <line number="51">
-            <code/>
-        </line>
-        <line hits="0" number="52">
             <code>  @override</code>
+        </line>
+        <line number="52">
+            <code>  Logger? channelLogger;</code>
         </line>
         <line number="53">
-            <code>  ExceptionManager get exceptionManager =&gt;</code>
+            <code/>
         </line>
         <line hits="0" number="54">
-            <code>      (_exceptionManager ??= ExceptionManager());</code>
+            <code>  @override</code>
         </line>
         <line number="55">
-            <code>  ExceptionManager? _exceptionManager;</code>
+            <code>  ExceptionManager get exceptionManager =&gt;</code>
         </line>
-        <line number="56">
-            <code/>
+        <line hits="0" number="56">
+            <code>      (_exceptionManager ??= ExceptionManager());</code>
         </line>
         <line number="57">
-            <code>  /// The local worker's [Channel].</code>
+            <code>  ExceptionManager? _exceptionManager;</code>
         </line>
         <line number="58">
-            <code>  Channel? get channel;</code>
+            <code/>
         </line>
         <line number="59">
-            <code/>
+            <code>  /// The local worker's [Channel].</code>
         </line>
         <line number="60">
-            <code>  /// A [Channel] to communicate with this local worker. This channel should be</code>
+            <code>  Channel? get channel;</code>
         </line>
         <line number="61">
-            <code>  /// provided to clients so they can invoke services from the local worker.</code>
+            <code/>
         </line>
-        <line hits="0" number="62">
-            <code>  Channel? get sharedChannel =&gt; channel?.share();</code>
+        <line number="62">
+            <code>  /// A [Channel] to communicate with this local worker. This channel should be</code>
         </line>
         <line number="63">
-            <code/>
+            <code>  /// provided to clients so they can invoke services from the local worker.</code>
         </line>
-        <line number="64">
-            <code>  /// Starts the local worker.</code>
+        <line hits="0" number="64">
+            <code>  Channel? get sharedChannel =&gt; channel?.share();</code>
         </line>
         <line number="65">
-            <code>  @override</code>
+            <code/>
         </line>
         <line number="66">
-            <code>  FutureOr&lt;void&gt; start();</code>
+            <code>  /// Starts the local worker.</code>
         </line>
         <line number="67">
-            <code/>
-        </line>
-        <line number="68">
-            <code>  /// Stops the local worker.</code>
-        </line>
-        <line number="69">
             <code>  @override</code>
         </line>
-        <line number="70">
-            <code>  void stop();</code>
+        <line number="68">
+            <code>  FutureOr&lt;void&gt; start();</code>
         </line>
-        <line number="71">
+        <line number="69">
             <code/>
         </line>
+        <line number="70">
+            <code>  /// Stops the local worker.</code>
+        </line>
+        <line number="71">
+            <code>  @override</code>
+        </line>
         <line number="72">
+            <code>  void stop();</code>
+        </line>
+        <line number="73">
+            <code/>
+        </line>
+        <line number="74">
+            <code>  /// Terminates the local worker.</code>
+        </line>
+        <line hits="0" number="75">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="76">
+            <code>  void terminate([TaskTerminatedException? ex]) =&gt; stop();</code>
+        </line>
+        <line number="77">
+            <code/>
+        </line>
+        <line number="78">
             <code>  /// Forward to underlying service.</code>
         </line>
-        <line hits="1" number="73">
+        <line hits="1" number="79">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="74">
+        <line hits="3" number="80">
             <code>  Map&lt;int, CommandHandler&gt; get operations =&gt; _service.operations;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="75">
+        <line number="81">
             <code>}</code>
         </line>
     </lines>

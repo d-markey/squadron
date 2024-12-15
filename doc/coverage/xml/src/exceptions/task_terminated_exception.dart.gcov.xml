@@ -31,9 +31,9 @@
         <line number="10">
             <code>class TaskTerminatedException implements SquadronError, CanceledException {</code>
         </line>
-        <line hits="2" number="11">
+        <line hits="4" number="11">
             <code>  TaskTerminatedException(this.message, [this.stackTrace]);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>

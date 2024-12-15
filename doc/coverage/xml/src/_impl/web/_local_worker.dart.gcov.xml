@@ -88,50 +88,50 @@
             <code>  @override</code>
         </line>
         <line number="28">
+            <code>  FutureOr&lt;void&gt; start() {}</code>
+        </line>
+        <line number="29">
+            <code/>
+        </line>
+        <line number="30">
+            <code>  @override</code>
+        </line>
+        <line number="31">
             <code>  void stop() {</code>
         </line>
-        <line hits="1" number="29">
+        <line hits="1" number="32">
             <code>    _port.port1.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
+        <line number="33">
             <code>    _port.port2.close();</code>
         </line>
-        <line hits="1" number="31">
+        <line hits="1" number="34">
             <code>    _channel?.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="32">
+        <line number="35">
             <code>    _channel = null;</code>
         </line>
-        <line number="33">
+        <line number="36">
             <code>  }</code>
         </line>
-        <line number="34">
+        <line number="37">
             <code/>
         </line>
-        <line number="35">
+        <line number="38">
             <code>  @override</code>
         </line>
-        <line hits="1" number="36">
+        <line hits="1" number="39">
             <code>  ExceptionManager get exceptionManager =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="37">
+        <line hits="1" number="40">
             <code>      (_exceptionManager ??= ExceptionManager());</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="38">
-            <code>  ExceptionManager? _exceptionManager;</code>
-        </line>
-        <line number="39">
-            <code/>
-        </line>
-        <line number="40">
-            <code>  @override</code>
-        </line>
         <line number="41">
-            <code>  FutureOr&lt;void&gt; start() {}</code>
+            <code>  ExceptionManager? _exceptionManager;</code>
         </line>
         <line number="42">
             <code>}</code>

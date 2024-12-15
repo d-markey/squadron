@@ -812,13 +812,13 @@
             <code>    _executing--;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="15" number="241">
+        <line hits="17" number="241">
             <code>    if (_terminationRequested &amp;&amp; _executing == 0) {</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="17" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="242">
+        <line hits="3" number="242">
             <code>      _unmount();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="243">
             <code>    }</code>
