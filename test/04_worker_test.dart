@@ -52,7 +52,7 @@ void execute(TestContext? tc) {
 
             await Future.delayed(TestDelays.delay);
             expect(w.upTime, upTime);
-            expect(w.idleTime, greaterThan(w.upTime));
+            expect(w.idleTime, greaterThanOrEqualTo(TestDelays.delay));
           });
         });
 
@@ -92,7 +92,7 @@ void execute(TestContext? tc) {
 
             await Future.delayed(TestDelays.delay);
             expect(w.upTime, upTime);
-            expect(w.idleTime, greaterThan(TestDelays.delay));
+            expect(w.idleTime, greaterThanOrEqualTo(TestDelays.delay));
           });
         });
 
@@ -122,7 +122,7 @@ void execute(TestContext? tc) {
               await w.io(ms: duration.inMilliseconds);
               throw unexpectedSuccess('io completed after termination');
             } on TaskTerminatedException {
-              // the "cpu" task has been terminated
+              // expected: the "io" task has been terminated
             }
 
             expect(w.isStopped, isTrue);
@@ -132,9 +132,9 @@ void execute(TestContext? tc) {
 
             await Future.delayed(TestDelays.delay);
             expect(w.upTime, upTime);
-            expect(w.idleTime, greaterThan(w.upTime));
+            expect(w.idleTime, greaterThanOrEqualTo(TestDelays.delay));
           });
-        }, skip: true);
+        });
 
         tc.test('- hook', () async {
           String? status;

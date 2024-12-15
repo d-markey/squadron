@@ -1,7 +1,7 @@
 ## 6.1.4
 
-- Implement `Worker.terminate()` to enable immediate termination of workers.
-- Refactor tests + browser test console.
+- Add `IWorker.terminate()` to enable immediate termination of workers and worker pools.
+- Refactor tests + browser test console + add unit tests for thread termination.
 
 ## 6.1.3
 

@@ -1,6 +1,7 @@
 import '_impl/xplat/_platform.dart'
     if (dart.library.io) '_impl/native/_platform.dart'
     if (dart.library.html) '_impl/web/_platform.dart'
+    if (dart.library.js) '_impl/web/_platform.dart'
     if (dart.library.js_interop) '_impl/web/_platform.dart' as impl;
 import 'converters/converter.dart';
 

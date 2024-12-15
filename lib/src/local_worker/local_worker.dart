@@ -6,9 +6,11 @@ import 'package:using/using.dart';
 import '../_impl/xplat/_local_worker.dart'
     if (dart.library.io) '../_impl/native/_local_worker.dart'
     if (dart.library.html) '../_impl/web/_local_worker.dart'
+    if (dart.library.js) '../_impl/web/_local_worker.dart'
     if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
+import '../exceptions/task_terminated_exception.dart';
 import '../iworker.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
@@ -68,6 +70,10 @@ abstract base class LocalWorker<W extends WorkerService>
   /// Stops the local worker.
   @override
   void stop();
+
+  /// Terminates the local worker.
+  @override
+  void terminate([TaskTerminatedException? ex]) => stop();
 
   /// Forward to underlying service.
   @override

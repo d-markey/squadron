@@ -9,6 +9,7 @@ import '../_impl/xplat/_forward_stream_controller.dart';
 import '../_impl/xplat/_platform.dart'
     if (dart.library.io) '../_impl/native/_platform.dart'
     if (dart.library.html) '../_impl/web/_platform.dart'
+    if (dart.library.js) '../_impl/web/_platform.dart'
     if (dart.library.js_interop) '../_impl/web/_platform.dart' as impl;
 import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
@@ -299,19 +300,20 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// Terminates this worker.
-  void terminate() {
+  @override
+  void terminate([TaskTerminatedException? ex]) {
     // stop now
     stop();
     // terminate all tasks
-    final error = TaskTerminatedException('Worker has been killed');
+    ex ??= TaskTerminatedException('Worker has been killed');
     final pendingTasks = _pendingTasks.toList();
     for (var task in pendingTasks) {
       if (task is ForwardCompleter) {
-        task.failure(error);
+        task.failure(ex);
       } else if (task is ForwardStreamController) {
         task.subscription?.cancel();
-        task.addError(error);
-        task.close().ignore();
+        task.addError(ex);
+        task.close();
       }
     }
   }

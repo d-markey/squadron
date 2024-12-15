@@ -28,14 +28,14 @@ base class _VmLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   ExceptionManager? _exceptionManager;
 
   @override
+  FutureOr<void> start() {}
+
+  @override
   void stop() {
     _port.close();
     _channel?.close();
     _channel = null;
   }
-
-  @override
-  FutureOr<void> start() {}
 }
 
 /// Creates a [LocalWorker] on a native platform.

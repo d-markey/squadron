@@ -4,23 +4,12 @@ import 'dart:collection';
 import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
-import '../concurrency_settings.dart';
-import '../exceptions/exception_manager.dart';
+import '../../squadron.dart';
 import '../exceptions/squadron_error.dart';
-import '../exceptions/squadron_exception.dart';
-import '../exceptions/worker_exception.dart';
-import '../iworker.dart';
-import '../stats/perf_counter.dart';
-import '../stats/worker_stat.dart';
-import '../worker/worker.dart';
-import '../worker_service.dart';
 import '_pool_worker.dart';
 import '_worker_stream_task.dart';
 import '_worker_task.dart';
 import '_worker_value_task.dart';
-import 'stream_task.dart';
-import 'task.dart';
-import 'value_task.dart';
 
 typedef WorkerFactory<W> = W Function(ExceptionManager);
 
@@ -249,6 +238,16 @@ abstract class WorkerPool<W extends Worker>
       stopped += _removeWorker(poolWorker, force);
     }
     return stopped;
+  }
+
+  @override
+  void terminate([TaskTerminatedException? ex]) {
+    _stopped = true;
+    final targets = _workers.toList();
+    for (var poolWorker in targets) {
+      _removeWorker(poolWorker, true);
+      poolWorker.worker.terminate(ex);
+    }
   }
 
   final _queue = Queue<WorkerTask>();

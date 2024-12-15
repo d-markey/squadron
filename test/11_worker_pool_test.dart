@@ -325,14 +325,14 @@ void execute(TestContext? tc) {
           }
 
           // restart
-          p.start(); // intentionally not awaited
+          p.start();
 
           n = await p.delayed(-2);
           expect(n, -2);
         });
       });
 
-      tc.test('- pool termination does not prevent processing of pending tasks',
+      tc.test('- stopping a pool does not prevent processing of pending tasks',
           () async {
         await TestWorkerPool(tc, ConcurrencySettings.threeCpuThreads)
             .useAsync((p) async {
@@ -358,6 +358,34 @@ void execute(TestContext? tc) {
 
           await pumpEventQueue();
           expect(p.size, isZero);
+        });
+      });
+
+      tc.test('- pool termination', () async {
+        await TestWorkerPool(tc, ConcurrencySettings.threeCpuThreads)
+            .useAsync((p) async {
+          await p.start();
+          final duration = TestDelays.delay * 10;
+
+          Timer(duration * 0.5, () {
+            p.terminate();
+            expect(p.stopped, true);
+          });
+
+          try {
+            final futures = [
+              p.cpu(ms: duration.inMilliseconds),
+              p.cpu(ms: duration.inMilliseconds),
+              p.cpu(ms: duration.inMilliseconds),
+              p.cpu(ms: duration.inMilliseconds),
+              p.cpu(ms: duration.inMilliseconds),
+              p.cpu(ms: duration.inMilliseconds),
+            ];
+            await Future.wait(futures);
+            unexpectedSuccess('cpu tasks weer not terminated');
+          } on TaskTerminatedException {
+            // expected
+          }
         });
       });
 

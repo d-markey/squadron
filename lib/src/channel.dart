@@ -5,6 +5,7 @@ import 'package:logger/web.dart';
 import '_impl/xplat/_channel.dart'
     if (dart.library.io) '_impl/native/_channel.dart'
     if (dart.library.html) '_impl/web/_channel.dart'
+    if (dart.library.js) '_impl/web/_channel.dart'
     if (dart.library.js_interop) '_impl/web/_channel.dart' as impl;
 import 'exceptions/exception_manager.dart';
 import 'tokens/_squadron_cancelation_token.dart';

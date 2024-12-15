@@ -25,6 +25,9 @@ base class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   Channel? get channel => _channel;
 
   @override
+  FutureOr<void> start() {}
+
+  @override
   void stop() {
     _port.port1.close();
     _port.port2.close();
@@ -36,9 +39,6 @@ base class _WebLocalWorker<W extends WorkerService> extends LocalWorker<W> {
   ExceptionManager get exceptionManager =>
       (_exceptionManager ??= ExceptionManager());
   ExceptionManager? _exceptionManager;
-
-  @override
-  FutureOr<void> start() {}
 }
 
 /// Creates a [LocalWorker] on a browser platform.
