@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-15</dd>
+                    <dd>2024-12-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>18</td><td>22</td><td class="med">81.8%</td>
+                            <th scope="row">Lines</th><td>20</td><td>22</td><td class="high">90.9%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -94,13 +94,13 @@
                     <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>1</td><td><code>String? _getErrorEventMessage(JSObject? obj) {</code></td>
+                    <td>12</td><td></td><td>3</td><td><code>String? _getErrorEventMessage(JSObject? obj) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>1</td><td><code>  if (obj != null &amp;&amp; obj.has('message')) {</code></td>
+                    <td>13</td><td></td><td>3</td><td><code>  if (obj != null &amp;&amp; obj.has('message')) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>0</td><td><code>    return obj['message'].dartify()?.toString();</code></td>
+                <tr class="lineCov" title="Line 14" id="line14">
+                    <td>14</td><td></td><td>2</td><td><code>    return obj['message'].dartify()?.toString();</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code>  } else {</code></td>
@@ -112,19 +112,19 @@
                     <td>17</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>1</td><td><code>}</code></td>
+                    <td>18</td><td></td><td>3</td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>Object? _getErrorEventError(JSObject? obj) {</code></td>
+                    <td>20</td><td></td><td>3</td><td><code>Object? _getErrorEventError(JSObject? obj) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>1</td><td><code>  if (obj != null &amp;&amp; obj.has('error')) {</code></td>
+                    <td>21</td><td></td><td>3</td><td><code>  if (obj != null &amp;&amp; obj.has('error')) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>0</td><td><code>    return obj['error'].dartify();</code></td>
+                <tr class="lineCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>2</td><td><code>    return obj['error'].dartify();</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code>  } else {</code></td>
@@ -136,16 +136,16 @@
                     <td>25</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>}</code></td>
+                    <td>26</td><td></td><td>3</td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
                     <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>1</td><td><code>Object getError(JSObject? obj) =&gt;</code></td>
+                    <td>28</td><td></td><td>3</td><td><code>Object getError(JSObject? obj) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>1</td><td><code>    _getErrorEventError(obj) ?? _getErrorEventMessage(obj) ?? 'Unknown error';</code></td>
+                    <td>29</td><td></td><td>3</td><td><code>    _getErrorEventError(obj) ?? _getErrorEventMessage(obj) ?? 'Unknown error';</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
                     <td>30</td><td></td><td></td><td><code></code></td>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84" lines-covered="105" lines-valid="125" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8981481" lines-covered="97" lines-valid="108" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of '_channel.dart';</code>
@@ -86,11 +86,11 @@
             <code/>
         </line>
         <line hits="10" number="28">
-            <code>  void _postRequest(WorkerRequest req) {</code>
+            <code>  void _postRequest(WorkerRequest req, {bool force = false}) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="29">
-            <code>    if (_closed) {</code>
+            <code>    if (_closed &amp;&amp; !force) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="30">
@@ -279,641 +279,501 @@
         <line number="82">
             <code>  FutureOr&lt;void&gt; cancelStream(int streamId) {</code>
         </line>
-        <line hits="3" number="83">
-            <code>    if (!_closed) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="4" number="83">
+            <code>    _postRequest(WorkerRequest.cancelStream(streamId), force: true);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="84">
-            <code>      _postRequest(WorkerRequest.cancelStream(streamId));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="85">
-            <code>    }</code>
-        </line>
-        <line number="86">
+        <line number="84">
             <code>  }</code>
         </line>
-        <line number="87">
+        <line number="85">
             <code/>
         </line>
-        <line number="88">
+        <line number="86">
             <code>  /// Sends a cancel token [WorkerRequest] to the [web.Worker].</code>
         </line>
-        <line number="89">
+        <line number="87">
             <code>  @override</code>
         </line>
-        <line hits="2" number="90">
+        <line hits="2" number="88">
             <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="91">
-            <code>    if (token != null &amp;&amp; !_closed) {</code>
+        <line hits="2" number="89">
+            <code>    if (token != null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="92">
-            <code>      _postRequest(WorkerRequest.cancel(token));</code>
+        <line hits="2" number="90">
+            <code>      _postRequest(WorkerRequest.cancel(token), force: true);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="93">
+        <line number="91">
             <code>    }</code>
         </line>
-        <line hits="2" number="94">
+        <line hits="2" number="92">
             <code>  }</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="95">
+        <line number="93">
             <code/>
         </line>
-        <line hits="10" number="96">
+        <line hits="10" number="94">
             <code>  Stream _getResponseStream(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="97">
+        <line number="95">
             <code>    web.MessageChannel com,</code>
         </line>
-        <line number="98">
+        <line number="96">
             <code>    WorkerRequest req,</code>
         </line>
-        <line number="99">
+        <line number="97">
             <code>    void Function(WorkerRequest) post, {</code>
         </line>
-        <line number="100">
+        <line number="98">
             <code>    required bool streaming,</code>
         </line>
-        <line number="101">
+        <line number="99">
             <code>  }) {</code>
         </line>
-        <line hits="10" number="102">
+        <line hits="10" number="100">
             <code>    final command = req.command;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="103">
+        <line number="101">
             <code/>
         </line>
-        <line number="104">
+        <line number="102">
             <code>    // return a stream of responses</code>
         </line>
-        <line hits="10" number="105">
+        <line hits="10" number="103">
             <code>    Stream&lt;WorkerResponse&gt; $sendRequest() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="106">
+        <line hits="10" number="104">
             <code>      StreamController&lt;WorkerResponse&gt;? controller;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="105">
+            <code/>
+        </line>
+        <line hits="10" number="106">
+            <code>      void $forwardMessage(WorkerResponse msg) =&gt; controller?.add(msg);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="107">
             <code/>
         </line>
         <line hits="10" number="108">
-            <code>      void $forwardMessage(WorkerResponse msg) =&gt; controller?.add(msg);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="109">
-            <code/>
-        </line>
-        <line hits="10" number="110">
             <code>      void $forwardError(Object error, StackTrace? st) =&gt;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="111">
+        <line hits="2" number="109">
             <code>          controller?.addError(SquadronException.from(error, st, command));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="110">
+            <code/>
+        </line>
+        <line number="111">
+            <code>      final buffer = EventBuffer($forwardMessage, $forwardError);</code>
         </line>
         <line number="112">
             <code/>
         </line>
-        <line number="113">
-            <code>      final buffer = EventBuffer($forwardMessage, $forwardError);</code>
-        </line>
-        <line number="114">
-            <code/>
-        </line>
-        <line hits="10" number="115">
+        <line hits="10" number="113">
             <code>      Future&lt;void&gt; $close() async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="116">
+        <line hits="10" number="114">
             <code>        com.port1.close();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="117">
+        <line number="115">
             <code>        com.port2.close();</code>
         </line>
-        <line hits="10" number="118">
+        <line hits="10" number="116">
             <code>        final future = controller?.close();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="119">
+        <line hits="10" number="117">
             <code>        controller = null;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="120">
+        <line hits="10" number="118">
             <code>        await future;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="121">
+        <line hits="10" number="119">
             <code>      }</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="122">
+        <line number="120">
             <code/>
         </line>
-        <line hits="10" number="123">
+        <line hits="10" number="121">
             <code>      controller = StreamController&lt;WorkerResponse&gt;(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="124">
+        <line hits="10" number="122">
             <code>        onListen: () {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="125">
+        <line number="123">
             <code>          // do nothing if the controller is closed already</code>
         </line>
-        <line hits="10" number="126">
+        <line hits="10" number="124">
             <code>          if (controller == null) return;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="127">
+        <line number="125">
             <code/>
         </line>
-        <line number="128">
+        <line number="126">
             <code>          // bind the controller</code>
         </line>
-        <line hits="10" number="129">
+        <line hits="10" number="127">
             <code>          com.port1.onmessageerror = (web.ErrorEvent e) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="130">
+        <line hits="0" number="128">
             <code>            final ex = SquadronException.from(getError(e), null, command);</code>
         </line>
-        <line hits="0" number="131">
+        <line hits="0" number="129">
             <code>            final handler = buffer.isActive ? buffer.addError : $forwardError;</code>
         </line>
-        <line hits="0" number="132">
+        <line hits="0" number="130">
             <code>            handler(ex, null);</code>
         </line>
-        <line hits="10" number="133">
+        <line hits="10" number="131">
             <code>          }.toJS;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="134">
+        <line number="132">
             <code/>
         </line>
-        <line hits="10" number="135">
+        <line hits="10" number="133">
             <code>          com.port1.onmessage = (web.MessageEvent e) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="136">
+        <line hits="10" number="134">
             <code>            final res = WorkerResponseExt.from(getMessageEventData(e)!);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="137">
+        <line hits="10" number="135">
             <code>            final handler = buffer.isActive ? buffer.add : $forwardMessage;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="138">
+        <line hits="10" number="136">
             <code>            handler(res);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="139">
+        <line hits="10" number="137">
             <code>          }.toJS;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="140">
+        <line number="138">
             <code/>
         </line>
-        <line number="141">
+        <line number="139">
             <code>          // send the request</code>
         </line>
-        <line hits="2" number="142">
+        <line hits="2" number="140">
             <code>          try {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="143">
+        <line hits="10" number="141">
             <code>            post(req);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="144">
+        <line hits="2" number="142">
             <code>          } catch (ex, st) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="145">
+        <line number="143">
             <code>            if (buffer.isActive) {</code>
         </line>
-        <line hits="0" number="146">
+        <line hits="0" number="144">
             <code>              buffer.addError(ex, st);</code>
         </line>
-        <line hits="2" number="147">
+        <line hits="2" number="145">
             <code>              buffer.onDeactivate = $close;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="148">
+        <line number="146">
             <code>            } else {</code>
         </line>
-        <line hits="2" number="149">
+        <line hits="2" number="147">
             <code>              $forwardError(ex, st);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="150">
+        <line hits="2" number="148">
             <code>              $close();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="151">
+        <line number="149">
             <code>            }</code>
         </line>
-        <line number="152">
+        <line number="150">
             <code>          }</code>
         </line>
-        <line hits="10" number="153">
+        <line hits="10" number="151">
             <code>        },</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="154">
+        <line hits="10" number="152">
             <code>        onPause: buffer.activate,</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="155">
+        <line hits="10" number="153">
             <code>        onResume: buffer.deactivate,</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="156">
+        <line number="154">
             <code>        onCancel: $close,</code>
         </line>
-        <line number="157">
+        <line number="155">
             <code>      );</code>
         </line>
-        <line number="158">
+        <line number="156">
             <code/>
         </line>
-        <line hits="10" number="159">
+        <line hits="10" number="157">
             <code>      return controller!.stream;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="160">
+        <line hits="10" number="158">
             <code>    }</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="161">
+        <line number="159">
             <code/>
         </line>
-        <line number="162">
+        <line number="160">
             <code>    // return a stream of decoded responses</code>
         </line>
-        <line hits="10" number="163">
-            <code>    return ResultStream(this, req, $sendRequest, streaming).stream;</code>
+        <line hits="10" number="161">
+            <code>    final res = ResultStream(this, req, $sendRequest, streaming);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="10" number="162">
+            <code>    res.done.whenComplete(() {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="163">
+            <code>      // cleanup resources</code>
+        </line>
         <line hits="10" number="164">
-            <code>  }</code>
+            <code>      com.port1.close();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="165">
+            <code>      com.port2.close();</code>
+        </line>
+        <line hits="10" number="166">
+            <code>    }).ignore();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="167">
+            <code>    return res.stream;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="168">
+            <code>  }</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="169">
             <code/>
         </line>
-        <line number="166">
+        <line number="170">
             <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
         </line>
-        <line number="167">
+        <line number="171">
             <code>  /// single value from the [web.Worker].</code>
         </line>
-        <line number="168">
+        <line number="172">
             <code>  @override</code>
         </line>
-        <line hits="10" number="169">
+        <line hits="10" number="173">
             <code>  Future&lt;dynamic&gt; sendRequest(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="170">
+        <line number="174">
             <code>    int command,</code>
         </line>
-        <line number="171">
+        <line number="175">
             <code>    List args, {</code>
         </line>
-        <line number="172">
+        <line number="176">
             <code>    SquadronCancelationToken? token,</code>
         </line>
-        <line number="173">
+        <line number="177">
             <code>    bool inspectRequest = false,</code>
         </line>
-        <line number="174">
+        <line number="178">
             <code>    bool inspectResponse = false,</code>
         </line>
-        <line number="175">
+        <line number="179">
             <code>  }) {</code>
         </line>
-        <line number="176">
+        <line number="180">
             <code>    final completer = Completer();</code>
         </line>
-        <line hits="10" number="177">
+        <line hits="10" number="181">
             <code>    late final StreamSubscription sub;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="178">
+        <line number="182">
             <code/>
         </line>
-        <line hits="10" number="179">
+        <line hits="10" number="183">
             <code>    void $success(dynamic data) async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="180">
+        <line hits="10" number="184">
             <code>      await sub.cancel();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="181">
+        <line hits="10" number="185">
             <code>      if (!completer.isCompleted) completer.complete(data);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="182">
+        <line hits="10" number="186">
             <code>    }</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="183">
+        <line number="187">
             <code/>
         </line>
-        <line hits="10" number="184">
+        <line hits="10" number="188">
             <code>    void $fail(Object ex, [StackTrace? st]) async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="185">
+        <line hits="5" number="189">
             <code>      await sub.cancel();</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="186">
+        <line hits="5" number="190">
             <code>      if (!completer.isCompleted) completer.completeError(ex, st);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="187">
+        <line hits="5" number="191">
             <code>    }</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="188">
+        <line number="192">
             <code/>
         </line>
-        <line hits="10" number="189">
+        <line hits="10" number="193">
             <code>    void $done() async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="190">
+        <line hits="0" number="194">
             <code>      await sub.cancel();</code>
         </line>
-        <line hits="0" number="191">
+        <line hits="0" number="195">
             <code>      if (!completer.isCompleted) {</code>
         </line>
-        <line hits="0" number="192">
+        <line hits="0" number="196">
             <code>        $fail(WorkerException('No response from worker', null, command));</code>
         </line>
-        <line number="193">
+        <line number="197">
             <code>      }</code>
         </line>
-        <line hits="0" number="194">
+        <line hits="0" number="198">
             <code>    }</code>
         </line>
-        <line number="195">
+        <line number="199">
             <code/>
         </line>
-        <line number="196">
+        <line number="200">
             <code>    final com = web.MessageChannel();</code>
         </line>
-        <line number="197">
+        <line number="201">
             <code>    final req = WorkerRequest.userCommand(</code>
         </line>
-        <line number="198">
+        <line number="202">
             <code>        com.port2, command, args, token, inspectResponse);</code>
         </line>
-        <line hits="10" number="199">
+        <line hits="10" number="203">
             <code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="200">
+        <line hits="10" number="204">
             <code>    sub = _getResponseStream(com, req, post, streaming: false)</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="201">
+        <line hits="10" number="205">
             <code>        .listen($success, onError: $fail, onDone: $done);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="202">
+        <line hits="10" number="206">
             <code>    return completer.future;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="203">
+        <line hits="10" number="207">
             <code>  }</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="204">
+        <line number="208">
             <code/>
         </line>
-        <line number="205">
+        <line number="209">
             <code>  /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a</code>
         </line>
-        <line number="206">
+        <line number="210">
             <code>  /// stream of values from the [web.Worker]. The [web.Worker] must send a [WorkerResponse.endOfStream] to close</code>
         </line>
-        <line number="207">
+        <line number="211">
             <code>  /// the [Stream].</code>
         </line>
-        <line number="208">
+        <line number="212">
             <code>  @override</code>
         </line>
-        <line hits="5" number="209">
+        <line hits="5" number="213">
             <code>  Stream&lt;dynamic&gt; sendStreamingRequest(</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="210">
+        <line number="214">
             <code>    int command,</code>
         </line>
-        <line number="211">
+        <line number="215">
             <code>    List args, {</code>
         </line>
-        <line number="212">
+        <line number="216">
             <code>    SquadronCancelationToken? token,</code>
         </line>
-        <line number="213">
+        <line number="217">
             <code>    bool inspectRequest = false,</code>
         </line>
-        <line number="214">
+        <line number="218">
             <code>    bool inspectResponse = false,</code>
         </line>
-        <line number="215">
+        <line number="219">
             <code>  }) {</code>
         </line>
-        <line number="216">
+        <line number="220">
             <code>    final com = web.MessageChannel();</code>
         </line>
-        <line number="217">
+        <line number="221">
             <code>    final req = WorkerRequest.userCommand(</code>
         </line>
-        <line number="218">
+        <line number="222">
             <code>        com.port2, command, args, token, inspectResponse);</code>
         </line>
-        <line hits="5" number="219">
+        <line hits="5" number="223">
             <code>    final post = inspectRequest ? _inspectAndPostRequest : _postRequest;</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="220">
+        <line hits="5" number="224">
             <code>    return _getResponseStream(com, req, post, streaming: true);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="221">
+        <line hits="5" number="225">
             <code>  }</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="222">
-            <code>}</code>
-        </line>
-        <line number="223">
-            <code/>
-        </line>
-        <line number="224">
-            <code>/// [Channel] used to communicate between [web.Worker]s. Creates a</code>
-        </line>
-        <line number="225">
-            <code>/// [web.MessageChannel] to receive commands on</code>
-        </line>
         <line number="226">
-            <code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
-        </line>
-        <line number="227">
-            <code>final class _WebForwardChannel extends _WebChannel {</code>
-        </line>
-        <line number="228">
-            <code>  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate</code>
-        </line>
-        <line number="229">
-            <code>  /// message channel</code>
-        </line>
-        <line hits="3" number="230">
-            <code>  _WebForwardChannel._(this._remote, this._com, Logger? logger,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="231">
-            <code>      ExceptionManager exceptionManager)</code>
-        </line>
-        <line number="232">
-            <code>      : super._(_com.port2, logger, exceptionManager) {</code>
-        </line>
-        <line hits="3" number="233">
-            <code>    _com.port1.onmessage = _forward.toJS;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="234">
-            <code>  }</code>
-        </line>
-        <line number="235">
-            <code/>
-        </line>
-        <line number="236">
-            <code>  /// [web.MessagePort] to the worker.</code>
-        </line>
-        <line number="237">
-            <code>  final web.MessagePort _remote;</code>
-        </line>
-        <line number="238">
-            <code/>
-        </line>
-        <line number="239">
-            <code>  /// [web.MessageChannel] used for forwarding messages.</code>
-        </line>
-        <line number="240">
-            <code>  final web.MessageChannel _com;</code>
-        </line>
-        <line number="241">
-            <code/>
-        </line>
-        <line number="242">
-            <code>  /// Forwards [web.MessageEvent.data] to the worker.</code>
-        </line>
-        <line hits="3" number="243">
-            <code>  void _forward(web.MessageEvent e) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="244">
-            <code>    if (_closed) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0" number="245">
-            <code>      throw SquadronErrorExt.create('Channel is closed');</code>
-        </line>
-        <line number="246">
-            <code>    }</code>
-        </line>
-        <line hits="0" number="247">
-            <code>    try {</code>
-        </line>
-        <line hits="3" number="248">
-            <code>      final data = getMessageEventData(e) as List;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="249">
-            <code>      final transfer = Transferables.get(data);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="250">
-            <code>      if (transfer == null || transfer.isEmpty) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="251">
-            <code>        _remote.postMessage(e.data);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="252">
-            <code>      } else {</code>
-        </line>
-        <line hits="3" number="253">
-            <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="254">
-            <code>        _remote.postMessage(e.data, jsTransfer);</code>
-        </line>
-        <line number="255">
-            <code>      }</code>
-        </line>
-        <line hits="0" number="256">
-            <code>    } catch (ex, st) {</code>
-        </line>
-        <line hits="1" number="257">
-            <code>      logger?.e(() =&gt; 'Failed to post request $e: $ex');</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0" number="258">
-            <code>      throw SquadronErrorExt.create('Failed to post request: $ex', st);</code>
-        </line>
-        <line number="259">
-            <code>    }</code>
-        </line>
-        <line hits="3" number="260">
-            <code>  }</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="261">
-            <code/>
-        </line>
-        <line number="262">
-            <code>  /// Closes this [Channel], effectively stopping message forwarding.</code>
-        </line>
-        <line number="263">
-            <code>  @override</code>
-        </line>
-        <line hits="0" number="264">
-            <code>  void close() {</code>
-        </line>
-        <line hits="0" number="265">
-            <code>    if (!_closed) {</code>
-        </line>
-        <line hits="0" number="266">
-            <code>      _com.port1.close();</code>
-        </line>
-        <line hits="0" number="267">
-            <code>      _closed = true;</code>
-        </line>
-        <line number="268">
-            <code>    }</code>
-        </line>
-        <line hits="0" number="269">
-            <code>  }</code>
-        </line>
-        <line number="270">
             <code>}</code>
         </line>
     </lines>

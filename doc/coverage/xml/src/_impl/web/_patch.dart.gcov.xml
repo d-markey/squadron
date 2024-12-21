@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8181818" lines-covered="18" lines-valid="22" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="20" lines-valid="22" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:js_interop';</code>
@@ -38,16 +38,17 @@
         <line number="11">
             <code/>
         </line>
-        <line hits="1" number="12">
+        <line hits="3" number="12">
             <code>String? _getErrorEventMessage(JSObject? obj) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="13">
+        <line hits="3" number="13">
             <code>  if (obj != null &amp;&amp; obj.has('message')) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="14">
+        <line hits="2" number="14">
             <code>    return obj['message'].dartify()?.toString();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="15">
             <code>  } else {</code>
@@ -59,23 +60,24 @@
         <line number="17">
             <code>  }</code>
         </line>
-        <line hits="1" number="18">
+        <line hits="3" number="18">
             <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="19">
             <code/>
         </line>
-        <line hits="1" number="20">
+        <line hits="3" number="20">
             <code>Object? _getErrorEventError(JSObject? obj) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="21">
+        <line hits="3" number="21">
             <code>  if (obj != null &amp;&amp; obj.has('error')) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="22">
+        <line hits="2" number="22">
             <code>    return obj['error'].dartify();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code>  } else {</code>
@@ -87,20 +89,20 @@
         <line number="25">
             <code>  }</code>
         </line>
-        <line hits="1" number="26">
+        <line hits="3" number="26">
             <code>}</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="27">
             <code/>
         </line>
-        <line hits="1" number="28">
+        <line hits="3" number="28">
             <code>Object getError(JSObject? obj) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="29">
+        <line hits="3" number="29">
             <code>    _getErrorEventError(obj) ?? _getErrorEventMessage(obj) ?? 'Unknown error';</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="30">
             <code/>
