@@ -207,6 +207,10 @@ const workers = {
     'js': (folder: 'js', opt: Optimizations.safe),
     'wasm': (folder: 'js', opt: Optimizations.safe),
   },
+  'streaming_worker.dart': {
+    'js': (folder: 'js', opt: Optimizations.safe),
+    'wasm': (folder: 'js', opt: Optimizations.safe),
+  },
   'local_client_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.safe),
     'wasm': (folder: 'js', opt: Optimizations.safe),

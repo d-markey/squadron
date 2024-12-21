@@ -22,6 +22,7 @@ import '_event_buffer.dart';
 import '_patch.dart';
 import '_uri_checker.dart';
 
+part '_channel_forward.dart';
 part '_channel_impl.dart';
 
 /// Stub implementations

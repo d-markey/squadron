@@ -24,8 +24,8 @@ final class _VmChannel implements Channel {
   @override
   Channel share() => this;
 
-  void _postRequest(WorkerRequest req) {
-    if (_closed) {
+  void _postRequest(WorkerRequest req, {bool force = false}) {
+    if (_closed && !force) {
       throw SquadronErrorExt.create('Channel is closed');
     }
     try {
@@ -49,16 +49,14 @@ final class _VmChannel implements Channel {
   /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
   @override
   FutureOr<void> cancelStream(int streamId) {
-    if (!_closed) {
-      _postRequest(WorkerRequest.cancelStream(streamId));
-    }
+    _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 
   /// Sends a cancel token [WorkerRequest] to the [vm.Isolate].
   @override
   FutureOr<void> cancelToken(SquadronCancelationToken? token) {
-    if (token != null && !_closed) {
-      _postRequest(WorkerRequest.cancel(token));
+    if (token != null) {
+      _postRequest(WorkerRequest.cancel(token), force: true);
     }
   }
 
@@ -108,7 +106,11 @@ final class _VmChannel implements Channel {
     }
 
     // return a stream of decoded responses
-    return ResultStream(this, req, $sendRequest, streaming).stream;
+    final res = ResultStream(this, req, $sendRequest, streaming);
+    res.done.whenComplete(() {
+      port.close();
+    }).ignore();
+    return res.stream;
   }
 
   /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the

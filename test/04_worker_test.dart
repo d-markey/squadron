@@ -357,7 +357,6 @@ void execute(TestContext? tc) {
             expect(w.totalWorkload, isZero);
 
             await Future.wait(tasks);
-            await pumpEventQueue();
 
             // all tasks have completed
             expect(completedTasks, containsAll([1, 2, 3]));

@@ -14,6 +14,7 @@ class TestEntryPoints {
   EntryPoint? prime;
 
   EntryPoint? log;
+  EntryPoint? streaming;
   EntryPoint? test;
 
   EntryPoint? errors;
@@ -32,6 +33,7 @@ class TestEntryPoints {
         local,
         prime,
         log,
+        streaming,
         test,
         errors,
         failedInit,

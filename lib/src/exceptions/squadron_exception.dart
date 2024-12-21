@@ -51,6 +51,12 @@ abstract class SquadronException implements Exception {
   List serialize();
 
   /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.
-  static StackTrace? loadStackTrace(String? stackTrace) =>
-      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);
+  static StackTrace? loadStackTrace(String? stackTrace) {
+    if (stackTrace == null) return null;
+    try {
+      return StackTrace.fromString(stackTrace);
+    } catch (_) {
+      return null;
+    }
+  }
 }

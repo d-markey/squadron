@@ -67,7 +67,7 @@ class EntryPointUri with Releasable {
     }
   } catch (ex) {
     const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;
-    postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null], null, null]);
+    postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
   }
 })()''';
 }

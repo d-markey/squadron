@@ -43,7 +43,6 @@ void execute(TestContext? tc) {
             }
 
             await Future.wait(tasks);
-            await pumpEventQueue();
 
             expect(completedTasks, hasLength(tasks.length));
             expect(p.stats, hasLength(p.maxWorkers));
@@ -87,11 +86,12 @@ void execute(TestContext? tc) {
 
             // wait until completion, then go idle
             await Future.wait(tasks);
-            await pumpEventQueue();
 
-            // the extra workers should have been stopped and the pool should be back to minimum size
-            // await pumpEventQueue();
+            // the extra workers should have been stopped
             expect(stopped, isPositive);
+
+            // and the pool should be back to minimum size
+            await pumpEventQueue();
             expect(p.size, p.minWorkers);
           } finally {
             timer.cancel();
@@ -236,7 +236,6 @@ void execute(TestContext? tc) {
             expect(progress.totalTimeInMicroseconds, isPositive);
 
             await Future.wait(tasks);
-            await pumpEventQueue();
 
             final end = counter.snapshot;
             expect(end.totalCount, greaterThanOrEqualTo(progress.totalCount));
@@ -272,7 +271,6 @@ void execute(TestContext? tc) {
             expect(progress.totalTimeInMicroseconds, isPositive);
 
             await Future.wait(tasks);
-            await pumpEventQueue();
 
             final end = counter.snapshot;
             expect(end.totalCount, greaterThanOrEqualTo(progress.totalCount));
@@ -312,9 +310,10 @@ void execute(TestContext? tc) {
 
           p.stop();
 
+          expect(p.stopped, isTrue);
+
           await pumpEventQueue();
           expect(p.size, isZero);
-          expect(p.stopped, isTrue);
 
           try {
             n = await p.delayed(-1);
@@ -350,7 +349,6 @@ void execute(TestContext? tc) {
           expect(digits, hasLength(lessThanOrEqualTo(count)));
 
           await Future.wait(tasks);
-          await pumpEventQueue();
 
           expect(p.stopped, isTrue);
           expect(p.pendingWorkload, isZero);

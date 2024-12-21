@@ -25,8 +25,8 @@ final class _WebChannel implements Channel {
   Channel share() => _WebForwardChannel._(
       _sendPort, web.MessageChannel(), logger, exceptionManager);
 
-  void _postRequest(WorkerRequest req) {
-    if (_closed) {
+  void _postRequest(WorkerRequest req, {bool force = false}) {
+    if (_closed && !force) {
       throw SquadronErrorExt.create('Channel is closed');
     }
     try {
@@ -80,16 +80,14 @@ final class _WebChannel implements Channel {
   /// Sends a close stream [WorkerRequest] to the [web.Worker].
   @override
   FutureOr<void> cancelStream(int streamId) {
-    if (!_closed) {
-      _postRequest(WorkerRequest.cancelStream(streamId));
-    }
+    _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 
   /// Sends a cancel token [WorkerRequest] to the [web.Worker].
   @override
   FutureOr<void> cancelToken(SquadronCancelationToken? token) {
-    if (token != null && !_closed) {
-      _postRequest(WorkerRequest.cancel(token));
+    if (token != null) {
+      _postRequest(WorkerRequest.cancel(token), force: true);
     }
   }
 
@@ -160,7 +158,13 @@ final class _WebChannel implements Channel {
     }
 
     // return a stream of decoded responses
-    return ResultStream(this, req, $sendRequest, streaming).stream;
+    final res = ResultStream(this, req, $sendRequest, streaming);
+    res.done.whenComplete(() {
+      // cleanup resources
+      com.port1.close();
+      com.port2.close();
+    }).ignore();
+    return res.stream;
   }
 
   /// Creates a [web.MessageChannel] and a [WorkerRequest] and sends it to the [web.Worker]. This method expects a
@@ -218,53 +222,5 @@ final class _WebChannel implements Channel {
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
     return _getResponseStream(com, req, post, streaming: true);
-  }
-}
-
-/// [Channel] used to communicate between [web.Worker]s. Creates a
-/// [web.MessageChannel] to receive commands on
-/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].
-final class _WebForwardChannel extends _WebChannel {
-  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate
-  /// message channel
-  _WebForwardChannel._(this._remote, this._com, Logger? logger,
-      ExceptionManager exceptionManager)
-      : super._(_com.port2, logger, exceptionManager) {
-    _com.port1.onmessage = _forward.toJS;
-  }
-
-  /// [web.MessagePort] to the worker.
-  final web.MessagePort _remote;
-
-  /// [web.MessageChannel] used for forwarding messages.
-  final web.MessageChannel _com;
-
-  /// Forwards [web.MessageEvent.data] to the worker.
-  void _forward(web.MessageEvent e) {
-    if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
-    }
-    try {
-      final data = getMessageEventData(e) as List;
-      final transfer = Transferables.get(data);
-      if (transfer == null || transfer.isEmpty) {
-        _remote.postMessage(e.data);
-      } else {
-        final jsTransfer = transfer.jsify() as JSArray;
-        _remote.postMessage(e.data, jsTransfer);
-      }
-    } catch (ex, st) {
-      logger?.e(() => 'Failed to post request $e: $ex');
-      throw SquadronErrorExt.create('Failed to post request: $ex', st);
-    }
-  }
-
-  /// Closes this [Channel], effectively stopping message forwarding.
-  @override
-  void close() {
-    if (!_closed) {
-      _com.port1.close();
-      _closed = true;
-    }
   }
 }

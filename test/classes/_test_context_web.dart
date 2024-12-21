@@ -60,13 +60,14 @@ extension TestEntryPointsExt on TestEntryPoints {
     local = Squadron.uri('$root/local_client_worker.dart.$ext');
     prime = Squadron.uri('$root/prime_worker.dart.$ext');
     log = Squadron.uri('$root/log_worker.dart.$ext');
+    streaming = Squadron.uri('$root/streaming_worker.dart.$ext');
     test = Squadron.uri('$root/test_worker.dart.$ext');
     errors = Squadron.uri('$root/error_worker.dart.$ext');
 
+    final js = 'onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };';
     inMemory = Uri.parse(
-        'data:application/javascript;base64,${base64Encode(utf8.encode('''
-onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };
-'''))}');
+      'data:application/javascript;base64,${base64Encode(utf8.encode(js))}',
+    );
 
     await _checkWebWorkers(defined.cast<Uri>());
 
@@ -74,7 +75,6 @@ onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };
   }
 }
 
-// ignore: unused_element
 Future _checkWebWorkers(Iterable<Uri> workerUrls) async {
   final messages = <String>[];
 

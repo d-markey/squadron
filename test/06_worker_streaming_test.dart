@@ -7,11 +7,13 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
+import 'package:using/using.dart';
 
 import 'classes/custom_exception.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
 import 'worker_services/delays.dart';
+import 'worker_services/streaming_service_worker.dart';
 import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
@@ -116,7 +118,6 @@ void execute(TestContext? tc) {
 
           expect(numbers, [0, 1, 2]);
 
-          await pumpEventQueue();
           final pending = await worker.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
@@ -141,7 +142,6 @@ void execute(TestContext? tc) {
 
           expect(numbers, [0]);
 
-          await pumpEventQueue();
           final pending = await worker.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
@@ -244,12 +244,53 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- subscription cancelation', () async {
-          var counter = 0;
-          final clock = worker.clock(frequency: 100);
-          final sub = clock.listen((_) => counter++);
-          await Future.delayed(Duration(milliseconds: 100));
-          expect(counter, isPositive);
-          await sub.cancel();
+          StreamingServiceWorker(tc).useAsync((w) async {
+            expect(await w.getMonitored(), 0);
+
+            var nb1 = 0;
+            final sub1 = w.monitoredStream().listen((_) => nb1++);
+
+            await Future.delayed(TestDelays.delay);
+
+            expect(await w.getMonitored(), 1);
+            expect(nb1, isPositive);
+
+            var nb2 = 0;
+            final sub2 = w.monitoredStream().listen((_) => nb2++);
+
+            await Future.delayed(TestDelays.delay);
+
+            expect(await w.getMonitored(), 2);
+            expect(nb2, isPositive);
+
+            await sub1.cancel();
+
+            final nb1_1 = nb1, nb2_1 = nb2;
+            await Future.delayed(TestDelays.delay);
+
+            expect(nb1, nb1_1);
+            expect(nb2, greaterThan(nb2_1));
+
+            expect(await w.getMonitored(), 1);
+
+            final nb1_2 = nb1, nb2_2 = nb2;
+            await Future.delayed(TestDelays.delay);
+
+            expect(nb1, nb1_2);
+            expect(nb2_2, greaterThan(nb2_1));
+            expect(nb2, greaterThan(nb2_2));
+
+            await sub2.cancel();
+
+            final nb1_3 = nb1, nb2_3 = nb2;
+            await Future.delayed(TestDelays.delay);
+
+            expect(nb1, nb1_3);
+            expect(nb2_3, greaterThan(nb2_2));
+            expect(nb2, nb2_3);
+
+            expect(await w.getMonitored(), 0);
+          });
         });
       });
     });

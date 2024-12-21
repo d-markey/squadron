@@ -33,18 +33,20 @@ Supports native, JavaScript & Web Assembly platforms.
 
 [View latest documentation on GitHub](https://github.com/d-markey/squadron/blob/main/README.md)
 
+[Test Console available on GitHub Pages](https://d-markey.github.io/squadron/browser-tests/)
+
 ## <a name="getting_started"></a>Getting Started
 
 1. Update your `pubspec.yaml` file to add dependencies to **[Squadron][pub_squadron]** and **[squadron_builder][pub_squadron_builder]** + [build_runner](https://pub.dev/packages/build_runner):
 
 ```yaml
 dependencies:
-  squadron: ^6.0.0
+  squadron: ^6.1.5
   # ...
 
 dev_dependencies:
   build_runner:
-  squadron_builder: ^6.0.0
+  squadron_builder: ^6.1.3
   # ...
 ```
 
@@ -207,9 +209,11 @@ On Web platforms, things are different because the data was handed over to the b
 
 To handle `List` and `Map` objects as efficiencly as possible, converters provided by Squadron optimize the process when the item type is a base type that can be handled by a simple cast. Eg. when a service method works with a `List<String>`, it is received/sent as a `List<dynamic>` and will be "promoted" back to `List<String>` by simply calling `list.cast<String>()`. For `Map<K, V>` objects where `K` and `V` are base types, the received `Map<dynamic, dynamic>` will be cast back to `Map<K, V>` with `map.cast<K, V>()`. In these scenarios, cast operations are deferred until an item is accessed. Dart's static type-safety checks guarantee the cast will succeed.
 
-When lists and maps contain elements that cannot be cast, additional processing is required. **For instance, a `List<int>` object sent to a Web Assembly worker will be received as a `List<dynamic>` containing `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used.
+When lists and maps contain elements that cannot be cast, additional processing is required.
 
-Under such circumstances, list elements must be processed individually and converted back; eg. `NumConverter` handles this specific example as `list.map(_toInt).toList()` where `_toInt` is a function that returns the input value as an `int` after checking it is effectively an `int` or an integral `double`.
+Web Assembly requires extra-care.
+* **For instance, a `List<int>` object sent to a Web Assembly worker will be received as a `List<dynamic>` containing `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used. Under such circumstances, list elements must be processed individually and converted back; eg. `NumConverter` handles this specific example as `list.map(_toInt).toList()` where `_toInt` is a function that returns the input value as an `int` after checking it is effectively an `int` or an integral `double`.
+* **`Map<K,V>` objects sent to a Web Assembly worker will be received as a `Map<String,V>`!** See issue https://github.com/dart-lang/sdk/issues/57113. This is related to the current implementation of `jsify()` in `js_interop`, which Squadron relies on when sending data to the worker. A future version of Squadron might switch to a specific implementation in order to better support maps on Web platforms.
 
 For large collections or complex structures (nested lists/maps), this process may impact performance because 1/ `map()` will iterate over all elements and 2/ `toList()` will create a fresh list to hold the converted elements.
 

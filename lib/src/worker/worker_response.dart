@@ -76,7 +76,6 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   dynamic get result {
     final err = error;
     if (err != null) {
-      print('THROWING $err');
       throw err;
     } else {
       return data[_$result];
