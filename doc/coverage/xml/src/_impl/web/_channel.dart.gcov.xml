@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8433735" lines-covered="70" lines-valid="83" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8433735" lines-covered="70" lines-valid="83" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -74,562 +74,565 @@
             <code/>
         </line>
         <line number="25">
-            <code>part '_channel_impl.dart';</code>
+            <code>part '_channel_forward.dart';</code>
         </line>
         <line number="26">
-            <code/>
+            <code>part '_channel_impl.dart';</code>
         </line>
         <line number="27">
-            <code>/// Stub implementations</code>
-        </line>
-        <line number="28">
             <code/>
         </line>
+        <line number="28">
+            <code>/// Stub implementations</code>
+        </line>
         <line number="29">
-            <code>/// Starts a [web.Worker] using the [entryPoint] and sends a start</code>
+            <code/>
         </line>
         <line number="30">
-            <code>/// [WorkerRequest] with [startArguments]. The future completes after the</code>
+            <code>/// Starts a [web.Worker] using the [entryPoint] and sends a start</code>
         </line>
         <line number="31">
-            <code>/// [web.Worker]'s main program has provided the [web.MessagePort] via</code>
+            <code>/// [WorkerRequest] with [startArguments]. The future completes after the</code>
         </line>
         <line number="32">
+            <code>/// [web.Worker]'s main program has provided the [web.MessagePort] via</code>
+        </line>
+        <line number="33">
             <code>/// [WorkerChannel.connect].</code>
         </line>
-        <line hits="11" number="33">
+        <line hits="11" number="34">
             <code>Future&lt;Channel&gt; openChannel(</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="34">
+        <line number="35">
             <code>  EntryPoint entryPoint,</code>
         </line>
-        <line number="35">
+        <line number="36">
             <code>  ExceptionManager exceptionManager,</code>
         </line>
-        <line number="36">
+        <line number="37">
             <code>  Logger? logger,</code>
         </line>
-        <line number="37">
+        <line number="38">
             <code>  List startArguments,</code>
         </line>
-        <line number="38">
+        <line number="39">
             <code>  PlatformThreadHook hook,</code>
         </line>
-        <line number="39">
+        <line number="40">
             <code>) async {</code>
         </line>
-        <line hits="11" number="40">
+        <line hits="11" number="41">
             <code>  final completer = Completer&lt;Channel&gt;();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="41">
+        <line number="42">
             <code>  final ready = Completer&lt;bool&gt;();</code>
         </line>
-        <line number="42">
+        <line number="43">
             <code>  Channel? channel;</code>
         </line>
-        <line number="43">
+        <line number="44">
             <code/>
         </line>
-        <line number="44">
+        <line number="45">
             <code>  final com = web.MessageChannel();</code>
         </line>
-        <line hits="11" number="45">
+        <line hits="11" number="46">
             <code>  final webEntryPoint = EntryPointUri.from(entryPoint);</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="46">
+        <line hits="11" number="47">
             <code>  late web.Worker worker;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="47">
+        <line number="48">
             <code/>
         </line>
-        <line hits="3" number="48">
+        <line hits="5" number="49">
             <code>  void fail(SquadronException ex) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="49">
+        <line hits="5" number="50">
             <code>    if (!ready.isCompleted) ready.completeError(ex);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="50">
+        <line hits="5" number="51">
             <code>    if (!completer.isCompleted) completer.completeError(ex);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="51">
+        <line hits="5" number="52">
             <code>  }</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="52">
+        <line number="53">
             <code/>
         </line>
-        <line hits="10" number="53">
+        <line hits="10" number="54">
             <code>  void success(Channel channel) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="54">
+        <line hits="10" number="55">
             <code>    if (!ready.isCompleted) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="55">
+        <line hits="0" number="56">
             <code>      throw SquadronErrorExt.create('Invalid state: worker is not ready');</code>
         </line>
-        <line number="56">
+        <line number="57">
             <code>    }</code>
         </line>
-        <line hits="10" number="57">
+        <line hits="10" number="58">
             <code>    if (!completer.isCompleted) completer.complete(channel);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="58">
+        <line hits="10" number="59">
             <code>  }</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="59">
+        <line number="60">
             <code/>
         </line>
-        <line hits="3" number="60">
+        <line hits="3" number="61">
             <code>  try {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="61">
+        <line hits="11" number="62">
             <code>    worker = web.Worker(webEntryPoint.uri.toJS);</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="62">
+        <line number="63">
             <code/>
         </line>
-        <line hits="1" number="63">
+        <line hits="2" number="64">
             <code>    void $errorHandler(web.ErrorEvent? e) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="64">
-            <code>      final err = getError(e), error = SquadronErrorExt.create(err.toString());</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="65">
+            <code>      final err = getError(e), error = SquadronErrorExt.create(err.toString());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="66">
             <code>      logger?.e(() =&gt; 'Connection to Web Worker failed: $error');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="66">
+        <line hits="2" number="67">
             <code>      fail(error);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="67">
+        <line number="68">
             <code/>
         </line>
-        <line hits="1" number="68">
+        <line hits="3" number="69">
             <code>      UriChecker.exists(entryPoint).then((found) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="69">
+        <line hits="3" number="70">
             <code>        try {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="70">
+        <line hits="3" number="71">
             <code>          final msg = (e != null)</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="71">
+        <line hits="3" number="72">
             <code>              ? '$entryPoint =&gt; ${err.runtimeType} $err [${e.filename}(${e.lineno})]'</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0" number="72">
-            <code>              : '$entryPoint =&gt; ${err.runtimeType} $err';</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="73">
-            <code>          logger?.e(() =&gt; 'Unhandled error from Web Worker: $msg.');</code>
+            <code>              : '$entryPoint =&gt; ${err.runtimeType} $err';</code>
         </line>
         <line hits="0" number="74">
+            <code>          logger?.e(() =&gt; 'Unhandled error from Web Worker: $msg.');</code>
+        </line>
+        <line hits="0" number="75">
             <code>          if (!found) {</code>
         </line>
-        <line hits="2" number="75">
+        <line hits="2" number="76">
             <code>            logger?.e(() =&gt; 'It seems no Web Worker lives at $entryPoint.');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="76">
+        <line number="77">
             <code>          }</code>
         </line>
-        <line number="77">
+        <line number="78">
             <code>        } catch (_) {</code>
         </line>
-        <line number="78">
+        <line number="79">
             <code>          // ignore</code>
         </line>
-        <line number="79">
+        <line number="80">
             <code>        }</code>
         </line>
-        <line hits="1" number="80">
+        <line hits="3" number="81">
             <code>      });</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="81">
+        <line hits="2" number="82">
             <code>    }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="82">
+        <line number="83">
             <code/>
         </line>
-        <line hits="11" number="83">
+        <line hits="11" number="84">
             <code>    worker.onerror = $errorHandler.toJS;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="84">
+        <line hits="11" number="85">
             <code>    worker.onmessageerror = $errorHandler.toJS;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="85">
-            <code/>
-        </line>
         <line number="86">
-            <code>    final disconnected = DisconnectedChannel(exceptionManager, logger);</code>
+            <code/>
         </line>
         <line number="87">
+            <code>    final disconnected = DisconnectedChannel(exceptionManager, logger);</code>
+        </line>
+        <line number="88">
             <code/>
         </line>
-        <line hits="10" number="88">
+        <line hits="10" number="89">
             <code>    worker.onmessage = (web.MessageEvent? e) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="89">
+        <line hits="10" number="90">
             <code>      try {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="90">
+        <line hits="10" number="91">
             <code>        final response = WorkerResponseExt.from(getMessageEventData(e) as List);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="91">
+        <line hits="10" number="92">
             <code>        if (!response.unwrapInPlace(disconnected)) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="92">
+        <line hits="0" number="93">
             <code>          return;</code>
         </line>
-        <line number="93">
+        <line number="94">
             <code>        }</code>
         </line>
-        <line number="94">
+        <line number="95">
             <code/>
         </line>
-        <line number="95">
+        <line number="96">
             <code>        final error = response.error;</code>
         </line>
-        <line hits="10" number="96">
+        <line hits="10" number="97">
             <code>        if (error != null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="97">
+        <line hits="2" number="98">
             <code>          logger?.e(() =&gt; 'Connection to Web Worker failed: $error');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="98">
+        <line hits="1" number="99">
             <code>          fail(error);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="99">
+        <line hits="10" number="100">
             <code>        } else if (!ready.isCompleted) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="100">
+        <line hits="2" number="101">
             <code>          logger?.t('Web Worker is ready');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="101">
+        <line hits="10" number="102">
             <code>          ready.complete(response.result);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="102">
+        <line number="103">
             <code>        }</code>
         </line>
-        <line hits="0" number="103">
+        <line hits="0" number="104">
             <code>      } catch (ex, st) {</code>
         </line>
-        <line hits="0" number="104">
+        <line hits="0" number="105">
             <code>        return fail(SquadronException.from(ex, st));</code>
         </line>
-        <line number="105">
+        <line number="106">
             <code>      }</code>
         </line>
-        <line hits="11" number="106">
+        <line hits="11" number="107">
             <code>    }.toJS;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="107">
+        <line number="108">
             <code/>
         </line>
-        <line hits="11" number="108">
+        <line hits="11" number="109">
             <code>    final res = await ready.future;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="109">
+        <line number="110">
             <code>    if (!res) {</code>
         </line>
-        <line hits="0" number="110">
+        <line hits="0" number="111">
             <code>      throw SquadronErrorExt.create('Web Worker is not ready');</code>
         </line>
-        <line number="111">
+        <line number="112">
             <code>    }</code>
         </line>
-        <line number="112">
-            <code/>
-        </line>
         <line number="113">
-            <code>    final startRequest = WorkerRequest.start(com.port2, startArguments);</code>
+            <code/>
         </line>
         <line number="114">
+            <code>    final startRequest = WorkerRequest.start(com.port2, startArguments);</code>
+        </line>
+        <line number="115">
             <code/>
         </line>
-        <line hits="10" number="115">
+        <line hits="10" number="116">
             <code>    com.port1.onmessage = (web.MessageEvent e) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="116">
+        <line hits="10" number="117">
             <code>      final response = WorkerResponseExt.from(getMessageEventData(e) as List);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="117">
+        <line hits="10" number="118">
             <code>      if (!response.unwrapInPlace(disconnected)) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="118">
+        <line hits="10" number="119">
             <code>        return;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="119">
+        <line number="120">
             <code>      }</code>
         </line>
-        <line number="120">
+        <line number="121">
             <code/>
         </line>
-        <line number="121">
+        <line number="122">
             <code>      final error = response.error;</code>
         </line>
-        <line hits="10" number="122">
+        <line hits="10" number="123">
             <code>      if (error != null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="123">
+        <line hits="2" number="124">
             <code>        logger?.e(() =&gt; 'Connection to Web Worker failed: $error');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="124">
+        <line hits="3" number="125">
             <code>        fail(error);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="125">
+        <line number="126">
             <code>      } else if (response.endOfStream) {</code>
         </line>
-        <line hits="1" number="126">
+        <line hits="1" number="127">
             <code>        logger?.w('Disconnecting from Web Worker');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="127">
+        <line hits="1" number="128">
             <code>        channel?.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="128">
+        <line hits="10" number="129">
             <code>      } else if (!completer.isCompleted) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="129">
+        <line hits="2" number="130">
             <code>        logger?.t('Connected to Web Worker');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="130">
+        <line hits="10" number="131">
             <code>        channel = _WebChannel._(response.result, logger, exceptionManager);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="131">
+        <line hits="10" number="132">
             <code>        success(channel!);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="132">
+        <line number="133">
             <code>      } else {</code>
         </line>
-        <line hits="2" number="133">
+        <line hits="2" number="134">
             <code>        logger?.d(() =&gt; 'Unexpected response: $response');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="134">
+        <line number="135">
             <code>      }</code>
         </line>
-        <line hits="10" number="135">
+        <line hits="10" number="136">
             <code>    }.toJS;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="136">
+        <line number="137">
             <code/>
         </line>
-        <line hits="0" number="137">
+        <line hits="0" number="138">
             <code>    try {</code>
         </line>
-        <line hits="10" number="138">
+        <line hits="10" number="139">
             <code>      final data = startRequest.wrapInPlace();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="139">
+        <line number="140">
             <code>      final msg = data.jsify();</code>
         </line>
-        <line hits="10" number="140">
+        <line hits="10" number="141">
             <code>      final transfer = Transferables.get(data);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="141">
+        <line number="142">
             <code>      if (transfer == null || transfer.isEmpty) {</code>
         </line>
-        <line number="142">
+        <line number="143">
             <code>        worker.postMessage(msg);</code>
         </line>
-        <line number="143">
+        <line number="144">
             <code>      } else {</code>
         </line>
-        <line hits="10" number="144">
+        <line hits="10" number="145">
             <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="145">
+        <line number="146">
             <code>        worker.postMessage(msg, jsTransfer);</code>
         </line>
-        <line number="146">
+        <line number="147">
             <code>      }</code>
         </line>
-        <line hits="0" number="147">
+        <line hits="0" number="148">
             <code>    } catch (ex, st) {</code>
         </line>
-        <line hits="2" number="148">
+        <line hits="2" number="149">
             <code>      logger?.e(() =&gt; 'Failed to post connection request $startRequest: $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="149">
+        <line hits="0" number="150">
             <code>      throw SquadronErrorExt.create(</code>
         </line>
-        <line hits="0" number="150">
+        <line hits="0" number="151">
             <code>          'Failed to post connection request: $ex', st);</code>
         </line>
-        <line number="151">
+        <line number="152">
             <code>    }</code>
         </line>
-        <line number="152">
+        <line number="153">
             <code/>
         </line>
-        <line hits="3" number="153">
+        <line hits="3" number="154">
             <code>    try {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="154">
+        <line hits="10" number="155">
             <code>      final channel = await completer.future;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="155">
+        <line hits="10" number="156">
             <code>      await hook.call(worker);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="156">
+        <line hits="2" number="157">
             <code>      logger?.t('Created Web Worker for $entryPoint');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="157">
+        <line hits="10" number="158">
             <code>      return channel;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="158">
+        <line number="159">
             <code>    } catch (ex) {</code>
         </line>
-        <line hits="2" number="159">
+        <line hits="2" number="160">
             <code>      logger?.e(() =&gt; 'Connection to Web Worker failed: $ex');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="160">
+        <line hits="3" number="161">
             <code>      rethrow;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="161">
+        <line number="162">
             <code>    }</code>
         </line>
-        <line hits="3" number="162">
+        <line hits="3" number="163">
             <code>  } catch (ex, st) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="163">
+        <line hits="3" number="164">
             <code>    ready.future.ignore();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="164">
+        <line hits="3" number="165">
             <code>    completer.future.ignore();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="165">
+        <line hits="0" number="166">
             <code>    logger?.t('Failed to create Web Worker for $entryPoint');</code>
         </line>
-        <line number="166">
+        <line number="167">
             <code>    com.port1.close();</code>
         </line>
-        <line number="167">
+        <line number="168">
             <code>    com.port2.close();</code>
         </line>
-        <line number="168">
+        <line number="169">
             <code>    worker.terminate();</code>
         </line>
-        <line hits="3" number="169">
+        <line hits="3" number="170">
             <code>    throw SquadronException.from(ex, st);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="170">
+        <line number="171">
             <code>  } finally {</code>
         </line>
-        <line number="171">
+        <line number="172">
             <code>    webEntryPoint.release();</code>
         </line>
-        <line number="172">
+        <line number="173">
             <code>  }</code>
         </line>
-        <line hits="11" number="173">
+        <line hits="11" number="174">
             <code>}</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="174">
+        <line number="175">
             <code/>
         </line>
-        <line number="175">
+        <line number="176">
             <code>/// Creates a [_WebChannel] from a [web.MessagePort].</code>
         </line>
-        <line number="176">
+        <line number="177">
             <code>Channel? deserialize(</code>
         </line>
-        <line number="177">
+        <line number="178">
             <code>  PlatformChannel? channelInfo, [</code>
         </line>
-        <line number="178">
+        <line number="179">
             <code>  Logger? logger,</code>
         </line>
-        <line number="179">
+        <line number="180">
             <code>  ExceptionManager? exceptionManager,</code>
         </line>
-        <line number="180">
+        <line number="181">
             <code>]) =&gt;</code>
         </line>
-        <line number="181">
+        <line number="182">
             <code>    (channelInfo == null)</code>
         </line>
-        <line number="182">
+        <line number="183">
             <code>        ? null</code>
         </line>
-        <line number="183">
+        <line number="184">
             <code>        : _WebChannel._(</code>
         </line>
-        <line number="184">
+        <line number="185">
             <code>            channelInfo,</code>
         </line>
-        <line number="185">
+        <line number="186">
             <code>            logger,</code>
         </line>
-        <line number="186">
+        <line number="187">
             <code>            exceptionManager ?? ExceptionManager(),</code>
         </line>
-        <line number="187">
+        <line number="188">
             <code>          );</code>
         </line>
     </lines>

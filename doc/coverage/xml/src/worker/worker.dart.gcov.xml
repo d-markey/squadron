@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89411765" lines-covered="152" lines-valid="170" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89411765" lines-covered="152" lines-valid="170" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -104,9 +104,9 @@
             <code>  Worker(this._entryPoint,</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="35">
+        <line hits="4" number="35">
             <code>      {this.args = const [],</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="36">
             <code>      PlatformThreadHook? threadHook,</code>
@@ -132,13 +132,13 @@
             <code>  void release() {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14" number="43">
+        <line hits="15" number="43">
             <code>    stop();</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14" number="44">
+        <line hits="15" number="44">
             <code>    super.release();</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="45">
             <code>  }</code>
@@ -553,9 +553,9 @@
         <line number="164">
             <code>    // get the channel, start the worker if necessary</code>
         </line>
-        <line hits="25" number="165">
+        <line hits="26" number="165">
             <code>    final channel = _channel ?? await start();</code>
-            <hit count="25" name="&lt;unnamed&gt;"/>
+            <hit count="26" name="&lt;unnamed&gt;"/>
         </line>
         <line number="166">
             <code/>

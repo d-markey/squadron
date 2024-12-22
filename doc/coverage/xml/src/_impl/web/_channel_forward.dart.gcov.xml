@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_channel_forward.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.55" lines-covered="11" lines-valid="20" package="src/_impl/web" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>part of '_channel.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>/// [Channel] used to communicate between [web.Worker]s. Creates a</code>
+        </line>
+        <line number="4">
+            <code>/// [web.MessageChannel] to receive commands on</code>
+        </line>
+        <line number="5">
+            <code>/// [web.MessageChannel.port2] and forwards them to the worker's [web.MessagePort] via [web.MessageChannel.port1].</code>
+        </line>
+        <line number="6">
+            <code>final class _WebForwardChannel extends _WebChannel {</code>
+        </line>
+        <line number="7">
+            <code>  /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate</code>
+        </line>
+        <line number="8">
+            <code>  /// message channel</code>
+        </line>
+        <line hits="3" number="9">
+            <code>  _WebForwardChannel._(this._remote, this._com, Logger? logger,</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code>      ExceptionManager exceptionManager)</code>
+        </line>
+        <line number="11">
+            <code>      : super._(_com.port2, logger, exceptionManager) {</code>
+        </line>
+        <line hits="3" number="12">
+            <code>    _com.port1.onmessage = _forward.toJS;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code>  }</code>
+        </line>
+        <line number="14">
+            <code/>
+        </line>
+        <line number="15">
+            <code>  /// [web.MessagePort] to the worker.</code>
+        </line>
+        <line number="16">
+            <code>  final web.MessagePort _remote;</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>  /// [web.MessageChannel] used for forwarding messages.</code>
+        </line>
+        <line number="19">
+            <code>  final web.MessageChannel _com;</code>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>  /// Forwards [web.MessageEvent.data] to the worker.</code>
+        </line>
+        <line hits="3" number="22">
+            <code>  void _forward(web.MessageEvent e) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="23">
+            <code>    if (_closed) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="24">
+            <code>      throw SquadronErrorExt.create('Channel is closed');</code>
+        </line>
+        <line number="25">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="26">
+            <code>    try {</code>
+        </line>
+        <line hits="3" number="27">
+            <code>      final data = getMessageEventData(e) as List;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="28">
+            <code>      final transfer = Transferables.get(data);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="29">
+            <code>      if (transfer == null || transfer.isEmpty) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="30">
+            <code>        _remote.postMessage(e.data);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="31">
+            <code>      } else {</code>
+        </line>
+        <line hits="3" number="32">
+            <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="33">
+            <code>        _remote.postMessage(e.data, jsTransfer);</code>
+        </line>
+        <line number="34">
+            <code>      }</code>
+        </line>
+        <line hits="0" number="35">
+            <code>    } catch (ex, st) {</code>
+        </line>
+        <line hits="1" number="36">
+            <code>      logger?.e(() =&gt; 'Failed to post request $e: $ex');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="37">
+            <code>      throw SquadronErrorExt.create('Failed to post request: $ex', st);</code>
+        </line>
+        <line number="38">
+            <code>    }</code>
+        </line>
+        <line hits="3" number="39">
+            <code>  }</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line number="41">
+            <code>  /// Closes this [Channel], effectively stopping message forwarding.</code>
+        </line>
+        <line number="42">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="43">
+            <code>  void close() {</code>
+        </line>
+        <line hits="0" number="44">
+            <code>    if (!_closed) {</code>
+        </line>
+        <line hits="0" number="45">
+            <code>      _com.port1.close();</code>
+        </line>
+        <line hits="0" number="46">
+            <code>      _closed = true;</code>
+        </line>
+        <line number="47">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="48">
+            <code>  }</code>
+        </line>
+        <line number="49">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../../"/>
+    <base href="../../../"/>
+</coverage>

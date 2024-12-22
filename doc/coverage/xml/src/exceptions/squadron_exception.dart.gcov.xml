@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.875" lines-covered="21" lines-valid="24" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8518519" lines-covered="23" lines-valid="27" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -42,9 +42,9 @@
         <line number="13">
             <code>      try {</code>
         </line>
-        <line hits="27" number="14">
+        <line hits="28" number="14">
             <code>        _stackTrace = StackTrace.current;</code>
-            <hit count="27" name="&lt;unnamed&gt;"/>
+            <hit count="28" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="15">
             <code>      } catch (_, st) {</code>
@@ -179,15 +179,35 @@
         <line number="53">
             <code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code>
         </line>
-        <line hits="10" number="54">
-            <code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code>
+        <line hits="20" number="54">
+            <code>  static StackTrace? loadStackTrace(String? stackTrace) {</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="55">
+            <code>    if (stackTrace == null) return null;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="55">
-            <code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
         <line number="56">
+            <code>    try {</code>
+        </line>
+        <line hits="15" number="57">
+            <code>      return StackTrace.fromString(stackTrace);</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="58">
+            <code>    } catch (_) {</code>
+        </line>
+        <line hits="0" number="59">
+            <code>      return null;</code>
+        </line>
+        <line number="60">
+            <code>    }</code>
+        </line>
+        <line hits="10" number="61">
+            <code>  }</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="62">
             <code>}</code>
         </line>
     </lines>

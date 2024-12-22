@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-15</dd>
+                    <dd>2024-12-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>21</td><td>24</td><td class="med">87.5%</td>
+                            <th scope="row">Lines</th><td>23</td><td>27</td><td class="med">85.2%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -100,7 +100,7 @@
                     <td>13</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>27</td><td><code>        _stackTrace = StackTrace.current;</code></td>
+                    <td>14</td><td></td><td>28</td><td><code>        _stackTrace = StackTrace.current;</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 15" id="line15">
                     <td>15</td><td></td><td>0</td><td><code>      } catch (_, st) {</code></td>
@@ -220,13 +220,31 @@
                     <td>53</td><td></td><td></td><td><code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>10</td><td><code>  static StackTrace? loadStackTrace(String? stackTrace) =&gt;</code></td>
+                    <td>54</td><td></td><td>20</td><td><code>  static StackTrace? loadStackTrace(String? stackTrace) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>7</td><td><code>      (stackTrace == null) ? null : StackTrace.fromString(stackTrace);</code></td>
+                    <td>55</td><td></td><td>10</td><td><code>    if (stackTrace == null) return null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
-                    <td>56</td><td></td><td></td><td><code>}</code></td>
+                    <td>56</td><td></td><td></td><td><code>    try {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>15</td><td><code>      return StackTrace.fromString(stackTrace);</code></td>
+                </tr>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code>    } catch (_) {</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 59" id="line59">
+                    <td>59</td><td></td><td>0</td><td><code>      return null;</code></td>
+                </tr>
+                <tr class="noop" title="Line 60" id="line60">
+                    <td>60</td><td></td><td></td><td><code>    }</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 61" id="line61">
+                    <td>61</td><td></td><td>10</td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 62" id="line62">
+                    <td>62</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

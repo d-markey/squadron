@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-15" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86313194" lines-covered="2100" lines-valid="2433" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86456627" lines-covered="2113" lines-valid="2444" testname="lcov.info" version="1.6">
     <sources>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="26" lines-valid="31" pathname="src/marshalers" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="42" lines-valid="51" pathname="src" prefix="/home/runner/work/squadron/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="287" lines-valid="368" pathname="src/_impl/xplat" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="288" lines-valid="369" pathname="src/_impl/xplat" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="541" lines-valid="545" pathname="src/converters" prefix="/home/runner/work/squadron/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="259" lines-valid="321" pathname="src/_impl/web" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="264" lines-valid="324" pathname="src/_impl/web" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="26" pathname="src/local_worker" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="287" lines-valid="324" pathname="src/pool" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="10" pathname="src/annotations" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="55" lines-valid="79" pathname="src/tokens" prefix="/home/runner/work/squadron/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="152" lines-valid="171" pathname="src/_impl/native" prefix="/home/runner/work/squadron/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="142" lines-valid="187" pathname="src/exceptions" prefix="/home/runner/work/squadron/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="264" lines-valid="292" pathname="src/worker" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="154" lines-valid="173" pathname="src/_impl/native" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="147" lines-valid="193" pathname="src/exceptions" prefix="/home/runner/work/squadron/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="264" lines-valid="291" pathname="src/worker" prefix="/home/runner/work/squadron/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="27" lines-valid="28" pathname="src/stats" prefix="/home/runner/work/squadron/squadron/lib/"/>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
