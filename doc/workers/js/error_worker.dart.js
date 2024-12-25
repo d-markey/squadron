@@ -10601,7 +10601,7 @@
   };
   A.WorkerRunner.prototype = {
     connect$3(startRequest, channelInfo, initializer) {
-      return this.connect$body$WorkerRunner(type$.nullable_List_dynamic._as(startRequest), type$.JSObject._as(channelInfo), type$.FutureOr_WorkerService_Function_List_dynamic._as(initializer));
+      return this.connect$body$WorkerRunner(type$.nullable_List_dynamic._as(startRequest), channelInfo, type$.FutureOr_WorkerService_Function_List_dynamic._as(initializer));
     },
     connect$body$WorkerRunner(startRequest, channelInfo, initializer) {
       var $async$goto = 0,
@@ -10654,7 +10654,7 @@
                 t2 = A.SquadronErrorExt_create("Invalid command identifier in service operations map; command ids must be > 0", null);
                 throw A.wrapException(t2);
               }
-              channel.connect$1(channelInfo);
+              channel.connect$1(type$.JSObject._as(channelInfo));
               $async$handler = 1;
               // goto after finally
               $async$goto = 5;

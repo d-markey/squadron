@@ -13,14 +13,12 @@ void main() async {
   await workerPool.start();
 
   try {
-    final tasks = <Future<String>>[];
+    final tasks = <Future<void>>[];
     for (var name in ['Mia', 'Bob', 'Eva', 'Ada', 'Max', 'Joy', 'Ray', 'Ben']) {
-      tasks.add(workerPool.sayHello(name));
+      tasks.add(workerPool.sayHello(name).then((m) => print('    --> $m')));
     }
 
-    for (var res in await Future.wait(tasks)) {
-      print('    --> $res');
-    }
+    await Future.wait(tasks);
 
     final stats = workerPool.stats.toList();
     print('${tasks.length} tasks handled by ${stats.length} workers.');

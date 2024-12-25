@@ -16,8 +16,15 @@ class HelloWorld {
   /// [threadId] is an hex string that should be unique to each worker thread.
   ///
   /// A service method.
-  FutureOr<String> sayHello([String? name]) {
+  Future<String> sayHello(String? name,
+      {int delayInSec = 0, bool echo = false}) async {
+    if (delayInSec > 0) {
+      await Future.delayed(Duration(seconds: delayInSec));
+    }
     name = name?.trim() ?? '';
+    if (echo) {
+      print('Saying hello to $name');
+    }
     return 'Hello, ${name.isEmpty ? 'World' : name} from thread $threadId!';
   }
 }

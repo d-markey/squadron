@@ -9,6 +9,7 @@ import 'package:test/test.dart';
 import 'classes/memory_logger.dart';
 import 'classes/test_context.dart';
 import 'classes/utils.dart';
+import 'worker_services/delays.dart';
 import 'worker_services/log_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
@@ -46,7 +47,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.off.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, doesNotMention('debug'));
         expect(logger.logs, doesNotMention('info'));
@@ -59,7 +60,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.fatal.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, doesNotMention('debug'));
         expect(logger.logs, doesNotMention('info'));
@@ -72,7 +73,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.error.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, doesNotMention('debug'));
         expect(logger.logs, doesNotMention('info'));
@@ -85,7 +86,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.warning.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, doesNotMention('debug'));
         expect(logger.logs, doesNotMention('info'));
@@ -98,7 +99,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.info.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, doesNotMention('debug'));
         expect(logger.logs, mentions('info'));
@@ -111,7 +112,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.debug.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, doesNotMention('trace'));
         expect(logger.logs, mentions('debug'));
         expect(logger.logs, mentions('info'));
@@ -124,7 +125,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.trace.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, mentions('trace'));
         expect(logger.logs, mentions('debug'));
         expect(logger.logs, mentions('info'));
@@ -137,7 +138,7 @@ void execute(TestContext? tc) {
         await worker.setLevel(Level.all.value);
         await worker.log();
         // log forwarding is asynchronous, make sure they have time to arrive
-        await pumpEventQueue();
+        await Future.delayed(TestDelays.shortDelay);
         expect(logger.logs, mentions('trace'));
         expect(logger.logs, mentions('debug'));
         expect(logger.logs, mentions('info'));

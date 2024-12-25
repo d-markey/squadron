@@ -8,6 +8,9 @@ final class _VmChannel implements Channel {
   /// the worker owner. Otherwise, [SendPort] to return values to the client.
   final vm.SendPort _sendPort;
 
+  PlatformThread? _thread;
+  final _activeConnections = <ForwardStreamController<WorkerResponse>>[];
+
   @override
   final ExceptionManager exceptionManager;
 
@@ -60,6 +63,15 @@ final class _VmChannel implements Channel {
     }
   }
 
+  void _enter(ForwardStreamController<WorkerResponse> controller) {
+    _activeConnections.add(controller);
+  }
+
+  void _leave(ForwardStreamController<WorkerResponse> controller) {
+    _activeConnections.remove(controller);
+    controller.close();
+  }
+
   Stream<dynamic> _getResponseStream(
     vm.ReceivePort port,
     WorkerRequest req,
@@ -82,6 +94,10 @@ final class _VmChannel implements Channel {
         }
       }
 
+      void $done() {
+        _leave(controller);
+      }
+
       controller = ForwardStreamController(onListen: () {
         // do nothing if the controller is closed already
         if (controller.isClosed) return;
@@ -90,16 +106,17 @@ final class _VmChannel implements Channel {
         controller.attachSubscription(port.cast<WorkerResponse>().listen(
               $forwardMessage,
               onError: $forwardError,
-              onDone: controller.close,
+              onDone: $done,
               cancelOnError: false,
             ));
 
         // send the request
         try {
+          _enter(controller);
           post(req);
         } catch (ex, st) {
           $forwardError(ex, st);
-          controller.close();
+          _leave(controller);
         }
       });
       return controller.stream;
@@ -107,9 +124,7 @@ final class _VmChannel implements Channel {
 
     // return a stream of decoded responses
     final res = ResultStream(this, req, $sendRequest, streaming);
-    res.done.whenComplete(() {
-      port.close();
-    }).ignore();
+    res.done.whenComplete(() => port.close()).ignore();
     return res.stream;
   }
 

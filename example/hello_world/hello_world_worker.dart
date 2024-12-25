@@ -17,7 +17,8 @@ class HelloWorldWorker extends Worker implements HelloWorld {
 
   /// Forward call to the service running in the worker thread.
   @override
-  Future<String> sayHello([String? name]) =>
-      send(HelloWorldWorkerService.$sayHello, args: [name])
+  Future<String> sayHello(String? name,
+          {int delayInSec = 0, bool echo = false}) =>
+      send(HelloWorldWorkerService.$sayHello, args: [name, delayInSec, echo])
           .then((res) => res.toString());
 }

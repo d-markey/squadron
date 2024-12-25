@@ -115,14 +115,14 @@ _182: (c) =>
               queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
 _204: (x0,x1) => x0.postMessage(x1),
 _205: (x0,x1,x2) => x0.postMessage(x1,x2),
-_231: () => globalThis.self,
-_232: () => new MessageChannel(),
-_233: x0 => x0.close(),
+_232: () => globalThis.self,
+_233: () => new MessageChannel(),
 _234: x0 => x0.close(),
 _235: x0 => x0.close(),
-_236: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._236(f,arguments.length,x0) }),
+_236: x0 => x0.close(),
 _237: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._237(f,arguments.length,x0) }),
-_238: (x0,x1) => x0.postMessage(x1),
+_238: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._238(f,arguments.length,x0) }),
+_239: (x0,x1) => x0.postMessage(x1),
 _260: (s, m) => {
           try {
             return new RegExp(s, m);

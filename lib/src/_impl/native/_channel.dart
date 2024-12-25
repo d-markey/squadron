@@ -3,20 +3,21 @@ import 'dart:convert';
 import 'dart:isolate' as vm;
 
 import 'package:logger/web.dart';
+import 'package:meta/meta.dart';
 
-import '../../channel.dart' show Channel;
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../exceptions/task_terminated_exception.dart';
 import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../typedefs.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../xplat/_disconnected_channel.dart';
 import '../xplat/_forward_stream_controller.dart';
 import '../xplat/_result_stream.dart';
+import '_typedefs.dart';
 
 part '_channel_impl.dart';
 
@@ -31,9 +32,9 @@ Future<Channel> openChannel(
   ExceptionManager exceptionManager,
   Logger? logger,
   List startArguments,
-  PlatformThreadHook hook,
+  PlatformThreadHook? hook,
 ) async {
-  final completer = Completer<Channel>();
+  final completer = Completer<_VmChannel>();
   Channel? channel;
 
   void failure(Object error, [StackTrace? stackTrace]) {
@@ -42,7 +43,7 @@ Future<Channel> openChannel(
     }
   }
 
-  void success(Channel channel) {
+  void success(_VmChannel channel) {
     if (!completer.isCompleted) {
       completer.complete(channel);
     }
@@ -54,7 +55,7 @@ Future<Channel> openChannel(
 
   exitPort.listen((message) {
     failure(SquadronErrorExt.create('Connection to worker failed'));
-    logger?.t('Isolate terminated.');
+    logger?.t('Isolate terminated with message $message.');
     channel?.close();
     receiver.close();
     errorPort.close();
@@ -98,8 +99,10 @@ Future<Channel> openChannel(
       channel?.close();
     } else if (!completer.isCompleted) {
       logger?.t('Connected to Isolate');
-      channel = _VmChannel._(response.result, logger, exceptionManager);
-      success(channel!);
+      final platformChannel =
+          _VmChannel._(response.result, logger, exceptionManager);
+      channel = platformChannel;
+      success(platformChannel);
     } else {
       logger?.e(() => 'Unexpected response: $response');
     }
@@ -117,13 +120,29 @@ Future<Channel> openChannel(
 
   try {
     final channel = await completer.future;
-    await hook.call(isolate);
+    channel._thread = isolate;
+    if (hook != null) {
+      await hook.call(isolate);
+    }
     logger?.t('Created Isolate');
     return channel;
   } catch (ex) {
     logger?.e(() => 'Connection to Isolate failed: $ex');
     isolate.kill(priority: vm.Isolate.beforeNextEvent);
     rethrow;
+  }
+}
+
+@internal
+void terminateChannel(Channel channel, TaskTerminatedException ex) {
+  if (channel is _VmChannel) {
+    channel._thread?.kill(priority: vm.Isolate.immediate);
+    final pendingConnections = channel._activeConnections;
+    for (var c in pendingConnections) {
+      c.subscription?.cancel();
+      c.addError(ex);
+      c.close();
+    }
   }
 }
 

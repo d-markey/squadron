@@ -91,7 +91,7 @@ void execute(TestContext? tc) {
             expect(stopped, isPositive);
 
             // and the pool should be back to minimum size
-            await pumpEventQueue();
+            await Future.delayed(TestDelays.shortDelay);
             expect(p.size, p.minWorkers);
           } finally {
             timer.cancel();
@@ -312,7 +312,7 @@ void execute(TestContext? tc) {
 
           expect(p.stopped, isTrue);
 
-          await pumpEventQueue();
+          await Future.delayed(TestDelays.shortDelay);
           expect(p.size, isZero);
 
           try {
@@ -354,7 +354,7 @@ void execute(TestContext? tc) {
           expect(p.pendingWorkload, isZero);
           expect(digits, hasLength(count));
 
-          await pumpEventQueue();
+          await Future.delayed(TestDelays.shortDelay);
           expect(p.size, isZero);
         });
       });

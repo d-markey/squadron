@@ -3,7 +3,6 @@ import '../../converters/converter.dart';
 import '../../converters/num_converter.dart';
 import '../../squadron_platform_type.dart';
 import '_patch.dart';
-import '_typedefs.dart';
 
 const double _one = 1.0;
 final _platformType = (_one is int)
@@ -24,8 +23,4 @@ Uri mapUrl(String url) {
     }
   }
   return Uri.parse(url).normalizePath();
-}
-
-void terminate(PlatformThread thread) {
-  thread.terminate();
 }

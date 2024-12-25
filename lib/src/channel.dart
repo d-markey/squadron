@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:logger/web.dart';
+import 'package:meta/meta.dart';
 
 import '_impl/xplat/_channel.dart'
     if (dart.library.io) '_impl/native/_channel.dart'
@@ -8,6 +9,7 @@ import '_impl/xplat/_channel.dart'
     if (dart.library.js) '_impl/web/_channel.dart'
     if (dart.library.js_interop) '_impl/web/_channel.dart' as impl;
 import 'exceptions/exception_manager.dart';
+import 'exceptions/task_terminated_exception.dart';
 import 'tokens/_squadron_cancelation_token.dart';
 import 'typedefs.dart';
 import 'worker/worker_request.dart';
@@ -64,7 +66,7 @@ abstract interface class Channel {
     Logger? logger,
     EntryPoint entryPoint,
     List startArguments,
-    PlatformThreadHook hook,
+    PlatformThreadHook? hook,
   ) =>
       impl.openChannel(
           entryPoint, exceptionManager, logger, startArguments, hook);
@@ -76,4 +78,9 @@ abstract interface class Channel {
     ExceptionManager? exceptionManager,
   ]) =>
       impl.deserialize(channelInfo, logger, exceptionManager);
+}
+
+@internal
+extension ChannelTerminationExt on Channel {
+  void terminate(TaskTerminatedException ex) => impl.terminateChannel(this, ex);
 }

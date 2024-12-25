@@ -10,6 +10,7 @@ import '../../exceptions/worker_exception.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_response.dart';
+import '_typedefs.dart' as impl;
 
 /// [WorkerChannel] implementation for the native world.
 final class _VmWorkerChannel implements WorkerChannel {
@@ -19,7 +20,7 @@ final class _VmWorkerChannel implements WorkerChannel {
 
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by
   /// the worker owner. Otherwise, [SendPort] to return values to the client.
-  final SendPort _sendPort;
+  final impl.PlatformChannel _sendPort;
 
   void _postResponse(WorkerResponse res) {
     try {
@@ -72,4 +73,6 @@ final class _VmWorkerChannel implements WorkerChannel {
 /// Creates a [WorkerChannel] from a [SendPort].
 @internal
 WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
-    (channelInfo == null) ? null : _VmWorkerChannel._(channelInfo, logger);
+    (channelInfo == null)
+        ? null
+        : _VmWorkerChannel._(channelInfo as impl.PlatformChannel, logger);

@@ -1,9 +1,9 @@
-import 'dart:async';
+// import 'dart:async';
 
 class EventBuffer<T> {
   EventBuffer(this._processValue, this._processError);
 
-  FutureOr<void> Function()? onDeactivate;
+  void Function()? onDeactivate;
 
   final void Function(T) _processValue;
   final void Function(Object, StackTrace?) _processError;

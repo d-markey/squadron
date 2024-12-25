@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../../pool/task.dart';
 import '../../typedefs.dart';
+import '../../utils.dart';
 
 @internal
 extension ObjectId on Object? {

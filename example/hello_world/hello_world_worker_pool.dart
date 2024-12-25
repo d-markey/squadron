@@ -26,5 +26,7 @@ class HelloWorldWorkerPool extends WorkerPool<HelloWorldWorker>
 
   /// Forward call to one of the pool's worker.
   @override
-  Future<String> sayHello([String? name]) => execute((w) => w.sayHello(name));
+  Future<String> sayHello(String? name,
+          {int delayInSec = 0, bool echo = false}) =>
+      execute((w) => w.sayHello(name, delayInSec: delayInSec, echo: echo));
 }

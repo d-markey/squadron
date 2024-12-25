@@ -1,5 +1,8 @@
+import 'package:meta/meta.dart';
+
 import '../../converters/cast_converter.dart';
 import '../../converters/converter.dart';
+import '../../exceptions/squadron_error.dart';
 import '../../squadron_platform_type.dart';
 import '_typedefs.dart';
 
@@ -9,4 +12,6 @@ SquadronPlatformType getPlatformType() => SquadronPlatformType.unknown;
 
 Uri mapUrl(String url) => Uri.parse(url);
 
-void terminate(PlatformThread thread) {}
+@internal
+void terminateThread(PlatformThread thread) =>
+    throw SquadronErrorExt.create('Platform not supported');

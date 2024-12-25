@@ -180,7 +180,7 @@ void execute(TestContext? tc) {
               expect(await w.isUninstalled(), isFalse);
 
               // log forwarding is asynchronous, make sure they have time to arrive
-              await pumpEventQueue();
+              await Future.delayed(TestDelays.shortDelay);
               expect(logger.logs, mentions('service installed'));
               expect(logger.logs, doesNotMention('intended failure'));
 
@@ -188,7 +188,7 @@ void execute(TestContext? tc) {
               w.stop();
 
               // log forwarding is asynchronous, make sure they have time to arrive
-              await pumpEventQueue();
+              await Future.delayed(TestDelays.shortDelay);
               expect(logger.logs, mentions('service uninstalled'));
               expect(logger.logs, doesNotMention('intended failure'));
             });
@@ -206,7 +206,7 @@ void execute(TestContext? tc) {
               } on WorkerException catch (ex) {
                 expect(ex, reports('this exception is reported'));
                 // log forwarding is asynchronous, make sure they have time to arrive
-                await pumpEventQueue();
+                await Future.delayed(TestDelays.shortDelay);
                 expect(logger.logs, doesNotMention('service installed'));
               }
             });
@@ -219,7 +219,7 @@ void execute(TestContext? tc) {
               await w.start();
 
               // log forwarding is asynchronous, make sure they have time to arrive
-              await pumpEventQueue();
+              await Future.delayed(TestDelays.shortDelay);
               expect(logger.logs, mentions('service installed'));
               expect(logger.logs, doesNotMention('intended failure'));
 
@@ -230,7 +230,7 @@ void execute(TestContext? tc) {
               w.stop();
 
               // log forwarding is asynchronous, make sure they have time to arrive
-              await pumpEventQueue();
+              await Future.delayed(TestDelays.shortDelay);
               expect(logger.logs, mentions('intended failure'));
               expect(logger.logs, doesNotMention('service uninstalled'));
             });

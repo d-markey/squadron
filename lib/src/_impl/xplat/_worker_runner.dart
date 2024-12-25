@@ -7,11 +7,11 @@ import '../../exceptions/squadron_exception.dart';
 import '../../local_worker/local_worker.dart';
 import '../../tokens/_cancelation_token_ref.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
+import '_typedefs.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.

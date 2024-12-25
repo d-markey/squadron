@@ -4,6 +4,8 @@ import 'package:using/using.dart';
 import 'package:web/web.dart' as web;
 
 import '../../exceptions/squadron_error.dart';
+import '../../typedefs.dart';
+import '_typedefs.dart' as impl;
 
 class EntryPointUri with Releasable {
   EntryPointUri._(this.uri, {required bool revoke}) : _revoke = revoke;
@@ -19,7 +21,9 @@ class EntryPointUri with Releasable {
     super.release();
   }
 
-  factory EntryPointUri.from(Uri workerEntrypoint) {
+  factory EntryPointUri.from(EntryPoint workerEntrypoint) {
+    workerEntrypoint as impl.EntryPoint;
+
     final fileName =
         workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??
             '';

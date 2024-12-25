@@ -234,7 +234,6 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/web/_channel_impl.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_entry_point_uri.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_event_buffer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_patch.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/web/_platform.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_uri_checker.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/web/_worker_channel.dart
@@ -247,9 +246,6 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_time_stamp.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_token_id.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_transferables.dart
 file:///C:/_Projects/github/squadron/lib/src/channel.dart
-file:///C:/_Projects/github/squadron/lib/src/converters/cast_converter.dart
-file:///C:/_Projects/github/squadron/lib/src/converters/converter.dart
-file:///C:/_Projects/github/squadron/lib/src/converters/num_converter.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/_builtin_exceptions.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/exception_manager.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/squadron_canceled_exception.dart
@@ -261,10 +257,10 @@ file:///C:/_Projects/github/squadron/lib/src/exceptions/task_canceled_exception.
 file:///C:/_Projects/github/squadron/lib/src/exceptions/task_terminated_exception.dart
 file:///C:/_Projects/github/squadron/lib/src/exceptions/worker_exception.dart
 file:///C:/_Projects/github/squadron/lib/src/iworker.dart
-file:///C:/_Projects/github/squadron/lib/src/squadron_platform_type.dart
 file:///C:/_Projects/github/squadron/lib/src/stats/worker_stat.dart
 file:///C:/_Projects/github/squadron/lib/src/tokens/_squadron_cancelation_token.dart
 file:///C:/_Projects/github/squadron/lib/src/typedefs.dart
+file:///C:/_Projects/github/squadron/lib/src/utils.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart

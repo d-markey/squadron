@@ -1,3 +1,7 @@
+## 6.1.6
+
+- Fix `IWorker.terminate()` to make sure worker termination is really immediate.
+
 ## 6.1.5
 
 - Fix a bug where streaming operations in workers are not cancelled if the worker has been stopped before the subscription is cancelled.

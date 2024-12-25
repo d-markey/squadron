@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:js_interop';
 
 import 'package:logger/web.dart';
+import 'package:meta/meta.dart';
 import 'package:web/web.dart' as web;
 
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../exceptions/task_terminated_exception.dart';
 import '../../exceptions/worker_exception.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
-import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
@@ -20,6 +21,7 @@ import '../xplat/_transferables.dart';
 import '_entry_point_uri.dart';
 import '_event_buffer.dart';
 import '_patch.dart';
+import '_typedefs.dart';
 import '_uri_checker.dart';
 
 part '_channel_forward.dart';
@@ -36,9 +38,9 @@ Future<Channel> openChannel(
   ExceptionManager exceptionManager,
   Logger? logger,
   List startArguments,
-  PlatformThreadHook hook,
+  PlatformThreadHook? hook,
 ) async {
-  final completer = Completer<Channel>();
+  final completer = Completer<_WebChannel>();
   final ready = Completer<bool>();
   Channel? channel;
 
@@ -51,7 +53,7 @@ Future<Channel> openChannel(
     if (!completer.isCompleted) completer.completeError(ex);
   }
 
-  void success(Channel channel) {
+  void success(_WebChannel channel) {
     if (!ready.isCompleted) {
       throw SquadronErrorExt.create('Invalid state: worker is not ready');
     }
@@ -128,8 +130,10 @@ Future<Channel> openChannel(
         channel?.close();
       } else if (!completer.isCompleted) {
         logger?.t('Connected to Web Worker');
-        channel = _WebChannel._(response.result, logger, exceptionManager);
-        success(channel!);
+        final webCh = _WebChannel._(response.result, logger, exceptionManager);
+        webCh._thread = worker;
+        channel = webCh;
+        success(webCh);
       } else {
         logger?.d(() => 'Unexpected response: $response');
       }
@@ -153,7 +157,9 @@ Future<Channel> openChannel(
 
     try {
       final channel = await completer.future;
-      await hook.call(worker);
+      if (hook != null) {
+        await hook.call(worker);
+      }
       logger?.t('Created Web Worker for $entryPoint');
       return channel;
     } catch (ex) {
@@ -170,6 +176,18 @@ Future<Channel> openChannel(
     throw SquadronException.from(ex, st);
   } finally {
     webEntryPoint.release();
+  }
+}
+
+@internal
+void terminateChannel(Channel channel, TaskTerminatedException ex) {
+  if (channel is _WebChannel) {
+    channel._thread?.terminate();
+    final pendingConnections = channel._activeConnections;
+    for (var c in pendingConnections) {
+      c.addError(ex);
+      c.close();
+    }
   }
 }
 

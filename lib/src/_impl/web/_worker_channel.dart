@@ -11,6 +11,7 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_response.dart';
 import '../xplat/_transferables.dart';
+import '_typedefs.dart' as impl;
 
 /// [WorkerChannel] implementation for the JavaScript world.
 final class _WebWorkerChannel implements WorkerChannel {
@@ -90,4 +91,6 @@ final class _WebWorkerChannel implements WorkerChannel {
 /// Creates a [WorkerChannel] from a [web.MessagePort].
 @internal
 WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
-    (channelInfo == null) ? null : _WebWorkerChannel._(channelInfo, logger);
+    (channelInfo == null)
+        ? null
+        : _WebWorkerChannel._(channelInfo as impl.PlatformChannel, logger);

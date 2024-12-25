@@ -8,6 +8,9 @@ final class _WebChannel implements Channel {
   /// [web.MessagePort] to return values to the client.
   final web.MessagePort _sendPort;
 
+  PlatformThread? _thread;
+  final _activeConnections = <StreamController<WorkerResponse>>[];
+
   @override
   final ExceptionManager exceptionManager;
 
@@ -91,6 +94,15 @@ final class _WebChannel implements Channel {
     }
   }
 
+  void _enter(StreamController<WorkerResponse>? controller) {
+    if (controller != null) _activeConnections.add(controller);
+  }
+
+  Future<void>? _leave(StreamController<WorkerResponse>? controller) {
+    _activeConnections.remove(controller);
+    return controller?.close();
+  }
+
   Stream _getResponseStream(
     web.MessageChannel com,
     WorkerRequest req,
@@ -113,7 +125,7 @@ final class _WebChannel implements Channel {
       Future<void> $close() async {
         com.port1.close();
         com.port2.close();
-        final future = controller?.close();
+        final future = _leave(controller);
         controller = null;
         await future;
       }
@@ -121,7 +133,8 @@ final class _WebChannel implements Channel {
       controller = StreamController<WorkerResponse>(
         onListen: () {
           // do nothing if the controller is closed already
-          if (controller == null) return;
+          final ctrlr = controller;
+          if (ctrlr == null) return;
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
@@ -138,6 +151,7 @@ final class _WebChannel implements Channel {
 
           // send the request
           try {
+            _enter(controller);
             post(req);
           } catch (ex, st) {
             if (buffer.isActive) {
@@ -147,6 +161,7 @@ final class _WebChannel implements Channel {
               $forwardError(ex, st);
               $close();
             }
+            _leave(controller);
           }
         },
         onPause: buffer.activate,
