@@ -1,64 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'dart:async';</code>
-        </line>
-        <line number="2">
-            <code/>
-        </line>
-        <line number="3">
             <code>import '_impl/xplat/_typedefs.dart'</code>
         </line>
-        <line number="4">
+        <line number="2">
             <code>    if (dart.library.io) '_impl/native/_typedefs.dart'</code>
         </line>
-        <line number="5">
+        <line number="3">
             <code>    if (dart.library.html) '_impl/web/_typedefs.dart'</code>
         </line>
-        <line number="6">
+        <line number="4">
             <code>    if (dart.library.js) '_impl/web/_typedefs.dart'</code>
         </line>
-        <line number="7">
+        <line number="5">
             <code>    if (dart.library.js_interop) '_impl/web/_typedefs.dart' as impl;</code>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line hits="12" number="7">
+            <code>final threadId = impl.threadId;</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="8">
             <code/>
         </line>
-        <line hits="12" number="9">
-            <code>final threadId = impl.threadId;</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="10">
-            <code/>
-        </line>
-        <line number="11">
+        <line number="9">
             <code>typedef EntryPoint = impl.EntryPoint;</code>
         </line>
-        <line number="12">
+        <line number="10">
             <code>typedef PlatformChannel = impl.PlatformChannel;</code>
         </line>
-        <line number="13">
+        <line number="11">
             <code>typedef PlatformThread = impl.PlatformThread;</code>
         </line>
-        <line number="14">
+        <line number="12">
             <code/>
         </line>
-        <line number="15">
-            <code>typedef PlatformThreadHook = FutureOr&lt;void&gt; Function(PlatformThread);</code>
-        </line>
-        <line number="16">
-            <code/>
-        </line>
-        <line number="17">
-            <code>extension HexExt on int {</code>
-        </line>
-        <line hits="15" number="18">
-            <code>  String get hex =&gt; '0x${toRadixString(16).padLeft(8, '0')}';</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="19">
-            <code>}</code>
+        <line number="13">
+            <code>typedef PlatformThreadHook = impl.PlatformThreadHook;</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

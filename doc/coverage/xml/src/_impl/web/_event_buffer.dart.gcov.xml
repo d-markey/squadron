@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_event_buffer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.88235295" lines-covered="15" lines-valid="17" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="_event_buffer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.88235295" lines-covered="15" lines-valid="17" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'dart:async';</code>
+            <code>// import 'dart:async';</code>
         </line>
         <line number="2">
             <code/>
@@ -18,7 +18,7 @@
             <code/>
         </line>
         <line hits="0" number="6">
-            <code>  FutureOr&lt;void&gt; Function()? onDeactivate;</code>
+            <code>  void Function()? onDeactivate;</code>
         </line>
         <line number="7">
             <code/>

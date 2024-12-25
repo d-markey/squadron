@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -11,235 +11,257 @@
             <code>import 'package:logger/web.dart';</code>
         </line>
         <line number="4">
-            <code/>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line number="5">
-            <code>import '_impl/xplat/_channel.dart'</code>
+            <code/>
         </line>
         <line number="6">
-            <code>    if (dart.library.io) '_impl/native/_channel.dart'</code>
+            <code>import '_impl/xplat/_channel.dart'</code>
         </line>
         <line number="7">
-            <code>    if (dart.library.html) '_impl/web/_channel.dart'</code>
+            <code>    if (dart.library.io) '_impl/native/_channel.dart'</code>
         </line>
         <line number="8">
-            <code>    if (dart.library.js) '_impl/web/_channel.dart'</code>
+            <code>    if (dart.library.html) '_impl/web/_channel.dart'</code>
         </line>
         <line number="9">
-            <code>    if (dart.library.js_interop) '_impl/web/_channel.dart' as impl;</code>
+            <code>    if (dart.library.js) '_impl/web/_channel.dart'</code>
         </line>
         <line number="10">
-            <code>import 'exceptions/exception_manager.dart';</code>
+            <code>    if (dart.library.js_interop) '_impl/web/_channel.dart' as impl;</code>
         </line>
         <line number="11">
-            <code>import 'tokens/_squadron_cancelation_token.dart';</code>
+            <code>import 'exceptions/exception_manager.dart';</code>
         </line>
         <line number="12">
-            <code>import 'typedefs.dart';</code>
+            <code>import 'exceptions/task_terminated_exception.dart';</code>
         </line>
         <line number="13">
-            <code>import 'worker/worker_request.dart';</code>
+            <code>import 'tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line number="14">
-            <code>import 'worker/worker_response.dart';</code>
+            <code>import 'typedefs.dart';</code>
         </line>
         <line number="15">
-            <code/>
+            <code>import 'worker/worker_request.dart';</code>
         </line>
         <line number="16">
-            <code>/// A [Channel] supports communication from a client to a platform worker. It</code>
+            <code>import 'worker/worker_response.dart';</code>
         </line>
         <line number="17">
-            <code>/// is used to send a [WorkerRequest] to a platform worker.</code>
+            <code/>
         </line>
         <line number="18">
-            <code>abstract interface class Channel {</code>
+            <code>/// A [Channel] supports communication from a client to a platform worker. It</code>
         </line>
         <line number="19">
-            <code>  /// The [ExceptionManager] attached to this channel.</code>
+            <code>/// is used to send a [WorkerRequest] to a platform worker.</code>
         </line>
         <line number="20">
-            <code>  ExceptionManager get exceptionManager;</code>
+            <code>abstract interface class Channel {</code>
         </line>
         <line number="21">
-            <code/>
+            <code>  /// The [ExceptionManager] attached to this channel.</code>
         </line>
         <line number="22">
-            <code>  /// The [Logger] attached to this channel.</code>
+            <code>  ExceptionManager get exceptionManager;</code>
         </line>
         <line number="23">
-            <code>  Logger? get logger;</code>
+            <code/>
         </line>
         <line number="24">
-            <code/>
+            <code>  /// The [Logger] attached to this channel.</code>
         </line>
         <line number="25">
-            <code>  /// [Channel] serialization. Returns an opaque object that can be transfered</code>
+            <code>  Logger? get logger;</code>
         </line>
         <line number="26">
-            <code>  /// from the client to the worker.</code>
+            <code/>
         </line>
         <line number="27">
-            <code>  PlatformChannel serialize();</code>
+            <code>  /// [Channel] serialization. Returns an opaque object that can be transfered</code>
         </line>
         <line number="28">
-            <code/>
+            <code>  /// from the client to the worker.</code>
         </line>
         <line number="29">
-            <code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to</code>
+            <code>  PlatformChannel serialize();</code>
         </line>
         <line number="30">
-            <code>  /// enable another worker to call the channel's worker.</code>
+            <code/>
         </line>
         <line number="31">
-            <code>  Channel share();</code>
+            <code>  /// [Channel] sharing. Returns a [Channel] object that can be provided to</code>
         </line>
         <line number="32">
-            <code/>
+            <code>  /// enable another worker to call the channel's worker.</code>
         </line>
         <line number="33">
-            <code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should</code>
+            <code>  Channel share();</code>
         </line>
         <line number="34">
-            <code>  /// release any resource related to the worker and should not be used after</code>
+            <code/>
         </line>
         <line number="35">
-            <code>  /// this method has been called.</code>
+            <code>  /// Sends a termination [WorkerRequest] to the worker. The [Channel] should</code>
         </line>
         <line number="36">
-            <code>  FutureOr&lt;void&gt; close();</code>
+            <code>  /// release any resource related to the worker and should not be used after</code>
         </line>
         <line number="37">
-            <code/>
+            <code>  /// this method has been called.</code>
         </line>
         <line number="38">
-            <code>  /// Sends a close stream [WorkerRequest] to the worker.</code>
+            <code>  FutureOr&lt;void&gt; close();</code>
         </line>
         <line number="39">
-            <code>  FutureOr&lt;void&gt; cancelStream(int streamId);</code>
+            <code/>
         </line>
         <line number="40">
-            <code/>
+            <code>  /// Sends a close stream [WorkerRequest] to the worker.</code>
         </line>
         <line number="41">
-            <code>  /// Sends a cancel token [WorkerRequest] to the worker.</code>
+            <code>  FutureOr&lt;void&gt; cancelStream(int streamId);</code>
         </line>
         <line number="42">
-            <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token);</code>
+            <code/>
         </line>
         <line number="43">
-            <code/>
+            <code>  /// Sends a cancel token [WorkerRequest] to the worker.</code>
         </line>
         <line number="44">
-            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects</code>
+            <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token);</code>
         </line>
         <line number="45">
-            <code>  /// a single value from the worker.</code>
+            <code/>
         </line>
         <line number="46">
-            <code>  Future&lt;dynamic&gt; sendRequest(int command, List args,</code>
-        </line>
-        <line number="47">
-            <code>      {SquadronCancelationToken? token,</code>
-        </line>
-        <line number="48">
-            <code>      bool inspectRequest = false,</code>
-        </line>
-        <line number="49">
-            <code>      bool inspectResponse = false});</code>
-        </line>
-        <line number="50">
-            <code/>
-        </line>
-        <line number="51">
             <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects</code>
         </line>
-        <line number="52">
-            <code>  /// a stream of values from the worker. The worker must send a</code>
+        <line number="47">
+            <code>  /// a single value from the worker.</code>
         </line>
-        <line number="53">
-            <code>  /// [WorkerResponse.closeStream] message to close the [Stream].</code>
+        <line number="48">
+            <code>  Future&lt;dynamic&gt; sendRequest(int command, List args,</code>
         </line>
-        <line number="54">
-            <code>  Stream&lt;dynamic&gt; sendStreamingRequest(int command, List args,</code>
-        </line>
-        <line number="55">
+        <line number="49">
             <code>      {SquadronCancelationToken? token,</code>
         </line>
-        <line number="56">
+        <line number="50">
             <code>      bool inspectRequest = false,</code>
         </line>
-        <line number="57">
+        <line number="51">
             <code>      bool inspectResponse = false});</code>
         </line>
-        <line number="58">
+        <line number="52">
             <code/>
         </line>
+        <line number="53">
+            <code>  /// Creates a [WorkerRequest] and sends it to the worker. This method expects</code>
+        </line>
+        <line number="54">
+            <code>  /// a stream of values from the worker. The worker must send a</code>
+        </line>
+        <line number="55">
+            <code>  /// [WorkerResponse.closeStream] message to close the [Stream].</code>
+        </line>
+        <line number="56">
+            <code>  Stream&lt;dynamic&gt; sendStreamingRequest(int command, List args,</code>
+        </line>
+        <line number="57">
+            <code>      {SquadronCancelationToken? token,</code>
+        </line>
+        <line number="58">
+            <code>      bool inspectRequest = false,</code>
+        </line>
         <line number="59">
-            <code>  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest]</code>
+            <code>      bool inspectResponse = false});</code>
         </line>
         <line number="60">
-            <code>  /// with [startArguments]. The future must not complete before the worker is</code>
+            <code/>
         </line>
         <line number="61">
+            <code>  /// Starts a worker using the [entryPoint] and sends a start [WorkerRequest]</code>
+        </line>
+        <line number="62">
+            <code>  /// with [startArguments]. The future must not complete before the worker is</code>
+        </line>
+        <line number="63">
             <code>  /// ready to serve requests.</code>
         </line>
-        <line hits="11" number="62">
+        <line hits="11" number="64">
             <code>  static Future&lt;Channel&gt; open(</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="63">
+        <line number="65">
             <code>    ExceptionManager exceptionManager,</code>
         </line>
-        <line number="64">
+        <line number="66">
             <code>    Logger? logger,</code>
         </line>
-        <line number="65">
+        <line number="67">
             <code>    EntryPoint entryPoint,</code>
         </line>
-        <line number="66">
+        <line number="68">
             <code>    List startArguments,</code>
         </line>
-        <line number="67">
-            <code>    PlatformThreadHook hook,</code>
+        <line number="69">
+            <code>    PlatformThreadHook? hook,</code>
         </line>
-        <line number="68">
+        <line number="70">
             <code>  ) =&gt;</code>
         </line>
-        <line hits="22" number="69">
+        <line hits="22" number="71">
             <code>      impl.openChannel(</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="70">
+        <line number="72">
             <code>          entryPoint, exceptionManager, logger, startArguments, hook);</code>
         </line>
-        <line number="71">
+        <line number="73">
             <code/>
         </line>
-        <line number="72">
+        <line number="74">
             <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
         </line>
-        <line hits="3" number="73">
+        <line hits="3" number="75">
             <code>  static Channel? deserialize(</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="74">
+        <line number="76">
             <code>    PlatformChannel? channelInfo, [</code>
         </line>
-        <line number="75">
+        <line number="77">
             <code>    Logger? logger,</code>
         </line>
-        <line number="76">
+        <line number="78">
             <code>    ExceptionManager? exceptionManager,</code>
         </line>
-        <line number="77">
+        <line number="79">
             <code>  ]) =&gt;</code>
         </line>
-        <line hits="3" number="78">
+        <line hits="3" number="80">
             <code>      impl.deserialize(channelInfo, logger, exceptionManager);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="79">
+        <line number="81">
+            <code>}</code>
+        </line>
+        <line number="82">
+            <code/>
+        </line>
+        <line number="83">
+            <code>@internal</code>
+        </line>
+        <line number="84">
+            <code>extension ChannelTerminationExt on Channel {</code>
+        </line>
+        <line hits="3" number="85">
+            <code>  void terminate(TaskTerminatedException ex) =&gt; impl.terminateChannel(this, ex);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="86">
             <code>}</code>
         </line>
     </lines>

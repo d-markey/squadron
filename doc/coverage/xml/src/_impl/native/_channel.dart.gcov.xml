@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-21" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8181818" lines-covered="45" lines-valid="55" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84375" lines-covered="54" lines-valid="64" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -17,10 +17,10 @@
             <code>import 'package:logger/web.dart';</code>
         </line>
         <line number="6">
-            <code/>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line number="7">
-            <code>import '../../channel.dart' show Channel;</code>
+            <code/>
         </line>
         <line number="8">
             <code>import '../../channel.dart';</code>
@@ -35,13 +35,13 @@
             <code>import '../../exceptions/squadron_exception.dart';</code>
         </line>
         <line number="12">
-            <code>import '../../exceptions/worker_exception.dart';</code>
+            <code>import '../../exceptions/task_terminated_exception.dart';</code>
         </line>
         <line number="13">
-            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
+            <code>import '../../exceptions/worker_exception.dart';</code>
         </line>
         <line number="14">
-            <code>import '../../typedefs.dart';</code>
+            <code>import '../../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line number="15">
             <code>import '../../worker/worker_request.dart';</code>
@@ -59,417 +59,483 @@
             <code>import '../xplat/_result_stream.dart';</code>
         </line>
         <line number="20">
-            <code/>
+            <code>import '_typedefs.dart';</code>
         </line>
         <line number="21">
-            <code>part '_channel_impl.dart';</code>
+            <code/>
         </line>
         <line number="22">
-            <code/>
+            <code>part '_channel_impl.dart';</code>
         </line>
         <line number="23">
-            <code>// Stub implementations.</code>
-        </line>
-        <line number="24">
             <code/>
         </line>
+        <line number="24">
+            <code>// Stub implementations.</code>
+        </line>
         <line number="25">
-            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start</code>
+            <code/>
         </line>
         <line number="26">
-            <code>/// [WorkerRequest] with [startArguments]. The future completes after the</code>
+            <code>/// Starts an [Isolate] using the [entryPoint] and sends a start</code>
         </line>
         <line number="27">
-            <code>/// worker [Isolate]'s main program has provided the [SendPort] via</code>
+            <code>/// [WorkerRequest] with [startArguments]. The future completes after the</code>
         </line>
         <line number="28">
+            <code>/// worker [Isolate]'s main program has provided the [SendPort] via</code>
+        </line>
+        <line number="29">
             <code>/// [WorkerChannel.connect].</code>
         </line>
-        <line hits="11" number="29">
+        <line hits="11" number="30">
             <code>Future&lt;Channel&gt; openChannel(</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
+        <line number="31">
             <code>  EntryPoint entryPoint,</code>
         </line>
-        <line number="31">
+        <line number="32">
             <code>  ExceptionManager exceptionManager,</code>
         </line>
-        <line number="32">
+        <line number="33">
             <code>  Logger? logger,</code>
         </line>
-        <line number="33">
+        <line number="34">
             <code>  List startArguments,</code>
         </line>
-        <line number="34">
-            <code>  PlatformThreadHook hook,</code>
-        </line>
         <line number="35">
+            <code>  PlatformThreadHook? hook,</code>
+        </line>
+        <line number="36">
             <code>) async {</code>
         </line>
-        <line hits="11" number="36">
-            <code>  final completer = Completer&lt;Channel&gt;();</code>
+        <line hits="11" number="37">
+            <code>  final completer = Completer&lt;_VmChannel&gt;();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="37">
+        <line number="38">
             <code>  Channel? channel;</code>
         </line>
-        <line number="38">
+        <line number="39">
             <code/>
         </line>
-        <line hits="11" number="39">
+        <line hits="11" number="40">
             <code>  void failure(Object error, [StackTrace? stackTrace]) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="40">
+        <line hits="11" number="41">
             <code>    if (!completer.isCompleted) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="41">
+        <line hits="6" number="42">
             <code>      completer.completeError(SquadronException.from(error, stackTrace));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="42">
+        <line number="43">
             <code>    }</code>
         </line>
-        <line number="43">
+        <line number="44">
             <code>  }</code>
         </line>
-        <line number="44">
+        <line number="45">
             <code/>
         </line>
-        <line hits="10" number="45">
-            <code>  void success(Channel channel) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="10" number="46">
-            <code>    if (!completer.isCompleted) {</code>
+            <code>  void success(_VmChannel channel) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="47">
+            <code>    if (!completer.isCompleted) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="48">
             <code>      completer.complete(channel);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="48">
+        <line number="49">
             <code>    }</code>
         </line>
-        <line number="49">
+        <line number="50">
             <code>  }</code>
         </line>
-        <line number="50">
+        <line number="51">
             <code/>
         </line>
-        <line hits="11" number="51">
+        <line hits="11" number="52">
             <code>  final receiver = vm.ReceivePort();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="52">
+        <line hits="11" number="53">
             <code>  final exitPort = vm.ReceivePort();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="53">
+        <line hits="11" number="54">
             <code>  final errorPort = vm.ReceivePort();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="54">
+        <line number="55">
             <code/>
         </line>
-        <line hits="22" number="55">
+        <line hits="22" number="56">
             <code>  exitPort.listen((message) {</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="56">
+        <line hits="22" number="57">
             <code>    failure(SquadronErrorExt.create('Connection to worker failed'));</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="57">
-            <code>    logger?.t('Isolate terminated.');</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4" number="58">
+            <code>    logger?.t('Isolate terminated with message $message.');</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="58">
+        <line hits="10" number="59">
             <code>    channel?.close();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="59">
+        <line hits="11" number="60">
             <code>    receiver.close();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="60">
+        <line hits="11" number="61">
             <code>    errorPort.close();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="61">
+        <line hits="11" number="62">
             <code>    exitPort.close();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="62">
+        <line number="63">
             <code>  });</code>
         </line>
-        <line number="63">
+        <line number="64">
             <code/>
         </line>
-        <line hits="11" number="64">
+        <line hits="11" number="65">
             <code>  errorPort.listen((message) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="65">
+        <line number="66">
             <code>    SquadronException? error;</code>
         </line>
-        <line number="66">
+        <line number="67">
             <code>    try {</code>
         </line>
-        <line hits="0" number="67">
+        <line hits="0" number="68">
             <code>      final data = jsonDecode(message[0]);</code>
         </line>
-        <line hits="0" number="68">
+        <line hits="0" number="69">
             <code>      if (data is List) {</code>
         </line>
-        <line hits="0" number="69">
+        <line hits="0" number="70">
             <code>        error = exceptionManager.deserialize(data.cast&lt;String&gt;());</code>
         </line>
-        <line number="70">
+        <line number="71">
             <code>      }</code>
         </line>
-        <line number="71">
+        <line number="72">
             <code>    } catch (_) {</code>
         </line>
-        <line number="72">
+        <line number="73">
             <code>      // not a String representing a SquadronException</code>
         </line>
-        <line number="73">
+        <line number="74">
             <code>    }</code>
         </line>
-        <line number="74">
+        <line number="75">
             <code/>
-        </line>
-        <line hits="0" number="75">
-            <code>    error ??= WorkerException(</code>
         </line>
         <line hits="0" number="76">
-            <code>      message[0],</code>
+            <code>    error ??= WorkerException(</code>
         </line>
         <line hits="0" number="77">
+            <code>      message[0],</code>
+        </line>
+        <line hits="0" number="78">
             <code>      SquadronException.loadStackTrace(message[1]),</code>
         </line>
-        <line number="78">
+        <line number="79">
             <code>    );</code>
         </line>
-        <line number="79">
+        <line number="80">
             <code/>
-        </line>
-        <line hits="0" number="80">
-            <code>    logger?.d(() =&gt; 'Unhandled error from Isolate: ${error?.message}.');</code>
         </line>
         <line hits="0" number="81">
+            <code>    logger?.d(() =&gt; 'Unhandled error from Isolate: ${error?.message}.');</code>
+        </line>
+        <line hits="0" number="82">
             <code>    failure(error);</code>
         </line>
-        <line number="82">
+        <line number="83">
             <code>  });</code>
         </line>
-        <line number="83">
+        <line number="84">
             <code/>
         </line>
-        <line hits="11" number="84">
+        <line hits="11" number="85">
             <code>  final disconnected = DisconnectedChannel(exceptionManager, logger);</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="85">
+        <line number="86">
             <code/>
         </line>
-        <line hits="21" number="86">
+        <line hits="21" number="87">
             <code>  receiver.listen((message) {</code>
             <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="87">
+        <line hits="10" number="88">
             <code>    final response = WorkerResponseExt.from(message);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="88">
+        <line hits="10" number="89">
             <code>    if (!response.unwrapInPlace(disconnected)) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="89">
+        <line number="90">
             <code>      return;</code>
         </line>
-        <line number="90">
+        <line number="91">
             <code>    }</code>
         </line>
-        <line number="91">
+        <line number="92">
             <code/>
         </line>
-        <line hits="10" number="92">
+        <line hits="10" number="93">
             <code>    final error = response.error;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="93">
+        <line number="94">
             <code>    if (error != null) {</code>
         </line>
-        <line hits="3" number="94">
+        <line hits="3" number="95">
             <code>      logger?.e(() =&gt; 'Connection to Isolate failed: $error');</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="95">
+        <line hits="3" number="96">
             <code>      failure(error);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="96">
+        <line hits="10" number="97">
             <code>    } else if (response.endOfStream) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="97">
+        <line hits="1" number="98">
             <code>      logger?.w('Disconnecting from Isolate');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="98">
+        <line hits="1" number="99">
             <code>      channel?.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="99">
+        <line hits="10" number="100">
             <code>    } else if (!completer.isCompleted) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="100">
+        <line hits="2" number="101">
             <code>      logger?.t('Connected to Isolate');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="101">
-            <code>      channel = _VmChannel._(response.result, logger, exceptionManager);</code>
+        <line number="102">
+            <code>      final platformChannel =</code>
+        </line>
+        <line hits="20" number="103">
+            <code>          _VmChannel._(response.result, logger, exceptionManager);</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="102">
-            <code>      success(channel!);</code>
+        <line number="104">
+            <code>      channel = platformChannel;</code>
+        </line>
+        <line hits="10" number="105">
+            <code>      success(platformChannel);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="103">
+        <line number="106">
             <code>    } else {</code>
         </line>
-        <line hits="0" number="104">
+        <line hits="0" number="107">
             <code>      logger?.e(() =&gt; 'Unexpected response: $response');</code>
         </line>
-        <line number="105">
+        <line number="108">
             <code>    }</code>
         </line>
-        <line number="106">
+        <line number="109">
             <code>  });</code>
         </line>
-        <line number="107">
+        <line number="110">
             <code/>
         </line>
-        <line hits="22" number="108">
+        <line hits="22" number="111">
             <code>  final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="109">
+        <line hits="11" number="112">
             <code>  startRequest.wrapInPlace();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="110">
+        <line hits="11" number="113">
             <code>  final isolate = await vm.Isolate.spawn(</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="111">
+        <line number="114">
             <code>    entryPoint,</code>
         </line>
-        <line number="112">
+        <line number="115">
             <code>    startRequest,</code>
         </line>
-        <line number="113">
+        <line number="116">
             <code>    errorsAreFatal: false,</code>
         </line>
-        <line hits="11" number="114">
+        <line hits="11" number="117">
             <code>    onExit: exitPort.sendPort,</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="115">
+        <line hits="11" number="118">
             <code>    onError: errorPort.sendPort,</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="116">
+        <line number="119">
             <code>  );</code>
         </line>
-        <line number="117">
+        <line number="120">
             <code/>
         </line>
-        <line number="118">
+        <line number="121">
             <code>  try {</code>
         </line>
-        <line hits="11" number="119">
+        <line hits="11" number="122">
             <code>    final channel = await completer.future;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="120">
-            <code>    await hook.call(isolate);</code>
+        <line hits="10" number="123">
+            <code>    channel._thread = isolate;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="121">
+        <line number="124">
+            <code>    if (hook != null) {</code>
+        </line>
+        <line hits="1" number="125">
+            <code>      await hook.call(isolate);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="126">
+            <code>    }</code>
+        </line>
+        <line hits="2" number="127">
             <code>    logger?.t('Created Isolate');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="122">
+        <line number="128">
             <code>    return channel;</code>
         </line>
-        <line number="123">
+        <line number="129">
             <code>  } catch (ex) {</code>
         </line>
-        <line hits="0" number="124">
+        <line hits="0" number="130">
             <code>    logger?.e(() =&gt; 'Connection to Isolate failed: $ex');</code>
         </line>
-        <line hits="4" number="125">
+        <line hits="4" number="131">
             <code>    isolate.kill(priority: vm.Isolate.beforeNextEvent);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="126">
+        <line number="132">
             <code>    rethrow;</code>
         </line>
-        <line number="127">
+        <line number="133">
             <code>  }</code>
         </line>
-        <line number="128">
+        <line number="134">
             <code>}</code>
         </line>
-        <line number="129">
+        <line number="135">
             <code/>
         </line>
-        <line number="130">
+        <line hits="1" number="136">
+            <code>@internal</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="137">
+            <code>void terminateChannel(Channel channel, TaskTerminatedException ex) {</code>
+        </line>
+        <line hits="1" number="138">
+            <code>  if (channel is _VmChannel) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="139">
+            <code>    channel._thread?.kill(priority: vm.Isolate.immediate);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="140">
+            <code>    final pendingConnections = channel._activeConnections;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="141">
+            <code>    for (var c in pendingConnections) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="142">
+            <code>      c.subscription?.cancel();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="143">
+            <code>      c.addError(ex);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="144">
+            <code>      c.close();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="145">
+            <code>    }</code>
+        </line>
+        <line number="146">
+            <code>  }</code>
+        </line>
+        <line number="147">
+            <code>}</code>
+        </line>
+        <line number="148">
+            <code/>
+        </line>
+        <line number="149">
             <code>/// Creates a [_VmChannel] from a [SendPort].</code>
         </line>
-        <line hits="3" number="131">
+        <line hits="3" number="150">
             <code>Channel? deserialize(</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="132">
+        <line number="151">
             <code>  PlatformChannel? channelInfo, [</code>
         </line>
-        <line number="133">
+        <line number="152">
             <code>  Logger? logger,</code>
         </line>
-        <line number="134">
+        <line number="153">
             <code>  ExceptionManager? exceptionManager,</code>
         </line>
-        <line number="135">
+        <line number="154">
             <code>]) =&gt;</code>
         </line>
-        <line number="136">
+        <line number="155">
             <code>    (channelInfo == null)</code>
         </line>
-        <line number="137">
+        <line number="156">
             <code>        ? null</code>
         </line>
-        <line hits="3" number="138">
+        <line hits="3" number="157">
             <code>        : _VmChannel._(</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="139">
+        <line number="158">
             <code>            channelInfo,</code>
         </line>
-        <line number="140">
+        <line number="159">
             <code>            logger,</code>
         </line>
-        <line hits="3" number="141">
+        <line hits="3" number="160">
             <code>            exceptionManager ?? ExceptionManager(),</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="142">
+        <line number="161">
             <code>          );</code>
         </line>
     </lines>

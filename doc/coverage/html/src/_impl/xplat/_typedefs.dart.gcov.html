@@ -2,9 +2,9 @@
 <html>
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="../jgenhtml.js"></script>
-        <title>LCOV - lcov.info typedefs.dart</title>
+        <link href="../../../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../../jgenhtml.js"></script>
+        <title>LCOV - lcov.info _typedefs.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,7 +13,7 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../index.html">top level</a> - <a href="index.html">src</a> - typedefs.dart
+                        <a href="../../../index.html">top level</a> - <a href="index.html">src/_impl/xplat</a> - _typedefs.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>1</td><td>1</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>0</td><td>1</td><td class="low">0.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,43 +61,37 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import '_impl/xplat/_typedefs.dart'</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'dart:async';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code>    if (dart.library.io) '_impl/native/_typedefs.dart'</code></td>
+                    <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>    if (dart.library.html) '_impl/web/_typedefs.dart'</code></td>
+                    <td>3</td><td></td><td></td><td><code>import '../../exceptions/squadron_error.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>    if (dart.library.js) '_impl/web/_typedefs.dart'</code></td>
+                    <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>    if (dart.library.js_interop) '_impl/web/_typedefs.dart' as impl;</code></td>
+                <tr class="lineNoCov" title="Line 5" id="line5">
+                    <td>5</td><td></td><td>0</td><td><code>String get threadId =&gt; throw SquadronErrorExt.create('Platform not supported');</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
                     <td>6</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 7" id="line7">
-                    <td>7</td><td></td><td>12</td><td><code>final threadId = impl.threadId;</code></td>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>typedef EntryPoint = dynamic;</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                    <td>8</td><td></td><td></td><td><code>typedef PlatformThread = dynamic;</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>typedef EntryPoint = impl.EntryPoint;</code></td>
+                    <td>9</td><td></td><td></td><td><code>typedef PlatformChannel = dynamic;</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>typedef PlatformChannel = impl.PlatformChannel;</code></td>
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>typedef PlatformThread = impl.PlatformThread;</code></td>
-                </tr>
-                <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>typedef PlatformThreadHook = impl.PlatformThreadHook;</code></td>
+                    <td>11</td><td></td><td></td><td><code>typedef PlatformThreadHook = FutureOr&lt;void&gt; Function(PlatformThread);</code></td>
                 </tr>
             </tbody>
         </table>

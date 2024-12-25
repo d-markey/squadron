@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="utils.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>extension HexExt on int {</code>
+        </line>
+        <line hits="15" number="2">
+            <code>  String get hex =&gt; '0x${toRadixString(16).padLeft(8, '0')}';</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="3">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../"/>
+    <base href="../"/>
+</coverage>
