@@ -35,12 +35,12 @@ final class _WebChannel implements Channel {
     try {
       req.cancelToken?.ensureStarted();
       final data = req.wrapInPlace();
-      final msg = data.jsify();
+      final msg = $jsify(data);
       final transfer = Transferables.get([req.channelInfo]);
       if (transfer == null || transfer.isEmpty) {
         _sendPort.postMessage(msg);
       } else {
-        final jsTransfer = transfer.jsify() as JSArray;
+        final jsTransfer = $jsify(transfer) as JSArray;
         _sendPort.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {
@@ -57,12 +57,12 @@ final class _WebChannel implements Channel {
     req.cancelToken?.throwIfCanceled();
     try {
       final data = req.wrapInPlace();
-      final msg = data.jsify();
+      final msg = $jsify(data);
       final transfer = Transferables.get(data);
       if (transfer == null || transfer.isEmpty) {
         _sendPort.postMessage(msg);
       } else {
-        final jsTransfer = transfer.jsify() as JSArray;
+        final jsTransfer = $jsify(transfer) as JSArray;
         _sendPort.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {

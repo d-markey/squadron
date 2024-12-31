@@ -269,6 +269,20 @@ void execute(TestContext? tc) {
           });
         });
 
+        tc.test('- maps', () async {
+          await TestWorker(tc).useAsync((w) async {
+            final input = {
+              BigInt.one.toString(): BigInt.one,
+              BigInt.two.toString(): BigInt.two,
+            };
+            final res = await w.map(input);
+            expect(res, {
+              BigInt.one: BigInt.one.toString(),
+              BigInt.two: BigInt.two.toString(),
+            });
+          });
+        });
+
         tc.test('- sequential', () async {
           await TestWorker(tc).useAsync((w) async {
             int taskId = 0;

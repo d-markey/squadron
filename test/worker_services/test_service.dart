@@ -41,6 +41,8 @@ class TestService implements WorkerService {
         return marshalOut ? bigIntMarshaler.marshal(res) : res;
       },
       platformTypeCommand: (r) => getPlatformType().toString(),
+      mapCommand: (r) =>
+          map(Squadron.converter.map<String, BigInt>()(r.args[0])),
     });
   }
 
@@ -164,6 +166,9 @@ class TestService implements WorkerService {
 
   FutureOr<SquadronPlatformType> getPlatformType() => Squadron.platformType;
 
+  Future<Map<BigInt, String>> map(Map<String, BigInt> input) async =>
+      input.map((k, v) => MapEntry(v, k));
+
   final bool _invalid;
 
   static const invalidCommand1 = -1; // command IDs must be > 0
@@ -180,6 +185,7 @@ class TestService implements WorkerService {
   static const infiniteWithErrorsCommand = 36;
   static const bigIntAddCommand = 41;
   static const platformTypeCommand = 51;
+  static const mapCommand = 52;
 
   @override
   final Map<int, CommandHandler> operations = {};

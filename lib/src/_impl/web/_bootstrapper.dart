@@ -23,11 +23,11 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   });
 
   self.onmessage = (web.MessageEvent e) {
-    final msg = getMessageEventData(e) as List;
+    final msg = getMessageEventData(e);
     com.port1.onmessage = runner.handle.toJS;
-    runner.connect(WorkerRequestExt.from(msg), com.port2, initializer);
+    runner.connect(WorkerRequestExt.from(msg!), com.port2, initializer);
   }.toJS;
 
   // initial message indicating the worker is up and running
-  self.postMessage(WorkerResponse.ready().wrapInPlace().jsify());
+  self.postMessage($jsify(WorkerResponse.ready().wrapInPlace()));
 }

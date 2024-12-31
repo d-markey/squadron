@@ -17,10 +17,10 @@ import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../xplat/_disconnected_channel.dart';
 import '../xplat/_result_stream.dart';
-import '../xplat/_transferables.dart';
 import '_entry_point_uri.dart';
 import '_event_buffer.dart';
 import '_patch.dart';
+import '_transferables.dart';
 import '_typedefs.dart';
 import '_uri_checker.dart';
 
@@ -141,12 +141,12 @@ Future<Channel> openChannel(
 
     try {
       final data = startRequest.wrapInPlace();
-      final msg = data.jsify();
+      final msg = $jsify(data);
       final transfer = Transferables.get(data);
       if (transfer == null || transfer.isEmpty) {
         worker.postMessage(msg);
       } else {
-        final jsTransfer = transfer.jsify() as JSArray;
+        final jsTransfer = $jsify(transfer) as JSArray;
         worker.postMessage(msg, jsTransfer);
       }
     } catch (ex, st) {

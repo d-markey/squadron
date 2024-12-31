@@ -29,7 +29,7 @@ final class _WebForwardChannel extends _WebChannel {
       if (transfer == null || transfer.isEmpty) {
         _remote.postMessage(e.data);
       } else {
-        final jsTransfer = transfer.jsify() as JSArray;
+        final jsTransfer = $jsify(transfer) as JSArray;
         _remote.postMessage(e.data, jsTransfer);
       }
     } catch (ex, st) {

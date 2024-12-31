@@ -114,6 +114,10 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
   @override
   Future<SquadronPlatformType> getPlatformType() =>
       execute((w) => w.getPlatformType());
+
+  @override
+  Future<Map<BigInt, String>> map(Map<String, BigInt> input) =>
+      execute((w) => w.map(input));
 }
 
 base class TestWorker extends Worker implements TestService {
@@ -224,6 +228,11 @@ base class TestWorker extends Worker implements TestService {
       marshalOut ? bigIntUnmarshaler : Squadron.converter.value<BigInt>(),
     );
   }
+
+  @override
+  Future<Map<BigInt, String>> map(Map<String, BigInt> input) =>
+      send(TestService.mapCommand, args: [input])
+          .then(Squadron.converter.map<BigInt, String>());
 
   @override
   Future<SquadronPlatformType> getPlatformType() =>

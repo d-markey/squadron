@@ -204,8 +204,8 @@ const workers = {
     'wasm': (folder: 'js', opt: Optimizations.safe),
   },
   'test_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.def),
+    'wasm': (folder: 'js', opt: Optimizations.def),
   },
   'streaming_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.safe),
