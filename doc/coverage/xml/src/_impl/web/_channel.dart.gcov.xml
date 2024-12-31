@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86170214" lines-covered="81" lines-valid="94" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86170214" lines-covered="81" lines-valid="94" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -59,16 +59,16 @@
             <code>import '../xplat/_result_stream.dart';</code>
         </line>
         <line number="20">
-            <code>import '../xplat/_transferables.dart';</code>
-        </line>
-        <line number="21">
             <code>import '_entry_point_uri.dart';</code>
         </line>
-        <line number="22">
+        <line number="21">
             <code>import '_event_buffer.dart';</code>
         </line>
-        <line number="23">
+        <line number="22">
             <code>import '_patch.dart';</code>
+        </line>
+        <line number="23">
+            <code>import '_transferables.dart';</code>
         </line>
         <line number="24">
             <code>import '_typedefs.dart';</code>
@@ -488,7 +488,7 @@
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="144">
-            <code>      final msg = data.jsify();</code>
+            <code>      final msg = $jsify(data);</code>
         </line>
         <line hits="10" number="145">
             <code>      final transfer = Transferables.get(data);</code>
@@ -504,7 +504,7 @@
             <code>      } else {</code>
         </line>
         <line hits="10" number="149">
-            <code>        final jsTransfer = transfer.jsify() as JSArray;</code>
+            <code>        final jsTransfer = $jsify(transfer) as JSArray;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="150">

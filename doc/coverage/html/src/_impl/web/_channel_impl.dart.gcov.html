@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-25</dd>
+                    <dd>2024-12-31</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -172,7 +172,7 @@
                     <td>37</td><td></td><td>10</td><td><code>      final data = req.wrapInPlace();</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>      final msg = data.jsify();</code></td>
+                    <td>38</td><td></td><td></td><td><code>      final msg = $jsify(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
                     <td>39</td><td></td><td>10</td><td><code>      final transfer = Transferables.get([req.channelInfo]);</code></td>
@@ -187,7 +187,7 @@
                     <td>42</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>9</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
+                    <td>43</td><td></td><td>9</td><td><code>        final jsTransfer = $jsify(transfer) as JSArray;</code></td>
                 </tr>
                 <tr class="noop" title="Line 44" id="line44">
                     <td>44</td><td></td><td></td><td><code>        _sendPort.postMessage(msg, jsTransfer);</code></td>
@@ -238,7 +238,7 @@
                     <td>59</td><td></td><td>2</td><td><code>      final data = req.wrapInPlace();</code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>      final msg = data.jsify();</code></td>
+                    <td>60</td><td></td><td></td><td><code>      final msg = $jsify(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
                     <td>61</td><td></td><td>2</td><td><code>      final transfer = Transferables.get(data);</code></td>
@@ -253,7 +253,7 @@
                     <td>64</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>2</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
+                    <td>65</td><td></td><td>2</td><td><code>        final jsTransfer = $jsify(transfer) as JSArray;</code></td>
                 </tr>
                 <tr class="noop" title="Line 66" id="line66">
                     <td>66</td><td></td><td></td><td><code>        _sendPort.postMessage(msg, jsTransfer);</code></td>

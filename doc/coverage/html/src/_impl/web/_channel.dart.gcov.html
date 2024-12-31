@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-25</dd>
+                    <dd>2024-12-31</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -118,16 +118,16 @@
                     <td>19</td><td></td><td></td><td><code>import '../xplat/_result_stream.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code>import '../xplat/_transferables.dart';</code></td>
+                    <td>20</td><td></td><td></td><td><code>import '_entry_point_uri.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>import '_entry_point_uri.dart';</code></td>
+                    <td>21</td><td></td><td></td><td><code>import '_event_buffer.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>import '_event_buffer.dart';</code></td>
+                    <td>22</td><td></td><td></td><td><code>import '_patch.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>import '_patch.dart';</code></td>
+                    <td>23</td><td></td><td></td><td><code>import '_transferables.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
                     <td>24</td><td></td><td></td><td><code>import '_typedefs.dart';</code></td>
@@ -490,7 +490,7 @@
                     <td>143</td><td></td><td>10</td><td><code>      final data = startRequest.wrapInPlace();</code></td>
                 </tr>
                 <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code>      final msg = data.jsify();</code></td>
+                    <td>144</td><td></td><td></td><td><code>      final msg = $jsify(data);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 145" id="line145">
                     <td>145</td><td></td><td>10</td><td><code>      final transfer = Transferables.get(data);</code></td>
@@ -505,7 +505,7 @@
                     <td>148</td><td></td><td></td><td><code>      } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>10</td><td><code>        final jsTransfer = transfer.jsify() as JSArray;</code></td>
+                    <td>149</td><td></td><td>10</td><td><code>        final jsTransfer = $jsify(transfer) as JSArray;</code></td>
                 </tr>
                 <tr class="noop" title="Line 150" id="line150">
                     <td>150</td><td></td><td></td><td><code>        worker.postMessage(msg, jsTransfer);</code></td>

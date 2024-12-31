@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-25" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="20" lines-valid="22" package="src/_impl/web" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="_patch.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.974359" lines-covered="76" lines-valid="78" package="src/_impl/web" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:js_interop';</code>
@@ -8,129 +8,527 @@
             <code>import 'dart:js_interop_unsafe';</code>
         </line>
         <line number="3">
-            <code/>
+            <code>import 'dart:typed_data';</code>
         </line>
         <line number="4">
-            <code>import 'package:web/web.dart';</code>
-        </line>
-        <line number="5">
             <code/>
         </line>
-        <line hits="12" number="6">
+        <line number="5">
+            <code>import 'package:web/web.dart';</code>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line hits="12" number="7">
             <code>String? getHome() {</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="7">
+        <line hits="0" number="8">
             <code>  if (window.isUndefinedOrNull) return null;</code>
         </line>
-        <line hits="12" number="8">
+        <line hits="12" number="9">
             <code>  final components = window.location.pathname.split('/');</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="9">
+        <line hits="12" number="10">
             <code>  return components.take(components.length - 1).join('/');</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="10">
+        <line hits="12" number="11">
             <code>}</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="11">
+        <line number="12">
             <code/>
         </line>
-        <line hits="3" number="12">
+        <line hits="3" number="13">
             <code>String? _getErrorEventMessage(JSObject? obj) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="13">
+        <line hits="3" number="14">
             <code>  if (obj != null &amp;&amp; obj.has('message')) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="14">
-            <code>    return obj['message'].dartify()?.toString();</code>
+        <line hits="2" number="15">
+            <code>    return $dartify(obj.getProperty('message'.toJS))?.toString();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="15">
+        <line number="16">
             <code>  } else {</code>
         </line>
-        <line hits="1" number="16">
+        <line hits="1" number="17">
             <code>    return null;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="17">
+        <line number="18">
             <code>  }</code>
         </line>
-        <line hits="3" number="18">
+        <line hits="3" number="19">
             <code>}</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="19">
+        <line number="20">
             <code/>
         </line>
-        <line hits="3" number="20">
+        <line hits="3" number="21">
             <code>Object? _getErrorEventError(JSObject? obj) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="21">
+        <line hits="3" number="22">
             <code>  if (obj != null &amp;&amp; obj.has('error')) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="22">
-            <code>    return obj['error'].dartify();</code>
+        <line hits="2" number="23">
+            <code>    return $dartify(obj.getProperty('error'.toJS));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="23">
+        <line number="24">
             <code>  } else {</code>
         </line>
-        <line hits="1" number="24">
+        <line hits="1" number="25">
             <code>    return null;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="25">
+        <line number="26">
             <code>  }</code>
         </line>
-        <line hits="3" number="26">
+        <line hits="3" number="27">
             <code>}</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="27">
+        <line number="28">
             <code/>
         </line>
-        <line hits="3" number="28">
+        <line hits="3" number="29">
             <code>Object getError(JSObject? obj) =&gt;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="29">
+        <line hits="3" number="30">
             <code>    _getErrorEventError(obj) ?? _getErrorEventMessage(obj) ?? 'Unknown error';</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
+        <line number="31">
             <code/>
         </line>
-        <line hits="10" number="31">
+        <line hits="10" number="32">
             <code>List? getMessageEventData(JSObject? obj) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="32">
+        <line hits="10" number="33">
             <code>  if (obj != null &amp;&amp; obj.has('data')) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="33">
-            <code>    return obj['data'].dartify() as List?;</code>
+        <line hits="10" number="34">
+            <code>    return $dartify(obj.getProperty('data'.toJS)) as List?;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="34">
+        <line number="35">
             <code>  } else {</code>
         </line>
-        <line hits="0" number="35">
+        <line hits="0" number="36">
             <code>    return null;</code>
         </line>
-        <line number="36">
+        <line number="37">
             <code>  }</code>
         </line>
-        <line hits="10" number="37">
+        <line hits="10" number="38">
             <code>}</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="39">
+            <code/>
+        </line>
+        <line number="40">
+            <code>@JS('Map')</code>
+        </line>
+        <line number="41">
+            <code>extension type _$JSMap._(JSObject _) implements JSObject {</code>
+        </line>
+        <line number="42">
+            <code>  external factory _$JSMap();</code>
+        </line>
+        <line number="43">
+            <code>  external JSAny get(JSAny? key);</code>
+        </line>
+        <line number="44">
+            <code>  external void set(JSAny? key, JSAny? value);</code>
+        </line>
+        <line number="45">
+            <code>  external JSObject keys();</code>
+        </line>
+        <line number="46">
+            <code>}</code>
+        </line>
+        <line number="47">
+            <code/>
+        </line>
+        <line number="48">
+            <code>@JS('BigInt')</code>
+        </line>
+        <line number="49">
+            <code>external JSBigInt _$JSBigInt(JSAny? value);</code>
+        </line>
+        <line number="50">
+            <code/>
+        </line>
+        <line number="51">
+            <code>extension on JSBigInt {</code>
+        </line>
+        <line number="52">
+            <code>  @JS('toString')</code>
+        </line>
+        <line number="53">
+            <code>  external JSString $toString();</code>
+        </line>
+        <line number="54">
+            <code>}</code>
+        </line>
+        <line number="55">
+            <code/>
+        </line>
+        <line number="56">
+            <code>extension _$JSIteratorExt on JSObject {</code>
+        </line>
+        <line hits="3" number="57">
+            <code>  JSObject? next() =&gt; callMethod(_$next);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="58">
+            <code>  bool get done =&gt; getProperty(_$done).isTruthy.toDart;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="59">
+            <code>  JSAny? get value =&gt; getProperty(_$value);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="60">
+            <code/>
+        </line>
+        <line hits="3" number="61">
+            <code>  static final _$next = 'next'.toJS;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="62">
+            <code>  static final _$done = 'done'.toJS;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="63">
+            <code>  static final _$value = 'value'.toJS;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="64">
+            <code>}</code>
+        </line>
+        <line number="65">
+            <code/>
+        </line>
+        <line hits="10" number="66">
+            <code>JSAny? _jsify(Object? obj, Map&lt;Object, JSAny&gt; cache) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="67">
+            <code>  if (obj == null) return null;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="68">
+            <code>  var js = cache[obj];</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="69">
+            <code>  if (js != null) return js;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="70">
+            <code>  if (obj is BigInt) {</code>
+        </line>
+        <line hits="2" number="71">
+            <code>    final bigint = _$JSBigInt(obj.toString().toJS);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="72">
+            <code>    print('BigInt $obj -&gt; $bigint [${bigint.runtimeType}]');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="73">
+            <code>    return bigint;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="74">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="75">
+            <code>  if (obj is Map) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="76">
+            <code>    final map = _$JSMap();</code>
+        </line>
+        <line hits="2" number="77">
+            <code>    cache[obj] = map;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="78">
+            <code>    for (var entry in obj.entries) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="79">
+            <code>      map.set(_jsify(entry.key, cache), _jsify(entry.value, cache));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="80">
+            <code>    }</code>
+        </line>
+        <line hits="2" number="81">
+            <code>    print('_jsify: $map');</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="82">
+            <code>    return map;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="83">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="84">
+            <code>  if (obj is List &amp;&amp; obj is! TypedData) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="85">
+            <code>    final len = obj.length;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="86">
+            <code>    final list = JSArray();</code>
+        </line>
+        <line hits="10" number="87">
+            <code>    cache[obj] = list;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="88">
+            <code>    for (var i = 0; i &lt; len; i++) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="89">
+            <code>      list.setProperty(i.toJS, _jsify(obj[i], cache));</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="90">
+            <code>    }</code>
+        </line>
+        <line hits="10" number="91">
+            <code>    return list;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="92">
+            <code>  }</code>
+        </line>
+        <line number="93">
+            <code>  js = obj.jsify();</code>
+        </line>
+        <line number="94">
+            <code>  if (js != null &amp;&amp; obj is! num &amp;&amp; obj is! bool &amp;&amp; obj is! String) {</code>
+        </line>
+        <line hits="10" number="95">
+            <code>    cache[obj] = js;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="96">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="97">
+            <code>  return js;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="98">
+            <code>}</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="99">
+            <code/>
+        </line>
+        <line number="100">
+            <code>JSAny? $jsify(Object? obj) {</code>
+        </line>
+        <line hits="10" number="101">
+            <code>  return _jsify(obj, Map&lt;Object, JSAny&gt;.identity());</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="102">
+            <code>  // return obj.jsify();</code>
+        </line>
+        <line number="103">
+            <code>}</code>
+        </line>
+        <line number="104">
+            <code/>
+        </line>
+        <line hits="10" number="105">
+            <code>Object? _dartify(JSAny? js, Map&lt;JSAny, Object&gt; cache) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="106">
+            <code>  if (js.isUndefinedOrNull) return null;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="107">
+            <code>  var obj = cache[js!];</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="108">
+            <code>  if (obj != null) return obj;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="109">
+            <code>  if (js.isA&lt;JSBigInt&gt;()) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="110">
+            <code>    js as JSBigInt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="111">
+            <code>    final strVal = js.$toString().toDart;</code>
+        </line>
+        <line hits="1" number="112">
+            <code>    print('BigInt $js -&gt; $strVal');</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="113">
+            <code>    return BigInt.parse(strVal);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="114">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="115">
+            <code>  if (js.isA&lt;_$JSMap&gt;()) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="116">
+            <code>    print('_dartify: $js');</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="117">
+            <code>    final map = {};</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="118">
+            <code>    cache[js] = map;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="119">
+            <code>    js as _$JSMap;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="120">
+            <code>    final keys = js.keys();</code>
+        </line>
+        <line hits="3" number="121">
+            <code>    while (true) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="122">
+            <code>      final res = keys.next();</code>
+        </line>
+        <line hits="3" number="123">
+            <code>      if (res == null || res.done) break;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="124">
+            <code>      final key = res.value;</code>
+        </line>
+        <line number="125">
+            <code>      final value = js.get(key);</code>
+        </line>
+        <line hits="3" number="126">
+            <code>      map[_dartify(key, cache)] = _dartify(value, cache);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="127">
+            <code>    }</code>
+        </line>
+        <line hits="3" number="128">
+            <code>    return map;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="129">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="130">
+            <code>  if (js.isA&lt;JSArray&gt;()) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="131">
+            <code>    final list = [];</code>
+        </line>
+        <line hits="10" number="132">
+            <code>    cache[js] = list;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="133">
+            <code>    js as JSArray;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="134">
+            <code>    final len = js.getProperty&lt;JSNumber&gt;('length'.toJS).toDartInt;</code>
+        </line>
+        <line hits="10" number="135">
+            <code>    for (var i = 0; i &lt; len; i++) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="136">
+            <code>      final value = js.getProperty(i.toJS);</code>
+        </line>
+        <line hits="10" number="137">
+            <code>      list.add(_dartify(value, cache));</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="138">
+            <code>    }</code>
+        </line>
+        <line hits="10" number="139">
+            <code>    return list;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="140">
+            <code>  }</code>
+        </line>
+        <line number="141">
+            <code>  obj = js.dartify();</code>
+        </line>
+        <line number="142">
+            <code>  if (obj != null &amp;&amp; obj is! num &amp;&amp; obj is! bool &amp;&amp; obj is! String) {</code>
+        </line>
+        <line hits="10" number="143">
+            <code>    cache[js] = obj;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="144">
+            <code>  }</code>
+        </line>
+        <line hits="10" number="145">
+            <code>  return obj;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="146">
+            <code>}</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="147">
+            <code/>
+        </line>
+        <line number="148">
+            <code>Object? $dartify(JSAny? js) {</code>
+        </line>
+        <line hits="10" number="149">
+            <code>  return _dartify(js, Map&lt;JSAny, Object&gt;.identity());</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="150">
+            <code>  // return js.dartify();</code>
+        </line>
+        <line number="151">
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
