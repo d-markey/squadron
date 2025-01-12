@@ -33,7 +33,7 @@ Supports native, JavaScript & Web Assembly platforms.
 
 [View latest documentation on GitHub](https://github.com/d-markey/squadron/blob/main/README.md)
 
-[Test Console available on GitHub Pages](https://d-markey.github.io/squadron/browser-tests/)
+[Test Console available on GitHub Pages](https://d-markey.github.io/squadron/test-console/)
 
 ## <a name="getting_started"></a>Getting Started
 
