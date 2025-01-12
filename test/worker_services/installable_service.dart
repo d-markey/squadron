@@ -3,15 +3,19 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_logger.dart';
-import 'delays.dart';
+import '../src/test_logger.dart';
+import '../test_constants.dart';
+import 'squadron_version.dart';
 
-class InstallableService with ServiceInstaller implements WorkerService {
+class InstallableService
+    with ServiceInstaller, SquadronVersion
+    implements WorkerService {
   InstallableService(
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : _throwOnInstall = throwOnInstall,
         _throwOnUninstall = throwOnUninstall {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       cmdIsInstalled: (r) => isInstalled(),
       cmdIsUninstalled: (r) => isUninstalled(),
     });
@@ -48,12 +52,12 @@ class InstallableService with ServiceInstaller implements WorkerService {
   }
 
   Future<bool> isInstalled() async {
-    await Future.delayed(TestDelays.shortDelay);
+    await Future.delayed(delay_20ms);
     return _installed;
   }
 
   Future<bool> isUninstalled() async {
-    await Future.delayed(TestDelays.shortDelay);
+    await Future.delayed(delay_20ms);
     return _uninstalled;
   }
 

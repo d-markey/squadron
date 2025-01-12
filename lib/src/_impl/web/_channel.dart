@@ -20,7 +20,6 @@ import '../xplat/_result_stream.dart';
 import '_entry_point_uri.dart';
 import '_event_buffer.dart';
 import '_patch.dart';
-import '_transferables.dart';
 import '_typedefs.dart';
 import '_uri_checker.dart';
 
@@ -64,7 +63,7 @@ Future<Channel> openChannel(
     worker = web.Worker(webEntryPoint.uri.toJS);
 
     void $errorHandler(web.ErrorEvent? e) {
-      final err = getError(e), error = SquadronErrorExt.create(err.toString());
+      final err = e.dartError, error = SquadronErrorExt.create(err.toString());
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 
@@ -90,7 +89,7 @@ Future<Channel> openChannel(
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
-        final response = WorkerResponseExt.from(getMessageEventData(e) as List);
+        final response = WorkerResponseExt.from(e.dartData!);
         if (!response.unwrapInPlace(disconnected)) {
           return;
         }
@@ -116,7 +115,7 @@ Future<Channel> openChannel(
     final startRequest = WorkerRequest.start(com.port2, startArguments);
 
     com.port1.onmessage = (web.MessageEvent e) {
-      final response = WorkerResponseExt.from(getMessageEventData(e) as List);
+      final response = WorkerResponseExt.from(e.dartData!);
       if (!response.unwrapInPlace(disconnected)) {
         return;
       }
@@ -140,15 +139,9 @@ Future<Channel> openChannel(
     }.toJS;
 
     try {
-      final data = startRequest.wrapInPlace();
-      final msg = $jsify(data);
-      final transfer = Transferables.get(data);
-      if (transfer == null || transfer.isEmpty) {
-        worker.postMessage(msg);
-      } else {
-        final jsTransfer = $jsify(transfer) as JSArray;
-        worker.postMessage(msg, jsTransfer);
-      }
+      final transfer = JSArray();
+      final msg = $jsify(startRequest.wrapInPlace(), transfer);
+      worker.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post connection request $startRequest: $ex');
       throw SquadronErrorExt.create(

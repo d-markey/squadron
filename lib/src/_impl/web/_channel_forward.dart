@@ -24,14 +24,9 @@ final class _WebForwardChannel extends _WebChannel {
       throw SquadronErrorExt.create('Channel is closed');
     }
     try {
-      final data = getMessageEventData(e) as List;
-      final transfer = Transferables.get(data);
-      if (transfer == null || transfer.isEmpty) {
-        _remote.postMessage(e.data);
-      } else {
-        final jsTransfer = $jsify(transfer) as JSArray;
-        _remote.postMessage(e.data, jsTransfer);
-      }
+      final transfer = JSArray();
+      $transferify(e.data, transfer);
+      _remote.postMessage(e.data, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $e: $ex');
       throw SquadronErrorExt.create('Failed to post request: $ex', st);

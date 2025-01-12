@@ -1,0 +1,155 @@
+@import url("colors.css");
+
+body {
+    font-family: Arial, sans-serif;
+    display: grid;
+    grid-template-areas:
+        "logo commands context"
+        "runner runner context"
+        "status status context"
+        "footer footer footer";
+    grid-template-rows: 5.5rem 1fr min-content auto;
+    grid-template-columns: min-content auto min-content;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: var(--mblue);
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.commands {
+    grid-area: commands;
+    border-bottom: 2px solid var(--border);
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+}
+
+h3 {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.logo {
+    grid-area: logo;
+    padding: 0.25rem;
+    border-bottom: 2px solid var(--border);
+    background-color: var(--background);
+    width: 5.5rem;
+}
+
+.logo img {
+    width: 5rem;
+    height: 5rem;
+}
+
+.context {
+    grid-area: context;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    white-space: nowrap;
+    border-left: 2px solid var(--border);
+    background-color: var(--background);
+    padding: 6px 12px;
+    gap: 12px;
+}
+
+.context label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.context input[type="checkbox"] {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.commands button,
+.context button {
+    border: 1px solid var(--mblue);
+    background-color: var(--mblue);
+    color: var(--white);
+    font-weight: bold;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+}
+
+.commands button:hover,
+.context button:hover {
+    background-color: var(--dblue);
+}
+
+.commands button:disabled,
+.context button:disabled {
+    background-color: transparent;
+    color: var(--mblue);
+    cursor: default;
+}
+
+.context button.on {
+    background-color: var(--dblue);
+    border: 1px solid var(--dblue);
+    padding: 0.25em 0.75em;
+}
+
+.context button.off {
+    border: 1px solid var(--dblue);
+    background-color: var(--background);
+    padding: 0.25em 0.75em;
+    color: var(--dblue);
+}
+
+#test-list {
+    margin-block-start: 1.33em;
+    margin-block-end: 1.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    color: var(--dblue);
+}
+
+.runner {
+    grid-area: runner;
+    background-color: var(--background);
+    overflow: hidden;
+    padding: 4px;
+}
+
+.runner iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.status {
+    grid-area: status;
+    display: flex;
+    align-items: center;
+    border-top: 2px solid var(--border);
+    background-color: var(--background);
+    padding: 6px 12px;
+    gap: 12px;
+}
+
+.footer {
+    grid-area: footer;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--white);
+    background-color: var(--green);
+    color: var(--white);
+    padding: 6px 0;
+    text-align: center;
+    font-size: 0.8rem;
+}

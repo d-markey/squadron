@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-abstract class LocalService implements WorkerService {
+import '../squadron_version.dart';
+
+abstract class LocalService with SquadronVersion implements WorkerService {
   FutureOr<String> getId();
   FutureOr<bool> throwException();
   Stream<int> sequence(int count);
@@ -12,9 +14,10 @@ abstract class LocalService implements WorkerService {
   static const sequenceCommand = 3;
 }
 
-class LocalServiceImpl extends LocalService {
+class LocalServiceImpl extends LocalService with SquadronVersion {
   LocalServiceImpl() {
     operations.addAll({
+      SquadronVersion.versionCommand: (req) => getVersion(),
       LocalService.getIdCommand: (req) => getId(),
       LocalService.throwExceptionCommand: (req) => throwException(),
       LocalService.sequenceCommand: (req) =>

@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
-import 'biging_marshaler.dart';
+import '../fraction.dart';
+import '../src/test_context.dart';
+import 'squadron_version.dart';
 import 'test_service.dart';
 
 base class TestWorkerPool extends WorkerPool<TestWorker>
+    with PoolVersion<TestWorker>
     implements TestService {
   TestWorkerPool._(
       super._workerFactory, ConcurrencySettings? concurrencySettings,
@@ -98,10 +100,10 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
       stream((w) => w.infiniteWithErrors(token));
 
   @override
-  Future<BigInt> bigIntAdd(BigInt a, BigInt b,
+  Future<Fraction> fractionAdd(Fraction a, Fraction b,
           {required bool marshalIn, required bool marshalOut}) =>
       execute((w) =>
-          w.bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut));
+          w.fractionAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut));
 
   ValueTask<int> delayedTask(int n) => scheduleValueTask((w) => w.delayed(n));
 
@@ -118,9 +120,12 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
   @override
   Future<Map<BigInt, String>> map(Map<String, BigInt> input) =>
       execute((w) => w.map(input));
+
+  @override
+  Future<Set<BigInt>> set(Set<BigInt> input) => execute((w) => w.set(input));
 }
 
-base class TestWorker extends Worker implements TestService {
+base class TestWorker extends Worker with WorkerVersion implements TestService {
   TestWorker._(super.entryPoint, List args, PlatformThreadHook? hook,
       ExceptionManager? exceptionManager)
       : super(
@@ -210,22 +215,23 @@ base class TestWorker extends Worker implements TestService {
       stream(TestService.infiniteWithErrorsCommand, token: token)
           .map(Squadron.converter.value<int>());
 
-  static final bigIntMarshaler = ((x) => (const BigIntMarshaler()).marshal(x));
-  static final bigIntUnmarshaler =
-      ((x) => (const BigIntMarshaler()).unmarshal(x));
+  static final fractionMarshaler =
+      ((x) => (const FractionMarshaler()).marshal(x));
+  static final fractionUnmarshaler = ((x) =>
+      (const FractionMarshaler()).unmarshal(Squadron.converter.list<int>()(x)));
 
   @override
-  Future<BigInt> bigIntAdd(BigInt a, BigInt b,
+  Future<Fraction> fractionAdd(Fraction a, Fraction b,
       {required bool marshalIn, required bool marshalOut}) {
     final marshal =
-        marshalIn ? bigIntMarshaler : Squadron.converter.value<BigInt>();
+        marshalIn ? fractionMarshaler : Squadron.converter.value<Fraction>();
     return send(
-      TestService.bigIntAddCommand,
+      TestService.fractionAddCommand,
       args: [marshal(a), marshal(b), marshalIn, marshalOut],
       inspectRequest: true,
       inspectResponse: true,
     ).then(
-      marshalOut ? bigIntUnmarshaler : Squadron.converter.value<BigInt>(),
+      marshalOut ? fractionUnmarshaler : Squadron.converter.value<Fraction>(),
     );
   }
 
@@ -233,6 +239,11 @@ base class TestWorker extends Worker implements TestService {
   Future<Map<BigInt, String>> map(Map<String, BigInt> input) =>
       send(TestService.mapCommand, args: [input])
           .then(Squadron.converter.map<BigInt, String>());
+
+  @override
+  Future<Set<BigInt>> set(Set<BigInt> input) =>
+      send(TestService.setCommand, args: [input])
+          .then(Squadron.converter.set<BigInt>());
 
   @override
   Future<SquadronPlatformType> getPlatformType() =>

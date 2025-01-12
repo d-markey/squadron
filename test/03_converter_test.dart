@@ -8,8 +8,8 @@ import 'package:test/test.dart';
 
 import '03_converter_test__list_features.dart';
 import '03_converter_test__map_features.dart';
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
 
 part '03_converter_test_cast.dart';
 part '03_converter_test_cast_in_place.dart';
@@ -49,7 +49,21 @@ final _mapOfIntsWithIntegralDouble = {
   'three': 3,
 };
 
-final _throwsTypeError = failsWith<TypeError>();
+bool _isTypeError(Object ex) {
+  if (ex is TypeError) return true;
+  if (ex is WorkerException) {
+    final msg = ex.message;
+    return msg.contains('TypeError') || msg.contains('not a subtype');
+  }
+  return false;
+}
+
+final _throwsTypeError = anyOf(
+    failsWith<TypeError>(),
+    allOf(
+      failsWith<WorkerException>(),
+      anyOf(reports('TypeError'), reports('not a subtype')),
+    ));
 final _isInfinite = anyOf(double.infinity, double.negativeInfinity);
 
 int _asInt(dynamic x) => x as int;
@@ -72,19 +86,17 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group('- Lazy lists', () {
-      testLazyLists(tc);
-    });
-
-    tc.group('- Lazy maps', () {
-      testLazyMaps(tc);
-    });
-
-    tc.group('- Converters', () {
-      tc.test('- custom identity is not considered an identity', () {
-        expect(Converter.isIdentity<int>(_asInt), isFalse);
+    tc.group('- LAZY COLLECTIONS', () {
+      tc.group('- Lazy list', () {
+        testLazyLists(tc);
       });
 
+      tc.group('- Lazy map', () {
+        testLazyMaps(tc);
+      });
+    });
+
+    tc.group('- CONVERTERS', () {
       tc.test('- Type checks per platform', () async {
         // making sure those assumptions hold over time
         expect(1.1, isNotA<int>());
@@ -100,21 +112,22 @@ void execute(TestContext? tc) {
         }
       });
 
+      tc.test('- Custom identity is not considered an identity', () {
+        expect(Converter.isIdentity<int>(_asInt), isFalse);
+      });
+
       testCastConverter(tc);
-      testNumConverter(tc);
-
       testInPlaceCastConverter(tc);
-      testInPlaceNumConverter(tc);
-
       testLazyInPlaceCastConverter(tc);
+
+      testNumConverter(tc);
+      testInPlaceNumConverter(tc);
       testLazyInPlaceNumConverter(tc);
-    });
 
-    tc.group('- Squadron converter', () {
-      final platformConverter = Squadron.converter;
+      tc.test('- Change default converter', () {
+        final defaultConverter = Squadron.converter;
 
-      tc.test('- Set', () {
-        final converter = LazyInPlaceConverter(platformConverter);
+        final converter = LazyInPlaceConverter(defaultConverter);
 
         var success = false, called = 0;
 
@@ -140,17 +153,17 @@ void execute(TestContext? tc) {
           expect(Squadron.converter, converter);
 
           // restore
-          Squadron.converter = platformConverter;
+          Squadron.converter = defaultConverter;
           expect(success, isFalse);
           expect(called, 2);
-          expect(Squadron.converter, platformConverter);
+          expect(Squadron.converter, defaultConverter);
 
           // update again
-          Squadron.converter = InPlaceConverter(platformConverter);
+          Squadron.converter = InPlaceConverter(defaultConverter);
           expect(success, isFalse);
           expect(called, 3);
           expect(Squadron.converter, isNot(converter));
-          expect(Squadron.converter, isNot(platformConverter));
+          expect(Squadron.converter, isNot(defaultConverter));
 
           // reset
           success = true;
@@ -158,10 +171,10 @@ void execute(TestContext? tc) {
           Squadron.converter = null;
           expect(success, isTrue);
           expect(called, 3);
-          expect(Squadron.converter, platformConverter);
+          expect(Squadron.converter, defaultConverter);
         } finally {
           Squadron.unregisterConverterChanged(key);
-          Squadron.converter = platformConverter;
+          Squadron.converter = defaultConverter;
         }
       });
     });

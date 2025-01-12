@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-abstract class Cache {
+import 'squadron_version.dart';
+
+abstract class Cache with SquadronVersion {
   FutureOr<dynamic> get(dynamic key);
   FutureOr<bool> containsKey(dynamic key);
   FutureOr<void> set(dynamic key, dynamic value, {Duration? timeToLive});
   FutureOr<CacheStat> getStats();
 }
 
-class CacheClient implements Cache {
+class CacheClient with SquadronVersion implements Cache {
   CacheClient(this._remote);
 
   final Channel _remote;
@@ -19,36 +21,37 @@ class CacheClient implements Cache {
 
   @override
   Future<dynamic> get(dynamic key) =>
-      _remote.sendRequest(CacheService.getOperation, [key]);
+      _remote.sendRequest(CacheService.getCommand, [key]);
 
   @override
   Future<bool> containsKey(dynamic key) =>
-      _remote.sendRequest(CacheService.containsOperation, [key]).then(
+      _remote.sendRequest(CacheService.containsCommand, [key]).then(
           Squadron.converter.value<bool>());
 
   @override
   Future set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
     return _remote.sendRequest(
-        CacheService.setOperation, [key, value, timeToLive?.inMicroseconds]);
+        CacheService.setCommand, [key, value, timeToLive?.inMicroseconds]);
   }
 
   @override
   Future<CacheStat> getStats() async => CacheStat.deserialize(
-      await _remote.sendRequest(CacheService.statsOperation, []));
+      await _remote.sendRequest(CacheService.statsCommand, []));
 }
 
-class CacheService implements Cache, WorkerService {
+class CacheService with SquadronVersion implements Cache, WorkerService {
   CacheService() {
     operations.addAll({
-      getOperation: (r) => get(r.args[0]),
-      containsOperation: (r) => containsKey(r.args[0]),
-      setOperation: (r) => set(r.args[0], r.args[1],
+      SquadronVersion.versionCommand: (r) => getVersion(),
+      getCommand: (r) => get(r.args[0]),
+      containsCommand: (r) => containsKey(r.args[0]),
+      setCommand: (r) => set(r.args[0], r.args[1],
           timeToLive: (r.args[2] == null)
               ? null
               : Duration(
                   microseconds: Squadron.converter.value<int>()(r.args[2]))),
-      statsOperation: (r) => getStats().serialize()
+      statsCommand: (r) => getStats().serialize()
     });
   }
 
@@ -99,10 +102,10 @@ class CacheService implements Cache, WorkerService {
   @override
   CacheStat getStats() => CacheStat(_hit, _miss, _expired, size, _maxSize);
 
-  static const getOperation = 1;
-  static const containsOperation = 2;
-  static const setOperation = 3;
-  static const statsOperation = 4;
+  static const getCommand = 1;
+  static const containsCommand = 2;
+  static const setCommand = 3;
+  static const statsCommand = 4;
 
   @override
   final Map<int, CommandHandler> operations = {};

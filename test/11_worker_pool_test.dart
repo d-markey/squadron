@@ -10,13 +10,11 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/custom_exception.dart';
-import 'classes/prime_numbers.dart';
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
-import 'const_concurrency_settings.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
+import 'test_constants.dart';
+import 'test_exception.dart';
 import 'worker_services/cache_service_worker.dart';
-import 'worker_services/delays.dart';
 import 'worker_services/error_service.dart';
 import 'worker_services/error_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
@@ -30,8 +28,8 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group("- Worker Pool", () {
-      tc.test('- prime worker pool with cache', () async {
+    tc.group('- SQUADRON WORKER - POOL', () {
+      tc.test('- Prime worker pool + cache worker', () async {
         await CacheWorker(tc).useAsync((cache) async {
           // important, the cache worker must be started to share its channel
           await cache.start();
@@ -54,7 +52,7 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- worker pool monitoring', () async {
+      tc.test('- Worker pool monitoring', () async {
         await TestWorkerPool(tc, concurrency_253).useAsync((p) async {
           final count = 2 * p.maxConcurrency + 1;
 
@@ -64,22 +62,22 @@ void execute(TestContext? tc) {
 
           final tasks = <Future>[];
           for (var i = 0; i < count; i++) {
-            tasks.add(p.io(ms: TestDelays.delay.inMilliseconds * 5));
+            tasks.add(p.io(ms: delay_80ms.inMilliseconds * 5));
           }
 
           // let the pool kick off some tasks: it must be running at full speed
-          await Future.delayed(TestDelays.delay * 2);
+          await Future.delayed(delay_80ms * 2);
           expect(p.size, p.maxWorkers);
 
           // install the worker monitor
           var stopped = 0;
-          final timer = Timer.periodic(TestDelays.delay * 0.5, (timer) {
-            stopped += p.stop((w) => w.idleTime > TestDelays.delay);
+          final timer = Timer.periodic(delay_80ms * 0.5, (timer) {
+            stopped += p.stop((w) => w.idleTime > delay_80ms);
           });
 
           try {
             // let tasks continue their work for a short while
-            await Future.delayed(TestDelays.delay * 2);
+            await Future.delayed(delay_80ms * 2);
 
             // while there is pending work, no worker should be stopped
             expect(stopped, lessThan(p.maxWorkers));
@@ -91,7 +89,7 @@ void execute(TestContext? tc) {
             expect(stopped, isPositive);
 
             // and the pool should be back to minimum size
-            await Future.delayed(TestDelays.shortDelay);
+            await Future.delayed(delay_20ms);
             expect(p.size, p.minWorkers);
           } finally {
             timer.cancel();
@@ -99,8 +97,8 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.group('- initialization error', () {
-        tc.test('- failed init', () async {
+      tc.group('- Error handling', () {
+        tc.test('- Failed initialization', () async {
           await TestWorkerPool.throws(tc).useAsync((p) async {
             await expectLater(p.start(), failsWith<WorkerException>());
             await expectLater(p.ping(), failsWith<CanceledException>());
@@ -108,7 +106,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- missing command', () async {
+        tc.test('- Missing command', () async {
           await TestWorkerPool.missingStartRequest(tc).useAsync((p) async {
             await expectLater(p.start(), failsWith<SquadronError>());
             await expectLater(p.ping(), failsWith<CanceledException>());
@@ -116,17 +114,15 @@ void execute(TestContext? tc) {
           });
         }, skip: tc.entryPoints.missingStartRequest == null);
 
-        tc.test('- invalid command ID', () async {
+        tc.test('- Invalid command ID', () async {
           await TestWorkerPool.invalid(tc).useAsync((p) async {
             await expectLater(p.start(), failsWith<SquadronError>());
             await expectLater(p.ping(), failsWith<CanceledException>());
             expect(p.size, isZero);
           });
         });
-      });
 
-      tc.group('- error handling', () {
-        tc.test('- Exception', () async {
+        tc.test('- Dart Exception', () async {
           await ErrorWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
               await p.throwException();
@@ -174,44 +170,44 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- CustomException (unregistered)', () async {
+        tc.test('- TestException (unregistered)', () async {
           await ErrorWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
-              await p.throwCustomException();
+              await p.throwTestException();
               throw unexpectedSuccess('cancel()');
             } on WorkerException catch (ex) {
-              expect(ex, isNotA<CustomException>());
+              expect(ex, isNotA<TestException>());
               expect(ex, reports('Failed to deserialize'));
-              expect(ex, reports('CUSTOM'));
-              expect(ex.command, ErrorService.throwCustomExceptionCommand);
+              expect(ex, reports('#TEST'));
+              expect(ex.command, ErrorService.throwTestExceptionCommand);
             } finally {
-              p.exceptionManager.unregister(CustomException.typeId);
+              p.exceptionManager.unregister(TestException.typeId);
             }
           });
         });
 
-        tc.test('- CustomException (registered)', () async {
+        tc.test('- TestException (registered)', () async {
           await ErrorWorkerPool(tc, concurrency_222).useAsync((p) async {
             try {
               p.exceptionManager.register(
-                CustomException.typeId,
-                CustomException.deserialize,
+                TestException.typeId,
+                TestException.deserialize,
               );
-              await p.throwCustomException();
+              await p.throwTestException();
               throw unexpectedSuccess('cancel()');
-            } on CustomException catch (ex) {
-              expect(ex, reports('intentional CUSTOM exception'));
-              expect(ex.stackTrace, hasCalled('throwCustomException'));
-              expect(ex.command, ErrorService.throwCustomExceptionCommand);
+            } on TestException catch (ex) {
+              expect(ex, reports('intentional TEST exception'));
+              expect(ex.stackTrace, hasCalled('throwTestException'));
+              expect(ex.command, ErrorService.throwTestExceptionCommand);
             } finally {
-              p.exceptionManager.unregister(CustomException.typeId);
+              p.exceptionManager.unregister(TestException.typeId);
             }
           });
         });
       });
 
-      tc.group('- performance', () {
-        tc.test('- value', () async {
+      tc.group('- Performance', () {
+        tc.test('- Non-streaming (prime worker)', () async {
           await PrimeWorkerPool(tc).useAsync((p) async {
             final count = 3 * p.maxConcurrency + 1;
             final counter = PerfCounter('perf'), tasks = <Future>[];
@@ -228,7 +224,7 @@ void execute(TestContext? tc) {
 
             var progress = counter.snapshot;
             if (progress.totalCount == 0) {
-              await Future.delayed(TestDelays.shortDelay);
+              await Future.delayed(delay_20ms);
               progress = counter.snapshot;
             }
             expect(progress.totalCount, isPositive);
@@ -245,7 +241,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- streaming', () async {
+        tc.test('- Streaming (prime worker)', () async {
           await PrimeWorkerPool(tc).useAsync((p) async {
             final count = 3 * p.maxConcurrency + 1;
             // start count tasks and measure performance
@@ -263,7 +259,7 @@ void execute(TestContext? tc) {
 
             var progress = counter.snapshot;
             if (progress.totalCount == 0) {
-              await Future.delayed(TestDelays.shortDelay);
+              await Future.delayed(delay_20ms);
               progress = counter.snapshot;
             }
             expect(progress.totalCount, isPositive);
@@ -281,7 +277,7 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- stopped pool will not accept new requests', () async {
+      tc.test('- Stopped pool will not accept new requests', () async {
         await TestWorkerPool(tc, ConcurrencySettings.oneIoThread)
             .useAsync((p) async {
           final n = await p.delayed(-1);
@@ -299,7 +295,7 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- restarted pool will serve new requests', () async {
+      tc.test('- Restarted pool will serve new requests', () async {
         await TestWorkerPool(tc, ConcurrencySettings.twoIoThreads)
             .useAsync((p) async {
           await p.start();
@@ -312,7 +308,7 @@ void execute(TestContext? tc) {
 
           expect(p.stopped, isTrue);
 
-          await Future.delayed(TestDelays.shortDelay);
+          await Future.delayed(delay_20ms);
           expect(p.size, isZero);
 
           try {
@@ -331,7 +327,7 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- stopping a pool does not prevent processing of pending tasks',
+      tc.test('- Stopping a pool does not prevent processing of pending tasks',
           () async {
         await TestWorkerPool(tc, ConcurrencySettings.threeCpuThreads)
             .useAsync((p) async {
@@ -341,7 +337,7 @@ void execute(TestContext? tc) {
             tasks.add(p.delayed(i).then(digits.add));
           }
 
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           p.stop();
 
           expect(p.stopped, isTrue);
@@ -354,16 +350,16 @@ void execute(TestContext? tc) {
           expect(p.pendingWorkload, isZero);
           expect(digits, hasLength(count));
 
-          await Future.delayed(TestDelays.shortDelay);
+          await Future.delayed(delay_20ms);
           expect(p.size, isZero);
         });
       });
 
-      tc.test('- pool termination', () async {
+      tc.test('- Pool termination', () async {
         await TestWorkerPool(tc, ConcurrencySettings.threeCpuThreads)
             .useAsync((p) async {
           await p.start();
-          final duration = TestDelays.delay * 10;
+          final duration = delay_80ms * 10;
 
           Timer(duration * 0.5, () {
             p.terminate();
@@ -387,8 +383,8 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.group('- streaming - with multiple errors', () {
-        tc.test('- cancelOnError: false', () async {
+      tc.group('- Streaming - with multiple errors', () {
+        tc.test('- With cancelOnError = false', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final token = CancelableToken();
 
@@ -418,7 +414,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- cancelOnError: true', () async {
+        tc.test('- With cancelOnError = true', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final numbers = <int>[];
 
@@ -436,7 +432,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- await for', () async {
+        tc.test('- With "await for"', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final numbers = <int>[];
             try {
@@ -452,7 +448,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- throwing in await for', () async {
+        tc.test('- Throwing in "await for"', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final numbers = <int>[];
             try {
@@ -471,7 +467,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- pause/resume', () async {
+        tc.test('- Pause & resume', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final numbers = <int>[], errors = <SquadronException>[];
 
@@ -514,20 +510,20 @@ void execute(TestContext? tc) {
             sub.pause();
             expect(numbers, isEmpty);
             expect(errors, isEmpty);
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
             expect(numbers, isEmpty);
             expect(errors, isEmpty);
             // resume
             resume();
 
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
             pause();
             pause();
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
             resume();
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
             resume();
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
 
             sub.cancel();
 
@@ -537,7 +533,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- pause/resume/cancel - using a StreamTask', () async {
+        tc.test('- Pause/resume/cancel with a StreamTask', () async {
           // at most one task
           await TestWorkerPool(tc, ConcurrencySettings.oneCpuThread)
               .useAsync((p) async {
@@ -564,7 +560,7 @@ void execute(TestContext? tc) {
             sub0.pause();
             sub1.pause();
 
-            await Future.delayed(TestDelays.delay * 2);
+            await Future.delayed(delay_80ms * 2);
 
             expect(numbers0, isEmpty);
             expect(errors0, isEmpty);
@@ -574,7 +570,7 @@ void execute(TestContext? tc) {
             sub0.resume();
             sub1.resume();
 
-            await Future.delayed(TestDelays.delay * 2);
+            await Future.delayed(delay_80ms * 2);
 
             expect(numbers0, isNotEmpty);
             expect(errors0, isNotEmpty);
@@ -592,7 +588,7 @@ void execute(TestContext? tc) {
             expect(errors1, isEmpty);
 
             // the second stream should be buffering events
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
 
             expect(numbers0, hasLength(numbersCount0));
             expect(errors0, hasLength(errorsCount0 + 1));
@@ -602,7 +598,7 @@ void execute(TestContext? tc) {
 
             // resume: buffered event should be processed
             sub1.resume();
-            await Future.delayed(TestDelays.delay * 4);
+            await Future.delayed(delay_80ms * 4);
 
             expect(numbers0, hasLength(numbersCount0));
             expect(errors0, hasLength(errorsCount0 + 1));
@@ -616,24 +612,28 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- immediate cancelation', () async {
+        tc.test('- Early cancelation', () async {
           await TestWorkerPool(tc).useAsync((p) async {
             final numbers = <int>[], errors = <SquadronException>[];
             final task = p.infiniteWithErrorsTask();
-            final sub = task.stream.listen(
-              numbers.add,
-              onError: errors.add,
-              cancelOnError: false,
-            );
 
-            await sub.cancel();
+            task.stream
+                .listen(
+                  numbers.add,
+                  onError: errors.add,
+                  cancelOnError: false,
+                )
+                .cancel();
 
+            // the stream subscription is cancelled
+            // but the task is still pending
             expect(task.isPending, isTrue);
             expect(task.isRunning, isFalse);
             expect(task.isCanceled, isFalse);
             expect(task.isFinished, isFalse);
 
-            await Future.delayed(TestDelays.delay * 2);
+            // now the task has completed
+            await Future.delayed(delay_80ms * 2);
 
             expect(task.isPending, isFalse);
             expect(task.isRunning, isFalse);
@@ -642,6 +642,34 @@ void execute(TestContext? tc) {
 
             expect(numbers, isEmpty);
             expect(errors, isEmpty);
+          });
+        });
+        tc.test('- Streaming task early cancelation', () async {
+          await TestWorkerPool(tc).useAsync((p) async {
+            final numbers = <int>[], errors = <SquadronException>[];
+            final task = p.infiniteWithErrorsTask();
+            final stream = task.stream;
+
+            task.cancel();
+
+            expect(task.isPending, isFalse);
+            expect(task.isRunning, isFalse);
+            expect(task.isCanceled, isTrue);
+            expect(task.isFinished, isFalse);
+
+            final sub = stream.listen(
+              numbers.add,
+              onError: errors.add,
+              cancelOnError: false,
+            );
+
+            await Future.delayed(delay_20ms);
+
+            expect(numbers, isEmpty);
+            expect(errors, hasLength(1));
+            expect(errors.first, isA<TaskCanceledException>());
+
+            sub.cancel();
           });
         });
       });

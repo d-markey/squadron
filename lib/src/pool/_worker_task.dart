@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
+
 import '../_impl/xplat/_time_stamp.dart';
 import '../exceptions/task_canceled_exception.dart';
 import '../stats/perf_counter.dart';
@@ -17,12 +19,6 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   int? _canceled;
 
   final PerfCounter? _counter;
-
-  final _done = Completer<void>();
-
-  /// Returns a future that will complete when the task has run.
-  @override
-  Future<void> get done => _done.future;
 
   @override
   bool get isCanceled => _canceled != null;
@@ -50,6 +46,11 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
       microseconds:
           (_scheduled ?? _canceled ?? microsecTimeStamp()) - submitted);
 
+  final _done = Completer<void>();
+
+  @override
+  Future<void> get done => _done.future;
+
   TaskCanceledException? _canceledException;
   TaskCanceledException? get canceledException => _canceledException;
 
@@ -62,28 +63,32 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
     _canceled ??= microsecTimeStamp();
     _canceledException ??= TaskCanceledException(message);
     if (_scheduled == null) {
-      // task will not be scheduled, make sure it reports as completed
-      _done.complete();
+      // task will not be scheduled, make sure it reports as errored
+      _fail();
     }
   }
 
   void _success(bool res) {
     _finished ??= microsecTimeStamp();
     _counter?.update(_finished! - _scheduled!, res);
-    _done.complete();
+    if (!_done.isCompleted) _done.complete();
   }
 
-  void _error(_) {
+  void _fail([Object? _]) {
     _finished ??= microsecTimeStamp();
     _counter?.update(_finished! - _scheduled!, false);
-    _done.complete();
+    if (!_done.isCompleted) _done.complete();
   }
 
-  Future<void> run(W worker) async {
+  Future<void> run(W worker) {
     _scheduled ??= microsecTimeStamp();
-
-    return execute(worker).then(_success, onError: _error);
+    return execute(worker).then(_success, onError: _fail);
   }
 
   Future<bool> execute(W worker);
+}
+
+@internal
+extension WorkerTaskExt on WorkerTask {
+  void fail() => _fail();
 }

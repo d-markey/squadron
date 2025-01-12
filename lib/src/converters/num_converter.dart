@@ -10,13 +10,15 @@ final class NumConverter extends Converter {
 
   static int _toInt(dynamic x) {
     if (x is int && x.isFinite) return x;
-    double y;
-    if (x is num) {
-      y = x.toDouble();
-    } else {
-      // seems like Map<int, V> are received as Map<JSString, V> on wasm
-      y = double.tryParse(x.toString())!;
-    }
+    double y = (x as num).toDouble();
+    ///////////////////////////// fixed in Squadron 6.2.0
+    // if (x is num) {
+    //   y = x.toDouble();
+    // } else {
+    //   // seems like Map<int, V> are received as Map<JSString, V> on wasm
+    //   y = double.tryParse(x.toString())!;
+    // }
+    ///////////////////////////// fixed in Squadron 6.2.0
     if (!y.isFinite) return double.nan as int; // intended type error
     final z = y.toInt(), d = y - z;
     if (d != 0) return double.nan as int; // intended type error

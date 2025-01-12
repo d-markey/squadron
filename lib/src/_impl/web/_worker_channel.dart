@@ -11,7 +11,6 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_response.dart';
 import '_patch.dart';
-import '_transferables.dart';
 import '_typedefs.dart' as impl;
 
 /// [WorkerChannel] implementation for the JavaScript world.
@@ -27,7 +26,7 @@ final class _WebWorkerChannel implements WorkerChannel {
 
   void _postResponse(WorkerResponse res) {
     try {
-      _sendPort.postMessage($jsify(res.wrapInPlace()));
+      _sendPort.postMessage($jsify(res.wrapInPlace(), null));
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
       throw SquadronErrorExt.create('Failed to post response: $ex', st);
@@ -37,12 +36,9 @@ final class _WebWorkerChannel implements WorkerChannel {
   void _inspectAndPostResponse(WorkerResponse res) {
     try {
       final data = res.wrapInPlace();
-      final transfer = Transferables.get(data);
-      if (transfer == null || transfer.isEmpty) {
-        _sendPort.postMessage($jsify(data));
-      } else {
-        _sendPort.postMessage($jsify(data), $jsify(transfer) as JSArray);
-      }
+      final transfer = JSArray();
+      final message = $jsify(data, transfer);
+      _sendPort.postMessage(message, transfer);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
       throw SquadronErrorExt.create('Failed to post response: $ex', st);

@@ -35,14 +35,12 @@ final class _WebChannel implements Channel {
     try {
       req.cancelToken?.ensureStarted();
       final data = req.wrapInPlace();
-      final msg = $jsify(data);
-      final transfer = Transferables.get([req.channelInfo]);
-      if (transfer == null || transfer.isEmpty) {
-        _sendPort.postMessage(msg);
-      } else {
-        final jsTransfer = $jsify(transfer) as JSArray;
-        _sendPort.postMessage(msg, jsTransfer);
+      final transfer = JSArray();
+      if (req.channelInfo != null) {
+        transfer.push(req.channelInfo);
       }
+      final msg = $jsify(data, null);
+      _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
       throw SquadronErrorExt.create('Failed to post request: $ex', st);
@@ -56,15 +54,9 @@ final class _WebChannel implements Channel {
     req.cancelToken?.ensureStarted();
     req.cancelToken?.throwIfCanceled();
     try {
-      final data = req.wrapInPlace();
-      final msg = $jsify(data);
-      final transfer = Transferables.get(data);
-      if (transfer == null || transfer.isEmpty) {
-        _sendPort.postMessage(msg);
-      } else {
-        final jsTransfer = $jsify(transfer) as JSArray;
-        _sendPort.postMessage(msg, jsTransfer);
-      }
+      final transfer = JSArray();
+      final msg = $jsify(req.wrapInPlace(), transfer);
+      _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
       throw SquadronErrorExt.create('Failed to post request: $ex', st);
@@ -138,13 +130,13 @@ final class _WebChannel implements Channel {
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
-            final ex = SquadronException.from(getError(e), null, command);
+            final ex = SquadronException.from(e.dartError, null, command);
             final handler = buffer.isActive ? buffer.addError : $forwardError;
             handler(ex, null);
           }.toJS;
 
           com.port1.onmessage = (web.MessageEvent e) {
-            final res = WorkerResponseExt.from(getMessageEventData(e)!);
+            final res = WorkerResponseExt.from(e.dartData!);
             final handler = buffer.isActive ? buffer.add : $forwardMessage;
             handler(res);
           }.toJS;

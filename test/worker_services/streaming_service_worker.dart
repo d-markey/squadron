@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
+import 'squadron_version.dart';
 import 'streaming_service.dart';
 
 class StreamingServiceWorkerPool extends WorkerPool<StreamingServiceWorker>
+    with PoolVersion<StreamingServiceWorker>
     implements StreamingService {
   StreamingServiceWorkerPool(
       TestContext context, ConcurrencySettings? concurrencySettings,
@@ -25,7 +27,9 @@ class StreamingServiceWorkerPool extends WorkerPool<StreamingServiceWorker>
   Stream<int> monitoredStream() => stream((w) => w.monitoredStream());
 }
 
-class StreamingServiceWorker extends Worker implements StreamingService {
+class StreamingServiceWorker extends Worker
+    with WorkerVersion
+    implements StreamingService {
   StreamingServiceWorker(TestContext context,
       {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
       : super(

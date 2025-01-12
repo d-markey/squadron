@@ -30,15 +30,23 @@ IF "%__REBUILD__%" == "1" (
     CALL .\tool\compile_all_tests.bat
 )
 
-RMDIR /S /Q .\doc\browser-tests
+RMDIR /S /Q .\doc\test-console
 RMDIR /S /Q .\doc\workers
 
-MKDIR .\doc\browser-tests
+MKDIR .\doc\test-console
+MKDIR .\doc\test-console\css
+MKDIR .\doc\test-console\includes
+MKDIR .\doc\test-console\js
+MKDIR .\doc\test-console\wasm
 MKDIR .\doc\workers
 MKDIR .\doc\workers\js
 MKDIR .\doc\workers\wasm
 
-CALL :DEPLOY browser-tests
+CALL :DEPLOY test-console
+CALL :DEPLOY test-console\css
+CALL :DEPLOY test-console\includes
+CALL :DEPLOY test-console\js
+CALL :DEPLOY test-console\wasm
 CALL :DEPLOY workers\js
 CALL :DEPLOY workers\wasm
 

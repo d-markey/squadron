@@ -1,18 +1,19 @@
+import '../exceptions/worker_exception.dart';
+
 typedef Cast<T> = T Function(dynamic);
 
 abstract base class Converter {
   const Converter();
 
-  static bool isIdentity<T>(Cast<T>? cast) =>
-      (cast == null) || (cast == identity<T>);
+  static bool isIdentity<T>(Cast<T> cast) => (cast == identity<T>);
 
-  static T identity<T>(dynamic x) => x as T;
+  static T identity<T>(dynamic x) {
+    if (x is T) return x;
+    throw WorkerException('TypeError: ${x.runtimeType} is not a subtype of $T');
+  }
 
   static List<dynamic> toList(dynamic x) =>
       (x is List) ? x : (x as Iterable).toList();
-
-  static Set<dynamic> toSet(dynamic x) =>
-      (x is Set) ? x : (x as Iterable).toSet();
 
   // non-nullable value
   Cast<T> value<T>();
@@ -35,8 +36,14 @@ abstract base class Converter {
 
   // set
   Cast<Set<T>> set<T>([Cast<T>? cast]) {
-    final op = list<T>(cast);
-    return (x) => op(x).toSet();
+    final op = cast ?? value<T>();
+    final toIterable = Converter.isIdentity<T>(op)
+        ? ((x) => (x as Iterable).cast<T>())
+        : ((x) => (x as Iterable).map(op));
+    final toSet = Converter.isIdentity<T>(op)
+        ? ((Set x) => x.cast<T>())
+        : ((Set x) => x.map(op).toSet());
+    return (x) => (x is Set) ? toSet(x) : toIterable(x).toSet();
   }
 
   // map

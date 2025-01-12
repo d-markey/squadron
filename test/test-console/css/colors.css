@@ -1,0 +1,16 @@
+:root {
+    --white: #FFFFFF;
+    --background: #F0F0F0;
+    --border: #CCCCCC;
+
+    --green: #00D2B8;
+    --lblue: #45D1FD;
+    --mblue: #0082C8;
+    --dblue: #02539A;
+
+    --pass: #00B000;
+    --skip: #FF9000;
+    --fail: #FF0000;
+
+    --highlight: #FFFFC6;
+}

@@ -13,34 +13,28 @@ final token = CancelableToken();
 final semaphore = Semaphore(3, maxCount: 3);
 
 void main(List<String> args) async {
-  print('Date/time: ${DateTime.now().toIso8601String()}');
   final sw = Stopwatch()..start();
 
   ProcessSignal.sigint.watch().listen((_) async {
     if (!token.isCanceled) {
-      print('Received Ctrl+C, aborting...');
+      print('[${sw.elapsed}] Received Ctrl+C, aborting...');
       token.cancel();
     }
   });
 
   args = overrideDefaultArgs(args, 'all', ['runners', 'js', 'wasm']);
 
-  final test = path.join(projectRoot, 'test');
+  final testRoot = path.join(projectRoot, 'test');
 
   final targets = <Compilation>[];
 
-  if (takeArg(args, 'runners')) {
-    print('Compile browser test runners to ${js.label} & ${wasm.label}...');
-    final runnersPath = path.join(test, 'browser-tests');
-    targets
-        .addAll(runners.entries.expand<Compilation>((e) => e.value.entries.map(
-              (d) => Compilation(
-                platform: d.key,
-                optimizationLevel: d.value.opt,
-                source: path.join(runnersPath, d.value.folder, e.key),
-                output: path.join(runnersPath, '${e.key}.${d.key}'),
-              ),
-            )));
+  final compileRunners = takeArg(args, 'runners');
+  if (compileRunners) {
+    final runnersPath = path.join(testRoot, 'test-console');
+    print(
+        '[${sw.elapsed}] Compile test runners to ${js.label} & ${wasm.label}...');
+    targets.addAll(runners.entries.expand((e) =>
+        e.value.entries.map((d) => _build(d, e.key, testRoot, runnersPath))));
   }
 
   final workerPlatforms = <String>{};
@@ -57,39 +51,55 @@ void main(List<String> args) async {
   if (takeArg(args, 'wasm')) $registerPlatform('wasm', wasm.label);
 
   if (workerPlatforms.isNotEmpty) {
-    final workersPath = path.join(test, 'workers');
-    print('Compile test workers to $platformLabels...');
-    targets.addAll(workers.entries.expand<Compilation>((e) =>
-        e.value.entries.where((d) => workerPlatforms.contains(d.key)).map(
-              (d) => Compilation(
-                platform: d.key,
-                optimizationLevel: d.value.opt,
-                source: path.join(workersPath, d.value.folder, e.key),
-                output: path.join(workersPath, d.key, '${e.key}.${d.key}'),
-              ),
-            )));
+    final workersPath = path.join(testRoot, 'workers');
+    print('[${sw.elapsed}] Compile test workers to $platformLabels...');
+    targets.addAll(workers.entries.expand((e) => e.value.entries
+        .where((d) => workerPlatforms.contains(d.key))
+        .map((d) => _build(d, e.key, workersPath, workersPath))));
   }
 
   reportUnknownArgs(args);
 
   try {
-    final results = await Future.wait(targets.map(_compile));
+    final results = await Future.wait(targets.map((t) => _compile(t, sw)));
+    final date = DateTime.now();
+    await Future.wait([
+      if (compileRunners)
+        _updateCompilationDate('runners', 'Test Console', date),
+      if (platformLabels.contains(js.label))
+        _updateCompilationDate('js', '${js.label} Workers', date),
+      if (platformLabels.contains(wasm.label))
+        _updateCompilationDate('wasm', '${wasm.label} Workers', date),
+    ]);
+
     final exitCode = results.where((e) => e != 0).firstOrNull ?? 0;
+    print('[${sw.elapsed}] Date/time: ${date.toIso8601String()}');
     print((exitCode == 0)
-        ? 'Done in ${sw.elapsed}.'
-        : 'Unknown error $exitCode.');
+        ? '[${sw.elapsed}] Done.'
+        : '[${sw.elapsed}] Unknown error $exitCode.');
     exit(exitCode);
   } on CanceledException {
-    print('Aborted');
+    print('[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
+    print('[${sw.elapsed}] Aborted');
     exit(1);
   } catch (ex, st) {
-    print('${ex.runtimeType}: $ex');
+    print('[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
+    print('[${sw.elapsed}] ${ex.runtimeType}: $ex');
     print(st);
     exit(255);
   }
 }
 
-Future<int> _compile(Compilation compilation) async {
+Compilation _build(MapEntry<String, ({String folder, int opt})> info,
+        String src, String sourceFolder, String outputFolder) =>
+    Compilation(
+      platform: info.key,
+      optimizationLevel: info.value.opt,
+      source: path.join(sourceFolder, info.value.folder, src),
+      output: path.join(outputFolder, info.key, '$src.${info.key}'),
+    );
+
+Future<int> _compile(Compilation compilation, Stopwatch sw) async {
   final t = await semaphore.enter();
   try {
     token.throwIfCanceled();
@@ -98,14 +108,14 @@ Future<int> _compile(Compilation compilation) async {
     final (:exitCode, :output) = await process.result;
     final src = compilation.source, compiled = compilation.output;
     if (token.isCanceled) {
-      print('* $src --> $compiled: cancelled ($exitCode)');
+      print('[${sw.elapsed}] * $src --> $compiled: cancelled ($exitCode)');
       token.throwIfCanceled();
     } else if (exitCode == 0) {
-      print('* $src --> $compiled: success');
+      print('[${sw.elapsed}] * $src --> $compiled: success');
     } else {
       print([
-        '* $src --> $compiled: error $exitCode',
-        ...output.map((l) => '     $l'),
+        '[${sw.elapsed}] * $src --> $compiled: error $exitCode',
+        ...output.map((l) => '[${sw.elapsed}]     $l'),
       ].join('\n'));
     }
     return exitCode;
@@ -114,12 +124,24 @@ Future<int> _compile(Compilation compilation) async {
   }
 }
 
+Future<void> _updateCompilationDate(
+    String target, String label, DateTime date) async {
+  final htmlFile = path.join(projectRoot, 'test', 'test-console', 'includes',
+      'compilation_date_$target.inc.html');
+  await File(htmlFile).writeAsString(
+      '<span><b>$label</b> compiled on <b>${datePart(date)} ${timePart(date)}</b></span>');
+}
+
+String datePart(DateTime d) => '${d.year}-${nn(d.month)}-${nn(d.day)}';
+String timePart(DateTime d) => '${nn(d.hour)}:${nn(d.minute)}:${nn(d.second)}';
+String nn(int n) => n.toString().padLeft(2, '0');
+
 sealed class Optimizations {
   static const none = 0;
   static const def = 1;
   static const safe = 2;
   static const unsafe = 3;
-  static const agressive = 4;
+  static const aggressive = 4;
 }
 
 extension type Compilation._(List<String> _args) {
@@ -176,44 +198,44 @@ const wasm = SquadronPlatformType.wasm;
 
 const workers = {
   'cache_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'echo_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'wasm', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'wasm', opt: Optimizations.aggressive),
   },
   'installable_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'issues_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.unsafe),
-    'wasm': (folder: 'js', opt: Optimizations.unsafe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'prime_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.unsafe),
-    'wasm': (folder: 'js', opt: Optimizations.unsafe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'not_a_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.unsafe),
-    'wasm': (folder: 'js', opt: Optimizations.unsafe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'log_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'test_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.def),
-    'wasm': (folder: 'js', opt: Optimizations.def),
+    'js': (folder: 'js', opt: Optimizations.safe),
+    'wasm': (folder: 'js', opt: Optimizations.safe),
   },
   'streaming_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'local_client_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'error_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.none), // no optim
@@ -222,15 +244,15 @@ const workers = {
 };
 
 const runners = {
-  'index.dart': {
-    'js': (folder: '', opt: Optimizations.agressive),
+  'console.dart': {
+    'js': (folder: 'src', opt: Optimizations.def),
   },
   'runner_js_workers.dart': {
-    'js': (folder: '', opt: Optimizations.def),
-    'wasm': (folder: '', opt: Optimizations.none),
+    'js': (folder: 'src', opt: Optimizations.def),
+    'wasm': (folder: 'src', opt: Optimizations.def),
   },
   'runner_wasm_workers.dart': {
-    'js': (folder: '', opt: Optimizations.def),
-    'wasm': (folder: '', opt: Optimizations.none),
+    'js': (folder: 'src', opt: Optimizations.def),
+    'wasm': (folder: 'src', opt: Optimizations.def),
   },
 };

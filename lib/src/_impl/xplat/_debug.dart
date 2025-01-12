@@ -5,14 +5,15 @@ import 'package:meta/meta.dart';
 import '../../pool/task.dart';
 import '../../typedefs.dart';
 import '../../utils.dart';
+import '../native/_debug.dart' if (dart.library.js_interop) '../web/_debug.dart'
+    as impl;
 
-@internal
-extension ObjectId on Object? {
+extension on Object? {
   String get objectId => '$runtimeType(${hashCode.hex})';
 }
 
 @internal
-void $log(String message) => print('[$threadId] $message');
+void $log(String message) => impl.$log('[$threadId] $message');
 
 final _busyControllers = <({StreamController controller, StackTrace st})>[];
 

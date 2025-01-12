@@ -11,10 +11,7 @@ class TypedDataMarshaler<T extends TypedData>
   ByteBuffer marshal(T data) => data.buffer;
 
   @override
-  T unmarshal(ByteBuffer data) {
-    final castor = _typeDataCastors[T] as Cast<T>;
-    return _td<T>(castor)(data);
-  }
+  T unmarshal(ByteBuffer data) => _td<T>(_typeDataCastors[T] as Cast<T>)(data);
 }
 
 Cast<T> _td<T>(T Function(ByteBuffer) view) =>

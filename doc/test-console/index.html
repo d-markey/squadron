@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Squadron Test Console</title>
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="icon" href="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg">
+
+  <script defer src="js/fragments.js"></script>
+  <script defer src="js/console.dart.js"></script>
+</head>
+
+<body>
+
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/d-markey/squadron/main/squadron_logo.svg" sizes="any"
+      type="image/svg+xml" />
+  </div>
+
+  <div class="commands">
+    <h3>Squadron Test Console</h3>
+    <div class="row">
+      <button id="tests-run-selected">Run Selected Tests</button>
+      &nbsp;
+      <button id="tests-cancel" disabled>Cancel</button>
+      &nbsp;
+      <button id="log-clear">Clear</button>
+      &nbsp;
+      <button id="error-previous">&lt; Previous Error</button>
+      <button id="error-next">Next Error &gt;</button>
+    </div>
+  </div>
+
+  <div class="context">
+
+    <div>
+      <h4>Test Platforms</h4>
+
+      <table>
+        <colgroup>
+          <col width="9rem;" />
+          <col />
+        </colgroup>
+        <tr>
+          <td>Runner:</td>
+          <td>
+            <button class="off" id="js-runner">JavaScript</button>
+            <button class="off" id="wasm-runner">Web Assembly</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Workers:</td>
+          <td>
+            <button class="off" id="js-workers">JavaScript</button>
+            <button class="off" id="wasm-workers">Web Assembly</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="border-top:2px solid var(--border);">
+      <h4>Test Groups</h4>
+
+      <div style="flex-direction: row">
+        <button id="tests-select-all">Select All</button>
+        <button id="tests-deselect-all">Deselect All</button>
+        <button id="tests-toggle">Toggle</button>
+      </div>
+
+      <div id="test-list"></div>
+    </div>
+  </div>
+
+  <div class="runner">
+    <iframe id="test-runner" src="test_runner_js2js.html"></iframe>
+  </div>
+
+  <div class="status">
+    <b id="console-status">Loading...</b>
+  </div>
+
+  <div class="footer">
+    <div x-fragment="includes/compilation_date_runners.inc.html"></div>
+    <div x-fragment="includes/compilation_date_js.inc.html"></div>
+    <div x-fragment="includes/compilation_date_wasm.inc.html"></div>
+  </div>
+
+  <script>window.onload = (e) => { loadFragments(); };</script>
+</body>
+
+</html>

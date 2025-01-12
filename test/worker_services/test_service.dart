@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import 'biging_marshaler.dart';
-import 'delays.dart';
+import '../fraction.dart';
+import '../test_constants.dart';
+import 'squadron_version.dart';
 
-class TestService implements WorkerService {
+class TestService with SquadronVersion implements WorkerService {
   static const startupOk = 0;
   static const startupThrows = 1;
   static const startupInvalid = 2;
@@ -17,6 +18,7 @@ class TestService implements WorkerService {
     operations.addAll({
       if (_invalid) invalidCommand1: (r) => null,
       if (_invalid) invalidCommand0: (r) => null,
+      SquadronVersion.versionCommand: (r) => getVersion(),
       ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
       cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
       delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
@@ -30,19 +32,26 @@ class TestService implements WorkerService {
       getPendingInfiniteWithErrorsCommand: (r) =>
           getPendingInfiniteWithErrors(),
       infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
-      bigIntAddCommand: (r) async {
-        final marshalIn = r.args[2] as bool;
-        final marshalOut = r.args[3] as bool;
-        final bigIntMarshaler = BigIntMarshaler();
-        final a = marshalIn ? bigIntMarshaler.unmarshal(r.args[0]) : r.args[0];
-        final b = marshalIn ? bigIntMarshaler.unmarshal(r.args[1]) : r.args[1];
-        final res =
-            await bigIntAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
-        return marshalOut ? bigIntMarshaler.marshal(res) : res;
+      fractionAddCommand: (r) async {
+        final marshalIn = Squadron.converter.value<bool>()(r.args[2]);
+        final marshalOut = Squadron.converter.value<bool>()(r.args[3]);
+        final toListOfInts = Squadron.converter.list<int>();
+        final toFraction = Squadron.converter.value<Fraction>();
+        final fractionMarshaler = const FractionMarshaler();
+        final a = marshalIn
+            ? fractionMarshaler.unmarshal(toListOfInts(r.args[0]))
+            : toFraction(r.args[0]);
+        final b = marshalIn
+            ? fractionMarshaler.unmarshal(toListOfInts(r.args[1]))
+            : toFraction(r.args[1]);
+        final res = await fractionAdd(a, b,
+            marshalIn: marshalIn, marshalOut: marshalOut);
+        return marshalOut ? fractionMarshaler.marshal(res) : toFraction(res);
       },
       platformTypeCommand: (r) => getPlatformType().toString(),
       mapCommand: (r) =>
           map(Squadron.converter.map<String, BigInt>()(r.args[0])),
+      setCommand: (r) => set(Squadron.converter.set<BigInt>()(r.args[0])),
     });
   }
 
@@ -55,7 +64,7 @@ class TestService implements WorkerService {
   }
 
   Future<int> delayed(int n) async {
-    await Future.delayed(TestDelays.delay);
+    await Future.delayed(delay_80ms);
     return n;
   }
 
@@ -63,7 +72,7 @@ class TestService implements WorkerService {
 
   Stream<int> finite(int count) async* {
     for (var i = 0; i < count; i++) {
-      await Future.delayed(TestDelays.shortDelay);
+      await Future.delayed(delay_20ms);
       yield i;
     }
   }
@@ -71,7 +80,7 @@ class TestService implements WorkerService {
   Stream<int> infinite() async* {
     int i = 0;
     while (true) {
-      await Future.delayed(TestDelays.shortDelay);
+      await Future.delayed(delay_20ms);
       yield i;
       i++;
     }
@@ -127,7 +136,7 @@ class TestService implements WorkerService {
           controller.addError(WorkerException('error #$i'));
         }
         i++;
-        await Future.delayed(TestDelays.shortDelay);
+        await Future.delayed(delay_20ms);
       }
     }
 
@@ -160,7 +169,7 @@ class TestService implements WorkerService {
     return controller.stream;
   }
 
-  FutureOr<BigInt> bigIntAdd(BigInt a, BigInt b,
+  FutureOr<Fraction> fractionAdd(Fraction a, Fraction b,
           {required bool marshalIn, required bool marshalOut}) =>
       a + b;
 
@@ -168,6 +177,9 @@ class TestService implements WorkerService {
 
   Future<Map<BigInt, String>> map(Map<String, BigInt> input) async =>
       input.map((k, v) => MapEntry(v, k));
+
+  Future<Set<BigInt>> set(Set<BigInt> input) async =>
+      input.map((v) => v * BigInt.two).toSet();
 
   final bool _invalid;
 
@@ -183,9 +195,10 @@ class TestService implements WorkerService {
   static const cancelableInfiniteCpuCommand = 34;
   static const getPendingInfiniteWithErrorsCommand = 35;
   static const infiniteWithErrorsCommand = 36;
-  static const bigIntAddCommand = 41;
+  static const fractionAddCommand = 41;
   static const platformTypeCommand = 51;
   static const mapCommand = 52;
+  static const setCommand = 53;
 
   @override
   final Map<int, CommandHandler> operations = {};

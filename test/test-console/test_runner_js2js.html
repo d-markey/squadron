@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Squadron Worker Tests - Browser (JavaScript Runner / JavaScript Workers)</title>
+  <link rel="stylesheet" href="css/test_runner.css">
+
+  <script defer src="js/runner_js_workers.dart.js"></script>
+  <script>
+    function dartPrint(message) {
+      sendToLogger(message);
+    }
+  </script>
+</head>
+
+<body>
+  <div id="output"></div>
+</body>
+
+</html>

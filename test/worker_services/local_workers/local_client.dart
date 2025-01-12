@@ -1,8 +1,11 @@
 import 'package:squadron/squadron.dart';
 
+import '../squadron_version.dart';
 import 'local_service.dart';
 
-class LocalClient extends LocalWorkerClient implements LocalService {
+class LocalClient extends LocalWorkerClient
+    with LocalWorkerVersion
+    implements LocalService {
   LocalClient(super.channel);
 
   @override

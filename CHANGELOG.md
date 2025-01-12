@@ -1,3 +1,10 @@
+## 6.2.0
+
+- Implement `jsify`/`dartify`-like functions to handle conversion between Dart / JavaScript. The implementation supports arbitrary `Map`s, `List`s and `Set`s, as well as `BigInt`s.
+- When converting a message to JS, the list of transferable objects is populated at the same time if required.
+- Reworked tests & activate Wasm tests.
+- Reworked test Web console (CSS by ChatGPT).
+
 ## 6.1.6
 
 - Fix `IWorker.terminate()` to make sure worker termination is really immediate.

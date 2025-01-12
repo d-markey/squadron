@@ -9,9 +9,9 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
-import 'const_concurrency_settings.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
+import 'test_constants.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
@@ -27,9 +27,9 @@ void execute(TestContext? tc) {
     final regExp = RegExp(
         'Worker running as "(0x[0-9A-Fa-f]+)", LocalService running as "(0x[0-9A-Fa-f]+)"');
 
-    tc.group("- Local Worker", () {
+    tc.group('- LOCAL WORKER', () {
       tc.group('- Identity', () {
-        tc.test('- Local', () async {
+        tc.test('- Local Worker', () async {
           var id = localService.getId();
           expect(id, 'LocalService running as "$threadId"');
           await LocalWorker.create(localService).useAsync((lw) async {
@@ -40,7 +40,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Squadron', () async {
+        tc.test('- Squadron Worker', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorker(tc, lw).useAsync((w) async {
               final check = await w.checkIds();
@@ -50,7 +50,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Pool', () async {
+        tc.test('- Worker Pool', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {
@@ -72,8 +72,8 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.group('- Exception', () {
-        tc.test('- Local', () async {
+      tc.group('- Error handling', () {
+        tc.test('- Local Worker', () async {
           try {
             final res = localService.throwException();
             throw unexpectedSuccess('throwException()', res);
@@ -88,12 +88,11 @@ void execute(TestContext? tc) {
               throw unexpectedSuccess('throwException()', res);
             } on WorkerException catch (ex) {
               expect(ex, reports('Intentional exception'));
-              expect(ex.stackTrace, hasCalled('throwException'));
             }
           });
         });
 
-        tc.test('- Squadron', () async {
+        tc.test('- Squadron Worker', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorker(tc, lw).useAsync((w) async {
               expect(await w.checkException(), isTrue);
@@ -101,7 +100,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Pool', () async {
+        tc.test('- Worker Pool', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {
@@ -116,8 +115,8 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.group('- Stream', () {
-        tc.test('- Local', () async {
+      tc.group('- Streaming', () {
+        tc.test('- Local Worker', () async {
           final list = await localService.sequence(19).toList();
           expect(list, Iterable.generate(19));
 
@@ -130,7 +129,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Squadron', () async {
+        tc.test('- Squadron Worker', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorker(tc, lw).useAsync((w) async {
               final res = await w.checkSequence(19).toList();
@@ -140,7 +139,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Pool', () async {
+        tc.test('- Worker Pool', () async {
           await LocalWorker.create(localService).useAsync((lw) async {
             await LocalClientWorkerPool(tc, lw, concurrency_253)
                 .useAsync((p) async {

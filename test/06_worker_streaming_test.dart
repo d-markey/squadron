@@ -9,10 +9,10 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/custom_exception.dart';
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
-import 'worker_services/delays.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
+import 'test_constants.dart';
+import 'test_exception.dart';
 import 'worker_services/streaming_service_worker.dart';
 import 'worker_services/test_service_worker.dart';
 
@@ -24,30 +24,19 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group("- Squadron Worker", () {
-      tc.group('- streaming', () {
-        late TestWorker worker;
-
-        tc.setUpAll(() async {
-          worker = TestWorker(tc);
-          await worker.start();
-        });
-
-        tc.tearDownAll(() {
-          worker.stop();
-        });
-
-        tc.test('- cancelOnError: false', () async {
+    tc.group('- SQUADRON WORKER - STREAMING', () {
+      tc.test('- With cancelOnError = false', () async {
+        await TestWorker(tc).useAsync((w) async {
           final done = Completer();
           final numbers = <int>[];
           final errors = <SquadronException>[];
           final maxErrors = 3;
 
-          var pending = await worker.getPendingInfiniteWithErrors();
+          var pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
 
           late final StreamSubscription sub;
-          sub = worker.infiniteWithErrors().listen(
+          sub = w.infiniteWithErrors().listen(
             numbers.add,
             onError: (ex) {
               errors.add(ex);
@@ -59,7 +48,7 @@ void execute(TestContext? tc) {
             cancelOnError: false,
           );
 
-          pending = await worker.getPendingInfiniteWithErrors();
+          pending = await w.getPendingInfiniteWithErrors();
           expect(pending, 1);
 
           await done.future;
@@ -68,26 +57,28 @@ void execute(TestContext? tc) {
           expect(numbers, hasLength(greaterThan(maxErrors)));
           expect(errors, everyElement(reports('error #\\d+')));
 
-          pending = await worker.getPendingInfiniteWithErrors();
+          pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- cancelOnError: true', () async {
+      tc.test('- With cancelOnError = true', () async {
+        await TestWorker(tc).useAsync((w) async {
           final numbers = <int>[];
 
-          var pending = await worker.getPendingInfiniteWithErrors();
+          var pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
 
           try {
             final completer = Completer();
-            worker.infiniteWithErrors().listen(
+            w.infiniteWithErrors().listen(
                   numbers.add,
                   onError: completer.completeError,
                   onDone: completer.complete,
                   cancelOnError: true,
                 );
 
-            pending = await worker.getPendingInfiniteWithErrors();
+            pending = await w.getPendingInfiniteWithErrors();
             expect(pending, 1);
 
             final res = await completer.future;
@@ -98,16 +89,18 @@ void execute(TestContext? tc) {
 
           expect(numbers, [0, 1, 2]);
 
-          pending = await worker.getPendingInfiniteWithErrors();
+          pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- await for', () async {
+      tc.test('- With "await for"', () async {
+        await TestWorker(tc).useAsync((w) async {
           final numbers = <int>[];
 
           try {
-            await for (var number in worker.infiniteWithErrors()) {
-              final pending = await worker.getPendingInfiniteWithErrors();
+            await for (var number in w.infiniteWithErrors()) {
+              final pending = await w.getPendingInfiniteWithErrors();
               expect(pending, 1);
               numbers.add(number);
             }
@@ -118,42 +111,46 @@ void execute(TestContext? tc) {
 
           expect(numbers, [0, 1, 2]);
 
-          final pending = await worker.getPendingInfiniteWithErrors();
+          final pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- throwing in await for', () async {
+      tc.test('- Throwing in "await for"', () async {
+        await TestWorker(tc).useAsync((w) async {
           final numbers = <int>[];
 
           try {
-            await for (var number in worker.infiniteWithErrors()) {
-              final pending = await worker.getPendingInfiniteWithErrors();
+            await for (var number in w.infiniteWithErrors()) {
+              final pending = await w.getPendingInfiniteWithErrors();
               expect(pending, 1);
               if (numbers.isEmpty) {
                 numbers.add(number);
               } else {
-                throw CustomException('client-side exception');
+                throw TestException('client-side exception');
               }
             }
             throw unexpectedSuccess('infiniteWithErrors()');
-          } on CustomException catch (ex) {
+          } on TestException catch (ex) {
             expect(ex, reports('client-side exception'));
           }
 
           expect(numbers, [0]);
 
-          final pending = await worker.getPendingInfiniteWithErrors();
+          final pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- pause/resume', () async {
-          var pending = await worker.getPendingInfiniteWithErrors();
+      tc.test('- Pause & resume', () async {
+        await TestWorker(tc).useAsync((w) async {
+          var pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
 
           final numbers = <int>[];
           final errors = <SquadronException>[];
 
-          final sub = worker
+          final sub = w
               .infiniteWithErrors()
               .listen(numbers.add, onError: errors.add, cancelOnError: false);
 
@@ -191,20 +188,20 @@ void execute(TestContext? tc) {
           sub.pause();
           expect(numbers, isEmpty);
           expect(errors, isEmpty);
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           expect(numbers, isEmpty);
           expect(errors, isEmpty);
           // resume
           resume();
 
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           pause();
           pause();
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           resume();
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           resume();
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
 
           await sub.cancel();
 
@@ -212,20 +209,22 @@ void execute(TestContext? tc) {
           expect(errors, hasLength(greaterThan(countErrors)));
           expect(errors, everyElement(reports('error #\\d+')));
 
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
 
-          pending = await worker.getPendingInfiniteWithErrors();
+          pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- immediate cancelation', () async {
-          var pending = await worker.getPendingInfiniteWithErrors();
+      tc.test('- Immediate cancelation', () async {
+        await TestWorker(tc).useAsync((w) async {
+          var pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
 
           final numbers = <int>[];
           final errors = <SquadronException>[];
 
-          final sub = worker
+          final sub = w
               .infiniteWithErrors()
               .listen(numbers.add, onError: errors.add, cancelOnError: false);
           expect(numbers, isEmpty);
@@ -235,62 +234,62 @@ void execute(TestContext? tc) {
           expect(numbers, isEmpty);
           expect(errors, isEmpty);
 
-          await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
           expect(numbers, isEmpty);
           expect(errors, isEmpty);
 
-          pending = await worker.getPendingInfiniteWithErrors();
+          pending = await w.getPendingInfiniteWithErrors();
           expect(pending, isZero);
         });
+      });
 
-        tc.test('- subscription cancelation', () async {
-          StreamingServiceWorker(tc).useAsync((w) async {
-            expect(await w.getMonitored(), 0);
+      tc.test('- Subscription cancelation', () async {
+        StreamingServiceWorker(tc).useAsync((w) async {
+          expect(await w.getMonitored(), 0);
 
-            var nb1 = 0;
-            final sub1 = w.monitoredStream().listen((_) => nb1++);
+          var nb1 = 0;
+          final sub1 = w.monitoredStream().listen((_) => nb1++);
 
-            await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
 
-            expect(await w.getMonitored(), 1);
-            expect(nb1, isPositive);
+          expect(await w.getMonitored(), 1);
+          expect(nb1, isPositive);
 
-            var nb2 = 0;
-            final sub2 = w.monitoredStream().listen((_) => nb2++);
+          var nb2 = 0;
+          final sub2 = w.monitoredStream().listen((_) => nb2++);
 
-            await Future.delayed(TestDelays.delay);
+          await Future.delayed(delay_80ms);
 
-            expect(await w.getMonitored(), 2);
-            expect(nb2, isPositive);
+          expect(await w.getMonitored(), 2);
+          expect(nb2, isPositive);
 
-            await sub1.cancel();
+          await sub1.cancel();
 
-            final nb1_1 = nb1, nb2_1 = nb2;
-            await Future.delayed(TestDelays.delay);
+          final nb1_1 = nb1, nb2_1 = nb2;
+          await Future.delayed(delay_80ms);
 
-            expect(nb1, nb1_1);
-            expect(nb2, greaterThan(nb2_1));
+          expect(nb1, nb1_1);
+          expect(nb2, greaterThan(nb2_1));
 
-            expect(await w.getMonitored(), 1);
+          expect(await w.getMonitored(), 1);
 
-            final nb1_2 = nb1, nb2_2 = nb2;
-            await Future.delayed(TestDelays.delay);
+          final nb1_2 = nb1, nb2_2 = nb2;
+          await Future.delayed(delay_80ms);
 
-            expect(nb1, nb1_2);
-            expect(nb2_2, greaterThan(nb2_1));
-            expect(nb2, greaterThan(nb2_2));
+          expect(nb1, nb1_2);
+          expect(nb2_2, greaterThan(nb2_1));
+          expect(nb2, greaterThan(nb2_2));
 
-            await sub2.cancel();
+          await sub2.cancel();
 
-            final nb1_3 = nb1, nb2_3 = nb2;
-            await Future.delayed(TestDelays.delay);
+          final nb1_3 = nb1, nb2_3 = nb2;
+          await Future.delayed(delay_80ms);
 
-            expect(nb1, nb1_3);
-            expect(nb2_3, greaterThan(nb2_2));
-            expect(nb2, nb2_3);
+          expect(nb1, nb1_3);
+          expect(nb2_3, greaterThan(nb2_2));
+          expect(nb2, nb2_3);
 
-            expect(await w.getMonitored(), 0);
-          });
+          expect(await w.getMonitored(), 0);
         });
       });
     });

@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
 import 'cache_service.dart';
+import 'squadron_version.dart';
 
-base class CacheWorker extends Worker implements Cache {
+base class CacheWorker extends Worker with WorkerVersion implements Cache {
   CacheWorker(TestContext context) : super(context.entryPoints.cache!);
 
   @override
   Future<dynamic> get(dynamic key) => send(
-        CacheService.getOperation,
+        CacheService.getCommand,
         args: [key],
         inspectRequest: true,
         inspectResponse: true,
@@ -18,14 +19,14 @@ base class CacheWorker extends Worker implements Cache {
 
   @override
   Future<bool> containsKey(dynamic key) =>
-      send(CacheService.containsOperation, args: [key])
+      send(CacheService.containsCommand, args: [key])
           .then(Squadron.converter.value<bool>());
 
   @override
   Future<dynamic> set(dynamic key, dynamic value, {Duration? timeToLive}) {
     assert(value != null); // null means not in cache; cannot store null
     return send(
-      CacheService.setOperation,
+      CacheService.setCommand,
       args: [key, value, timeToLive?.inMicroseconds],
       inspectRequest: true,
       inspectResponse: true,
@@ -34,5 +35,5 @@ base class CacheWorker extends Worker implements Cache {
 
   @override
   Future<CacheStat> getStats() async =>
-      CacheStat.deserialize(await send(CacheService.statsOperation));
+      CacheStat.deserialize(await send(CacheService.statsCommand));
 }

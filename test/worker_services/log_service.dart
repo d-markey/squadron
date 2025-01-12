@@ -1,11 +1,13 @@
 import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_logger.dart';
+import '../src/test_logger.dart';
+import 'squadron_version.dart';
 
-class LogService implements WorkerService {
+class LogService with SquadronVersion implements WorkerService {
   LogService() : super() {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
       logCommand: (r) => log(),
     });

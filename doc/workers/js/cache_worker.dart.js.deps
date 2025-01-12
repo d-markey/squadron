@@ -249,7 +249,6 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_internal_logger.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_result_stream.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_time_stamp.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_token_id.dart
-file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_transferables.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_worker_runner.dart
 file:///C:/_Projects/github/squadron/lib/src/annotations/squadron_method.dart
@@ -305,7 +304,9 @@ file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_response.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
+file:///C:/_Projects/github/squadron/lib/version.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service.dart
+file:///C:/_Projects/github/squadron/test/worker_services/squadron_version.dart
 file:///C:/_Projects/github/squadron/test/workers/js/cache_worker.dart
 org-dartlang-sdk:///lib/_http/crypto.dart
 org-dartlang-sdk:///lib/_http/embedder_config.dart

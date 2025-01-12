@@ -4,10 +4,12 @@ import 'dart:math';
 import 'package:squadron/squadron.dart';
 
 import 'cache_service.dart';
+import 'squadron_version.dart';
 
-class PrimeService implements WorkerService {
+class PrimeService with SquadronVersion implements WorkerService {
   PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache) {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
       getPrimesCommand: (r) =>
           getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),

@@ -1,0 +1,41 @@
+@import url("colors.css");
+
+body {
+    background-color: var(--white);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#output {
+    height: 100vh;
+    width: 100vw;
+    overflow: scroll;
+    text-wrap: nowrap;
+    scrollbar-color: var(--border) var(--background);
+    scrollbar-width: thin;
+}
+
+.pass {
+    color: var(--pass);
+}
+
+.skip {
+    color: var(--skip);
+}
+
+.fail {
+    color: var(--fail);
+}
+
+.highlight {
+    background-color: var(--highlight);
+}
+
+.bold {
+    font-weight: bold;
+}

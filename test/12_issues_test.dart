@@ -9,8 +9,8 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
 import 'worker_services/issues_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
@@ -21,9 +21,9 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group("- GitHub Issues", () {
+    tc.group('- GITHUB ISSUES', () {
       tc.group('- #8 - Exceptions from Streams must come through onError', () {
-        tc.test('- Squadron Worker', () async {
+        tc.test('- Using a Squadron worker', () async {
           await IssuesWorker(tc).useAsync((w) async {
             await w.start();
             final completer = Completer(), results = [], errors = [];
@@ -46,7 +46,7 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Worker Pool', () async {
+        tc.test('- Using a worker pool', () async {
           await IssuesWorkerPool(tc).useAsync((p) async {
             await p.start();
             final completer = Completer(), results = [], errors = [];
@@ -72,11 +72,21 @@ void execute(TestContext? tc) {
       tc.group(
           '- #23 - Handle case where Map<int, _> is received as Map<JSString, _> in wasm worker',
           () {
-        tc.test('- Squadron Worker', () async {
+        tc.test('- Using a Squadron worker', () async {
           await IssuesWorker(tc).useAsync((w) async {
             await w.issue_23([0], columnWidths: const {1: 125});
             await w.issue_23([0], columnWidths: const {2: 125});
             await w.issue_23([0], columnWidths: {-12: 125});
+          });
+        });
+
+        tc.test('- Using a worker pool', () async {
+          await IssuesWorkerPool(tc).useAsync((w) async {
+            await Future.wait([
+              w.issue_23([0], columnWidths: const {1: 125}),
+              w.issue_23([0], columnWidths: const {2: 125}),
+              w.issue_23([0], columnWidths: {-12: 125})
+            ]);
           });
         });
       });

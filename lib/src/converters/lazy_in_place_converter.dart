@@ -20,12 +20,6 @@ final class LazyInPlaceConverter extends Converter {
   }
 
   @override
-  Cast<Set<T>> set<T>([Cast<T>? cast]) {
-    final op = cast ?? value<T>();
-    return Converter.isIdentity<T>(op) ? converter.set<T>(op) : _toSet(op);
-  }
-
-  @override
   Cast<Map<K, V>> map<K, V>({Cast<K>? kcast, Cast<V>? vcast}) {
     final kop = kcast ?? value<K>(), vop = vcast ?? value<V>();
     return (!Converter.isIdentity<K>(kop) || Converter.isIdentity<V>(vop))
@@ -35,9 +29,6 @@ final class LazyInPlaceConverter extends Converter {
 
   static Cast<List<T>> _toList<T>(Cast<T> cast) =>
       (x) => LazyInPlaceList(x, cast);
-
-  static Cast<Set<T>> _toSet<T>(Cast<T> cast) =>
-      (x) => (x as Iterable).map(cast).toSet();
 
   static Cast<Map<K, V>> _toMap<K, V>(Cast<V> vcast) =>
       (x) => LazyInPlaceMap(x, vcast);

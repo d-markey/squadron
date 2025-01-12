@@ -20,21 +20,23 @@ class ForwardStreamController<T> {
 
   Future<void> get done => _controller.done;
 
-  bool get isClosed => _controller.isClosed;
+  var _closed = false;
+  bool get isClosed => _closed || _controller.isClosed;
 
-  StreamSubscription? _sub;
+  StreamSubscription<T>? _sub;
 
-  StreamSubscription? get subscription => _sub;
+  StreamSubscription<T>? get subscription => _sub;
 
   void add(T data) {
-    if (!_controller.isClosed) _controller.add(data);
+    if (!isClosed) _controller.add(data);
   }
 
   void addError(SquadronException ex) {
-    if (!_controller.isClosed) _controller.addError(ex);
+    if (!isClosed) _controller.addError(ex);
   }
 
   Future<void> close() async {
+    _closed = true;
     await _sub?.cancel();
     _sub = null;
     _controller.close();
@@ -62,7 +64,7 @@ class ForwardStreamController<T> {
     }
   }
 
-  void attachSubscription(StreamSubscription sub) {
+  void attachSubscription(StreamSubscription<T> sub) {
     if (_sub != null) {
       throw SquadronErrorExt.create(
           'Invalid state: a subscription is already attached');
@@ -79,6 +81,5 @@ class ForwardStreamController<T> {
     // have the subscription handle the cancel event if the controller doesn't
     // handle it already
     _controller.onCancel ??= sub.cancel;
-    _sub = sub;
   }
 }

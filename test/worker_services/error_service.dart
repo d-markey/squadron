@@ -4,11 +4,12 @@ import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/custom_exception.dart';
-import '../classes/platform.dart';
-import '../classes/test_logger.dart';
+import '../src/platform.dart';
+import '../src/test_logger.dart';
+import '../test_exception.dart';
+import 'squadron_version.dart';
 
-class ErrorService implements WorkerService {
+class ErrorService with SquadronVersion implements WorkerService {
   static const startupOk = 0;
   static const startupThrows = 1;
   static const startupInvalid = 2;
@@ -17,6 +18,7 @@ class ErrorService implements WorkerService {
       : _invalid = invalid,
         super() {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       if (_invalid) invalidCommand1: (r) => null,
       if (_invalid) invalidCommand0: (r) => null,
       setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
@@ -25,7 +27,7 @@ class ErrorService implements WorkerService {
       throwWorkerExceptionCommand: (r) => throwWorkerException(),
       throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
       throwCanceledExceptionCommand: (r) => throwCanceledException(),
-      throwCustomExceptionCommand: (r) => throwCustomException(),
+      throwTestExceptionCommand: (r) => throwTestException(),
       invalidResponseCommand: (r) => invalidResponse(),
       /* missingCommand */
       pingCommand: (r) => ping(),
@@ -60,8 +62,8 @@ class ErrorService implements WorkerService {
   void throwCanceledException() =>
       throw CanceledException('intentional canceled exception');
 
-  void throwCustomException() =>
-      throw CustomException('intentional CUSTOM exception');
+  void throwTestException() =>
+      throw TestException('intentional TEST exception');
 
   FutureOr<dynamic> invalidResponse() => unsendable;
 
@@ -78,7 +80,7 @@ class ErrorService implements WorkerService {
   static const throwWorkerExceptionCommand = 12;
   static const throwTaskTimeOutExceptionCommand = 13;
   static const throwCanceledExceptionCommand = 14;
-  static const throwCustomExceptionCommand = 15;
+  static const throwTestExceptionCommand = 15;
   static const missingCommand = 21;
   static const invalidResponseCommand = 22;
 

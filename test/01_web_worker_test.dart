@@ -14,8 +14,8 @@ import 'package:test/test.dart';
 import 'package:web/web.dart' as web show Worker;
 import 'package:web/web.dart' hide Worker;
 
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
 
 Future<void> main() => TestContext.run(execute);
 
@@ -25,8 +25,8 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group("- WebWorker", () {
-      tc.test('- plain Web Worker', () async {
+    tc.group('- WEB WORKER', () {
+      tc.test('- JavaScript Web Worker', () async {
         final ep = EntryPointUri.from(tc.entryPoints.native!);
         final w = web.Worker(ep.uri.toJS);
 
@@ -51,7 +51,7 @@ void execute(TestContext? tc) {
         }
       });
 
-      tc.test('- plain Web Worker (in-memory)', () async {
+      tc.test('- JavaScript Web Worker (in-memory)', () async {
         final ep = EntryPointUri.from(tc.entryPoints.inMemory!);
         final w = web.Worker(ep.uri.toJS);
 
@@ -76,7 +76,7 @@ void execute(TestContext? tc) {
         }
       });
 
-      tc.test('- regular Web Worker', () async {
+      tc.test('- Dart Web Worker', () async {
         final ep = EntryPointUri.from(tc.entryPoints.echo!);
         final w = web.Worker(ep.uri.toJS);
 
@@ -107,7 +107,7 @@ void execute(TestContext? tc) {
         }
       });
 
-      tc.test('- missing Web Worker (JavaScript)', () async {
+      tc.test('- Missing Web Worker (JavaScript)', () async {
         final ep = EntryPointUri.from(Uri.parse('not_found.js'));
         final w = web.Worker(ep.uri.toJS);
 
@@ -128,7 +128,7 @@ void execute(TestContext? tc) {
         }
       });
 
-      tc.test('- missing Web Worker (WebAssembly)', () async {
+      tc.test('- Missing Web Worker (WebAssembly)', () async {
         final ep = EntryPointUri.from(Uri.parse('not_found.wasm'));
         final w = web.Worker(ep.uri.toJS);
 

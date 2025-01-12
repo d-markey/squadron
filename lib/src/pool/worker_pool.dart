@@ -4,12 +4,24 @@ import 'dart:collection';
 import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
-import '../../squadron.dart';
+import '../concurrency_settings.dart';
+import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_error.dart';
+import '../exceptions/squadron_exception.dart';
+import '../exceptions/task_terminated_exception.dart';
+import '../exceptions/worker_exception.dart';
+import '../iworker.dart';
+import '../stats/perf_counter.dart';
+import '../stats/worker_stat.dart';
+import '../worker/worker.dart';
+import '../worker_service.dart';
 import '_pool_worker.dart';
 import '_worker_stream_task.dart';
 import '_worker_task.dart';
 import '_worker_value_task.dart';
+import 'stream_task.dart';
+import 'task.dart';
+import 'value_task.dart';
 
 typedef WorkerFactory<W> = W Function(ExceptionManager);
 
@@ -280,13 +292,13 @@ abstract class WorkerPool<W extends Worker>
       scheduleStreamTask(task, counter: counter).stream;
 
   /// Registers and schedules a [task] that returns a single value.
-  /// Returns a [ValueTask]<T>.
+  /// Returns a [ValueTask].
   ValueTask<T> scheduleValueTask<T>(Future<T> Function(W worker) task,
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerValueTask<T, W>(task, counter)) as ValueTask<T>;
 
   /// Registers and schedules a [task] that returns a stream of values.
-  /// Returns a [StreamTask]<T>.
+  /// Returns a [StreamTask].
   StreamTask<T> scheduleStreamTask<T>(Stream<T> Function(W worker) task,
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
@@ -361,18 +373,20 @@ abstract class WorkerPool<W extends Worker>
 
   /// Task cancelation. If a specific [task] is provided, only this task will be canceled.
   /// Otherwise, all tasks registered with the [WorkerPool] are canceled.
-  void cancel([Task? task, String? message]) {
-    if (task != null) {
-      _executing.remove(task);
-      _queue.removeWhere((t) => t == task);
+  void cancel(Task task, [String? message]) {
+    _executing.remove(task);
+    _queue.removeWhere((t) => t == task);
+    task.cancel(message);
+  }
+
+  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.
+  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.
+  void cancelAll([String? message]) {
+    final toBeCanceled = _executing.followedBy(_queue).toList();
+    _executing.clear();
+    _queue.clear();
+    for (var task in toBeCanceled) {
       task.cancel(message);
-    } else {
-      final toBeCanceled = _executing.followedBy(_queue).toList();
-      _executing.clear();
-      _queue.clear();
-      for (var task in toBeCanceled) {
-        task.cancel(message);
-      }
     }
   }
 

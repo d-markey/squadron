@@ -4,8 +4,8 @@ import 'package:squadron/squadron.dart';
 import 'package:squadron/src/converters/lazy_in_place_map.dart';
 import 'package:test/test.dart';
 
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
 
 void testLazyMaps(TestContext tc) {
   _DataContext<V> $initDataContext<V>(Map data, Cast<V> cast) => (
@@ -15,7 +15,7 @@ void testLazyMaps(TestContext tc) {
         ))
       );
 
-  tc.group('- doubles', () {
+  tc.group('- Doubles', () {
     final data = Map<dynamic, dynamic>.unmodifiable(
       {'one': 1, 'two': 2, '3dot3': 3.3, 'four': 4, '4dot4': 4.4},
     );
@@ -26,7 +26,7 @@ void testLazyMaps(TestContext tc) {
     }
   });
 
-  tc.group('- nullable doubles', () {
+  tc.group('- Nullable doubles', () {
     final data = Map<dynamic, dynamic>.unmodifiable(
       {'one': 1, 'two': 2, '': null, '3dot3': 3.3, 'four': 4, '4dot4': 4.4},
     );
@@ -37,7 +37,7 @@ void testLazyMaps(TestContext tc) {
     }
   });
 
-  tc.group('- nullable ints', () {
+  tc.group('- Nullable integers', () {
     final data = Map<dynamic, dynamic>.unmodifiable(
       {'one': 1, 'two': 2, '': null, 'three': 3, 'four': 4, 'five': 5},
     );

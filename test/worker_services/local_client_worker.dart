@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 import 'package:using/using.dart';
 
-import '../classes/test_context.dart';
-import '../classes/utils.dart';
+import '../src/test_context.dart';
+import '../src/utils.dart';
 import 'local_workers/local_client.dart';
 import 'local_workers/local_service.dart';
+import 'squadron_version.dart';
 
-abstract class LocalClientService {
+abstract class LocalClientService with SquadronVersion {
   FutureOr<String> checkIds();
   FutureOr<bool> checkException();
   Stream<Map<String, dynamic>> checkSequence(int count);
@@ -19,10 +20,11 @@ abstract class LocalClientService {
 }
 
 class LocalClientServiceImpl
-    with Releasable
+    with Releasable, SquadronVersion
     implements LocalClientService, WorkerService {
   LocalClientServiceImpl(this._localClient) {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       LocalClientService.checkIdsCommand: (req) => checkIds(),
       LocalClientService.checkExceptionCommand: (req) => checkException(),
       LocalClientService.checkSequenceCommand: (req) =>
@@ -66,6 +68,7 @@ class LocalClientServiceImpl
 }
 
 base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
+    with PoolVersion<LocalClientWorker>
     implements LocalClientService {
   LocalClientWorkerPool(
     TestContext context,
@@ -91,7 +94,9 @@ base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
       stream((w) => w.checkSequence(count));
 }
 
-base class LocalClientWorker extends Worker implements LocalClientService {
+base class LocalClientWorker extends Worker
+    with WorkerVersion
+    implements LocalClientService {
   LocalClientWorker(TestContext context, LocalWorker<LocalService> localService,
       {ExceptionManager? exceptionManager})
       : super(

@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
 import 'error_service.dart';
+import 'squadron_version.dart';
 
 base class ErrorWorkerPool extends WorkerPool<ErrorWorker>
+    with PoolVersion<ErrorWorker>
     implements ErrorService {
   ErrorWorkerPool._(
       super._workerFactory, ConcurrencySettings? concurrencySettings,
@@ -82,8 +84,7 @@ base class ErrorWorkerPool extends WorkerPool<ErrorWorker>
       execute((w) => w.throwCanceledException());
 
   @override
-  Future<void> throwCustomException() =>
-      execute((w) => w.throwCustomException());
+  Future<void> throwTestException() => execute((w) => w.throwTestException());
 
   @override
   Future<void> missing() => execute((w) => w.missing());
@@ -92,7 +93,9 @@ base class ErrorWorkerPool extends WorkerPool<ErrorWorker>
   Future<dynamic> invalidResponse() => execute((w) => w.invalidResponse());
 }
 
-base class ErrorWorker extends Worker implements ErrorService {
+base class ErrorWorker extends Worker
+    with WorkerVersion
+    implements ErrorService {
   ErrorWorker._(super.entryPoint, List args, PlatformThreadHook? hook,
       ExceptionManager? exceptionManager)
       : super(
@@ -169,8 +172,8 @@ base class ErrorWorker extends Worker implements ErrorService {
           .then(Squadron.converter.value<int>());
 
   @override
-  Future<int> throwCustomException() =>
-      send(ErrorService.throwCustomExceptionCommand)
+  Future<int> throwTestException() =>
+      send(ErrorService.throwTestExceptionCommand)
           .then(Squadron.converter.value<int>());
 
   @override

@@ -1,9 +1,11 @@
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
 import 'installable_service.dart';
+import 'squadron_version.dart';
 
 base class InstallableWorkerPool extends WorkerPool<InstallableWorker>
+    with PoolVersion<InstallableWorker>
     implements InstallableService {
   InstallableWorkerPool(TestContext context,
       {bool throwOnInstall = false,
@@ -36,7 +38,9 @@ base class InstallableWorkerPool extends WorkerPool<InstallableWorker>
   Future<bool> isUninstalled() => execute((w) => w.isUninstalled());
 }
 
-base class InstallableWorker extends Worker implements InstallableService {
+base class InstallableWorker extends Worker
+    with WorkerVersion
+    implements InstallableService {
   InstallableWorker._(
     TestContext context, {
     bool throwOnInstall = false,

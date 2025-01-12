@@ -17,7 +17,7 @@ SquadronPlatformType getPlatformType() => _platformType;
 
 Uri mapUrl(String url) {
   if (url.startsWith('~')) {
-    final root = getHome();
+    final root = getRootUrl();
     if (root != null) {
       url = '$root${url.substring(1)}';
     }

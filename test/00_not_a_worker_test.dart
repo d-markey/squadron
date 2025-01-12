@@ -7,7 +7,7 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/test_context.dart';
+import 'src/test_context.dart';
 import 'worker_services/not_a_worker_service.dart';
 
 Future<void> main() => TestContext.run(execute);
@@ -24,8 +24,8 @@ void execute(TestContext? tc) {
   // print('  * isCrossOriginIsolated = ${tc.isCrossOriginIsolated}');
 
   tc.launch(() {
-    tc.group('- Not a worker', () {
-      tc.test("- Native worker", () async {
+    tc.group('- NOT A WORKER', () {
+      tc.test('- Dart program (VM)', () async {
         await NotAWorker(tc).useAsync((w) async {
           var started = false, expired = false;
           Object? error;
@@ -44,7 +44,7 @@ void execute(TestContext? tc) {
         });
       }, skip: !tc.workerPlatform.isVm);
 
-      tc.test("- Web worker", () async {
+      tc.test('- Dart program (Web)', () async {
         await NotAWorker(tc).useAsync((w) async {
           var started = false, expired = false;
           Object? error;

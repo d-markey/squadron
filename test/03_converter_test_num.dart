@@ -4,14 +4,14 @@ part of '03_converter_test.dart';
 
 // ignore: non_constant_identifier_names
 void testNumConverter(TestContext tc) {
-  tc.group("- NumConverter", () {
+  tc.group('- NumConverter', () {
     final converter = NumConverter.instance;
 
-    tc.group('- ints', () {
+    tc.group('- Integers', () {
       final $toInt = converter.value<int>();
       final $toNullableInt = converter.nullable<int>();
 
-      tc.test('- converters are not identities', () {
+      tc.test('- Converters are not identities', () {
         expect(Converter.isIdentity($toInt), isFalse);
         expect(Converter.isIdentity($toNullableInt), isFalse);
       });
@@ -55,8 +55,8 @@ void testNumConverter(TestContext tc) {
       });
 
       tc.test('- String', () async {
-        expect($toInt('1'), 1);
-        expect($toNullableInt('1'), 1);
+        await expectLater(() => $toInt('1'), _throwsTypeError);
+        await expectLater(() => $toNullableInt('1'), _throwsTypeError);
         await expectLater(() => $toNullableInt('1.1'), _throwsTypeError);
         await expectLater(() => $toNullableInt('garbage'), _throwsTypeError);
       });
@@ -67,11 +67,11 @@ void testNumConverter(TestContext tc) {
       });
     });
 
-    tc.group('- doubles', () {
+    tc.group('- Doubles', () {
       final $toDbl = converter.value<double>();
       final $toNullableDbl = converter.nullable<double>();
 
-      tc.test('- converters are not identities', () {
+      tc.test('- Converters are not identities', () {
         expect(Converter.isIdentity($toDbl), isFalse);
         expect(Converter.isIdentity($toNullableDbl), isFalse);
       });
@@ -119,8 +119,8 @@ void testNumConverter(TestContext tc) {
       });
     });
 
-    tc.group('- lists', () {
-      tc.test('- ints (cast)', () async {
+    tc.group('- Lists', () {
+      tc.test('- Integers (cast conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfInts);
 
@@ -130,7 +130,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfInts);
       });
 
-      tc.test('- ints (map)', () async {
+      tc.test('- Integers (custom conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfInts);
 
@@ -139,7 +139,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfInts);
       });
 
-      tc.test('- nullable ints', () async {
+      tc.test('- Nullable integers', () async {
         final data = <dynamic>[];
         data.addAll(_listOfNullableInts);
 
@@ -149,7 +149,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfNullableInts);
       });
 
-      tc.test('- ints + integral double (cast)', () async {
+      tc.test('- Integers + integral double (cast conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfIntsWithIntegralDouble);
 
@@ -159,7 +159,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfIntsWithIntegralDouble);
       });
 
-      tc.test('- ints + integral double (map)', () async {
+      tc.test('- Integers + integral double (custom conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfIntsWithIntegralDouble);
 
@@ -174,7 +174,7 @@ void testNumConverter(TestContext tc) {
         }
       });
 
-      tc.test('- doubles', () async {
+      tc.test('- Doubles', () async {
         final data = <dynamic>[];
         data.addAll(_listOfDoubles);
 
@@ -184,7 +184,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfDoubles);
       });
 
-      tc.test('- nullable doubles', () async {
+      tc.test('- Nullable doubles', () async {
         final data = <dynamic>[];
         data.addAll(_listOfNullableDoubles);
 
@@ -194,7 +194,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfNullableDoubles);
       });
 
-      tc.test('- doubles + int', () async {
+      tc.test('- Doubles + integer', () async {
         final data = <dynamic>[];
         data.addAll(_listOfDoublesWithInt);
 
@@ -205,8 +205,8 @@ void testNumConverter(TestContext tc) {
       });
     });
 
-    tc.group('- sets', () {
-      tc.test('- ints (cast)', () async {
+    tc.group('- Sets', () {
+      tc.test('- Integers (cast conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfInts);
 
@@ -216,7 +216,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfInts.toSet());
       });
 
-      tc.test('- ints (map)', () async {
+      tc.test('- Integers (custom conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfInts);
 
@@ -226,7 +226,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfInts.toSet());
       });
 
-      tc.test('- nullable ints', () async {
+      tc.test('- Nullable integers', () async {
         final data = <dynamic>{};
         data.addAll(_listOfNullableInts);
 
@@ -236,7 +236,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfNullableInts.toSet());
       });
 
-      tc.test('- ints + integral double (cast)', () async {
+      tc.test('- Integers + integral double (cast conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfIntsWithIntegralDouble);
 
@@ -251,7 +251,7 @@ void testNumConverter(TestContext tc) {
         }
       });
 
-      tc.test('- ints + integral double (map)', () async {
+      tc.test('- Integers + integral double (custom conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfIntsWithIntegralDouble);
 
@@ -266,7 +266,7 @@ void testNumConverter(TestContext tc) {
         }
       });
 
-      tc.test('- doubles', () async {
+      tc.test('- Doubles', () async {
         final data = <dynamic>{};
         data.addAll(_listOfDoubles);
 
@@ -276,7 +276,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfDoubles.toSet());
       });
 
-      tc.test('- nullable doubles', () async {
+      tc.test('- Nullable doubles', () async {
         final data = <dynamic>{};
         data.addAll(_listOfNullableDoubles);
 
@@ -286,7 +286,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _listOfNullableDoubles.toSet());
       });
 
-      tc.test('- doubles + int', () async {
+      tc.test('- Doubles + integer', () async {
         final data = <dynamic>{};
         data.addAll(_listOfDoublesWithInt);
 
@@ -302,8 +302,8 @@ void testNumConverter(TestContext tc) {
       });
     });
 
-    tc.group('- maps', () {
-      tc.test('- String / int (cast)', () async {
+    tc.group('- Maps', () {
+      tc.test('- String / integer (cast conversion)', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfInts);
 
@@ -313,7 +313,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _mapOfInts);
       });
 
-      tc.test('- String / int (map)', () async {
+      tc.test('- String / integer (custom conversion)', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfInts);
 
@@ -323,7 +323,7 @@ void testNumConverter(TestContext tc) {
         expect(res, _mapOfInts);
       });
 
-      tc.test('- String / nullable int', () async {
+      tc.test('- String / nullable integer', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfNullableInts);
 
@@ -334,7 +334,8 @@ void testNumConverter(TestContext tc) {
         expect(res, _mapOfNullableInts);
       });
 
-      tc.test('- String / ints + integral double (cast)', () async {
+      tc.test('- String / integers + integral double (cast conversion)',
+          () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfIntsWithIntegralDouble);
 
@@ -344,7 +345,8 @@ void testNumConverter(TestContext tc) {
         expect(res, _mapOfIntsWithIntegralDouble);
       });
 
-      tc.test('- String / ints + integral double (map)', () async {
+      tc.test('- String / integers + integral double (custom conversion)',
+          () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfIntsWithIntegralDouble);
 

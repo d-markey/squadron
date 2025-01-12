@@ -9,26 +9,28 @@ final projectRoot = findRootOfProject();
 void main(List<String> args) async {
   args = overrideDefaultArgs(args, 'all', ['runners', 'js', 'wasm']);
 
-  final test = path.join(projectRoot, 'test');
+  final testRoot = path.join(projectRoot, 'test');
   final futures = <Future<void>>[];
 
   if (takeArg(args, 'runners')) {
-    final browserTests = Directory(path.join(test, 'browser-tests'));
-    print('Clean up browser test runners from ${browserTests.projectPath}...');
-    futures.addAll(_clean(browserTests, _jsExts).toList());
-    futures.addAll(_clean(browserTests, _wasmExts).toList());
+    final js = Directory(path.join(testRoot, 'test-console', 'js'));
+    print('Clean up JavaScript test runners from ${js.projectPath}...');
+    futures.addAll(_clean(js, _jsExts));
+    final wasm = Directory(path.join(testRoot, 'test-console', 'wasm'));
+    print('Clean up Web Assembly test runners from ${wasm.projectPath}...');
+    futures.addAll(_clean(wasm, _wasmExts));
   }
 
   if (takeArg(args, 'js')) {
-    final jsWorkers = Directory(path.join(test, 'workers', 'js'));
-    print('Clean up JavaScript workers from ${jsWorkers.projectPath}...');
-    futures.addAll(_clean(jsWorkers, _jsExts).toList());
+    final js = Directory(path.join(testRoot, 'workers', 'js'));
+    print('Clean up JavaScript workers from ${js.projectPath}...');
+    futures.addAll(_clean(js, _jsExts));
   }
 
   if (takeArg(args, 'wasm')) {
-    final wasmWorkers = Directory(path.join(test, 'workers', 'wasm'));
-    print('Clean up Web Assembly workers from ${wasmWorkers.projectPath}...');
-    futures.addAll(_clean(wasmWorkers, _wasmExts).toList());
+    final wasm = Directory(path.join(testRoot, 'workers', 'wasm'));
+    print('Clean up Web Assembly workers from ${wasm.projectPath}...');
+    futures.addAll(_clean(wasm, _wasmExts));
   }
 
   reportUnknownArgs(args);

@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'delays.dart';
+import '../test_constants.dart';
+import 'squadron_version.dart';
 
-class StreamingService implements WorkerService {
+class StreamingService with SquadronVersion implements WorkerService {
   StreamingService() {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       $getMonitored: (r) => getMonitored(),
       $monitoredStream: (r) => monitoredStream(),
     });
@@ -29,12 +31,12 @@ class StreamingService implements WorkerService {
       onListen: () async {
         _monitored += 1;
         int i = 0;
-        while (true) {
+        while (!controller.isClosed) {
           if (pauses == 0) {
             i++;
             controller.add(i);
           }
-          await Future.delayed(TestDelays.shortDelay);
+          await Future.delayed(delay_20ms);
         }
       },
       onPause: () {

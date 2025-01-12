@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
 import 'issues_service.dart';
+import 'squadron_version.dart';
 
 base class IssuesWorkerPool extends WorkerPool<IssuesWorker>
+    with PoolVersion<IssuesWorker>
     implements IssuesService {
   IssuesWorkerPool(TestContext context,
       [ConcurrencySettings? concurrencySettings])
@@ -46,7 +48,9 @@ base class IssuesWorkerPool extends WorkerPool<IssuesWorker>
           ));
 }
 
-base class IssuesWorker extends Worker implements IssuesService {
+base class IssuesWorker extends Worker
+    with WorkerVersion
+    implements IssuesService {
   IssuesWorker(TestContext context, {ExceptionManager? exceptionManager})
       : super(context.entryPoints.issues!, exceptionManager: exceptionManager);
 
@@ -83,8 +87,9 @@ class $X {
   static final nullableList = Squadron.converter.nullable(list);
   static final map = Squadron.converter.map();
   static final nullableMap = Squadron.converter.nullable(map);
+  // ignore: prefer_function_declarations_over_variables
   static final bytedata =
-      (($) => (const TypedDataMarshaler<ByteData>()).marshal($));
+      (x) => const TypedDataMarshaler<ByteData>().marshal(x);
   static final nullableBytedata = Squadron.converter.nullable(bytedata);
   static final mapOfBytedata = Squadron.converter.map(vcast: bytedata);
   static final nullableMapOfBytedata =

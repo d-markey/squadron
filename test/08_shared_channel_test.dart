@@ -6,8 +6,8 @@ library;
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'classes/prime_numbers.dart';
-import 'classes/test_context.dart';
+import 'src/test_context.dart';
+import 'test_constants.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 
@@ -19,8 +19,8 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
-    tc.group("- Shared Channel", () {
-      tc.test('- cache worker', () async {
+    tc.group('- SHARED CHANNEL', () {
+      tc.test('- Standalone cache worker', () async {
         await CacheWorker(tc).useAsync((cache) async {
           expect(await cache.get(1), isNull);
           expect(await cache.containsKey(1), isFalse);
@@ -30,7 +30,7 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- prime worker with cache', () async {
+      tc.test('- Prime worker + cache worker', () async {
         await CacheWorker(tc).useAsync((cache) async {
           await cache.start();
 

@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../classes/test_context.dart';
+import '../src/test_context.dart';
 import 'cache_service_worker.dart';
 import 'prime_service.dart';
+import 'squadron_version.dart';
 
 base class PrimeWorkerPool extends WorkerPool<PrimeWorker>
+    with PoolVersion<PrimeWorker>
     implements PrimeService {
   PrimeWorkerPool(
     TestContext context, [
@@ -30,7 +32,9 @@ base class PrimeWorkerPool extends WorkerPool<PrimeWorker>
       stream((w) => w.getPrimes(min, max), counter: counter);
 }
 
-base class PrimeWorker extends Worker implements PrimeService {
+base class PrimeWorker extends Worker
+    with WorkerVersion
+    implements PrimeService {
   PrimeWorker(TestContext context, CacheWorker? cache,
       [ExceptionManager? exceptionManager])
       : super(

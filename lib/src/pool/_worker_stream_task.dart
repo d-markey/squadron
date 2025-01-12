@@ -13,15 +13,13 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   WorkerStreamTask(this._producer, PerfCounter? counter) : super(counter) {
     _controller = ForwardStreamController<T>(onListen: () async {
       try {
-        throwIfCanceled();
-        if (_controller.isClosed) return;
-        final stream = await _streamer.future;
-        if (_controller.isClosed) {
-          // we might have a problem here: the controller is closed but the worker
-          // has started streaming; cancel the operation
-          stream.listen((_) {}).cancel();
+        final worker = await _worker.future;
+        if (canceledException != null || worker == null) {
+          // the task was canceled
+          throw canceledException!;
         } else {
-          _controller.attachSubscription(stream.listen(
+          // otherwise, forward data from the worker
+          _controller.attachSubscription(_producer(worker).listen(
             _onData,
             onError: _onError,
             onDone: _controller.close,
@@ -35,7 +33,7 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   }
 
   final Stream<T> Function(W worker) _producer;
-  final _streamer = Completer<Stream<T>>();
+  final _worker = Completer<W?>();
 
   late final ForwardStreamController<T> _controller;
 
@@ -54,19 +52,24 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   @override
   void cancel([String? message]) {
     super.cancel(message);
-    _closeWithError(canceledException!);
+    if (!_worker.isCompleted) {
+      // task canceled before it got scheduled
+      _worker.complete(null);
+    }
+    if (_controller.subscription != null) {
+      // task canceled after a listener subscribed to the stream
+      _closeWithError(canceledException!);
+    }
   }
 
   @override
   Future<bool> execute(W worker) {
-    try {
-      throwIfCanceled();
-      final stream = _producer(worker);
-      _streamer.complete(stream);
-      return _controller.done.then((_) => true);
-    } catch (ex, st) {
-      _closeWithError(SquadronException.from(ex, st));
-      return Future.value(false);
+    if (canceledException == null) {
+      // run with worker
+      _worker.complete(worker);
     }
+    return _controller.done
+        .then((_) => canceledException == null)
+        .catchError((_) => false);
   }
 }

@@ -3,9 +3,12 @@ import 'dart:typed_data';
 
 import 'package:squadron/squadron.dart';
 
-class IssuesService implements WorkerService {
+import 'squadron_version.dart';
+
+class IssuesService with SquadronVersion implements WorkerService {
   IssuesService() {
     operations.addAll({
+      SquadronVersion.versionCommand: (r) => getVersion(),
       cmdIssue_8: (r) => issue_8(
             $X.listOfInt(r.args[0]),
           ),
@@ -60,7 +63,7 @@ class $X {
       Squadron.converter.nullable(Squadron.converter.map<int, double>());
   // ignore: prefer_function_declarations_over_variables
   static final bytedata =
-      ($) => (const TypedDataMarshaler<ByteData>()).unmarshal($);
+      (x) => const TypedDataMarshaler<ByteData>().unmarshal(x);
   static final nullableBytedata = Squadron.converter.nullable(bytedata);
   static final nullableMapOfIntBytedata = Squadron.converter
       .nullable(Squadron.converter.map<int, ByteData>(vcast: bytedata));

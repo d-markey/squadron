@@ -13,6 +13,10 @@ final class WorkerValueTask<T, W extends Worker> extends WorkerTask<T, W>
 
   final Future<T> Function(W worker) _computer;
   final _result = Completer<T>();
+  final _done = Completer<void>();
+
+  @override
+  Future<void> get done => _done.future;
 
   @override
   Future<T> get value => _result.future;

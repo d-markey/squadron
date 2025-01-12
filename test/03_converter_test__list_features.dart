@@ -6,14 +6,14 @@ import 'package:squadron/squadron.dart';
 import 'package:squadron/src/converters/lazy_in_place_list.dart';
 import 'package:test/test.dart';
 
-import 'classes/test_context.dart';
-import 'classes/utils.dart';
+import 'src/test_context.dart';
+import 'src/utils.dart';
 
 void testLazyLists(TestContext tc) {
   _DataContext<T> $initDataContext<T>(List data, Cast<T> cast) =>
       (lazy: LazyInPlaceList([...data], cast), ref: [...data.map(cast)]);
 
-  tc.group('- doubles', () {
+  tc.group('- Doubles', () {
     final data = List<dynamic>.unmodifiable(
       [1, 2, 3, 4, 1.1, 2.2, 3.3, 4.4, 1, 2, 3, 4, 3.3, 2],
     );
@@ -24,7 +24,7 @@ void testLazyLists(TestContext tc) {
     }
   });
 
-  tc.group('- nullable doubles', () {
+  tc.group('- Nullable doubles', () {
     final data = List<dynamic>.unmodifiable(
       [1, 2, null, 4, 1.1, null, 3.3, 4.4, 1, 2, 3, null, 3.3, 2],
     );
@@ -35,7 +35,7 @@ void testLazyLists(TestContext tc) {
     }
   });
 
-  tc.group('- nullable ints', () {
+  tc.group('- Nullable integers', () {
     final data = List<dynamic>.unmodifiable(
       [1, 2, null, 4, 3.toDouble(), null, 2.toDouble(), 4, 1, null, 3],
     );
