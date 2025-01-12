@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="_internal_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.64705884" lines-covered="11" lines-valid="17" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="_internal_logger.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="8" lines-valid="8" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:logger/web.dart';</code>
@@ -10,9 +10,9 @@
         <line number="3">
             <code>class InternalLogger extends Logger {</code>
         </line>
-        <line hits="11" number="4">
+        <line hits="10" number="4">
             <code>  InternalLogger()</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="5">
             <code>      : super(</code>
@@ -39,15 +39,14 @@
         <line number="11">
             <code/>
         </line>
-        <line hits="1" number="12">
+        <line number="12">
             <code>class _NoLogOutput extends LogOutput {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="13">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="14">
+        <line number="14">
             <code>  void output(OutputEvent event) {</code>
         </line>
         <line number="15">
@@ -59,7 +58,7 @@
         <line number="17">
             <code>    // lives in the main thread).</code>
         </line>
-        <line hits="0" number="18">
+        <line number="18">
             <code>  }</code>
         </line>
         <line number="19">
@@ -68,15 +67,14 @@
         <line number="20">
             <code/>
         </line>
-        <line hits="1" number="21">
+        <line number="21">
             <code>class _DummyPrinter extends LogPrinter {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="22">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="23">
+        <line number="23">
             <code>  List&lt;String&gt; log(LogEvent event) =&gt;</code>
         </line>
         <line number="24">
@@ -88,7 +86,7 @@
         <line number="26">
             <code>      // through Logger's output callbacks.</code>
         </line>
-        <line hits="0" number="27">
+        <line number="27">
             <code>      const [''];</code>
         </line>
         <line number="28">
@@ -97,15 +95,14 @@
         <line number="29">
             <code/>
         </line>
-        <line hits="1" number="30">
+        <line number="30">
             <code>class _LogAllFilter extends LogFilter {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="31">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="32">
+        <line number="32">
             <code>  bool shouldLog(LogEvent event) =&gt;</code>
         </line>
         <line number="33">
@@ -114,7 +111,7 @@
         <line number="34">
             <code>      // whether the message should be logged or not.</code>
         </line>
-        <line hits="0" number="35">
+        <line number="35">
             <code>      true;</code>
         </line>
         <line number="36">

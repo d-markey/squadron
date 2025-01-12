@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8518519" lines-covered="23" lines-valid="27" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="squadron_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9444444" lines-covered="17" lines-valid="18" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -31,22 +31,22 @@
         <line number="10">
             <code>abstract class SquadronException implements Exception {</code>
         </line>
-        <line hits="19" number="11">
+        <line hits="12" number="11">
             <code>  SquadronException.init(this.message, [this._stackTrace]) {</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="19" number="12">
+        <line hits="12" number="12">
             <code>    if (_stackTrace == null) {</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code>      try {</code>
         </line>
-        <line hits="28" number="14">
+        <line hits="24" number="14">
             <code>        _stackTrace = StackTrace.current;</code>
-            <hit count="28" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="15">
+        <line number="15">
             <code>      } catch (_, st) {</code>
         </line>
         <line number="16">
@@ -61,9 +61,8 @@
         <line number="19">
             <code>    }</code>
         </line>
-        <line hits="8" number="20">
+        <line number="20">
             <code>  }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="21">
             <code/>
@@ -77,44 +76,42 @@
         <line number="24">
             <code>  /// [WorkerException] wrapping [error] and [stackTrace].</code>
         </line>
-        <line hits="16" number="25">
+        <line hits="8" number="25">
             <code>  static SquadronException from(Object error,</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="26">
             <code>      [StackTrace? stackTrace, int? command]) {</code>
         </line>
-        <line hits="16" number="27">
+        <line hits="8" number="27">
             <code>    if (error is WorkerException) {</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="28">
+        <line hits="4" number="28">
             <code>      if (command != null) error.setCommand(command);</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="29">
+        <line number="29">
             <code>      return error;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="13" number="30">
+        <line hits="7" number="30">
             <code>    } else if (error is SquadronException) {</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
+            <hit count="7" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="31">
+        <line number="31">
             <code>      return error;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="32">
+        <line hits="4" number="32">
             <code>    } else if (error is CanceledException) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="33">
             <code>      return error.toSquadronException();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="34">
+        <line hits="4" number="34">
             <code>    } else if (error is TimeoutException) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="35">
             <code>      return error.toSquadronException();</code>
@@ -123,16 +120,15 @@
         <line number="36">
             <code>    } else {</code>
         </line>
-        <line hits="11" number="37">
+        <line hits="8" number="37">
             <code>      return WorkerException(error.toString(), stackTrace, command);</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="38">
             <code>    }</code>
         </line>
-        <line hits="8" number="39">
+        <line number="39">
             <code>  }</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="40">
             <code/>
@@ -146,23 +142,23 @@
         <line number="43">
             <code>  /// The exception's [StackTrace].</code>
         </line>
-        <line hits="19" number="44">
+        <line hits="12" number="44">
             <code>  StackTrace? get stackTrace =&gt; _stackTrace;</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="45">
+        <line number="45">
             <code>  StackTrace? _stackTrace;</code>
         </line>
         <line number="46">
             <code/>
         </line>
-        <line hits="3" number="47">
+        <line hits="2" number="47">
             <code>  @override</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="48">
+        <line hits="4" number="48">
             <code>  String toString() =&gt; jsonEncode(serialize());</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="49">
             <code/>
@@ -179,33 +175,31 @@
         <line number="53">
             <code>  /// Deserializes a [stackTrace] if any. Returns null if no [StackTrace] is provided.</code>
         </line>
-        <line hits="20" number="54">
+        <line hits="10" number="54">
             <code>  static StackTrace? loadStackTrace(String? stackTrace) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="55">
-            <code>    if (stackTrace == null) return null;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="55">
+            <code>    if (stackTrace == null) return null;</code>
         </line>
         <line number="56">
             <code>    try {</code>
         </line>
-        <line hits="15" number="57">
+        <line hits="6" number="57">
             <code>      return StackTrace.fromString(stackTrace);</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="58">
             <code>    } catch (_) {</code>
         </line>
-        <line hits="0" number="59">
+        <line number="59">
             <code>      return null;</code>
         </line>
         <line number="60">
             <code>    }</code>
         </line>
-        <line hits="10" number="61">
+        <line number="61">
             <code>  }</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
             <code>}</code>

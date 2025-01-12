@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="squadron_platform_type.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.73333335" lines-covered="11" lines-valid="15" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="squadron_platform_type.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="src" testname="lcov.info" version="1.6">
     <lines>
-        <line hits="0" number="1">
+        <line number="1">
             <code>enum SquadronPlatformType {</code>
         </line>
         <line number="2">
@@ -31,17 +31,17 @@
         <line number="10">
             <code/>
         </line>
-        <line hits="4" number="11">
+        <line hits="24" number="11">
             <code>  bool get isVm =&gt; this == vm;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="12">
+        <line hits="6" number="12">
             <code>  bool get isJs =&gt; this == js;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="13">
+        <line hits="4" number="13">
             <code>  bool get isWasm =&gt; this == wasm;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6" number="14">
             <code>  bool get isWeb =&gt; isJs || isWasm;</code>
@@ -50,17 +50,17 @@
         <line number="15">
             <code/>
         </line>
-        <line hits="2" number="16">
+        <line hits="1" number="16">
             <code>  static SquadronPlatformType? tryParse(String label) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="17">
+            <code>    if (label == js.label) return js;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="17">
-            <code>    if (label == js.label) return js;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="18">
+        <line hits="2" number="18">
             <code>    if (label == wasm.label) return wasm;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="19">
             <code>    if (label == vm.label) return vm;</code>
@@ -69,12 +69,11 @@
         <line hits="0" number="20">
             <code>    if (label == unknown.label) return unknown;</code>
         </line>
-        <line hits="0" number="21">
+        <line number="21">
             <code>    return null;</code>
         </line>
-        <line hits="1" number="22">
+        <line number="22">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code/>
@@ -87,7 +86,7 @@
             <code>  String toString() =&gt; label;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="26">
+        <line number="26">
             <code>}</code>
         </line>
     </lines>

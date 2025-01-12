@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6875" lines-covered="11" lines-valid="16" package="src/local_worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.64285713" lines-covered="9" lines-valid="14" package="src/local_worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -116,17 +116,17 @@
         <line number="38">
             <code/>
         </line>
-        <line hits="2" number="39">
+        <line hits="1" number="39">
             <code>  factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="40">
+        <line hits="1" number="40">
             <code>      impl.createLocalWorker&lt;W&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="41">
+        <line hits="1" number="41">
             <code>          service, exceptionManager ?? ExceptionManager());</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="42">
             <code/>
@@ -141,21 +141,19 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="46">
+        <line number="46">
             <code>  void release() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1" number="47">
             <code>    stop();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="48">
+        <line hits="1" number="48">
             <code>    super.release();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="49">
-            <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code>  }</code>
         </line>
         <line number="50">
             <code/>
@@ -248,9 +246,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="80">
+        <line hits="2" number="80">
             <code>  Map&lt;int, CommandHandler&gt; get operations =&gt; _service.operations;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="81">
             <code>}</code>

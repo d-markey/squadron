@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="lazy_in_place_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="26" lines-valid="26" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="lazy_in_place_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="15" lines-valid="15" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'converter.dart';</code>
@@ -25,9 +25,9 @@
         <line number="8">
             <code>final class LazyInPlaceConverter extends Converter {</code>
         </line>
-        <line hits="3" number="9">
+        <line hits="2" number="9">
             <code>  const LazyInPlaceConverter(this.converter) : super();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
@@ -42,9 +42,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="14">
+        <line hits="2" number="14">
             <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; converter.value&lt;T&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="15">
             <code/>
@@ -53,21 +53,19 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="17">
+        <line number="17">
             <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="18">
+        <line hits="1" number="18">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5" number="19">
-            <code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.list&lt;T&gt;(op) : _toList(op);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="20">
-            <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="19">
+            <code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.list&lt;T&gt;(op) : _toList(op);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code>  }</code>
         </line>
         <line number="21">
             <code/>
@@ -76,87 +74,51 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="23">
-            <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line number="23">
+            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
         </line>
         <line hits="2" number="24">
-            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="25">
-            <code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.set&lt;T&gt;(op) : _toSet(op);</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="25">
+            <code>    return (!Converter.isIdentity&lt;K&gt;(kop) || Converter.isIdentity&lt;V&gt;(vop))</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="26">
-            <code>  }</code>
+        <line hits="2" number="26">
+            <code>        ? converter.map&lt;K, V&gt;(kcast: kop, vcast: vop)</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="27">
+            <code>        : _toMap(vop);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="27">
+        <line number="28">
+            <code>  }</code>
+        </line>
+        <line number="29">
             <code/>
         </line>
-        <line hits="1" number="28">
-            <code>  @override</code>
+        <line hits="1" number="30">
+            <code>  static Cast&lt;List&lt;T&gt;&gt; _toList&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="29">
-            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="30">
-            <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="31">
-            <code>    return (!Converter.isIdentity&lt;K&gt;(kop) || Converter.isIdentity&lt;V&gt;(vop))</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="32">
-            <code>        ? converter.map&lt;K, V&gt;(kcast: kop, vcast: vop)</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="33">
-            <code>        : _toMap(vop);</code>
+        <line hits="2" number="31">
+            <code>      (x) =&gt; LazyInPlaceList(x, cast);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="34">
-            <code>  }</code>
+        <line number="32">
+            <code/>
+        </line>
+        <line hits="1" number="33">
+            <code>  static Cast&lt;Map&lt;K, V&gt;&gt; _toMap&lt;K, V&gt;(Cast&lt;V&gt; vcast) =&gt;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="34">
+            <code>      (x) =&gt; LazyInPlaceMap(x, vcast);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="35">
-            <code/>
-        </line>
-        <line hits="2" number="36">
-            <code>  static Cast&lt;List&lt;T&gt;&gt; _toList&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="37">
-            <code>      (x) =&gt; LazyInPlaceList(x, cast);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="38">
-            <code/>
-        </line>
-        <line hits="2" number="39">
-            <code>  static Cast&lt;Set&lt;T&gt;&gt; _toSet&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="40">
-            <code>      (x) =&gt; (x as Iterable).map(cast).toSet();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="41">
-            <code/>
-        </line>
-        <line hits="2" number="42">
-            <code>  static Cast&lt;Map&lt;K, V&gt;&gt; _toMap&lt;K, V&gt;(Cast&lt;V&gt; vcast) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="43">
-            <code>      (x) =&gt; LazyInPlaceMap(x, vcast);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="44">
             <code>}</code>
         </line>
     </lines>

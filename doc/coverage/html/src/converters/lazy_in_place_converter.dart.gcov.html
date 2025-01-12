@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-31</dd>
+                    <dd>2025-01-12</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>26</td><td>26</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>15</td><td>15</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -85,7 +85,7 @@
                     <td>8</td><td></td><td></td><td><code>final class LazyInPlaceConverter extends Converter {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>3</td><td><code>  const LazyInPlaceConverter(this.converter) : super();</code></td>
+                    <td>9</td><td></td><td>2</td><td><code>  const LazyInPlaceConverter(this.converter) : super();</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
                     <td>10</td><td></td><td></td><td><code></code></td>
@@ -100,7 +100,7 @@
                     <td>13</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>3</td><td><code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; converter.value&lt;T&gt;();</code></td>
+                    <td>14</td><td></td><td>2</td><td><code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; converter.value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code></code></td>
@@ -108,17 +108,17 @@
                 <tr class="lineCov" title="Line 16" id="line16">
                     <td>16</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>1</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>2</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                    <td>18</td><td></td><td>1</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>5</td><td><code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.list&lt;T&gt;(op) : _toList(op);</code></td>
+                    <td>19</td><td></td><td>4</td><td><code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.list&lt;T&gt;(op) : _toList(op);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code></code></td>
@@ -126,71 +126,44 @@
                 <tr class="lineCov" title="Line 22" id="line22">
                     <td>22</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>1</td><td><code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code></td>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>2</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                    <td>24</td><td></td><td>2</td><td><code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>5</td><td><code>    return Converter.isIdentity&lt;T&gt;(op) ? converter.set&lt;T&gt;(op) : _toSet(op);</code></td>
+                    <td>25</td><td></td><td>2</td><td><code>    return (!Converter.isIdentity&lt;K&gt;(kop) || Converter.isIdentity&lt;V&gt;(vop))</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>26</td><td></td><td>2</td><td><code>        ? converter.map&lt;K, V&gt;(kcast: kop, vcast: vop)</code></td>
                 </tr>
-                <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>1</td><td><code>        : _toMap(vop);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>1</td><td><code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>3</td><td><code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code></td>
+                    <td>30</td><td></td><td>1</td><td><code>  static Cast&lt;List&lt;T&gt;&gt; _toList&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>3</td><td><code>    return (!Converter.isIdentity&lt;K&gt;(kop) || Converter.isIdentity&lt;V&gt;(vop))</code></td>
+                    <td>31</td><td></td><td>2</td><td><code>      (x) =&gt; LazyInPlaceList(x, cast);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>3</td><td><code>        ? converter.map&lt;K, V&gt;(kcast: kop, vcast: vop)</code></td>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>2</td><td><code>        : _toMap(vop);</code></td>
+                    <td>33</td><td></td><td>1</td><td><code>  static Cast&lt;Map&lt;K, V&gt;&gt; _toMap&lt;K, V&gt;(Cast&lt;V&gt; vcast) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>1</td><td><code>  }</code></td>
+                    <td>34</td><td></td><td>2</td><td><code>      (x) =&gt; LazyInPlaceMap(x, vcast);</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>2</td><td><code>  static Cast&lt;List&lt;T&gt;&gt; _toList&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>3</td><td><code>      (x) =&gt; LazyInPlaceList(x, cast);</code></td>
-                </tr>
-                <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>2</td><td><code>  static Cast&lt;Set&lt;T&gt;&gt; _toSet&lt;T&gt;(Cast&lt;T&gt; cast) =&gt;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>4</td><td><code>      (x) =&gt; (x as Iterable).map(cast).toSet();</code></td>
-                </tr>
-                <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>2</td><td><code>  static Cast&lt;Map&lt;K, V&gt;&gt; _toMap&lt;K, V&gt;(Cast&lt;V&gt; vcast) =&gt;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>3</td><td><code>      (x) =&gt; LazyInPlaceMap(x, vcast);</code></td>
-                </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>}</code></td>
+                    <td>35</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

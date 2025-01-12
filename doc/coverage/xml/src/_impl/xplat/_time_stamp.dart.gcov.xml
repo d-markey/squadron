@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="_time_stamp.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="_time_stamp.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
-        <line hits="44" number="1">
+        <line hits="33" number="1">
             <code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code>
-            <hit count="44" name="&lt;unnamed&gt;"/>
+            <hit count="33" name="&lt;unnamed&gt;"/>
         </line>
         <line number="2">
             <code/>
         </line>
-        <line hits="22" number="3">
+        <line hits="11" number="3">
             <code>int microsecTimeStamp([DateTime? time]) =&gt;</code>
-            <hit count="22" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="66" number="4">
+        <line hits="55" number="4">
             <code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code>
-            <hit count="66" name="&lt;unnamed&gt;"/>
+            <hit count="55" name="&lt;unnamed&gt;"/>
         </line>
         <line number="5">
             <code/>
@@ -26,9 +26,9 @@
         <line number="7">
             <code>    ? null</code>
         </line>
-        <line hits="40" number="8">
+        <line hits="30" number="8">
             <code>    : _latestUPDEpoch.add(Duration(microseconds: microsecs));</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

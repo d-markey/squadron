@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-31</dd>
+                    <dd>2025-01-12</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -232,7 +232,7 @@
                     <td>57</td><td></td><td>22</td><td><code>    failure(SquadronErrorExt.create('Connection to worker failed'));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>4</td><td><code>    logger?.t('Isolate terminated with message $message.');</code></td>
+                    <td>58</td><td></td><td>6</td><td><code>    logger?.t('Isolate terminated with message $message.');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 59" id="line59">
                     <td>59</td><td></td><td>10</td><td><code>    channel?.close();</code></td>
@@ -346,7 +346,7 @@
                     <td>95</td><td></td><td>3</td><td><code>      logger?.e(() =&gt; 'Connection to Isolate failed: $error');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>3</td><td><code>      failure(error);</code></td>
+                    <td>96</td><td></td><td>2</td><td><code>      failure(error);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
                     <td>97</td><td></td><td>10</td><td><code>    } else if (response.endOfStream) {</code></td>
@@ -361,7 +361,7 @@
                     <td>100</td><td></td><td>10</td><td><code>    } else if (!completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 101" id="line101">
-                    <td>101</td><td></td><td>2</td><td><code>      logger?.t('Connected to Isolate');</code></td>
+                    <td>101</td><td></td><td>3</td><td><code>      logger?.t('Connected to Isolate');</code></td>
                 </tr>
                 <tr class="noop" title="Line 102" id="line102">
                     <td>102</td><td></td><td></td><td><code>      final platformChannel =</code></td>
@@ -433,13 +433,13 @@
                     <td>124</td><td></td><td></td><td><code>    if (hook != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>1</td><td><code>      await hook.call(isolate);</code></td>
+                    <td>125</td><td></td><td>2</td><td><code>      await hook.call(isolate);</code></td>
                 </tr>
                 <tr class="noop" title="Line 126" id="line126">
                     <td>126</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>2</td><td><code>    logger?.t('Created Isolate');</code></td>
+                    <td>127</td><td></td><td>3</td><td><code>    logger?.t('Created Isolate');</code></td>
                 </tr>
                 <tr class="noop" title="Line 128" id="line128">
                     <td>128</td><td></td><td></td><td><code>    return channel;</code></td>
@@ -451,7 +451,7 @@
                     <td>130</td><td></td><td>0</td><td><code>    logger?.e(() =&gt; 'Connection to Isolate failed: $ex');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>4</td><td><code>    isolate.kill(priority: vm.Isolate.beforeNextEvent);</code></td>
+                    <td>131</td><td></td><td>3</td><td><code>    isolate.kill(priority: vm.Isolate.beforeNextEvent);</code></td>
                 </tr>
                 <tr class="noop" title="Line 132" id="line132">
                     <td>132</td><td></td><td></td><td><code>    rethrow;</code></td>

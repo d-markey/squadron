@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -22,9 +22,9 @@
         <line number="7">
             <code/>
         </line>
-        <line hits="40" number="8">
+        <line hits="30" number="8">
             <code>  Future&lt;T&gt; get future =&gt; _res.future;</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="9">
             <code/>
@@ -33,9 +33,9 @@
             <code>  void success(T data) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="50" number="11">
+        <line hits="40" number="11">
             <code>    if (!_res.isCompleted) _res.complete(data);</code>
-            <hit count="50" name="&lt;unnamed&gt;"/>
+            <hit count="40" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code>  }</code>
@@ -47,9 +47,9 @@
             <code>  void failure(SquadronException ex) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="16" number="15">
+        <line hits="12" number="15">
             <code>    if (!_res.isCompleted) _res.completeError(ex);</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="16">
             <code>  }</code>

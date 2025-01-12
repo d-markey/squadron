@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9583333" lines-covered="46" lines-valid="48" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -81,9 +81,9 @@
             <code>      WorkerRequest._([</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="27">
+        <line hits="10" number="27">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="28">
             <code>        channelInfo, // 1 - channel</code>
@@ -120,9 +120,9 @@
             <code>      WorkerRequest._([</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="21" number="39">
+        <line hits="11" number="39">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="40">
             <code>        channelInfo, // 1 - channel</code>
@@ -155,9 +155,9 @@
             <code>  static WorkerRequest cancelStream(int streamId) =&gt; WorkerRequest._([</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="50">
+        <line hits="3" number="50">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code>        null, // 1 - channel</code>
@@ -194,9 +194,9 @@
             <code>      WorkerRequest._([</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="62">
+        <line hits="2" number="62">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="63">
             <code>        null, // 1 - channel</code>
@@ -229,9 +229,9 @@
             <code>  static WorkerRequest stop() =&gt; WorkerRequest._([</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="73">
+        <line hits="10" number="73">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="74">
             <code>        null, // 1 - channel</code>
@@ -260,9 +260,9 @@
         <line number="82">
             <code>  /// The client's [WorkerChannel]. Only valid on the receiving end.</code>
         </line>
-        <line hits="21" number="83">
+        <line hits="20" number="83">
             <code>  WorkerChannel? get channel =&gt; data[_$channel];</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="84">
             <code/>
@@ -274,9 +274,9 @@
             <code>  void Function(dynamic)? get reply =&gt;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="33" number="87">
+        <line hits="32" number="87">
             <code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code>
-            <hit count="33" name="&lt;unnamed&gt;"/>
+            <hit count="32" name="&lt;unnamed&gt;"/>
         </line>
         <line number="88">
             <code/>
@@ -284,9 +284,8 @@
         <line number="89">
             <code>  /// The client's channel info.</code>
         </line>
-        <line hits="10" number="90">
+        <line hits="0" number="90">
             <code>  PlatformChannel? get channelInfo =&gt; data[_$channel];</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="91">
             <code/>
@@ -294,9 +293,9 @@
         <line number="92">
             <code>  /// Cancelation token.</code>
         </line>
-        <line hits="30" number="93">
+        <line hits="20" number="93">
             <code>  SquadronCancelationToken? get cancelToken =&gt; data[_$token];</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="94">
             <code/>
@@ -314,9 +313,9 @@
         <line number="98">
             <code>  /// The [command]'s ID.</code>
         </line>
-        <line hits="30" number="99">
+        <line hits="20" number="99">
             <code>  int get command =&gt; data[_$command];</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="100">
             <code/>
@@ -324,9 +323,9 @@
         <line number="101">
             <code>  /// The command's arguments, if any.</code>
         </line>
-        <line hits="21" number="102">
+        <line hits="20" number="102">
             <code>  List get args =&gt; data[_$args];</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="103">
             <code/>
@@ -337,9 +336,9 @@
         <line number="105">
             <code>  /// Web Workers, ownership of these objects must be transfered across threads.</code>
         </line>
-        <line hits="21" number="106">
+        <line hits="20" number="106">
             <code>  bool get inspectResponse =&gt; data[_$inspectResponse];</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="107">
             <code/>
@@ -439,33 +438,33 @@
             <code>  void unwrapInPlace(InternalLogger? logger) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="138">
+        <line hits="10" number="138">
             <code>    unwrapTravelTime();</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="31" number="139">
+        <line hits="30" number="139">
             <code>    data[_$command] = (data[_$command] as num).toInt();</code>
-            <hit count="31" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="24" number="140">
+        <line hits="23" number="140">
             <code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code>
-            <hit count="24" name="&lt;unnamed&gt;"/>
+            <hit count="23" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="31" number="141">
+        <line hits="30" number="141">
             <code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code>
-            <hit count="31" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="31" number="142">
+        <line hits="30" number="142">
             <code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code>
-            <hit count="31" name="&lt;unnamed&gt;"/>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="143">
+        <line hits="10" number="143">
             <code>    data[_$inspectResponse] ??= false;</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="144">
+        <line hits="10" number="144">
             <code>    data[_$args] ??= const [];</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="145">
             <code>  }</code>
@@ -476,32 +475,30 @@
         <line number="147">
             <code>  /// In-place serialization of a [WorkerRequest].</code>
         </line>
-        <line hits="21" number="148">
+        <line hits="11" number="148">
             <code>  List wrapInPlace() {</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="21" number="149">
+        <line hits="11" number="149">
             <code>    final token = data[_$token];</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="150">
+        <line hits="11" number="150">
             <code>    if (token is SquadronCancelationToken) {</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="151">
+        <line hits="4" number="151">
             <code>      data[_$token] = token.serialize();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="152">
             <code>    }</code>
         </line>
-        <line hits="10" number="153">
+        <line number="153">
             <code>    return data;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="154">
+        <line number="154">
             <code>  }</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="155">
             <code/>
@@ -510,9 +507,9 @@
             <code>  static WorkerRequest from(List data) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="21" number="157">
+        <line hits="20" number="157">
             <code>    if (data.length != 7) {</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="158">
             <code>      throw SquadronErrorExt.create('Invalid worker request');</code>

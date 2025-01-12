@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-31</dd>
+                    <dd>2025-01-12</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>17</td><td>18</td><td class="high">94.4%</td>
+                            <th scope="row">Lines</th><td>15</td><td>17</td><td class="med">88.2%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -94,7 +94,7 @@
                     <td>11</td><td></td><td></td><td><code>  /// Gets the current platform type.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>48</td><td><code>  static final platformType = impl.getPlatformType();</code></td>
+                    <td>12</td><td></td><td>36</td><td><code>  static final platformType = impl.getPlatformType();</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code></code></td>
@@ -114,17 +114,17 @@
                 <tr class="noop" title="Line 18" id="line18">
                     <td>18</td><td></td><td></td><td><code>  /// will return '/path/to/workers'.</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>12</td><td><code>  static Uri uri(String url) =&gt; impl.mapUrl(url);</code></td>
+                <tr class="lineNoCov" title="Line 19" id="line19">
+                    <td>19</td><td></td><td>0</td><td><code>  static Uri uri(String url) =&gt; impl.mapUrl(url);</code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
                     <td>20</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>40</td><td><code>  static final _platformConverter = impl.getPlatformConverter();</code></td>
+                    <td>21</td><td></td><td>30</td><td><code>  static final _platformConverter = impl.getPlatformConverter();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>40</td><td><code>  static Converter _converter = _platformConverter;</code></td>
+                    <td>22</td><td></td><td>30</td><td><code>  static Converter _converter = _platformConverter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code></code></td>
@@ -133,7 +133,7 @@
                     <td>24</td><td></td><td></td><td><code>  /// Gets the current converter.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>30</td><td><code>  static Converter get converter =&gt; _converter;</code></td>
+                    <td>25</td><td></td><td>20</td><td><code>  static Converter get converter =&gt; _converter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
                     <td>26</td><td></td><td></td><td><code></code></td>
@@ -148,25 +148,25 @@
                     <td>29</td><td></td><td></td><td><code>  /// [onConverterChanged] will be notified of the change.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>2</td><td><code>  static set converter(Converter? value) {</code></td>
+                    <td>30</td><td></td><td>1</td><td><code>  static set converter(Converter? value) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>2</td><td><code>    value ??= _platformConverter;</code></td>
+                    <td>31</td><td></td><td>1</td><td><code>    value ??= _platformConverter;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>3</td><td><code>    if (_converter != value) {</code></td>
+                    <td>32</td><td></td><td>2</td><td><code>    if (_converter != value) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
                     <td>33</td><td></td><td></td><td><code>      _converter = value;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>4</td><td><code>      for (var handler in _converterChangeHandlers.values) {</code></td>
+                    <td>34</td><td></td><td>3</td><td><code>      for (var handler in _converterChangeHandlers.values) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>2</td><td><code>          handler();</code></td>
+                    <td>36</td><td></td><td>1</td><td><code>          handler();</code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
                     <td>37</td><td></td><td></td><td><code>        } catch (_) {</code></td>
@@ -183,8 +183,8 @@
                 <tr class="noop" title="Line 41" id="line41">
                     <td>41</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 42" id="line42">
+                    <td>42</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
                     <td>43</td><td></td><td></td><td><code></code></td>
@@ -211,7 +211,7 @@
                     <td>50</td><td></td><td>1</td><td><code>    final key = Object();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>3</td><td><code>    _converterChangeHandlers[key] = handler;</code></td>
+                    <td>51</td><td></td><td>2</td><td><code>    _converterChangeHandlers[key] = handler;</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
                     <td>52</td><td></td><td></td><td><code>    return key;</code></td>
@@ -229,7 +229,7 @@
                     <td>56</td><td></td><td>1</td><td><code>  static void unregisterConverterChanged(Object key) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>3</td><td><code>    _converterChangeHandlers.remove(key);</code></td>
+                    <td>57</td><td></td><td>2</td><td><code>    _converterChangeHandlers.remove(key);</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
                     <td>58</td><td></td><td></td><td><code>  }</code></td>

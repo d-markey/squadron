@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="concurrency_settings.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.33333334" lines-covered="2" lines-valid="6" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="concurrency_settings.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.33333334" lines-covered="2" lines-valid="6" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>/// Concurrency settings governing parallelization of workers in a [WorkerPool].</code>
@@ -7,9 +7,9 @@
         <line number="2">
             <code>class ConcurrencySettings {</code>
         </line>
-        <line hits="15" number="3">
+        <line hits="25" number="3">
             <code>  const ConcurrencySettings(</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
         <line number="4">
             <code>      {this.minWorkers = 0, this.maxWorkers = 0, this.maxParallel = 1})</code>
@@ -77,9 +77,9 @@
         <line number="25">
             <code>  /// Maximum number of running tasks.</code>
         </line>
-        <line hits="15" number="26">
+        <line hits="12" number="26">
             <code>  int get maxConcurrency =&gt; maxWorkers * maxParallel;</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="27">
             <code/>

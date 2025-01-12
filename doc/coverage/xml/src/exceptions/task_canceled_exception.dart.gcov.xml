@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="task_canceled_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.083333336" lines-covered="1" lines-valid="12" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="task_canceled_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.11111111" lines-covered="1" lines-valid="9" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:convert';</code>
@@ -28,9 +28,9 @@
         <line number="9">
             <code>class TaskCanceledException implements SquadronError, CanceledException {</code>
         </line>
-        <line hits="4" number="10">
+        <line hits="2" number="10">
             <code>  TaskCanceledException(String? message) : message = message ?? 'Task canceled';</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="11">
             <code/>
@@ -47,7 +47,7 @@
         <line hits="0" number="15">
             <code>  @override</code>
         </line>
-        <line hits="0" number="16">
+        <line number="16">
             <code>  StackTrace? get stackTrace =&gt; null;</code>
         </line>
         <line number="17">
@@ -92,7 +92,7 @@
         <line hits="0" number="30">
             <code>  static TaskCanceledException? deserialize(List? props) {</code>
         </line>
-        <line hits="0" number="31">
+        <line number="31">
             <code>    if (props == null) return null;</code>
         </line>
         <line hits="0" number="32">
@@ -101,7 +101,7 @@
         <line hits="0" number="33">
             <code>    return TaskCanceledException(props[_$message]);</code>
         </line>
-        <line hits="0" number="34">
+        <line number="34">
             <code>  }</code>
         </line>
         <line number="35">

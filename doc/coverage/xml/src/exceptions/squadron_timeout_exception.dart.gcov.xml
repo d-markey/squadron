@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="squadron_timeout_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="19" lines-valid="19" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="squadron_timeout_exception.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9375" lines-covered="15" lines-valid="16" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:cancelation_token/cancelation_token.dart';</code>
@@ -28,16 +28,16 @@
         <line number="9">
             <code>    implements TimeoutCanceledException {</code>
         </line>
-        <line hits="6" number="10">
+        <line hits="3" number="10">
             <code>  SquadronTimeoutException(String tokenId, String message, this.duration,</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="11">
             <code>      [StackTrace? stackTrace])</code>
         </line>
-        <line hits="6" number="12">
+        <line hits="3" number="12">
             <code>      : super(tokenId, message, stackTrace);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code/>
@@ -55,32 +55,31 @@
             <code>  @override</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="18">
+        <line hits="6" number="18">
             <code>  List serialize() =&gt; List.unmodifiable([</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="19">
             <code>        $timeoutExceptionType,</code>
         </line>
-        <line hits="4" number="20">
+        <line hits="3" number="20">
             <code>        tokenId,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="21">
+        <line hits="3" number="21">
             <code>        message,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="22">
+        <line hits="6" number="22">
             <code>        stackTrace?.toString(),</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="23">
+        <line hits="3" number="23">
             <code>        duration?.inMicroseconds,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="24">
+        <line number="24">
             <code>      ]);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="25">
             <code>}</code>
@@ -112,48 +111,45 @@
         <line number="34">
             <code>extension SquadronTimeoutExceptionExt on SquadronTimeoutException {</code>
         </line>
-        <line hits="5" number="35">
+        <line hits="3" number="35">
             <code>  static SquadronTimeoutException? deserialize(List? props) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="36">
+        <line number="36">
             <code>    if (props == null) return null;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="37">
+        <line hits="6" number="37">
             <code>    if (props[_$type] != $timeoutExceptionType) return null;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="38">
+        <line hits="3" number="38">
             <code>    final microSecs = (props[_$duration] as num?)?.toInt();</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="39">
+        <line hits="3" number="39">
             <code>    return SquadronTimeoutException(</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="40">
+        <line hits="3" number="40">
             <code>      props[_$tokenId],</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="41">
+        <line hits="3" number="41">
             <code>      props[_$message],</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="42">
+        <line hits="0" number="42">
             <code>      (microSecs == null) ? null : Duration(microseconds: microSecs),</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="43">
+        <line hits="6" number="43">
             <code>      SquadronException.loadStackTrace(props[_$stackTrace]),</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="44">
             <code>    );</code>
         </line>
-        <line hits="2" number="45">
+        <line number="45">
             <code>  }</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="46">
             <code>}</code>

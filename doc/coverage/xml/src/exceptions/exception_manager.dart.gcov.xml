@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.72" lines-covered="18" lines-valid="25" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="exception_manager.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7368421" lines-covered="14" lines-valid="19" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '_builtin_exceptions.dart';</code>
@@ -25,16 +25,15 @@
         <line number="8">
             <code>class ExceptionManager {</code>
         </line>
-        <line hits="16" number="9">
+        <line hits="11" number="9">
             <code>  ExceptionManager();</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="11" number="11">
+        <line number="11">
             <code>  final _deserializers = Map.from(builtinExceptions);</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
@@ -52,9 +51,9 @@
         <line number="16">
             <code>      String exceptionTypeId, WorkerExceptionDeserializer deserializer) {</code>
         </line>
-        <line hits="6" number="17">
+        <line hits="4" number="17">
             <code>    if (builtinExceptions.containsKey(exceptionTypeId)) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="18">
             <code>      throw SquadronErrorExt.create(</code>
@@ -68,9 +67,9 @@
         <line number="21">
             <code>    }</code>
         </line>
-        <line hits="6" number="22">
+        <line hits="4" number="22">
             <code>    _deserializers[exceptionTypeId] = deserializer;</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code>  }</code>
@@ -90,13 +89,13 @@
         <line number="28">
             <code>  /// prefer passing static methods or top-level functions instead.</code>
         </line>
-        <line hits="3" number="29">
+        <line hits="2" number="29">
             <code>  void unregister(String exceptionTypeId) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="30">
+        <line hits="4" number="30">
             <code>    if (builtinExceptions.containsKey(exceptionTypeId)) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="31">
             <code>      throw SquadronErrorExt.create(</code>
@@ -110,13 +109,12 @@
         <line number="34">
             <code>    }</code>
         </line>
-        <line hits="6" number="35">
+        <line hits="4" number="35">
             <code>    _deserializers.remove(exceptionTypeId);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="36">
+        <line number="36">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="37">
             <code/>
@@ -124,48 +122,47 @@
         <line number="38">
             <code>  /// Deserializes a [List] that was produced by [serialize].</code>
         </line>
-        <line hits="20" number="39">
+        <line hits="10" number="39">
             <code>  SquadronException? deserialize(List? data) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="16" number="40">
-            <code>    if (data == null || data.isEmpty) {</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="41">
-            <code>      return null;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="40">
+            <code>    if (data == null || data.isEmpty) {</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="41">
+            <code>      return null;</code>
         </line>
         <line number="42">
             <code>    }</code>
         </line>
-        <line hits="0" number="43">
+        <line number="43">
             <code>    try {</code>
         </line>
-        <line hits="14" number="44">
+        <line hits="5" number="44">
             <code>      final exceptionType = data[0];</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="45">
+        <line hits="10" number="45">
             <code>      final deserializer = _deserializers[exceptionType];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14" number="46">
+        <line hits="5" number="46">
             <code>      return deserializer?.call(data) ??</code>
-            <hit count="14" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="47">
+        <line hits="2" number="47">
             <code>          WorkerException(</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="48">
+        <line hits="2" number="48">
             <code>            'Failed to deserialize exception information for $exceptionType',</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="49">
             <code>          );</code>
         </line>
-        <line hits="0" number="50">
+        <line number="50">
             <code>    } catch (ex, st) {</code>
         </line>
         <line hits="0" number="51">
@@ -174,9 +171,8 @@
         <line number="52">
             <code>    }</code>
         </line>
-        <line hits="10" number="53">
+        <line number="53">
             <code>  }</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="54">
             <code>}</code>

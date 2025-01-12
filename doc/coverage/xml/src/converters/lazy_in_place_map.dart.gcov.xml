@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2024-12-31" filename="lazy_in_place_map.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="90" lines-valid="90" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-12" filename="lazy_in_place_map.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="69" lines-valid="69" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -19,9 +19,9 @@
         <line number="6">
             <code>class LazyInPlaceMap&lt;K, V&gt; implements Map&lt;K, V&gt; {</code>
         </line>
-        <line hits="2" number="7">
+        <line hits="1" number="7">
             <code>  LazyInPlaceMap(this._data, this._vcast);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="8">
             <code/>
@@ -39,13 +39,12 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="13">
+        <line number="13">
             <code>  Iterable&lt;MapEntry&lt;K, V&gt;&gt; get entries =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="14">
+        <line hits="5" number="14">
             <code>      keys.map((k) =&gt; MapEntry(k, _get(k) as V));</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="15">
             <code/>
@@ -54,9 +53,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="17">
+        <line hits="2" number="17">
             <code>  bool get isEmpty =&gt; _data.isEmpty;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="18">
             <code/>
@@ -65,9 +64,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="20">
+        <line hits="2" number="20">
             <code>  bool get isNotEmpty =&gt; _data.isNotEmpty;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="21">
             <code/>
@@ -76,9 +75,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="23">
+        <line hits="3" number="23">
             <code>  Iterable&lt;K&gt; get keys =&gt; _data.keys.cast&lt;K&gt;();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="24">
             <code/>
@@ -87,9 +86,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="26">
+        <line hits="2" number="26">
             <code>  int get length =&gt; _data.length;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="27">
             <code/>
@@ -98,28 +97,26 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="29">
+        <line number="29">
             <code>  Iterable&lt;V&gt; get values sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="30">
+        <line hits="3" number="30">
             <code>    final keys = _data.keys.toList();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="31">
-            <code>    for (var i = 0; i &lt; keys.length; i++) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="32">
-            <code>      yield _get(keys[i]) as V;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="31">
+            <code>    for (var i = 0; i &lt; keys.length; i++) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="32">
+            <code>      yield _get(keys[i]) as V;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="33">
             <code>    }</code>
         </line>
-        <line hits="1" number="34">
+        <line number="34">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="35">
             <code/>
@@ -128,9 +125,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="37">
+        <line hits="1" number="37">
             <code>  V? operator [](Object? key) =&gt; _get(key);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="38">
             <code/>
@@ -139,9 +136,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="40">
+        <line hits="2" number="40">
             <code>  void operator []=(K key, V value) =&gt; _data[key] = value;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="41">
             <code/>
@@ -150,9 +147,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="43">
+        <line hits="2" number="43">
             <code>  void addAll(Map&lt;K, V&gt; other) =&gt; _data.addAll(other);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="44">
             <code/>
@@ -161,13 +158,12 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="46">
+        <line number="46">
             <code>  void addEntries(Iterable&lt;MapEntry&lt;K, V&gt;&gt; newEntries) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="47">
+        <line hits="2" number="47">
             <code>      _data.addEntries(newEntries);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="48">
             <code/>
@@ -176,9 +172,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="50">
+        <line hits="2" number="50">
             <code>  Map&lt;RK, RV&gt; cast&lt;RK, RV&gt;() =&gt; _forceCast().cast&lt;RK, RV&gt;();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code/>
@@ -187,9 +183,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="53">
+        <line hits="2" number="53">
             <code>  void clear() =&gt; _data.clear();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="54">
             <code/>
@@ -198,9 +194,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="56">
+        <line hits="2" number="56">
             <code>  bool containsKey(Object? key) =&gt; _data.containsKey(key);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="57">
             <code/>
@@ -209,9 +205,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="59">
+        <line hits="6" number="59">
             <code>  bool containsValue(Object? value) =&gt; _data.keys.any((k) =&gt; value == _get(k));</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="60">
             <code/>
@@ -220,24 +216,22 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="62">
+        <line number="62">
             <code>  void forEach(void Function(K key, V value) action) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="63">
+        <line hits="3" number="63">
             <code>    for (var k in _data.keys) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="64">
-            <code>      action(k as K, _get(k) as V);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="64">
+            <code>      action(k as K, _get(k) as V);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="65">
             <code>    }</code>
         </line>
-        <line hits="1" number="66">
+        <line number="66">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="67">
             <code/>
@@ -246,36 +240,33 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="69">
+        <line number="69">
             <code>  Map&lt;K2, V2&gt; map&lt;K2, V2&gt;(MapEntry&lt;K2, V2&gt; Function(K key, V value) convert) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="70">
+        <line hits="4" number="70">
             <code>    final r = &lt;K2, V2&gt;{}, keys = _data.keys.toList();</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="71">
+        <line hits="4" number="71">
             <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="72">
+        <line hits="3" number="72">
             <code>      final k = keys[i], e = convert(k as K, _get(k) as V);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="73">
+        <line hits="3" number="73">
             <code>      r[e.key] = e.value;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="74">
             <code>    }</code>
         </line>
-        <line hits="1" number="75">
+        <line number="75">
             <code>    return r;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="76">
+        <line number="76">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="77">
             <code/>
@@ -284,13 +275,12 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="79">
+        <line number="79">
             <code>  V putIfAbsent(K key, V Function() ifAbsent) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="80">
+        <line hits="2" number="80">
             <code>      _data.putIfAbsent(key, ifAbsent);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="81">
             <code/>
@@ -299,9 +289,9 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="83">
+        <line hits="2" number="83">
             <code>  V? remove(Object? key) =&gt; _data.remove(key);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="84">
             <code/>
@@ -310,29 +300,28 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="86">
+        <line number="86">
             <code>  void removeWhere(bool Function(K key, V value) test) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="87">
+        <line hits="3" number="87">
             <code>    final keys = _data.keys.toList();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="88">
+            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="88">
-            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="89">
+        <line hits="2" number="89">
             <code>      final k = keys[i], v = _get(k);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="90">
-            <code>      if (test(k as K, v as V)) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="91">
+        <line hits="1" number="90">
+            <code>      if (test(k as K, v as V)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="91">
             <code>        _data.remove(k);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="92">
             <code>      }</code>
@@ -340,9 +329,8 @@
         <line number="93">
             <code>    }</code>
         </line>
-        <line hits="1" number="94">
+        <line number="94">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="95">
             <code/>
@@ -351,21 +339,19 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="97">
+        <line number="97">
             <code>  String toString() {</code>
+        </line>
+        <line hits="1" number="98">
+            <code>    _forceCast();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="98">
-            <code>    _forceCast();</code>
+        <line hits="2" number="99">
+            <code>    return _data.toString();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="99">
-            <code>    return _data.toString();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="100">
+        <line number="100">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="101">
             <code/>
@@ -374,17 +360,15 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="103">
+        <line number="103">
             <code>  V update(K key, V Function(V value) update, {V Function()? ifAbsent}) =&gt;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="104">
+        <line hits="4" number="104">
             <code>      _data.update(key, (v) =&gt; (v != null &amp;&amp; v is! V) ? _vcast(v) : v,</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="105">
+        <line number="105">
             <code>          ifAbsent: ifAbsent);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="106">
             <code/>
@@ -393,77 +377,74 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="108">
+        <line number="108">
             <code>  void updateAll(V Function(K key, V value) update) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="109">
+        <line hits="3" number="109">
             <code>    final keys = _data.keys.toList();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="5" number="110">
-            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="111">
-            <code>      final k = keys[i], v = _get(k);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="112">
-            <code>      _data[k] = update(k as K, v as V);</code>
+        <line hits="4" number="110">
+            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="111">
+            <code>      final k = keys[i], v = _get(k);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="112">
+            <code>      _data[k] = update(k as K, v as V);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="113">
             <code>    }</code>
         </line>
-        <line hits="1" number="114">
+        <line number="114">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="115">
             <code/>
         </line>
-        <line hits="2" number="116">
+        <line hits="1" number="116">
             <code>  Map&lt;dynamic, dynamic&gt; _forceCast() {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="117">
+        <line hits="3" number="117">
             <code>    var keys = _data.keys.toList();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="118">
+            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="118">
-            <code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="119">
+        <line hits="2" number="119">
             <code>      _get(keys[i]);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="120">
             <code>    }</code>
         </line>
-        <line hits="2" number="121">
+        <line hits="1" number="121">
             <code>    return _data;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="122">
-            <code>  }</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="122">
+            <code>  }</code>
         </line>
         <line number="123">
             <code/>
         </line>
-        <line hits="2" number="124">
+        <line hits="1" number="124">
             <code>  V? _get(Object? key) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="125">
+        <line hits="2" number="125">
             <code>    dynamic v = _data[key];</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="126">
-            <code>    if (v != null &amp;&amp; v is! V) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="126">
+            <code>    if (v != null &amp;&amp; v is! V) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="127">
             <code>      v = _vcast(v);</code>
@@ -476,13 +457,11 @@
         <line number="129">
             <code>    }</code>
         </line>
-        <line hits="1" number="130">
+        <line number="130">
             <code>    return v;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="131">
+        <line number="131">
             <code>  }</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="132">
             <code>}</code>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2024-12-31</dd>
+                    <dd>2025-01-12</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>36</td><td>40</td><td class="high">90.0%</td>
+                            <th scope="row">Lines</th><td>28</td><td>28</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -88,13 +88,13 @@
                     <td>9</td><td></td><td></td><td><code>class SquadronCancelationToken extends CancelationToken {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>4</td><td><code>  SquadronCancelationToken._(this.token, this.id) {</code></td>
+                    <td>10</td><td></td><td>2</td><td><code>  SquadronCancelationToken._(this.token, this.id) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>10</td><td><code>    token?.onCanceled.then(_checkToken);</code></td>
+                    <td>11</td><td></td><td>8</td><td><code>    token?.onCanceled.then(_checkToken);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>0</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code></code></td>
@@ -103,31 +103,31 @@
                     <td>14</td><td></td><td>2</td><td><code>  List serialize() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>4</td><td><code>    _checkToken();</code></td>
+                    <td>15</td><td></td><td>2</td><td><code>    _checkToken();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>6</td><td><code>    return List.unmodifiable([</code></td>
+                    <td>16</td><td></td><td>4</td><td><code>    return List.unmodifiable([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>4</td><td><code>      id,</code></td>
+                    <td>17</td><td></td><td>2</td><td><code>      id,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 18" id="line18">
-                    <td>18</td><td></td><td>6</td><td><code>      exception?.serialize(),</code></td>
+                    <td>18</td><td></td><td>4</td><td><code>      exception?.serialize(),</code></td>
                 </tr>
                 <tr class="noop" title="Line 19" id="line19">
                     <td>19</td><td></td><td></td><td><code>    ]);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>0</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>11</td><td><code>  static SquadronCancelationToken? deserialize(List? props) {</code></td>
+                    <td>22</td><td></td><td>10</td><td><code>  static SquadronCancelationToken? deserialize(List? props) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>1</td><td><code>    if (props == null) return null;</code></td>
+                <tr class="noop" title="Line 23" id="line23">
+                    <td>23</td><td></td><td></td><td><code>    if (props == null) return null;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
                     <td>24</td><td></td><td>2</td><td><code>    final id = props[_$id];</code></td>
@@ -138,8 +138,8 @@
                 <tr class="lineCov" title="Line 26" id="line26">
                     <td>26</td><td></td><td>2</td><td><code>    final token = SquadronCancelationToken._(null, id);</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 27" id="line27">
-                    <td>27</td><td></td><td>0</td><td><code>    if (ex != null) {</code></td>
+                <tr class="noop" title="Line 27" id="line27">
+                    <td>27</td><td></td><td></td><td><code>    if (ex != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
                     <td>28</td><td></td><td>2</td><td><code>      token._exception = ex;</code></td>
@@ -150,11 +150,11 @@
                 <tr class="noop" title="Line 30" id="line30">
                     <td>30</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>0</td><td><code>    return token;</code></td>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code>    return token;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>1</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 32" id="line32">
+                    <td>32</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
                     <td>33</td><td></td><td></td><td><code></code></td>
@@ -184,7 +184,7 @@
                     <td>41</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>4</td><td><code>  SquadronCanceledException? get exception =&gt; _exception;</code></td>
+                    <td>42</td><td></td><td>2</td><td><code>  SquadronCanceledException? get exception =&gt; _exception;</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
                     <td>43</td><td></td><td></td><td><code>  SquadronCanceledException? _exception;</code></td>
@@ -195,14 +195,14 @@
                 <tr class="lineCov" title="Line 45" id="line45">
                     <td>45</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>2</td><td><code>  void ensureStarted() {</code></td>
+                <tr class="noop" title="Line 46" id="line46">
+                    <td>46</td><td></td><td></td><td><code>  void ensureStarted() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>5</td><td><code>    token?.ensureStarted();</code></td>
+                    <td>47</td><td></td><td>4</td><td><code>    token?.ensureStarted();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>2</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 48" id="line48">
+                    <td>48</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
                     <td>49</td><td></td><td></td><td><code></code></td>
@@ -211,7 +211,7 @@
                     <td>50</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>6</td><td><code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code></td>
+                    <td>51</td><td></td><td>4</td><td><code>  Future&lt;CanceledException&gt; get onCanceled =&gt; _completer.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
                     <td>52</td><td></td><td></td><td><code>  final _completer = Completer&lt;CanceledException&gt;();</code></td>
@@ -220,22 +220,22 @@
                     <td>53</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>4</td><td><code>  void _checkToken([dynamic _]) {</code></td>
+                    <td>54</td><td></td><td>2</td><td><code>  void _checkToken([dynamic _]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>6</td><td><code>    final ex = token?.exception;</code></td>
+                    <td>55</td><td></td><td>4</td><td><code>    final ex = token?.exception;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>2</td><td><code>    if (ex != null) {</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>    if (ex != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>8</td><td><code>      _exception ??= SquadronCanceledException.from(id, ex);</code></td>
+                    <td>57</td><td></td><td>6</td><td><code>      _exception ??= SquadronCanceledException.from(id, ex);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>6</td><td><code>      if (!_completer.isCompleted) {</code></td>
+                    <td>58</td><td></td><td>4</td><td><code>      if (!_completer.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>8</td><td><code>        _completer.complete(_exception);</code></td>
+                    <td>59</td><td></td><td>6</td><td><code>        _completer.complete(_exception);</code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
                     <td>60</td><td></td><td></td><td><code>      }</code></td>
@@ -243,8 +243,8 @@
                 <tr class="noop" title="Line 61" id="line61">
                     <td>61</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>2</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 62" id="line62">
+                    <td>62</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
                     <td>63</td><td></td><td></td><td><code>}</code></td>
@@ -268,7 +268,7 @@
                     <td>69</td><td></td><td></td><td><code>extension SquadronCancelationTokenExt on CancelationToken {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>4</td><td><code>  SquadronCancelationToken wrap() {</code></td>
+                    <td>70</td><td></td><td>2</td><td><code>  SquadronCancelationToken wrap() {</code></td>
                 </tr>
                 <tr class="noop" title="Line 71" id="line71">
                     <td>71</td><td></td><td></td><td><code>    final self = this;</code></td>
@@ -280,13 +280,13 @@
                     <td>73</td><td></td><td>4</td><td><code>    final token = SquadronCancelationToken._(self, TokenId.next());</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>4</td><td><code>    token._checkToken();</code></td>
+                    <td>74</td><td></td><td>2</td><td><code>    token._checkToken();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>2</td><td><code>    return token;</code></td>
+                <tr class="noop" title="Line 75" id="line75">
+                    <td>75</td><td></td><td></td><td><code>    return token;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>2</td><td><code>  }</code></td>
+                <tr class="noop" title="Line 76" id="line76">
+                    <td>76</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 77" id="line77">
                     <td>77</td><td></td><td></td><td><code>}</code></td>
