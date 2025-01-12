@@ -31,12 +31,12 @@ bool _isTransferable(JSAny js) {
 
 void _registerTransferable(JSAny js, JSArray transfer) {
   if (js.isA<JSTypedArray>()) {
-    final buffer = (js as JSTypedArray).buffer;
+    final buffer = (js as JSTypedArray).$buffer;
     if (buffer.isA<JSArrayBuffer>()) {
-      transfer.push(buffer);
+      transfer.$push(buffer);
     }
   } else if (_isTransferable(js)) {
-    transfer.push(js);
+    transfer.$push(js);
   }
 }
 
@@ -52,9 +52,9 @@ void $transferify(JSAny? message, JSArray transfer) {
 
     // inspect array contents
     if (obj.isA<JSArray>()) {
-      final len = (obj as JSArray).length;
+      final len = (obj as JSArray).$length;
       for (var i = 0; i < len; i++) {
-        squadronTransferify(obj.at(i));
+        squadronTransferify(obj.$at(i));
       }
       return;
     }
@@ -66,8 +66,8 @@ void $transferify(JSAny? message, JSArray transfer) {
         final res = keys.next();
         if (res == null || res.done) break;
         final entry = res.value as JSArray; // [key, value]
-        squadronTransferify(entry.at(0));
-        squadronTransferify(entry.at(1));
+        squadronTransferify(entry.$at(0));
+        squadronTransferify(entry.$at(1));
       }
       return;
     }
@@ -105,7 +105,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     if (obj is List && obj is! TypedData) {
       final len = obj.length, jsArray = cache[obj] = JSArray();
       for (var i = 0; i < len; i++) {
-        jsArray.push(squadronJsify(obj[i]));
+        jsArray.$push(squadronJsify(obj[i]));
       }
       return jsArray;
     }
@@ -177,9 +177,9 @@ Object? $dartify(JSAny? message) {
 
     // process JS Array object recursively
     if (js.isA<JSArray>()) {
-      final len = (js as JSArray).length, dartList = cache[js] = [];
+      final len = (js as JSArray).$length, dartList = cache[js] = [];
       for (var i = 0; i < len; i++) {
-        dartList.add(squadronDartify(js.at(i)));
+        dartList.add(squadronDartify(js.$at(i)));
       }
       return dartList;
     }
@@ -191,7 +191,7 @@ Object? $dartify(JSAny? message) {
         final res = keys.next();
         if (res == null || res.done) break;
         final entry = res.value as JSArray; // [key, value]
-        dartMap[squadronDartify(entry.at(0))] = squadronDartify(entry.at(1));
+        dartMap[squadronDartify(entry.$at(0))] = squadronDartify(entry.$at(1));
       }
       return dartMap;
     }
@@ -251,13 +251,13 @@ extension $JSEventExt on web.Event? {
   List? get dartData => _getMessageEventData(this) as List?;
 }
 
-extension JSArrayExt on JSArray {
-  @JS()
-  external void push(JSAny? value);
-  @JS()
-  external JSAny? at(int index);
-  @JS()
-  external int get length;
+extension $JSArrayExt on JSArray {
+  @JS('push')
+  external void $push(JSAny? value);
+  @JS('at')
+  external JSAny? $at(int index);
+  @JS('length')
+  external int get $length;
 }
 
 @JS('BigInt')
@@ -295,7 +295,8 @@ extension _$JSIteratorResultExt on _$JSIteratorResult {
 }
 
 extension _$JSTypedArrayExt on JSTypedArray {
-  JSAny? get buffer => getProperty(_$JSProps.buffer);
+  @JS('buffer')
+  external JSAny? get $buffer;
 }
 
 sealed class _$JSProps {
@@ -308,7 +309,4 @@ sealed class _$JSProps {
   static final next = 'next'.toJS;
   static final done = 'done'.toJS;
   static final value = 'value'.toJS;
-
-  // typed arrays
-  static final buffer = 'buffer'.toJS;
 }

@@ -37,7 +37,7 @@ final class _WebChannel implements Channel {
       final data = req.wrapInPlace();
       final transfer = JSArray();
       if (req.channelInfo != null) {
-        transfer.push(req.channelInfo);
+        transfer.$push(req.channelInfo);
       }
       final msg = $jsify(data, null);
       _sendPort.postMessage(msg, transfer);
