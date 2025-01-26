@@ -197,7 +197,7 @@ base class BigIntService {
 
 As stated in a previous paragraph, code designed to run only on native platforms should not worry about data conversion. Because Squadron native workers share the same code and execute in `Isolate`s running in the same Dart VM, they never leave Dart's type-system. Data sent through Squadron is promoted from `dynamic` back to strong-types by simple cast operations.
 
-On Web platforms, things are different because the data was handed over to the browser which down't know anything about Dart types:
+On Web platforms, things are different because the data was handed over to the browser which doesn't know anything about Dart types:
 
 * `bool` and `String`: casting is enough to re-enter Dart's type system (handled by `CastConverter`).
 
@@ -213,7 +213,7 @@ When lists and maps contain elements that cannot be cast, additional processing 
 
 Web Assembly requires extra-care.
 * **For instance, a `List<int>` object sent to a Web Assembly worker will be received as a `List<dynamic>` containing `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used. Under such circumstances, list elements must be processed individually and converted back; eg. `NumConverter` handles this specific example as `list.map(_toInt).toList()` where `_toInt` is a function that returns the input value as an `int` after checking it is effectively an `int` or an integral `double`.
-* **`Map<K,V>` objects sent to a Web Assembly worker will be received as a `Map<String,V>`!** See issue https://github.com/dart-lang/sdk/issues/57113. This is related to the current implementation of `jsify()` in `js_interop`, which Squadron relies on when sending data to the worker. A future version of Squadron might switch to a specific implementation in order to better support maps on Web platforms.
+* **`Map<K,V>` objects sent to a Web Assembly worker will be received as a `Map<String,V>`!** See issue https://github.com/dart-lang/sdk/issues/57113. This is related to the current implementation of `jsify()` in `js_interop`, which Squadron relies on when sending data to the worker. **This issue has been fixed in Squadron 6.2.0.**
 
 For large collections or complex structures (nested lists/maps), this process may impact performance because 1/ `map()` will iterate over all elements and 2/ `toList()` will create a fresh list to hold the converted elements.
 

@@ -13,6 +13,7 @@ String? getRootUrl() {
 
 bool _isTransferable(JSAny js) {
   // see https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects#supported_objects
+  if (js.isA<JSArrayBuffer>()) return true;
   if (js.isA<web.MessagePort>()) return true;
   if (js.isA<web.ReadableStream>()) return true;
   if (js.isA<web.WritableStream>()) return true;
@@ -29,39 +30,47 @@ bool _isTransferable(JSAny js) {
   return false;
 }
 
-void _registerTransferable(JSAny js, JSArray transfer) {
-  if (js.isA<JSTypedArray>()) {
-    final buffer = (js as JSTypedArray).$buffer;
-    if (buffer.isA<JSArrayBuffer>()) {
-      transfer.$push(buffer);
-    }
-  } else if (_isTransferable(js)) {
-    transfer.$push(js);
-  }
-}
+bool _$equals(Object a, Object b) => (a is JSObject)
+    ? ((b is JSObject) && $is(a, b))
+    : ((b is! JSObject) && identical(a, b));
+
+bool _$is(JSAny a, JSAny b) => $is(a, b);
 
 void $transferify(JSAny? message, JSArray transfer) {
-  final registered = HashSet<JSAny>.identity();
+  final registered = HashSet<JSAny>(equals: _$is);
 
-  void squadronTransferify(JSAny? obj) {
-    if (obj.isUndefinedOrNull) return;
-    obj as JSAny;
+  void squadronTransferify(JSAny? js) {
+    if (js.isUndefinedOrNull) return;
+    js as JSAny;
+
+    // for typed array, transfer the underlying buffer
+    if (js.isA<JSTypedArray>()) {
+      js = (js as JSTypedArray).$buffer!;
+    }
 
     // nothing to do if already visited
-    if (!registered.add(obj)) return;
+    if (!registered.add(js)) return;
+
+    // array buffer are transfered as is
+    if (js.isA<JSArrayBuffer>()) {
+      transfer.$push(js);
+      return;
+    }
 
     // inspect array contents
-    if (obj.isA<JSArray>()) {
-      final len = (obj as JSArray).$length;
+    if (js.isA<JSArray>()) {
+      js as JSArray;
+      final len = js.$length;
       for (var i = 0; i < len; i++) {
-        squadronTransferify(obj.$at(i));
+        squadronTransferify(js.$at(i));
       }
       return;
     }
 
     // inspect map contents
-    if (obj.isA<_$JSMap>()) {
-      final keys = (obj as _$JSMap).entries();
+    if (js.isA<$JSMap>()) {
+      js as $JSMap;
+      final keys = js.entries();
       while (true) {
         final res = keys.next();
         if (res == null || res.done) break;
@@ -73,8 +82,9 @@ void $transferify(JSAny? message, JSArray transfer) {
     }
 
     // inspect set contents
-    if (obj.isA<_$JSSet>()) {
-      final values = (obj as _$JSSet).values();
+    if (js.isA<$JSSet>()) {
+      js as $JSSet;
+      final values = js.values();
       while (true) {
         final res = values.next();
         if (res == null || res.done) break;
@@ -85,14 +95,30 @@ void $transferify(JSAny? message, JSArray transfer) {
     }
 
     // register other JS objects
-    _registerTransferable(obj, transfer);
+    if (_isTransferable(js)) {
+      transfer.$push(js);
+    }
   }
 
   squadronTransferify(message);
 }
 
 JSAny? $jsify(Object? message, JSArray? transfer) {
-  final cache = HashMap<Object, JSAny>.identity();
+  final cache = HashMap<Object, JSAny>(equals: _$equals);
+
+  final $registerTransferable = (transfer == null)
+      ? ((JSAny js) {})
+      : ((JSAny js) {
+          // for typed array, transfer the underlying buffer
+          if (js.isA<JSTypedArray>()) {
+            js = (js as JSTypedArray).$buffer!;
+            if (cache.containsKey(js)) return;
+            cache[js] = js;
+          }
+          if (_isTransferable(js)) {
+            transfer.$push(js);
+          }
+        });
 
   JSAny? squadronJsify(Object? obj) {
     if (obj == null) return null;
@@ -103,7 +129,8 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // process List object recursively
     if (obj is List && obj is! TypedData) {
-      final len = obj.length, jsArray = cache[obj] = JSArray();
+      final len = obj.length, jsArray = JSArray();
+      cache[obj] = jsArray;
       for (var i = 0; i < len; i++) {
         jsArray.$push(squadronJsify(obj[i]));
       }
@@ -112,7 +139,8 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // process Map object recursively
     if (obj is Map) {
-      final jsMap = cache[obj] = _$JSMap();
+      final jsMap = $JSMap();
+      cache[obj] = jsMap;
       for (var entry in obj.entries) {
         jsMap.set(
           squadronJsify(entry.key),
@@ -124,7 +152,8 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // process Set object recursively
     if (obj is Set) {
-      final jsSet = cache[obj] = _$JSSet();
+      final jsSet = $JSSet();
+      cache[obj] = jsSet;
       for (var value in obj) {
         jsSet.add(squadronJsify(value));
       }
@@ -133,11 +162,11 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // support BigInt object
     if (obj is BigInt) {
-      return _$JSBigInt(obj.toString().toJS);
+      return $JSBigInt(obj.toString().toJS);
     }
 
     // delegate to Dart's jsify()
-    final res = obj.jsify();
+    var res = obj.jsify();
 
     // cache result and update list of transferable objects
     if (res.isDefinedAndNotNull) {
@@ -145,9 +174,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
       if (obj is! num && obj is! bool && obj is! String) {
         cache[obj] = res;
       }
-      if (transfer != null) {
-        _registerTransferable(res, transfer);
-      }
+      $registerTransferable(res);
     }
 
     return res;
@@ -166,7 +193,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 }
 
 Object? $dartify(JSAny? message) {
-  final cache = HashMap<JSAny, Object>.identity();
+  final cache = HashMap<JSAny, Object>(equals: _$equals);
 
   Object? squadronDartify(JSAny? js) {
     if (js.isUndefinedOrNull) return null;
@@ -177,7 +204,8 @@ Object? $dartify(JSAny? message) {
 
     // process JS Array object recursively
     if (js.isA<JSArray>()) {
-      final len = (js as JSArray).$length, dartList = cache[js] = [];
+      final len = (js as JSArray).$length, dartList = [];
+      cache[js] = dartList;
       for (var i = 0; i < len; i++) {
         dartList.add(squadronDartify(js.$at(i)));
       }
@@ -185,8 +213,9 @@ Object? $dartify(JSAny? message) {
     }
 
     // process JS Map object recursively
-    if (js.isA<_$JSMap>()) {
-      final keys = (js as _$JSMap).entries(), dartMap = cache[js] = {};
+    if (js.isA<$JSMap>()) {
+      final keys = (js as $JSMap).entries(), dartMap = {};
+      cache[js] = dartMap;
       while (true) {
         final res = keys.next();
         if (res == null || res.done) break;
@@ -197,9 +226,9 @@ Object? $dartify(JSAny? message) {
     }
 
     // process JS Set object recursively
-    if (js.isA<_$JSSet>()) {
-      final values = (js as _$JSSet).values(),
-          dartSet = cache[js] = <dynamic>{};
+    if (js.isA<$JSSet>()) {
+      final values = (js as $JSSet).values(), dartSet = <dynamic>{};
+      cache[js] = dartSet;
       while (true) {
         final res = values.next();
         if (res == null || res.done) break;
@@ -251,50 +280,58 @@ extension $JSEventExt on web.Event? {
   List? get dartData => _getMessageEventData(this) as List?;
 }
 
+@JS('Object.is')
+external bool $is(JSAny? a, JSAny? b);
+
 extension $JSArrayExt on JSArray {
   @JS('push')
-  external void $push(JSAny? value);
+  external int $push(JSAny? value);
   @JS('at')
   external JSAny? $at(int index);
   @JS('length')
   external int get $length;
 }
 
+extension $JSArrayBufferExt on JSArrayBuffer {
+  @JS('byteLength')
+  external int get $byteLength;
+}
+
 @JS('BigInt')
-external JSBigInt _$JSBigInt(JSAny? value);
+external JSBigInt $JSBigInt(JSAny? value);
 
 extension on JSBigInt {
   @JS('toString')
   external JSString $toString();
 }
 
-typedef _$JSIterator = JSObject;
-typedef _$JSIteratorResult = JSObject;
+typedef $JSIterator = JSObject;
+typedef $JSIteratorResult = JSObject;
 
 @JS('Map')
-extension type _$JSMap._(JSObject _) implements JSObject {
-  external factory _$JSMap();
-  external void set(JSAny? key, JSAny? value);
-  external _$JSIterator entries();
+extension type $JSMap._(JSObject _) implements JSObject {
+  external factory $JSMap();
+  external $JSMap set(JSAny? key, JSAny? value);
+  external $JSIterator entries();
 }
 
 @JS('Set')
-extension type _$JSSet._(JSObject _) implements JSObject {
-  external factory _$JSSet();
-  external _$JSSet add(JSAny? value);
-  external _$JSIterator values();
+extension type $JSSet._(JSObject _) implements JSObject {
+  external factory $JSSet();
+  external $JSSet add(JSAny? value);
+  external $JSIterator values();
 }
 
-extension _$JSIteratorExt on _$JSIterator {
-  _$JSIteratorResult? next() => callMethod(_$JSProps.next);
+extension $JSIteratorExt on $JSIterator {
+  $JSIteratorResult? next() => callMethod(_$JSProps.next);
 }
 
-extension _$JSIteratorResultExt on _$JSIteratorResult {
+extension $JSIteratorResultExt on $JSIteratorResult {
   bool get done => getProperty(_$JSProps.done).isTruthy.toDart;
   JSAny? get value => getProperty(_$JSProps.value);
 }
 
-extension _$JSTypedArrayExt on JSTypedArray {
+extension $JSTypedArrayExt on JSTypedArray {
   @JS('buffer')
   external JSAny? get $buffer;
 }

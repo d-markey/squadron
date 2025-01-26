@@ -4,12 +4,14 @@
 library;
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:logger/web.dart';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
+import 'fraction.dart';
 import 'src/memory_logger.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
@@ -223,6 +225,75 @@ void execute(TestContext? tc) {
           final input = {BigInt.one, BigInt.two};
           final res = await w.set(input);
           expect(res, {BigInt.two, BigInt.two * BigInt.two});
+        });
+      });
+
+      tc.test('- Sending TypedData - different instances', () async {
+        await TestWorker(tc).useAsync((w) async {
+          final a = Uint32List.fromList([1, 2, 3]);
+          final b = Uint32List.fromList([1, 2, 3]);
+          final res = await w.checkBuffers(a, b);
+          expect(res, isFalse);
+        });
+      });
+
+      tc.test('- Sending TypedData - same instances', () async {
+        await TestWorker(tc).useAsync((w) async {
+          final a = Uint32List.fromList([1, 2, 3]);
+          final res = await w.checkBuffers(a, a);
+          if (tc.workerPlatform.isVm) {
+            expect(res, isFalse);
+          } else if (tc.workerPlatform.isJs) {
+            // identity is retained when using JS worker
+            expect(res, isTrue);
+          } else if (tc.workerPlatform.isWasm) {
+            expect(res, isFalse);
+          }
+        });
+      });
+
+      tc.test('- Sending TypedData - same buffer', () async {
+        await TestWorker(tc).useAsync((w) async {
+          final a = Float32List(8);
+          final b = a.buffer.asUint8List();
+          final res = await w.checkBuffers(a, b);
+          if (tc.workerPlatform.isVm) {
+            expect(res, isFalse);
+          } else if (tc.workerPlatform.isJs) {
+            if (tc.runnerPlatform.isJs) {
+              // identity is retained when using JS client + JS worker
+              expect(res, isTrue);
+            } else {
+              expect(res, isFalse);
+            }
+          } else if (tc.workerPlatform.isWasm) {
+            expect(res, isFalse);
+          }
+        });
+      });
+
+      tc.test('- Identity - different instances', () async {
+        await TestWorker(tc).useAsync((w) async {
+          final a = Fraction(1, 2);
+          final b = Fraction(1, 2);
+          final res = await w.checkFractions(a, b);
+          expect(res, isFalse);
+        });
+      });
+
+      tc.test('- Identity - same instances', () async {
+        // requires changes in marshalers + converters to maintain identities
+        // so all these tests return false when they ideally should return true
+        await TestWorker(tc).useAsync((w) async {
+          final a = Fraction(1, 2);
+          final res = await w.checkFractions(a, a);
+          if (tc.workerPlatform.isVm) {
+            expect(res, isFalse);
+          } else if (tc.workerPlatform.isJs) {
+            expect(res, isFalse);
+          } else if (tc.workerPlatform.isWasm) {
+            expect(res, isFalse);
+          }
         });
       });
 

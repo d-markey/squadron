@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
@@ -123,6 +124,14 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
 
   @override
   Future<Set<BigInt>> set(Set<BigInt> input) => execute((w) => w.set(input));
+
+  @override
+  Future<bool> checkBuffers(TypedData a, TypedData b) =>
+      execute((w) => w.checkBuffers(a, b));
+
+  @override
+  Future<bool> checkFractions(Fraction a, Fraction b) =>
+      execute((w) => w.checkFractions(a, b));
 }
 
 base class TestWorker extends Worker with WorkerVersion implements TestService {
@@ -244,6 +253,18 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
   Future<Set<BigInt>> set(Set<BigInt> input) =>
       send(TestService.setCommand, args: [input])
           .then(Squadron.converter.set<BigInt>());
+
+  @override
+  Future<bool> checkBuffers(TypedData a, TypedData b) =>
+      send(TestService.checkBufferCommand, args: [a, b])
+          .then(Squadron.converter.value<bool>());
+
+  @override
+  Future<bool> checkFractions(Fraction a, Fraction b) =>
+      send(TestService.checkFractionCommand, args: [
+        const FractionMarshaler().marshal(a),
+        const FractionMarshaler().marshal(b),
+      ]).then(Squadron.converter.value<bool>());
 
   @override
   Future<SquadronPlatformType> getPlatformType() =>

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
@@ -52,6 +53,13 @@ class TestService with SquadronVersion implements WorkerService {
       mapCommand: (r) =>
           map(Squadron.converter.map<String, BigInt>()(r.args[0])),
       setCommand: (r) => set(Squadron.converter.set<BigInt>()(r.args[0])),
+      checkBufferCommand: (r) => checkBuffers(r.args[0], r.args[1]),
+      checkFractionCommand: (r) => checkFractions(
+            const FractionMarshaler()
+                .unmarshal(Squadron.converter.list<int>()(r.args[0])),
+            const FractionMarshaler()
+                .unmarshal(Squadron.converter.list<int>()(r.args[1])),
+          ),
     });
   }
 
@@ -181,6 +189,11 @@ class TestService with SquadronVersion implements WorkerService {
   Future<Set<BigInt>> set(Set<BigInt> input) async =>
       input.map((v) => v * BigInt.two).toSet();
 
+  Future<bool> checkBuffers(TypedData a, TypedData b) async =>
+      identical(a.buffer, b.buffer);
+
+  Future<bool> checkFractions(Fraction a, Fraction b) async => identical(a, b);
+
   final bool _invalid;
 
   static const invalidCommand1 = -1; // command IDs must be > 0
@@ -199,6 +212,8 @@ class TestService with SquadronVersion implements WorkerService {
   static const platformTypeCommand = 51;
   static const mapCommand = 52;
   static const setCommand = 53;
+  static const checkBufferCommand = 61;
+  static const checkFractionCommand = 62;
 
   @override
   final Map<int, CommandHandler> operations = {};

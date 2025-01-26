@@ -26,8 +26,8 @@ GOTO parse
 :endparse
 
 IF "%__REBUILD__%" == "1" (
-    CALL .\tool\clean_all_tests.bat
-    CALL .\tool\compile_all_tests.bat
+    CALL .\tool\clean_tests.bat runners js wasm
+    CALL .\tool\compile_tests.bat runners js wasm
 )
 
 RMDIR /S /Q .\doc\test-console

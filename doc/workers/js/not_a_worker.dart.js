@@ -24,8 +24,7 @@ a[b]=u
 a[c]=function(){if(a[b]===u){var t=d()
 if(a[b]!==u){A.q(b)}a[b]=t}var s=a[b]
 a[c]=function(){return s}
-return s}}function makeConstList(a){a.immutable$list=Array
-a.fixed$length=Array
+return s}}function makeConstList(a){a.$flags=7
 return a}function convertToFastObject(a){function t(){}t.prototype=a
 new t()
 return a}function convertAllToFastObject(a){for(var u=0;u<a.length;++u){convertToFastObject(a[u])}}var y=0

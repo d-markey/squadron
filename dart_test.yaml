@@ -6,6 +6,5 @@ compilers:
   - dart2js
   - dart2wasm
 
-js_trace: true
 chain_stack_traces: true
 concurrency: 1

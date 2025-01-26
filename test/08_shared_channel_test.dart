@@ -6,8 +6,8 @@ library;
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
+import 'primes.dart';
 import 'src/test_context.dart';
-import 'test_constants.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 

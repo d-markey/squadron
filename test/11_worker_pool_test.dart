@@ -10,6 +10,7 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
+import 'primes.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
@@ -363,7 +364,7 @@ void execute(TestContext? tc) {
 
           Timer(duration * 0.5, () {
             p.terminate();
-            expect(p.stopped, true);
+            expect(p.stopped, isTrue);
           });
 
           try {

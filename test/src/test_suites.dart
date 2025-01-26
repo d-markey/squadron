@@ -1,3 +1,4 @@
+import '../00_jsify_dartify_test.dart' as jsify_dartify;
 import '../00_not_a_worker_test.dart' as not_a_worker;
 import '../01_web_worker_test.dart' as web_worker;
 import '../02_logging_test.dart' as logging;
@@ -21,6 +22,8 @@ class TestSuite {
 }
 
 const testSuites = [
+  TestSuite(not_a_worker.testScript, not_a_worker.execute),
+  TestSuite(jsify_dartify.testScript, jsify_dartify.execute),
   TestSuite(web_worker.testScript, web_worker.execute),
   TestSuite(worker.testScript, worker.execute),
   TestSuite(worker_errors.testScript, worker_errors.execute),
@@ -33,5 +36,4 @@ const testSuites = [
   TestSuite(marshalers.testScript, marshalers.execute),
   TestSuite(cancelation.testScript, cancelation.execute),
   TestSuite(issues.testScript, issues.execute),
-  TestSuite(not_a_worker.testScript, not_a_worker.execute),
 ];
