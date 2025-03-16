@@ -11,4 +11,7 @@ base class MissingWorker extends Worker {
           context.entryPoints.missingWorker!,
           hook,
         );
+
+  @override
+  List? getStartArgs() => null;
 }

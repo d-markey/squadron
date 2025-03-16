@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -11,11 +8,11 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'fraction.dart';
 import 'src/memory_logger.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
+import 'worker_services/fraction.dart';
 import 'worker_services/installable_service_worker.dart';
 import 'worker_services/test_service_worker.dart';
 
@@ -27,6 +24,29 @@ void execute(TestContext? tc) {
   if (tc == null) return;
 
   tc.launch(() {
+    tc.group('- SQUADRON PLATFORMS', () {
+      tc.test('- VM', () {
+        expect(Squadron.platformType.isVm, isTrue);
+        expect(Squadron.platformType.isJs, isFalse);
+        expect(Squadron.platformType.isWasm, isFalse);
+        expect(Squadron.platformType.isWeb, isFalse);
+      }, testOn: 'dart-vm');
+
+      tc.test('- JS', () {
+        expect(Squadron.platformType.isVm, isFalse);
+        expect(Squadron.platformType.isJs, isTrue);
+        expect(Squadron.platformType.isWasm, isFalse);
+        expect(Squadron.platformType.isWeb, isTrue);
+      }, testOn: 'dart2js');
+
+      tc.test('- WASM', () {
+        expect(Squadron.platformType.isVm, isFalse);
+        expect(Squadron.platformType.isJs, isFalse);
+        expect(Squadron.platformType.isWasm, isTrue);
+        expect(Squadron.platformType.isWeb, isTrue);
+      }, testOn: 'dart2wasm');
+    });
+
     tc.group('- SQUADRON WORKER - START/STOP', () {
       tc.test('- Start & stop', () async {
         await TestWorker(tc).useAsync((w) async {
@@ -282,18 +302,10 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Identity - same instances', () async {
-        // requires changes in marshalers + converters to maintain identities
-        // so all these tests return false when they ideally should return true
         await TestWorker(tc).useAsync((w) async {
           final a = Fraction(1, 2);
           final res = await w.checkFractions(a, a);
-          if (tc.workerPlatform.isVm) {
-            expect(res, isFalse);
-          } else if (tc.workerPlatform.isJs) {
-            expect(res, isFalse);
-          } else if (tc.workerPlatform.isWasm) {
-            expect(res, isFalse);
-          }
+          expect(res, isTrue);
         });
       });
 

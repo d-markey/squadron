@@ -10,6 +10,9 @@ base class CacheWorker extends Worker with WorkerVersion implements Cache {
   CacheWorker(TestContext context) : super(context.entryPoints.cache!);
 
   @override
+  List? getStartArgs() => null;
+
+  @override
   Future<dynamic> get(dynamic key) => send(
         CacheService.getCommand,
         args: [key],

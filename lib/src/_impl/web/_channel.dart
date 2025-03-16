@@ -54,7 +54,7 @@ Future<Channel> openChannel(
 
   void success(_WebChannel channel) {
     if (!ready.isCompleted) {
-      throw SquadronErrorExt.create('Invalid state: worker is not ready');
+      throw SquadronErrorImpl.create('Invalid state: worker is not ready');
     }
     if (!completer.isCompleted) completer.complete(channel);
   }
@@ -63,7 +63,7 @@ Future<Channel> openChannel(
     worker = web.Worker(webEntryPoint.uri.toJS);
 
     void $errorHandler(web.ErrorEvent? e) {
-      final err = e.dartError, error = SquadronErrorExt.create(err.toString());
+      final err = e.dartError, error = SquadronErrorImpl.create(err.toString());
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 
@@ -89,7 +89,7 @@ Future<Channel> openChannel(
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
-        final response = WorkerResponseExt.from(e.dartData!);
+        final response = WorkerResponseImpl.from(e.dartData!);
         if (!response.unwrapInPlace(disconnected)) {
           return;
         }
@@ -109,13 +109,13 @@ Future<Channel> openChannel(
 
     final res = await ready.future;
     if (!res) {
-      throw SquadronErrorExt.create('Web Worker is not ready');
+      throw SquadronErrorImpl.create('Web Worker is not ready');
     }
 
     final startRequest = WorkerRequest.start(com.port2, startArguments);
 
     com.port1.onmessage = (web.MessageEvent e) {
-      final response = WorkerResponseExt.from(e.dartData!);
+      final response = WorkerResponseImpl.from(e.dartData!);
       if (!response.unwrapInPlace(disconnected)) {
         return;
       }
@@ -144,7 +144,7 @@ Future<Channel> openChannel(
       worker.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post connection request $startRequest: $ex');
-      throw SquadronErrorExt.create(
+      throw SquadronErrorImpl.create(
           'Failed to post connection request: $ex', st);
     }
 

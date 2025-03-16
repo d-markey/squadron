@@ -29,8 +29,8 @@ final builtinExceptions = <String, SquadronExceptionDeserializer>{
   $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,
   $taskCanceledExceptionType: TaskCanceledExceptionExt.deserialize,
   $taskTerminatedExceptionType: TaskTerminatedExceptionExt.deserialize,
-  $squadronErrorType: SquadronErrorExt.deserialize,
-  $workerExceptionType: WorkerExceptionExt.deserialize,
+  $squadronErrorType: SquadronErrorImpl.deserialize,
+  $workerExceptionType: WorkerExceptionImpl.deserialize,
 };
 
 @internal

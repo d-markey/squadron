@@ -5,6 +5,8 @@ import 'dart:typed_data';
 
 import 'package:web/web.dart' as web;
 
+import '../../squadron_singleton.dart';
+
 String? getRootUrl() {
   if (web.window.isUndefinedOrNull) return null;
   final components = web.window.location.pathname.split('/');
@@ -29,10 +31,6 @@ bool _isTransferable(JSAny js) {
   if (js.isA<web.MIDIAccess>()) return true;
   return false;
 }
-
-bool _$equals(Object a, Object b) => (a is JSObject)
-    ? ((b is JSObject) && $is(a, b))
-    : ((b is! JSObject) && identical(a, b));
 
 bool _$is(JSAny a, JSAny b) => $is(a, b);
 
@@ -104,7 +102,7 @@ void $transferify(JSAny? message, JSArray transfer) {
 }
 
 JSAny? $jsify(Object? message, JSArray? transfer) {
-  final cache = HashMap<Object, JSAny>(equals: _$equals);
+  final cache = HashMap<Object, JSAny>(equals: Squadron.identical);
 
   final $registerTransferable = (transfer == null)
       ? ((JSAny js) {})
@@ -193,7 +191,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 }
 
 Object? $dartify(JSAny? message) {
-  final cache = HashMap<JSAny, Object>(equals: _$equals);
+  final cache = HashMap<JSAny, Object>(equals: Squadron.identical);
 
   Object? squadronDartify(JSAny? js) {
     if (js.isUndefinedOrNull) return null;

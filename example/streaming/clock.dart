@@ -20,16 +20,18 @@ class Clock {
 
 class ClockWorkerService extends Clock implements WorkerService {
   @override
-  late final operations = {
+  late final operations = OperationsMap({
     $clockId: (WorkerRequest r) => infiniteClock(periodInMs: _toInt(r.args[0]))
-  };
+  });
 
   static const $clockId = 1;
 }
 
 class ClockWorker extends Worker implements Clock {
-  ClockWorker(super.entryPoint,
-      {super.args, super.threadHook, super.exceptionManager});
+  ClockWorker(super.entryPoint, {super.threadHook, super.exceptionManager});
+
+  @override
+  List? getStartArgs() => null;
 
   @override
   Stream<int> infiniteClock({int periodInMs = 1000}) => stream(

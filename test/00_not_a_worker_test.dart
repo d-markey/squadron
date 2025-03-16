@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';

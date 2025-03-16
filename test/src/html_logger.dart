@@ -35,17 +35,30 @@ class HtmlLogger {
     _error = error;
   }
 
+  HTMLDivElement? _findDisplayableError(int dir) {
+    if (_errorLines.isEmpty ||
+        _errorLines.every((d) => d.parentElement == null)) {
+      return null;
+    }
+    var curIdx = (_error == null)
+        ? (dir > 0 ? -1 : _errorLines.length)
+        : _errorLines.indexOf(_error!);
+
+    curIdx += dir;
+    var div = _errorLines[curIdx % _errorLines.length];
+    while (div.parentElement == null) {
+      curIdx += dir;
+      div = _errorLines[curIdx % _errorLines.length];
+    }
+    return div;
+  }
+
   void showNextError() {
-    if (_errorLines.isEmpty) return;
-    final curIdx = (_error == null) ? -1 : _errorLines.indexOf(_error!);
-    _showError(_errorLines[(curIdx + 1) % _errorLines.length]);
+    _showError(_findDisplayableError(1));
   }
 
   void showPrevError() {
-    if (_errorLines.isEmpty) return;
-    final curIdx =
-        (_error == null) ? _errorLines.length : _errorLines.indexOf(_error!);
-    _showError(_errorLines[(curIdx - 1) % _errorLines.length]);
+    _showError(_findDisplayableError(-1));
   }
 
   void _onScroll(Event scrollEvent) {
@@ -57,11 +70,38 @@ class HtmlLogger {
     }
   }
 
+  bool _suspendUIUpdates = false;
+  bool get isSuspended => _suspendUIUpdates;
+
+  final _suspended = <HTMLDivElement>[];
+
+  void suspendUIUpdates() {
+    _suspendUIUpdates = true;
+  }
+
+  void resumeUIUpdates() {
+    _suspendUIUpdates = false;
+    for (var div in _suspended) {
+      _div.appendChild(div);
+    }
+    _suspended.clear();
+    if (_scrollToEnd) {
+      _forceScroll = true;
+      _div.scrollTo(0.toJS, _div.scrollHeight);
+    }
+  }
+
   HTMLDivElement _log(Duration ts, String message) {
     if (message.isNotEmpty) {
       message = '[$ts] $message';
     }
-    return _div.appendDiv(html: message);
+    if (_suspendUIUpdates) {
+      final div = document.createDiv(html: message);
+      _suspended.add(div);
+      return div;
+    } else {
+      return _div.appendDiv(html: message);
+    }
   }
 
   void log(JSAny? message) {
@@ -84,7 +124,7 @@ class HtmlLogger {
         }
       }
     }
-    if (_scrollToEnd) {
+    if (_scrollToEnd && !_suspendUIUpdates) {
       _forceScroll = true;
       _div.scrollTo(0.toJS, _div.scrollHeight);
     }
@@ -94,6 +134,7 @@ class HtmlLogger {
     _errorLines.clear();
     _errors = 0;
     _showError(null);
+    _suspended.clear();
     _div.innerHTML = ''.toJS;
     _scrollToEnd = true;
     _forceScroll = true;

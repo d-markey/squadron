@@ -90,7 +90,7 @@ const _$endOfStream = 3;
 const _$log = 4;
 
 @internal
-extension WorkerResponseExt on WorkerResponse {
+extension WorkerResponseImpl on WorkerResponse {
   /// In-place deserialization of a [WorkerResponse] sent by the worker.
   /// Returns `false` if the message requires no further processing (currently
   /// used for log messages only).
@@ -120,7 +120,7 @@ extension WorkerResponseExt on WorkerResponse {
 
   static WorkerResponse from(List data) {
     if (data.length != 5) {
-      throw SquadronErrorExt.create('Invalid worker response');
+      throw SquadronErrorImpl.create('Invalid worker response');
     }
     return WorkerResponse._(data);
   }
@@ -153,7 +153,7 @@ extension _LogEventSerializationExt on LogEvent {
   static String? _stringify(dynamic message) {
     if (message is Function) {
       try {
-        return _stringify(message());
+        return message().toString();
       } catch (ex) {
         return 'Deferred message failed with error: $ex';
       }

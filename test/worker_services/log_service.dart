@@ -5,14 +5,6 @@ import '../src/test_logger.dart';
 import 'squadron_version.dart';
 
 class LogService with SquadronVersion implements WorkerService {
-  LogService() : super() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
-      logCommand: (r) => log(),
-    });
-  }
-
   final _logger = TestLogger(ProductionFilter());
 
   void setLevel(int level) {
@@ -32,5 +24,9 @@ class LogService with SquadronVersion implements WorkerService {
   static const logCommand = 2;
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
+    logCommand: (r) => log(),
+  });
 }

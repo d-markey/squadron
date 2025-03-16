@@ -14,8 +14,8 @@ class HelloWorldWorkerService extends HelloWorld implements WorkerService {
 
   /// Map of commands.
   @override
-  late final operations = {
+  late final operations = OperationsMap({
     $sayHello: (WorkerRequest r) =>
         sayHello(r.args[0], delayInSec: r.args[1], echo: r.args[2]),
-  };
+  });
 }

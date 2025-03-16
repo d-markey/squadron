@@ -66,7 +66,7 @@ class ForwardStreamController<T> {
 
   void attachSubscription(StreamSubscription<T> sub) {
     if (_sub != null) {
-      throw SquadronErrorExt.create(
+      throw SquadronErrorImpl.create(
           'Invalid state: a subscription is already attached');
     }
     _sub = sub;

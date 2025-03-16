@@ -6,19 +6,15 @@ import '../test_constants.dart';
 import 'squadron_version.dart';
 
 class StreamingService with SquadronVersion implements WorkerService {
-  StreamingService() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      $getMonitored: (r) => getMonitored(),
-      $monitoredStream: (r) => monitoredStream(),
-    });
-  }
-
   static const $getMonitored = 1;
   static const $monitoredStream = 2;
 
   @override
-  final operations = <int, CommandHandler>{};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    $getMonitored: (r) => getMonitored(),
+    $monitoredStream: (r) => monitoredStream(),
+  });
 
   int _monitored = 0;
 

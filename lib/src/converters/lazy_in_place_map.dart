@@ -1,7 +1,14 @@
 import 'package:meta/meta.dart';
 
-import 'converter.dart';
+import '../typedefs.dart';
 
+/// Wraps a `Map<dynamic, dynamic>` and a `Cast<V>` converter. Keys in the map
+/// must be castable to [K] (`key as K`). Values in the map are converted to [V]
+/// on demand i.e. when they are read by the program. Conversion occurs only
+/// once for each value and the original `dynamic` value is replaced with the
+/// conversion result. If some keys cannot be safely cast to [K], exceptions
+/// might occur at runtime, e.g. when reading [keys] or [entries], or calling
+/// [map].
 @internal
 class LazyInPlaceMap<K, V> implements Map<K, V> {
   LazyInPlaceMap(this._data, this._vcast);
@@ -26,12 +33,7 @@ class LazyInPlaceMap<K, V> implements Map<K, V> {
   int get length => _data.length;
 
   @override
-  Iterable<V> get values sync* {
-    final keys = _data.keys.toList();
-    for (var i = 0; i < keys.length; i++) {
-      yield _get(keys[i]) as V;
-    }
-  }
+  Iterable<V> get values => _data.keys.map((k) => _get(k) as V);
 
   @override
   V? operator [](Object? key) => _get(key);

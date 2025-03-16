@@ -1,10 +1,11 @@
+import '../typedefs.dart';
 import 'converter.dart';
 
-base class CastConverter extends Converter {
+class CastConverter extends Converter {
   const CastConverter();
 
   static const instance = CastConverter();
 
   @override
-  Cast<T> value<T>() => Converter.identity<T>;
+  Cast<T> value<T extends Object>() => Converter.identity<T>;
 }

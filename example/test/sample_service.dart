@@ -42,10 +42,10 @@ class SampleServiceImpl implements SampleService, WorkerService {
 
   // command IDs --> command handlers
   @override
-  late final Map<int, CommandHandler> operations = {
+  late final operations = OperationsMap({
     SampleService.ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
     SampleService.cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),
     SampleService.whoAreYouTalkingToCommand: (WorkerRequest r) =>
         whoAreYouTalkingTo(),
-  };
+  });
 }

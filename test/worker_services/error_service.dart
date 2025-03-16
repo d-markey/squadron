@@ -16,23 +16,7 @@ class ErrorService with SquadronVersion implements WorkerService {
 
   ErrorService({bool invalid = false})
       : _invalid = invalid,
-        super() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      if (_invalid) invalidCommand1: (r) => null,
-      if (_invalid) invalidCommand0: (r) => null,
-      setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
-      logCommand: (r) => log(),
-      throwExceptionCommand: (r) => throwException(),
-      throwWorkerExceptionCommand: (r) => throwWorkerException(),
-      throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
-      throwCanceledExceptionCommand: (r) => throwCanceledException(),
-      throwTestExceptionCommand: (r) => throwTestException(),
-      invalidResponseCommand: (r) => invalidResponse(),
-      /* missingCommand */
-      pingCommand: (r) => ping(),
-    });
-  }
+        super();
 
   final _logger = TestLogger(ProductionFilter());
 
@@ -84,6 +68,22 @@ class ErrorService with SquadronVersion implements WorkerService {
   static const missingCommand = 21;
   static const invalidResponseCommand = 22;
 
+  OperationsMap? _operations;
+
   @override
-  final Map<int, CommandHandler> operations = {};
+  OperationsMap get operations => (_operations ??= OperationsMap({
+        SquadronVersion.versionCommand: (r) => getVersion(),
+        if (_invalid) invalidCommand1: (r) => null,
+        if (_invalid) invalidCommand0: (r) => null,
+        setLevelCommand: (r) => setLevel((r.args[0] as num).toInt()),
+        logCommand: (r) => log(),
+        throwExceptionCommand: (r) => throwException(),
+        throwWorkerExceptionCommand: (r) => throwWorkerException(),
+        throwTaskTimeOutExceptionCommand: (r) => throwTaskTimeOutException(),
+        throwCanceledExceptionCommand: (r) => throwCanceledException(),
+        throwTestExceptionCommand: (r) => throwTestException(),
+        invalidResponseCommand: (r) => invalidResponse(),
+        /* missingCommand */
+        pingCommand: (r) => ping(),
+      }));
 }

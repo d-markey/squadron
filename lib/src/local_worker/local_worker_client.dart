@@ -4,7 +4,9 @@ import 'package:cancelation_token/cancelation_token.dart';
 import 'package:using/using.dart';
 
 import '../channel.dart';
+import '../invoker.dart';
 import '../tokens/_squadron_cancelation_token.dart';
+import '../typedefs.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
 import 'local_worker.dart';
@@ -12,7 +14,7 @@ import 'local_worker.dart';
 /// Base class used to communicate with a [LocalWorker].
 ///
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
-class LocalWorkerClient with Releasable implements WorkerService {
+class LocalWorkerClient with Releasable implements WorkerService, Invoker {
   /// Create a client for a [LocalWorker]. The [channel] passed to this client must have been obtained by
   /// calling [Channel.share] on the [LocalWorker.channel].
   LocalWorkerClient(this.channel);
@@ -27,6 +29,7 @@ class LocalWorkerClient with Releasable implements WorkerService {
   }
 
   /// Sends a command to the [LocalWorker].
+  @override
   Future<dynamic> send(int command,
           {List args = const [],
           CancelationToken? token,
@@ -38,6 +41,7 @@ class LocalWorkerClient with Releasable implements WorkerService {
           inspectResponse: inspectResponse);
 
   /// Sends a streaming command to the [LocalWorker].
+  @override
   Stream<dynamic> stream(int command,
           {List args = const [],
           CancelationToken? token,
@@ -50,5 +54,5 @@ class LocalWorkerClient with Releasable implements WorkerService {
 
   /// Local worker clients do not need an [operations] map.
   @override
-  final Map<int, CommandHandler> operations = WorkerService.noOperations;
+  final OperationsMap operations = WorkerService.noOperations;
 }

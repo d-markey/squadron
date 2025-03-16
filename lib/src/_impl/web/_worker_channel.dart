@@ -29,7 +29,7 @@ final class _WebWorkerChannel implements WorkerChannel {
       _sendPort.postMessage($jsify(res.wrapInPlace(), null));
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronErrorExt.create('Failed to post response: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post response: $ex', st);
     }
   }
 
@@ -41,7 +41,7 @@ final class _WebWorkerChannel implements WorkerChannel {
       _sendPort.postMessage(message, transfer);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronErrorExt.create('Failed to post response: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post response: $ex', st);
     }
   }
 

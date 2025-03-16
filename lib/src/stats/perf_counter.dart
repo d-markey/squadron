@@ -41,7 +41,7 @@ class PerfCounter implements PerfCounterSnapshot {
 }
 
 @internal
-extension PerfCounterExt on PerfCounter {
+extension PerfCounterImpl on PerfCounter {
   /// Updates counter value with the duration indicated by [timeInMicroseconds].
   /// 1. update the maximum elapsed time if required.
   /// 2. add specified time to the total elapsed time.

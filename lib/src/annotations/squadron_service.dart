@@ -2,6 +2,11 @@ import '../pool/worker_pool.dart';
 import 'target_platform.dart';
 
 const localService = SquadronService.local();
+const localWorker = LocalWorkerParam._();
+
+class LocalWorkerParam {
+  const LocalWorkerParam._();
+}
 
 /// Annotation for service classes to be wrapped as workers.
 class SquadronService {
@@ -21,15 +26,15 @@ class SquadronService {
   const SquadronService.local()
       : pool = false,
         local = true,
-        targetPlatform = TargetPlatform.all,
+        targetPlatform = TargetPlatform.none,
         baseUrl = '';
 
-  /// Controls code generation of a [WorkerPool] exposing the target service class.
-  /// `true` by default.
+  /// Controls code generation of a [WorkerPool] exposing the target service
+  /// class. `true` by default.
   final bool pool;
 
-  /// Controls code generation of a [LocalWorkerClient] exposing the target service class.
-  /// `false` by default.
+  /// Controls code generation of a [LocalWorkerClient] exposing the target
+  /// service class. `false` by default.
   final bool local;
 
   /// Controls code generation of a entry points for various platforms.

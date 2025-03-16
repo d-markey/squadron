@@ -55,6 +55,9 @@ base class IssuesWorker extends Worker
       : super(context.entryPoints.issues!, exceptionManager: exceptionManager);
 
   @override
+  List? getStartArgs() => null;
+
+  @override
   Stream<Map<String, int>> issue_8(List<int> nums) =>
       stream(IssuesService.cmdIssue_8, args: [nums])
           .map(Squadron.converter.map<String, int>());
@@ -71,29 +74,13 @@ base class IssuesWorker extends Worker
     final Map<int, ByteData>? dataFonts,
   }) =>
       send(IssuesService.cmdIssue_23, args: [
-        $X.list(bytes),
+        bytes,
         title,
         isLandscape,
-        $X.nullableList(columns),
-        $X.nullableMap(columnWidths),
-        $X.nullableBytedata(fontData),
-        $X.nullableMapOfBytedata(titleFonts),
-        $X.nullableMapOfBytedata(dataFonts),
-      ]).then($X.bytebuffer);
-}
-
-class $X {
-  static final list = Squadron.converter.list();
-  static final nullableList = Squadron.converter.nullable(list);
-  static final map = Squadron.converter.map();
-  static final nullableMap = Squadron.converter.nullable(map);
-  // ignore: prefer_function_declarations_over_variables
-  static final bytedata =
-      (x) => const TypedDataMarshaler<ByteData>().marshal(x);
-  static final nullableBytedata = Squadron.converter.nullable(bytedata);
-  static final mapOfBytedata = Squadron.converter.map(vcast: bytedata);
-  static final nullableMapOfBytedata =
-      Squadron.converter.nullable(mapOfBytedata);
-  static final bytebuffer =
-      Squadron.converter.nullable(Squadron.converter.value<ByteBuffer>());
+        columns,
+        columnWidths,
+        fontData,
+        titleFonts,
+        dataFonts,
+      ]).then(Converter.allowNull(Squadron.converter.value<ByteBuffer>()));
 }

@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
@@ -15,9 +12,6 @@ import 'src/utils.dart';
 import 'test_constants.dart';
 import 'worker_services/test_service_worker.dart';
 
-const concurrencySettings_222 =
-    ConcurrencySettings(minWorkers: 2, maxWorkers: 2, maxParallel: 2);
-
 Future<void> main() => TestContext.run(execute);
 
 const testScript = '08_cancelation_test.dart';
@@ -29,7 +23,7 @@ void execute(TestContext? tc) {
     tc.group('- CANCELATION', () {
       tc.group('- ValueTask', () {
         tc.test('- Immediate with pool.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final tasks = <Future>[], digits = <int>[];
             int errors = 0;
@@ -50,7 +44,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Immediate with pool.cancel(task)', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final task1 = p.delayedTask(3);
             final task2 = p.delayedTask(3);
 
@@ -69,7 +63,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Immediate with task.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final task1 = p.delayedTask(3);
             final task2 = p.delayedTask(3);
 
@@ -88,7 +82,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With pool.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final tasks = <Future>[], digits = <int>[];
             int errors = 0;
@@ -108,7 +102,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With pool.cancel(task)', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 3 * p.maxConcurrency + 1;
             final tasks = <ValueTask>[], futures = <Future>[], digits = <int>[];
             int errors = 0;
@@ -153,7 +147,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With task.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 3 * p.maxConcurrency + 1;
             final tasks = <ValueTask>[], futures = <Future>[], digits = <int>[];
             int errors = 0;
@@ -200,7 +194,7 @@ void execute(TestContext? tc) {
 
       tc.group('- StreamTask', () {
         tc.test('- Immediate with pool.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final futures = <Future>[],
                 digits = <int>[],
@@ -224,7 +218,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Immediate with pool.cancel(task)', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final digits = <int>[], errors = <Exception>[];
 
             final task = p.finiteTask(100);
@@ -241,7 +235,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Immediate with task.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final digits = <int>[], errors = <Exception>[];
 
             final task = p.finiteTask(100);
@@ -258,7 +252,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With pool.cancelAll()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final results = <List>[], tasks = <Future>[];
             for (var i = 0; i < count; i++) {
@@ -299,7 +293,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With pool.cancel(task)', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final tasks = <StreamTask>[], started = <Future>[];
             final status = List.filled(count, 'not started');
@@ -350,7 +344,7 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- With task.cancel()', () async {
-          await TestWorkerPool(tc, concurrencySettings_222).useAsync((p) async {
+          await TestWorkerPool(tc, concurrency_222).useAsync((p) async {
             final count = 2 * p.maxConcurrency + 1;
             final tasks = <StreamTask>[], started = <Future>[];
             final status = List.filled(count, 'not started');

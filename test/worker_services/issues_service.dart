@@ -6,24 +6,6 @@ import 'package:squadron/squadron.dart';
 import 'squadron_version.dart';
 
 class IssuesService with SquadronVersion implements WorkerService {
-  IssuesService() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      cmdIssue_8: (r) => issue_8(
-            $X.listOfInt(r.args[0]),
-          ),
-      cmdIssue_23: (r) => issue_23(
-            $X.listOfInt(r.args[0]),
-            title: r.args[1],
-            isLandscape: r.args[2],
-            columns: $X.nullableListOfString(r.args[3]),
-            columnWidths: $X.nullableMapOfIntDouble(r.args[4]),
-            fontData: $X.nullableBytedata(r.args[5]),
-            titleFonts: $X.nullableMapOfIntBytedata(r.args[6]),
-            dataFonts: $X.nullableMapOfIntBytedata(r.args[7]),
-          ),
-    });
-  }
   Stream<Map<String, int>> issue_8(List<int> nums) async* {
     int id = 0;
     for (var n in nums) {
@@ -52,19 +34,26 @@ class IssuesService with SquadronVersion implements WorkerService {
 
   // command IDs --> command implementations
   @override
-  final Map<int, CommandHandler> operations = {};
-}
-
-class $X {
-  static final listOfInt = Squadron.converter.list<int>();
-  static final nullableListOfString =
-      Squadron.converter.nullable(Squadron.converter.list<String>());
-  static final nullableMapOfIntDouble =
-      Squadron.converter.nullable(Squadron.converter.map<int, double>());
-  // ignore: prefer_function_declarations_over_variables
-  static final bytedata =
-      (x) => const TypedDataMarshaler<ByteData>().unmarshal(x);
-  static final nullableBytedata = Squadron.converter.nullable(bytedata);
-  static final nullableMapOfIntBytedata = Squadron.converter
-      .nullable(Squadron.converter.map<int, ByteData>(vcast: bytedata));
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    cmdIssue_8: (r) => issue_8(
+          Squadron.converter.list<int>()(r.args[0]),
+        ),
+    cmdIssue_23: (r) {
+      final converter = ContextAwareConverter();
+      return issue_23(
+        converter.list<int>()(r.args[0]),
+        title: r.args[1],
+        isLandscape: r.args[2],
+        columns: Converter.allowNull(converter.list<String>())(r.args[3]),
+        columnWidths:
+            Converter.allowNull(converter.map<int, double>())(r.args[4]),
+        fontData: Converter.allowNull(converter.value<ByteData>())(r.args[5]),
+        titleFonts:
+            Converter.allowNull(converter.map<int, ByteData>())(r.args[6]),
+        dataFonts:
+            Converter.allowNull(converter.map<int, ByteData>())(r.args[7]),
+      );
+    },
+  });
 }

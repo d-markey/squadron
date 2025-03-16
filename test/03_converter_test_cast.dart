@@ -9,7 +9,7 @@ void testCastConverter(TestContext tc) {
 
     tc.group('- Integers', () {
       final $toInt = converter.value<int>();
-      final $toNullableInt = converter.nullable<int>();
+      final $toNullableInt = Converter.allowNull($toInt);
 
       void $platformSensitive(dynamic value) {
         try {
@@ -97,7 +97,7 @@ void testCastConverter(TestContext tc) {
 
     tc.group('- Doubles', () {
       final $toDbl = converter.value<double>();
-      final $toNullableDbl = converter.nullable<double>();
+      final $toNullableDbl = Converter.allowNull($toDbl);
 
       void $platformSensitive(dynamic value) {
         try {
@@ -192,6 +192,7 @@ void testCastConverter(TestContext tc) {
         await expectLater(() => data as List<int>, _throwsTypeError);
         final res = converter.list<int>()(data);
         expect(res, isA<List<int>>());
+        expect(res, data);
         expect(res, _listOfInts);
       });
 
@@ -210,7 +211,7 @@ void testCastConverter(TestContext tc) {
         data.addAll(_listOfNullableInts);
 
         await expectLater(() => data as List<int?>, _throwsTypeError);
-        final res = converter.list<int?>(converter.nullable<int>())(data);
+        final res = converter.nlist<int>(converter.value<int>())(data);
         expect(res, isA<List<int?>>());
         expect(res, _listOfNullableInts);
       });
@@ -260,7 +261,7 @@ void testCastConverter(TestContext tc) {
         data.addAll(_listOfNullableDoubles);
 
         await expectLater(() => data as List<double?>, _throwsTypeError);
-        final res = converter.list<double?>(converter.nullable<double>())(data);
+        final res = converter.nlist<double>(converter.value<double>())(data);
         expect(res, isA<List<double?>>());
         expect(res, _listOfNullableDoubles);
       });
@@ -307,7 +308,7 @@ void testCastConverter(TestContext tc) {
         data.addAll(_listOfNullableInts);
 
         await expectLater(() => data as Set<int?>, _throwsTypeError);
-        final res = converter.set<int?>(converter.nullable<int>())(data);
+        final res = converter.nset<int>(converter.value<int>())(data);
         expect(res, isA<Set<int?>>());
         expect(res, _listOfNullableInts.toSet());
       });
@@ -357,7 +358,7 @@ void testCastConverter(TestContext tc) {
         data.addAll(_listOfNullableDoubles);
 
         await expectLater(() => data as Set<double?>, _throwsTypeError);
-        final res = converter.set<double?>(converter.nullable<double>())(data);
+        final res = converter.nset<double>(converter.value<double>())(data);
         expect(res, isA<Set<double?>>());
         expect(res, _listOfNullableDoubles.toSet());
       });
@@ -405,7 +406,7 @@ void testCastConverter(TestContext tc) {
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
         final res =
-            converter.map<String, int?>(vcast: converter.nullable<int>())(data);
+            converter.nmap<String, int>(vcast: converter.value<int>())(data);
         expect(res, isA<Map<String, int?>>());
         expect(res, _mapOfNullableInts);
       });
@@ -440,6 +441,33 @@ void testCastConverter(TestContext tc) {
         } on TypeError catch (ex) {
           _unexpectedFailureIfJs('integral double to int', ex);
         }
+      });
+    });
+
+    tc.group('Instances', () {
+      tc.test('Different instances', () {
+        final a = <num>[1, 2, 3, 4, 5], b = <num>[1, 2, 3, 4, 5];
+        expect(a, isNotA<List<int>>());
+        expect(b, isNotA<List<int>>());
+        final ca = converter.list<int>()(a);
+        final cb = converter.list<int>()(b);
+        expect(ca, isA<List<int>>());
+        expect(cb, isA<List<int>>());
+        expect(ca, cb);
+        expect(identical(ca, cb), isFalse);
+      });
+
+      tc.test('Same instance', () {
+        final a = <num>[1, 2, 3, 4, 5], b = a;
+        expect(a, isNotA<List<int>>());
+        expect(b, isNotA<List<int>>());
+        final ca = converter.list<int>()(a);
+        final cb = converter.list<int>()(b);
+        expect(ca, isA<List<int>>());
+        expect(cb, isA<List<int>>());
+        expect(ca, cb);
+        // CastConverter is not context aware
+        expect(identical(ca, cb), isFalse);
       });
     });
   });

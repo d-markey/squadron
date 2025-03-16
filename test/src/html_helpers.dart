@@ -40,7 +40,7 @@ extension DocumentExt on Document {
   HTMLLabelElement createLabel({String? id, String? text, Element? target}) {
     final label = document.createElement('label') as HTMLLabelElement;
     if (id != null) label.id = id;
-    if (text != null) label.text = text;
+    if (text != null) label.textContent = text;
     if (target != null && target.id.isNotEmpty) label.htmlFor = target.id;
     return label;
   }
@@ -48,7 +48,7 @@ extension DocumentExt on Document {
   HTMLSpanElement createSpan({String? id, String? text}) {
     final span = document.createElement('span') as HTMLSpanElement;
     if (id != null) span.id = id;
-    if (text != null) span.text = text;
+    if (text != null) span.textContent = text;
     return span;
   }
 }

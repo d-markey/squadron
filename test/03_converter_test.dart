@@ -1,9 +1,7 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/converters/context_aware_converter.dart';
 import 'package:test/test.dart';
 
 import '03_converter_test__list_features.dart';
@@ -12,11 +10,8 @@ import 'src/test_context.dart';
 import 'src/utils.dart';
 
 part '03_converter_test_cast.dart';
-part '03_converter_test_cast_in_place.dart';
-part '03_converter_test_cast_lazy_in_place.dart';
+part '03_converter_test_context_aware.dart';
 part '03_converter_test_num.dart';
-part '03_converter_test_num_in_place.dart';
-part '03_converter_test_num_lazy_in_place.dart';
 
 Future<void> main() => TestContext.run(
       execute,
@@ -117,17 +112,13 @@ void execute(TestContext? tc) {
       });
 
       testCastConverter(tc);
-      testInPlaceCastConverter(tc);
-      testLazyInPlaceCastConverter(tc);
-
       testNumConverter(tc);
-      testInPlaceNumConverter(tc);
-      testLazyInPlaceNumConverter(tc);
+      testContextAwareConverter(tc);
 
       tc.test('- Change default converter', () {
         final defaultConverter = Squadron.converter;
 
-        final converter = LazyInPlaceConverter(defaultConverter);
+        final converter = NumConverter();
 
         var success = false, called = 0;
 
@@ -159,7 +150,7 @@ void execute(TestContext? tc) {
           expect(Squadron.converter, defaultConverter);
 
           // update again
-          Squadron.converter = InPlaceConverter(defaultConverter);
+          Squadron.converter = CastConverter();
           expect(success, isFalse);
           expect(called, 3);
           expect(Squadron.converter, isNot(converter));
@@ -174,6 +165,54 @@ void execute(TestContext? tc) {
           expect(Squadron.converter, defaultConverter);
         } finally {
           Squadron.unregisterConverterChanged(key);
+          Squadron.converter = defaultConverter;
+        }
+      });
+
+      tc.test('- Converter listeners', () {
+        final defaultConverter = Squadron.converter;
+
+        final converter = NumConverter();
+
+        var called1 = 0, called2 = 0;
+
+        void check1() => called1++;
+        void check2() => called2++;
+
+        final key1 = Squadron.onConverterChanged(check1);
+        final key2 = Squadron.onConverterChanged(check2);
+        try {
+          // update
+          Squadron.converter = converter;
+          expect(called1, 1);
+          expect(called2, 1);
+
+          // no change
+          Squadron.converter = converter;
+          expect(called1, 1);
+          expect(called2, 1);
+
+          // restore
+          Squadron.converter = defaultConverter;
+          expect(called1, 2);
+          expect(called2, 2);
+
+          // unregister
+          Squadron.unregisterConverterChanged(key1);
+
+          // update again
+          Squadron.converter = CastConverter();
+          expect(called1, 2);
+          expect(called2, 3);
+
+          Squadron.unregisterConverterChanged(key1);
+          Squadron.unregisterConverterChanged(key2);
+          Squadron.converter = null;
+          expect(called1, 2);
+          expect(called2, 3);
+        } finally {
+          Squadron.unregisterConverterChanged(key1);
+          Squadron.unregisterConverterChanged(key2);
           Squadron.converter = defaultConverter;
         }
       });

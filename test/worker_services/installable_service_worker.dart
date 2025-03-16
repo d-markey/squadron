@@ -46,12 +46,12 @@ base class InstallableWorker extends Worker
     bool throwOnInstall = false,
     bool throwOnUninstall = false,
     ExceptionManager? exceptionManager,
-  }) : super(
+  })  : args = [
+          throwOnInstall,
+          throwOnUninstall,
+        ],
+        super(
           context.entryPoints.installable!,
-          args: [
-            throwOnInstall,
-            throwOnUninstall,
-          ],
           exceptionManager: exceptionManager,
         );
 
@@ -62,6 +62,11 @@ base class InstallableWorker extends Worker
 
   InstallableWorker.throwOnUninstall(TestContext context)
       : this._(context, throwOnUninstall: true);
+
+  final List args;
+
+  @override
+  List getStartArgs() => args;
 
   @override
   void install() {

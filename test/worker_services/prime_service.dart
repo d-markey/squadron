@@ -7,14 +7,7 @@ import 'cache_service.dart';
 import 'squadron_version.dart';
 
 class PrimeService with SquadronVersion implements WorkerService {
-  PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache) {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
-      getPrimesCommand: (r) =>
-          getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),
-    });
-  }
+  PrimeService([Cache? cache]) : _primeChecker = _checkWith(cache);
 
   static FutureOr<bool> Function(int) _checkWith(Cache? cache) {
     if (cache == null) {
@@ -46,7 +39,12 @@ class PrimeService with SquadronVersion implements WorkerService {
   static const getPrimesCommand = 2;
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    isPrimeCommand: (r) => isPrime((r.args[0] as num).toInt()),
+    getPrimesCommand: (r) =>
+        getPrimes((r.args[0] as num).toInt(), (r.args[1] as num).toInt()),
+  });
 
   static Iterable<int> _getPrimeCandidates(int min, int max) sync* {
     bool inRange(int p) => (min <= p && p <= max);

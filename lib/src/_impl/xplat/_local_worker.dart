@@ -1,9 +1,9 @@
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../local_worker/local_worker.dart';
-import '../../worker_service.dart';
+import '../../typedefs.dart';
 
 /// Creates a [LocalWorker]
-LocalWorker<W> createLocalWorker<W extends WorkerService>(
-        W service, ExceptionManager exceptionManager) =>
-    throw SquadronErrorExt.create('Platform not supported');
+LocalWorker<W> createLocalWorker<W>(W service, OperationsMap operations,
+        ExceptionManager exceptionManager) =>
+    throw SquadronErrorImpl.create('Platform not supported');

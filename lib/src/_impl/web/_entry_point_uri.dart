@@ -44,7 +44,7 @@ class EntryPointUri with Releasable {
       // something else, eg. inline JavaScript
       return EntryPointUri._(url, revoke: false);
     } else {
-      throw SquadronErrorExt.create('Invalid entry point URI');
+      throw SquadronErrorImpl.create('Invalid entry point URI');
     }
   }
 

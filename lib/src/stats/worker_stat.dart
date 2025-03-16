@@ -46,7 +46,7 @@ class WorkerStat {
 }
 
 @internal
-extension WorkerStatExt on WorkerStat {
+extension WorkerStatImpl on WorkerStat {
   static WorkerStat create(
           Type workerType,
           int workerHashCode,

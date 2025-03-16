@@ -11,4 +11,7 @@ base class NotAWorker extends Worker {
           context.entryPoints.notAWorker!,
           hook,
         );
+
+  @override
+  List? getStartArgs() => null;
 }

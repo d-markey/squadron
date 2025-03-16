@@ -30,26 +30,26 @@ final class _WebChannel implements Channel {
 
   void _postRequest(WorkerRequest req, {bool force = false}) {
     if (_closed && !force) {
-      throw SquadronErrorExt.create('Channel is closed');
+      throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
       req.cancelToken?.ensureStarted();
       final data = req.wrapInPlace();
       final transfer = JSArray();
       if (req.channelInfo != null) {
-        transfer.$push(req.channelInfo);
+        transfer.$push(req.webChannelInfo);
       }
       final msg = $jsify(data, null);
       _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronErrorExt.create('Failed to post request: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post request: $ex', st);
     }
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
+      throw SquadronErrorImpl.create('Channel is closed');
     }
     req.cancelToken?.ensureStarted();
     req.cancelToken?.throwIfCanceled();
@@ -59,7 +59,7 @@ final class _WebChannel implements Channel {
       _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronErrorExt.create('Failed to post request: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post request: $ex', st);
     }
   }
 
@@ -136,7 +136,7 @@ final class _WebChannel implements Channel {
           }.toJS;
 
           com.port1.onmessage = (web.MessageEvent e) {
-            final res = WorkerResponseExt.from(e.dartData!);
+            final res = WorkerResponseImpl.from(e.dartData!);
             final handler = buffer.isActive ? buffer.add : $forwardMessage;
             handler(res);
           }.toJS;

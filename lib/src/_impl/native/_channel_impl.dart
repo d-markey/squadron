@@ -23,20 +23,21 @@ final class _VmChannel implements Channel {
   @override
   PlatformChannel serialize() => _sendPort;
 
-  /// [Channel] sharing in Native world returns the same instance.
+  /// [Channel] sharing in JavaScript world returns a [_VmForwardChannel].
   @override
-  Channel share() => this;
+  Channel share() => _VmForwardChannel._(
+      _sendPort, vm.ReceivePort(), logger, exceptionManager);
 
   void _postRequest(WorkerRequest req, {bool force = false}) {
     if (_closed && !force) {
-      throw SquadronErrorExt.create('Channel is closed');
+      throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
       req.cancelToken?.ensureStarted();
       _sendPort.send(req.wrapInPlace());
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
-      throw SquadronErrorExt.create('Failed to post request: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post request: $ex', st);
     }
   }
 

@@ -62,6 +62,7 @@ extension TestEntryPointsExt on TestEntryPoints {
     log = Squadron.uri('$root/log_worker.dart.$ext');
     streaming = Squadron.uri('$root/streaming_worker.dart.$ext');
     test = Squadron.uri('$root/test_worker.dart.$ext');
+    person = Squadron.uri('$root/person_worker.dart.$ext');
     errors = Squadron.uri('$root/error_worker.dart.$ext');
 
     final js = 'onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };';

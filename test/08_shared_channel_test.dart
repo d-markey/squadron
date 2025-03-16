@@ -1,15 +1,12 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'primes.dart';
 import 'src/test_context.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
+import 'worker_services/primes.dart';
 
 Future<void> main() => TestContext.run(execute);
 

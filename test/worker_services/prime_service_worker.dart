@@ -35,13 +35,17 @@ base class PrimeWorkerPool extends WorkerPool<PrimeWorker>
 base class PrimeWorker extends Worker
     with WorkerVersion
     implements PrimeService {
-  PrimeWorker(TestContext context, CacheWorker? cache,
+  PrimeWorker(TestContext context, this.cache,
       [ExceptionManager? exceptionManager])
       : super(
           context.entryPoints.prime!,
-          args: [cache?.getSharedChannel()!.serialize()],
           exceptionManager: exceptionManager,
         );
+
+  final CacheWorker? cache;
+
+  @override
+  List? getStartArgs() => [cache?.getSharedChannel()!.serialize()];
 
   @override
   FutureOr<bool> isPrime(int n) => send(PrimeService.isPrimeCommand, args: [n])

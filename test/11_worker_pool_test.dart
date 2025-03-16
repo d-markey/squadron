@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
@@ -10,7 +7,6 @@ import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
-import 'primes.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
@@ -19,6 +15,7 @@ import 'worker_services/cache_service_worker.dart';
 import 'worker_services/error_service.dart';
 import 'worker_services/error_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
+import 'worker_services/primes.dart';
 import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);

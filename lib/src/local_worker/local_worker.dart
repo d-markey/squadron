@@ -1,19 +1,13 @@
 import 'dart:async';
 
-import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
+import '../../squadron.dart';
 import '../_impl/xplat/_local_worker.dart'
     if (dart.library.io) '../_impl/native/_local_worker.dart'
     if (dart.library.html) '../_impl/web/_local_worker.dart'
     if (dart.library.js) '../_impl/web/_local_worker.dart'
     if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;
-import '../channel.dart';
-import '../exceptions/exception_manager.dart';
-import '../exceptions/task_terminated_exception.dart';
-import '../iworker.dart';
-import '../worker/worker_request.dart';
-import '../worker_service.dart';
 
 /// Base local worker class.
 ///
@@ -31,37 +25,35 @@ import '../worker_service.dart';
 /// worker are deserialized as [WorkerRequest]s and dispatched to a handler
 /// defined in the [_service]'s [WorkerService.operations] map according to the
 /// [WorkerRequest.command].
-abstract base class LocalWorker<W extends WorkerService>
+abstract interface class LocalWorker<W>
     with Releasable
     implements WorkerService, IWorker {
-  LocalWorker(this._service);
-
-  factory LocalWorker.create(W service, [ExceptionManager? exceptionManager]) =>
-      impl.createLocalWorker<W>(
-          service, exceptionManager ?? ExceptionManager());
-
-  final W _service;
-
-  @override
-  void release() {
-    stop();
-    super.release();
+  factory LocalWorker.create(W service,
+      [OperationsMap? operations, ExceptionManager? exceptionManager]) {
+    if (operations == null) {
+      if (service is WorkerService) {
+        operations = service.operations;
+      } else {
+        throw ArgumentError(
+          'The operations map must be provided because $W does not implement $WorkerService',
+          'operations',
+        );
+      }
+    }
+    return impl.createLocalWorker<W>(
+      service,
+      operations,
+      exceptionManager ?? ExceptionManager(),
+    );
   }
 
-  @override
-  Logger? channelLogger;
+  W get service;
 
   @override
-  ExceptionManager get exceptionManager =>
-      (_exceptionManager ??= ExceptionManager());
-  ExceptionManager? _exceptionManager;
+  ExceptionManager get exceptionManager;
 
   /// The local worker's [Channel].
   Channel? get channel;
-
-  /// A [Channel] to communicate with this local worker. This channel should be
-  /// provided to clients so they can invoke services from the local worker.
-  Channel? get sharedChannel => channel?.share();
 
   /// Starts the local worker.
   @override
@@ -73,9 +65,9 @@ abstract base class LocalWorker<W extends WorkerService>
 
   /// Terminates the local worker.
   @override
-  void terminate([TaskTerminatedException? ex]) => stop();
+  void terminate([TaskTerminatedException? ex]);
 
   /// Forward to underlying service.
   @override
-  Map<int, CommandHandler> get operations => _service.operations;
+  OperationsMap get operations;
 }

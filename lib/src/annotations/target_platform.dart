@@ -1,4 +1,6 @@
-final class TargetPlatform {
+sealed class TargetPlatform {
+  static const none = 0;
+
   static const vm = 1;
   static const js = 2;
   static const wasm = 4;

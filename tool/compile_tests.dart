@@ -205,6 +205,10 @@ const workers = {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'wasm', opt: Optimizations.aggressive),
   },
+  'error_worker.dart': {
+    'js': (folder: 'js', opt: Optimizations.none), // no optim
+    'wasm': (folder: 'js', opt: Optimizations.none), // no optim
+  },
   'installable_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'js', opt: Optimizations.aggressive),
@@ -213,11 +217,7 @@ const workers = {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
-  'prime_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
-  },
-  'not_a_worker.dart': {
+  'local_client_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
@@ -225,21 +225,25 @@ const workers = {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
-  'test_worker.dart': {
+  'not_a_worker.dart': {
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+  },
+  'person_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.safe),
     'wasm': (folder: 'js', opt: Optimizations.safe),
+  },
+  'prime_worker.dart': {
+    'js': (folder: 'js', opt: Optimizations.aggressive),
+    'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
   'streaming_worker.dart': {
     'js': (folder: 'js', opt: Optimizations.aggressive),
     'wasm': (folder: 'js', opt: Optimizations.aggressive),
   },
-  'local_client_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
-  },
-  'error_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.none), // no optim
-    'wasm': (folder: 'js', opt: Optimizations.none), // no optim
+  'test_worker.dart': {
+    'js': (folder: 'js', opt: Optimizations.safe),
+    'wasm': (folder: 'js', opt: Optimizations.safe),
   },
 };
 

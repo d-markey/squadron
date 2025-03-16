@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:meta/meta.dart';
+
 import '../../utils.dart';
 import '../../worker/worker_request.dart';
 
@@ -11,3 +13,8 @@ typedef PlatformThread = Isolate;
 typedef PlatformChannel = SendPort;
 
 typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
+
+@internal
+extension WorkerRequestExt on WorkerRequest {
+  PlatformChannel? get vmChannelInfo => (channelInfo as PlatformChannel?);
+}

@@ -120,7 +120,7 @@ Future<void> displayVersions([TestContext? context]) async {
     _displayVersion(
       ctx.entryPoints.errors,
       () => ErrorWorker(ctx),
-    )
+    ),
   ]);
 }
 

@@ -35,12 +35,25 @@ class Fraction {
   int get hashCode => Object.hash(numerator, denominator);
 }
 
-class FractionMarshaler implements SquadronMarshaler<Fraction, List<int>> {
+class FractionMarshaler extends SquadronMarshaler<Fraction, List<int>> {
   const FractionMarshaler();
 
   @override
-  List<int> marshal(Fraction data) => [data.numerator, data.denominator];
+  List<int> marshal(Fraction data, [MarshalingContext? context]) {
+    var ref = context?.getReference<List<int>>(data);
+    if (ref != null) return ref;
+    ref = [data.numerator, data.denominator];
+    context?.setReference(data, ref);
+    return ref;
+  }
 
   @override
-  Fraction unmarshal(List<int> data) => Fraction._(data[0], data[1]);
+  Fraction unmarshal(List<int> data, [MarshalingContext? context]) {
+    var ref = context?.getReference<Fraction>(data);
+    if (ref != null) return ref;
+    final list = context.converter.list<int>()(data);
+    ref = Fraction._(list[0], list[1]);
+    context?.setReference(data, ref);
+    return ref;
+  }
 }

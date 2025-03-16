@@ -13,7 +13,10 @@ import 'hello_world_worker_service.dart';
 /// The service worker.
 class HelloWorldWorker extends Worker implements HelloWorld {
   HelloWorldWorker(super.entryPoint,
-      {super.args, super.threadHook, super.exceptionManager});
+      {super.threadHook, super.exceptionManager});
+
+  @override
+  List? getStartArgs() => null;
 
   /// Forward call to the service running in the worker thread.
   @override

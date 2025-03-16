@@ -29,9 +29,8 @@ void main() async {
   log();
 
   final identityService = IdentityServiceImpl();
-  final localIdentityWorker =
-      LocalWorker<IdentityService>.create(identityService);
-  final identityClient = IdentityClient(localIdentityWorker.sharedChannel!);
+  final localIdentityWorker = LocalWorker.create(identityService);
+  final identityClient = IdentityClient(localIdentityWorker.channel!.share());
   final sampleService = SampleServiceImpl(identityClient);
   SampleWorkerPool? pool;
 

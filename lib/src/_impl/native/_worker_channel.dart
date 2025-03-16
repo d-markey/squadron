@@ -28,7 +28,7 @@ final class _VmWorkerChannel implements WorkerChannel {
       _sendPort.send(data);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
-      throw SquadronErrorExt.create('Failed to post response: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post response: $ex', st);
     }
   }
 

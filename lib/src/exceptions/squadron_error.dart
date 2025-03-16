@@ -26,7 +26,7 @@ const _$stackTrace = 2;
 const _$command = 3;
 
 @internal
-extension SquadronErrorExt on SquadronError {
+extension SquadronErrorImpl on SquadronError {
   static SquadronError create(String message,
           [StackTrace? stackTrace, int? command]) =>
       SquadronError._(message, stackTrace, command);

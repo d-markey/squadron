@@ -41,19 +41,7 @@ class CacheClient with SquadronVersion implements Cache {
 }
 
 class CacheService with SquadronVersion implements Cache, WorkerService {
-  CacheService() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      getCommand: (r) => get(r.args[0]),
-      containsCommand: (r) => containsKey(r.args[0]),
-      setCommand: (r) => set(r.args[0], r.args[1],
-          timeToLive: (r.args[2] == null)
-              ? null
-              : Duration(
-                  microseconds: Squadron.converter.value<int>()(r.args[2]))),
-      statsCommand: (r) => getStats().serialize()
-    });
-  }
+  CacheService();
 
   final _cache = <dynamic, _CacheEntry>{};
 
@@ -108,7 +96,17 @@ class CacheService with SquadronVersion implements Cache, WorkerService {
   static const statsCommand = 4;
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    getCommand: (r) => get(r.args[0]),
+    containsCommand: (r) => containsKey(r.args[0]),
+    setCommand: (r) => set(r.args[0], r.args[1],
+        timeToLive: (r.args[2] == null)
+            ? null
+            : Duration(
+                microseconds: Squadron.converter.value<int>()(r.args[2]))),
+    statsCommand: (r) => getStats().serialize()
+  });
 }
 
 class _CacheEntry {

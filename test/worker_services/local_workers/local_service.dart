@@ -15,16 +15,6 @@ abstract class LocalService with SquadronVersion implements WorkerService {
 }
 
 class LocalServiceImpl extends LocalService with SquadronVersion {
-  LocalServiceImpl() {
-    operations.addAll({
-      SquadronVersion.versionCommand: (req) => getVersion(),
-      LocalService.getIdCommand: (req) => getId(),
-      LocalService.throwExceptionCommand: (req) => throwException(),
-      LocalService.sequenceCommand: (req) =>
-          sequence(Squadron.converter.value<int>()(req.args[0])),
-    });
-  }
-
   @override
   String getId() => 'LocalService running as "$threadId"';
 
@@ -36,5 +26,11 @@ class LocalServiceImpl extends LocalService with SquadronVersion {
       Stream.fromIterable(Iterable.generate(count));
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (req) => getVersion(),
+    LocalService.getIdCommand: (req) => getId(),
+    LocalService.throwExceptionCommand: (req) => throwException(),
+    LocalService.sequenceCommand: (req) =>
+        sequence(Squadron.converter.value<int>()(req.args[0])),
+  });
 }

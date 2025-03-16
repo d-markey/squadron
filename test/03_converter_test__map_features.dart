@@ -184,9 +184,9 @@ final _nintTests = <String, _FeatureTest<int?>>{
 
 // helpers
 final _dbl = NumConverter.instance.value<double>();
-final _ndbl = NumConverter.instance.nullable<double>();
+final _ndbl = Converter.allowNull(_dbl);
 final _int = NumConverter.instance.value<int>();
-final _nint = NumConverter.instance.nullable<int>();
+final _nint = Converter.allowNull(_int);
 
 bool _isGt3(n) => (n != null) && (_dbl(n) > 3);
 bool _isNeg(n) => (n != null) && (_dbl(n) < 0);

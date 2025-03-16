@@ -2,9 +2,9 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart' as web;
 
+import '../../typedefs.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
-import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_patch.dart';
 import '_worker_runner.dart';

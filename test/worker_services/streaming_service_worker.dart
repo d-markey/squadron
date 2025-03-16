@@ -39,6 +39,9 @@ class StreamingServiceWorker extends Worker
         );
 
   @override
+  List? getStartArgs() => null;
+
+  @override
   Future<int> getMonitored() =>
       send(StreamingService.$getMonitored).then(_toInt);
 

@@ -13,7 +13,7 @@ extension type WorkerMessage(List data) {
 const _$traveltime = 0;
 
 @internal
-extension WorkerMessageExt on WorkerMessage {
+extension WorkerMessageImpl on WorkerMessage {
   void unwrapTravelTime() {
     final ts = (data[_$traveltime] as num?)?.toInt();
     if (ts != null) {

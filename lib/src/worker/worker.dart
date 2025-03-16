@@ -12,6 +12,7 @@ import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
 import '../exceptions/task_terminated_exception.dart';
 import '../exceptions/worker_exception.dart';
+import '../invoker.dart';
 import '../iworker.dart';
 import '../stats/worker_stat.dart';
 import '../tokens/_squadron_cancelation_token.dart';
@@ -24,12 +25,12 @@ import '../worker_service.dart';
 /// This base class takes care of creating the [Channel] and firing up the
 /// worker. Typically, derived classes should add proxy methods sending
 /// [WorkerRequest]s to the worker.
-abstract class Worker with Releasable implements WorkerService, IWorker {
+abstract class Worker
+    with Releasable
+    implements WorkerService, IWorker, Invoker {
   /// Creates a [Worker] with the specified entrypoint.
   Worker(this._entryPoint,
-      {this.args = const [],
-      PlatformThreadHook? threadHook,
-      ExceptionManager? exceptionManager})
+      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
       : _threadHook = threadHook,
         _exceptionManager = exceptionManager;
 
@@ -54,7 +55,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   final PlatformThreadHook? _threadHook;
 
   /// The [Worker]'s start arguments.
-  final List args;
+  List? getStartArgs();
 
   /// Start timestamp (in microseconds since Epoch).
   int? _started;
@@ -104,7 +105,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// [Worker] statistics.
-  WorkerStat get stats => WorkerStatExt.create(
+  WorkerStat get stats => WorkerStatImpl.create(
         runtimeType,
         hashCode,
         isStopped,
@@ -141,6 +142,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// Sends a workload to the worker.
+  @override
   Future<dynamic> send(
     int command, {
     List args = const [],
@@ -182,6 +184,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
   }
 
   /// Sends a streaming workload to the worker.
+  @override
   Stream<dynamic> stream(
     int command, {
     List args = const [],
@@ -245,6 +248,7 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
       throw WorkerException('Invalid state: worker is stopped');
     }
 
+    final args = getStartArgs() ?? const [];
     _openChannel ??= Channel.open(
         exceptionManager, channelLogger, _entryPoint, args, _threadHook);
     final channel = _channel ?? await _openChannel;
@@ -279,5 +283,5 @@ abstract class Worker with Releasable implements WorkerService, IWorker {
 
   /// Workers do not need an [operations] map.
   @override
-  Map<int, CommandHandler> get operations => WorkerService.noOperations;
+  OperationsMap get operations => WorkerService.noOperations;
 }

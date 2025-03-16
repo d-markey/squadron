@@ -5,4 +5,4 @@ import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 
 WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
-    throw SquadronErrorExt.create('Platform not supported');
+    throw SquadronErrorImpl.create('Platform not supported');

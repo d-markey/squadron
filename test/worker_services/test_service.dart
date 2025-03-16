@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import '../fraction.dart';
 import '../test_constants.dart';
+import 'fraction.dart';
 import 'squadron_version.dart';
 
 class TestService with SquadronVersion implements WorkerService {
@@ -13,55 +13,7 @@ class TestService with SquadronVersion implements WorkerService {
   static const startupThrows = 1;
   static const startupInvalid = 2;
 
-  TestService({bool invalid = false})
-      : _invalid = invalid,
-        super() {
-    operations.addAll({
-      if (_invalid) invalidCommand1: (r) => null,
-      if (_invalid) invalidCommand0: (r) => null,
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
-      cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
-      delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
-      pingCommand: (r) => ping(),
-      finiteCommand: (r) => finite((r.args[0] as num).toInt()),
-      infiniteCommand: (r) => infinite(),
-      clockCommand: (r) =>
-          clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
-      cancelableInfiniteCpuCommand: (r) =>
-          cancelableInfiniteCpu(r.cancelToken!),
-      getPendingInfiniteWithErrorsCommand: (r) =>
-          getPendingInfiniteWithErrors(),
-      infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
-      fractionAddCommand: (r) async {
-        final marshalIn = Squadron.converter.value<bool>()(r.args[2]);
-        final marshalOut = Squadron.converter.value<bool>()(r.args[3]);
-        final toListOfInts = Squadron.converter.list<int>();
-        final toFraction = Squadron.converter.value<Fraction>();
-        final fractionMarshaler = const FractionMarshaler();
-        final a = marshalIn
-            ? fractionMarshaler.unmarshal(toListOfInts(r.args[0]))
-            : toFraction(r.args[0]);
-        final b = marshalIn
-            ? fractionMarshaler.unmarshal(toListOfInts(r.args[1]))
-            : toFraction(r.args[1]);
-        final res = await fractionAdd(a, b,
-            marshalIn: marshalIn, marshalOut: marshalOut);
-        return marshalOut ? fractionMarshaler.marshal(res) : toFraction(res);
-      },
-      platformTypeCommand: (r) => getPlatformType().toString(),
-      mapCommand: (r) =>
-          map(Squadron.converter.map<String, BigInt>()(r.args[0])),
-      setCommand: (r) => set(Squadron.converter.set<BigInt>()(r.args[0])),
-      checkBufferCommand: (r) => checkBuffers(r.args[0], r.args[1]),
-      checkFractionCommand: (r) => checkFractions(
-            const FractionMarshaler()
-                .unmarshal(Squadron.converter.list<int>()(r.args[0])),
-            const FractionMarshaler()
-                .unmarshal(Squadron.converter.list<int>()(r.args[1])),
-          ),
-    });
-  }
+  TestService({bool invalid = false}) : _invalid = invalid;
 
   Future<void> io({required int ms}) async =>
       await Future.delayed(Duration(milliseconds: ms));
@@ -216,5 +168,53 @@ class TestService with SquadronVersion implements WorkerService {
   static const checkFractionCommand = 62;
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    if (_invalid) invalidCommand1: (r) => null,
+    if (_invalid) invalidCommand0: (r) => null,
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
+    cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
+    delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
+    pingCommand: (r) => ping(),
+    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
+    infiniteCommand: (r) => infinite(),
+    clockCommand: (r) =>
+        clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
+    cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
+    getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
+    infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
+    fractionAddCommand: (r) async {
+      final cin = MarshalingContext();
+      final marshalIn = cin.value<bool>()(r.args[2]);
+      final marshalOut = cin.value<bool>()(r.args[3]);
+      final toListOfInts = cin.list<int>();
+      final toFraction = cin.value<Fraction>();
+      final fractionMarshaler = const FractionMarshaler();
+      final a = marshalIn
+          ? fractionMarshaler.unmarshal(toListOfInts(r.args[0]), cin)
+          : toFraction(r.args[0]);
+      final b = marshalIn
+          ? fractionMarshaler.unmarshal(toListOfInts(r.args[1]), cin)
+          : toFraction(r.args[1]);
+      final res =
+          await fractionAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
+      final cout = MarshalingContext();
+      return marshalOut
+          ? fractionMarshaler.marshal(res, cout)
+          : toFraction(res);
+    },
+    platformTypeCommand: (r) => getPlatformType().toString(),
+    mapCommand: (r) => map(Squadron.converter.map<String, BigInt>()(r.args[0])),
+    setCommand: (r) => set(Squadron.converter.set<BigInt>()(r.args[0])),
+    checkBufferCommand: (r) => checkBuffers(r.args[0], r.args[1]),
+    checkFractionCommand: (r) {
+      final cin = MarshalingContext();
+      final toListOfInt = cin.list<int>();
+      final marshaler = const FractionMarshaler();
+      return checkFractions(
+        marshaler.unmarshal(toListOfInt(r.args[0]), cin),
+        marshaler.unmarshal(toListOfInt(r.args[1]), cin),
+      );
+    },
+  });
 }

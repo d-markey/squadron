@@ -13,13 +13,7 @@ class InstallableService
   InstallableService(
       {bool throwOnInstall = false, bool throwOnUninstall = false})
       : _throwOnInstall = throwOnInstall,
-        _throwOnUninstall = throwOnUninstall {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      cmdIsInstalled: (r) => isInstalled(),
-      cmdIsUninstalled: (r) => isUninstalled(),
-    });
-  }
+        _throwOnUninstall = throwOnUninstall;
 
   Logger? channelLogger = TestLogger(ProductionFilter());
 
@@ -67,5 +61,9 @@ class InstallableService
 
   // command IDs --> command implementations
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    cmdIsInstalled: (r) => isInstalled(),
+    cmdIsUninstalled: (r) => isUninstalled(),
+  });
 }

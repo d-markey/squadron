@@ -27,7 +27,7 @@ class ResultStream {
           streamIdCompleter.complete(null);
           channel.logger
               ?.e('Invalid state: unexpected endOfStream for command $command');
-          _controller.addError(SquadronErrorExt.create(
+          _controller.addError(SquadronErrorImpl.create(
             'Invalid state: unexpected endOfStream',
             null,
             command,

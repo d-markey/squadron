@@ -96,11 +96,10 @@ base class ErrorWorkerPool extends WorkerPool<ErrorWorker>
 base class ErrorWorker extends Worker
     with WorkerVersion
     implements ErrorService {
-  ErrorWorker._(super.entryPoint, List args, PlatformThreadHook? hook,
+  ErrorWorker._(super.entryPoint, this.args, PlatformThreadHook? hook,
       ExceptionManager? exceptionManager)
       : super(
           threadHook: hook,
-          args: args,
           exceptionManager: exceptionManager,
         );
 
@@ -139,6 +138,11 @@ base class ErrorWorker extends Worker
           hook,
           exceptionManager,
         );
+
+  final List args;
+
+  @override
+  List getStartArgs() => args;
 
   @override
   Future<void> setLevel(int level) =>

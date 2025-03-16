@@ -1,7 +1,7 @@
 import 'dart:isolate';
 
+import '../../typedefs.dart';
 import '../../worker/worker_request.dart';
-import '../../worker_service.dart';
 import '../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 

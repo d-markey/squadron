@@ -5,13 +5,14 @@ import 'package:logger/web.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../local_worker/local_worker.dart';
+import '../../service_installer.dart';
 import '../../tokens/_cancelation_token_ref.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
+import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
-import '_typedefs.dart';
 
 class WorkerRunner {
   /// Constructs a new worker runner.
@@ -28,7 +29,7 @@ class WorkerRunner {
   bool _terminationRequested = false;
   int _executing = 0;
 
-  final _streamCancelers = <int, SquadronCallback>{};
+  final _streamCancelers = <int, StreamCanceler>{};
   int _streamId = 0;
 
   void Function(OutputEvent)? _logForwarder;
@@ -58,9 +59,9 @@ class WorkerRunner {
       channel = startRequest?.channel;
 
       if (startRequest == null) {
-        throw SquadronErrorExt.create('Missing connection request');
+        throw SquadronErrorImpl.create('Missing connection request');
       } else if (channel == null) {
-        throw SquadronErrorExt.create('Missing client for connection request');
+        throw SquadronErrorImpl.create('Missing client for connection request');
       }
 
       if (_logForwarder == null) {
@@ -70,15 +71,15 @@ class WorkerRunner {
       }
 
       if (!startRequest.isConnection) {
-        throw SquadronErrorExt.create('Connection request expected');
+        throw SquadronErrorImpl.create('Connection request expected');
       } else if (_service != null) {
-        throw SquadronErrorExt.create('Already connected');
+        throw SquadronErrorImpl.create('Already connected');
       }
 
       _service = await initializer(startRequest);
 
       if (_service!.operations.keys.where((k) => k <= 0).isNotEmpty) {
-        throw SquadronErrorExt.create(
+        throw SquadronErrorImpl.create(
           'Invalid command identifier in service operations map; command ids must be > 0',
         );
       }
@@ -149,17 +150,17 @@ class WorkerRunner {
 
       if (request.isConnection) {
         // connection requests are handled by connect().
-        throw SquadronErrorExt.create(
+        throw SquadronErrorImpl.create(
             'Unexpected connection request: $request');
       } else if (_service == null) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
-        throw SquadronErrorExt.create('Worker service is not ready');
+        throw SquadronErrorImpl.create('Worker service is not ready');
       }
 
       // ==== other requests require a client to send the response ====
 
       if (channel == null) {
-        throw SquadronErrorExt.create('Missing client for request: $request');
+        throw SquadronErrorImpl.create('Missing client for request: $request');
       }
 
       final token = request.cancelToken;
@@ -171,7 +172,7 @@ class WorkerRunner {
         // find the operation matching the request command
         final cmd = request.command, op = _service?.operations[cmd];
         if (op == null) {
-          throw SquadronErrorExt.create('Unknown command: $cmd');
+          throw SquadronErrorImpl.create('Unknown command: $cmd');
         }
 
         // process
@@ -300,7 +301,7 @@ class WorkerRunner {
 
   /// Assigns a stream ID to the stream canceler callback and registers the
   /// callback.
-  int _registerStreamCanceler(SquadronCallback canceler) {
+  int _registerStreamCanceler(StreamCanceler canceler) {
     final streamId = ++_streamId;
     _streamCancelers[streamId] = canceler;
     return streamId;

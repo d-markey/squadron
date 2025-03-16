@@ -13,6 +13,7 @@ import '../exceptions/worker_exception.dart';
 import '../iworker.dart';
 import '../stats/perf_counter.dart';
 import '../stats/worker_stat.dart';
+import '../typedefs.dart';
 import '../worker/worker.dart';
 import '../worker_service.dart';
 import '_pool_worker.dart';
@@ -270,7 +271,7 @@ abstract class WorkerPool<W extends Worker>
 
   WorkerTask<T, W> _enqueue<T>(WorkerTask<T, W> task) {
     if (_stopped) {
-      throw SquadronErrorExt.create(
+      throw SquadronErrorImpl.create(
         'The pool cannot accept new requests because it is stopped',
       );
     }
@@ -398,5 +399,5 @@ abstract class WorkerPool<W extends Worker>
 
   /// Worker pools do not need an [operations] map.
   @override
-  Map<int, CommandHandler> get operations => WorkerService.noOperations;
+  OperationsMap get operations => WorkerService.noOperations;
 }

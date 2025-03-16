@@ -23,6 +23,9 @@ base class LogWorker extends Worker with WorkerVersion implements LogService {
   LogWorker(TestContext context) : super(context.entryPoints.log!);
 
   @override
+  List? getStartArgs() => null;
+
+  @override
   Future<void> setLevel(int level) =>
       send(LogService.setLevelCommand, args: [level]);
 

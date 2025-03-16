@@ -15,7 +15,7 @@ class ExceptionManager {
   void register(
       String exceptionTypeId, WorkerExceptionDeserializer deserializer) {
     if (builtinExceptions.containsKey(exceptionTypeId)) {
-      throw SquadronErrorExt.create(
+      throw SquadronErrorImpl.create(
         'Invalid exception type ID: $exceptionTypeId is reserved.',
       );
     }
@@ -28,7 +28,7 @@ class ExceptionManager {
   /// prefer passing static methods or top-level functions instead.
   void unregister(String exceptionTypeId) {
     if (builtinExceptions.containsKey(exceptionTypeId)) {
-      throw SquadronErrorExt.create(
+      throw SquadronErrorImpl.create(
         'Invalid exception type ID: $exceptionTypeId is reserved.',
       );
     }

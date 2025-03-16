@@ -16,15 +16,15 @@ Future<Channel> openChannel(
   List startArguments,
   PlatformThreadHook? hook,
 ) =>
-    throw SquadronErrorExt.create('Platform not supported');
+    throw SquadronErrorImpl.create('Platform not supported');
 
 @internal
 void terminateChannel(Channel channel, TaskTerminatedException ex) =>
-    throw SquadronErrorExt.create('Platform not supported');
+    throw SquadronErrorImpl.create('Platform not supported');
 
 Channel? deserialize(
   PlatformChannel? channelInfo, [
   Logger? logger,
   ExceptionManager? exceptionManager,
 ]) =>
-    throw SquadronErrorExt.create('Platform not supported');
+    throw SquadronErrorImpl.create('Platform not supported');

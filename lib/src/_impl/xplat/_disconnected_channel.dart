@@ -21,7 +21,7 @@ final class DisconnectedChannel implements Channel {
   final Logger? logger;
 
   Never _disconnectedError() =>
-      throw SquadronErrorExt.create('Channel is not connected');
+      throw SquadronErrorImpl.create('Channel is not connected');
 
   @override
   FutureOr<void> cancelStream(int streamId) => _disconnectedError();

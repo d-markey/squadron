@@ -1,3 +1,7 @@
+import 'dart:js_interop';
+
+import 'package:meta/meta.dart';
+
 import '../../converters/cast_converter.dart';
 import '../../converters/converter.dart';
 import '../../converters/num_converter.dart';
@@ -24,3 +28,8 @@ Uri mapUrl(String url) {
   }
   return Uri.parse(url).normalizePath();
 }
+
+@internal
+bool isSameInstance(Object a, Object b) => (a is JSObject)
+    ? ((b is JSObject) && $is(a, b))
+    : ((b is! JSObject) && identical(a, b));

@@ -2,8 +2,12 @@ import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
 
-import 'converter.dart';
+import '../typedefs.dart';
 
+/// Wraps a `List<dynamic>` and a `Cast<E>` converter. Items in the list
+/// are converted to `E` on demand i.e. when they are read by the program.
+/// Conversion occurs only once for each item and the original `dynamic` item
+/// is replaced with the conversion result.
 @internal
 class LazyInPlaceList<E> implements List<E> {
   LazyInPlaceList(this._data, this._cast);

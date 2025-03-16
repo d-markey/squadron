@@ -41,4 +41,4 @@ This folder contains examples and tests for Squadron:
 
 However examples here only rely on Squadron and are implemented manually.
 
-This approach is discouraged and it is highly recommended to use squadron_builder in order to generate the boilerplate code in order to have your service run in Squadron workers.
+This approach is discouraged and it is highly recommended to use [squadron_builder]() in order to generate the boilerplate code in order to have your service run in Squadron workers.

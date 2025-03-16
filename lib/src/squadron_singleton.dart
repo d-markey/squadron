@@ -18,6 +18,8 @@ class Squadron {
   /// will return '/path/to/workers'.
   static Uri uri(String url) => impl.mapUrl(url);
 
+  static final identical = impl.isSameInstance;
+
   static final _platformConverter = impl.getPlatformConverter();
   static Converter _converter = _platformConverter;
 

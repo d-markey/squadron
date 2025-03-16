@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-@TestOn('browser')
+@TestOn('dart2js || dart2wasm')
 library;
 
 import 'dart:js_interop';
@@ -313,6 +313,17 @@ void execute(TestContext? tc) {
           expect(t.$length, isZero);
         });
 
+        tc.test('- JSArrayBuffer - same instance', () {
+          final t = JSArray();
+
+          final u32 = td.Uint32List(4).toJS;
+          $transferify([u32, u32].toJS, t);
+
+          expect(t.$length, 1);
+          expect(t.$at(0).isA<JSArrayBuffer>(), isTrue);
+          expect((t.$at(0) as JSArrayBuffer).$byteLength, 4 * 32 / 8);
+        });
+
         tc.test('- JSArrayBuffer - different instances', () {
           final t = JSArray();
 
@@ -361,18 +372,17 @@ void execute(TestContext? tc) {
           }
         });
 
-        tc.test('- JSArrayBuffer - same instance', () {
+        tc.test('- MessagePort - same instance', () {
           final t = JSArray();
 
-          final u32 = td.Uint32List(4).toJS;
-          $transferify([u32, u32].toJS, t);
+          final channel1 = MessageChannel();
+          $transferify([channel1.port1, channel1.port1].toJS, t);
 
           expect(t.$length, 1);
-          expect(t.$at(0).isA<JSArrayBuffer>(), isTrue);
-          expect((t.$at(0) as JSArrayBuffer).$byteLength, 4 * 32 / 8);
+          expect(t.$at(0).isA<MessagePort>(), isTrue);
         });
 
-        tc.test('- MessagePort - same instance', () {
+        tc.test('- MessagePort - different instances', () {
           final t = JSArray();
 
           final channel1 = MessageChannel();
@@ -385,17 +395,7 @@ void execute(TestContext? tc) {
 
           expect($is(t.$at(0), t.$at(1)), isFalse);
         });
-
-        tc.test('- MessagePort - same instance', () {
-          final t = JSArray();
-
-          final channel1 = MessageChannel();
-          $transferify([channel1.port1, channel1.port1].toJS, t);
-
-          expect(t.$length, 1);
-          expect(t.$at(0).isA<MessagePort>(), isTrue);
-        });
       });
-    });
+    }, testOn: 'dart2js || dart2wasm');
   });
 }

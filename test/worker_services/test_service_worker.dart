@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import '../fraction.dart';
 import '../src/test_context.dart';
+import 'fraction.dart';
 import 'squadron_version.dart';
 import 'test_service.dart';
 
@@ -135,11 +135,10 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
 }
 
 base class TestWorker extends Worker with WorkerVersion implements TestService {
-  TestWorker._(super.entryPoint, List args, PlatformThreadHook? hook,
+  TestWorker._(super.entryPoint, this.args, PlatformThreadHook? hook,
       ExceptionManager? exceptionManager)
       : super(
           threadHook: hook,
-          args: args,
           exceptionManager: exceptionManager,
         );
 
@@ -178,6 +177,11 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
           hook,
           exceptionManager,
         );
+
+  final List args;
+
+  @override
+  List? getStartArgs() => args;
 
   @override
   Future<void> io({required int ms}) => send(TestService.ioCommand, args: [ms]);
@@ -224,24 +228,24 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
       stream(TestService.infiniteWithErrorsCommand, token: token)
           .map(Squadron.converter.value<int>());
 
-  static final fractionMarshaler =
-      ((x) => (const FractionMarshaler()).marshal(x));
-  static final fractionUnmarshaler = ((x) =>
-      (const FractionMarshaler()).unmarshal(Squadron.converter.list<int>()(x)));
-
   @override
   Future<Fraction> fractionAdd(Fraction a, Fraction b,
-      {required bool marshalIn, required bool marshalOut}) {
+      {required bool marshalIn, required bool marshalOut}) async {
+    final cin = MarshalingContext();
+    final marshaler = const FractionMarshaler();
     final marshal =
-        marshalIn ? fractionMarshaler : Squadron.converter.value<Fraction>();
-    return send(
+        marshalIn ? (x) => marshaler.marshal(x, cin) : cin.value<Fraction>();
+    final res = await send(
       TestService.fractionAddCommand,
       args: [marshal(a), marshal(b), marshalIn, marshalOut],
       inspectRequest: true,
       inspectResponse: true,
-    ).then(
-      marshalOut ? fractionUnmarshaler : Squadron.converter.value<Fraction>(),
     );
+    final cout = MarshalingContext();
+    final unmarshal = marshalOut
+        ? (x) => marshaler.unmarshal(cout.list<int>()(x), cout)
+        : Squadron.converter.value<Fraction>();
+    return unmarshal(res);
   }
 
   @override
@@ -260,15 +264,21 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
           .then(Squadron.converter.value<bool>());
 
   @override
-  Future<bool> checkFractions(Fraction a, Fraction b) =>
-      send(TestService.checkFractionCommand, args: [
-        const FractionMarshaler().marshal(a),
-        const FractionMarshaler().marshal(b),
-      ]).then(Squadron.converter.value<bool>());
+  Future<bool> checkFractions(Fraction a, Fraction b) {
+    final marshalingContext = MarshalingContext();
+    final marshaler = const FractionMarshaler();
+    return send(
+      TestService.checkFractionCommand,
+      args: [
+        marshaler.marshal(a, marshalingContext),
+        marshaler.marshal(b, marshalingContext),
+      ],
+    ).then(Squadron.converter.value<bool>());
+  }
 
   @override
   Future<SquadronPlatformType> getPlatformType() =>
-      send(TestService.platformTypeCommand).then((res) =>
+      send(TestService.platformTypeCommand).then(($) =>
           SquadronPlatformType.tryParse(
-              Squadron.converter.value<String>()(res))!);
+              Squadron.converter.value<String>()($))!);
 }

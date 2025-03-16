@@ -9,9 +9,9 @@ abstract class IdentityService implements WorkerService {
   static const whoAreYouCommand = 1;
 
   @override
-  late final Map<int, CommandHandler> operations = {
+  late final OperationsMap operations = OperationsMap({
     IdentityService.whoAreYouCommand: (req) => whoAreYou(),
-  };
+  });
 }
 
 // The service implementation

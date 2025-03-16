@@ -9,6 +9,7 @@ import '../workers/vm/issues_worker.dart' as entrypoint_issues;
 import '../workers/vm/local_client_worker.dart' as entrypoint_local_client;
 import '../workers/vm/log_worker.dart' as entrypoint_log;
 import '../workers/vm/not_a_worker.dart' as entrypoint_not_a_worker;
+import '../workers/vm/person_worker.dart' as entrypoint_person;
 import '../workers/vm/prime_worker.dart' as entrypoint_prime;
 import '../workers/vm/streaming_worker.dart' as entrypoint_streaming;
 import '../workers/vm/test_worker.dart' as entrypoint_test;
@@ -42,6 +43,7 @@ extension TestEntryPointsExt on TestEntryPoints {
     log = entrypoint_log.start;
     streaming = entrypoint_streaming.start;
     test = entrypoint_test.start;
+    person = entrypoint_person.start;
     errors = entrypoint_error.start;
     missingStartRequest = entrypoint_error.startWithMissingCommand;
   }

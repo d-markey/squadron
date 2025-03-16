@@ -19,6 +19,7 @@ import '../xplat/_forward_stream_controller.dart';
 import '../xplat/_result_stream.dart';
 import '_typedefs.dart';
 
+part '_channel_forward.dart';
 part '_channel_impl.dart';
 
 // Stub implementations.
@@ -54,7 +55,7 @@ Future<Channel> openChannel(
   final errorPort = vm.ReceivePort();
 
   exitPort.listen((message) {
-    failure(SquadronErrorExt.create('Connection to worker failed'));
+    failure(SquadronErrorImpl.create('Connection to worker failed'));
     logger?.t('Isolate terminated with message $message.');
     channel?.close();
     receiver.close();
@@ -85,7 +86,7 @@ Future<Channel> openChannel(
   final disconnected = DisconnectedChannel(exceptionManager, logger);
 
   receiver.listen((message) {
-    final response = WorkerResponseExt.from(message);
+    final response = WorkerResponseImpl.from(message);
     if (!response.unwrapInPlace(disconnected)) {
       return;
     }

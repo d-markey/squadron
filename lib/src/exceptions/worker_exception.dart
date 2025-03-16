@@ -29,7 +29,7 @@ const _$stackTrace = 2;
 const _$command = 3;
 
 @internal
-extension WorkerExceptionExt on WorkerException {
+extension WorkerExceptionImpl on WorkerException {
   void setCommand(int command) {
     _command = command;
   }

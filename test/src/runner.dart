@@ -67,6 +67,9 @@ Future<void> bootstrap({required SquadronPlatformType workerPlatform}) async {
 
     window.notify(RunnerMessage.started.toJS);
     await context.wait().whenComplete(timer.cancel);
+    if (htmlLogger.isSuspended) {
+      htmlLogger.resumeUIUpdates();
+    }
     window.notify(RunnerMessage.done.toJS);
     window.notify(
         context.isCancelled ? 'Tests cancelled'.toJS : 'Tests completed'.toJS);
@@ -85,6 +88,7 @@ Future<void> bootstrap({required SquadronPlatformType workerPlatform}) async {
     } else if (msg == RunnerMessage.cancel) {
       if ($context != null) {
         Log.writeln('Cancel tests');
+        htmlLogger.suspendUIUpdates();
         $context?.cancel();
         $context = null;
       }

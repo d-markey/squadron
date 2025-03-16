@@ -21,7 +21,7 @@ final class _WebForwardChannel extends _WebChannel {
   /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
     if (_closed) {
-      throw SquadronErrorExt.create('Channel is closed');
+      throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
       final transfer = JSArray();
@@ -29,7 +29,7 @@ final class _WebForwardChannel extends _WebChannel {
       _remote.postMessage(e.data, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $e: $ex');
-      throw SquadronErrorExt.create('Failed to post request: $ex', st);
+      throw SquadronErrorImpl.create('Failed to post request: $ex', st);
     }
   }
 

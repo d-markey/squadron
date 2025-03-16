@@ -155,7 +155,7 @@ extension WorkerRequestExt on WorkerRequest {
 
   static WorkerRequest from(List data) {
     if (data.length != 7) {
-      throw SquadronErrorExt.create('Invalid worker request');
+      throw SquadronErrorImpl.create('Invalid worker request');
     }
     return WorkerRequest._(data);
   }
@@ -165,7 +165,7 @@ extension WorkerRequestExt on WorkerRequest {
 extension CancelationTokenExt on WorkerRequest {
   void overrideCancelToken(SquadronCancelationToken token) {
     if (cancelToken == null || cancelToken!.id != token.id) {
-      throw SquadronErrorExt.create('Cancelation token mismatch');
+      throw SquadronErrorImpl.create('Cancelation token mismatch');
     }
     data[_$token] = token;
   }

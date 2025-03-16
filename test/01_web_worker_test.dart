@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-@TestOn('browser && dart2wasm')
+@TestOn('dart2js || dart2wasm')
 library;
 
 import 'dart:async';
@@ -90,7 +90,7 @@ void execute(TestContext? tc) {
           }.toJS;
           w.onmessage = (MessageEvent e) {
             if (!ready.isCompleted) {
-              final status = WorkerResponseExt.from(e.data.dartify() as List);
+              final status = WorkerResponseImpl.from(e.data.dartify() as List);
               ready.complete(status.result);
             } else {
               res.complete(e.data.dartify()?.toString() ?? '');
@@ -139,7 +139,7 @@ void execute(TestContext? tc) {
           }.toJS;
           w.onmessage = (MessageEvent e) {
             try {
-              final res = WorkerResponseExt.from(e.data.dartify() as List);
+              final res = WorkerResponseImpl.from(e.data.dartify() as List);
               if (res.unwrapInPlace(DisconnectedChannel())) {
                 final error = res.error;
                 if (error != null) {
@@ -166,7 +166,7 @@ void execute(TestContext? tc) {
           w.terminate();
         }
       });
-    });
+    }, testOn: 'dart2js || dart2wasm');
   });
 }
 
@@ -181,5 +181,5 @@ SquadronError _errorFromEvent(JSAny? event) {
   } else {
     msg = 'Unknown error: ${event.dartify()}';
   }
-  return SquadronErrorExt.create(msg);
+  return SquadronErrorImpl.create(msg);
 }

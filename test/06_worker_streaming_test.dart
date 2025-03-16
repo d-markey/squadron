@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-@TestOn('vm || browser')
-library;
-
 import 'dart:async';
 
 import 'package:squadron/squadron.dart';

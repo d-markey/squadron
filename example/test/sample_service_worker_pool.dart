@@ -15,7 +15,7 @@ base class SampleWorkerPool extends WorkerPool<SampleWorker>
       : super(
             (ExceptionManager exceptionManager) => SampleWorker(
                   entryPoint,
-                  args: [identityServer.channel?.share().serialize()],
+                  identityServer,
                   threadHook: threadHook,
                   exceptionManager: exceptionManager,
                 ),
@@ -34,8 +34,13 @@ base class SampleWorkerPool extends WorkerPool<SampleWorker>
 }
 
 base class SampleWorker extends Worker implements SampleService {
-  SampleWorker(super.entryPoint,
-      {super.args, super.threadHook, super.exceptionManager});
+  SampleWorker(super.entryPoint, this.identityServer,
+      {super.threadHook, super.exceptionManager});
+
+  final LocalWorker<IdentityService> identityServer;
+
+  @override
+  List? getStartArgs() => [identityServer.channel?.serialize()];
 
   @override
   Future io({required int milliseconds}) =>

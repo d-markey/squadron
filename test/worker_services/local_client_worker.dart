@@ -22,15 +22,7 @@ abstract class LocalClientService with SquadronVersion {
 class LocalClientServiceImpl
     with Releasable, SquadronVersion
     implements LocalClientService, WorkerService {
-  LocalClientServiceImpl(this._localClient) {
-    operations.addAll({
-      SquadronVersion.versionCommand: (r) => getVersion(),
-      LocalClientService.checkIdsCommand: (req) => checkIds(),
-      LocalClientService.checkExceptionCommand: (req) => checkException(),
-      LocalClientService.checkSequenceCommand: (req) =>
-          checkSequence(Squadron.converter.value<int>()(req.args[0])),
-    });
-  }
+  LocalClientServiceImpl(this._localClient);
 
   @override
   void release() {
@@ -64,7 +56,13 @@ class LocalClientServiceImpl
   }
 
   @override
-  final Map<int, CommandHandler> operations = {};
+  late final operations = OperationsMap({
+    SquadronVersion.versionCommand: (r) => getVersion(),
+    LocalClientService.checkIdsCommand: (req) => checkIds(),
+    LocalClientService.checkExceptionCommand: (req) => checkException(),
+    LocalClientService.checkSequenceCommand: (req) =>
+        checkSequence(Squadron.converter.value<int>()(req.args[0])),
+  });
 }
 
 base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
@@ -97,13 +95,17 @@ base class LocalClientWorkerPool extends WorkerPool<LocalClientWorker>
 base class LocalClientWorker extends Worker
     with WorkerVersion
     implements LocalClientService {
-  LocalClientWorker(TestContext context, LocalWorker<LocalService> localService,
+  LocalClientWorker(TestContext context, this.localService,
       {ExceptionManager? exceptionManager})
       : super(
           context.entryPoints.local!,
-          args: [localService.channel?.share().serialize()],
           exceptionManager: exceptionManager ?? localService.exceptionManager,
         );
+
+  final LocalWorker<LocalService> localService;
+
+  @override
+  List? getStartArgs() => [localService.channel?.share().serialize()];
 
   @override
   Future<String> checkIds() => send(LocalClientService.checkIdsCommand)
@@ -117,5 +119,5 @@ base class LocalClientWorker extends Worker
   @override
   Stream<Map<String, dynamic>> checkSequence(int count) =>
       stream(LocalClientService.checkSequenceCommand, args: [count])
-          .map(Squadron.converter.map<String, dynamic>());
+          .map(Squadron.converter.nmap<String, Object>());
 }

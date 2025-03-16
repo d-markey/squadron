@@ -16,10 +16,9 @@ class TestEntryPoints {
   EntryPoint? log;
   EntryPoint? streaming;
   EntryPoint? test;
+  EntryPoint? person;
 
   EntryPoint? errors;
-  EntryPoint? failedInit;
-  EntryPoint? invalidCommand;
   EntryPoint? missingStartRequest;
 
   Iterable<EntryPoint> get defined => [
@@ -35,9 +34,8 @@ class TestEntryPoints {
         log,
         streaming,
         test,
+        person,
         errors,
-        failedInit,
-        invalidCommand,
         missingStartRequest,
       ].nonNulls;
 }
