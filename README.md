@@ -157,7 +157,7 @@ There are a few constraints on what type of data can be transferred, please refe
 
 On native platforms, Squadron uses a default `CastConverter` that will try to simply cast data on the receiving end.
 
-However, when there are nested conversions (eg. `nullable<T>(nestedConversion)` or `list<T>(nestedConversion)`), casting is only possible when the nested conversion is the identity (`(x) => x as T`). In other situations, the conversion must be applied and this could impact performance in complex data structures (such as maps / lists). See [Optimizing Conversions](#optimizing-conversions) for more information.
+However, when there are nested conversions (eg. `list<T>(nestedConversion)`), casting is only possible when the nested conversion is the identity (`(x) => x as T`). In other situations, the conversion must be applied and this could impact performance in complex data structures (such as maps / lists). See [Optimizing Conversions](#optimizing-conversions) for more information.
 
 ### <a name="types_web"></a>Web Platforms
 
@@ -167,7 +167,7 @@ On Web plaforms, Squadron uses a default `CastConverter` (JavaScript runtime) or
 
 More importantly, custom-types will require marshaling so they can be transferred across worker boundaries. Squadron is not too opinionated and there are various ways to achieve this: eg. using JSON (together with `json_serializer` for instance), by implementing `marshal()`/`unmarshal()` or `toJson()`/`fromJson()` methods in your data classes, or by using [Squadron marshalers](https://pub.dev/documentation/squadron/latest/squadron/SquadronMarshaler-class.html).
 
-For instance, to transfer a Dart `Person` instance:
+Here's an example of a `Person` class, and a Squadron `PersonMarshaler` to serialize/deserialize instances of `Person`:
 
 ```dart
 class Person {
@@ -200,7 +200,7 @@ class PersonMarshaler implements GenericMarshaler<Person> {
 } 
 ```
 
-Apply the marshaler by annotating `Person` parameters and/or return values:
+[squadron_builder][pub_squadron_builder] implements proper conversion in and out when generating the code for `PersonServiceWorker`. You only need to apply the marshaler by annotating `Person` parameters and/or return values:
 
 ```dart
 @SquadronService(baseUrl: '~/workers', targetPlatform: TargetPlatform.web)
@@ -225,7 +225,14 @@ base class PersonService {
 }
 ```
 
-[squadron_builder][pub_squadron_builder] will implement proper conversion in and out when generating the code for `PersonServiceWorker`.
+Even easier, just annotate the `Person` class with the marshaler!
+
+```dart
+@PersonMarshaler()
+class Person {
+  // ...
+}
+```
 
 ### <a name="conversions"></a>Optimizing Conversions
 
@@ -235,29 +242,23 @@ On Web platforms, things are different because the data was handed over to the b
 
 * `bool` and `String`: casting is enough to re-enter Dart's type system (handled by `CastConverter`).
 
-* `int` and `double`: integers may be received as floating points numbers; in JavaScript runtimes, `int`is a subtype of `double` and casting is enough (handled by `CastConverter`); in Web Assembly runtimes, integer values may be received as a `double` and require conversion back to `int` (handled by `NumConverter`).
+* `int` and `double`: integers may be received as floating points numbers; in JavaScript runtimes, `int` is a subtype of `double` and casting is enough (handled by `CastConverter`); in Web Assembly runtimes, integer values may be received as a `double` and require conversion back to `int` (handled by `NumConverter`).
 
-* `List`, `Set` and `Map`: these objects are received as `List<dynamic>`, `Set<dynamic>` and `Map<dynamic, dynamic>`. Item, key and value types are systematically lost. Type-casting is not enough and would always fail with a `TypeError` so additional processing is required from the converter.
+* `List`, `Set` and `Map`: these objects are received as `List<dynamic>`, `Set<dynamic>` and `Map<dynamic, dynamic>`. Item, key and value types are systematically lost. Type-casting is not enough and would always fail with a `TypeError`. Additional processing is required from the converter.
 
-To handle collections as efficiencly as possible, converters provided by Squadron optimize the process when the item type is a base type that can be handled by a simple cast. Eg. when a service method works with a `List<String>`, it is received as a `List<dynamic>` and will be "promoted" back to `List<String>` by simply calling `list.cast<String>()` (same for `Set`). For `Map<K, V>` objects where `K` and `V` are base types, the received `Map<dynamic, dynamic>` will be cast back to `Map<K, V>` with `map.cast<K, V>()`. In these scenarios, cast operations are deferred until items are accessed. Dart's static type-safety checks should guarantee the cast will succeed.
+To handle collections as efficiencly as possible, converters provided by Squadron optimize the process when the item type is a base type that can be handled by a simple cast. Eg. when a service method works with a `List<String>`, it is received as a `List<dynamic>` and will be "promoted" back to `List<String>` by simply calling `list.cast<String>()` (same for `Set`). For `Map<K, V>` objects where `K` and `V` are base types, the received `Map<dynamic, dynamic>` will be cast back to `Map<K, V>` with `map.cast<K, V>()`. In these scenarios, cast operations are deferred until items are accessed. Dart's static type-safety checks should guarantee success of cast operations.
 
 When collections contain elements that cannot be cast, additional processing is required.
 
-Web Assembly workers requires extra-care for the following reasons,:
+Web Assembly workers requires extra-care: starting from version 7.0, Squadron has implemented custom versions of `package:web`'s `jsify` and `dartify` functions to better work with Squadron's `NumConverter`. This implementation helps handle the `int`/`double` issue (see [issue #55203](https://github.com/dart-lang/sdk/issues/55203)) as well as the stringified-keys issue in `maps` (see [issue #57113](https://github.com/dart-lang/sdk/issues/57113)).
 
-* **`List<int>` objects sent to a Web Assembly worker will be received as `List<dynamic>` with `double` elements!** Because `int` is not a subtype of `double` on Web Assembly runtimes, `list.cast<int>()` cannot be used. Under such circumstances, list elements must be processed individually and converted back; eg. `NumConverter` handles this specific example as `list.map(_toInt).toList()` where `_toInt` is a function that returns the input value as an `int` after checking it is effectively an `int` or an integral `double`.
-
-* **`Map<K,V>` objects sent to a Web Assembly worker will be received as `Map<String,V>`!** See issue https://github.com/dart-lang/sdk/issues/57113. This is related to the current implementation of `jsify()` in `js_interop`, which Squadron relies on when sending data to the worker. This issue has been fixed in Squadron >= 6.2.0.
-
-For large collections or complex structures (nested lists/maps), this process may impact performance because 1/ `map()` will iterate over all elements and 2/ `toList()` will create a fresh list to hold the converted elements.
-
-It can be optimized in various ways: for instance when working with large lists of numbers, using `Int32List` or some other typed data will be more efficient as these types use a byte buffer under the hood.
+While casting should be enough (and hopefully not too expensive) on VM platform, it will not be the case on Web platforms where performance might be impacted. For instance, when working with large collections or complex structures such as nested lists/maps, the conversion process may require inspecting all list items or map keys & values. It can be optimized in various ways, eg. a large list of integers could be handled via a `Int32List` that will travel to/from workers via a (hopefully efficient) byte buffer.
 
 ### <a name="marshaling"></a>Marshaling
 
-Converters only take care of base types (strings, numbers, booleans, lists, maps and sets as well as Dart's typed data and `BigInt`). The default behavior for other types (whether they're Dart types such as `DateTime` or `Duration`, or custom types that you or a third-party package implemented) is to simply cast the `dynamic` value to the specified type.
+Converters only take care of base types (strings, numbers, booleans, lists, maps and sets as well as Dart's typed data and `BigInt`). The default behavior for other types is to simply cast the `dynamic` value to the specified type, whether they're Dart types such as `DateTime` or `Duration`, or custom types that you or a third-party package implemented.
 
-This will only work on native Dart VM. On browser platforms, custom objects must be serialized when sent and deserialized when received. Squadron provides `SquadronMarshaler<T, S>` for you to implement your own marshaler:
+But casting will only work on native Dart VM. On browser platforms, custom objects must be serialized when sent and deserialized when received. Squadron provides `SquadronMarshaler<T, S>` for you to implement your own marshaler:
 
 * `S marshal(T data, [MarshalingContext? context])`: implement this method to serialize an instance of `T` to something that can be transfered, for instance a `List`;
 
@@ -300,13 +301,13 @@ class CarMarshaler implements SquadronMarshaler<Car, List> {
     return Car(
       data[0],
       price,
-      Engine.values.singleWhere((e) => e.index == engineIndex),
+      Engine.values[engineIndex]),
     );
   }
 }
 ```
 
-[squadron_builder][pub_squadron_builder] will use the marshaler based on annotations provided in your service implementation:
+[squadron_builder][pub_squadron_builder] generates code using the marshaler annotation you provide in your service implementation:
 
 ```dart
 @SquadronService()
@@ -325,7 +326,7 @@ Alternatively, if you own the target class, you can also simply annotate it:
 ```dart
 @carMarshaler
 class Car {
-   // ...
+  // ...
 }
 
 @SquadronService()
@@ -338,7 +339,7 @@ class CarService {
 }
 ```
 
-If your application is designed to run both on native and Web platforms, it is possible to optimize for VM platforms by providing different marshalers depending on the platform and conditionally import the proper implementation.
+If your application is designed to run both on native and Web platforms, it is possible to optimize for VM platforms by providing different marshalers depending on the platform and conditionally import the proper implementation. Eg. on VM platforms, marshalers would mostly be 'no-ops'.
 
 ```dart
 ///////////// file car_marshaler.web.dart /////////////
@@ -371,6 +372,7 @@ class Car {
   // ...
 }
 ```
+
 ### <a name="marshaling-context"></a>Marshaling Context
 
 Marshalers can work with a `MarshalingContext`. The marshaling context stores results of marshaling/unmarshaling operations and serves the same result if the same instance is un/marshaled again.
@@ -412,7 +414,7 @@ This creates cyclical references that will fail to marshal unless a marshaling c
 
 Again, Squadron is not opinionated when it comes to serialization: but it will try and support you in as many ways as possible. You keep full control over the way you choose to serialize your custom classes. For instance, you may choose to not send children as full `Person` instances and instead send just some ids or a subset of properties that won't introduce circular dependencies. It's up to you to assess pros and cons and implement your own solution.
 
-For concrete examples, see https://github.com/d-markey/squadron/blob/main/test/worker_services/persons.
+For a concrete example, see https://github.com/d-markey/squadron/blob/main/test/worker_services/persons.
 
 ## <a name="thanks"></a>Thanks!
 
