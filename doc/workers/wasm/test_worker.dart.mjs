@@ -160,7 +160,9 @@ class CompiledApp {
       _168: Function.prototype.call.bind(DataView.prototype.getInt32),
       _169: Function.prototype.call.bind(DataView.prototype.setInt32),
       _174: Function.prototype.call.bind(DataView.prototype.getFloat32),
+      _175: Function.prototype.call.bind(DataView.prototype.setFloat32),
       _176: Function.prototype.call.bind(DataView.prototype.getFloat64),
+      _177: Function.prototype.call.bind(DataView.prototype.setFloat64),
       _194: o => Object.keys(o),
       _195: (ms, c) =>
       setTimeout(() => dartInstance.exports.$invokeCallback(c),ms),

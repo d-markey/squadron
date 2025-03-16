@@ -108,9 +108,7 @@ class CompiledApp {
       _10: () => new Array(),
       _13: x0 => x0.length,
       _15: (x0,x1) => x0[x1],
-      _31: x0 => new Int32Array(x0),
       _33: x0 => new Uint32Array(x0),
-      _35: x0 => new Float32Array(x0),
       _38: (o, t) => typeof o === t,
       _39: (o, c) => o instanceof c,
       _67: (o) => !!o,
@@ -143,10 +141,8 @@ class CompiledApp {
       _147: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
       _148: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
       _151: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
-      _152: o => o.byteLength,
       _155: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
       _156: (b, o) => new DataView(b, o),
-      _157: (b, o, l) => new DataView(b, o, l),
       _158: Function.prototype.call.bind(DataView.prototype.getUint8),
       _159: Function.prototype.call.bind(DataView.prototype.setUint8),
       _160: Function.prototype.call.bind(DataView.prototype.getInt8),
@@ -159,12 +155,10 @@ class CompiledApp {
       _167: Function.prototype.call.bind(DataView.prototype.setUint32),
       _168: Function.prototype.call.bind(DataView.prototype.getInt32),
       _169: Function.prototype.call.bind(DataView.prototype.setInt32),
-      _170: Function.prototype.call.bind(DataView.prototype.getBigUint64),
-      _171: Function.prototype.call.bind(DataView.prototype.setBigUint64),
-      _172: Function.prototype.call.bind(DataView.prototype.getBigInt64),
-      _173: Function.prototype.call.bind(DataView.prototype.setBigInt64),
       _174: Function.prototype.call.bind(DataView.prototype.getFloat32),
+      _175: Function.prototype.call.bind(DataView.prototype.setFloat32),
       _176: Function.prototype.call.bind(DataView.prototype.getFloat64),
+      _177: Function.prototype.call.bind(DataView.prototype.setFloat64),
       _194: o => Object.keys(o),
       _195: (ms, c) =>
       setTimeout(() => dartInstance.exports.$invokeCallback(c),ms),
@@ -368,16 +362,9 @@ class CompiledApp {
           jsArray[jsArrayOffset + i] = getValue(wasmArray, wasmArrayOffset + i);
         }
       },
-      _388: (jsArray, jsArrayOffset, wasmArray, wasmArrayOffset, length) => {
-        const getValue = dartInstance.exports.$wasmF32ArrayGet;
-        for (let i = 0; i < length; i++) {
-          jsArray[jsArrayOffset + i] = getValue(wasmArray, wasmArrayOffset + i);
-        }
-      },
       _401: x0 => x0.flags,
       _408: (o, p) => o[p],
       _411: v => v.toString(),
-      _412: (d, digits) => d.toFixed(digits),
       _416: x0 => x0.random(),
       _417: x0 => x0.random(),
       _421: () => globalThis.Math,
