@@ -119,13 +119,13 @@
         <line number="36">
             <code>  /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).</code>
         </line>
-        <line hits="3" number="37">
+        <line hits="4" number="37">
             <code>  static int compareCapacityDesc(PoolWorker a, PoolWorker b) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="18" number="38">
+        <line hits="24" number="38">
             <code>    if (a.capacity != b.capacity) return b.capacity.compareTo(a.capacity);</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
+            <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="39">
             <code>    if (a._lastStart == null) return 1;</code>

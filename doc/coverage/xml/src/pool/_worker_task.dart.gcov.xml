@@ -187,9 +187,9 @@
             <code>  void throwIfCanceled() {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="58">
+        <line hits="4" number="58">
             <code>    if (_canceledException != null) throw _canceledException!;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="59">
             <code>  }</code>
