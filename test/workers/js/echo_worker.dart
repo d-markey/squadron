@@ -1,3 +1,4 @@
+// ignore: deprecated_member_use
 import 'dart:html';
 
 import 'package:squadron/src/worker/worker_response.dart';
