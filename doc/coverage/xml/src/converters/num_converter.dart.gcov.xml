@@ -1,117 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="num_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="11" lines-valid="11" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="num_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="11" lines-valid="11" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'converter.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import 'converter.dart';</code>
         </line>
         <line number="3">
+            <code/>
+        </line>
+        <line number="4">
             <code>final class NumConverter extends Converter {</code>
         </line>
-        <line hits="12" number="4">
+        <line hits="13" number="5">
             <code>  const NumConverter();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="5">
-            <code/>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
-            <code>  static const instance = NumConverter();</code>
-        </line>
-        <line number="7">
             <code/>
         </line>
-        <line hits="1" number="8">
+        <line number="7">
+            <code>  static const instance = NumConverter();</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line hits="1" number="9">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="9">
-            <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; _numCastors[T] as Cast&lt;T&gt;? ?? Converter.identity&lt;T&gt;;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line number="10">
-            <code/>
+            <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() {</code>
         </line>
         <line hits="1" number="11">
+            <code>    if (T == int) return _toInt as Cast&lt;T&gt;;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="12">
+            <code>    if (T == double) return _toDbl as Cast&lt;T&gt;;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code>    return Converter.identity&lt;T&gt;;</code>
+        </line>
+        <line number="14">
+            <code>  }</code>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line hits="1" number="16">
             <code>  static int _toInt(dynamic x) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="12">
+        <line number="17">
+            <code>    x as num;</code>
+        </line>
+        <line hits="2" number="18">
             <code>    if (x is int &amp;&amp; x.isFinite) return x;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="13">
-            <code>    double y = (x as num).toDouble();</code>
+        <line hits="1" number="19">
+            <code>    double y = x.toDouble();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="14">
-            <code>    ///////////////////////////// fixed in Squadron 6.2.0</code>
-        </line>
-        <line number="15">
-            <code>    // if (x is num) {</code>
-        </line>
-        <line number="16">
-            <code>    //   y = x.toDouble();</code>
-        </line>
-        <line number="17">
-            <code>    // } else {</code>
-        </line>
-        <line number="18">
-            <code>    //   // seems like Map&lt;int, V&gt; are received as Map&lt;JSString, V&gt; on wasm</code>
-        </line>
-        <line number="19">
-            <code>    //   y = double.tryParse(x.toString())!;</code>
-        </line>
-        <line number="20">
-            <code>    // }</code>
-        </line>
-        <line number="21">
-            <code>    ///////////////////////////// fixed in Squadron 6.2.0</code>
-        </line>
-        <line hits="1" number="22">
+        <line hits="1" number="20">
             <code>    if (!y.isFinite) return double.nan as int; // intended type error</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="23">
+        <line hits="2" number="21">
             <code>    final z = y.toInt(), d = y - z;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="24">
+        <line hits="1" number="22">
             <code>    if (d != 0) return double.nan as int; // intended type error</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="25">
+        <line number="23">
             <code>    return z;</code>
         </line>
-        <line number="26">
+        <line number="24">
             <code>  }</code>
         </line>
-        <line number="27">
+        <line number="25">
             <code/>
         </line>
-        <line hits="2" number="28">
+        <line hits="2" number="26">
             <code>  static double _toDbl(dynamic x) =&gt; (x as num).toDouble();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="29">
-            <code/>
-        </line>
-        <line hits="3" number="30">
-            <code>  static final Map&lt;Type, Cast&gt; _numCastors = {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="31">
-            <code>    int: _toInt,</code>
-        </line>
-        <line number="32">
-            <code>    double: _toDbl,</code>
-        </line>
-        <line number="33">
-            <code>  };</code>
-        </line>
-        <line number="34">
+        <line number="27">
             <code>}</code>
         </line>
     </lines>

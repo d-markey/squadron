@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-01-26</dd>
+                    <dd>2025-03-16</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -337,7 +337,7 @@
                     <td>92</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 93" id="line93">
-                    <td>93</td><td></td><td></td><td><code>extension WorkerResponseExt on WorkerResponse {</code></td>
+                    <td>93</td><td></td><td></td><td><code>extension WorkerResponseImpl on WorkerResponse {</code></td>
                 </tr>
                 <tr class="noop" title="Line 94" id="line94">
                     <td>94</td><td></td><td></td><td><code>  /// In-place deserialization of a [WorkerResponse] sent by the worker.</code></td>
@@ -427,7 +427,7 @@
                     <td>122</td><td></td><td>20</td><td><code>    if (data.length != 5) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 123" id="line123">
-                    <td>123</td><td></td><td>0</td><td><code>      throw SquadronErrorExt.create('Invalid worker response');</code></td>
+                    <td>123</td><td></td><td>0</td><td><code>      throw SquadronErrorImpl.create('Invalid worker response');</code></td>
                 </tr>
                 <tr class="noop" title="Line 124" id="line124">
                     <td>124</td><td></td><td></td><td><code>    }</code></td>
@@ -526,7 +526,7 @@
                     <td>155</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 156" id="line156">
-                    <td>156</td><td></td><td>4</td><td><code>        return _stringify(message());</code></td>
+                    <td>156</td><td></td><td>4</td><td><code>        return message().toString();</code></td>
                 </tr>
                 <tr class="noop" title="Line 157" id="line157">
                     <td>157</td><td></td><td></td><td><code>      } catch (ex) {</code></td>

@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="identity_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="3" package="src/marshalers" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="identity_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.33333334" lines-covered="1" lines-valid="3" package="src/marshalers" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'squadron_marshaler.dart';</code>
+            <code>import 'marshaling_context.dart';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import 'squadron_marshaler.dart';</code>
         </line>
         <line number="3">
-            <code>/// Identity marshaler.</code>
+            <code/>
         </line>
         <line number="4">
-            <code>final class IdentityMarshaler&lt;T&gt; implements SquadronMarshaler&lt;T, T&gt; {</code>
+            <code>/// Identity marshaler.</code>
         </line>
-        <line hits="0" number="5">
+        <line number="5">
+            <code>final class IdentityMarshaler&lt;T&gt; extends SquadronMarshaler&lt;T, T&gt; {</code>
+        </line>
+        <line hits="12" number="6">
             <code>  const IdentityMarshaler();</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="6">
+        <line number="7">
             <code/>
         </line>
-        <line hits="0" number="7">
+        <line hits="0" number="8">
             <code>  @override</code>
-        </line>
-        <line number="8">
-            <code>  T marshal(T data) =&gt; data;</code>
         </line>
         <line number="9">
+            <code>  T marshal(T data, [MarshalingContext? context]) =&gt; data;</code>
+        </line>
+        <line number="10">
             <code/>
         </line>
-        <line hits="0" number="10">
+        <line hits="0" number="11">
             <code>  @override</code>
         </line>
-        <line number="11">
-            <code>  T unmarshal(T data) =&gt; data;</code>
-        </line>
         <line number="12">
+            <code>  T unmarshal(T data, [MarshalingContext? context]) =&gt; data;</code>
+        </line>
+        <line number="13">
             <code>}</code>
         </line>
     </lines>

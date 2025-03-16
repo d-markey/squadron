@@ -1,134 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="worker_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'dart:async';</code>
+            <code>import 'typedefs.dart';</code>
         </line>
         <line number="2">
-            <code/>
-        </line>
-        <line number="3">
-            <code>import 'worker/worker.dart';</code>
-        </line>
-        <line number="4">
             <code>import 'worker/worker_request.dart';</code>
         </line>
-        <line number="5">
+        <line number="3">
             <code/>
+        </line>
+        <line number="4">
+            <code>/// Base class for a worker service.</code>
+        </line>
+        <line number="5">
+            <code>abstract interface class WorkerService {</code>
         </line>
         <line number="6">
-            <code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code>
+            <code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code>
         </line>
         <line number="7">
-            <code>    WorkerRequest startRequest);</code>
+            <code>  /// worker will dispatch the request to the [CommandHandler] matching the value</code>
         </line>
         <line number="8">
-            <code/>
+            <code>  /// of [WorkerRequest.command].</code>
         </line>
         <line number="9">
-            <code>typedef CommandHandler = FutureOr&lt;dynamic&gt; Function(WorkerRequest req);</code>
+            <code>  OperationsMap get operations;</code>
         </line>
         <line number="10">
             <code/>
         </line>
         <line number="11">
-            <code>typedef SquadronCallback = void Function();</code>
-        </line>
-        <line number="12">
-            <code>typedef SquadronAsyncCallback = FutureOr&lt;void&gt; Function();</code>
-        </line>
-        <line number="13">
-            <code/>
-        </line>
-        <line number="14">
-            <code>/// Extend this class or implement this interface in your worker service if it needs</code>
-        </line>
-        <line number="15">
-            <code>/// to take action when the worker thread is started or stopped.</code>
-        </line>
-        <line number="16">
-            <code>mixin ServiceInstaller {</code>
-        </line>
-        <line number="17">
-            <code>  /// Squadron will call this method as part of the worker thread initialization.</code>
-        </line>
-        <line number="18">
-            <code>  /// It will be called just after the service instance has been constructed. The</code>
-        </line>
-        <line number="19">
-            <code>  /// future returned by [Worker.start] will not complete before this method completes</code>
-        </line>
-        <line number="20">
-            <code>  /// whether synchronously or asynchronously. If this method throws, the future</code>
-        </line>
-        <line number="21">
-            <code>  /// returned by [Worker.start] will complete with an error and the service will not</code>
-        </line>
-        <line number="22">
-            <code>  /// be available.</code>
-        </line>
-        <line hits="2" number="23">
-            <code>  FutureOr&lt;void&gt; install() {}</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="24">
-            <code/>
-        </line>
-        <line number="25">
-            <code>  /// Squadron will call this method as part of the worker thread shutdown process.</code>
-        </line>
-        <line number="26">
-            <code>  /// It will be called just before effectively closing the platform channel. If</code>
-        </line>
-        <line number="27">
-            <code>  /// this method throws, the exception will not bubble up to the parent thread.</code>
-        </line>
-        <line number="28">
-            <code>  /// Also, [Worker.stop] does not wait for this method to complete.</code>
-        </line>
-        <line hits="2" number="29">
-            <code>  FutureOr&lt;void&gt; uninstall() {}</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="30">
-            <code>}</code>
-        </line>
-        <line number="31">
-            <code/>
-        </line>
-        <line number="32">
-            <code>/// Base class for a worker service.</code>
-        </line>
-        <line number="33">
-            <code>abstract interface class WorkerService {</code>
-        </line>
-        <line number="34">
-            <code>  /// Map of command handlers. Upon reception of a [WorkerRequest], the platform</code>
-        </line>
-        <line number="35">
-            <code>  /// worker will dispatch the request to the [CommandHandler] mathing the value</code>
-        </line>
-        <line number="36">
-            <code>  /// of [WorkerRequest.command].</code>
-        </line>
-        <line number="37">
-            <code>  Map&lt;int, CommandHandler&gt; get operations;</code>
-        </line>
-        <line number="38">
-            <code/>
-        </line>
-        <line number="39">
             <code>  /// Empty command handlers map.</code>
         </line>
-        <line hits="2" number="40">
-            <code>  static final Map&lt;int, CommandHandler&gt; noOperations =</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="4" number="12">
+            <code>  static final OperationsMap noOperations = OperationsMap({});</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="41">
-            <code>      Map&lt;int, CommandHandler&gt;.unmodifiable(const {});</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="42">
+        <line number="13">
             <code>}</code>
         </line>
     </lines>

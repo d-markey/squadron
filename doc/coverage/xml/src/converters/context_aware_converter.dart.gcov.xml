@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="context_aware_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.627451" lines-covered="64" lines-valid="102" package="src/converters" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
+            <code>import '../squadron_singleton.dart';</code>
+        </line>
+        <line number="4">
+            <code>import '../typedefs.dart';</code>
+        </line>
+        <line number="5">
+            <code>import 'converter.dart';</code>
+        </line>
+        <line number="6">
+            <code>import 'lazy_in_place_list.dart';</code>
+        </line>
+        <line number="7">
+            <code>import 'lazy_in_place_map.dart';</code>
+        </line>
+        <line number="8">
+            <code>import 'serialization_context.dart';</code>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line number="10">
+            <code>class ContextAwareConverter extends Converter {</code>
+        </line>
+        <line hits="4" number="11">
+            <code>  ContextAwareConverter([Converter? converter])</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="12">
+            <code>      : _converter = converter ?? Squadron.converter;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="13">
+            <code/>
+        </line>
+        <line number="14">
+            <code>  final Converter _converter;</code>
+        </line>
+        <line number="15">
+            <code>  // use Squadron.identical to handle JS objects</code>
+        </line>
+        <line number="16">
+            <code>  final _arguments = SerializationContext(Squadron.identical);</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>  // non-nullable value</code>
+        </line>
+        <line hits="4" number="19">
+            <code>  @override</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() {</code>
+        </line>
+        <line hits="8" number="21">
+            <code>    final op = _converter.value&lt;T&gt;();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7" number="22">
+            <code>    if (Converter.isNumber&lt;T&gt;() || Converter.isIdentity&lt;T&gt;(op)) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="23">
+            <code>      // no context needed for numbers / identity converters</code>
+        </line>
+        <line number="24">
+            <code>      return op;</code>
+        </line>
+        <line number="25">
+            <code>    }</code>
+        </line>
+        <line hits="0" number="26">
+            <code>    return (dynamic x) {</code>
+        </line>
+        <line number="27">
+            <code>      x as Object;</code>
+        </line>
+        <line hits="0" number="28">
+            <code>      var ref = _arguments.getReference&lt;T&gt;(x);</code>
+        </line>
+        <line number="29">
+            <code>      if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="30">
+            <code>      ref = op(x);</code>
+        </line>
+        <line hits="0" number="31">
+            <code>      _arguments.setReference(x, ref);</code>
+        </line>
+        <line number="32">
+            <code>      return ref;</code>
+        </line>
+        <line number="33">
+            <code>    };</code>
+        </line>
+        <line number="34">
+            <code>  }</code>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  // list</code>
+        </line>
+        <line hits="4" number="37">
+            <code>  @override</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="38">
+            <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+        </line>
+        <line hits="4" number="39">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="40">
+            <code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="41">
+            <code>      final toList = _converter.list&lt;T&gt;(); // elements will be cast</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="42">
+            <code>      return (dynamic x) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="43">
+            <code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="44">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="3" number="45">
+            <code>        ref = toList(x);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="46">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="47">
+            <code>        return ref;</code>
+        </line>
+        <line number="48">
+            <code>      };</code>
+        </line>
+        <line number="49">
+            <code>    } else {</code>
+        </line>
+        <line hits="1" number="50">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="51">
+            <code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="1" number="53">
+            <code>        ref = LazyInPlaceList(x, op); // elements will be converted upon access</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="54">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="55">
+            <code>        return ref;</code>
+        </line>
+        <line number="56">
+            <code>      };</code>
+        </line>
+        <line number="57">
+            <code>    }</code>
+        </line>
+        <line number="58">
+            <code>  }</code>
+        </line>
+        <line number="59">
+            <code/>
+        </line>
+        <line hits="1" number="60">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="61">
+            <code>  Cast&lt;List&lt;T?&gt;&gt; nlist&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+        </line>
+        <line hits="0" number="62">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+        </line>
+        <line hits="1" number="63">
+            <code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="64">
+            <code>      final toList = _converter.nlist&lt;T&gt;(); // elements will be cast</code>
+        </line>
+        <line hits="0" number="65">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="66">
+            <code>        var ref = _arguments.getReference&lt;List&lt;T?&gt;&gt;(x);</code>
+        </line>
+        <line number="67">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="68">
+            <code>        ref = toList(x);</code>
+        </line>
+        <line hits="0" number="69">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line number="70">
+            <code>        return ref;</code>
+        </line>
+        <line number="71">
+            <code>      };</code>
+        </line>
+        <line number="72">
+            <code>    } else {</code>
+        </line>
+        <line hits="1" number="73">
+            <code>      final nop = Converter.allowNull(op);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="74">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="75">
+            <code>        var ref = _arguments.getReference&lt;List&lt;T?&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="76">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="1" number="77">
+            <code>        ref = LazyInPlaceList(x, nop); // elements will be converted upon access</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="78">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="79">
+            <code>        return ref;</code>
+        </line>
+        <line number="80">
+            <code>      };</code>
+        </line>
+        <line number="81">
+            <code>    }</code>
+        </line>
+        <line number="82">
+            <code>  }</code>
+        </line>
+        <line number="83">
+            <code/>
+        </line>
+        <line number="84">
+            <code>  // set</code>
+        </line>
+        <line hits="1" number="85">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="86">
+            <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+        </line>
+        <line hits="1" number="87">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="88">
+            <code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="89">
+            <code>      final toSet = _converter.set&lt;T&gt;(); // elements will be cast</code>
+        </line>
+        <line hits="0" number="90">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="91">
+            <code>        var ref = _arguments.getReference&lt;Set&lt;T&gt;&gt;(x);</code>
+        </line>
+        <line number="92">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="93">
+            <code>        ref = toSet(x);</code>
+        </line>
+        <line hits="0" number="94">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line number="95">
+            <code>        return ref;</code>
+        </line>
+        <line number="96">
+            <code>      };</code>
+        </line>
+        <line number="97">
+            <code>    } else {</code>
+        </line>
+        <line hits="1" number="98">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="99">
+            <code>        var ref = _arguments.getReference&lt;Set&lt;T&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="100">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line number="101">
+            <code>        ref = &lt;T&gt;{}; // TODO: implement a lazy set?</code>
+        </line>
+        <line hits="2" number="102">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="103">
+            <code>        ref.addAll((x as Iterable).map(op));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="104">
+            <code>        return ref;</code>
+        </line>
+        <line number="105">
+            <code>      };</code>
+        </line>
+        <line number="106">
+            <code>    }</code>
+        </line>
+        <line number="107">
+            <code>  }</code>
+        </line>
+        <line number="108">
+            <code/>
+        </line>
+        <line hits="1" number="109">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="110">
+            <code>  Cast&lt;Set&lt;T?&gt;&gt; nset&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+        </line>
+        <line hits="1" number="111">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="112">
+            <code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="113">
+            <code>      final toSet = _converter.nset&lt;T&gt;(); // elements will be cast</code>
+        </line>
+        <line hits="0" number="114">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="115">
+            <code>        var ref = _arguments.getReference&lt;Set&lt;T?&gt;&gt;(x);</code>
+        </line>
+        <line number="116">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="117">
+            <code>        ref = toSet(x);</code>
+        </line>
+        <line hits="0" number="118">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line number="119">
+            <code>        return ref;</code>
+        </line>
+        <line number="120">
+            <code>      };</code>
+        </line>
+        <line number="121">
+            <code>    } else {</code>
+        </line>
+        <line hits="1" number="122">
+            <code>      final nop = Converter.allowNull(op);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="123">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="124">
+            <code>        var ref = _arguments.getReference&lt;Set&lt;T?&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="125">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line number="126">
+            <code>        ref = &lt;T?&gt;{}; // TODO: implement a lazy set?</code>
+        </line>
+        <line hits="2" number="127">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="128">
+            <code>        ref.addAll((x as Iterable).map(nop));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="129">
+            <code>        return ref;</code>
+        </line>
+        <line number="130">
+            <code>      };</code>
+        </line>
+        <line number="131">
+            <code>    }</code>
+        </line>
+        <line number="132">
+            <code>  }</code>
+        </line>
+        <line number="133">
+            <code/>
+        </line>
+        <line number="134">
+            <code>  // map</code>
+        </line>
+        <line hits="2" number="135">
+            <code>  @override</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="136">
+            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code>
+        </line>
+        <line number="137">
+            <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
+        </line>
+        <line hits="2" number="138">
+            <code>    final kop = kcast ?? value&lt;K&gt;();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="139">
+            <code>    final vop = vcast ?? value&lt;V&gt;();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="140">
+            <code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="141">
+            <code>      final toMap = _converter.map&lt;K, V&gt;(); // elements will be cast</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="142">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="143">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="144">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="1" number="145">
+            <code>        ref = toMap(x);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="146">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="147">
+            <code>        return ref;</code>
+        </line>
+        <line number="148">
+            <code>      };</code>
+        </line>
+        <line hits="1" number="149">
+            <code>    } else if (Converter.isIdentity(kop)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="150">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="151">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="152">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="1" number="153">
+            <code>        ref = LazyInPlaceMap(x, vop); // elements will be converted upon access</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="154">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="155">
+            <code>        return ref;</code>
+        </line>
+        <line number="156">
+            <code>      };</code>
+        </line>
+        <line number="157">
+            <code>    } else {</code>
+        </line>
+        <line hits="0" number="158">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="159">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V&gt;&gt;(x);</code>
+        </line>
+        <line number="160">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="161">
+            <code>        ref = &lt;K, V&gt;{}; // TODO: implements a lazy map with convertible keys?</code>
+        </line>
+        <line hits="0" number="162">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line hits="0" number="163">
+            <code>        ref.addEntries(</code>
+        </line>
+        <line hits="0" number="164">
+            <code>          (x as Map).entries.map((e) =&gt; MapEntry(kop(e.key), vop(e.value))),</code>
+        </line>
+        <line number="165">
+            <code>        );</code>
+        </line>
+        <line number="166">
+            <code>        return ref;</code>
+        </line>
+        <line number="167">
+            <code>      };</code>
+        </line>
+        <line number="168">
+            <code>    }</code>
+        </line>
+        <line number="169">
+            <code>  }</code>
+        </line>
+        <line number="170">
+            <code/>
+        </line>
+        <line hits="1" number="171">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="172">
+            <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nmap&lt;K extends Object, V extends Object&gt;(</code>
+        </line>
+        <line number="173">
+            <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
+        </line>
+        <line hits="1" number="174">
+            <code>    final kop = kcast ?? value&lt;K&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="175">
+            <code>    final vop = vcast ?? value&lt;V&gt;();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="176">
+            <code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="177">
+            <code>      final toMap = _converter.nmap&lt;K, V&gt;(); // elements will be cast</code>
+        </line>
+        <line hits="0" number="178">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="179">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V?&gt;&gt;(x);</code>
+        </line>
+        <line number="180">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="181">
+            <code>        ref = toMap(x);</code>
+        </line>
+        <line hits="0" number="182">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line number="183">
+            <code>        return ref;</code>
+        </line>
+        <line number="184">
+            <code>      };</code>
+        </line>
+        <line hits="1" number="185">
+            <code>    } else if (Converter.isIdentity(kop)) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="186">
+            <code>      final nvop = Converter.allowNull(vop);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="187">
+            <code>      return (dynamic x) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="188">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V?&gt;&gt;(x);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="189">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="1" number="190">
+            <code>        ref = LazyInPlaceMap(x, nvop); // elements will be converted upon access</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="191">
+            <code>        _arguments.setReference(x, ref);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="192">
+            <code>        return ref;</code>
+        </line>
+        <line number="193">
+            <code>      };</code>
+        </line>
+        <line number="194">
+            <code>    } else {</code>
+        </line>
+        <line hits="0" number="195">
+            <code>      final nvop = Converter.allowNull(vop);</code>
+        </line>
+        <line hits="0" number="196">
+            <code>      return (dynamic x) {</code>
+        </line>
+        <line hits="0" number="197">
+            <code>        var ref = _arguments.getReference&lt;Map&lt;K, V?&gt;&gt;(x);</code>
+        </line>
+        <line number="198">
+            <code>        if (ref != null) return ref;</code>
+        </line>
+        <line hits="0" number="199">
+            <code>        ref = &lt;K, V?&gt;{}; // TODO: implements a lazy map with convertible keys?</code>
+        </line>
+        <line hits="0" number="200">
+            <code>        _arguments.setReference(x, ref);</code>
+        </line>
+        <line hits="0" number="201">
+            <code>        ref.addEntries(</code>
+        </line>
+        <line hits="0" number="202">
+            <code>          (x as Map).entries.map((e) =&gt; MapEntry(kop(e.key), nvop(e.value))),</code>
+        </line>
+        <line number="203">
+            <code>        );</code>
+        </line>
+        <line number="204">
+            <code>        return ref;</code>
+        </line>
+        <line number="205">
+            <code>      };</code>
+        </line>
+        <line number="206">
+            <code>    }</code>
+        </line>
+        <line number="207">
+            <code>  }</code>
+        </line>
+        <line number="208">
+            <code>}</code>
+        </line>
+        <line number="209">
+            <code/>
+        </line>
+        <line number="210">
+            <code>@internal</code>
+        </line>
+        <line number="211">
+            <code>extension ContextAwareConverterImpl on ContextAwareConverter {</code>
+        </line>
+        <line hits="3" number="212">
+            <code>  void reset() =&gt; _arguments.reset();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="213">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9245283" lines-covered="98" lines-valid="106" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.92523366" lines-covered="99" lines-valid="107" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -44,908 +44,921 @@
             <code>import '../exceptions/worker_exception.dart';</code>
         </line>
         <line number="15">
-            <code>import '../iworker.dart';</code>
+            <code>import '../invoker.dart';</code>
         </line>
         <line number="16">
-            <code>import '../stats/worker_stat.dart';</code>
+            <code>import '../iworker.dart';</code>
         </line>
         <line number="17">
-            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
+            <code>import '../stats/worker_stat.dart';</code>
         </line>
         <line number="18">
-            <code>import '../typedefs.dart';</code>
+            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line number="19">
-            <code>import '../worker/worker_request.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line number="20">
-            <code>import '../worker_service.dart';</code>
+            <code>import '../worker/worker_request.dart';</code>
         </line>
         <line number="21">
-            <code/>
+            <code>import '../worker_service.dart';</code>
         </line>
         <line number="22">
-            <code>/// Base worker class.</code>
+            <code/>
         </line>
         <line number="23">
-            <code>///</code>
+            <code>/// Base worker class.</code>
         </line>
         <line number="24">
-            <code>/// This base class takes care of creating the [Channel] and firing up the</code>
+            <code>///</code>
         </line>
         <line number="25">
-            <code>/// worker. Typically, derived classes should add proxy methods sending</code>
+            <code>/// This base class takes care of creating the [Channel] and firing up the</code>
         </line>
         <line number="26">
-            <code>/// [WorkerRequest]s to the worker.</code>
+            <code>/// worker. Typically, derived classes should add proxy methods sending</code>
         </line>
         <line number="27">
-            <code>abstract class Worker with Releasable implements WorkerService, IWorker {</code>
+            <code>/// [WorkerRequest]s to the worker.</code>
         </line>
         <line number="28">
+            <code>abstract class Worker</code>
+        </line>
+        <line number="29">
+            <code>    with Releasable</code>
+        </line>
+        <line number="30">
+            <code>    implements WorkerService, IWorker, Invoker {</code>
+        </line>
+        <line number="31">
             <code>  /// Creates a [Worker] with the specified entrypoint.</code>
         </line>
-        <line hits="11" number="29">
+        <line hits="11" number="32">
             <code>  Worker(this._entryPoint,</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
-            <code>      {this.args = const [],</code>
-        </line>
-        <line number="31">
-            <code>      PlatformThreadHook? threadHook,</code>
-        </line>
-        <line number="32">
-            <code>      ExceptionManager? exceptionManager})</code>
-        </line>
         <line number="33">
-            <code>      : _threadHook = threadHook,</code>
+            <code>      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})</code>
         </line>
         <line number="34">
-            <code>        _exceptionManager = exceptionManager;</code>
+            <code>      : _threadHook = threadHook,</code>
         </line>
         <line number="35">
+            <code>        _exceptionManager = exceptionManager;</code>
+        </line>
+        <line number="36">
             <code/>
         </line>
-        <line hits="11" number="36">
+        <line hits="11" number="37">
             <code>  @override</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="37">
+        <line number="38">
             <code>  void release() {</code>
         </line>
-        <line hits="11" number="38">
+        <line hits="11" number="39">
             <code>    stop();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="39">
+        <line hits="11" number="40">
             <code>    super.release();</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="40">
+        <line number="41">
             <code>  }</code>
         </line>
-        <line number="41">
-            <code/>
-        </line>
         <line number="42">
-            <code>  /// The [Worker]'s entry point; typically, a top-level function in native</code>
+            <code/>
         </line>
         <line number="43">
-            <code>  /// world or the Uri to a JavaScript file in browser world.</code>
+            <code>  /// The [Worker]'s entry point; typically, a top-level function in native</code>
         </line>
         <line number="44">
-            <code>  final EntryPoint _entryPoint;</code>
+            <code>  /// world or the Uri to a JavaScript file in browser world.</code>
         </line>
         <line number="45">
-            <code/>
+            <code>  final EntryPoint _entryPoint;</code>
         </line>
         <line number="46">
-            <code>  @override</code>
-        </line>
-        <line number="47">
-            <code>  Logger? channelLogger;</code>
-        </line>
-        <line number="48">
             <code/>
         </line>
-        <line hits="11" number="49">
+        <line number="47">
+            <code>  @override</code>
+        </line>
+        <line number="48">
+            <code>  Logger? channelLogger;</code>
+        </line>
+        <line number="49">
+            <code/>
+        </line>
+        <line hits="11" number="50">
             <code>  @override</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="50">
+        <line number="51">
             <code>  ExceptionManager get exceptionManager =&gt;</code>
         </line>
-        <line hits="21" number="51">
+        <line hits="21" number="52">
             <code>      (_exceptionManager ??= ExceptionManager());</code>
             <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="52">
+        <line number="53">
             <code>  ExceptionManager? _exceptionManager;</code>
         </line>
-        <line number="53">
-            <code/>
-        </line>
         <line number="54">
-            <code>  final PlatformThreadHook? _threadHook;</code>
+            <code/>
         </line>
         <line number="55">
-            <code/>
+            <code>  final PlatformThreadHook? _threadHook;</code>
         </line>
         <line number="56">
-            <code>  /// The [Worker]'s start arguments.</code>
+            <code/>
         </line>
         <line number="57">
-            <code>  final List args;</code>
+            <code>  /// The [Worker]'s start arguments.</code>
         </line>
         <line number="58">
-            <code/>
+            <code>  List? getStartArgs();</code>
         </line>
         <line number="59">
-            <code>  /// Start timestamp (in microseconds since Epoch).</code>
+            <code/>
         </line>
         <line number="60">
-            <code>  int? _started;</code>
+            <code>  /// Start timestamp (in microseconds since Epoch).</code>
         </line>
         <line number="61">
-            <code/>
+            <code>  int? _started;</code>
         </line>
         <line number="62">
-            <code>  /// Stopped timestamp (in microseconds since Epoch).</code>
-        </line>
-        <line number="63">
-            <code>  int? _stopped;</code>
-        </line>
-        <line number="64">
             <code/>
         </line>
+        <line number="63">
+            <code>  /// Stopped timestamp (in microseconds since Epoch).</code>
+        </line>
+        <line number="64">
+            <code>  int? _stopped;</code>
+        </line>
         <line number="65">
+            <code/>
+        </line>
+        <line number="66">
             <code>  /// Current workload.</code>
         </line>
-        <line hits="12" number="66">
+        <line hits="12" number="67">
             <code>  int get workload =&gt; _workload;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="67">
+        <line number="68">
             <code>  int _workload = 0;</code>
         </line>
-        <line number="68">
+        <line number="69">
             <code/>
         </line>
-        <line number="69">
+        <line number="70">
             <code>  /// Maximum acceptable workload.</code>
         </line>
-        <line hits="12" number="70">
+        <line hits="12" number="71">
             <code>  int get maxWorkload =&gt; _maxWorkload;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="71">
+        <line number="72">
             <code>  int _maxWorkload = 0;</code>
         </line>
-        <line number="72">
+        <line number="73">
             <code/>
         </line>
-        <line number="73">
+        <line number="74">
             <code>  /// Total processed workload.</code>
         </line>
-        <line hits="12" number="74">
+        <line hits="12" number="75">
             <code>  int get totalWorkload =&gt; _totalWorkload;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="75">
+        <line number="76">
             <code>  int _totalWorkload = 0;</code>
         </line>
-        <line number="76">
+        <line number="77">
             <code/>
         </line>
-        <line number="77">
+        <line number="78">
             <code>  /// Total errors.</code>
         </line>
-        <line hits="10" number="78">
+        <line hits="10" number="79">
             <code>  int get totalErrors =&gt; _totalErrors;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="79">
+        <line number="80">
             <code>  int _totalErrors = 0;</code>
         </line>
-        <line number="80">
+        <line number="81">
             <code/>
         </line>
-        <line number="81">
+        <line number="82">
             <code>  /// Up time.</code>
         </line>
-        <line hits="12" number="82">
+        <line hits="12" number="83">
             <code>  Duration get upTime =&gt; (_started == null)</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="83">
+        <line number="84">
             <code>      ? Duration.zero</code>
         </line>
-        <line hits="27" number="84">
+        <line hits="27" number="85">
             <code>      : Duration(microseconds: (_stopped ?? microsecTimeStamp()) - _started!);</code>
             <hit count="27" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="85">
+        <line number="86">
             <code/>
         </line>
-        <line number="86">
+        <line number="87">
             <code>  /// Idle time.</code>
         </line>
-        <line hits="24" number="87">
+        <line hits="24" number="88">
             <code>  Duration get idleTime =&gt; (_workload &gt; 0 || _idle == null)</code>
             <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="88">
+        <line number="89">
             <code>      ? Duration.zero</code>
         </line>
-        <line hits="24" number="89">
+        <line hits="24" number="90">
             <code>      : Duration(microseconds: microsecTimeStamp() - _idle!);</code>
             <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="90">
+        <line number="91">
             <code>  int? _idle;</code>
         </line>
-        <line number="91">
+        <line number="92">
             <code/>
         </line>
-        <line number="92">
+        <line number="93">
             <code>  /// Indicates if the [Worker] has been stopped.</code>
         </line>
-        <line hits="12" number="93">
+        <line hits="12" number="94">
             <code>  bool get isStopped =&gt; _stopped != null;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="94">
+        <line number="95">
             <code/>
         </line>
-        <line number="95">
+        <line number="96">
             <code>  /// [Worker] status.</code>
         </line>
-        <line hits="5" number="96">
+        <line hits="5" number="97">
             <code>  String get status {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="97">
+        <line hits="5" number="98">
             <code>    if (isStopped) {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="98">
+        <line number="99">
             <code>      return 'STOPPED';</code>
         </line>
-        <line hits="4" number="99">
+        <line hits="4" number="100">
             <code>    } else if (_workload == 0) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="100">
+        <line number="101">
             <code>      return 'IDLE';</code>
         </line>
-        <line number="101">
+        <line number="102">
             <code>    } else {</code>
         </line>
-        <line hits="0" number="102">
+        <line hits="0" number="103">
             <code>      return 'WORKING($_workload)';</code>
         </line>
-        <line number="103">
+        <line number="104">
             <code>    }</code>
         </line>
-        <line number="104">
+        <line number="105">
             <code>  }</code>
         </line>
-        <line number="105">
+        <line number="106">
             <code/>
         </line>
-        <line number="106">
+        <line number="107">
             <code>  /// [Worker] statistics.</code>
         </line>
-        <line hits="10" number="107">
-            <code>  WorkerStat get stats =&gt; WorkerStatExt.create(</code>
+        <line hits="10" number="108">
+            <code>  WorkerStat get stats =&gt; WorkerStatImpl.create(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="108">
+        <line hits="5" number="109">
             <code>        runtimeType,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="109">
+        <line hits="5" number="110">
             <code>        hashCode,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="110">
+        <line hits="5" number="111">
             <code>        isStopped,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="111">
+        <line hits="5" number="112">
             <code>        status,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="112">
+        <line hits="5" number="113">
             <code>        workload,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="113">
+        <line hits="5" number="114">
             <code>        maxWorkload,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="114">
+        <line hits="5" number="115">
             <code>        totalWorkload,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="115">
+        <line hits="5" number="116">
             <code>        totalErrors,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="116">
+        <line hits="5" number="117">
             <code>        upTime,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="117">
+        <line hits="5" number="118">
             <code>        idleTime,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="118">
+        <line number="119">
             <code>      );</code>
         </line>
-        <line number="119">
+        <line number="120">
             <code/>
         </line>
-        <line number="120">
+        <line number="121">
             <code>  /// Returns true if the [Worker] is connected i.e., it has a valid [Channel].</code>
         </line>
-        <line number="121">
+        <line number="122">
             <code>  /// Returns false otherwise.</code>
         </line>
-        <line hits="2" number="122">
+        <line hits="2" number="123">
             <code>  bool get isConnected =&gt; _channel != null;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="123">
+        <line number="124">
             <code/>
         </line>
-        <line number="124">
+        <line number="125">
             <code>  /// Shared [Channel] that can be used to communicate with the worker.</code>
         </line>
-        <line hits="6" number="125">
+        <line hits="6" number="126">
             <code>  Channel? getSharedChannel() =&gt; _channel?.share();</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="126">
-            <code/>
-        </line>
         <line number="127">
-            <code>  Channel? _channel;</code>
+            <code/>
         </line>
         <line number="128">
-            <code>  Future&lt;Channel&gt;? _openChannel;</code>
+            <code>  Channel? _channel;</code>
         </line>
         <line number="129">
+            <code>  Future&lt;Channel&gt;? _openChannel;</code>
+        </line>
+        <line number="130">
             <code/>
         </line>
-        <line hits="10" number="130">
+        <line hits="10" number="131">
             <code>  void _enter(Object task) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="131">
+        <line hits="20" number="132">
             <code>    _workload++;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="132">
+        <line hits="30" number="133">
             <code>    if (_workload &gt; _maxWorkload) {</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="133">
+        <line hits="20" number="134">
             <code>      _maxWorkload = _workload;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="134">
+        <line number="135">
             <code>    }</code>
         </line>
-        <line number="135">
+        <line number="136">
             <code>  }</code>
         </line>
-        <line number="136">
+        <line number="137">
             <code/>
         </line>
-        <line hits="10" number="137">
+        <line hits="10" number="138">
             <code>  void _leave(Object task) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="138">
+        <line hits="20" number="139">
             <code>    _workload--;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="139">
+        <line hits="20" number="140">
             <code>    _totalWorkload++;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="140">
+        <line hits="20" number="141">
             <code>    _idle = microsecTimeStamp();</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="141">
+        <line number="142">
             <code>  }</code>
         </line>
-        <line number="142">
+        <line number="143">
             <code/>
         </line>
-        <line number="143">
+        <line number="144">
             <code>  /// Sends a workload to the worker.</code>
         </line>
-        <line hits="10" number="144">
-            <code>  Future&lt;dynamic&gt; send(</code>
+        <line hits="10" number="145">
+            <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="145">
-            <code>    int command, {</code>
         </line>
         <line number="146">
-            <code>    List args = const [],</code>
+            <code>  Future&lt;dynamic&gt; send(</code>
         </line>
         <line number="147">
-            <code>    CancelationToken? token,</code>
+            <code>    int command, {</code>
         </line>
         <line number="148">
-            <code>    bool inspectRequest = false,</code>
+            <code>    List args = const [],</code>
         </line>
         <line number="149">
-            <code>    bool inspectResponse = false,</code>
+            <code>    CancelationToken? token,</code>
         </line>
         <line number="150">
-            <code>  }) async {</code>
+            <code>    bool inspectRequest = false,</code>
         </line>
-        <line hits="0" number="151">
-            <code>    token?.throwIfCanceled();</code>
+        <line number="151">
+            <code>    bool inspectResponse = false,</code>
         </line>
         <line number="152">
+            <code>  }) async {</code>
+        </line>
+        <line hits="0" number="153">
+            <code>    token?.throwIfCanceled();</code>
+        </line>
+        <line number="154">
             <code/>
-        </line>
-        <line number="153">
-            <code>    // get the channel, start the worker if necessary</code>
-        </line>
-        <line hits="18" number="154">
-            <code>    final channel = _channel ?? await start();</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="155">
-            <code/>
+            <code>    // get the channel, start the worker if necessary</code>
         </line>
-        <line hits="10" number="156">
-            <code>    final completer = ForwardCompleter();</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="18" number="156">
+            <code>    final channel = _channel ?? await start();</code>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="157">
             <code/>
         </line>
-        <line hits="0" number="158">
-            <code>    final squadronToken = token?.wrap();</code>
+        <line hits="10" number="158">
+            <code>    final completer = ForwardCompleter();</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="159">
-            <code>    squadronToken?.onCanceled.then((ex) {</code>
-        </line>
-        <line hits="0" number="160">
-            <code>      _channel?.cancelToken(squadronToken);</code>
-        </line>
-        <line hits="0" number="161">
-            <code>      completer.failure(SquadronException.from(ex, null, command));</code>
-        </line>
-        <line number="162">
-            <code>    });</code>
-        </line>
-        <line number="163">
+        <line number="159">
             <code/>
         </line>
-        <line hits="10" number="164">
+        <line hits="0" number="160">
+            <code>    final squadronToken = token?.wrap();</code>
+        </line>
+        <line hits="0" number="161">
+            <code>    squadronToken?.onCanceled.then((ex) {</code>
+        </line>
+        <line hits="0" number="162">
+            <code>      _channel?.cancelToken(squadronToken);</code>
+        </line>
+        <line hits="0" number="163">
+            <code>      completer.failure(SquadronException.from(ex, null, command));</code>
+        </line>
+        <line number="164">
+            <code>    });</code>
+        </line>
+        <line number="165">
+            <code/>
+        </line>
+        <line hits="10" number="166">
             <code>    _enter(completer);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="50" number="165">
+        <line hits="50" number="167">
             <code>    completer.future.whenComplete(() =&gt; _leave(completer)).ignore();</code>
             <hit count="50" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="166">
+        <line number="168">
             <code/>
         </line>
-        <line number="167">
+        <line number="169">
             <code>    try {</code>
         </line>
-        <line hits="10" number="168">
+        <line hits="10" number="170">
             <code>      final res = await channel.sendRequest(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="169">
+        <line number="171">
             <code>        command,</code>
         </line>
-        <line number="170">
+        <line number="172">
             <code>        args,</code>
         </line>
-        <line number="171">
+        <line number="173">
             <code>        token: squadronToken,</code>
         </line>
-        <line number="172">
+        <line number="174">
             <code>        inspectRequest: inspectRequest,</code>
         </line>
-        <line number="173">
+        <line number="175">
             <code>        inspectResponse: inspectResponse,</code>
         </line>
-        <line number="174">
+        <line number="176">
             <code>      );</code>
         </line>
-        <line hits="10" number="175">
+        <line hits="10" number="177">
             <code>      completer.success(res);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="176">
+        <line number="178">
             <code>    } catch (ex, st) {</code>
         </line>
-        <line hits="6" number="177">
+        <line hits="6" number="179">
             <code>      _totalErrors++;</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="178">
+        <line hits="6" number="180">
             <code>      completer.failure(SquadronException.from(ex, st, command));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="179">
+        <line number="181">
             <code>    }</code>
         </line>
-        <line number="180">
+        <line number="182">
             <code/>
         </line>
-        <line hits="10" number="181">
+        <line hits="10" number="183">
             <code>    return completer.future;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="182">
+        <line number="184">
             <code>  }</code>
         </line>
-        <line number="183">
+        <line number="185">
             <code/>
         </line>
-        <line number="184">
+        <line number="186">
             <code>  /// Sends a streaming workload to the worker.</code>
         </line>
-        <line hits="5" number="185">
-            <code>  Stream&lt;dynamic&gt; stream(</code>
+        <line hits="5" number="187">
+            <code>  @override</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="186">
-            <code>    int command, {</code>
-        </line>
-        <line number="187">
-            <code>    List args = const [],</code>
-        </line>
         <line number="188">
-            <code>    CancelationToken? token,</code>
+            <code>  Stream&lt;dynamic&gt; stream(</code>
         </line>
         <line number="189">
-            <code>    bool inspectRequest = false,</code>
+            <code>    int command, {</code>
         </line>
         <line number="190">
-            <code>    bool inspectResponse = false,</code>
+            <code>    List args = const [],</code>
         </line>
         <line number="191">
+            <code>    CancelationToken? token,</code>
+        </line>
+        <line number="192">
+            <code>    bool inspectRequest = false,</code>
+        </line>
+        <line number="193">
+            <code>    bool inspectResponse = false,</code>
+        </line>
+        <line number="194">
             <code>  }) {</code>
         </line>
-        <line hits="2" number="192">
+        <line hits="2" number="195">
             <code>    final squadronToken = token?.wrap();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="193">
+        <line number="196">
             <code/>
         </line>
-        <line number="194">
+        <line number="197">
             <code>    late final ForwardStreamController controller;</code>
         </line>
-        <line number="195">
+        <line number="198">
             <code/>
         </line>
-        <line hits="6" number="196">
+        <line hits="6" number="199">
             <code>    squadronToken?.onCanceled.then((ex) {</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="197">
+        <line hits="2" number="200">
             <code>      if (!controller.isClosed) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="198">
+        <line hits="4" number="201">
             <code>        controller.subscription?.cancel();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="199">
+        <line hits="4" number="202">
             <code>        controller.addError(SquadronException.from(ex, null, command));</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="200">
+        <line hits="2" number="203">
             <code>        controller.close();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="201">
+        <line number="204">
             <code>      }</code>
         </line>
-        <line hits="4" number="202">
+        <line hits="4" number="205">
             <code>      _channel?.cancelToken(squadronToken);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="203">
+        <line number="206">
             <code>    });</code>
         </line>
-        <line number="204">
+        <line number="207">
             <code/>
         </line>
-        <line hits="10" number="205">
+        <line hits="10" number="208">
             <code>    controller = ForwardStreamController(onListen: () async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="206">
+        <line number="209">
             <code>      try {</code>
-        </line>
-        <line hits="5" number="207">
-            <code>        if (controller.isClosed) return;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="208">
-            <code>        squadronToken?.throwIfCanceled();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="8" number="209">
-            <code>        final channel = _channel ?? await start();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5" number="210">
             <code>        if (controller.isClosed) return;</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="211">
-            <code/>
+        <line hits="2" number="211">
+            <code>        squadronToken?.throwIfCanceled();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="212">
-            <code>        _enter(controller);</code>
+        <line hits="8" number="212">
+            <code>        final channel = _channel ?? await start();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="213">
+            <code>        if (controller.isClosed) return;</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="25" number="213">
-            <code>        controller.done.whenComplete(() =&gt; _leave(controller)).ignore();</code>
-            <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
         <line number="214">
             <code/>
         </line>
         <line hits="5" number="215">
+            <code>        _enter(controller);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="25" number="216">
+            <code>        controller.done.whenComplete(() =&gt; _leave(controller)).ignore();</code>
+            <hit count="25" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="217">
+            <code/>
+        </line>
+        <line hits="5" number="218">
             <code>        controller.attachSubscription(channel</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="216">
+        <line hits="5" number="219">
             <code>            .sendStreamingRequest(</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="217">
+        <line number="220">
             <code>              command,</code>
         </line>
-        <line number="218">
+        <line number="221">
             <code>              args,</code>
         </line>
-        <line number="219">
+        <line number="222">
             <code>              token: squadronToken,</code>
         </line>
-        <line number="220">
+        <line number="223">
             <code>              inspectRequest: inspectRequest,</code>
         </line>
-        <line number="221">
+        <line number="224">
             <code>              inspectResponse: inspectResponse,</code>
         </line>
-        <line number="222">
+        <line number="225">
             <code>            )</code>
         </line>
-        <line hits="5" number="223">
+        <line hits="5" number="226">
             <code>            .listen(</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="224">
+        <line hits="5" number="227">
             <code>              controller.add,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="225">
+        <line hits="3" number="228">
             <code>              onError: (ex, st) =&gt;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="226">
+        <line hits="6" number="229">
             <code>                  controller.addError(SquadronException.from(ex, st, command)),</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="227">
+        <line hits="5" number="230">
             <code>              onDone: controller.close,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="228">
+        <line number="231">
             <code>              cancelOnError: false,</code>
         </line>
-        <line number="229">
+        <line number="232">
             <code>            ));</code>
         </line>
-        <line number="230">
+        <line number="233">
             <code>      } catch (ex, st) {</code>
         </line>
-        <line hits="2" number="231">
+        <line hits="2" number="234">
             <code>        _totalErrors++;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="232">
+        <line hits="1" number="235">
             <code>        controller.subscription?.cancel();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="233">
+        <line hits="2" number="236">
             <code>        controller.addError(SquadronException.from(ex, st, command));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="234">
+        <line hits="1" number="237">
             <code>        controller.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="235">
+        <line number="238">
             <code>      }</code>
         </line>
-        <line number="236">
-            <code>    });</code>
-        </line>
-        <line number="237">
-            <code/>
-        </line>
-        <line hits="5" number="238">
-            <code>    return controller.stream;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
         <line number="239">
-            <code>  }</code>
+            <code>    });</code>
         </line>
         <line number="240">
             <code/>
         </line>
-        <line number="241">
+        <line hits="5" number="241">
+            <code>    return controller.stream;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="242">
+            <code>  }</code>
+        </line>
+        <line number="243">
+            <code/>
+        </line>
+        <line number="244">
             <code>  /// Creates a [Channel] and starts the worker using the [_entryPoint].</code>
         </line>
-        <line hits="11" number="242">
+        <line hits="11" number="245">
             <code>  @override</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="243">
+        <line number="246">
             <code>  Future&lt;Channel&gt; start() async {</code>
         </line>
-        <line hits="11" number="244">
+        <line hits="11" number="247">
             <code>    if (_stopped != null) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="245">
+        <line hits="1" number="248">
             <code>      throw WorkerException('Invalid state: worker is stopped');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="246">
+        <line number="249">
             <code>    }</code>
         </line>
-        <line number="247">
+        <line number="250">
             <code/>
         </line>
-        <line hits="22" number="248">
+        <line hits="11" number="251">
+            <code>    final args = getStartArgs() ?? const [];</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="22" number="252">
             <code>    _openChannel ??= Channel.open(</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="55" number="249">
+        <line hits="44" number="253">
             <code>        exceptionManager, channelLogger, _entryPoint, args, _threadHook);</code>
-            <hit count="55" name="&lt;unnamed&gt;"/>
+            <hit count="44" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="250">
+        <line hits="22" number="254">
             <code>    final channel = _channel ?? await _openChannel;</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="251">
+        <line hits="10" number="255">
             <code>    if (_channel == null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="252">
+        <line hits="10" number="256">
             <code>      _channel = channel;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="253">
+        <line hits="20" number="257">
             <code>      _started = microsecTimeStamp();</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="254">
+        <line hits="20" number="258">
             <code>      _idle = _started;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="255">
+        <line number="259">
             <code>    }</code>
         </line>
-        <line hits="10" number="256">
+        <line hits="10" number="260">
             <code>    return _channel!;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="257">
+        <line number="261">
             <code>  }</code>
         </line>
-        <line number="258">
+        <line number="262">
             <code/>
         </line>
-        <line number="259">
+        <line number="263">
             <code>  /// Stops this worker.</code>
         </line>
-        <line hits="11" number="260">
+        <line hits="11" number="264">
             <code>  @override</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="261">
+        <line number="265">
             <code>  void stop() {</code>
         </line>
-        <line hits="11" number="262">
+        <line hits="11" number="266">
             <code>    if (_stopped == null) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14" number="263">
+        <line hits="14" number="267">
             <code>      channelLogger?.d('Stop worker');</code>
             <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="264">
+        <line hits="22" number="268">
             <code>      _stopped = microsecTimeStamp();</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="265">
+        <line hits="11" number="269">
             <code>      _openChannel = null;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="21" number="266">
+        <line hits="21" number="270">
             <code>      _channel?.close();</code>
             <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="267">
+        <line hits="11" number="271">
             <code>      _channel = null;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="268">
+        <line number="272">
             <code>    }</code>
         </line>
-        <line number="269">
+        <line number="273">
             <code>  }</code>
         </line>
-        <line number="270">
+        <line number="274">
             <code/>
         </line>
-        <line number="271">
+        <line number="275">
             <code>  /// Terminates this worker.</code>
         </line>
-        <line hits="2" number="272">
+        <line hits="2" number="276">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="273">
+        <line number="277">
             <code>  void terminate([TaskTerminatedException? ex]) {</code>
         </line>
-        <line number="274">
+        <line number="278">
             <code>    // terminate channel and stop worker</code>
         </line>
-        <line hits="2" number="275">
+        <line hits="2" number="279">
             <code>    ex ??= TaskTerminatedException('Worker has been terminated');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="276">
+        <line hits="3" number="280">
             <code>    _channel?.terminate(ex);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="277">
+        <line hits="2" number="281">
             <code>    stop();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="278">
+        <line number="282">
             <code>  }</code>
         </line>
-        <line number="279">
+        <line number="283">
             <code/>
         </line>
-        <line number="280">
+        <line number="284">
             <code>  /// Workers do not need an [operations] map.</code>
         </line>
-        <line hits="0" number="281">
+        <line hits="0" number="285">
             <code>  @override</code>
         </line>
-        <line hits="0" number="282">
-            <code>  Map&lt;int, CommandHandler&gt; get operations =&gt; WorkerService.noOperations;</code>
+        <line hits="0" number="286">
+            <code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code>
         </line>
-        <line number="283">
+        <line number="287">
             <code>}</code>
         </line>
     </lines>

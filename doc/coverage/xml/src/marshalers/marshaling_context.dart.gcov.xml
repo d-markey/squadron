@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="marshaling_context.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.55" lines-covered="11" lines-valid="20" package="src/marshalers" testname="lcov.info" version="1.6">
+    <lines>
+        <line number="1">
+            <code>import '../converters/context_aware_converter.dart';</code>
+        </line>
+        <line number="2">
+            <code>import '../converters/converter.dart';</code>
+        </line>
+        <line number="3">
+            <code>import '../converters/serialization_context.dart';</code>
+        </line>
+        <line number="4">
+            <code>import '../squadron_singleton.dart';</code>
+        </line>
+        <line number="5">
+            <code>import '../typedefs.dart';</code>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line number="7">
+            <code>/// Marshaling context. Context-aware marshalers can register marshaled /</code>
+        </line>
+        <line number="8">
+            <code>/// unmarshaled instances; if the same input is encountered, the same instance</code>
+        </line>
+        <line number="9">
+            <code>/// can be fetched from the context instead of marshaling/unmarshaling a fresh</code>
+        </line>
+        <line number="10">
+            <code>/// instance. Context-aware marshalers can be used where object identities</code>
+        </line>
+        <line number="11">
+            <code>/// matter. Additionally, they also help support serialization of instances</code>
+        </line>
+        <line number="12">
+            <code>/// that bear cyclical dependencies.</code>
+        </line>
+        <line number="13">
+            <code>class MarshalingContext {</code>
+        </line>
+        <line hits="2" number="14">
+            <code>  MarshalingContext({bool contextAware = true})</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="15">
+            <code>      : _converter =</code>
+        </line>
+        <line hits="2" number="16">
+            <code>            contextAware ? ContextAwareConverter() : Squadron.converter,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="17">
+            <code>        _objects = contextAware ? SerializationContext(identical) : null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line number="19">
+            <code>  /// [none] can be used as a context-unaware converter.</code>
+        </line>
+        <line number="20">
+            <code>  static const MarshalingContext? none = null;</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line number="22">
+            <code>  /// [Converter] to convert data before marshaling/unmarshaling. In a context-</code>
+        </line>
+        <line number="23">
+            <code>  /// aware marshaling context, the converter also keeps track of raw data</code>
+        </line>
+        <line number="24">
+            <code>  /// received from / sent to the worker</code>
+        </line>
+        <line number="25">
+            <code>  final Converter _converter;</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line number="27">
+            <code>  final SerializationContext? _objects;</code>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line number="29">
+            <code>  /// Whether this context is context-aware.</code>
+        </line>
+        <line hits="0" number="30">
+            <code>  bool get isContextAware =&gt; _objects != null;</code>
+        </line>
+        <line number="31">
+            <code/>
+        </line>
+        <line number="32">
+            <code>  /// Get the instance that was registered for the same [data].</code>
+        </line>
+        <line hits="2" number="33">
+            <code>  T? getReference&lt;T extends Object&gt;(dynamic data) =&gt;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="34">
+            <code>      _objects?.getReference(data);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  /// Register [instance] for this [data].</code>
+        </line>
+        <line hits="2" number="37">
+            <code>  void setReference&lt;T extends Object&gt;(dynamic data, T instance) =&gt;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="38">
+            <code>      _objects?.setReference(data, instance);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="39">
+            <code>}</code>
+        </line>
+        <line number="40">
+            <code/>
+        </line>
+        <line number="41">
+            <code>/// Make MarshalingContext? a converter</code>
+        </line>
+        <line number="42">
+            <code>extension ConverterExt on MarshalingContext? {</code>
+        </line>
+        <line hits="4" number="43">
+            <code>  Converter get converter =&gt; this?._converter ?? Squadron.converter;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="44">
+            <code/>
+        </line>
+        <line hits="3" number="45">
+            <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() =&gt; converter.value&lt;T&gt;();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="46">
+            <code/>
+        </line>
+        <line hits="2" number="47">
+            <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="48">
+            <code>      converter.list&lt;T&gt;(cast);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code/>
+        </line>
+        <line hits="0" number="50">
+            <code>  Cast&lt;List&lt;T?&gt;&gt; nlist&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt;</code>
+        </line>
+        <line hits="0" number="51">
+            <code>      converter.nlist(cast);</code>
+        </line>
+        <line number="52">
+            <code/>
+        </line>
+        <line hits="0" number="53">
+            <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt; converter.set&lt;T&gt;(cast);</code>
+        </line>
+        <line number="54">
+            <code/>
+        </line>
+        <line hits="0" number="55">
+            <code>  Cast&lt;Set&lt;T?&gt;&gt; nset&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt; converter.nset(cast);</code>
+        </line>
+        <line number="56">
+            <code/>
+        </line>
+        <line hits="0" number="57">
+            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code>
+        </line>
+        <line number="58">
+            <code>          {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) =&gt;</code>
+        </line>
+        <line hits="0" number="59">
+            <code>      converter.map&lt;K, V&gt;(kcast: kcast, vcast: vcast);</code>
+        </line>
+        <line number="60">
+            <code/>
+        </line>
+        <line hits="0" number="61">
+            <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nmap&lt;K extends Object, V extends Object&gt;(</code>
+        </line>
+        <line number="62">
+            <code>          {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) =&gt;</code>
+        </line>
+        <line hits="0" number="63">
+            <code>      converter.nmap&lt;K, V&gt;(kcast: kcast, vcast: vcast);</code>
+        </line>
+        <line number="64">
+            <code>}</code>
+        </line>
+    </lines>
+    <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
+    <base href="../../"/>
+    <base href="../../"/>
+</coverage>

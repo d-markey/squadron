@@ -2,9 +2,9 @@
 <html>
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="../../../jgenhtml.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="../../../jgenhtml.js"></script>
-        <title>LCOV - lcov.info _typedefs.dart</title>
+        <link href="../jgenhtml.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../jgenhtml.js"></script>
+        <title>LCOV - lcov.info service_installer.dart</title>
     </head>
     <body class="noscript nolegend">
         <h1>LCOV - code coverage report</h1>
@@ -13,12 +13,12 @@
                 <dl class="pageView">
                     <dt>Current view</dt>
                     <dd>
-                        <a href="../../../index.html">top level</a> - <a href="index.html">src/_impl/xplat</a> - _typedefs.dart
+                        <a href="../index.html">top level</a> - <a href="index.html">src</a> - service_installer.dart
                     </dd>
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-01-26</dd>
+                    <dd>2025-03-16</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>0</td><td>1</td><td class="low">0.0%</td>
+                            <th scope="row">Lines</th><td>2</td><td>2</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -67,31 +67,61 @@
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../../exceptions/squadron_error.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import 'worker/worker.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
                     <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 5" id="line5">
-                    <td>5</td><td></td><td>0</td><td><code>String get threadId =&gt; throw SquadronErrorExt.create('Platform not supported');</code></td>
+                <tr class="noop" title="Line 5" id="line5">
+                    <td>5</td><td></td><td></td><td><code>/// Extend this class or implement this interface in your worker service if it needs</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code></code></td>
+                    <td>6</td><td></td><td></td><td><code>/// to take action when the worker thread is started or stopped.</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>typedef EntryPoint = dynamic;</code></td>
+                    <td>7</td><td></td><td></td><td><code>mixin ServiceInstaller {</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code>typedef PlatformThread = dynamic;</code></td>
+                    <td>8</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread initialization.</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>typedef PlatformChannel = dynamic;</code></td>
+                    <td>9</td><td></td><td></td><td><code>  /// It will be called just after the service instance has been constructed. The</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                    <td>10</td><td></td><td></td><td><code>  /// future returned by [Worker.start] will not complete before this method completes</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code>typedef PlatformThreadHook = FutureOr&lt;void&gt; Function(PlatformThread);</code></td>
+                    <td>11</td><td></td><td></td><td><code>  /// whether synchronously or asynchronously. If this method throws, the future</code></td>
+                </tr>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code>  /// returned by [Worker.start] will complete with an error and the service will not</code></td>
+                </tr>
+                <tr class="noop" title="Line 13" id="line13">
+                    <td>13</td><td></td><td></td><td><code>  /// be available.</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 14" id="line14">
+                    <td>14</td><td></td><td>2</td><td><code>  FutureOr&lt;void&gt; install() {}</code></td>
+                </tr>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>  /// Squadron will call this method as part of the worker thread shutdown process.</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>  /// It will be called just before effectively closing the platform channel. If</code></td>
+                </tr>
+                <tr class="noop" title="Line 18" id="line18">
+                    <td>18</td><td></td><td></td><td><code>  /// this method throws, the exception will not bubble up to the parent thread.</code></td>
+                </tr>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code>  /// Also, [Worker.stop] does not wait for this method to complete.</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>2</td><td><code>  FutureOr&lt;void&gt; uninstall() {}</code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

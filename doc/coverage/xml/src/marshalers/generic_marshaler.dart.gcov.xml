@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="generic_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="1" package="src/marshalers" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="generic_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src/marshalers" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'squadron_marshaler.dart';</code>
@@ -11,15 +11,13 @@
             <code>/// Base class to abstract `S` in `SquadronMarshaler&lt;T, S&gt;`.</code>
         </line>
         <line number="4">
-            <code>abstract interface class GenericMarshaler&lt;T&gt;</code>
+            <code>abstract class GenericMarshaler&lt;T&gt; extends SquadronMarshaler&lt;T, dynamic&gt; {</code>
         </line>
-        <line number="5">
-            <code>    implements SquadronMarshaler&lt;T, dynamic&gt; {</code>
-        </line>
-        <line hits="0" number="6">
+        <line hits="13" number="5">
             <code>  const GenericMarshaler();</code>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="7">
+        <line number="6">
             <code>}</code>
         </line>
     </lines>

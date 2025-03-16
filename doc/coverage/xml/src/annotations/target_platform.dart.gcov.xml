@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="target_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="3" package="src/annotations" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="target_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="3" package="src/annotations" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>final class TargetPlatform {</code>
+            <code>sealed class TargetPlatform {</code>
         </line>
         <line number="2">
-            <code>  static const vm = 1;</code>
+            <code>  static const none = 0;</code>
         </line>
         <line number="3">
-            <code>  static const js = 2;</code>
+            <code/>
         </line>
         <line number="4">
-            <code>  static const wasm = 4;</code>
+            <code>  static const vm = 1;</code>
         </line>
         <line number="5">
-            <code/>
+            <code>  static const js = 2;</code>
         </line>
         <line number="6">
-            <code>  static const web = js | wasm;</code>
+            <code>  static const wasm = 4;</code>
         </line>
         <line number="7">
-            <code>  static const all = vm | js | wasm;</code>
-        </line>
-        <line number="8">
-            <code>}</code>
-        </line>
-        <line number="9">
             <code/>
         </line>
+        <line number="8">
+            <code>  static const web = js | wasm;</code>
+        </line>
+        <line number="9">
+            <code>  static const all = vm | js | wasm;</code>
+        </line>
         <line number="10">
+            <code>}</code>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line number="12">
             <code>extension TargetPlatformExt on int {</code>
         </line>
-        <line hits="0" number="11">
+        <line hits="0" number="13">
             <code>  bool get hasVm =&gt; (this &amp; TargetPlatform.vm) != 0;</code>
         </line>
-        <line hits="0" number="12">
+        <line hits="0" number="14">
             <code>  bool get hasJs =&gt; (this &amp; TargetPlatform.js) != 0;</code>
         </line>
-        <line hits="0" number="13">
+        <line hits="0" number="15">
             <code>  bool get hasWasm =&gt; (this &amp; TargetPlatform.wasm) != 0;</code>
         </line>
-        <line number="14">
+        <line number="16">
             <code>}</code>
         </line>
     </lines>

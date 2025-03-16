@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.89705884" lines-covered="61" lines-valid="68" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="_channel_impl.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9" lines-covered="63" lines-valid="70" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of '_channel.dart';</code>
@@ -80,544 +80,549 @@
             <code/>
         </line>
         <line number="26">
-            <code>  /// [Channel] sharing in Native world returns the same instance.</code>
+            <code>  /// [Channel] sharing in JavaScript world returns a [_VmForwardChannel].</code>
         </line>
         <line hits="3" number="27">
             <code>  @override</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="28">
-            <code>  Channel share() =&gt; this;</code>
+        <line hits="3" number="28">
+            <code>  Channel share() =&gt; _VmForwardChannel._(</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="29">
+        <line hits="12" number="29">
+            <code>      _sendPort, vm.ReceivePort(), logger, exceptionManager);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="30">
             <code/>
         </line>
-        <line hits="10" number="30">
+        <line hits="10" number="31">
             <code>  void _postRequest(WorkerRequest req, {bool force = false}) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="31">
+        <line hits="10" number="32">
             <code>    if (_closed &amp;&amp; !force) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="32">
-            <code>      throw SquadronErrorExt.create('Channel is closed');</code>
-        </line>
-        <line number="33">
-            <code>    }</code>
+        <line hits="0" number="33">
+            <code>      throw SquadronErrorImpl.create('Channel is closed');</code>
         </line>
         <line number="34">
+            <code>    }</code>
+        </line>
+        <line number="35">
             <code>    try {</code>
         </line>
-        <line hits="12" number="35">
+        <line hits="12" number="36">
             <code>      req.cancelToken?.ensureStarted();</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="36">
+        <line hits="30" number="37">
             <code>      _sendPort.send(req.wrapInPlace());</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="37">
+        <line number="38">
             <code>    } catch (ex, st) {</code>
         </line>
-        <line hits="1" number="38">
+        <line hits="1" number="39">
             <code>      logger?.e(() =&gt; 'Failed to post request $req: $ex');</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="39">
-            <code>      throw SquadronErrorExt.create('Failed to post request: $ex', st);</code>
+        <line hits="2" number="40">
+            <code>      throw SquadronErrorImpl.create('Failed to post request: $ex', st);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="40">
+        <line number="41">
             <code>    }</code>
         </line>
-        <line number="41">
+        <line number="42">
             <code>  }</code>
         </line>
-        <line number="42">
+        <line number="43">
             <code/>
         </line>
-        <line number="43">
+        <line number="44">
             <code>  /// Sends a termination [WorkerRequest] to the [vm.Isolate].</code>
         </line>
-        <line hits="10" number="44">
+        <line hits="10" number="45">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="45">
+        <line number="46">
             <code>  FutureOr&lt;void&gt; close() {</code>
         </line>
-        <line hits="10" number="46">
+        <line hits="10" number="47">
             <code>    if (!_closed) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="47">
+        <line hits="20" number="48">
             <code>      _postRequest(WorkerRequest.stop());</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="48">
+        <line hits="10" number="49">
             <code>      _closed = true;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="49">
+        <line number="50">
             <code>    }</code>
         </line>
-        <line number="50">
+        <line number="51">
             <code>  }</code>
         </line>
-        <line number="51">
+        <line number="52">
             <code/>
         </line>
-        <line number="52">
+        <line number="53">
             <code>  /// Sends a close stream [WorkerRequest] to the [vm.Isolate].</code>
         </line>
-        <line hits="3" number="53">
+        <line hits="3" number="54">
             <code>  @override</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="54">
+        <line number="55">
             <code>  FutureOr&lt;void&gt; cancelStream(int streamId) {</code>
         </line>
-        <line hits="6" number="55">
+        <line hits="6" number="56">
             <code>    _postRequest(WorkerRequest.cancelStream(streamId), force: true);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="56">
+        <line number="57">
             <code>  }</code>
         </line>
-        <line number="57">
+        <line number="58">
             <code/>
         </line>
-        <line number="58">
+        <line number="59">
             <code>  /// Sends a cancel token [WorkerRequest] to the [vm.Isolate].</code>
         </line>
-        <line hits="2" number="59">
+        <line hits="2" number="60">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="60">
+        <line number="61">
             <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token) {</code>
         </line>
-        <line number="61">
+        <line number="62">
             <code>    if (token != null) {</code>
         </line>
-        <line hits="4" number="62">
+        <line hits="4" number="63">
             <code>      _postRequest(WorkerRequest.cancel(token), force: true);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="63">
+        <line number="64">
             <code>    }</code>
         </line>
-        <line number="64">
+        <line number="65">
             <code>  }</code>
         </line>
-        <line number="65">
+        <line number="66">
             <code/>
         </line>
-        <line hits="10" number="66">
+        <line hits="10" number="67">
             <code>  void _enter(ForwardStreamController&lt;WorkerResponse&gt; controller) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="67">
+        <line hits="20" number="68">
             <code>    _activeConnections.add(controller);</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="68">
+        <line number="69">
             <code>  }</code>
         </line>
-        <line number="69">
+        <line number="70">
             <code/>
         </line>
-        <line hits="1" number="70">
+        <line hits="1" number="71">
             <code>  void _leave(ForwardStreamController&lt;WorkerResponse&gt; controller) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="71">
+        <line hits="2" number="72">
             <code>    _activeConnections.remove(controller);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="72">
+        <line hits="1" number="73">
             <code>    controller.close();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="73">
+        <line number="74">
             <code>  }</code>
         </line>
-        <line number="74">
+        <line number="75">
             <code/>
         </line>
-        <line hits="10" number="75">
+        <line hits="10" number="76">
             <code>  Stream&lt;dynamic&gt; _getResponseStream(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="76">
+        <line number="77">
             <code>    vm.ReceivePort port,</code>
         </line>
-        <line number="77">
+        <line number="78">
             <code>    WorkerRequest req,</code>
         </line>
-        <line number="78">
+        <line number="79">
             <code>    void Function(WorkerRequest) post, {</code>
         </line>
-        <line number="79">
+        <line number="80">
             <code>    required bool streaming,</code>
         </line>
-        <line number="80">
+        <line number="81">
             <code>  }) {</code>
         </line>
-        <line hits="10" number="81">
+        <line hits="10" number="82">
             <code>    final command = req.command;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="82">
+        <line number="83">
             <code/>
         </line>
-        <line number="83">
+        <line number="84">
             <code>    // send the request, return a stream of responses</code>
         </line>
-        <line hits="10" number="84">
+        <line hits="10" number="85">
             <code>    Stream&lt;WorkerResponse&gt; $sendRequest() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="85">
+        <line number="86">
             <code>      late final ForwardStreamController&lt;WorkerResponse&gt; controller;</code>
         </line>
-        <line number="86">
+        <line number="87">
             <code/>
         </line>
-        <line hits="10" number="87">
+        <line hits="10" number="88">
             <code>      void $forwardMessage(WorkerResponse msg) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="88">
+        <line hits="20" number="89">
             <code>        if (!controller.isClosed) controller.add(msg);</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="89">
+        <line number="90">
             <code>      }</code>
         </line>
-        <line number="90">
+        <line number="91">
             <code/>
         </line>
-        <line hits="1" number="91">
+        <line hits="1" number="92">
             <code>      void $forwardError(Object error, StackTrace? st) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="92">
+        <line hits="1" number="93">
             <code>        if (!controller.isClosed) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="93">
+        <line hits="2" number="94">
             <code>          controller.addError(SquadronException.from(error, st, command));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="94">
+        <line number="95">
             <code>        }</code>
         </line>
-        <line number="95">
+        <line number="96">
             <code>      }</code>
         </line>
-        <line number="96">
+        <line number="97">
             <code/>
-        </line>
-        <line hits="0" number="97">
-            <code>      void $done() {</code>
         </line>
         <line hits="0" number="98">
+            <code>      void $done() {</code>
+        </line>
+        <line hits="0" number="99">
             <code>        _leave(controller);</code>
         </line>
-        <line number="99">
+        <line number="100">
             <code>      }</code>
         </line>
-        <line number="100">
+        <line number="101">
             <code/>
         </line>
-        <line hits="20" number="101">
+        <line hits="20" number="102">
             <code>      controller = ForwardStreamController(onListen: () {</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="102">
+        <line number="103">
             <code>        // do nothing if the controller is closed already</code>
         </line>
-        <line hits="10" number="103">
+        <line hits="10" number="104">
             <code>        if (controller.isClosed) return;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="104">
+        <line number="105">
             <code/>
         </line>
-        <line number="105">
+        <line number="106">
             <code>        // bind the controller</code>
         </line>
-        <line hits="30" number="106">
+        <line hits="30" number="107">
             <code>        controller.attachSubscription(port.cast&lt;WorkerResponse&gt;().listen(</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="107">
+        <line number="108">
             <code>              $forwardMessage,</code>
         </line>
-        <line number="108">
+        <line number="109">
             <code>              onError: $forwardError,</code>
         </line>
-        <line number="109">
+        <line number="110">
             <code>              onDone: $done,</code>
         </line>
-        <line number="110">
+        <line number="111">
             <code>              cancelOnError: false,</code>
         </line>
-        <line number="111">
+        <line number="112">
             <code>            ));</code>
         </line>
-        <line number="112">
+        <line number="113">
             <code/>
         </line>
-        <line number="113">
+        <line number="114">
             <code>        // send the request</code>
         </line>
-        <line number="114">
+        <line number="115">
             <code>        try {</code>
         </line>
-        <line hits="10" number="115">
+        <line hits="10" number="116">
             <code>          _enter(controller);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="116">
+        <line hits="10" number="117">
             <code>          post(req);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="117">
+        <line number="118">
             <code>        } catch (ex, st) {</code>
         </line>
-        <line hits="1" number="118">
+        <line hits="1" number="119">
             <code>          $forwardError(ex, st);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="119">
+        <line hits="1" number="120">
             <code>          _leave(controller);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="120">
+        <line number="121">
             <code>        }</code>
         </line>
-        <line number="121">
+        <line number="122">
             <code>      });</code>
         </line>
-        <line hits="10" number="122">
+        <line hits="10" number="123">
             <code>      return controller.stream;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="123">
+        <line number="124">
             <code>    }</code>
         </line>
-        <line number="124">
+        <line number="125">
             <code/>
         </line>
-        <line number="125">
+        <line number="126">
             <code>    // return a stream of decoded responses</code>
         </line>
-        <line hits="10" number="126">
+        <line hits="10" number="127">
             <code>    final res = ResultStream(this, req, $sendRequest, streaming);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="50" number="127">
+        <line hits="50" number="128">
             <code>    res.done.whenComplete(() =&gt; port.close()).ignore();</code>
             <hit count="50" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="128">
+        <line hits="10" number="129">
             <code>    return res.stream;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="129">
+        <line number="130">
             <code>  }</code>
         </line>
-        <line number="130">
+        <line number="131">
             <code/>
         </line>
-        <line number="131">
+        <line number="132">
             <code>  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code>
         </line>
-        <line number="132">
+        <line number="133">
             <code>  /// [Isolate]. This method expects a single value from the [Isolate]</code>
         </line>
-        <line hits="10" number="133">
+        <line hits="10" number="134">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="134">
+        <line number="135">
             <code>  Future&lt;dynamic&gt; sendRequest(</code>
         </line>
-        <line number="135">
+        <line number="136">
             <code>    int command,</code>
         </line>
-        <line number="136">
+        <line number="137">
             <code>    List args, {</code>
         </line>
-        <line number="137">
+        <line number="138">
             <code>    SquadronCancelationToken? token,</code>
         </line>
-        <line number="138">
+        <line number="139">
             <code>    bool inspectRequest = false,</code>
         </line>
-        <line number="139">
+        <line number="140">
             <code>    bool inspectResponse = false,</code>
         </line>
-        <line number="140">
+        <line number="141">
             <code>  }) {</code>
         </line>
-        <line hits="10" number="141">
+        <line hits="10" number="142">
             <code>    final completer = Completer();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="142">
+        <line number="143">
             <code>    late final StreamSubscription sub;</code>
         </line>
-        <line number="143">
+        <line number="144">
             <code/>
         </line>
-        <line hits="10" number="144">
+        <line hits="10" number="145">
             <code>    void $success(dynamic data) async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="145">
+        <line hits="10" number="146">
             <code>      await sub.cancel();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="146">
+        <line hits="20" number="147">
             <code>      if (!completer.isCompleted) completer.complete(data);</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="147">
+        <line number="148">
             <code>    }</code>
         </line>
-        <line number="148">
+        <line number="149">
             <code/>
         </line>
-        <line hits="4" number="149">
+        <line hits="4" number="150">
             <code>    void $fail(Object ex, [StackTrace? st]) async {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="150">
+        <line hits="4" number="151">
             <code>      await sub.cancel();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="151">
+        <line hits="8" number="152">
             <code>      if (!completer.isCompleted) completer.completeError(ex, st);</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="152">
+        <line number="153">
             <code>    }</code>
         </line>
-        <line number="153">
+        <line number="154">
             <code/>
-        </line>
-        <line hits="0" number="154">
-            <code>    void $done() async {</code>
         </line>
         <line hits="0" number="155">
-            <code>      await sub.cancel();</code>
+            <code>    void $done() async {</code>
         </line>
         <line hits="0" number="156">
-            <code>      if (!completer.isCompleted) {</code>
+            <code>      await sub.cancel();</code>
         </line>
         <line hits="0" number="157">
+            <code>      if (!completer.isCompleted) {</code>
+        </line>
+        <line hits="0" number="158">
             <code>        $fail(WorkerException('No response from worker', null, command));</code>
         </line>
-        <line number="158">
+        <line number="159">
             <code>      }</code>
         </line>
-        <line number="159">
+        <line number="160">
             <code>    }</code>
         </line>
-        <line number="160">
+        <line number="161">
             <code/>
         </line>
-        <line hits="10" number="161">
-            <code>    final receiver = vm.ReceivePort();</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="10" number="162">
-            <code>    final req = WorkerRequest.userCommand(</code>
+            <code>    final receiver = vm.ReceivePort();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="163">
+            <code>    final req = WorkerRequest.userCommand(</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="164">
             <code>        receiver.sendPort, command, args, token, inspectResponse);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="164">
+        <line hits="20" number="165">
             <code>    sub = _getResponseStream(receiver, req, _postRequest, streaming: false)</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="165">
+        <line hits="10" number="166">
             <code>        .listen($success, onError: $fail, onDone: $done);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="166">
+        <line hits="10" number="167">
             <code>    return completer.future;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="167">
+        <line number="168">
             <code>  }</code>
         </line>
-        <line number="168">
+        <line number="169">
             <code/>
         </line>
-        <line number="169">
+        <line number="170">
             <code>  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the</code>
         </line>
-        <line number="170">
+        <line number="171">
             <code>  /// [Isolate]. This method expects a stream of values from the [Isolate].</code>
         </line>
-        <line number="171">
+        <line number="172">
             <code>  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the</code>
         </line>
-        <line number="172">
+        <line number="173">
             <code>  /// [Stream].</code>
         </line>
-        <line hits="5" number="173">
+        <line hits="5" number="174">
             <code>  @override</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="174">
+        <line number="175">
             <code>  Stream&lt;dynamic&gt; sendStreamingRequest(</code>
         </line>
-        <line number="175">
+        <line number="176">
             <code>    int command,</code>
         </line>
-        <line number="176">
+        <line number="177">
             <code>    List args, {</code>
         </line>
-        <line number="177">
+        <line number="178">
             <code>    SquadronCancelationToken? token,</code>
         </line>
-        <line number="178">
+        <line number="179">
             <code>    bool inspectRequest = false,</code>
         </line>
-        <line number="179">
+        <line number="180">
             <code>    bool inspectResponse = false,</code>
         </line>
-        <line number="180">
+        <line number="181">
             <code>  }) {</code>
         </line>
-        <line hits="5" number="181">
+        <line hits="5" number="182">
             <code>    final receiver = vm.ReceivePort();</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="182">
+        <line hits="5" number="183">
             <code>    final req = WorkerRequest.userCommand(</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="183">
+        <line hits="5" number="184">
             <code>        receiver.sendPort, command, args, token, inspectResponse);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="184">
+        <line hits="10" number="185">
             <code>    return _getResponseStream(receiver, req, _postRequest, streaming: true);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="185">
+        <line number="186">
             <code>  }</code>
         </line>
-        <line number="186">
+        <line number="187">
             <code>}</code>
         </line>
     </lines>

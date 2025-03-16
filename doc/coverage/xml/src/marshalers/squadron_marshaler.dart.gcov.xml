@@ -1,46 +1,77 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="squadron_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="1" package="src/marshalers" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="squadron_marshaler.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.2" lines-covered="1" lines-valid="5" package="src/marshalers" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code>
+            <code>import 'marshaling_context.dart';</code>
         </line>
         <line number="2">
-            <code>abstract interface class SquadronMarshaler&lt;T, S&gt; {</code>
+            <code/>
         </line>
-        <line hits="0" number="3">
-            <code>  const SquadronMarshaler();</code>
+        <line number="3">
+            <code>/// Base class to serialize/deserialize data of type [T] to a transferable type [S].</code>
         </line>
         <line number="4">
-            <code/>
+            <code>abstract class SquadronMarshaler&lt;T, S&gt; {</code>
         </line>
-        <line number="5">
-            <code>  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary representation.</code>
+        <line hits="43" number="5">
+            <code>  const SquadronMarshaler();</code>
+            <hit count="43" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
-            <code>  /// `unmarshal(marshal(data))` must produce an instance of [T] that is equivalent to</code>
-        </line>
-        <line number="7">
-            <code>  /// original instance [data].</code>
-        </line>
-        <line number="8">
-            <code>  S marshal(T data);</code>
-        </line>
-        <line number="9">
             <code/>
         </line>
-        <line number="10">
-            <code>  /// Deserialize a representation of type [S] back to the original data of type [T].</code>
+        <line number="7">
+            <code>  /// Serialize [data] of type [T] to type [S], eg. a `String` or some binary representation.</code>
         </line>
-        <line number="11">
+        <line number="8">
             <code>  /// `unmarshal(marshal(data))` must produce an instance of [T] that is equivalent to</code>
         </line>
-        <line number="12">
+        <line number="9">
             <code>  /// original instance [data].</code>
         </line>
-        <line number="13">
-            <code>  T unmarshal(S data);</code>
+        <line number="10">
+            <code>  S marshal(T data, [MarshalingContext? context]);</code>
         </line>
-        <line number="14">
+        <line number="11">
+            <code/>
+        </line>
+        <line number="12">
+            <code>  /// If [data] is `null`, return `null` else call [marshal] with [data] and the [context].</code>
+        </line>
+        <line hits="0" number="13">
+            <code>  S? nmarshal(T? data, [MarshalingContext? context]) =&gt;</code>
+        </line>
+        <line hits="0" number="14">
+            <code>      (data == null) ? null : marshal(data, context);</code>
+        </line>
+        <line number="15">
+            <code/>
+        </line>
+        <line number="16">
+            <code>  /// Deserialize a representation of type [S] back to the original data of type [T].</code>
+        </line>
+        <line number="17">
+            <code>  /// `unmarshal(marshal(data))` must produce an instance of [T] that is equivalent to</code>
+        </line>
+        <line number="18">
+            <code>  /// original instance [data].</code>
+        </line>
+        <line number="19">
+            <code>  T unmarshal(S data, [MarshalingContext? context]);</code>
+        </line>
+        <line number="20">
+            <code/>
+        </line>
+        <line number="21">
+            <code>  /// If [data] is `null`, return `null` else call [unmarshal] with [data] and the [context].</code>
+        </line>
+        <line hits="0" number="22">
+            <code>  T? nunmarshal(S? data, [MarshalingContext? context]) =&gt;</code>
+        </line>
+        <line hits="0" number="23">
+            <code>      (data == null) ? null : unmarshal(data, context);</code>
+        </line>
+        <line number="24">
             <code>}</code>
         </line>
     </lines>

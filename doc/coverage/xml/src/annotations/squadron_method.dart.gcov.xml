@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="squadron_method.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src/annotations" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="squadron_method.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src/annotations" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../channel.dart';</code>
@@ -14,55 +14,91 @@
             <code>class SquadronMethod {</code>
         </line>
         <line hits="12" number="5">
-            <code>  const SquadronMethod(</code>
+            <code>  const SquadronMethod({</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
-            <code>      {this.inspectRequest = false, this.inspectResponse = false});</code>
+            <code>    this.inspectRequest = false,</code>
         </line>
         <line number="7">
-            <code/>
+            <code>    this.inspectResponse = false,</code>
         </line>
         <line number="8">
-            <code>  /// Indicates whether the contents of the incoming message should be inspected</code>
+            <code>    this.withContext,</code>
         </line>
         <line number="9">
-            <code>  /// by Squadron before sending the request to the worker. By default, incoming</code>
+            <code>  });</code>
         </line>
         <line number="10">
-            <code>  /// messages are not inspected except for the startup message. The purpose of</code>
+            <code/>
         </line>
         <line number="11">
-            <code>  /// message inspection is to detect non-base-type data that require transfer of</code>
+            <code>  /// Indicates whether the contents of the incoming message should be</code>
         </line>
         <line number="12">
-            <code>  /// ownership to the target worker. E.g. if the request data include a [Channel]</code>
+            <code>  /// inspected by Squadron before sending the request to the worker. By</code>
         </line>
         <line number="13">
-            <code>  /// object, [inspectRequest] must be set to `true`.</code>
+            <code>  /// default, incoming messages are not inspected except for the startup</code>
         </line>
         <line number="14">
-            <code>  final bool inspectRequest;</code>
+            <code>  /// message. The purpose of message inspection is to detect non-base-type</code>
         </line>
         <line number="15">
-            <code/>
+            <code>  /// data that require transfer of ownership to the target worker. E.g. if</code>
         </line>
         <line number="16">
-            <code>  /// Same as [inspectRequest] but for outgoing messages (response produced by the</code>
+            <code>  /// the request data include a [Channel] object, [inspectRequest] must be</code>
         </line>
         <line number="17">
-            <code>  /// worker).</code>
+            <code>  /// set to `true`.</code>
         </line>
         <line number="18">
-            <code>  final bool inspectResponse;</code>
+            <code>  final bool inspectRequest;</code>
         </line>
         <line number="19">
-            <code>}</code>
-        </line>
-        <line number="20">
             <code/>
         </line>
+        <line number="20">
+            <code>  /// Same as [inspectRequest] but for outgoing messages (response produced</code>
+        </line>
         <line number="21">
+            <code>  /// by the worker).</code>
+        </line>
+        <line number="22">
+            <code>  final bool inspectResponse;</code>
+        </line>
+        <line number="23">
+            <code/>
+        </line>
+        <line number="24">
+            <code>  /// Indicates whether de/serialization should use a serialization context.</code>
+        </line>
+        <line number="25">
+            <code>  /// Serialization contexts enable transfering data and preserve identities,</code>
+        </line>
+        <line number="26">
+            <code>  /// e.g. calling `myService.myMethod(x, x)` will result in the service method</code>
+        </line>
+        <line number="27">
+            <code>  /// receiving the same serialization data for `x`. If `null`, a serialization</code>
+        </line>
+        <line number="28">
+            <code>  /// context will be automatically used if and only if marshaling is required</code>
+        </line>
+        <line number="29">
+            <code>  /// to call the service method.</code>
+        </line>
+        <line number="30">
+            <code>  final bool? withContext;</code>
+        </line>
+        <line number="31">
+            <code>}</code>
+        </line>
+        <line number="32">
+            <code/>
+        </line>
+        <line number="33">
             <code>const squadronMethod = SquadronMethod();</code>
         </line>
     </lines>

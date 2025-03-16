@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-01-26</dd>
+                    <dd>2025-03-16</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>69</td><td>69</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>67</td><td>67</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -67,49 +67,49 @@
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import 'converter.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import '../typedefs.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
                     <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>5</td><td></td><td></td><td><code>/// Wraps a `Map&lt;dynamic, dynamic&gt;` and a `Cast&lt;V&gt;` converter. Keys in the map</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>class LazyInPlaceMap&lt;K, V&gt; implements Map&lt;K, V&gt; {</code></td>
+                    <td>6</td><td></td><td></td><td><code>/// must be castable to [K] (`key as K`). Values in the map are converted to [V]</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 7" id="line7">
-                    <td>7</td><td></td><td>1</td><td><code>  LazyInPlaceMap(this._data, this._vcast);</code></td>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>/// on demand i.e. when they are read by the program. Conversion occurs only</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                    <td>8</td><td></td><td></td><td><code>/// once for each value and the original `dynamic` value is replaced with the</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code>  final Map&lt;dynamic, dynamic&gt; _data;</code></td>
+                    <td>9</td><td></td><td></td><td><code>/// conversion result. If some keys cannot be safely cast to [K], exceptions</code></td>
                 </tr>
                 <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code>  final Cast&lt;V&gt; _vcast;</code></td>
+                    <td>10</td><td></td><td></td><td><code>/// might occur at runtime, e.g. when reading [keys] or [entries], or calling</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
-                    <td>11</td><td></td><td></td><td><code></code></td>
+                    <td>11</td><td></td><td></td><td><code>/// [map].</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 12" id="line12">
+                    <td>12</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>  Iterable&lt;MapEntry&lt;K, V&gt;&gt; get entries =&gt;</code></td>
+                    <td>13</td><td></td><td></td><td><code>class LazyInPlaceMap&lt;K, V&gt; implements Map&lt;K, V&gt; {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>5</td><td><code>      keys.map((k) =&gt; MapEntry(k, _get(k) as V));</code></td>
+                    <td>14</td><td></td><td>1</td><td><code>  LazyInPlaceMap(this._data, this._vcast);</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>  final Map&lt;dynamic, dynamic&gt; _data;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>2</td><td><code>  bool get isEmpty =&gt; _data.isEmpty;</code></td>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>  final Cast&lt;V&gt; _vcast;</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
                     <td>18</td><td></td><td></td><td><code></code></td>
@@ -117,344 +117,350 @@
                 <tr class="lineCov" title="Line 19" id="line19">
                     <td>19</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>2</td><td><code>  bool get isNotEmpty =&gt; _data.isNotEmpty;</code></td>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  Iterable&lt;MapEntry&lt;K, V&gt;&gt; get entries =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>5</td><td><code>      keys.map((k) =&gt; MapEntry(k, _get(k) as V));</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 23" id="line23">
-                    <td>23</td><td></td><td>3</td><td><code>  Iterable&lt;K&gt; get keys =&gt; _data.keys.cast&lt;K&gt;();</code></td>
+                    <td>23</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>2</td><td><code>  bool get isEmpty =&gt; _data.isEmpty;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>2</td><td><code>  int get length =&gt; _data.length;</code></td>
+                    <td>26</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>2</td><td><code>  bool get isNotEmpty =&gt; _data.isNotEmpty;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>  Iterable&lt;V&gt; get values sync* {</code></td>
+                <tr class="lineCov" title="Line 29" id="line29">
+                    <td>29</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>3</td><td><code>    final keys = _data.keys.toList();</code></td>
+                    <td>30</td><td></td><td>3</td><td><code>  Iterable&lt;K&gt; get keys =&gt; _data.keys.cast&lt;K&gt;();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>3</td><td><code>    for (var i = 0; i &lt; keys.length; i++) {</code></td>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>2</td><td><code>      yield _get(keys[i]) as V;</code></td>
+                    <td>32</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 33" id="line33">
+                    <td>33</td><td></td><td>2</td><td><code>  int get length =&gt; _data.length;</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>  }</code></td>
+                    <td>34</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>36</td><td></td><td>5</td><td><code>  Iterable&lt;V&gt; get values =&gt; _data.keys.map((k) =&gt; _get(k) as V);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>1</td><td><code>  V? operator [](Object? key) =&gt; _get(key);</code></td>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 38" id="line38">
+                    <td>38</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>39</td><td></td><td>1</td><td><code>  V? operator [](Object? key) =&gt; _get(key);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>2</td><td><code>  void operator []=(K key, V value) =&gt; _data[key] = value;</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 41" id="line41">
+                    <td>41</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>42</td><td></td><td>2</td><td><code>  void operator []=(K key, V value) =&gt; _data[key] = value;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>2</td><td><code>  void addAll(Map&lt;K, V&gt; other) =&gt; _data.addAll(other);</code></td>
+                <tr class="noop" title="Line 43" id="line43">
+                    <td>43</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 44" id="line44">
+                    <td>44</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>45</td><td></td><td>2</td><td><code>  void addAll(Map&lt;K, V&gt; other) =&gt; _data.addAll(other);</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code>  void addEntries(Iterable&lt;MapEntry&lt;K, V&gt;&gt; newEntries) =&gt;</code></td>
+                    <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>2</td><td><code>      _data.addEntries(newEntries);</code></td>
+                    <td>47</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code></code></td>
+                    <td>48</td><td></td><td></td><td><code>  void addEntries(Iterable&lt;MapEntry&lt;K, V&gt;&gt; newEntries) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>49</td><td></td><td>2</td><td><code>      _data.addEntries(newEntries);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>2</td><td><code>  Map&lt;RK, RV&gt; cast&lt;RK, RV&gt;() =&gt; _forceCast().cast&lt;RK, RV&gt;();</code></td>
+                <tr class="noop" title="Line 50" id="line50">
+                    <td>50</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 51" id="line51">
+                    <td>51</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>52</td><td></td><td>2</td><td><code>  Map&lt;RK, RV&gt; cast&lt;RK, RV&gt;() =&gt; _forceCast().cast&lt;RK, RV&gt;();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>2</td><td><code>  void clear() =&gt; _data.clear();</code></td>
+                <tr class="noop" title="Line 53" id="line53">
+                    <td>53</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 54" id="line54">
-                    <td>54</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 54" id="line54">
+                    <td>54</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>55</td><td></td><td>2</td><td><code>  void clear() =&gt; _data.clear();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>2</td><td><code>  bool containsKey(Object? key) =&gt; _data.containsKey(key);</code></td>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 57" id="line57">
+                    <td>57</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>58</td><td></td><td>2</td><td><code>  bool containsKey(Object? key) =&gt; _data.containsKey(key);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>6</td><td><code>  bool containsValue(Object? value) =&gt; _data.keys.any((k) =&gt; value == _get(k));</code></td>
+                <tr class="noop" title="Line 59" id="line59">
+                    <td>59</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 60" id="line60">
+                    <td>60</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>61</td><td></td><td>6</td><td><code>  bool containsValue(Object? value) =&gt; _data.keys.any((k) =&gt; value == _get(k));</code></td>
                 </tr>
                 <tr class="noop" title="Line 62" id="line62">
-                    <td>62</td><td></td><td></td><td><code>  void forEach(void Function(K key, V value) action) {</code></td>
+                    <td>62</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 63" id="line63">
-                    <td>63</td><td></td><td>3</td><td><code>    for (var k in _data.keys) {</code></td>
+                    <td>63</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>2</td><td><code>      action(k as K, _get(k) as V);</code></td>
+                <tr class="noop" title="Line 64" id="line64">
+                    <td>64</td><td></td><td></td><td><code>  void forEach(void Function(K key, V value) action) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 65" id="line65">
-                    <td>65</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 65" id="line65">
+                    <td>65</td><td></td><td>3</td><td><code>    for (var k in _data.keys) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 66" id="line66">
-                    <td>66</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>2</td><td><code>      action(k as K, _get(k) as V);</code></td>
                 </tr>
                 <tr class="noop" title="Line 67" id="line67">
-                    <td>67</td><td></td><td></td><td><code></code></td>
+                    <td>67</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 68" id="line68">
-                    <td>68</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 68" id="line68">
+                    <td>68</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 69" id="line69">
-                    <td>69</td><td></td><td></td><td><code>  Map&lt;K2, V2&gt; map&lt;K2, V2&gt;(MapEntry&lt;K2, V2&gt; Function(K key, V value) convert) {</code></td>
+                    <td>69</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>4</td><td><code>    final r = &lt;K2, V2&gt;{}, keys = _data.keys.toList();</code></td>
+                    <td>70</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
+                <tr class="noop" title="Line 71" id="line71">
+                    <td>71</td><td></td><td></td><td><code>  Map&lt;K2, V2&gt; map&lt;K2, V2&gt;(MapEntry&lt;K2, V2&gt; Function(K key, V value) convert) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>3</td><td><code>      final k = keys[i], e = convert(k as K, _get(k) as V);</code></td>
+                    <td>72</td><td></td><td>4</td><td><code>    final r = &lt;K2, V2&gt;{}, keys = _data.keys.toList();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>3</td><td><code>      r[e.key] = e.value;</code></td>
+                    <td>73</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 74" id="line74">
-                    <td>74</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 74" id="line74">
+                    <td>74</td><td></td><td>3</td><td><code>      final k = keys[i], e = convert(k as K, _get(k) as V);</code></td>
                 </tr>
-                <tr class="noop" title="Line 75" id="line75">
-                    <td>75</td><td></td><td></td><td><code>    return r;</code></td>
+                <tr class="lineCov" title="Line 75" id="line75">
+                    <td>75</td><td></td><td>3</td><td><code>      r[e.key] = e.value;</code></td>
                 </tr>
                 <tr class="noop" title="Line 76" id="line76">
-                    <td>76</td><td></td><td></td><td><code>  }</code></td>
+                    <td>76</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 77" id="line77">
-                    <td>77</td><td></td><td></td><td><code></code></td>
+                    <td>77</td><td></td><td></td><td><code>    return r;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 78" id="line78">
+                    <td>78</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 79" id="line79">
-                    <td>79</td><td></td><td></td><td><code>  V putIfAbsent(K key, V Function() ifAbsent) =&gt;</code></td>
+                    <td>79</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>2</td><td><code>      _data.putIfAbsent(key, ifAbsent);</code></td>
+                    <td>80</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 81" id="line81">
-                    <td>81</td><td></td><td></td><td><code></code></td>
+                    <td>81</td><td></td><td></td><td><code>  V putIfAbsent(K key, V Function() ifAbsent) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 82" id="line82">
-                    <td>82</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>82</td><td></td><td>2</td><td><code>      _data.putIfAbsent(key, ifAbsent);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>2</td><td><code>  V? remove(Object? key) =&gt; _data.remove(key);</code></td>
+                <tr class="noop" title="Line 83" id="line83">
+                    <td>83</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 84" id="line84">
-                    <td>84</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 84" id="line84">
+                    <td>84</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 85" id="line85">
-                    <td>85</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>85</td><td></td><td>2</td><td><code>  V? remove(Object? key) =&gt; _data.remove(key);</code></td>
                 </tr>
                 <tr class="noop" title="Line 86" id="line86">
-                    <td>86</td><td></td><td></td><td><code>  void removeWhere(bool Function(K key, V value) test) {</code></td>
+                    <td>86</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 87" id="line87">
-                    <td>87</td><td></td><td>3</td><td><code>    final keys = _data.keys.toList();</code></td>
+                    <td>87</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
+                <tr class="noop" title="Line 88" id="line88">
+                    <td>88</td><td></td><td></td><td><code>  void removeWhere(bool Function(K key, V value) test) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 89" id="line89">
-                    <td>89</td><td></td><td>2</td><td><code>      final k = keys[i], v = _get(k);</code></td>
+                    <td>89</td><td></td><td>3</td><td><code>    final keys = _data.keys.toList();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>1</td><td><code>      if (test(k as K, v as V)) {</code></td>
+                    <td>90</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 91" id="line91">
-                    <td>91</td><td></td><td>2</td><td><code>        _data.remove(k);</code></td>
+                    <td>91</td><td></td><td>2</td><td><code>      final k = keys[i], v = _get(k);</code></td>
                 </tr>
-                <tr class="noop" title="Line 92" id="line92">
-                    <td>92</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 92" id="line92">
+                    <td>92</td><td></td><td>1</td><td><code>      if (test(k as K, v as V)) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 93" id="line93">
-                    <td>93</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 93" id="line93">
+                    <td>93</td><td></td><td>2</td><td><code>        _data.remove(k);</code></td>
                 </tr>
                 <tr class="noop" title="Line 94" id="line94">
-                    <td>94</td><td></td><td></td><td><code>  }</code></td>
+                    <td>94</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 95" id="line95">
-                    <td>95</td><td></td><td></td><td><code></code></td>
+                    <td>95</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 96" id="line96">
+                    <td>96</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 97" id="line97">
-                    <td>97</td><td></td><td></td><td><code>  String toString() {</code></td>
+                    <td>97</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
-                    <td>98</td><td></td><td>1</td><td><code>    _forceCast();</code></td>
+                    <td>98</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>2</td><td><code>    return _data.toString();</code></td>
+                <tr class="noop" title="Line 99" id="line99">
+                    <td>99</td><td></td><td></td><td><code>  String toString() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 100" id="line100">
-                    <td>100</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 100" id="line100">
+                    <td>100</td><td></td><td>1</td><td><code>    _forceCast();</code></td>
                 </tr>
-                <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 101" id="line101">
+                    <td>101</td><td></td><td>2</td><td><code>    return _data.toString();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 102" id="line102">
-                    <td>102</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 102" id="line102">
+                    <td>102</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 103" id="line103">
-                    <td>103</td><td></td><td></td><td><code>  V update(K key, V Function(V value) update, {V Function()? ifAbsent}) =&gt;</code></td>
+                    <td>103</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 104" id="line104">
-                    <td>104</td><td></td><td>4</td><td><code>      _data.update(key, (v) =&gt; (v != null &amp;&amp; v is! V) ? _vcast(v) : v,</code></td>
+                    <td>104</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 105" id="line105">
-                    <td>105</td><td></td><td></td><td><code>          ifAbsent: ifAbsent);</code></td>
+                    <td>105</td><td></td><td></td><td><code>  V update(K key, V Function(V value) update, {V Function()? ifAbsent}) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 106" id="line106">
-                    <td>106</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 106" id="line106">
+                    <td>106</td><td></td><td>4</td><td><code>      _data.update(key, (v) =&gt; (v != null &amp;&amp; v is! V) ? _vcast(v) : v,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 107" id="line107">
-                    <td>107</td><td></td><td>1</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 107" id="line107">
+                    <td>107</td><td></td><td></td><td><code>          ifAbsent: ifAbsent);</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
-                    <td>108</td><td></td><td></td><td><code>  void updateAll(V Function(K key, V value) update) {</code></td>
+                    <td>108</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>3</td><td><code>    final keys = _data.keys.toList();</code></td>
+                    <td>109</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
+                <tr class="noop" title="Line 110" id="line110">
+                    <td>110</td><td></td><td></td><td><code>  void updateAll(V Function(K key, V value) update) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 111" id="line111">
-                    <td>111</td><td></td><td>2</td><td><code>      final k = keys[i], v = _get(k);</code></td>
+                    <td>111</td><td></td><td>3</td><td><code>    final keys = _data.keys.toList();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>3</td><td><code>      _data[k] = update(k as K, v as V);</code></td>
+                    <td>112</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 113" id="line113">
-                    <td>113</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 113" id="line113">
+                    <td>113</td><td></td><td>2</td><td><code>      final k = keys[i], v = _get(k);</code></td>
                 </tr>
-                <tr class="noop" title="Line 114" id="line114">
-                    <td>114</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 114" id="line114">
+                    <td>114</td><td></td><td>3</td><td><code>      _data[k] = update(k as K, v as V);</code></td>
                 </tr>
                 <tr class="noop" title="Line 115" id="line115">
-                    <td>115</td><td></td><td></td><td><code></code></td>
+                    <td>115</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 116" id="line116">
-                    <td>116</td><td></td><td>1</td><td><code>  Map&lt;dynamic, dynamic&gt; _forceCast() {</code></td>
+                <tr class="noop" title="Line 116" id="line116">
+                    <td>116</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 117" id="line117">
-                    <td>117</td><td></td><td>3</td><td><code>    var keys = _data.keys.toList();</code></td>
+                <tr class="noop" title="Line 117" id="line117">
+                    <td>117</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
+                    <td>118</td><td></td><td>1</td><td><code>  Map&lt;dynamic, dynamic&gt; _forceCast() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>2</td><td><code>      _get(keys[i]);</code></td>
+                    <td>119</td><td></td><td>3</td><td><code>    var keys = _data.keys.toList();</code></td>
                 </tr>
-                <tr class="noop" title="Line 120" id="line120">
-                    <td>120</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 120" id="line120">
+                    <td>120</td><td></td><td>4</td><td><code>    for (var i = keys.length - 1; i &gt;= 0; i--) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 121" id="line121">
-                    <td>121</td><td></td><td>1</td><td><code>    return _data;</code></td>
+                    <td>121</td><td></td><td>2</td><td><code>      _get(keys[i]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 122" id="line122">
-                    <td>122</td><td></td><td></td><td><code>  }</code></td>
+                    <td>122</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 123" id="line123">
-                    <td>123</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 123" id="line123">
+                    <td>123</td><td></td><td>1</td><td><code>    return _data;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 124" id="line124">
-                    <td>124</td><td></td><td>1</td><td><code>  V? _get(Object? key) {</code></td>
+                <tr class="noop" title="Line 124" id="line124">
+                    <td>124</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 125" id="line125">
-                    <td>125</td><td></td><td>2</td><td><code>    dynamic v = _data[key];</code></td>
+                <tr class="noop" title="Line 125" id="line125">
+                    <td>125</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>1</td><td><code>    if (v != null &amp;&amp; v is! V) {</code></td>
+                    <td>126</td><td></td><td>1</td><td><code>  V? _get(Object? key) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>2</td><td><code>      v = _vcast(v);</code></td>
+                    <td>127</td><td></td><td>2</td><td><code>    dynamic v = _data[key];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>2</td><td><code>      _data[key] = v;</code></td>
+                    <td>128</td><td></td><td>1</td><td><code>    if (v != null &amp;&amp; v is! V) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 129" id="line129">
-                    <td>129</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 129" id="line129">
+                    <td>129</td><td></td><td>2</td><td><code>      v = _vcast(v);</code></td>
                 </tr>
-                <tr class="noop" title="Line 130" id="line130">
-                    <td>130</td><td></td><td></td><td><code>    return v;</code></td>
+                <tr class="lineCov" title="Line 130" id="line130">
+                    <td>130</td><td></td><td>2</td><td><code>      _data[key] = v;</code></td>
                 </tr>
                 <tr class="noop" title="Line 131" id="line131">
-                    <td>131</td><td></td><td></td><td><code>  }</code></td>
+                    <td>131</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 132" id="line132">
-                    <td>132</td><td></td><td></td><td><code>}</code></td>
+                    <td>132</td><td></td><td></td><td><code>    return v;</code></td>
+                </tr>
+                <tr class="noop" title="Line 133" id="line133">
+                    <td>133</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 134" id="line134">
+                    <td>134</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

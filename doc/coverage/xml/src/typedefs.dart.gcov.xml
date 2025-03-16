@@ -1,45 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="typedefs.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import '_impl/xplat/_typedefs.dart'</code>
+            <code>import 'dart:async';</code>
         </line>
         <line number="2">
-            <code>    if (dart.library.io) '_impl/native/_typedefs.dart'</code>
+            <code/>
         </line>
         <line number="3">
-            <code>    if (dart.library.html) '_impl/web/_typedefs.dart'</code>
+            <code>import '_impl/xplat/_typedefs.dart'</code>
         </line>
         <line number="4">
-            <code>    if (dart.library.js) '_impl/web/_typedefs.dart'</code>
+            <code>    if (dart.library.io) '_impl/native/_typedefs.dart'</code>
         </line>
         <line number="5">
-            <code>    if (dart.library.js_interop) '_impl/web/_typedefs.dart' as impl;</code>
+            <code>    if (dart.library.html) '_impl/web/_typedefs.dart'</code>
         </line>
         <line number="6">
-            <code/>
+            <code>    if (dart.library.js) '_impl/web/_typedefs.dart'</code>
         </line>
-        <line hits="9" number="7">
-            <code>final threadId = impl.threadId;</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line number="7">
+            <code>    if (dart.library.js_interop) '_impl/web/_typedefs.dart' as impl;</code>
         </line>
         <line number="8">
-            <code/>
+            <code>import 'worker/worker_request.dart';</code>
         </line>
         <line number="9">
-            <code>typedef EntryPoint = impl.EntryPoint;</code>
+            <code>import 'worker_service.dart';</code>
         </line>
         <line number="10">
-            <code>typedef PlatformChannel = impl.PlatformChannel;</code>
+            <code/>
         </line>
-        <line number="11">
-            <code>typedef PlatformThread = impl.PlatformThread;</code>
+        <line hits="9" number="11">
+            <code>final threadId = impl.threadId;</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
         </line>
         <line number="13">
+            <code>typedef EntryPoint = impl.EntryPoint;</code>
+        </line>
+        <line number="14">
+            <code>typedef PlatformChannel = impl.PlatformChannel;</code>
+        </line>
+        <line number="15">
+            <code>typedef PlatformThread = impl.PlatformThread;</code>
+        </line>
+        <line number="16">
             <code>typedef PlatformThreadHook = impl.PlatformThreadHook;</code>
+        </line>
+        <line number="17">
+            <code/>
+        </line>
+        <line number="18">
+            <code>typedef WorkerInitializer = FutureOr&lt;WorkerService&gt; Function(</code>
+        </line>
+        <line number="19">
+            <code>    WorkerRequest startRequest);</code>
+        </line>
+        <line number="20">
+            <code>typedef CommandHandler = FutureOr&lt;dynamic&gt; Function(WorkerRequest req);</code>
+        </line>
+        <line number="21">
+            <code>typedef StreamCanceler = void Function();</code>
+        </line>
+        <line number="22">
+            <code/>
+        </line>
+        <line number="23">
+            <code>typedef Cast&lt;T&gt; = T Function(dynamic);</code>
+        </line>
+        <line number="24">
+            <code/>
+        </line>
+        <line number="25">
+            <code>extension type OperationsMap(Map&lt;int, CommandHandler&gt; _ops) {</code>
+        </line>
+        <line hits="20" number="26">
+            <code>  CommandHandler? operator [](int key) =&gt; _ops[key];</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="27">
+            <code/>
+        </line>
+        <line hits="20" number="28">
+            <code>  Iterable&lt;int&gt; get keys =&gt; _ops.keys;</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="29">
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

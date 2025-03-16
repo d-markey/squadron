@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="cast_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'converter.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import 'converter.dart';</code>
         </line>
         <line number="3">
-            <code>base class CastConverter extends Converter {</code>
-        </line>
-        <line hits="12" number="4">
-            <code>  const CastConverter();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="5">
             <code/>
+        </line>
+        <line number="4">
+            <code>class CastConverter extends Converter {</code>
+        </line>
+        <line hits="13" number="5">
+            <code>  const CastConverter();</code>
+            <hit count="13" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
-            <code>  static const instance = CastConverter();</code>
-        </line>
-        <line number="7">
             <code/>
         </line>
-        <line hits="10" number="8">
+        <line number="7">
+            <code>  static const instance = CastConverter();</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line hits="10" number="9">
             <code>  @override</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="9">
-            <code>  Cast&lt;T&gt; value&lt;T&gt;() =&gt; Converter.identity&lt;T&gt;;</code>
-        </line>
         <line number="10">
+            <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() =&gt; Converter.identity&lt;T&gt;;</code>
+        </line>
+        <line number="11">
             <code>}</code>
         </line>
     </lines>

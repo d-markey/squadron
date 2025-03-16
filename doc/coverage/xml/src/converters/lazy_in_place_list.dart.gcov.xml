@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="lazy_in_place_list.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.99590164" lines-covered="243" lines-valid="244" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="lazy_in_place_list.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.99590164" lines-covered="243" lines-valid="244" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:math' as math;</code>
@@ -14,472 +14,470 @@
             <code/>
         </line>
         <line number="5">
-            <code>import 'converter.dart';</code>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line number="6">
             <code/>
         </line>
         <line number="7">
-            <code>@internal</code>
+            <code>/// Wraps a `List&lt;dynamic&gt;` and a `Cast&lt;E&gt;` converter. Items in the list</code>
         </line>
         <line number="8">
+            <code>/// are converted to `E` on demand i.e. when they are read by the program.</code>
+        </line>
+        <line number="9">
+            <code>/// Conversion occurs only once for each item and the original `dynamic` item</code>
+        </line>
+        <line number="10">
+            <code>/// is replaced with the conversion result.</code>
+        </line>
+        <line number="11">
+            <code>@internal</code>
+        </line>
+        <line number="12">
             <code>class LazyInPlaceList&lt;E&gt; implements List&lt;E&gt; {</code>
         </line>
-        <line hits="1" number="9">
+        <line hits="1" number="13">
             <code>  LazyInPlaceList(this._data, this._cast);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="10">
+        <line number="14">
             <code/>
         </line>
-        <line number="11">
+        <line number="15">
             <code>  final List&lt;dynamic&gt; _data;</code>
         </line>
-        <line number="12">
+        <line number="16">
             <code>  final Cast&lt;E&gt; _cast;</code>
         </line>
-        <line number="13">
+        <line number="17">
             <code/>
         </line>
-        <line hits="1" number="14">
+        <line hits="1" number="18">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="15">
+        <line hits="1" number="19">
             <code>  E get first =&gt; _get(0);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="16">
+        <line number="20">
             <code/>
         </line>
-        <line hits="1" number="17">
+        <line hits="1" number="21">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="18">
+        <line hits="2" number="22">
             <code>  set first(E value) =&gt; _data[0] = value;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="19">
+        <line number="23">
             <code/>
         </line>
-        <line hits="1" number="20">
+        <line hits="1" number="24">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="21">
+        <line hits="2" number="25">
             <code>  bool get isEmpty =&gt; _data.isEmpty;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="22">
+        <line number="26">
             <code/>
         </line>
-        <line hits="1" number="23">
+        <line hits="1" number="27">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="24">
+        <line hits="2" number="28">
             <code>  bool get isNotEmpty =&gt; _data.isNotEmpty;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="25">
+        <line number="29">
             <code/>
         </line>
-        <line hits="1" number="26">
+        <line hits="1" number="30">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="27">
+        <line hits="2" number="31">
             <code>  Iterator&lt;E&gt; get iterator =&gt; _iterate().iterator;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="28">
+        <line number="32">
             <code/>
         </line>
-        <line hits="1" number="29">
+        <line hits="1" number="33">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="30">
+        <line hits="3" number="34">
             <code>  E get last =&gt; _get(length - 1);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="31">
+        <line number="35">
             <code/>
         </line>
-        <line hits="1" number="32">
+        <line hits="1" number="36">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="33">
+        <line hits="4" number="37">
             <code>  set last(E value) =&gt; _data[length - 1] = value;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="34">
+        <line number="38">
             <code/>
         </line>
-        <line hits="1" number="35">
+        <line hits="1" number="39">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="36">
+        <line hits="2" number="40">
             <code>  int get length =&gt; _data.length;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="37">
+        <line number="41">
             <code/>
         </line>
-        <line hits="1" number="38">
+        <line hits="1" number="42">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="39">
+        <line number="43">
             <code>  set length(int value) {</code>
         </line>
-        <line hits="2" number="40">
+        <line hits="2" number="44">
             <code>    if (value &gt; length) null as E;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="41">
+        <line hits="2" number="45">
             <code>    _data.length = value;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="42">
+        <line number="46">
             <code>  }</code>
         </line>
-        <line number="43">
+        <line number="47">
             <code/>
         </line>
-        <line hits="1" number="44">
+        <line hits="1" number="48">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="45">
+        <line number="49">
             <code>  Iterable&lt;E&gt; get reversed sync* {</code>
         </line>
-        <line hits="4" number="46">
+        <line hits="4" number="50">
             <code>    for (var i = length - 1; i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="47">
+        <line hits="1" number="51">
             <code>      yield _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="48">
+        <line number="52">
             <code>    }</code>
         </line>
-        <line number="49">
+        <line number="53">
             <code>  }</code>
         </line>
-        <line number="50">
+        <line number="54">
             <code/>
         </line>
-        <line hits="1" number="51">
+        <line hits="1" number="55">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="52">
+        <line number="56">
             <code>  E get single {</code>
         </line>
-        <line hits="1" number="53">
+        <line hits="1" number="57">
             <code>    if (isEmpty) throw _ListError.noElement();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="54">
+        <line hits="3" number="58">
             <code>    if (length &gt; 1) throw _ListError.tooMany();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="55">
+        <line hits="0" number="59">
             <code>    return _get(0);</code>
         </line>
-        <line number="56">
+        <line number="60">
             <code>  }</code>
         </line>
-        <line number="57">
+        <line number="61">
             <code/>
         </line>
-        <line hits="1" number="58">
+        <line hits="1" number="62">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="59">
+        <line number="63">
             <code>  List&lt;E&gt; operator +(List&lt;E&gt; other) {</code>
         </line>
-        <line hits="3" number="60">
+        <line hits="3" number="64">
             <code>    final l = length, tl = l + other.length;</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="61">
+        <line hits="2" number="65">
             <code>    if (tl == l) return toList();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="62">
+        <line hits="2" number="66">
             <code>    final r = List&lt;E&gt;.filled(tl, other[0]);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="63">
+        <line hits="2" number="67">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="64">
+        <line hits="2" number="68">
             <code>      r[i] = _get(i);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="65">
+        <line number="69">
             <code>    }</code>
         </line>
-        <line hits="1" number="66">
+        <line hits="1" number="70">
             <code>    r.setRange(l, tl, other);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="67">
+        <line number="71">
             <code>    return r;</code>
         </line>
-        <line number="68">
+        <line number="72">
             <code>  }</code>
         </line>
-        <line number="69">
+        <line number="73">
             <code/>
         </line>
-        <line hits="1" number="70">
+        <line hits="1" number="74">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="71">
+        <line hits="1" number="75">
             <code>  E operator [](int index) =&gt; _get(index);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="72">
+        <line number="76">
             <code/>
         </line>
-        <line hits="1" number="73">
+        <line hits="1" number="77">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="74">
+        <line hits="2" number="78">
             <code>  void operator []=(int index, E value) =&gt; _data[index] = value;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="75">
+        <line number="79">
             <code/>
         </line>
-        <line hits="1" number="76">
+        <line hits="1" number="80">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="77">
+        <line hits="2" number="81">
             <code>  void add(E value) =&gt; _data.add(value);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="78">
+        <line number="82">
             <code/>
         </line>
-        <line hits="1" number="79">
+        <line hits="1" number="83">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="80">
+        <line hits="2" number="84">
             <code>  void addAll(Iterable&lt;E&gt; iterable) =&gt; _data.addAll(iterable);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="81">
+        <line number="85">
             <code/>
         </line>
-        <line hits="1" number="82">
+        <line hits="1" number="86">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="83">
+        <line number="87">
             <code>  bool any(bool Function(E element) test) {</code>
         </line>
-        <line hits="1" number="84">
+        <line hits="1" number="88">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="85">
+        <line hits="2" number="89">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="86">
+        <line hits="2" number="90">
             <code>      if (test(_get(i))) return true;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="87">
+        <line number="91">
             <code>    }</code>
         </line>
-        <line number="88">
+        <line number="92">
             <code>    return false;</code>
         </line>
-        <line number="89">
+        <line number="93">
             <code>  }</code>
         </line>
-        <line number="90">
+        <line number="94">
             <code/>
         </line>
-        <line hits="1" number="91">
+        <line hits="1" number="95">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="92">
+        <line number="96">
             <code>  Map&lt;int, E&gt; asMap() {</code>
         </line>
-        <line hits="2" number="93">
+        <line hits="2" number="97">
             <code>    final r = &lt;int, E&gt;{}, l = length;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="94">
+        <line hits="2" number="98">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="95">
+        <line hits="2" number="99">
             <code>      r[i] = _get(i);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="96">
+        <line number="100">
             <code>    }</code>
         </line>
-        <line number="97">
+        <line number="101">
             <code>    return r;</code>
         </line>
-        <line number="98">
+        <line number="102">
             <code>  }</code>
         </line>
-        <line number="99">
+        <line number="103">
             <code/>
         </line>
-        <line hits="1" number="100">
+        <line hits="1" number="104">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="101">
+        <line hits="2" number="105">
             <code>  List&lt;R&gt; cast&lt;R&gt;() =&gt; _forceCast().cast&lt;R&gt;();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="102">
+        <line number="106">
             <code/>
         </line>
-        <line hits="1" number="103">
+        <line hits="1" number="107">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="104">
+        <line hits="2" number="108">
             <code>  void clear() =&gt; _data.clear();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="105">
+        <line number="109">
             <code/>
         </line>
-        <line hits="1" number="106">
+        <line hits="1" number="110">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="107">
+        <line number="111">
             <code>  bool contains(Object? element) {</code>
         </line>
-        <line hits="1" number="108">
+        <line hits="1" number="112">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="109">
+        <line hits="2" number="113">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="110">
+        <line hits="2" number="114">
             <code>      if (element == _get(i)) return true;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="111">
+        <line number="115">
             <code>    }</code>
         </line>
-        <line number="112">
+        <line number="116">
             <code>    return false;</code>
         </line>
-        <line number="113">
+        <line number="117">
             <code>  }</code>
         </line>
-        <line number="114">
+        <line number="118">
             <code/>
         </line>
-        <line hits="1" number="115">
+        <line hits="1" number="119">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="116">
+        <line hits="1" number="120">
             <code>  E elementAt(int index) =&gt; _get(index);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="117">
+        <line number="121">
             <code/>
         </line>
-        <line hits="1" number="118">
+        <line hits="1" number="122">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="119">
+        <line number="123">
             <code>  bool every(bool Function(E element) test) {</code>
         </line>
-        <line hits="1" number="120">
+        <line hits="1" number="124">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="121">
+        <line hits="2" number="125">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="122">
+        <line hits="2" number="126">
             <code>      if (!test(_get(i))) return false;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="123">
+        <line number="127">
             <code>    }</code>
         </line>
-        <line number="124">
+        <line number="128">
             <code>    return true;</code>
         </line>
-        <line number="125">
+        <line number="129">
             <code>  }</code>
         </line>
-        <line number="126">
+        <line number="130">
             <code/>
         </line>
-        <line hits="1" number="127">
+        <line hits="1" number="131">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="128">
+        <line number="132">
             <code>  Iterable&lt;U&gt; expand&lt;U&gt;(Iterable&lt;U&gt; Function(E element) toElements) sync* {</code>
         </line>
-        <line hits="1" number="129">
+        <line hits="1" number="133">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="130">
+        <line hits="2" number="134">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="131">
+        <line hits="2" number="135">
             <code>      yield* toElements(_get(i));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="132">
+        <line number="136">
             <code>    }</code>
         </line>
-        <line number="133">
+        <line number="137">
             <code>  }</code>
-        </line>
-        <line number="134">
-            <code/>
-        </line>
-        <line hits="1" number="135">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="136">
-            <code>  void fillRange(int start, int end, [E? fillValue]) =&gt;</code>
-        </line>
-        <line hits="2" number="137">
-            <code>      _data.fillRange(start, end, fillValue);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="138">
             <code/>
@@ -489,246 +487,246 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="140">
+            <code>  void fillRange(int start, int end, [E? fillValue]) =&gt;</code>
+        </line>
+        <line hits="2" number="141">
+            <code>      _data.fillRange(start, end, fillValue);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="142">
+            <code/>
+        </line>
+        <line hits="1" number="143">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="144">
             <code>  E firstWhere(bool Function(E element) test, {E Function()? orElse}) {</code>
         </line>
-        <line hits="1" number="141">
+        <line hits="1" number="145">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="142">
+        <line hits="2" number="146">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="143">
+        <line hits="1" number="147">
             <code>      final v = _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="144">
+        <line hits="1" number="148">
             <code>      if (test(v)) return v;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="145">
+        <line number="149">
             <code>    }</code>
         </line>
-        <line hits="1" number="146">
+        <line hits="1" number="150">
             <code>    if (orElse != null) return orElse();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="147">
+        <line hits="1" number="151">
             <code>    throw _ListError.noElement();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="148">
+        <line number="152">
             <code>  }</code>
         </line>
-        <line number="149">
+        <line number="153">
             <code/>
         </line>
-        <line hits="1" number="150">
+        <line hits="1" number="154">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="151">
+        <line number="155">
             <code>  U fold&lt;U&gt;(U initialValue, U Function(U previousValue, E element) combine) {</code>
         </line>
-        <line hits="1" number="152">
+        <line hits="1" number="156">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="153">
+        <line number="157">
             <code>    U res = initialValue;</code>
         </line>
-        <line hits="2" number="154">
+        <line hits="2" number="158">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="155">
+        <line hits="2" number="159">
             <code>      res = combine(res, _get(i));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="156">
+        <line number="160">
             <code>    }</code>
         </line>
-        <line number="157">
+        <line number="161">
             <code>    return res;</code>
         </line>
-        <line number="158">
+        <line number="162">
             <code>  }</code>
         </line>
-        <line number="159">
+        <line number="163">
             <code/>
         </line>
-        <line hits="1" number="160">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="161">
-            <code>  Iterable&lt;E&gt; followedBy(Iterable&lt;E&gt; other) sync* {</code>
-        </line>
-        <line hits="1" number="162">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="163">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1" number="164">
-            <code>      yield _get(i);</code>
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="165">
-            <code>    }</code>
+            <code>  Iterable&lt;E&gt; followedBy(Iterable&lt;E&gt; other) sync* {</code>
         </line>
-        <line number="166">
-            <code>    yield* other;</code>
-        </line>
-        <line number="167">
-            <code>  }</code>
-        </line>
-        <line number="168">
-            <code/>
-        </line>
-        <line hits="1" number="169">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="170">
-            <code>  void forEach(void Function(E element) action) {</code>
-        </line>
-        <line hits="1" number="171">
+        <line hits="1" number="166">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="172">
+        <line hits="2" number="167">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="173">
-            <code>      action(_get(i));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="174">
-            <code>    }</code>
-        </line>
-        <line number="175">
-            <code>  }</code>
-        </line>
-        <line number="176">
-            <code/>
-        </line>
-        <line hits="1" number="177">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="178">
-            <code>  Iterable&lt;E&gt; getRange(int start, int end) sync* {</code>
-        </line>
-        <line hits="2" number="179">
-            <code>    RangeError.checkValidRange(start, end, length);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="180">
-            <code>    for (var i = start; i &lt; end; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="181">
+        <line hits="1" number="168">
             <code>      yield _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="182">
+        <line number="169">
             <code>    }</code>
         </line>
-        <line number="183">
+        <line number="170">
+            <code>    yield* other;</code>
+        </line>
+        <line number="171">
             <code>  }</code>
         </line>
-        <line number="184">
+        <line number="172">
             <code/>
         </line>
-        <line hits="1" number="185">
+        <line hits="1" number="173">
             <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="174">
+            <code>  void forEach(void Function(E element) action) {</code>
+        </line>
+        <line hits="1" number="175">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="176">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="177">
+            <code>      action(_get(i));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="178">
+            <code>    }</code>
+        </line>
+        <line number="179">
+            <code>  }</code>
+        </line>
+        <line number="180">
+            <code/>
+        </line>
+        <line hits="1" number="181">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="182">
+            <code>  Iterable&lt;E&gt; getRange(int start, int end) sync* {</code>
+        </line>
+        <line hits="2" number="183">
+            <code>    RangeError.checkValidRange(start, end, length);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="184">
+            <code>    for (var i = start; i &lt; end; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="185">
+            <code>      yield _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="186">
+            <code>    }</code>
+        </line>
+        <line number="187">
+            <code>  }</code>
+        </line>
+        <line number="188">
+            <code/>
+        </line>
+        <line hits="1" number="189">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="190">
             <code>  int indexOf(E element, [int start = 0]) {</code>
         </line>
-        <line hits="1" number="187">
+        <line hits="1" number="191">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="188">
+        <line hits="2" number="192">
             <code>    for (var i = start; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="189">
+        <line hits="2" number="193">
             <code>      if (_get(i) == element) return i;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="190">
+        <line number="194">
             <code>    }</code>
         </line>
-        <line hits="1" number="191">
+        <line hits="1" number="195">
             <code>    return -1;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="192">
+        <line number="196">
             <code>  }</code>
         </line>
-        <line number="193">
+        <line number="197">
             <code/>
         </line>
-        <line hits="1" number="194">
+        <line hits="1" number="198">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="195">
+        <line number="199">
             <code>  int indexWhere(bool Function(E element) test, [int start = 0]) {</code>
         </line>
-        <line hits="1" number="196">
+        <line hits="1" number="200">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="197">
+        <line hits="2" number="201">
             <code>    for (var i = start; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="198">
+        <line hits="2" number="202">
             <code>      if (test(_get(i))) return i;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="199">
+        <line number="203">
             <code>    }</code>
         </line>
-        <line hits="1" number="200">
+        <line hits="1" number="204">
             <code>    return -1;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="201">
+        <line number="205">
             <code>  }</code>
         </line>
-        <line number="202">
+        <line number="206">
             <code/>
         </line>
-        <line hits="1" number="203">
+        <line hits="1" number="207">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="204">
-            <code>  void insert(int index, E element) =&gt; _data.insert(index, element);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="205">
-            <code/>
-        </line>
-        <line hits="1" number="206">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="207">
-            <code>  void insertAll(int index, Iterable&lt;E&gt; iterable) =&gt;</code>
         </line>
         <line hits="2" number="208">
-            <code>      _data.insertAll(index, iterable);</code>
+            <code>  void insert(int index, E element) =&gt; _data.insert(index, element);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="209">
@@ -739,352 +737,352 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="211">
+            <code>  void insertAll(int index, Iterable&lt;E&gt; iterable) =&gt;</code>
+        </line>
+        <line hits="2" number="212">
+            <code>      _data.insertAll(index, iterable);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="213">
+            <code/>
+        </line>
+        <line hits="1" number="214">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="215">
             <code>  String join([String separator = ""]) {</code>
         </line>
-        <line hits="1" number="212">
+        <line hits="1" number="216">
             <code>    final buffer = StringBuffer();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="213">
+        <line hits="1" number="217">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="214">
+        <line hits="1" number="218">
             <code>    if (l &gt; 0) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="215">
+        <line hits="3" number="219">
             <code>      buffer.write(_get(0).toString());</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="216">
+        <line hits="2" number="220">
             <code>      for (var i = 1; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="217">
+        <line hits="1" number="221">
             <code>        buffer.write(separator);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="218">
+        <line hits="3" number="222">
             <code>        buffer.write(_get(i).toString());</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="219">
+        <line number="223">
             <code>      }</code>
         </line>
-        <line number="220">
+        <line number="224">
             <code>    }</code>
         </line>
-        <line hits="1" number="221">
+        <line hits="1" number="225">
             <code>    return buffer.toString();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="222">
+        <line number="226">
             <code>  }</code>
         </line>
-        <line number="223">
+        <line number="227">
             <code/>
         </line>
-        <line hits="1" number="224">
+        <line hits="1" number="228">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="225">
+        <line number="229">
             <code>  int lastIndexOf(E element, [int? start]) {</code>
         </line>
-        <line hits="4" number="226">
+        <line hits="4" number="230">
             <code>    for (var i = start ?? (length - 1); i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="227">
+        <line hits="2" number="231">
             <code>      if (element == _get(i)) return i;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="228">
+        <line number="232">
             <code>    }</code>
         </line>
-        <line hits="1" number="229">
+        <line hits="1" number="233">
             <code>    return -1;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="230">
+        <line number="234">
             <code>  }</code>
         </line>
-        <line number="231">
+        <line number="235">
             <code/>
         </line>
-        <line hits="1" number="232">
+        <line hits="1" number="236">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="233">
+        <line number="237">
             <code>  int lastIndexWhere(bool Function(E element) test, [int? start]) {</code>
         </line>
-        <line hits="4" number="234">
+        <line hits="4" number="238">
             <code>    for (var i = start ?? (length - 1); i &gt;= 0; i--) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="235">
+        <line hits="2" number="239">
             <code>      if (test(_get(i))) return i;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="236">
+        <line number="240">
             <code>    }</code>
         </line>
-        <line hits="1" number="237">
+        <line hits="1" number="241">
             <code>    return -1;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="238">
+        <line number="242">
             <code>  }</code>
         </line>
-        <line number="239">
+        <line number="243">
             <code/>
         </line>
-        <line hits="1" number="240">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="241">
-            <code>  E lastWhere(bool Function(E element) test, {E Function()? orElse}) {</code>
-        </line>
-        <line hits="4" number="242">
-            <code>    for (var i = length - 1; i &gt;= 0; i--) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="243">
-            <code>      final v = _get(i);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1" number="244">
-            <code>      if (test(v)) return v;</code>
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="245">
+            <code>  E lastWhere(bool Function(E element) test, {E Function()? orElse}) {</code>
+        </line>
+        <line hits="4" number="246">
+            <code>    for (var i = length - 1; i &gt;= 0; i--) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="247">
+            <code>      final v = _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="248">
+            <code>      if (test(v)) return v;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="249">
             <code>    }</code>
         </line>
-        <line hits="1" number="246">
+        <line hits="1" number="250">
             <code>    if (orElse != null) return orElse();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="247">
+        <line hits="1" number="251">
             <code>    throw _ListError.noElement();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="248">
+        <line number="252">
             <code>  }</code>
         </line>
-        <line number="249">
+        <line number="253">
             <code/>
         </line>
-        <line hits="1" number="250">
+        <line hits="1" number="254">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="251">
+        <line number="255">
             <code>  Iterable&lt;U&gt; map&lt;U&gt;(U Function(E e) toElement) sync* {</code>
         </line>
-        <line hits="1" number="252">
+        <line hits="1" number="256">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="253">
+        <line hits="2" number="257">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="254">
+        <line hits="2" number="258">
             <code>      yield toElement(_get(i));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="255">
+        <line number="259">
             <code>    }</code>
         </line>
-        <line number="256">
+        <line number="260">
             <code>  }</code>
         </line>
-        <line number="257">
+        <line number="261">
             <code/>
         </line>
-        <line hits="1" number="258">
+        <line hits="1" number="262">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="259">
+        <line number="263">
             <code>  E reduce(E Function(E value, E element) combine) {</code>
         </line>
-        <line hits="1" number="260">
+        <line hits="1" number="264">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="261">
+        <line hits="1" number="265">
             <code>    if (l == 0) throw _ListError.noElement();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="262">
+        <line hits="1" number="266">
             <code>    E res = _get(0);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="263">
+        <line hits="2" number="267">
             <code>    for (var i = 1; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="264">
+        <line hits="2" number="268">
             <code>      res = combine(res, _get(i));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="265">
+        <line number="269">
             <code>    }</code>
         </line>
-        <line number="266">
+        <line number="270">
             <code>    return res;</code>
         </line>
-        <line number="267">
+        <line number="271">
             <code>  }</code>
         </line>
-        <line number="268">
+        <line number="272">
             <code/>
         </line>
-        <line hits="1" number="269">
+        <line hits="1" number="273">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="270">
+        <line hits="2" number="274">
             <code>  bool remove(Object? value) =&gt; _data.remove(value);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="271">
+        <line number="275">
             <code/>
         </line>
-        <line hits="1" number="272">
+        <line hits="1" number="276">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="273">
+        <line number="277">
             <code>  E removeAt(int index) {</code>
         </line>
-        <line hits="1" number="274">
+        <line hits="1" number="278">
             <code>    final v = _get(index);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="275">
+        <line hits="2" number="279">
             <code>    _data.removeAt(index);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="276">
+        <line number="280">
             <code>    return v;</code>
         </line>
-        <line number="277">
+        <line number="281">
             <code>  }</code>
         </line>
-        <line number="278">
+        <line number="282">
             <code/>
         </line>
-        <line hits="1" number="279">
+        <line hits="1" number="283">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="280">
+        <line number="284">
             <code>  E removeLast() {</code>
         </line>
-        <line hits="3" number="281">
+        <line hits="3" number="285">
             <code>    final v = _get(length - 1);</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="282">
+        <line hits="2" number="286">
             <code>    _data.removeLast();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="283">
+        <line number="287">
             <code>    return v;</code>
         </line>
-        <line number="284">
+        <line number="288">
             <code>  }</code>
         </line>
-        <line number="285">
+        <line number="289">
             <code/>
         </line>
-        <line hits="1" number="286">
+        <line hits="1" number="290">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="287">
+        <line hits="2" number="291">
             <code>  void removeRange(int start, int end) =&gt; _data.removeRange(start, end);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="288">
+        <line number="292">
             <code/>
         </line>
-        <line hits="1" number="289">
+        <line hits="1" number="293">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="290">
+        <line number="294">
             <code>  void removeWhere(bool Function(E element) test) {</code>
         </line>
-        <line hits="2" number="291">
+        <line hits="2" number="295">
             <code>    var i = length - 1;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="292">
+        <line hits="1" number="296">
             <code>    while (i &gt;= 0) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="293">
+        <line hits="2" number="297">
             <code>      if (test(_get(i))) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="294">
+        <line hits="1" number="298">
             <code>        final e = i + 1;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="295">
+        <line hits="1" number="299">
             <code>        i--;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="296">
+        <line hits="3" number="300">
             <code>        while (i &gt;= 0 &amp;&amp; test(_get(i))) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="297">
+        <line hits="1" number="301">
             <code>          i--;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="298">
+        <line number="302">
             <code>        }</code>
         </line>
-        <line hits="2" number="299">
+        <line hits="2" number="303">
             <code>        removeRange(i + 1, e);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="300">
+        <line number="304">
             <code>      } else {</code>
         </line>
-        <line hits="1" number="301">
+        <line hits="1" number="305">
             <code>        i--;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="302">
+        <line number="306">
             <code>      }</code>
         </line>
-        <line number="303">
+        <line number="307">
             <code>    }</code>
         </line>
-        <line number="304">
+        <line number="308">
             <code>  }</code>
-        </line>
-        <line number="305">
-            <code/>
-        </line>
-        <line hits="1" number="306">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="307">
-            <code>  void replaceRange(int start, int end, Iterable&lt;E&gt; replacements) =&gt;</code>
-        </line>
-        <line hits="2" number="308">
-            <code>      _data.replaceRange(start, end, replacements);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="309">
             <code/>
@@ -1094,11 +1092,11 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="311">
-            <code>  void retainWhere(bool Function(E element) test) =&gt;</code>
+            <code>  void replaceRange(int start, int end, Iterable&lt;E&gt; replacements) =&gt;</code>
         </line>
-        <line hits="3" number="312">
-            <code>      removeWhere((e) =&gt; !test(e));</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="312">
+            <code>      _data.replaceRange(start, end, replacements);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="313">
             <code/>
@@ -1107,163 +1105,162 @@
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="315">
+        <line number="315">
+            <code>  void retainWhere(bool Function(E element) test) =&gt;</code>
+        </line>
+        <line hits="3" number="316">
+            <code>      removeWhere((e) =&gt; !test(e));</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="317">
+            <code/>
+        </line>
+        <line hits="1" number="318">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="319">
             <code>  void setAll(int index, Iterable&lt;E&gt; iterable) =&gt; _data.setAll(index, iterable);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="316">
+        <line number="320">
             <code/>
         </line>
-        <line hits="1" number="317">
+        <line hits="1" number="321">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="318">
+        <line number="322">
             <code>  void setRange(int start, int end, Iterable&lt;E&gt; iterable,</code>
         </line>
-        <line number="319">
+        <line number="323">
             <code>          [int skipCount = 0]) =&gt;</code>
         </line>
-        <line hits="2" number="320">
+        <line hits="2" number="324">
             <code>      _data.setRange(start, end, iterable, skipCount);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="321">
+        <line number="325">
             <code/>
         </line>
-        <line hits="1" number="322">
+        <line hits="1" number="326">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="323">
+        <line hits="2" number="327">
             <code>  void shuffle([math.Random? random]) =&gt; _data.shuffle(random);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="324">
+        <line number="328">
             <code/>
         </line>
-        <line hits="1" number="325">
+        <line hits="1" number="329">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="326">
+        <line number="330">
             <code>  E singleWhere(bool Function(E element) test, {E Function()? orElse}) {</code>
         </line>
-        <line number="327">
+        <line number="331">
             <code>    late E res;</code>
         </line>
-        <line hits="1" number="328">
+        <line hits="1" number="332">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="329">
+        <line number="333">
             <code>    var found = false;</code>
         </line>
-        <line hits="2" number="330">
+        <line hits="2" number="334">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="331">
+        <line hits="1" number="335">
             <code>      final v = _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="332">
+        <line hits="1" number="336">
             <code>      if (test(v)) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="333">
+        <line hits="1" number="337">
             <code>        if (found) throw _ListError.tooMany();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="334">
+        <line number="338">
             <code>        found = true;</code>
         </line>
-        <line number="335">
+        <line number="339">
             <code>        res = v;</code>
         </line>
-        <line number="336">
+        <line number="340">
             <code>      }</code>
         </line>
-        <line number="337">
+        <line number="341">
             <code>    }</code>
         </line>
-        <line number="338">
+        <line number="342">
             <code>    if (found) return res;</code>
         </line>
-        <line hits="1" number="339">
+        <line hits="1" number="343">
             <code>    if (orElse != null) return orElse();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="340">
+        <line hits="1" number="344">
             <code>    throw _ListError.noElement();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="341">
+        <line number="345">
             <code>  }</code>
         </line>
-        <line number="342">
+        <line number="346">
             <code/>
         </line>
-        <line hits="1" number="343">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="344">
-            <code>  Iterable&lt;E&gt; skip(int count) sync* {</code>
-        </line>
-        <line hits="1" number="345">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="346">
-            <code>    for (var i = count; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
         <line hits="1" number="347">
-            <code>      yield _get(i);</code>
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="348">
-            <code>    }</code>
+            <code>  Iterable&lt;E&gt; skip(int count) sync* {</code>
         </line>
-        <line number="349">
-            <code>  }</code>
-        </line>
-        <line number="350">
-            <code/>
-        </line>
-        <line hits="1" number="351">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="352">
-            <code>  Iterable&lt;E&gt; skipWhile(bool Function(E value) test) sync* {</code>
-        </line>
-        <line number="353">
-            <code>    var i = 0;</code>
-        </line>
-        <line hits="1" number="354">
+        <line hits="1" number="349">
             <code>    final l = length;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="355">
-            <code>    while (i &lt; l &amp;&amp; test(_get(i))) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="350">
+            <code>    for (var i = count; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="356">
-            <code>      i++;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="357">
-            <code>    }</code>
-        </line>
-        <line hits="1" number="358">
-            <code>    while (i &lt; l) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="359">
+        <line hits="1" number="351">
             <code>      yield _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="352">
+            <code>    }</code>
+        </line>
+        <line number="353">
+            <code>  }</code>
+        </line>
+        <line number="354">
+            <code/>
+        </line>
+        <line hits="1" number="355">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="356">
+            <code>  Iterable&lt;E&gt; skipWhile(bool Function(E value) test) sync* {</code>
+        </line>
+        <line number="357">
+            <code>    var i = 0;</code>
+        </line>
+        <line hits="1" number="358">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="359">
+            <code>    while (i &lt; l &amp;&amp; test(_get(i))) {</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1" number="360">
             <code>      i++;</code>
@@ -1272,60 +1269,61 @@
         <line number="361">
             <code>    }</code>
         </line>
-        <line number="362">
-            <code>  }</code>
+        <line hits="1" number="362">
+            <code>    while (i &lt; l) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="363">
-            <code/>
+        <line hits="1" number="363">
+            <code>      yield _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1" number="364">
-            <code>  @override</code>
+            <code>      i++;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="365">
-            <code>  void sort([int Function(E a, E b)? compare]) {</code>
-        </line>
-        <line hits="1" number="366">
-            <code>    _forceCast();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="367">
-            <code>    if (compare == null) {</code>
-        </line>
-        <line hits="2" number="368">
-            <code>      final d = _data.cast&lt;E&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="369">
-            <code>      d.sort();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="370">
-            <code>    } else {</code>
-        </line>
-        <line hits="4" number="371">
-            <code>      _data.sort((a, b) =&gt; compare(a as E, b as E));</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="372">
             <code>    }</code>
         </line>
-        <line number="373">
+        <line number="366">
             <code>  }</code>
         </line>
-        <line number="374">
+        <line number="367">
             <code/>
         </line>
-        <line hits="1" number="375">
+        <line hits="1" number="368">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="376">
-            <code>  List&lt;E&gt; sublist(int start, [int? end]) =&gt;</code>
+        <line number="369">
+            <code>  void sort([int Function(E a, E b)? compare]) {</code>
         </line>
-        <line hits="3" number="377">
-            <code>      getRange(start, end ?? length).toList();</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="1" number="370">
+            <code>    _forceCast();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="371">
+            <code>    if (compare == null) {</code>
+        </line>
+        <line hits="2" number="372">
+            <code>      final d = _data.cast&lt;E&gt;();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="373">
+            <code>      d.sort();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="374">
+            <code>    } else {</code>
+        </line>
+        <line hits="4" number="375">
+            <code>      _data.sort((a, b) =&gt; compare(a as E, b as E));</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="376">
+            <code>    }</code>
+        </line>
+        <line number="377">
+            <code>  }</code>
         </line>
         <line number="378">
             <code/>
@@ -1335,323 +1333,337 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="380">
-            <code>  Iterable&lt;E&gt; take(int count) sync* {</code>
+            <code>  List&lt;E&gt; sublist(int start, [int? end]) =&gt;</code>
         </line>
-        <line hits="2" number="381">
-            <code>    final c = math.min(count, length);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line hits="3" number="381">
+            <code>      getRange(start, end ?? length).toList();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="382">
-            <code>    for (var i = 0; i &lt; c; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line number="382">
+            <code/>
         </line>
         <line hits="1" number="383">
-            <code>      yield _get(i);</code>
+            <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="384">
-            <code>    }</code>
+            <code>  Iterable&lt;E&gt; take(int count) sync* {</code>
         </line>
-        <line number="385">
-            <code>  }</code>
+        <line hits="2" number="385">
+            <code>    final c = math.min(count, length);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="386">
-            <code/>
+        <line hits="2" number="386">
+            <code>    for (var i = 0; i &lt; c; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1" number="387">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="388">
-            <code>  Iterable&lt;E&gt; takeWhile(bool Function(E value) test) sync* {</code>
-        </line>
-        <line hits="1" number="389">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="390">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="391">
-            <code>      final v = _get(i);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="392">
-            <code>      if (!test(v)) break;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="393">
-            <code>      yield v;</code>
-        </line>
-        <line number="394">
-            <code>    }</code>
-        </line>
-        <line number="395">
-            <code>  }</code>
-        </line>
-        <line number="396">
-            <code/>
-        </line>
-        <line hits="1" number="397">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="398">
-            <code>  List&lt;E&gt; toList({bool growable = true}) {</code>
-        </line>
-        <line hits="1" number="399">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="400">
-            <code>    if (l == 0) return growable ? [] : const [];</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="401">
-            <code>    final res = List.filled(l, _get(0), growable: growable);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="402">
-            <code>    for (var i = 1; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="403">
-            <code>      res[i] = _get(i);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="404">
-            <code>    }</code>
-        </line>
-        <line number="405">
-            <code>    return res;</code>
-        </line>
-        <line number="406">
-            <code>  }</code>
-        </line>
-        <line number="407">
-            <code/>
-        </line>
-        <line hits="1" number="408">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="409">
-            <code>  Set&lt;E&gt; toSet() {</code>
-        </line>
-        <line hits="1" number="410">
-            <code>    final s = &lt;E&gt;{}, l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="411">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="412">
-            <code>      s.add(_get(i));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="413">
-            <code>    }</code>
-        </line>
-        <line number="414">
-            <code>    return s;</code>
-        </line>
-        <line number="415">
-            <code>  }</code>
-        </line>
-        <line number="416">
-            <code/>
-        </line>
-        <line hits="1" number="417">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="418">
-            <code>  String toString() {</code>
-        </line>
-        <line hits="1" number="419">
-            <code>    _forceCast();</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="420">
-            <code>    return _data.toString();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="421">
-            <code>  }</code>
-        </line>
-        <line number="422">
-            <code/>
-        </line>
-        <line hits="1" number="423">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="424">
-            <code>  Iterable&lt;E&gt; where(bool Function(E element) test) sync* {</code>
-        </line>
-        <line hits="1" number="425">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="426">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="427">
-            <code>      final v = _get(i);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="428">
-            <code>      if (test(v)) yield v;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="429">
-            <code>    }</code>
-        </line>
-        <line number="430">
-            <code>  }</code>
-        </line>
-        <line number="431">
-            <code/>
-        </line>
-        <line hits="1" number="432">
-            <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="433">
-            <code>  Iterable&lt;U&gt; whereType&lt;U&gt;() sync* {</code>
-        </line>
-        <line hits="1" number="434">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="435">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="436">
-            <code>      final v = _get(i);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="437">
-            <code>      if (v is U) yield v;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="438">
-            <code>    }</code>
-        </line>
-        <line number="439">
-            <code>  }</code>
-        </line>
-        <line number="440">
-            <code/>
-        </line>
-        <line hits="1" number="441">
-            <code>  List&lt;dynamic&gt; _forceCast() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="442">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="443">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="444">
-            <code>      _get(i);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="445">
-            <code>    }</code>
-        </line>
-        <line hits="1" number="446">
-            <code>    return _data;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="447">
-            <code>  }</code>
-        </line>
-        <line number="448">
-            <code/>
-        </line>
-        <line hits="1" number="449">
-            <code>  E _get(int idx) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="450">
-            <code>    dynamic v = _data[idx];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="451">
-            <code>    if (v != null &amp;&amp; v is! E) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="452">
-            <code>      v = _cast(v);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="453">
-            <code>      _data[idx] = v;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="454">
-            <code>    }</code>
-        </line>
-        <line number="455">
-            <code>    return v;</code>
-        </line>
-        <line number="456">
-            <code>  }</code>
-        </line>
-        <line number="457">
-            <code/>
-        </line>
-        <line hits="1" number="458">
-            <code>  Iterable&lt;E&gt; _iterate() sync* {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="459">
-            <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="460">
-            <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="461">
             <code>      yield _get(i);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="462">
+        <line number="388">
             <code>    }</code>
         </line>
-        <line number="463">
+        <line number="389">
             <code>  }</code>
         </line>
-        <line number="464">
-            <code>}</code>
-        </line>
-        <line number="465">
+        <line number="390">
             <code/>
         </line>
+        <line hits="1" number="391">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="392">
+            <code>  Iterable&lt;E&gt; takeWhile(bool Function(E value) test) sync* {</code>
+        </line>
+        <line hits="1" number="393">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="394">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="395">
+            <code>      final v = _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="396">
+            <code>      if (!test(v)) break;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="397">
+            <code>      yield v;</code>
+        </line>
+        <line number="398">
+            <code>    }</code>
+        </line>
+        <line number="399">
+            <code>  }</code>
+        </line>
+        <line number="400">
+            <code/>
+        </line>
+        <line hits="1" number="401">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="402">
+            <code>  List&lt;E&gt; toList({bool growable = true}) {</code>
+        </line>
+        <line hits="1" number="403">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="404">
+            <code>    if (l == 0) return growable ? [] : const [];</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="405">
+            <code>    final res = List.filled(l, _get(0), growable: growable);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="406">
+            <code>    for (var i = 1; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="407">
+            <code>      res[i] = _get(i);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="408">
+            <code>    }</code>
+        </line>
+        <line number="409">
+            <code>    return res;</code>
+        </line>
+        <line number="410">
+            <code>  }</code>
+        </line>
+        <line number="411">
+            <code/>
+        </line>
+        <line hits="1" number="412">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="413">
+            <code>  Set&lt;E&gt; toSet() {</code>
+        </line>
+        <line hits="1" number="414">
+            <code>    final s = &lt;E&gt;{}, l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="415">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="416">
+            <code>      s.add(_get(i));</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="417">
+            <code>    }</code>
+        </line>
+        <line number="418">
+            <code>    return s;</code>
+        </line>
+        <line number="419">
+            <code>  }</code>
+        </line>
+        <line number="420">
+            <code/>
+        </line>
+        <line hits="1" number="421">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="422">
+            <code>  String toString() {</code>
+        </line>
+        <line hits="1" number="423">
+            <code>    _forceCast();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="424">
+            <code>    return _data.toString();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="425">
+            <code>  }</code>
+        </line>
+        <line number="426">
+            <code/>
+        </line>
+        <line hits="1" number="427">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="428">
+            <code>  Iterable&lt;E&gt; where(bool Function(E element) test) sync* {</code>
+        </line>
+        <line hits="1" number="429">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="430">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="431">
+            <code>      final v = _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="432">
+            <code>      if (test(v)) yield v;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="433">
+            <code>    }</code>
+        </line>
+        <line number="434">
+            <code>  }</code>
+        </line>
+        <line number="435">
+            <code/>
+        </line>
+        <line hits="1" number="436">
+            <code>  @override</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="437">
+            <code>  Iterable&lt;U&gt; whereType&lt;U&gt;() sync* {</code>
+        </line>
+        <line hits="1" number="438">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="439">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="440">
+            <code>      final v = _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="441">
+            <code>      if (v is U) yield v;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="442">
+            <code>    }</code>
+        </line>
+        <line number="443">
+            <code>  }</code>
+        </line>
+        <line number="444">
+            <code/>
+        </line>
+        <line hits="1" number="445">
+            <code>  List&lt;dynamic&gt; _forceCast() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="446">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="447">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="448">
+            <code>      _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="449">
+            <code>    }</code>
+        </line>
+        <line hits="1" number="450">
+            <code>    return _data;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="451">
+            <code>  }</code>
+        </line>
+        <line number="452">
+            <code/>
+        </line>
+        <line hits="1" number="453">
+            <code>  E _get(int idx) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="454">
+            <code>    dynamic v = _data[idx];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="455">
+            <code>    if (v != null &amp;&amp; v is! E) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="456">
+            <code>      v = _cast(v);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="457">
+            <code>      _data[idx] = v;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="458">
+            <code>    }</code>
+        </line>
+        <line number="459">
+            <code>    return v;</code>
+        </line>
+        <line number="460">
+            <code>  }</code>
+        </line>
+        <line number="461">
+            <code/>
+        </line>
+        <line hits="1" number="462">
+            <code>  Iterable&lt;E&gt; _iterate() sync* {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="463">
+            <code>    final l = length;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="464">
+            <code>    for (var i = 0; i &lt; l; i++) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="465">
+            <code>      yield _get(i);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
         <line number="466">
-            <code>// copied from dart-sdk\lib\internal\iterable.dart</code>
+            <code>    }</code>
         </line>
         <line number="467">
+            <code>  }</code>
+        </line>
+        <line number="468">
+            <code>}</code>
+        </line>
+        <line number="469">
+            <code/>
+        </line>
+        <line number="470">
+            <code>// copied from dart-sdk\lib\internal\iterable.dart</code>
+        </line>
+        <line number="471">
             <code>sealed class _ListError {</code>
         </line>
-        <line hits="2" number="468">
+        <line hits="2" number="472">
             <code>  static StateError noElement() =&gt; StateError("No element");</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="469">
+        <line hits="2" number="473">
             <code>  static StateError tooMany() =&gt; StateError("Too many elements");</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="470">
+        <line number="474">
             <code>}</code>
         </line>
     </lines>

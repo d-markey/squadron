@@ -1,208 +1,293 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-01-26" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9677419" lines-covered="30" lines-valid="31" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="40" lines-valid="40" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../exceptions/worker_exception.dart';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import '../typedefs.dart';</code>
         </line>
         <line number="3">
-            <code>typedef Cast&lt;T&gt; = T Function(dynamic);</code>
+            <code/>
         </line>
         <line number="4">
-            <code/>
+            <code>abstract class Converter {</code>
         </line>
-        <line number="5">
-            <code>abstract base class Converter {</code>
-        </line>
-        <line hits="25" number="6">
+        <line hits="28" number="5">
             <code>  const Converter();</code>
-            <hit count="25" name="&lt;unnamed&gt;"/>
+            <hit count="28" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="7">
+        <line number="6">
             <code/>
         </line>
-        <line hits="10" number="8">
+        <line hits="11" number="7">
+            <code>  static bool isNumber&lt;T&gt;() =&gt; (T == int || T == double);</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line hits="10" number="9">
             <code>  static bool isIdentity&lt;T&gt;(Cast&lt;T&gt; cast) =&gt; (cast == identity&lt;T&gt;);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="9">
+        <line number="10">
             <code/>
         </line>
-        <line hits="10" number="10">
-            <code>  static T identity&lt;T&gt;(dynamic x) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="20" number="11">
+            <code>  static T identity&lt;T&gt;(dynamic x) =&gt; (x is T)</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="11">
-            <code>    if (x is T) return x;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line number="12">
+            <code>      ? x</code>
         </line>
-        <line hits="3" number="12">
-            <code>    throw WorkerException('TypeError: ${x.runtimeType} is not a subtype of $T');</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="13">
-            <code>  }</code>
-        </line>
-        <line number="14">
-            <code/>
-        </line>
-        <line hits="4" number="15">
-            <code>  static List&lt;dynamic&gt; toList(dynamic x) =&gt;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="16">
-            <code>      (x is List) ? x : (x as Iterable).toList();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="17">
-            <code/>
-        </line>
-        <line number="18">
-            <code>  // non-nullable value</code>
-        </line>
-        <line number="19">
-            <code>  Cast&lt;T&gt; value&lt;T&gt;();</code>
-        </line>
-        <line number="20">
-            <code/>
-        </line>
-        <line number="21">
-            <code>  // nullable value</code>
-        </line>
-        <line hits="2" number="22">
-            <code>  Cast&lt;T?&gt; nullable&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="1" number="23">
-            <code>    final op = cast ?? value&lt;T&gt;();</code>
+        <line hits="1" number="13">
+            <code>      : throw WorkerException(</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="24">
-            <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
+        <line hits="2" number="14">
+            <code>          'TypeError: ${x.runtimeType} is not a subtype of $T');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="25">
-            <code>        ? value&lt;T?&gt;()</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="26">
-            <code>        : (($) =&gt; ($ == null) ? null : op($));</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="27">
-            <code>  }</code>
-        </line>
-        <line number="28">
+        <line number="15">
             <code/>
         </line>
-        <line number="29">
-            <code>  // list</code>
+        <line hits="8" number="16">
+            <code>  static List&lt;T&gt; _castList&lt;T&gt;(dynamic x) =&gt; (x is List&lt;T&gt;)</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="30">
-            <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line number="17">
+            <code>      ? x</code>
         </line>
-        <line hits="4" number="31">
-            <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="18">
+            <code>      : ((x is List) ? x.cast&lt;T&gt;() : (x as Iterable).cast&lt;T&gt;().toList());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="32">
-            <code>    return Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="12" number="33">
-            <code>        ? ((x) =&gt; Converter.toList(x).cast&lt;T&gt;())</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="34">
-            <code>        : ((x) =&gt; Converter.toList(x).map&lt;T&gt;(op).toList());</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="35">
-            <code>  }</code>
-        </line>
-        <line number="36">
+        <line number="19">
             <code/>
         </line>
-        <line number="37">
-            <code>  // set</code>
+        <line hits="1" number="20">
+            <code>  static Cast&lt;List&lt;T&gt;&gt; _mapList&lt;T&gt;(Cast&lt;T&gt; op) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="38">
-            <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="39">
-            <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="40">
-            <code>    final toIterable = Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="41">
-            <code>        ? ((x) =&gt; (x as Iterable).cast&lt;T&gt;())</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0" number="42">
-            <code>        : ((x) =&gt; (x as Iterable).map(op));</code>
-        </line>
-        <line hits="2" number="43">
-            <code>    final toSet = Converter.isIdentity&lt;T&gt;(op)</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="44">
-            <code>        ? ((Set x) =&gt; x.cast&lt;T&gt;())</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="3" number="45">
-            <code>        : ((Set x) =&gt; x.map(op).toSet());</code>
+        <line hits="3" number="21">
+            <code>      (x) =&gt; (x as Iterable).map(op).toList();</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="46">
-            <code>    return (x) =&gt; (x is Set) ? toSet(x) : toIterable(x).toSet();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="47">
-            <code>  }</code>
-        </line>
-        <line number="48">
+        <line number="22">
             <code/>
         </line>
-        <line number="49">
-            <code>  // map</code>
-        </line>
-        <line hits="4" number="50">
-            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K, V&gt;({Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
+        <line hits="4" number="23">
+            <code>  static Set&lt;T&gt; _castSet&lt;T&gt;(dynamic x) =&gt; (x is Set&lt;T&gt;)</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="51">
-            <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line number="24">
+            <code>      ? x</code>
         </line>
-        <line hits="8" number="52">
-            <code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line hits="5" number="25">
+            <code>      : ((x is Set) ? x.cast&lt;T&gt;() : (x as Iterable).cast&lt;T&gt;().toSet());</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="53">
-            <code>      return ((x) =&gt; (x as Map).cast&lt;K, V&gt;());</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line number="26">
+            <code/>
         </line>
-        <line number="54">
-            <code>    } else {</code>
+        <line hits="1" number="27">
+            <code>  static Cast&lt;Set&lt;T&gt;&gt; _mapSet&lt;T&gt;(Cast&lt;T&gt; op) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="55">
-            <code>      return ((x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v))));</code>
+        <line hits="3" number="28">
+            <code>      (x) =&gt; (x as Iterable).map(op).toSet();</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="29">
+            <code/>
+        </line>
+        <line hits="4" number="30">
+            <code>  static Map&lt;K, V&gt; _castMap&lt;K, V&gt;(dynamic x) =&gt;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="31">
+            <code>      (x is Map&lt;K, V&gt;) ? x : (x as Map).cast&lt;K, V&gt;();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="32">
+            <code/>
+        </line>
+        <line hits="1" number="33">
+            <code>  static Cast&lt;Map&lt;K, V&gt;&gt; _mapMap&lt;K, V&gt;(Cast&lt;K&gt; kop, Cast&lt;V&gt; vop) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="34">
+            <code>      (x) =&gt; (x as Map).map((k, v) =&gt; MapEntry(kop(k), vop(v)));</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="56">
-            <code>    }</code>
+        <line number="35">
+            <code/>
         </line>
-        <line number="57">
+        <line hits="3" number="36">
+            <code>  static Cast&lt;T?&gt; allowNull&lt;T extends Object&gt;(Cast&lt;T&gt; op) =&gt;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="7" number="37">
+            <code>      isIdentity(op) ? identity&lt;T?&gt; : ((x) =&gt; (x == null) ? null : op(x));</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="38">
+            <code/>
+        </line>
+        <line number="39">
+            <code>  // non-nullable value</code>
+        </line>
+        <line number="40">
+            <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;();</code>
+        </line>
+        <line number="41">
+            <code/>
+        </line>
+        <line number="42">
+            <code>  // list (of non-nullable T)</code>
+        </line>
+        <line hits="4" number="43">
+            <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="44">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="45">
+            <code>    return isIdentity&lt;T&gt;(op) ? _castList&lt;T&gt; : _mapList(op);</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="46">
             <code>  }</code>
         </line>
+        <line number="47">
+            <code/>
+        </line>
+        <line number="48">
+            <code>  // list (of nullable T)</code>
+        </line>
+        <line hits="1" number="49">
+            <code>  Cast&lt;List&lt;T?&gt;&gt; nlist&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="50">
+            <code>    final op = allowNull(cast ?? value&lt;T&gt;());</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="51">
+            <code>    return isIdentity&lt;T?&gt;(op) ? _castList&lt;T?&gt; : _mapList(op);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="52">
+            <code>  }</code>
+        </line>
+        <line number="53">
+            <code/>
+        </line>
+        <line number="54">
+            <code>  // set (of non-nullable T)</code>
+        </line>
+        <line hits="2" number="55">
+            <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="56">
+            <code>    final op = cast ?? value&lt;T&gt;();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="57">
+            <code>    return isIdentity&lt;T&gt;(op) ? _castSet&lt;T&gt; : _mapSet&lt;T&gt;(op);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
         <line number="58">
+            <code>  }</code>
+        </line>
+        <line number="59">
+            <code/>
+        </line>
+        <line number="60">
+            <code>  // set (of nullable T)</code>
+        </line>
+        <line hits="1" number="61">
+            <code>  Cast&lt;Set&lt;T?&gt;&gt; nset&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="62">
+            <code>    var op = allowNull(cast ?? value&lt;T&gt;());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="63">
+            <code>    return isIdentity&lt;T?&gt;(op) ? _castSet&lt;T?&gt; : _mapSet&lt;T?&gt;(op);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="64">
+            <code>  }</code>
+        </line>
+        <line number="65">
+            <code/>
+        </line>
+        <line number="66">
+            <code>  // map (of non-nullable K, V)</code>
+        </line>
+        <line hits="3" number="67">
+            <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="68">
+            <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
+        </line>
+        <line hits="6" number="69">
+            <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="6" number="70">
+            <code>    return (isIdentity&lt;K&gt;(kop) &amp;&amp; isIdentity&lt;V&gt;(vop))</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="71">
+            <code>        ? _castMap&lt;K, V&gt;</code>
+        </line>
+        <line hits="1" number="72">
+            <code>        : _mapMap&lt;K, V&gt;(kop, vop);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="73">
+            <code>  }</code>
+        </line>
+        <line number="74">
+            <code/>
+        </line>
+        <line number="75">
+            <code>  // map (of non-nullable K, nullable V)</code>
+        </line>
+        <line hits="2" number="76">
+            <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nmap&lt;K extends Object, V extends Object&gt;(</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="77">
+            <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
+        </line>
+        <line hits="6" number="78">
+            <code>    final kop = kcast ?? value&lt;K&gt;(), vop = allowNull(vcast ?? value&lt;V&gt;());</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="79">
+            <code>    return (isIdentity&lt;K&gt;(kop) &amp;&amp; isIdentity&lt;V?&gt;(vop))</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="80">
+            <code>        ? _castMap&lt;K, V?&gt;</code>
+        </line>
+        <line hits="1" number="81">
+            <code>        : _mapMap&lt;K, V?&gt;(kop, vop);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="82">
+            <code>  }</code>
+        </line>
+        <line number="83">
             <code>}</code>
         </line>
     </lines>
