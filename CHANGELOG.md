@@ -1,3 +1,9 @@
+## 7.0.0
+
+- Implement serialization contexts to ser-/deser-ialize while retaining object identities. For instance, when calling a service method `myServiceMethod(x, x)`, previous versions of Squadron would serialize `x` twice, resuling in two different instances on the receiving end. Using `ContextAwareConverter`, `x` can be serialized only once and the same serialized representation of `x` would be used for the second argument. Note that this also supports serialization of graph of objects, including those with cyclical references.
+- Local services can now be plain Dart classes -- squadron_builder will take care of generating the operations map. No need de derive from `WorkerService` anymore.
+- New annotation for squadron_builder: `SquadronService.local()` to indicate the service may run as a local service; `localWorker` to be applied on parameters used to pass a local service on to a worker (only supported for start requests); `withContext` parameter to `SquadronMethod` to force use of a marshaling context when ser-/deser-ializing to/from that service method.
+
 ## 6.2.0
 
 - Implement `jsify`/`dartify`-like functions to handle conversion between Dart / JavaScript. The implementation supports arbitrary `Map`s, `List`s and `Set`s, as well as `BigInt`s.
