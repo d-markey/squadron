@@ -164,9 +164,9 @@
         <line number="49">
             <code>    } catch (ex, st) {</code>
         </line>
-        <line hits="2" number="50">
+        <line hits="4" number="50">
             <code>      _failure(SquadronException.from(ex, st));</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code>      return false;</code>
