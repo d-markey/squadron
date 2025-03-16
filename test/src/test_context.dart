@@ -121,8 +121,7 @@ class TestContext {
   bool _skipTest(bool skip, TestResult result) =>
       skip || (onlyTests.isNotEmpty && !onlyTests.any(result.isMatch));
 
-  void test(String description, dynamic Function() body,
-      {bool skip = false, String? testOn}) {
+  void test(String description, dynamic Function() body, {bool skip = false}) {
     final result = _enterTest(description);
     testResults.add(result);
     if (runMode == RunMode.discover) {
@@ -149,19 +148,18 @@ class TestContext {
             result.pass();
           });
         }
-      }, testOn: testOn);
+      });
     }
     _leave(result);
   }
 
-  void group(String description, dynamic Function() body,
-      {bool skip = false, String? testOn}) {
+  void group(String description, dynamic Function() body, {bool skip = false}) {
     final result = _enterGroup(description);
     if (runMode == RunMode.discover) {
       _knownGroups.add(result.testPath);
       body();
     } else if (!_skipTest(skip, result)) {
-      env.group(description, body, testOn: testOn);
+      env.group(description, body);
     }
     _leave(result);
   }

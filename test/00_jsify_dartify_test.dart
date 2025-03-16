@@ -396,6 +396,6 @@ void execute(TestContext? tc) {
           expect($is(t.$at(0), t.$at(1)), isFalse);
         });
       });
-    }, testOn: 'dart2js || dart2wasm');
+    });
   });
 }

@@ -166,7 +166,7 @@ void execute(TestContext? tc) {
           w.terminate();
         }
       });
-    }, testOn: 'dart2js || dart2wasm');
+    });
   });
 }
 

@@ -30,21 +30,26 @@ void execute(TestContext? tc) {
         expect(Squadron.platformType.isJs, isFalse);
         expect(Squadron.platformType.isWasm, isFalse);
         expect(Squadron.platformType.isWeb, isFalse);
-      }, testOn: 'dart-vm');
+      }, skip: !tc.runnerPlatform.isVm);
 
       tc.test('- JS', () {
         expect(Squadron.platformType.isVm, isFalse);
         expect(Squadron.platformType.isJs, isTrue);
         expect(Squadron.platformType.isWasm, isFalse);
         expect(Squadron.platformType.isWeb, isTrue);
-      }, testOn: 'dart2js');
+      }, skip: !tc.runnerPlatform.isJs);
 
       tc.test('- WASM', () {
         expect(Squadron.platformType.isVm, isFalse);
         expect(Squadron.platformType.isJs, isFalse);
         expect(Squadron.platformType.isWasm, isTrue);
         expect(Squadron.platformType.isWeb, isTrue);
-      }, testOn: 'dart2wasm');
+      }, skip: !tc.runnerPlatform.isWasm);
+
+      tc.test('- Web', () {
+        expect(Squadron.platformType.isVm, isFalse);
+        expect(Squadron.platformType.isWeb, isTrue);
+      }, skip: !tc.runnerPlatform.isWeb);
     });
 
     tc.group('- SQUADRON WORKER - START/STOP', () {
