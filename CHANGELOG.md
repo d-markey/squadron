@@ -1,3 +1,7 @@
+## 7.0.1
+
+- Move stats management out of worker into a specialized class.
+
 ## 7.0.0
 
 - Implement serialization contexts to ser-/deser-ialize while retaining object identities. For instance, when calling a service method `myServiceMethod(x, x)`, previous versions of Squadron would serialize `x` twice, resuling in two different instances on the receiving end. Using `ContextAwareConverter`, `x` can be serialized only once and the same serialized representation of `x` would be used for the second argument. Note that this also supports serialization of graph of objects, including those with cyclical references.

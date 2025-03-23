@@ -56,51 +56,58 @@ void execute(TestContext? tc) {
       tc.test('- Start & stop', () async {
         await TestWorker(tc).useAsync((w) async {
           expect(w.isConnected, isFalse);
-          expect(w.upTime, Duration.zero);
-          expect(w.idleTime, Duration.zero);
-          expect(w.isStopped, isFalse);
+          var stats = w.stats;
+          expect(stats.upTime, Duration.zero);
+          expect(stats.idleTime, Duration.zero);
+          expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
           expect(channel, isNotNull);
           expect(w.isConnected, isTrue);
 
           await Future.delayed(delay_80ms * 2);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(w.isStopped, isFalse);
-          expect(w.idleTime, lessThanOrEqualTo(w.upTime));
+          stats = w.stats;
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.isStopped, isFalse);
+          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
 
           w.stop();
-          expect(w.isStopped, isTrue);
-          final upTime = w.upTime;
+          stats = w.stats;
+          expect(stats.isStopped, isTrue);
+          final upTime = stats.upTime;
           expect(w.isConnected, isFalse);
-          expect(w.upTime, greaterThan(Duration.zero));
+          expect(stats.upTime, greaterThan(Duration.zero));
 
           await Future.delayed(delay_80ms);
-          expect(w.upTime, upTime);
-          expect(w.idleTime, greaterThanOrEqualTo(delay_80ms));
+          stats = w.stats;
+          expect(stats.upTime, upTime);
+          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
         });
       });
 
       tc.test('- Start & terminate (sync)', () async {
         await TestWorker(tc).useAsync((w) async {
           expect(w.isConnected, isFalse);
-          expect(w.upTime, Duration.zero);
-          expect(w.idleTime, Duration.zero);
-          expect(w.isStopped, isFalse);
+          var stats = w.stats;
+          expect(stats.upTime, Duration.zero);
+          expect(stats.idleTime, Duration.zero);
+          expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
           expect(channel, isNotNull);
           expect(w.isConnected, isTrue);
 
           await Future.delayed(delay_80ms * 2);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(w.isStopped, isFalse);
-          expect(w.idleTime, lessThanOrEqualTo(w.upTime));
+          stats = w.stats;
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.isStopped, isFalse);
+          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
 
           final duration = delay_80ms * 6;
           Future.delayed(duration * 0.5, () {
             w.terminate();
-            expect(w.isStopped, isTrue);
+            stats = w.stats;
+            expect(stats.isStopped, isTrue);
           });
 
           try {
@@ -110,37 +117,42 @@ void execute(TestContext? tc) {
             // expected: the "cpu" task has been terminated
           }
 
-          expect(w.isStopped, isTrue);
-          final upTime = w.upTime;
+          stats = w.stats;
+          expect(stats.isStopped, isTrue);
+          final upTime = stats.upTime;
           expect(w.isConnected, isFalse);
-          expect(w.upTime, greaterThan(Duration.zero));
+          expect(stats.upTime, greaterThan(Duration.zero));
 
           await Future.delayed(delay_80ms);
-          expect(w.upTime, upTime);
-          expect(w.idleTime, greaterThanOrEqualTo(delay_80ms));
+          stats = w.stats;
+          expect(stats.upTime, upTime);
+          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
         });
       });
 
       tc.test('- Start & terminate (async)', () async {
         await TestWorker(tc).useAsync((w) async {
           expect(w.isConnected, isFalse);
-          expect(w.upTime, Duration.zero);
-          expect(w.idleTime, Duration.zero);
-          expect(w.isStopped, isFalse);
+          var stats = w.stats;
+          expect(stats.upTime, Duration.zero);
+          expect(stats.idleTime, Duration.zero);
+          expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
           expect(channel, isNotNull);
           expect(w.isConnected, isTrue);
 
           await Future.delayed(delay_80ms * 2);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(w.isStopped, isFalse);
-          expect(w.idleTime, lessThanOrEqualTo(w.upTime));
+          stats = w.stats;
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.isStopped, isFalse);
+          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
 
           final duration = delay_80ms * 6;
           Future.delayed(duration * 0.5, () {
             w.terminate();
-            expect(w.isStopped, isTrue);
+            stats = w.stats;
+            expect(stats.isStopped, isTrue);
           });
 
           try {
@@ -150,14 +162,16 @@ void execute(TestContext? tc) {
             // expected: the "io" task has been terminated
           }
 
-          expect(w.isStopped, isTrue);
-          final upTime = w.upTime;
+          stats = w.stats;
+          expect(stats.isStopped, isTrue);
+          final savedUpTime = stats.upTime;
           expect(w.isConnected, isFalse);
-          expect(w.upTime, greaterThan(Duration.zero));
+          expect(stats.upTime, greaterThan(Duration.zero));
 
           await Future.delayed(delay_80ms);
-          expect(w.upTime, upTime);
-          expect(w.idleTime, greaterThanOrEqualTo(delay_80ms));
+          stats = w.stats;
+          expect(stats.upTime, savedUpTime);
+          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
         });
       });
 
@@ -202,12 +216,12 @@ void execute(TestContext? tc) {
       tc.test('- Cannot restart after stop', () async {
         await TestWorker(tc).useAsync((w) async {
           await w.start();
-          expect(w.isStopped, isFalse);
+          expect(w.stats.isStopped, isFalse);
 
           await Future.delayed(delay_80ms);
 
           w.stop();
-          expect(w.isStopped, isTrue);
+          expect(w.stats.isStopped, isTrue);
 
           await Future.delayed(delay_80ms);
 
@@ -325,51 +339,58 @@ void execute(TestContext? tc) {
                 .whenComplete(() => completedTasks.add(id));
           }
 
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, isZero);
-          expect(w.totalWorkload, isZero);
+          var stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, isZero);
+          expect(stats.totalWorkload, isZero);
 
           await createTask(delay_80ms); // task #1
 
           expect(completedTasks, contains(1)); // #1 has completed
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 1);
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 1);
 
           final task = createTask(delay_80ms * 3); // task #2
 
           expect(completedTasks, contains(1)); // #2 is pending
-          expect(w.workload, 1);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 1);
+          stats = w.stats;
+          expect(stats.workload, 1);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 1);
 
           await Future.delayed(delay_80ms);
 
           expect(completedTasks, contains(1)); // #2 is still pending
-          expect(w.workload, 1);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 1);
+          stats = w.stats;
+          expect(stats.workload, 1);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 1);
 
           await task;
 
           expect(completedTasks, containsAll([1, 2])); // #2 has completed
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 2);
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 2);
 
           await createTask(delay_80ms); // task #3
 
           expect(completedTasks, containsAll([1, 2, 3])); // #3 has completed
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 3);
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 3);
 
           w.stop();
 
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 1);
-          expect(w.totalWorkload, 3);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms * 5));
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 1);
+          expect(stats.totalWorkload, 3);
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 5));
         });
       });
 
@@ -386,9 +407,10 @@ void execute(TestContext? tc) {
 
           await w.start();
 
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, isZero);
-          expect(w.totalWorkload, isZero);
+          var stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, isZero);
+          expect(stats.totalWorkload, isZero);
 
           var tasks = [
             createTask(delay_80ms), // task 1
@@ -397,19 +419,21 @@ void execute(TestContext? tc) {
           ];
 
           expect(completedTasks, isEmpty);
-          expect(w.workload, 3);
-          expect(w.maxWorkload, 3);
-          expect(w.totalWorkload, isZero);
+          stats = w.stats;
+          expect(stats.workload, 3);
+          expect(stats.maxWorkload, 3);
+          expect(stats.totalWorkload, isZero);
 
           await Future.wait(tasks);
 
           // all tasks have completed
           expect(completedTasks, containsAll([1, 2, 3]));
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 3);
-          expect(w.totalWorkload, 3);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms * 5));
-          expect(w.upTime, lessThanOrEqualTo(delay_80ms * 7));
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 3);
+          expect(stats.totalWorkload, 3);
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 5));
+          expect(stats.upTime, lessThanOrEqualTo(delay_80ms * 7));
 
           /////////// time origin for next tasks ///////////
 
@@ -419,52 +443,59 @@ void execute(TestContext? tc) {
           createTask(delay_80ms * 3); // #6 complete at ~3 delays
 
           expect(completedTasks, isEmpty);
-          expect(w.workload, 3);
-          expect(w.maxWorkload, 3);
-          expect(w.totalWorkload, 3);
+          stats = w.stats;
+          expect(stats.workload, 3);
+          expect(stats.maxWorkload, 3);
+          expect(stats.totalWorkload, 3);
 
           // 1 delay: all tasks still pending
           await Future.delayed(delay_80ms);
           expect(completedTasks, isEmpty);
-          expect(w.workload, 3);
-          expect(w.maxWorkload, 3);
-          expect(w.totalWorkload, 3);
+          stats = w.stats;
+          expect(stats.workload, 3);
+          expect(stats.maxWorkload, 3);
+          expect(stats.totalWorkload, 3);
 
           // 4 delays: #6 has completed
           await Future.delayed(delay_80ms * 3);
           expect(completedTasks, contains(6));
-          expect(w.workload, 2);
-          expect(w.maxWorkload, 3);
-          expect(w.totalWorkload, 4);
+          stats = w.stats;
+          expect(stats.workload, 2);
+          expect(stats.maxWorkload, 3);
+          expect(stats.totalWorkload, 4);
 
           createTask(delay_80ms * 5); // #7 completes at ~9 delays
           createTask(delay_80ms * 3); // #8 completes at ~7 delays
 
           expect(completedTasks, contains(6));
-          expect(w.workload, 4);
-          expect(w.maxWorkload, 4);
-          expect(w.totalWorkload, 4);
+          stats = w.stats;
+          expect(stats.workload, 4);
+          expect(stats.maxWorkload, 4);
+          expect(stats.totalWorkload, 4);
 
           // 8 delays: #5 and #8 have completed
           await Future.delayed(delay_80ms * 4);
           expect(completedTasks, containsAll([5, 6, 8]));
-          expect(w.workload, 2);
-          expect(w.maxWorkload, 4);
-          expect(w.totalWorkload, 6);
+          stats = w.stats;
+          expect(stats.workload, 2);
+          expect(stats.maxWorkload, 4);
+          expect(stats.totalWorkload, 6);
 
           // 11 delays: all tasks have completed
           await Future.delayed(delay_80ms * 3);
           expect(completedTasks, containsAll([4, 5, 6, 7, 8]));
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 4);
-          expect(w.totalWorkload, 8);
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 4);
+          expect(stats.totalWorkload, 8);
 
           w.stop();
-          expect(w.workload, isZero);
-          expect(w.maxWorkload, 4);
-          expect(w.totalWorkload, 8);
-          expect(w.upTime, greaterThanOrEqualTo(delay_80ms * 16));
-          expect(w.upTime, lessThan(delay_80ms * 19));
+          stats = w.stats;
+          expect(stats.workload, isZero);
+          expect(stats.maxWorkload, 4);
+          expect(stats.totalWorkload, 8);
+          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 16));
+          expect(stats.upTime, lessThan(delay_80ms * 19));
         });
       });
     });

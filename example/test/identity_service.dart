@@ -3,28 +3,31 @@ import 'dart:async';
 import 'package:squadron/squadron.dart';
 
 // The service interface
-abstract class IdentityService implements WorkerService {
-  FutureOr<String> whoAreYou();
+abstract class LoggingService implements WorkerService {
+  FutureOr<void> log(String threadId, Object message);
 
-  static const whoAreYouCommand = 1;
+  static const logCommand = 1;
 
   @override
   late final OperationsMap operations = OperationsMap({
-    IdentityService.whoAreYouCommand: (req) => whoAreYou(),
+    LoggingService.logCommand: (req) =>
+        log(Squadron.converter.value<String>()(req.args[0]), req.args[1]),
   });
 }
 
 // The service implementation
-class IdentityServiceImpl extends IdentityService {
+class LoggingServiceImpl extends LoggingService {
   @override
-  String whoAreYou() => threadId;
+  void log(String threadId, Object message) {
+    print('[LOG ${DateTime.now()}] [$threadId] $message');
+  }
 }
 
 // The service client: this class will be used in workers that need to call the service implementation
-class IdentityClient extends LocalWorkerClient implements IdentityService {
-  IdentityClient(super.channel);
+class LoggingClient extends LocalWorkerClient implements LoggingService {
+  LoggingClient(super.channel);
 
   @override
-  Future<String> whoAreYou() => send(IdentityService.whoAreYouCommand)
-      .then(Squadron.converter.value<String>());
+  void log(String threadId, Object message) =>
+      send(LoggingService.logCommand, args: [threadId, message]);
 }

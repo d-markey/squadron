@@ -9,13 +9,13 @@ base class SampleWorkerPool extends WorkerPool<SampleWorker>
     implements SampleService {
   SampleWorkerPool(
       EntryPoint entryPoint,
-      LocalWorker<IdentityService> identityServer,
+      LocalWorker<LoggingService> loggingServer,
       PlatformThreadHook? threadHook,
       ConcurrencySettings concurrencySettings)
       : super(
             (ExceptionManager exceptionManager) => SampleWorker(
                   entryPoint,
-                  identityServer,
+                  loggingServer,
                   threadHook: threadHook,
                   exceptionManager: exceptionManager,
                 ),
@@ -28,19 +28,17 @@ base class SampleWorkerPool extends WorkerPool<SampleWorker>
   @override
   Future cpu({required int milliseconds}) =>
       execute((w) => w.cpu(milliseconds: milliseconds));
-
-  @override
-  Future<String> whoAreYouTalkingTo() => execute((w) => w.whoAreYouTalkingTo());
 }
 
 base class SampleWorker extends Worker implements SampleService {
-  SampleWorker(super.entryPoint, this.identityServer,
-      {super.threadHook, super.exceptionManager});
+  SampleWorker(super.entryPoint, LocalWorker<LoggingService> loggingServer,
+      {super.threadHook, super.exceptionManager})
+      : _channel = loggingServer.channel?.share();
 
-  final LocalWorker<IdentityService> identityServer;
+  final Channel? _channel;
 
   @override
-  List? getStartArgs() => [identityServer.channel?.serialize()];
+  List? getStartArgs() => [_channel?.serialize()];
 
   @override
   Future io({required int milliseconds}) =>
@@ -51,6 +49,8 @@ base class SampleWorker extends Worker implements SampleService {
       send(SampleService.cpuCommand, args: [milliseconds]);
 
   @override
-  Future<String> whoAreYouTalkingTo() =>
-      send(SampleService.whoAreYouTalkingToCommand).then((x) => x as String);
+  void stop() {
+    _channel?.close();
+    super.stop();
+  }
 }

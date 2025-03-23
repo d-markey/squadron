@@ -23,6 +23,7 @@ const $timeoutExceptionType = '\$T';
 @internal
 typedef SquadronExceptionDeserializer = SquadronException? Function(List props);
 
+@internal
 final builtinExceptions = <String, SquadronExceptionDeserializer>{
   $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,
   $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,

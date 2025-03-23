@@ -1,43 +1,43 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
 
 abstract class SampleService {
-  Future io({required int milliseconds});
-  FutureOr cpu({required int milliseconds});
-  FutureOr<String> whoAreYouTalkingTo();
+  Future<void> io({required int milliseconds});
+  FutureOr<void> cpu({required int milliseconds});
 
   // command IDs
   static const ioCommand = 1;
   static const cpuCommand = 2;
-  static const whoAreYouTalkingToCommand = 3;
 }
 
 class SampleServiceImpl implements SampleService, WorkerService {
-  SampleServiceImpl(this._identityClient);
+  SampleServiceImpl(this._logger) {
+    _logger.log(threadId, '$this initialized');
+  }
 
-  final IdentityClient _identityClient;
-  final Logger _logger = Logger(level: Level.all);
-
-  @override
-  Future io({required int milliseconds}) =>
-      Future.delayed(Duration(milliseconds: milliseconds));
+  final LoggingClient _logger;
 
   @override
-  void cpu({required int milliseconds}) {
-    final sw = Stopwatch()..start();
-    while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
+  Future<void> io({required int milliseconds}) async {
+    // io() is asynchronous --> log messages will be received separately because
+    // of the "await" between both calls
+    _logger.log(threadId, '[${DateTime.now()}] start io($milliseconds)...');
+    await Future.delayed(Duration(milliseconds: milliseconds));
+    _logger.log(threadId, '[${DateTime.now()}] done  io($milliseconds)...');
   }
 
   @override
-  Future<String> whoAreYouTalkingTo() async {
-    // this is where the local worker is called
-    final localWorkerIdentity = await _identityClient.whoAreYou();
-    _logger.i('talking to $localWorkerIdentity');
-    return 'I am $threadId, and I am talking to $localWorkerIdentity.';
+  void cpu({required int milliseconds}) {
+    // cpu() is synchronous --> both log messages will be received ~ at the same time
+    _logger.log(threadId, '[${DateTime.now()}] start cpu($milliseconds)...');
+    final sw = Stopwatch()..start();
+    while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
+    _logger.log(threadId, '[${DateTime.now()}] done  cpu($milliseconds)...');
+    // log() is asynchronous, so previous calls were only registered to the
+    // event loop, and cannot execute before this point
   }
 
   // command IDs --> command handlers
@@ -45,7 +45,5 @@ class SampleServiceImpl implements SampleService, WorkerService {
   late final operations = OperationsMap({
     SampleService.ioCommand: (WorkerRequest r) => io(milliseconds: r.args[0]),
     SampleService.cpuCommand: (WorkerRequest r) => cpu(milliseconds: r.args[0]),
-    SampleService.whoAreYouTalkingToCommand: (WorkerRequest r) =>
-        whoAreYouTalkingTo(),
   });
 }

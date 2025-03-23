@@ -536,6 +536,7 @@ file:///C:/_Projects/github/squadron/lib/src/tokens/_squadron_cancelation_token.
 file:///C:/_Projects/github/squadron/lib/src/typedefs.dart
 file:///C:/_Projects/github/squadron/lib/src/utils.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker.dart
+file:///C:/_Projects/github/squadron/lib/src/worker/worker.stats.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart

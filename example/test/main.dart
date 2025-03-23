@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import 'identity_service.dart';
@@ -9,29 +8,24 @@ import 'sample_service_worker_pool.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
 
 void main() async {
-  final sw = Stopwatch()..start();
+  final loggingService = LoggingServiceImpl();
 
-  final logger = Logger(level: Level.all);
-
-  void log([String? message]) {
-    message ??= '';
-    print(message.isEmpty ? ' ' : '[${sw.elapsed}] $message');
-    logger.i(message.isEmpty ? ' ' : '[${sw.elapsed}] $message');
+  void log(String message) {
+    loggingService.log(threadId, message.isEmpty ? ' ' : message);
   }
 
-  final loops = 5;
-  final max = 50;
+  final loops = 2;
+  final max = 10;
 
-  log();
+  log('');
   log('loops = $loops');
   log('max = $max');
   log('threadId = $threadId');
-  log();
+  log('');
 
-  final identityService = IdentityServiceImpl();
-  final localIdentityWorker = LocalWorker.create(identityService);
-  final identityClient = IdentityClient(localIdentityWorker.channel!.share());
-  final sampleService = SampleServiceImpl(identityClient);
+  final localLoggingWorker = LocalWorker.create(loggingService);
+  final loggingClient = LoggingClient(localLoggingWorker.channel!);
+  final sampleService = SampleServiceImpl(loggingClient);
   SampleWorkerPool? pool;
 
   Future<Stopwatch> measure(SampleService srv) async {
@@ -40,8 +34,8 @@ void main() async {
       final futures = <Future>[];
       for (var n = 0; n < max; n++) {
         futures
-          ..add(Future(() => srv.cpu(milliseconds: n)))
-          ..add(srv.io(milliseconds: n));
+          ..add(Future(() => srv.cpu(milliseconds: (n + 1) * 20)))
+          ..add(srv.io(milliseconds: (n + 1) * 20));
       }
       await Future.wait(futures);
     }
@@ -57,7 +51,7 @@ void main() async {
     final syncElapsed = syncSw.elapsedMicroseconds;
 
     log('sync version completed in ${Duration(microseconds: syncElapsed)}');
-    log();
+    log('');
 
     ///////////// POOL /////////////
     log('///////////// POOL /////////////');
@@ -70,9 +64,8 @@ void main() async {
       log('Worker created with runtime type = ${worker.runtimeType}, threadId=$threadId');
     }
 
-    pool = SampleWorkerPool(sample_isolate.start, localIdentityWorker,
+    pool = SampleWorkerPool(sample_isolate.start, localLoggingWorker,
         workerHook, concurrencySettings);
-    pool.channelLogger = logger;
     await pool.start();
     log('pool started');
 
@@ -80,7 +73,7 @@ void main() async {
     final maxIdle = Duration(milliseconds: 1000);
 
     final monitor = Timer.periodic(Duration(milliseconds: 250), (timer) {
-      pool?.stop((w) => w.idleTime > maxIdle);
+      pool?.stop((w) => w.stats.idleTime > maxIdle);
     });
 
     log('pool monitor started');
@@ -89,7 +82,7 @@ void main() async {
 
     // force maximum load on pool
     for (var i = 0; i < pool.maxConcurrency; i++) {
-      tasks.add(pool.cpu(milliseconds: 5));
+      tasks.add(pool.cpu(milliseconds: 20));
     }
 
     await Future.wait(tasks);
@@ -105,22 +98,12 @@ void main() async {
     final asyncElapsed = asyncSw.elapsedMicroseconds;
 
     log('async version completed in ${Duration(microseconds: asyncElapsed)}');
-    log();
+    log('');
 
     ///////////// LOCAL WORKER /////////////
     log('///////////// LOCAL WORKER /////////////');
 
-    log('IdentityClient is ${await identityClient.whoAreYou()}.');
-    log(await sampleService.whoAreYouTalkingTo());
-
-    tasks.clear();
-    for (var i = 0; i < pool.maxConcurrency + 1; i++) {
-      tasks.add(pool.whoAreYouTalkingTo().then(log));
-    }
-    await Future.wait(tasks);
-
-    // stop the local identity worker
-    localIdentityWorker.stop();
+    loggingClient.log(threadId, 'logging from the main thread');
 
     // shutdown pool
     log('waiting for monitor to stop workers...');
@@ -143,16 +126,20 @@ void main() async {
     monitor.cancel();
 
     log('pool stats:');
-    log('  * size=${pool.size}, workload=${pool.workload}, maxLoad=${pool.maxWorkload}, totalWorkload=${pool.totalWorkload}, totalErrors=${pool.totalErrors}');
+    final stats = pool.stats.toList(), fullStats = pool.fullStats.toList();
+    log('  * size=${pool.size}, workload=${stats.workload}, totalWorkload=${fullStats.totalWorkload}, totalErrors=${fullStats.totalErrors}');
 
-    log();
+    log('');
   } on WorkerException catch (e) {
     log(e.message);
-    log(e.stackTrace?.toString());
+    log((e.stackTrace ?? StackTrace.empty).toString());
   } finally {
     pool?.stop();
   }
 
   log('Done.');
-  log();
+  log('');
+
+  // stop the local identity worker
+  localLoggingWorker.stop();
 }

@@ -23,6 +23,7 @@ class WorkerRunner {
   final internalLogger = InternalLogger();
 
   WorkerService? _service;
+  OperationsMap? _operations;
 
   final _cancelTokens = <String, CancelationTokenReference>{};
 
@@ -39,9 +40,21 @@ class WorkerRunner {
     final runner = WorkerRunner((r) {
       r.internalLogger.t('Terminating local Worker');
       r._service = null;
+      r._operations = null;
     });
     runner._service = localWorker;
+    runner._operations = localWorker.operations;
+    runner._checkOperations();
     return runner;
+  }
+
+  void _checkOperations() {
+    final invalidKeys = _operations!.keys.where((k) => k <= 0).toList();
+    if (invalidKeys.isNotEmpty) {
+      throw SquadronErrorImpl.create(
+        'Invalid command identifier${(invalidKeys.length > 1) ? 's' : ''} in service operations map: ${invalidKeys.join(', ')}. Command ids must be positive.',
+      );
+    }
   }
 
   /// Called by the platform worker upon startup, in response to a start
@@ -72,17 +85,13 @@ class WorkerRunner {
 
       if (!startRequest.isConnection) {
         throw SquadronErrorImpl.create('Connection request expected');
-      } else if (_service != null) {
+      } else if (_service != null || _operations != null) {
         throw SquadronErrorImpl.create('Already connected');
       }
 
       _service = await initializer(startRequest);
-
-      if (_service!.operations.keys.where((k) => k <= 0).isNotEmpty) {
-        throw SquadronErrorImpl.create(
-          'Invalid command identifier in service operations map; command ids must be > 0',
-        );
-      }
+      _operations = _service!.operations;
+      _checkOperations();
 
       channel.connect(channelInfo);
 
@@ -152,7 +161,7 @@ class WorkerRunner {
         // connection requests are handled by connect().
         throw SquadronErrorImpl.create(
             'Unexpected connection request: $request');
-      } else if (_service == null) {
+      } else if (_operations == null) {
         // commands are not available yet (maybe connect() wasn't called or awaited)
         throw SquadronErrorImpl.create('Worker service is not ready');
       }
@@ -170,7 +179,7 @@ class WorkerRunner {
       final tokenRef = _begin(request);
       try {
         // find the operation matching the request command
-        final cmd = request.command, op = _service?.operations[cmd];
+        final cmd = request.command, op = _operations![cmd];
         if (op == null) {
           throw SquadronErrorImpl.create('Unknown command: $cmd');
         }

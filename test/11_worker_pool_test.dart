@@ -70,7 +70,7 @@ void execute(TestContext? tc) {
           // install the worker monitor
           var stopped = 0;
           final timer = Timer.periodic(delay_80ms * 0.5, (timer) {
-            stopped += p.stop((w) => w.idleTime > delay_80ms);
+            stopped += p.stop((w) => w.stats.idleTime > delay_80ms);
           });
 
           try {

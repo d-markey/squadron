@@ -45,6 +45,12 @@ class WorkerStat {
   Duration idleTime;
 }
 
+extension WorkerStatsExt on Iterable<WorkerStat> {
+  int get workload => fold<int>(0, (p, s) => p + s.workload);
+  int get totalWorkload => fold<int>(0, (p, s) => p + s.totalWorkload);
+  int get totalErrors => fold<int>(0, (p, s) => p + s.totalErrors);
+}
+
 @internal
 extension WorkerStatImpl on WorkerStat {
   static WorkerStat create(

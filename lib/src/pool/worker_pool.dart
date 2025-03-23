@@ -90,26 +90,10 @@ abstract class WorkerPool<W extends Worker>
   int get maxSize => _maxSize;
   int _maxSize = 0;
 
-  /// Current workload.
-  int get workload => stats.fold<int>(0, (p, w) => p + w.workload);
-
-  /// Maximum workload.
-  int get maxWorkload => fullStats.fold<int>(
-      0, (p, s) => (p >= s.maxWorkload) ? p : s.maxWorkload);
-
-  /// Total workload.
-  int get totalWorkload =>
-      fullStats.fold<int>(0, (p, s) => p + s.totalWorkload);
-
-  /// Number of errors.
-  int get totalErrors => fullStats.fold<int>(0, (p, s) => p + s.totalErrors);
-
-  final _workerPoolListeners =
-      <Object, void Function(W worker, bool removed)>{};
+  final _workerPoolListeners = <Object, void Function(WorkerStat, bool)>{};
 
   /// Registers a callback to be invoked when a worker thread is added or removed from the pool.
-  Object registerWorkerPoolListener(
-      void Function(W worker, bool removed) listener) {
+  Object registerWorkerPoolListener(void Function(WorkerStat, bool) listener) {
     final token = Object();
     _workerPoolListeners[token] = listener;
     return token;
@@ -117,7 +101,7 @@ abstract class WorkerPool<W extends Worker>
 
   /// Unregisters a callback.
   void unregisterWorkerPoolListener(
-      {Function(W worker, bool removed)? listener, Object? token}) {
+      {Function(WorkerStat, bool)? listener, Object? token}) {
     if (token != null) {
       _workerPoolListeners.remove(token);
     } else if (listener != null) {
@@ -197,11 +181,14 @@ abstract class WorkerPool<W extends Worker>
   }
 
   void _notify(W worker, {required bool removed}) {
-    for (var listener in _workerPoolListeners.values) {
-      try {
-        listener(worker, removed);
-      } catch (ex) {
-        // swallow error from user land
+    if (_workerPoolListeners.isNotEmpty) {
+      final stats = worker.stats;
+      for (var listener in _workerPoolListeners.values) {
+        try {
+          listener(stats, removed);
+        } catch (ex) {
+          // swallow error from user land
+        }
       }
     }
   }

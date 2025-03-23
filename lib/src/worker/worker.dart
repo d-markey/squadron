@@ -20,6 +20,8 @@ import '../typedefs.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
 
+part 'worker.stats.dart';
+
 /// Base worker class.
 ///
 /// This base class takes care of creating the [Channel] and firing up the
@@ -57,66 +59,10 @@ abstract class Worker
   /// The [Worker]'s start arguments.
   List? getStartArgs();
 
-  /// Start timestamp (in microseconds since Epoch).
-  int? _started;
-
-  /// Stopped timestamp (in microseconds since Epoch).
-  int? _stopped;
-
-  /// Current workload.
-  int get workload => _workload;
-  int _workload = 0;
-
-  /// Maximum acceptable workload.
-  int get maxWorkload => _maxWorkload;
-  int _maxWorkload = 0;
-
-  /// Total processed workload.
-  int get totalWorkload => _totalWorkload;
-  int _totalWorkload = 0;
-
-  /// Total errors.
-  int get totalErrors => _totalErrors;
-  int _totalErrors = 0;
-
-  /// Up time.
-  Duration get upTime => (_started == null)
-      ? Duration.zero
-      : Duration(microseconds: (_stopped ?? microsecTimeStamp()) - _started!);
-
-  /// Idle time.
-  Duration get idleTime => (_workload > 0 || _idle == null)
-      ? Duration.zero
-      : Duration(microseconds: microsecTimeStamp() - _idle!);
-  int? _idle;
-
-  /// Indicates if the [Worker] has been stopped.
-  bool get isStopped => _stopped != null;
-
-  /// [Worker] status.
-  String get status {
-    if (isStopped) {
-      return 'STOPPED';
-    } else if (_workload == 0) {
-      return 'IDLE';
-    } else {
-      return 'WORKING($_workload)';
-    }
-  }
-
   /// [Worker] statistics.
-  WorkerStat get stats => WorkerStatImpl.create(
-        runtimeType,
-        hashCode,
-        isStopped,
-        status,
-        workload,
-        maxWorkload,
-        totalWorkload,
-        totalErrors,
-        upTime,
-        idleTime,
-      );
+  WorkerStat get stats => _stats.snapshot;
+
+  late final _stats = _Stats(this);
 
   /// Returns true if the [Worker] is connected i.e., it has a valid [Channel].
   /// Returns false otherwise.
@@ -127,19 +73,6 @@ abstract class Worker
 
   Channel? _channel;
   Future<Channel>? _openChannel;
-
-  void _enter(Object task) {
-    _workload++;
-    if (_workload > _maxWorkload) {
-      _maxWorkload = _workload;
-    }
-  }
-
-  void _leave(Object task) {
-    _workload--;
-    _totalWorkload++;
-    _idle = microsecTimeStamp();
-  }
 
   /// Sends a workload to the worker.
   @override
@@ -163,8 +96,8 @@ abstract class Worker
       completer.failure(SquadronException.from(ex, null, command));
     });
 
-    _enter(completer);
-    completer.future.whenComplete(() => _leave(completer)).ignore();
+    _stats.beginWork();
+    completer.future.whenComplete(_stats.endWork).ignore();
 
     try {
       final res = await channel.sendRequest(
@@ -176,7 +109,7 @@ abstract class Worker
       );
       completer.success(res);
     } catch (ex, st) {
-      _totalErrors++;
+      _stats.failed();
       completer.failure(SquadronException.from(ex, st, command));
     }
 
@@ -212,8 +145,8 @@ abstract class Worker
         final channel = _channel ?? await start();
         if (controller.isClosed) return;
 
-        _enter(controller);
-        controller.done.whenComplete(() => _leave(controller)).ignore();
+        _stats.beginWork();
+        controller.done.whenComplete(_stats.endWork).ignore();
 
         controller.attachSubscription(channel
             .sendStreamingRequest(
@@ -231,7 +164,7 @@ abstract class Worker
               cancelOnError: false,
             ));
       } catch (ex, st) {
-        _totalErrors++;
+        _stats.failed();
         controller.subscription?.cancel();
         controller.addError(SquadronException.from(ex, st, command));
         controller.close();
@@ -244,7 +177,7 @@ abstract class Worker
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
   Future<Channel> start() async {
-    if (_stopped != null) {
+    if (stats.isStopped) {
       throw WorkerException('Invalid state: worker is stopped');
     }
 
@@ -254,8 +187,7 @@ abstract class Worker
     final channel = _channel ?? await _openChannel;
     if (_channel == null) {
       _channel = channel;
-      _started = microsecTimeStamp();
-      _idle = _started;
+      _stats.start();
     }
     return _channel!;
   }
@@ -263,9 +195,9 @@ abstract class Worker
   /// Stops this worker.
   @override
   void stop() {
-    if (_stopped == null) {
+    if (!_stats.isStopped) {
       channelLogger?.d('Stop worker');
-      _stopped = microsecTimeStamp();
+      _stats.stop();
       _openChannel = null;
       _channel?.close();
       _channel = null;
