@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7898089" lines-covered="124" lines-valid="157" package="src/exceptions" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="27" lines-valid="27" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="27" lines-valid="27" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="27" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_timeout_exception.dart" functions-hit="0" functions-valid="0" lines-hit="15" lines-valid="16" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="15" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="task_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="9" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="exception_manager.dart" functions-hit="0" functions-valid="0" lines-hit="14" lines-valid="19" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="exception_manager.dart" functions-hit="0" functions-valid="0" lines-hit="14" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="14" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_builtin_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="7" lines-valid="7" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="7" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="15" lines-valid="15" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="squadron_timeout_exception.dart" functions-hit="0" functions-valid="0" lines-hit="15" lines-valid="16" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="15" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="task_terminated_exception.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="11" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron_error.dart" functions-hit="0" functions-valid="0" lines-hit="15" lines-valid="15" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="15" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_exception.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="18" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_exception.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="16" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="worker_exception.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="16" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="16" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="19" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="task_terminated_exception.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="11" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_exception.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="18" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_canceled_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="11" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="task_canceled_exception.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="9" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_builtin_exceptions.dart" functions-hit="0" functions-valid="0" lines-hit="7" lines-valid="7" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="7" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

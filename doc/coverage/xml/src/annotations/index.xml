@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90909094" lines-covered="10" lines-valid="11" package="src/annotations" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="squadron_method.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/_Projects/github/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="target_platform.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="3" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="target_platform.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="3" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="3" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_service.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="7" prefix="/_Projects/github/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="squadron_method.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_service.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="7" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="6" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
