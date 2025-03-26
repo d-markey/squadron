@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-16</dd>
+                    <dd>2025-03-26</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -135,101 +135,104 @@
                 <tr class="noop" title="Line 25" id="line25">
                     <td>25</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>33</td><td><code>final builtinExceptions = &lt;String, SquadronExceptionDeserializer&gt;{</code></td>
+                <tr class="noop" title="Line 26" id="line26">
+                    <td>26</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
-                <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>  $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,</code></td>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>33</td><td><code>final builtinExceptions = &lt;String, SquadronExceptionDeserializer&gt;{</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>  $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,</code></td>
+                    <td>28</td><td></td><td></td><td><code>  $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code>  $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,</code></td>
+                    <td>29</td><td></td><td></td><td><code>  $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  $taskCanceledExceptionType: TaskCanceledExceptionExt.deserialize,</code></td>
+                    <td>30</td><td></td><td></td><td><code>  $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code>  $taskTerminatedExceptionType: TaskTerminatedExceptionExt.deserialize,</code></td>
+                    <td>31</td><td></td><td></td><td><code>  $taskCanceledExceptionType: TaskCanceledExceptionExt.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>  $squadronErrorType: SquadronErrorImpl.deserialize,</code></td>
+                    <td>32</td><td></td><td></td><td><code>  $taskTerminatedExceptionType: TaskTerminatedExceptionExt.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  $workerExceptionType: WorkerExceptionImpl.deserialize,</code></td>
+                    <td>33</td><td></td><td></td><td><code>  $squadronErrorType: SquadronErrorImpl.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>};</code></td>
+                    <td>34</td><td></td><td></td><td><code>  $workerExceptionType: WorkerExceptionImpl.deserialize,</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code></code></td>
+                    <td>35</td><td></td><td></td><td><code>};</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>36</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>extension CanceledConversionExt on CanceledException {</code></td>
+                    <td>37</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>2</td><td><code>  SquadronException toSquadronException(</code></td>
+                <tr class="noop" title="Line 38" id="line38">
+                    <td>38</td><td></td><td></td><td><code>extension CanceledConversionExt on CanceledException {</code></td>
                 </tr>
-                <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code></td>
+                <tr class="lineCov" title="Line 39" id="line39">
+                    <td>39</td><td></td><td>2</td><td><code>  SquadronException toSquadronException(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>2</td><td><code>      SquadronCanceledException.from(</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code>        tokenId ?? '',</code></td>
+                <tr class="lineCov" title="Line 41" id="line41">
+                    <td>41</td><td></td><td>2</td><td><code>      SquadronCanceledException.from(</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>        this,</code></td>
+                    <td>42</td><td></td><td></td><td><code>        tokenId ?? '',</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code>        stackTrace,</code></td>
+                    <td>43</td><td></td><td></td><td><code>        this,</code></td>
                 </tr>
                 <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>      );</code></td>
+                    <td>44</td><td></td><td></td><td><code>        stackTrace,</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>}</code></td>
+                    <td>45</td><td></td><td></td><td><code>      );</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code></code></td>
+                    <td>46</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>47</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code>extension TimeoutConversionExt on TimeoutException {</code></td>
+                    <td>48</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>2</td><td><code>  SquadronException toSquadronException(</code></td>
+                <tr class="noop" title="Line 49" id="line49">
+                    <td>49</td><td></td><td></td><td><code>extension TimeoutConversionExt on TimeoutException {</code></td>
                 </tr>
-                <tr class="noop" title="Line 50" id="line50">
-                    <td>50</td><td></td><td></td><td><code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code></td>
+                <tr class="lineCov" title="Line 50" id="line50">
+                    <td>50</td><td></td><td>2</td><td><code>  SquadronException toSquadronException(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>2</td><td><code>      SquadronTimeoutException(</code></td>
+                <tr class="noop" title="Line 51" id="line51">
+                    <td>51</td><td></td><td></td><td><code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>        tokenId ?? '',</code></td>
+                <tr class="lineCov" title="Line 52" id="line52">
+                    <td>52</td><td></td><td>2</td><td><code>      SquadronTimeoutException(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>2</td><td><code>        message ?? 'Operation timeout',</code></td>
+                <tr class="noop" title="Line 53" id="line53">
+                    <td>53</td><td></td><td></td><td><code>        tokenId ?? '',</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>2</td><td><code>        duration,</code></td>
+                    <td>54</td><td></td><td>2</td><td><code>        message ?? 'Operation timeout',</code></td>
                 </tr>
-                <tr class="noop" title="Line 55" id="line55">
-                    <td>55</td><td></td><td></td><td><code>        stackTrace,</code></td>
+                <tr class="lineCov" title="Line 55" id="line55">
+                    <td>55</td><td></td><td>2</td><td><code>        duration,</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
-                    <td>56</td><td></td><td></td><td><code>      );</code></td>
+                    <td>56</td><td></td><td></td><td><code>        stackTrace,</code></td>
                 </tr>
                 <tr class="noop" title="Line 57" id="line57">
-                    <td>57</td><td></td><td></td><td><code>}</code></td>
+                    <td>57</td><td></td><td></td><td><code>      );</code></td>
+                </tr>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

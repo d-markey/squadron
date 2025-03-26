@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-16</dd>
+                    <dd>2025-03-26</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -124,7 +124,7 @@
                     <td>21</td><td></td><td></td><td><code>  /// Whether this [PoolWorker] is stopped or doing nothing.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>6</td><td><code>  bool get isIdle =&gt; worker.isStopped || _capacity == _maxWorkload;</code></td>
+                    <td>22</td><td></td><td>7</td><td><code>  bool get isIdle =&gt; worker.stats.isStopped || _capacity == _maxWorkload;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code></code></td>
@@ -190,7 +190,7 @@
                     <td>43</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>12</td><td><code>  static bool isStopped(PoolWorker w) =&gt; w.worker.isStopped;</code></td>
+                    <td>44</td><td></td><td>16</td><td><code>  static bool isStopped(PoolWorker w) =&gt; w.worker.stats.isStopped;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
                     <td>45</td><td></td><td>3</td><td><code>  static WorkerStat getStats(PoolWorker w) =&gt; w.worker.stats;</code></td>

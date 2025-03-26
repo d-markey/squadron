@@ -41,12 +41,12 @@ Supports native, JavaScript & Web Assembly platforms.
 
 ```yaml
 dependencies:
-  squadron: ^7.0.0
+  squadron: ^7.1.0
   # ...
 
 dev_dependencies:
   build_runner:
-  squadron_builder: ^7.0.0
+  squadron_builder: ^7.1.0
   # ...
 ```
 
@@ -64,7 +64,7 @@ Create a class containing the code you intend to run in a dedicated thread and m
 
 * use **`SquadronMethod`** for the methods you want to expose.
 
-Service methods must return a `Future<T>`, a `FutureOr<T>` or a `Stream<T>`.
+Service methods must return a `Future<T>`, a `FutureOr<T>`, or a `Stream<T>`.
 
 ```dart
 // file hello_world.dart
@@ -364,8 +364,8 @@ const carMarshaler = IdentityMarshaler<Car>();
 
 ///////////// file car.dart /////////////
 
-import 'car_marshaler.vm.dart'
-  if (dart.library.js_interop) 'car_marshaler.web.dart';
+import 'car_marshaler.web.dart'
+  if (dart.library.io) 'car_marshaler.vm.dart';
 
 @carMarshaler
 class Car {
@@ -412,9 +412,27 @@ mother.children.addAll([me, brother, sister]);
 
 This creates cyclical references that will fail to marshal unless a marshaling context is used.
 
-Again, Squadron is not opinionated when it comes to serialization: but it will try and support you in as many ways as possible. You keep full control over the way you choose to serialize your custom classes. For instance, you may choose to not send children as full `Person` instances and instead send just some ids or a subset of properties that won't introduce circular dependencies. It's up to you to assess pros and cons and implement your own solution.
+Again, Squadron is not opinionated when it comes to serialization: it will try and support you in as many ways as possible. You keep full control over the way you choose to serialize your custom classes. For instance, you may choose to not send children as full `Person` instances and instead send just some ids or a subset of properties that won't introduce circular dependencies. It's up to you to assess pros and cons and implement your own solution.
 
 For a concrete example, see https://github.com/d-markey/squadron/blob/main/test/worker_services/persons.
+
+## <a name="exceptions"></a>Exceptions
+
+Exceptions thrown form a `Worker` also need to cross thread-boundaries.
+
+You can implement custom exceptions by deriving from `WorkerException`.
+
+* Custom exception classes must  override the `serialize()` method to return an array with the exception's properties. The first item must be a code of your choice (refered to as the "Exception Type ID").
+* A static function to deserialize this array and recreate the custom exception will also be required.
+* Finally, an `ExceptionManager` must be provided to `Worker`s and `WorkerPool`s. The custom exception deserialization function must be registered with the `ExceptionManager` and associated to the "Exception Type ID".
+
+If an exception occurs in the worker code ("background thread" or callee side), Squadron will serialize it and revive it on the caller side (the "main thread").
+
+## <a name="logging"></a>Logging
+
+Logging is easy: just use Dart's `print()` function! There's one caveat when debugging your code in the browser: Web workers are not attached to Dart's debugger, so log messages will end-up in the browser's console.
+
+It is possible to implement a logger and have log messages get redirected to the main thread, which is attached to Dart's debugger. This can be done by using a local worker. For more information, please refer to the `local_logger` example.
 
 ## <a name="thanks"></a>Thanks!
 

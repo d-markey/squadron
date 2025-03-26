@@ -7,14 +7,6 @@ class PersonMarshaler extends GenericMarshaler<Person> {
 
   @override
   dynamic marshal(Person data, [MarshalingContext? context]) {
-    if (Squadron.platformType.isVm) {
-      // fast path on VM platforms
-      // an alternative exists based on conditional imports
-      // eg. a VM-specific marshaler (alias for `IdentityMarshaler`)
-      //   + a Web-specific marshaler to/from `List` or whatever suitable
-      // see CityMarshaler/CountryMarshaler for example implementations
-      return data;
-    }
     var res = context?.getReference<List>(data);
     if (res != null) return res;
 
@@ -44,14 +36,6 @@ class PersonMarshaler extends GenericMarshaler<Person> {
 
   @override
   Person unmarshal(dynamic data, [MarshalingContext? context]) {
-    if (Squadron.platformType.isVm) {
-      // fast path on VM platforms
-      // an alternative exists based on conditional imports
-      // eg. a VM-specific marshaler (alias for `IdentityMarshaler`)
-      //   + a Web-specific marshaler to/from `List` or whatever suitable
-      // see CityMarshaler/CountryMarshaler for example implementations
-      return data;
-    }
     data as List;
     var res = context?.getReference<Person>(data);
     if (res != null) return res;

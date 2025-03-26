@@ -1,49 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75" lines-covered="3" lines-valid="4" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="4" lines-valid="5" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'package:meta/meta.dart';</code>
+            <code>import 'dart:isolate';</code>
         </line>
         <line number="2">
             <code/>
         </line>
         <line number="3">
-            <code>import '../../converters/cast_converter.dart';</code>
+            <code>import 'package:meta/meta.dart';</code>
         </line>
         <line number="4">
-            <code>import '../../converters/converter.dart';</code>
-        </line>
-        <line number="5">
-            <code>import '../../squadron_platform_type.dart';</code>
-        </line>
-        <line number="6">
             <code/>
         </line>
-        <line hits="10" number="7">
+        <line number="5">
+            <code>import '../../converters/cast_converter.dart';</code>
+        </line>
+        <line number="6">
+            <code>import '../../converters/converter.dart';</code>
+        </line>
+        <line number="7">
+            <code>import '../../squadron_platform_type.dart';</code>
+        </line>
+        <line number="8">
+            <code>import '../../utils.dart';</code>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line hits="15" number="10">
+            <code>final threadId = Isolate.current.hashCode.hex;</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line hits="10" number="12">
             <code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="8">
+        <line number="13">
             <code/>
         </line>
-        <line hits="12" number="9">
+        <line hits="12" number="14">
             <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="10">
+        <line number="15">
             <code/>
         </line>
-        <line hits="0" number="11">
+        <line hits="0" number="16">
             <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
         </line>
-        <line number="12">
+        <line number="17">
             <code/>
         </line>
-        <line hits="3" number="13">
+        <line hits="3" number="18">
             <code>@internal</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="14">
+        <line number="19">
             <code>bool isSameInstance(Object a, Object b) =&gt; identical(a, b);</code>
         </line>
     </lines>

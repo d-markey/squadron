@@ -9,6 +9,7 @@ import 'package:using/using.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
+import 'test_extensions.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-16</dd>
+                    <dd>2025-03-26</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>3</td><td>4</td><td class="med">75.0%</td>
+                            <th scope="row">Lines</th><td>4</td><td>5</td><td class="med">80.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,46 +61,61 @@
             </thead>
             <tbody>
                 <tr class="noop" title="Line 1" id="line1">
-                    <td>1</td><td></td><td></td><td><code>import 'package:meta/meta.dart';</code></td>
+                    <td>1</td><td></td><td></td><td><code>import 'dart:isolate';</code></td>
                 </tr>
                 <tr class="noop" title="Line 2" id="line2">
                     <td>2</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
-                    <td>3</td><td></td><td></td><td><code>import '../../converters/cast_converter.dart';</code></td>
+                    <td>3</td><td></td><td></td><td><code>import 'package:meta/meta.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code>import '../../converters/converter.dart';</code></td>
+                    <td>4</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>import '../../squadron_platform_type.dart';</code></td>
+                    <td>5</td><td></td><td></td><td><code>import '../../converters/cast_converter.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code></code></td>
+                    <td>6</td><td></td><td></td><td><code>import '../../converters/converter.dart';</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 7" id="line7">
-                    <td>7</td><td></td><td>10</td><td><code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code></td>
+                <tr class="noop" title="Line 7" id="line7">
+                    <td>7</td><td></td><td></td><td><code>import '../../squadron_platform_type.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 8" id="line8">
-                    <td>8</td><td></td><td></td><td><code></code></td>
+                    <td>8</td><td></td><td></td><td><code>import '../../utils.dart';</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>12</td><td><code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code></td>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 10" id="line10">
-                    <td>10</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 10" id="line10">
+                    <td>10</td><td></td><td>15</td><td><code>final threadId = Isolate.current.hashCode.hex;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>0</td><td><code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code></td>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>10</td><td><code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>3</td><td><code>@internal</code></td>
+                <tr class="noop" title="Line 13" id="line13">
+                    <td>13</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>bool isSameInstance(Object a, Object b) =&gt; identical(a, b);</code></td>
+                <tr class="lineCov" title="Line 14" id="line14">
+                    <td>14</td><td></td><td>12</td><td><code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code></td>
+                </tr>
+                <tr class="noop" title="Line 15" id="line15">
+                    <td>15</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 16" id="line16">
+                    <td>16</td><td></td><td>0</td><td><code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>3</td><td><code>@internal</code></td>
+                </tr>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code>bool isSameInstance(Object a, Object b) =&gt; identical(a, b);</code></td>
                 </tr>
             </tbody>
         </table>

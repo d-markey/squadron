@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85714287" lines-covered="42" lines-valid="49" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85714287" lines-covered="42" lines-valid="49" package="src" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="concurrency_settings.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="6" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="concurrency_settings.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="6" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="utils.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="worker_service.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="squadron_singleton.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="19" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="service_installer.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_service.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="channel.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="channel.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_platform_type.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="11" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="utils.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="service_installer.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="typedefs.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_platform_type.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="11" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="10" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="squadron_singleton.dart" functions-hit="0" functions-valid="0" lines-hit="16" lines-valid="18" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="16" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="typedefs.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="3" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="3" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

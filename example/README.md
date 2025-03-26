@@ -37,8 +37,6 @@ This folder contains examples and tests for Squadron:
 
 * `**hello_world**`: a simple example to execute a service in a pool of workers.
 * `**streaming**`: a simple example to execute a service streaming values from a worker.
-* `**test**`: various test benchmarks.
+* `**local_logger**`: a simple example using a local service to log messages from workers.
 
-However examples here only rely on Squadron and are implemented manually.
-
-This approach is discouraged and it is highly recommended to use [squadron_builder]() in order to generate the boilerplate code in order to have your service run in Squadron workers.
+However these examples are all implemented manually. **This approach is discouraged** and it is highly recommended to use [squadron_builder](https://pub.dev/packages/squadron_builder) in order to generate the boilerplate code and have your service run in Squadron workers.

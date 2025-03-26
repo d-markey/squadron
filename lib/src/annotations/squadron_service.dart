@@ -2,6 +2,7 @@ import '../pool/worker_pool.dart';
 import 'target_platform.dart';
 
 const localService = SquadronService.local();
+const vmService = SquadronService.vm();
 const localWorker = LocalWorkerParam._();
 
 class LocalWorkerParam {

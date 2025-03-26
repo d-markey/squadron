@@ -5,6 +5,8 @@ import '_impl/xplat/_platform.dart'
     if (dart.library.js_interop) '_impl/web/_platform.dart' as impl;
 import 'converters/converter.dart';
 
+String get threadId => impl.threadId;
+
 class Squadron {
   Squadron._();
 

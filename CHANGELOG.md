@@ -1,6 +1,9 @@
-## 7.0.1
+## 7.1.0
 
-- Move stats management out of worker into a specialized class.
+- Move stats management out of Worker into a specialized class.
+- Breaking change: removed `WorkerStat.status`.
+- Remove accessors to `ConcurrencySettings` properties in `WorkerPool`.
+- Update tests.
 
 ## 7.0.0
 

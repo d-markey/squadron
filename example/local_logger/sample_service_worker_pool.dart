@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'identity_service.dart';
+import 'logging_service.dart';
 import 'sample_service.dart';
 
 base class SampleWorkerPool extends WorkerPool<SampleWorker>

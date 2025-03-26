@@ -481,6 +481,7 @@ file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_disconnected_channel.d
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_completer.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_forward_stream_controller.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_internal_logger.dart
+file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_platform.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_result_stream.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_time_stamp.dart
 file:///C:/_Projects/github/squadron/lib/src/_impl/xplat/_token_id.dart
@@ -516,7 +517,6 @@ file:///C:/_Projects/github/squadron/lib/src/marshalers/generic_marshaler.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/identity_marshaler.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/marshaling_context.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/squadron_marshaler.dart
-file:///C:/_Projects/github/squadron/lib/src/marshalers/typed_data_marshaler.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/_pool_worker.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/_worker_stream_task.dart
 file:///C:/_Projects/github/squadron/lib/src/pool/_worker_task.dart

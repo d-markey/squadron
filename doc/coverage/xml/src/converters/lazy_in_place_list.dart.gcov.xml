@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="lazy_in_place_list.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.99590164" lines-covered="243" lines-valid="244" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="lazy_in_place_list.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.99590164" lines-covered="243" lines-valid="244" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:math' as math;</code>
@@ -37,9 +37,9 @@
         <line number="12">
             <code>class LazyInPlaceList&lt;E&gt; implements List&lt;E&gt; {</code>
         </line>
-        <line hits="1" number="13">
+        <line hits="2" number="13">
             <code>  LazyInPlaceList(this._data, this._cast);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="14">
             <code/>
@@ -130,13 +130,13 @@
         <line number="38">
             <code/>
         </line>
-        <line hits="1" number="39">
+        <line hits="2" number="39">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="40">
-            <code>  int get length =&gt; _data.length;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="40">
+            <code>  int get length =&gt; _data.length;</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="41">
             <code/>
@@ -253,13 +253,13 @@
         <line number="73">
             <code/>
         </line>
-        <line hits="1" number="74">
+        <line hits="2" number="74">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="75">
+        <line hits="2" number="75">
             <code>  E operator [](int index) =&gt; _get(index);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="76">
             <code/>
@@ -297,24 +297,24 @@
         <line number="85">
             <code/>
         </line>
-        <line hits="1" number="86">
+        <line hits="2" number="86">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="87">
             <code>  bool any(bool Function(E element) test) {</code>
         </line>
-        <line hits="1" number="88">
+        <line hits="2" number="88">
             <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="89">
+        <line hits="3" number="89">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="90">
+        <line hits="4" number="90">
             <code>      if (test(_get(i))) return true;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="91">
             <code>    }</code>
@@ -381,24 +381,24 @@
         <line number="109">
             <code/>
         </line>
-        <line hits="1" number="110">
+        <line hits="2" number="110">
             <code>  @override</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="111">
             <code>  bool contains(Object? element) {</code>
         </line>
-        <line hits="1" number="112">
+        <line hits="2" number="112">
             <code>    final l = length;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="113">
+        <line hits="4" number="113">
             <code>    for (var i = 0; i &lt; l; i++) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="114">
+        <line hits="4" number="114">
             <code>      if (element == _get(i)) return true;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="115">
             <code>    }</code>
@@ -1589,25 +1589,25 @@
         <line number="452">
             <code/>
         </line>
-        <line hits="1" number="453">
+        <line hits="2" number="453">
             <code>  E _get(int idx) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="454">
+        <line hits="4" number="454">
             <code>    dynamic v = _data[idx];</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="455">
+        <line hits="2" number="455">
             <code>    if (v != null &amp;&amp; v is! E) {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="456">
+        <line hits="4" number="456">
             <code>      v = _cast(v);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="457">
+        <line hits="4" number="457">
             <code>      _data[idx] = v;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="458">
             <code>    }</code>

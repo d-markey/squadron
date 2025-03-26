@@ -4230,7 +4230,7 @@ $S:34}
 A.du.prototype={
 aj(){var s=0,r=A.aU(t.N),q
 var $async$aj=A.aY(function(a,b){if(a===1)return A.aR(b,r)
-while(true)switch(s){case 0:q="7.0.0"
+while(true)switch(s){case 0:q="7.1.0"
 s=1
 break
 case 1:return A.aS(q,r)}})

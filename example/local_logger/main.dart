@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'identity_service.dart';
+import 'logging_service.dart';
 import 'sample_service.dart';
 import 'sample_service_worker_pool.dart';
 import 'sample_worker_vm.dart' as sample_isolate;
@@ -81,7 +81,7 @@ void main() async {
     final tasks = <Future>[];
 
     // force maximum load on pool
-    for (var i = 0; i < pool.maxConcurrency; i++) {
+    for (var i = 0; i < pool.concurrencySettings.maxConcurrency; i++) {
       tasks.add(pool.cpu(milliseconds: 20));
     }
 
@@ -142,4 +142,16 @@ void main() async {
 
   // stop the local identity worker
   localLoggingWorker.stop();
+}
+
+extension WorkerStatExt on WorkerStat {
+  String get status {
+    if (isStopped) {
+      return 'STOPPED';
+    } else if (workload == 0) {
+      return 'IDLE';
+    } else {
+      return 'WORKING($workload)';
+    }
+  }
 }

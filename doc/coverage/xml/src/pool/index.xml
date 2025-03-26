@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8832685" lines-covered="227" lines-valid="257" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8955823" lines-covered="223" lines-valid="249" package="src/pool" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="_pool_worker.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="17" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="_worker_task.dart" functions-hit="0" functions-valid="0" lines-hit="32" lines-valid="38" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_worker_task.dart" functions-hit="0" functions-valid="0" lines-hit="32" lines-valid="38" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="32" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="132" lines-valid="154" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="132" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="worker_pool.dart" functions-hit="0" functions-valid="0" lines-hit="128" lines-valid="146" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="128" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_worker_stream_task.dart" functions-hit="0" functions-valid="0" lines-hit="29" lines-valid="29" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_worker_stream_task.dart" functions-hit="0" functions-valid="0" lines-hit="29" lines-valid="29" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="29" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_worker_value_task.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="19" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_pool_worker.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="17" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_worker_value_task.dart" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="19" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="17" name="&lt;unnamed&gt;"/>
         </source>
     </sources>

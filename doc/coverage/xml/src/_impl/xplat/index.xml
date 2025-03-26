@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.81007755" lines-covered="209" lines-valid="258" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8081181" lines-covered="219" lines-valid="271" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="120" lines-valid="134" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="120" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="_time_stamp.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="_token_id.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_token_id.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="2" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_internal_logger.dart" functions-hit="0" functions-valid="0" lines-hit="8" lines-valid="8" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="127" lines-valid="142" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="127" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_disconnected_channel.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="18" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_time_stamp.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_internal_logger.dart" functions-hit="0" functions-valid="0" lines-hit="8" lines-valid="8" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="8" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_forward_completer.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="_forward_stream_controller.dart" functions-hit="0" functions-valid="0" lines-hit="31" lines-valid="32" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="31" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="_disconnected_channel.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="18" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_platform.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="5" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_result_stream.dart" functions-hit="0" functions-valid="0" lines-hit="38" lines-valid="54" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="38" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_forward_stream_controller.dart" functions-hit="0" functions-valid="0" lines-hit="31" lines-valid="32" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="31" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_forward_completer.dart" functions-hit="0" functions-valid="0" lines-hit="5" lines-valid="5" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="5" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="_result_stream.dart" functions-hit="0" functions-valid="0" lines-hit="40" lines-valid="54" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="40" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

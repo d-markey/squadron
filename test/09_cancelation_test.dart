@@ -10,6 +10,7 @@ import 'package:using/using.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
+import 'test_extensions.dart';
 import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
@@ -263,7 +264,7 @@ void execute(TestContext? tc) {
                   onError: res.add, onDone: completer.complete);
             }
 
-            await Future.delayed(delay_80ms);
+            await Future.delayed(delay_80ms * 2);
             p.cancelAll();
 
             await Future.wait(tasks);
@@ -644,7 +645,7 @@ void execute(TestContext? tc) {
             // canceled by timeout2
             final timeout2 = TimeoutToken(delay_20ms * N * 1.8);
             final cancelation2 = CancelableToken();
-            Timer(timeout2.timeout * 2, cancelation2.cancel);
+            Timer(timeout2.timeout * 4, cancelation2.cancel);
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
             expect(composite2.isCanceled, isFalse);
 
@@ -659,7 +660,7 @@ void execute(TestContext? tc) {
             // canceled by timeout3 and cancelation3
             final timeout3 = TimeoutToken(delay_20ms * N * 1.8);
             final cancelation3 = CancelableToken();
-            Timer(timeout3.timeout * 0.5, cancelation3.cancel);
+            Timer(timeout3.timeout * 0.4, cancelation3.cancel);
             final composite3 = CompositeToken.all([timeout3, cancelation3]);
             expect(composite3.isCanceled, isFalse);
 

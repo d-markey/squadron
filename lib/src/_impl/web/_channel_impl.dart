@@ -37,7 +37,7 @@ final class _WebChannel implements Channel {
       final data = req.wrapInPlace();
       final transfer = JSArray();
       if (req.channelInfo != null) {
-        transfer.$push(req.webChannelInfo);
+        transfer.$push(req.messagePort);
       }
       final msg = $jsify(data, null);
       _sendPort.postMessage(msg, transfer);
@@ -230,4 +230,8 @@ final class _WebChannel implements Channel {
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
     return _getResponseStream(com, req, post, streaming: true);
   }
+}
+
+extension on WorkerRequest {
+  PlatformChannel? get messagePort => (channelInfo as PlatformChannel?);
 }

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-16</dd>
+                    <dd>2025-03-26</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -97,7 +97,7 @@
                     <td>12</td><td></td><td></td><td><code>class LazyInPlaceList&lt;E&gt; implements List&lt;E&gt; {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>1</td><td><code>  LazyInPlaceList(this._data, this._cast);</code></td>
+                    <td>13</td><td></td><td>2</td><td><code>  LazyInPlaceList(this._data, this._cast);</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code></code></td>
@@ -175,10 +175,10 @@
                     <td>38</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>39</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>2</td><td><code>  int get length =&gt; _data.length;</code></td>
+                    <td>40</td><td></td><td>4</td><td><code>  int get length =&gt; _data.length;</code></td>
                 </tr>
                 <tr class="noop" title="Line 41" id="line41">
                     <td>41</td><td></td><td></td><td><code></code></td>
@@ -280,10 +280,10 @@
                     <td>73</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>74</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>1</td><td><code>  E operator [](int index) =&gt; _get(index);</code></td>
+                    <td>75</td><td></td><td>2</td><td><code>  E operator [](int index) =&gt; _get(index);</code></td>
                 </tr>
                 <tr class="noop" title="Line 76" id="line76">
                     <td>76</td><td></td><td></td><td><code></code></td>
@@ -316,19 +316,19 @@
                     <td>85</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 86" id="line86">
-                    <td>86</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>86</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 87" id="line87">
                     <td>87</td><td></td><td></td><td><code>  bool any(bool Function(E element) test) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 88" id="line88">
-                    <td>88</td><td></td><td>1</td><td><code>    final l = length;</code></td>
+                    <td>88</td><td></td><td>2</td><td><code>    final l = length;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 89" id="line89">
-                    <td>89</td><td></td><td>2</td><td><code>    for (var i = 0; i &lt; l; i++) {</code></td>
+                    <td>89</td><td></td><td>3</td><td><code>    for (var i = 0; i &lt; l; i++) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 90" id="line90">
-                    <td>90</td><td></td><td>2</td><td><code>      if (test(_get(i))) return true;</code></td>
+                    <td>90</td><td></td><td>4</td><td><code>      if (test(_get(i))) return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 91" id="line91">
                     <td>91</td><td></td><td></td><td><code>    }</code></td>
@@ -388,19 +388,19 @@
                     <td>109</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>110</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 111" id="line111">
                     <td>111</td><td></td><td></td><td><code>  bool contains(Object? element) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>1</td><td><code>    final l = length;</code></td>
+                    <td>112</td><td></td><td>2</td><td><code>    final l = length;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 113" id="line113">
-                    <td>113</td><td></td><td>2</td><td><code>    for (var i = 0; i &lt; l; i++) {</code></td>
+                    <td>113</td><td></td><td>4</td><td><code>    for (var i = 0; i &lt; l; i++) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 114" id="line114">
-                    <td>114</td><td></td><td>2</td><td><code>      if (element == _get(i)) return true;</code></td>
+                    <td>114</td><td></td><td>4</td><td><code>      if (element == _get(i)) return true;</code></td>
                 </tr>
                 <tr class="noop" title="Line 115" id="line115">
                     <td>115</td><td></td><td></td><td><code>    }</code></td>
@@ -1417,19 +1417,19 @@
                     <td>452</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 453" id="line453">
-                    <td>453</td><td></td><td>1</td><td><code>  E _get(int idx) {</code></td>
+                    <td>453</td><td></td><td>2</td><td><code>  E _get(int idx) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 454" id="line454">
-                    <td>454</td><td></td><td>2</td><td><code>    dynamic v = _data[idx];</code></td>
+                    <td>454</td><td></td><td>4</td><td><code>    dynamic v = _data[idx];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 455" id="line455">
-                    <td>455</td><td></td><td>1</td><td><code>    if (v != null &amp;&amp; v is! E) {</code></td>
+                    <td>455</td><td></td><td>2</td><td><code>    if (v != null &amp;&amp; v is! E) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 456" id="line456">
-                    <td>456</td><td></td><td>2</td><td><code>      v = _cast(v);</code></td>
+                    <td>456</td><td></td><td>4</td><td><code>      v = _cast(v);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 457" id="line457">
-                    <td>457</td><td></td><td>2</td><td><code>      _data[idx] = v;</code></td>
+                    <td>457</td><td></td><td>4</td><td><code>      _data[idx] = v;</code></td>
                 </tr>
                 <tr class="noop" title="Line 458" id="line458">
                     <td>458</td><td></td><td></td><td><code>    }</code></td>

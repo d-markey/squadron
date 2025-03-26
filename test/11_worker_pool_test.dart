@@ -11,6 +11,7 @@ import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
 import 'test_exception.dart';
+import 'test_extensions.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/error_service.dart';
 import 'worker_services/error_service_worker.dart';

@@ -5,6 +5,7 @@ import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
 import '../src/test_context.dart';
+import '../test_extensions.dart';
 import 'fraction.dart';
 import 'squadron_version.dart';
 import 'test_service.dart';

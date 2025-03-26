@@ -4,7 +4,7 @@ import 'package:squadron/squadron.dart';
 
 // The service interface
 abstract class LoggingService implements WorkerService {
-  FutureOr<void> log(String threadId, Object message);
+  Future<void> log(String threadId, Object message);
 
   static const logCommand = 1;
 
@@ -18,7 +18,7 @@ abstract class LoggingService implements WorkerService {
 // The service implementation
 class LoggingServiceImpl extends LoggingService {
   @override
-  void log(String threadId, Object message) {
+  Future<void> log(String threadId, Object message) async {
     print('[LOG ${DateTime.now()}] [$threadId] $message');
   }
 }
@@ -28,6 +28,6 @@ class LoggingClient extends LocalWorkerClient implements LoggingService {
   LoggingClient(super.channel);
 
   @override
-  void log(String threadId, Object message) =>
+  Future<void> log(String threadId, Object message) =>
       send(LoggingService.logCommand, args: [threadId, message]);
 }

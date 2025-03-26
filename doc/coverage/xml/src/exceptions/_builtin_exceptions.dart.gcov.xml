@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="_builtin_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="src/exceptions" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="_builtin_exceptions.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="src/exceptions" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -76,107 +76,110 @@
         <line number="25">
             <code/>
         </line>
-        <line hits="33" number="26">
+        <line number="26">
+            <code>@internal</code>
+        </line>
+        <line hits="33" number="27">
             <code>final builtinExceptions = &lt;String, SquadronExceptionDeserializer&gt;{</code>
             <hit count="33" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="27">
+        <line number="28">
             <code>  $canceledExceptionType: SquadronCanceledExceptionExt.deserialize,</code>
         </line>
-        <line number="28">
+        <line number="29">
             <code>  $timeoutExceptionType: SquadronTimeoutExceptionExt.deserialize,</code>
         </line>
-        <line number="29">
+        <line number="30">
             <code>  $canceledExceptionsType: SquadronCanceledExceptionsExt.deserialize,</code>
         </line>
-        <line number="30">
+        <line number="31">
             <code>  $taskCanceledExceptionType: TaskCanceledExceptionExt.deserialize,</code>
         </line>
-        <line number="31">
+        <line number="32">
             <code>  $taskTerminatedExceptionType: TaskTerminatedExceptionExt.deserialize,</code>
         </line>
-        <line number="32">
+        <line number="33">
             <code>  $squadronErrorType: SquadronErrorImpl.deserialize,</code>
         </line>
-        <line number="33">
+        <line number="34">
             <code>  $workerExceptionType: WorkerExceptionImpl.deserialize,</code>
         </line>
-        <line number="34">
+        <line number="35">
             <code>};</code>
         </line>
-        <line number="35">
+        <line number="36">
             <code/>
         </line>
-        <line number="36">
+        <line number="37">
             <code>@internal</code>
         </line>
-        <line number="37">
+        <line number="38">
             <code>extension CanceledConversionExt on CanceledException {</code>
         </line>
-        <line hits="2" number="38">
+        <line hits="2" number="39">
             <code>  SquadronException toSquadronException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="39">
+        <line number="40">
             <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
         </line>
-        <line hits="2" number="40">
+        <line hits="2" number="41">
             <code>      SquadronCanceledException.from(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="41">
+        <line number="42">
             <code>        tokenId ?? '',</code>
         </line>
-        <line number="42">
+        <line number="43">
             <code>        this,</code>
         </line>
-        <line number="43">
+        <line number="44">
             <code>        stackTrace,</code>
         </line>
-        <line number="44">
+        <line number="45">
             <code>      );</code>
         </line>
-        <line number="45">
+        <line number="46">
             <code>}</code>
         </line>
-        <line number="46">
+        <line number="47">
             <code/>
         </line>
-        <line number="47">
+        <line number="48">
             <code>@internal</code>
         </line>
-        <line number="48">
+        <line number="49">
             <code>extension TimeoutConversionExt on TimeoutException {</code>
         </line>
-        <line hits="2" number="49">
+        <line hits="2" number="50">
             <code>  SquadronException toSquadronException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="50">
+        <line number="51">
             <code>          [String? tokenId, StackTrace? stackTrace]) =&gt;</code>
         </line>
-        <line hits="2" number="51">
+        <line hits="2" number="52">
             <code>      SquadronTimeoutException(</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="52">
+        <line number="53">
             <code>        tokenId ?? '',</code>
         </line>
-        <line hits="2" number="53">
+        <line hits="2" number="54">
             <code>        message ?? 'Operation timeout',</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="54">
+        <line hits="2" number="55">
             <code>        duration,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="55">
+        <line number="56">
             <code>        stackTrace,</code>
         </line>
-        <line number="56">
+        <line number="57">
             <code>      );</code>
         </line>
-        <line number="57">
+        <line number="58">
             <code>}</code>
         </line>
     </lines>

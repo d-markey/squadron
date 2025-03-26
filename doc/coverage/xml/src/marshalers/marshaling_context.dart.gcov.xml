@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="marshaling_context.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.55" lines-covered="11" lines-valid="20" package="src/marshalers" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="marshaling_context.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.6" lines-covered="12" lines-valid="20" package="src/marshalers" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../converters/context_aware_converter.dart';</code>
@@ -47,9 +47,9 @@
         <line number="15">
             <code>      : _converter =</code>
         </line>
-        <line hits="2" number="16">
+        <line hits="3" number="16">
             <code>            contextAware ? ContextAwareConverter() : Squadron.converter,</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="17">
             <code>        _objects = contextAware ? SerializationContext(identical) : null;</code>
@@ -91,8 +91,9 @@
         <line number="29">
             <code>  /// Whether this context is context-aware.</code>
         </line>
-        <line hits="0" number="30">
+        <line hits="2" number="30">
             <code>  bool get isContextAware =&gt; _objects != null;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="31">
             <code/>

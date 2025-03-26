@@ -63,18 +63,6 @@ abstract class WorkerPool<W extends Worker>
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
 
-  /// Minimum workers.
-  int get minWorkers => concurrencySettings.minWorkers;
-
-  /// Maximum workers.
-  int get maxWorkers => concurrencySettings.maxWorkers;
-
-  /// Maximum tasks per worker.
-  int get maxParallel => concurrencySettings.maxParallel;
-
-  /// Maximum running tasks.
-  int get maxConcurrency => concurrencySettings.maxConcurrency;
-
   final _workers = <PoolWorker<W>>[];
 
   final _deadWorkerStats = <WorkerStat>[];
@@ -112,10 +100,12 @@ abstract class WorkerPool<W extends Worker>
   int _startingWorkers = 0;
 
   int _getProvisionNeeds(int workload) {
+    final minWorkers = concurrencySettings.minWorkers;
     if (workload < minWorkers) {
       // at least minWorkers
       workload = minWorkers;
     }
+    final maxWorkers = concurrencySettings.maxWorkers;
     if (maxWorkers > 0 && workload > maxWorkers) {
       // at most maxWorkers if > 0
       workload = maxWorkers;
@@ -125,8 +115,8 @@ abstract class WorkerPool<W extends Worker>
   }
 
   Future<void> _provisionWorkers(int workload) {
-    final tasks = <Future>[];
-    final errors = [];
+    final tasks = <Future>[], errors = [];
+    final maxParallel = concurrencySettings.maxParallel;
     for (var i = 0; i < workload; i++) {
       try {
         final worker = _workerFactory(exceptionManager);

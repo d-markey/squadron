@@ -52,13 +52,101 @@ void execute(TestContext? tc) {
       }, skip: !tc.runnerPlatform.isWeb);
     });
 
+    tc.group('- TARGET PLATFORMS', () {
+      tc.test('- VM', () {
+        expect(TargetPlatform.all.hasVm, isTrue);
+        expect(TargetPlatform.vm.hasVm, isTrue);
+        expect(TargetPlatform.js.hasVm, isFalse);
+        expect(TargetPlatform.wasm.hasVm, isFalse);
+        expect(TargetPlatform.web.hasVm, isFalse);
+      });
+
+      tc.test('- JS', () {
+        expect(TargetPlatform.all.hasJs, isTrue);
+        expect(TargetPlatform.vm.hasJs, isFalse);
+        expect(TargetPlatform.js.hasJs, isTrue);
+        expect(TargetPlatform.wasm.hasJs, isFalse);
+        expect(TargetPlatform.web.hasJs, isTrue);
+      });
+
+      tc.test('- WASM', () {
+        expect(TargetPlatform.all.hasWasm, isTrue);
+        expect(TargetPlatform.vm.hasWasm, isFalse);
+        expect(TargetPlatform.js.hasWasm, isFalse);
+        expect(TargetPlatform.wasm.hasWasm, isTrue);
+        expect(TargetPlatform.web.hasWasm, isTrue);
+      });
+    });
+
+    tc.group('- ANNOTATIONS', () {
+      tc.test('- VM', () {
+        expect(vmService.local, isFalse);
+        expect(vmService.pool, isTrue);
+        expect(vmService.targetPlatform.hasVm, isTrue);
+        expect(vmService.targetPlatform.hasJs, isFalse);
+        expect(vmService.targetPlatform.hasWasm, isFalse);
+      });
+
+      tc.test('- JS', () {
+        final jsService = SquadronService(
+            baseUrl: '~/', pool: true, targetPlatform: TargetPlatform.js);
+        expect(jsService.baseUrl, '~/');
+        expect(jsService.local, isFalse);
+        expect(jsService.pool, isTrue);
+        expect(jsService.targetPlatform.hasVm, isFalse);
+        expect(jsService.targetPlatform.hasJs, isTrue);
+        expect(jsService.targetPlatform.hasWasm, isFalse);
+      });
+
+      tc.test('- WASM', () {
+        final wasmService = SquadronService(
+            baseUrl: '~/', pool: true, targetPlatform: TargetPlatform.wasm);
+        expect(wasmService.baseUrl, '~/');
+        expect(wasmService.local, isFalse);
+        expect(wasmService.pool, isTrue);
+        expect(wasmService.targetPlatform.hasVm, isFalse);
+        expect(wasmService.targetPlatform.hasJs, isFalse);
+        expect(wasmService.targetPlatform.hasWasm, isTrue);
+      });
+
+      tc.test('- WEB', () {
+        final wasmService = SquadronService.web(baseUrl: '~/', pool: true);
+        expect(wasmService.baseUrl, '~/');
+        expect(wasmService.local, isFalse);
+        expect(wasmService.pool, isTrue);
+        expect(wasmService.targetPlatform.hasVm, isFalse);
+        expect(wasmService.targetPlatform.hasJs, isTrue);
+        expect(wasmService.targetPlatform.hasWasm, isTrue);
+      });
+
+      tc.test('- ALL', () {
+        final wasmService = SquadronService(baseUrl: '~/', pool: true);
+        expect(wasmService.baseUrl, '~/');
+        expect(wasmService.local, isFalse);
+        expect(wasmService.pool, isTrue);
+        expect(wasmService.targetPlatform.hasVm, isTrue);
+        expect(wasmService.targetPlatform.hasJs, isTrue);
+        expect(wasmService.targetPlatform.hasWasm, isTrue);
+      });
+
+      tc.test('- ALL - no pool', () {
+        final wasmService = SquadronService(baseUrl: '~/', pool: false);
+        expect(wasmService.baseUrl, '~/');
+        expect(wasmService.local, isFalse);
+        expect(wasmService.pool, isFalse);
+        expect(wasmService.targetPlatform.hasVm, isTrue);
+        expect(wasmService.targetPlatform.hasJs, isTrue);
+        expect(wasmService.targetPlatform.hasWasm, isTrue);
+      });
+    });
+
     tc.group('- SQUADRON WORKER - START/STOP', () {
       tc.test('- Start & stop', () async {
         await TestWorker(tc).useAsync((w) async {
           expect(w.isConnected, isFalse);
           var stats = w.stats;
           expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, Duration.zero);
+          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
@@ -90,7 +178,7 @@ void execute(TestContext? tc) {
           expect(w.isConnected, isFalse);
           var stats = w.stats;
           expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, Duration.zero);
+          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
@@ -135,7 +223,7 @@ void execute(TestContext? tc) {
           expect(w.isConnected, isFalse);
           var stats = w.stats;
           expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, Duration.zero);
+          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();

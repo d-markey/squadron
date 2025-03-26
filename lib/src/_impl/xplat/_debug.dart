@@ -3,17 +3,16 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 
 import '../../pool/task.dart';
-import '../../typedefs.dart';
 import '../../utils.dart';
 import '../native/_debug.dart' if (dart.library.js_interop) '../web/_debug.dart'
-    as impl;
+    as dbg;
 
 extension on Object? {
   String get objectId => '$runtimeType(${hashCode.hex})';
 }
 
 @internal
-void $log(String message) => impl.$log('[$threadId] $message');
+void $log(String message) => dbg.$log(message);
 
 final _busyControllers = <({StreamController controller, StackTrace st})>[];
 

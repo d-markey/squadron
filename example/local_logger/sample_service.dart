@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import 'identity_service.dart';
+import 'logging_service.dart';
 
 abstract class SampleService {
   Future<void> io({required int milliseconds});
@@ -22,22 +22,23 @@ class SampleServiceImpl implements SampleService, WorkerService {
 
   @override
   Future<void> io({required int milliseconds}) async {
-    // io() is asynchronous --> log messages will be received separately because
-    // of the "await" between both calls
+    // io() is asynchronous
     _logger.log(threadId, '[${DateTime.now()}] start io($milliseconds)...');
+    // the first call to log() will execute while awaiting the delayed future
     await Future.delayed(Duration(milliseconds: milliseconds));
     _logger.log(threadId, '[${DateTime.now()}] done  io($milliseconds)...');
+    // the second call to log() will execute after returning from this method
   }
 
   @override
   void cpu({required int milliseconds}) {
-    // cpu() is synchronous --> both log messages will be received ~ at the same time
+    // cpu() is synchronous, log() is asynchronous
     _logger.log(threadId, '[${DateTime.now()}] start cpu($milliseconds)...');
+    // the first call to log() cannot execute while the sync loop executes
     final sw = Stopwatch()..start();
     while (sw.elapsedMilliseconds < milliseconds) {/* cpu */}
     _logger.log(threadId, '[${DateTime.now()}] done  cpu($milliseconds)...');
-    // log() is asynchronous, so previous calls were only registered to the
-    // event loop, and cannot execute before this point
+    // the first and second call to log() will execute after returning from this method
   }
 
   // command IDs --> command handlers

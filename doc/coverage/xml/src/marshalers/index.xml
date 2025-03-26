@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-16" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.4827586" lines-covered="14" lines-valid="29" package="src/marshalers" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.68" lines-covered="17" lines-valid="25" package="src/marshalers" testname="lcov.info" version="1.6">
     <sources>
-        <source branches-hit="0" branches-valid="0" filename="squadron_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="marshaling_context.dart" functions-hit="0" functions-valid="0" lines-hit="12" lines-valid="20" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="12" name="&lt;unnamed&gt;"/>
+        </source>
+        <source branches-hit="0" branches-valid="0" filename="squadron_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="identity_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="3" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="generic_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/_Projects/github/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="generic_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="1" lines-valid="1" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="1" name="&lt;unnamed&gt;"/>
-        </source>
-        <source branches-hit="0" branches-valid="0" filename="marshaling_context.dart" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="20" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="11" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="identity_marshaler.dart" functions-hit="0" functions-valid="0" lines-hit="3" lines-valid="3" prefix="/_Projects/github/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="3" name="&lt;unnamed&gt;"/>
         </source>
     </sources>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
