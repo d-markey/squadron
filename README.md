@@ -21,7 +21,7 @@ Supports native, JavaScript & Web Assembly platforms.
 [![Dart Style](https://img.shields.io/badge/style-lints-40c4ff)](https://pub.dev/packages/lints)
 [![Pub Points](https://img.shields.io/pub/points/squadron)](https://pub.dev/packages/squadron/score)
 [![Likes](https://img.shields.io/pub/likes/squadron)](https://pub.dev/packages/squadron/score)
-[![Popularity](https://img.shields.io/pub/popularity/squadron)](https://pub.dev/packages/squadron/score)
+[![Downloads](https://img.shields.io/pub/dm/squadron)](https://pub.dev/packages/squadron/score)
 
 [![Last Commit](https://img.shields.io/github/last-commit/d-markey/squadron?logo=git&logoColor=white)](https://github.com/d-markey/squadron/commits)
 [![Dart Workflow](https://github.com/d-markey/squadron/actions/workflows/dart.yml/badge.svg?logo=dart)](https://github.com/d-markey/squadron/actions/workflows/dart.yml)
