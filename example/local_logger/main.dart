@@ -9,24 +9,19 @@ import 'sample_worker_vm.dart' as sample_isolate;
 
 void main() async {
   final loggingService = LoggingServiceImpl();
-
-  void log(String message) {
-    loggingService.log(threadId, message.isEmpty ? ' ' : message);
-  }
-
-  final loops = 2;
-  final max = 10;
-
-  log('');
-  log('loops = $loops');
-  log('max = $max');
-  log('threadId = $threadId');
-  log('');
-
   final localLoggingWorker = LocalWorker.create(loggingService);
   final loggingClient = LoggingClient(localLoggingWorker.channel!);
   final sampleService = SampleServiceImpl(loggingClient);
   SampleWorkerPool? pool;
+
+  final loops = 2;
+  final max = 10;
+
+  loggingService.log(threadId, '');
+  loggingService.log(threadId, 'loops = $loops');
+  loggingService.log(threadId, 'max = $max');
+  loggingService.log(threadId, 'threadId = $threadId');
+  loggingService.log(threadId, '');
 
   Future<Stopwatch> measure(SampleService srv) async {
     final sw = Stopwatch()..start();
@@ -45,29 +40,31 @@ void main() async {
 
   try {
     ///////////// SYNC /////////////
-    log('///////////// SYNC /////////////');
+    loggingService.log(threadId, '///////////// SYNC /////////////');
 
     final syncSw = await measure(sampleService);
     final syncElapsed = syncSw.elapsedMicroseconds;
 
-    log('sync version completed in ${Duration(microseconds: syncElapsed)}');
-    log('');
+    loggingService.log(threadId,
+        'sync version completed in ${Duration(microseconds: syncElapsed)}');
+    loggingService.log(threadId, '');
 
     ///////////// POOL /////////////
-    log('///////////// POOL /////////////');
+    loggingService.log(threadId, '///////////// POOL /////////////');
 
     // create the pool
     final concurrencySettings =
         ConcurrencySettings(minWorkers: 2, maxWorkers: 4, maxParallel: 2);
 
     void workerHook(PlatformThread worker) {
-      log('Worker created with runtime type = ${worker.runtimeType}, threadId=$threadId');
+      loggingService.log(
+          threadId, 'Worker created with runtime type = ${worker.runtimeType}');
     }
 
     pool = SampleWorkerPool(sample_isolate.start, localLoggingWorker,
         workerHook, concurrencySettings);
     await pool.start();
-    log('pool started');
+    loggingService.log(threadId, 'pool started');
 
     // create the pool monitor
     final maxIdle = Duration(milliseconds: 1000);
@@ -76,7 +73,7 @@ void main() async {
       pool?.stop((w) => w.getStats().idleTime > maxIdle);
     });
 
-    log('pool monitor started');
+    loggingService.log(threadId, 'pool monitor started');
 
     final tasks = <Future>[];
 
@@ -92,56 +89,55 @@ void main() async {
     // sit idle to that the pool monitor stops 2 of them
     await Future.delayed(maxIdle * 2);
     assert(pool.size == 2);
-    log('pool monitor OK');
+    loggingService.log(threadId, 'pool monitor OK');
 
     final asyncSw = await measure(pool);
     final asyncElapsed = asyncSw.elapsedMicroseconds;
 
-    log('async version completed in ${Duration(microseconds: asyncElapsed)}');
-    log('');
-
-    ///////////// LOCAL WORKER /////////////
-    log('///////////// LOCAL WORKER /////////////');
-
-    loggingClient.log(threadId, 'logging from the main thread');
+    loggingService.log(threadId,
+        'async version completed in ${Duration(microseconds: asyncElapsed)}');
+    loggingService.log(threadId, '');
 
     // shutdown pool
-    log('waiting for monitor to stop workers...');
+    loggingService.log(threadId, 'waiting for monitor to stop workers...');
     final sw = Stopwatch()..start();
     while (true) {
       final size = pool.size;
-      log('  * pool.size = $size');
+      loggingService.log(threadId, '  * pool.size = $size');
       if (size <= pool.concurrencySettings.minWorkers) break;
       await Future.delayed(maxIdle ~/ 2);
       if (sw.elapsedMicroseconds > maxIdle.inMicroseconds * 2) {
-        log('Houston, we have a problem...');
+        loggingService.log(threadId, 'Houston, we have a problem...');
       }
     }
 
-    log('worker stats:');
+    loggingService.log(threadId, 'worker stats:');
     for (var stat in pool.fullStats) {
-      log('  * ${stat.workerHashCode}: status=${stat.status}, workload=${stat.workload}, maxWorkload=${stat.maxWorkload}, totalWorkload=${stat.totalWorkload}, totalErrors=${stat.totalErrors}');
+      loggingService.log(threadId,
+          '  * ${stat.workerHashCode.hex}: status=${stat.status}, workload=${stat.workload}, maxWorkload=${stat.maxWorkload}, totalWorkload=${stat.totalWorkload}, totalErrors=${stat.totalErrors}');
     }
 
     monitor.cancel();
 
-    log('pool stats:');
+    loggingService.log(threadId, 'pool stats:');
     final stats = pool.stats.toList(), fullStats = pool.fullStats.toList();
-    log('  * size=${pool.size}, workload=${stats.workload}, totalWorkload=${fullStats.totalWorkload}, totalErrors=${fullStats.totalErrors}');
+    loggingService.log(threadId,
+        '  * size=${pool.size}, workload=${stats.workload}, totalWorkload=${fullStats.totalWorkload}, totalErrors=${fullStats.totalErrors}');
 
-    log('');
+    loggingService.log(threadId, '');
   } on WorkerException catch (e) {
-    log(e.message);
-    log((e.stackTrace ?? StackTrace.empty).toString());
+    loggingService.log(threadId, e.message);
+    loggingService.log(threadId, (e.stackTrace ?? StackTrace.empty).toString());
   } finally {
     pool?.stop();
   }
 
-  log('Done.');
-  log('');
-
   // stop the local identity worker
-  localLoggingWorker.stop();
+  loggingService.log(threadId, 'Stopping the local worker...');
+  localLoggingWorker.terminate();
+
+  loggingService.log(threadId, '');
+  loggingService.log(threadId, 'Done.');
 }
 
 extension WorkerStatExt on WorkerStat {
