@@ -73,7 +73,7 @@ void main() async {
     final maxIdle = Duration(milliseconds: 1000);
 
     final monitor = Timer.periodic(Duration(milliseconds: 250), (timer) {
-      pool?.stop((w) => w.stats.idleTime > maxIdle);
+      pool?.stop((w) => w.getStats().idleTime > maxIdle);
     });
 
     log('pool monitor started');

@@ -131,7 +131,7 @@ abstract class WorkerPool<W extends Worker>
           _addWorkerAndNotify(poolWorker);
         }).catchError((ex, st) {
           // start failed, ensure the worker is stopped
-          poolWorker.worker.stop();
+          poolWorker.worker.terminate();
           errors.add(SquadronException.from(ex, st));
         }));
       } catch (ex, st) {
@@ -170,9 +170,8 @@ abstract class WorkerPool<W extends Worker>
     }
   }
 
-  void _notify(W worker, {required bool removed}) {
+  void _notify(WorkerStat stats, {required bool removed}) {
     if (_workerPoolListeners.isNotEmpty) {
-      final stats = worker.stats;
       for (var listener in _workerPoolListeners.values) {
         try {
           listener(stats, removed);
@@ -183,26 +182,23 @@ abstract class WorkerPool<W extends Worker>
     }
   }
 
-  void _removeWorkerAndNotify(PoolWorker<W> poolWorker) {
-    _workers.remove(poolWorker);
-    _notify(poolWorker.worker, removed: true);
+  int _removeWorkerAndNotify(PoolWorker<W> poolWorker, bool force) {
+    if (force || _workers.length > concurrencySettings.minWorkers) {
+      final worker = poolWorker.worker;
+      worker.stop();
+      if (_workers.remove(poolWorker)) {
+        final stats = worker.getStats();
+        _deadWorkerStats.add(stats);
+        _notify(stats, removed: true);
+        return 1;
+      }
+    }
+    return 0;
   }
 
   void _addWorkerAndNotify(PoolWorker<W> poolWorker) {
     _workers.add(poolWorker);
-    _notify(poolWorker.worker, removed: false);
-  }
-
-  int _removeWorker(PoolWorker<W> poolWorker, bool force) {
-    if (force || _workers.length > concurrencySettings.minWorkers) {
-      final worker = poolWorker.worker;
-      worker.stop();
-      _deadWorkerStats.add(worker.stats);
-      _removeWorkerAndNotify(poolWorker);
-      return 1;
-    } else {
-      return 0;
-    }
+    _notify(poolWorker.worker.getStats(), removed: false);
   }
 
   /// Stop idle pool workers matching the [predicate].
@@ -215,9 +211,10 @@ abstract class WorkerPool<W extends Worker>
   int stop([bool Function(W worker)? predicate]) {
     List<PoolWorker<W>> targets;
     bool force = (predicate == null);
+    _workers.sort(PoolWorker.compareCapacity);
     if (force) {
       // kill workers while keeping enough workers alive to process pending tasks
-      targets = _workers.skip(_queue.length).toList();
+      targets = _workers.reversed.skip(_queue.length).toList();
       _stopped = true;
     } else {
       // kill workers that are idle and satisfy the predicate
@@ -225,7 +222,7 @@ abstract class WorkerPool<W extends Worker>
     }
     var stopped = 0;
     for (var poolWorker in targets) {
-      stopped += _removeWorker(poolWorker, force);
+      stopped += _removeWorkerAndNotify(poolWorker, force);
     }
     return stopped;
   }
@@ -233,10 +230,10 @@ abstract class WorkerPool<W extends Worker>
   @override
   void terminate([TaskTerminatedException? ex]) {
     _stopped = true;
-    final targets = _workers.toList();
-    for (var poolWorker in targets) {
-      _removeWorker(poolWorker, true);
-      poolWorker.worker.terminate(ex);
+    for (var i = _workers.length - 1; i >= 0; i--) {
+      final w = _workers[i];
+      w.worker.terminate(ex);
+      _removeWorkerAndNotify(w, true);
     }
   }
 
@@ -281,22 +278,21 @@ abstract class WorkerPool<W extends Worker>
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
-  /// Schedule tasks.
+  Timer? _timer;
+
   void _schedule() {
+    if (_timer?.isActive != true) {
+      _timer = Timer(Duration.zero, __schedule);
+    }
+  }
+
+  /// Schedule tasks.
+  void __schedule() {
     if (_workers.isEmpty && _startingWorkers > 0) {
       // workers are still starting, defer
-      Future(_schedule);
+      _schedule();
       return;
     }
-
-    // remove dead workers
-    _workers
-        .where(PoolWorker.isStopped)
-        .toList() // take a copy
-        .forEach(_removeWorkerAndNotify);
-
-    // remove canceled tasks
-    _queue.removeWhere((t) => t.isCanceled);
 
     // any work to do?
     if (_queue.isEmpty) {
@@ -317,34 +313,35 @@ abstract class WorkerPool<W extends Worker>
         (_) => _dispatchTasks(),
         onError: (ex) {
           channelLogger?.e(() => 'Provisionning workers failed with error $ex');
-          while (_queue.isNotEmpty) {
-            _queue.removeFirst().cancel('Provisionning workers failed');
+          if (_workers.isEmpty) {
+            while (_queue.isNotEmpty) {
+              _queue.removeFirst().cancel('Provisionning workers failed');
+            }
+          } else {
+            _schedule();
           }
         },
       );
     }
   }
 
-  int _sortAndGetMaxCapacity() {
-    _workers.sort(PoolWorker.compareCapacityDesc);
-    return _workers.isEmpty ? 0 : _workers.first.capacity;
-  }
-
   void _dispatchTasks() {
-    int maxCapacity;
-    while (_queue.isNotEmpty && (maxCapacity = _sortAndGetMaxCapacity()) > 0) {
-      maxCapacity -= 1;
-      for (var idx = 0; idx < _workers.length; idx++) {
-        final w = _workers[idx];
-        if (_queue.isEmpty || w.capacity == 0 || w.capacity < maxCapacity) {
-          break;
-        }
+    _workers.sort(PoolWorker.compareCapacity);
+    for (var idx = _workers.length - 1; idx >= 0; idx--) {
+      final w = _workers[idx];
+      if (w.isStopped) {
+        _removeWorkerAndNotify(w, false);
+        continue;
+      }
+      while (_queue.isNotEmpty && w.capacity > 0) {
         final task = _queue.removeFirst();
-        _executing.add(task);
-        w.run(task).whenComplete(() {
-          _executing.remove(task);
-          _schedule();
-        });
+        if (!task.isCanceled) {
+          _executing.add(task);
+          w.run(task).whenComplete(() {
+            _executing.remove(task);
+            _schedule();
+          });
+        }
       }
     }
   }

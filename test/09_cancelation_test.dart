@@ -29,7 +29,7 @@ void execute(TestContext? tc) {
             final tasks = <Future>[], digits = <int>[];
             int errors = 0;
             for (var i = 0; i < count; i++) {
-              tasks.add(p.delayed(i).then(
+              tasks.add(p.delayed_80ms(i).then(
                     digits.add,
                     onError: (_) => errors++,
                   ));
@@ -89,7 +89,7 @@ void execute(TestContext? tc) {
             int errors = 0;
             for (var i = 0; i < count; i++) {
               tasks.add(
-                p.delayed(i).then(digits.add, onError: (e) => errors++),
+                p.delayed_80ms(i).then(digits.add, onError: (e) => errors++),
               );
             }
 
@@ -260,7 +260,7 @@ void execute(TestContext? tc) {
               final completer = Completer(), res = [];
               results.add(res);
               tasks.add(completer.future);
-              p.finite(2 * i + 1).listen(res.add,
+              p.finite_20ms(2 * i + 1).listen(res.add,
                   onError: res.add, onDone: completer.complete);
             }
 
@@ -399,7 +399,7 @@ void execute(TestContext? tc) {
       tc.group('- CancelationToken', () {
         tc.test('- Finite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20, cancelation = CancelableToken();
+            final N = 15, cancelation = CancelableToken();
 
             // cancel the token after some time
             Timer(delay_20ms * N, cancelation.cancel);
@@ -415,7 +415,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20, cancelation = CancelableToken();
+            final N = 15, cancelation = CancelableToken();
 
             // cancel the token after some time
             Timer(delay_20ms * N, cancelation.cancel);
@@ -431,11 +431,11 @@ void execute(TestContext? tc) {
 
         tc.test('- Finite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final N = 20, count = 2 * p.maxConcurrency + 1;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
             // cancel the token after some time
             final token = CancelableToken();
-            Timer(delay_20ms * N * 1.8, token.cancel);
+            Timer(delay_20ms * N * 1.9, token.cancel);
 
             final res = await _testFinitePoolCancelation(p, N, count, token);
 
@@ -448,11 +448,11 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final count = 2 * p.maxConcurrency + 1, N = 20;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
             // cancel the token after some time
             final token = CancelableToken();
-            Timer(delay_20ms * N * 1.8, token.cancel);
+            Timer(delay_20ms * N * 1.9, token.cancel);
 
             final res = await _testInfinitePoolCancelation(p, count, token);
 
@@ -467,7 +467,7 @@ void execute(TestContext? tc) {
       tc.group('- TimeoutToken', () {
         tc.test('- Finite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20, timeout = TimeoutToken(delay_20ms * N);
+            final N = 15, timeout = TimeoutToken(delay_20ms * N);
             expect(timeout.isCanceled, isFalse);
 
             final res = await _testFiniteCancelation(w, N, timeout);
@@ -480,7 +480,7 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20, timeout = TimeoutToken(delay_20ms * N);
+            final N = 15, timeout = TimeoutToken(delay_20ms * N);
             expect(timeout.isCanceled, isFalse);
 
             final res = await _testInfiniteCancelation(w, timeout);
@@ -493,9 +493,9 @@ void execute(TestContext? tc) {
 
         tc.test('- Finite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final count = 2 * p.maxConcurrency + 1, N = 20;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
-            final timeout = TimeoutToken(delay_20ms * N * 1.8);
+            final timeout = TimeoutToken(delay_20ms * N * 1.9);
 
             final res = await _testFinitePoolCancelation(p, N, count, timeout);
             expect(timeout.isCanceled, isTrue);
@@ -507,9 +507,9 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final count = 2 * p.maxConcurrency + 1, N = 20;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
-            final timeout = TimeoutToken(delay_20ms * N * 1.8);
+            final timeout = TimeoutToken(delay_20ms * N * 1.9);
 
             final res = await _testInfinitePoolCancelation(p, count, timeout);
             expect(timeout.isCanceled, isTrue);
@@ -523,12 +523,12 @@ void execute(TestContext? tc) {
       tc.group('- CompositeToken', () {
         tc.test('- Finite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20;
+            final N = 15;
 
             // canceled by cancelation1
-            final timeout1 = TimeoutToken(delay_20ms * N);
+            final timeout1 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation1 = CancelableToken();
-            Timer(timeout1.timeout * 0.5, cancelation1.cancel);
+            Timer(timeout1.timeout * 0.25, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
             expect(composite1.isCanceled, isFalse);
 
@@ -541,7 +541,7 @@ void execute(TestContext? tc) {
             expect(res.digits, Iterable.generate(res.digits.length));
 
             // canceled by timeout2
-            final timeout2 = TimeoutToken(delay_20ms * N);
+            final timeout2 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation2 = CancelableToken();
             Timer(timeout2.timeout * 2, cancelation2.cancel);
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
@@ -556,9 +556,9 @@ void execute(TestContext? tc) {
             expect(res.digits, Iterable.generate(res.digits.length));
 
             // canceled by timeout3 and cancelation3
-            final timeout3 = TimeoutToken(delay_20ms * N);
+            final timeout3 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation3 = CancelableToken();
-            Timer(timeout3.timeout * 0.5, cancelation3.cancel);
+            Timer(timeout3.timeout * 0.25, cancelation3.cancel);
             final composite3 = CompositeToken.all([timeout3, cancelation3]);
             expect(composite3.isCanceled, isFalse);
 
@@ -574,12 +574,12 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() worker', () async {
           await TestWorker(tc).useAsync((w) async {
-            final N = 20;
+            final N = 15;
 
             // canceled by cancelation1
-            final timeout1 = TimeoutToken(delay_20ms * N);
+            final timeout1 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation1 = CancelableToken();
-            Timer(timeout1.timeout * 0.5, cancelation1.cancel);
+            Timer(timeout1.timeout * 0.25, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
             expect(composite1.isCanceled, isFalse);
 
@@ -592,7 +592,7 @@ void execute(TestContext? tc) {
             expect(res.digits, Iterable.generate(res.digits.length));
 
             // canceled by timeout2
-            final timeout2 = TimeoutToken(delay_20ms * N);
+            final timeout2 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation2 = CancelableToken();
             Timer(timeout2.timeout * 2, cancelation2.cancel);
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
@@ -607,9 +607,9 @@ void execute(TestContext? tc) {
             expect(res.digits, Iterable.generate(res.digits.length));
 
             // canceled by timeout3 and cancelation3
-            final timeout3 = TimeoutToken(delay_20ms * N);
+            final timeout3 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation3 = CancelableToken();
-            Timer(timeout3.timeout * 0.5, cancelation3.cancel);
+            Timer(timeout3.timeout * 0.25, cancelation3.cancel);
             final composite3 = CompositeToken.all([timeout3, cancelation3]);
             expect(composite3.isCanceled, isFalse);
 
@@ -625,12 +625,12 @@ void execute(TestContext? tc) {
 
         tc.test('- Finite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final count = 2 * p.maxConcurrency + 1, N = 20;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
             // canceled by cancelation1
-            final timeout1 = TimeoutToken(delay_20ms * N * 1.8);
+            final timeout1 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation1 = CancelableToken();
-            Timer(timeout1.timeout * 0.5, cancelation1.cancel);
+            Timer(timeout1.timeout * 0.25, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
             expect(composite1.isCanceled, isFalse);
 
@@ -643,7 +643,7 @@ void execute(TestContext? tc) {
             expect(res.errors, count - res.success);
 
             // canceled by timeout2
-            final timeout2 = TimeoutToken(delay_20ms * N * 1.8);
+            final timeout2 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation2 = CancelableToken();
             Timer(timeout2.timeout * 4, cancelation2.cancel);
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
@@ -658,9 +658,9 @@ void execute(TestContext? tc) {
             expect(res.errors, count - res.success);
 
             // canceled by timeout3 and cancelation3
-            final timeout3 = TimeoutToken(delay_20ms * N * 1.8);
+            final timeout3 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation3 = CancelableToken();
-            Timer(timeout3.timeout * 0.4, cancelation3.cancel);
+            Timer(timeout3.timeout * 0.25, cancelation3.cancel);
             final composite3 = CompositeToken.all([timeout3, cancelation3]);
             expect(composite3.isCanceled, isFalse);
 
@@ -676,12 +676,12 @@ void execute(TestContext? tc) {
 
         tc.test('- Infinite() pool', () async {
           await TestWorkerPool(tc).useAsync((p) async {
-            final count = 2 * p.maxConcurrency + 1, N = 20;
+            final N = 15, count = 2 * p.maxConcurrency + 1;
 
             // canceled by cancelation1
-            final timeout1 = TimeoutToken(delay_20ms * N);
+            final timeout1 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation1 = CancelableToken();
-            Timer(timeout1.timeout * 0.5, cancelation1.cancel);
+            Timer(timeout1.timeout * 0.25, cancelation1.cancel);
             final composite1 = CompositeToken.any([timeout1, cancelation1]);
             expect(composite1.isCanceled, isFalse);
 
@@ -694,9 +694,9 @@ void execute(TestContext? tc) {
             expect(res.errors, count);
 
             // canceled by timeout2
-            final timeout2 = TimeoutToken(delay_20ms * N);
+            final timeout2 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation2 = CancelableToken();
-            Timer(timeout2.timeout * 2, cancelation2.cancel);
+            Timer(timeout2.timeout * 4, cancelation2.cancel);
             final composite2 = CompositeToken.any([timeout2, cancelation2]);
             expect(composite2.isCanceled, isFalse);
 
@@ -709,9 +709,9 @@ void execute(TestContext? tc) {
             expect(res.errors, count);
 
             // canceled by timeout3 and cancelation3
-            final timeout3 = TimeoutToken(delay_20ms * N);
+            final timeout3 = TimeoutToken(delay_20ms * N * 1.9);
             final cancelation3 = CancelableToken();
-            Timer(timeout3.timeout * 0.5, cancelation3.cancel);
+            Timer(timeout3.timeout * 0.25, cancelation3.cancel);
             final composite3 = CompositeToken.all([timeout3, cancelation3]);
             expect(composite3.isCanceled, isFalse);
 
@@ -734,7 +734,7 @@ Future<({List<int> digits, Object? exception})> _testFiniteCancelation(
   Object? exception;
   final digits = <int>[];
   try {
-    await for (final n in worker.finite(50 * N, token)) {
+    await for (final n in worker.finite_20ms(50 * N, token)) {
       digits.add(n);
     }
   } catch (ex) {
@@ -749,7 +749,7 @@ Future<({List<int> digits, Object? exception})> _testInfiniteCancelation(
   Object? exception;
   final digits = <int>[];
   try {
-    await for (final n in worker.infinite(token)) {
+    await for (final n in worker.infinite_20ms(token)) {
       digits.add(n);
     }
   } catch (ex) {
@@ -763,7 +763,7 @@ Future<({int success, int errors})> _testFinitePoolCancelation(
   final tasks = <Future>[];
   int success = 0, errors = 0;
   for (var i = 0; i < count; i++) {
-    tasks.add(pool.finite(N, token).toList().then(
+    tasks.add(pool.finite_20ms(N, token).toList().then(
           (_) => success++,
           onError: (_) => errors++,
         ));
@@ -786,7 +786,7 @@ Future<({int success, int errors})> _testInfinitePoolCancelation(
   final tasks = <Future>[];
   int success = 0, errors = 0;
   for (var i = 0; i < count; i++) {
-    tasks.add(pool.infinite(token).toList().then(
+    tasks.add(pool.infinite_20ms(token).toList().then(
           (_) => success++,
           onError: (_) => errors++,
         ));

@@ -1,3 +1,7 @@
+## 7.1.1
+
+- Be less aggressive on task scheduling in Worker pools. When synchronously submitting many tasks to the pool, the `_schedule` synchronous method was systematically called and would block the event loop. This version uses a timer to avoid flooding the pool's scheduler.
+
 ## 7.1.0
 
 - Move stats management out of Worker into a specialized class.

@@ -26,7 +26,7 @@ void main() async {
   });
 
   final timer = Timer.periodic(Duration(seconds: 1), (t) {
-    final stats = clock.stats;
+    final stats = clock.getStats();
     log('Clock status: ${stats.isStopped ? 'stopped' : 'running'}, up time = ${stats.upTime}, current workload = ${stats.workload}, total workload = ${stats.totalWorkload}');
   });
 

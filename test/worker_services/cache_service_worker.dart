@@ -37,6 +37,6 @@ base class CacheWorker extends Worker with WorkerVersion implements Cache {
   }
 
   @override
-  Future<CacheStat> getStats() async =>
+  Future<CacheStat> getCacheStats() async =>
       CacheStat.deserialize(await send(CacheService.statsCommand));
 }

@@ -8,7 +8,7 @@ abstract class Cache with SquadronVersion {
   FutureOr<dynamic> get(dynamic key);
   FutureOr<bool> containsKey(dynamic key);
   FutureOr<void> set(dynamic key, dynamic value, {Duration? timeToLive});
-  FutureOr<CacheStat> getStats();
+  FutureOr<CacheStat> getCacheStats();
 }
 
 class CacheClient with SquadronVersion implements Cache {
@@ -36,7 +36,7 @@ class CacheClient with SquadronVersion implements Cache {
   }
 
   @override
-  Future<CacheStat> getStats() async => CacheStat.deserialize(
+  Future<CacheStat> getCacheStats() async => CacheStat.deserialize(
       await _remote.sendRequest(CacheService.statsCommand, []));
 }
 
@@ -88,7 +88,7 @@ class CacheService with SquadronVersion implements Cache, WorkerService {
   }
 
   @override
-  CacheStat getStats() => CacheStat(_hit, _miss, _expired, size, _maxSize);
+  CacheStat getCacheStats() => CacheStat(_hit, _miss, _expired, size, _maxSize);
 
   static const getCommand = 1;
   static const containsCommand = 2;
@@ -105,7 +105,7 @@ class CacheService with SquadronVersion implements Cache, WorkerService {
             ? null
             : Duration(
                 microseconds: Squadron.converter.value<int>()(r.args[2]))),
-    statsCommand: (r) => getStats().serialize()
+    statsCommand: (r) => getCacheStats().serialize()
   });
 }
 

@@ -71,7 +71,7 @@ void execute(TestContext? tc) {
           // install the worker monitor
           var stopped = 0;
           final timer = Timer.periodic(delay_80ms * 0.5, (timer) {
-            stopped += p.stop((w) => w.stats.idleTime > delay_80ms);
+            stopped += p.stop((w) => w.getStats().idleTime > delay_80ms);
           });
 
           try {
@@ -279,13 +279,13 @@ void execute(TestContext? tc) {
       tc.test('- Stopped pool will not accept new requests', () async {
         await TestWorkerPool(tc, ConcurrencySettings.oneIoThread)
             .useAsync((p) async {
-          final n = await p.delayed(-1);
+          final n = await p.delayed_80ms(-1);
           expect(n, -1);
 
           p.stop();
 
           try {
-            final n = await p.delayed(-1);
+            final n = await p.delayed_80ms(-1);
             throw unexpectedSuccess('delayed()', n);
           } on SquadronError catch (ex) {
             expect(ex, reports('cannot accept new requests'));
@@ -300,7 +300,7 @@ void execute(TestContext? tc) {
           await p.start();
           expect(p.size, isPositive);
 
-          var n = await p.delayed(-1);
+          var n = await p.delayed_80ms(-1);
           expect(n, -1);
 
           p.stop();
@@ -311,7 +311,7 @@ void execute(TestContext? tc) {
           expect(p.size, isZero);
 
           try {
-            n = await p.delayed(-1);
+            n = await p.delayed_80ms(-1);
             throw unexpectedSuccess('delayed()', n);
           } on SquadronError catch (ex) {
             expect(ex, reports('cannot accept new requests'));
@@ -321,7 +321,7 @@ void execute(TestContext? tc) {
           // restart
           p.start();
 
-          n = await p.delayed(-2);
+          n = await p.delayed_80ms(-2);
           expect(n, -2);
         });
       });
@@ -333,7 +333,7 @@ void execute(TestContext? tc) {
           final count = 2 * p.maxConcurrency + p.maxWorkers;
           final digits = <int>[], tasks = <Future>[];
           for (var i = 0; i < count; i++) {
-            tasks.add(p.delayed(i).then(digits.add));
+            tasks.add(p.delayed_80ms(i).then(digits.add));
           }
 
           await Future.delayed(delay_80ms);

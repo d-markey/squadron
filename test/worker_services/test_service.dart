@@ -23,26 +23,25 @@ class TestService with SquadronVersion implements WorkerService {
     while (sw.elapsedMilliseconds < ms) {/* cpu */}
   }
 
-  Future<int> delayed(int n) async {
+  Future<int> delayed_80ms(int n) async {
     await Future.delayed(delay_80ms);
     return n;
   }
 
   FutureOr<bool> ping() => true;
 
-  Stream<int> finite(int count) async* {
+  Stream<int> finite_20ms(int count) async* {
     for (var i = 0; i < count; i++) {
       await Future.delayed(delay_20ms);
       yield i;
     }
   }
 
-  Stream<int> infinite() async* {
+  Stream<int> infinite_20ms() async* {
     int i = 0;
     while (true) {
       await Future.delayed(delay_20ms);
-      yield i;
-      i++;
+      yield i++;
     }
   }
 
@@ -78,7 +77,6 @@ class TestService with SquadronVersion implements WorkerService {
   Stream<int> infiniteWithErrors() {
     _pendingInfiniteWithErrors++;
     late final StreamController<int> controller;
-    int paused = 0;
     Completer? resumeSignal;
 
     void onListen() async {
@@ -101,17 +99,12 @@ class TestService with SquadronVersion implements WorkerService {
     }
 
     void onPause() {
-      paused++;
-      resumeSignal ??= Completer();
+      resumeSignal = Completer();
     }
 
     void onResume() {
-      if (paused == 0) return;
-      paused--;
-      if (paused == 0) {
-        resumeSignal!.complete();
-        resumeSignal = null;
-      }
+      resumeSignal?.complete();
+      resumeSignal = null;
     }
 
     void onCancel() {
@@ -174,10 +167,10 @@ class TestService with SquadronVersion implements WorkerService {
     SquadronVersion.versionCommand: (r) => getVersion(),
     ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
     cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
-    delayedCommand: (r) => delayed((r.args[0] as num).toInt()),
+    delayedCommand: (r) => delayed_80ms((r.args[0] as num).toInt()),
     pingCommand: (r) => ping(),
-    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
-    infiniteCommand: (r) => infinite(),
+    finiteCommand: (r) => finite_20ms((r.args[0] as num).toInt()),
+    infiniteCommand: (r) => infinite_20ms(),
     clockCommand: (r) =>
         clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
     cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),

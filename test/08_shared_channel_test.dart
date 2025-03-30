@@ -31,7 +31,7 @@ void execute(TestContext? tc) {
         await CacheWorker(tc).useAsync((cache) async {
           await cache.start();
 
-          var cacheStats = await cache.getStats();
+          var cacheStats = await cache.getCacheStats();
           expect(cacheStats.hit, isZero);
           expect(cacheStats.miss, isZero);
           expect(cacheStats.expired, isZero);
@@ -45,7 +45,7 @@ void execute(TestContext? tc) {
             }
             final elapsedWithEmptyCache = sw.elapsedMicroseconds;
 
-            cacheStats = await cache.getStats();
+            cacheStats = await cache.getCacheStats();
             final cacheSize = cacheStats.size;
             expect(cacheSize, isPositive);
             expect(cacheStats.hit, isZero);
@@ -59,7 +59,7 @@ void execute(TestContext? tc) {
             }
             final elapsedWithFullCache = sw.elapsedMicroseconds;
 
-            cacheStats = await cache.getStats();
+            cacheStats = await cache.getCacheStats();
             expect(cacheStats.hit, cacheSize);
             expect(cacheStats.miss, cacheSize);
             expect(cacheStats.expired, isZero);

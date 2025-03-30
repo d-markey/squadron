@@ -45,8 +45,13 @@ class WorkerStat {
 }
 
 extension WorkerStatsExt on Iterable<WorkerStat> {
+  /// Gets the total workload from a collection of worker stats.
   int get workload => fold<int>(0, (p, s) => p + s.workload);
+
+  /// Gets the grand total of workloads from a collection of worker stats.
   int get totalWorkload => fold<int>(0, (p, s) => p + s.totalWorkload);
+
+  /// Gets the grand total of errors from a collection of worker stats.
   int get totalErrors => fold<int>(0, (p, s) => p + s.totalErrors);
 }
 

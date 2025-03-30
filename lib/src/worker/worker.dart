@@ -59,10 +59,16 @@ abstract class Worker
   /// The [Worker]'s start arguments.
   List? getStartArgs();
 
+  late final _stats = _Stats(this);
+
+  bool get isStopped => _stats.isStopped;
+
   /// [Worker] statistics.
+  @Deprecated('Use getStats()')
   WorkerStat get stats => _stats.snapshot;
 
-  late final _stats = _Stats(this);
+  /// [Worker] statistics.
+  WorkerStat getStats() => _stats.snapshot;
 
   /// Returns true if the [Worker] is connected i.e., it has a valid [Channel].
   /// Returns false otherwise.
@@ -177,7 +183,7 @@ abstract class Worker
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
   Future<Channel> start() async {
-    if (stats.isStopped) {
+    if (isStopped) {
       throw WorkerException('Invalid state: worker is stopped');
     }
 
@@ -195,7 +201,7 @@ abstract class Worker
   /// Stops this worker.
   @override
   void stop() {
-    if (!_stats.isStopped) {
+    if (!isStopped) {
       channelLogger?.d('Stop worker');
       _stats.stop();
       _openChannel = null;

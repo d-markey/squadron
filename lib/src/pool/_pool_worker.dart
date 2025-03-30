@@ -18,8 +18,11 @@ class PoolWorker<W extends Worker> {
   /// The current capacity of this [PoolWorker].
   int get capacity => _capacity;
 
-  /// Whether this [PoolWorker] is stopped or doing nothing.
-  bool get isIdle => worker.stats.isStopped || _capacity == _maxWorkload;
+  /// Whether this [PoolWorker] is stopped or idle.
+  bool get isIdle => worker.isStopped || _capacity == _maxWorkload;
+
+  /// Whether this [PoolWorker] is stopped.
+  bool get isStopped => worker.isStopped;
 
   /// Run the specified [task] in the [worker].
   Future<void> run(WorkerTask task) {
@@ -34,13 +37,12 @@ class PoolWorker<W extends Worker> {
   }
 
   /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).
-  static int compareCapacityDesc(PoolWorker a, PoolWorker b) {
-    if (a.capacity != b.capacity) return b.capacity.compareTo(a.capacity);
-    if (a._lastStart == null) return 1;
-    if (b._lastStart == null) return -1;
-    return a._lastStart!.compareTo(b._lastStart!);
+  static int compareCapacity(PoolWorker a, PoolWorker b) {
+    if (a.capacity != b.capacity) return a.capacity.compareTo(b.capacity);
+    if (a._lastStart == null) return -1;
+    if (b._lastStart == null) return 1;
+    return b._lastStart!.compareTo(a._lastStart!);
   }
 
-  static bool isStopped(PoolWorker w) => w.worker.stats.isStopped;
-  static WorkerStat getStats(PoolWorker w) => w.worker.stats;
+  static WorkerStat getStats(PoolWorker w) => w.worker.getStats();
 }

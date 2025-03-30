@@ -70,18 +70,18 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
   Future<void> cpu({required int ms}) => execute((w) => w.cpu(ms: ms));
 
   @override
-  Future<int> delayed(int n) => execute((w) => w.delayed(n));
+  Future<int> delayed_80ms(int n) => execute((w) => w.delayed_80ms(n));
 
   @override
   Future<bool> ping() => execute((w) => w.ping());
 
   @override
-  Stream<int> finite(int count, [CancelationToken? token]) =>
-      stream((w) => w.finite(count, token));
+  Stream<int> finite_20ms(int count, [CancelationToken? token]) =>
+      stream((w) => w.finite_20ms(count, token));
 
   @override
-  Stream<int> infinite([CancelationToken? token]) =>
-      stream((w) => w.infinite(token));
+  Stream<int> infinite_20ms([CancelationToken? token]) =>
+      stream((w) => w.infinite_20ms(token));
 
   @override
   Stream<int> clock({int frequency = 1, CancelationToken? token}) =>
@@ -107,10 +107,11 @@ base class TestWorkerPool extends WorkerPool<TestWorker>
       execute((w) =>
           w.fractionAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut));
 
-  ValueTask<int> delayedTask(int n) => scheduleValueTask((w) => w.delayed(n));
+  ValueTask<int> delayedTask(int n) =>
+      scheduleValueTask((w) => w.delayed_80ms(n));
 
   StreamTask<int> finiteTask(int n, [CancelationToken? token]) =>
-      scheduleStreamTask((w) => w.finite(n, token));
+      scheduleStreamTask((w) => w.finite_20ms(n, token));
 
   StreamTask<int> infiniteWithErrorsTask([CancelationToken? token]) =>
       scheduleStreamTask((w) => w.infiniteWithErrors(token));
@@ -192,7 +193,7 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
       send(TestService.cpuCommand, args: [ms]);
 
   @override
-  Future<int> delayed(int n) => send(TestService.delayedCommand, args: [n])
+  Future<int> delayed_80ms(int n) => send(TestService.delayedCommand, args: [n])
       .then(Squadron.converter.value<int>());
 
   @override
@@ -200,12 +201,12 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
       send(TestService.pingCommand).then(Squadron.converter.value<bool>());
 
   @override
-  Stream<int> finite(int count, [CancelationToken? token]) =>
+  Stream<int> finite_20ms(int count, [CancelationToken? token]) =>
       stream(TestService.finiteCommand, args: [count], token: token)
           .map(Squadron.converter.value<int>());
 
   @override
-  Stream<int> infinite([CancelationToken? token]) =>
+  Stream<int> infinite_20ms([CancelationToken? token]) =>
       stream(TestService.infiniteCommand, token: token)
           .map(Squadron.converter.value<int>());
 

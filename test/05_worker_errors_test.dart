@@ -115,7 +115,7 @@ void execute(TestContext? tc) {
 
       tc.test('- Dart Exception', () async {
         await ErrorWorker(tc).useAsync((w) async {
-          final errors = w.stats.totalErrors;
+          final errors = w.getStats().totalErrors;
           try {
             final res = await w.throwException();
             throw unexpectedSuccess('throwException()', res);
@@ -123,13 +123,13 @@ void execute(TestContext? tc) {
             expect(ex, reports('intentional exception'));
             expect(ex.stackTrace, hasCalled('throwException'));
           }
-          expect(w.stats.totalErrors, errors + 1);
+          expect(w.getStats().totalErrors, errors + 1);
         });
       });
 
       tc.test('- WorkerException', () async {
         await ErrorWorker(tc).useAsync((w) async {
-          final errors = w.stats.totalErrors;
+          final errors = w.getStats().totalErrors;
           try {
             final res = await w.throwWorkerException();
             throw unexpectedSuccess('throwWorkerException()', res);
@@ -137,39 +137,39 @@ void execute(TestContext? tc) {
             expect(ex, reports('intentional worker exception'));
             expect(ex.stackTrace, hasCalled('throwWorkerException'));
           }
-          expect(w.stats.totalErrors, errors + 1);
+          expect(w.getStats().totalErrors, errors + 1);
         });
       });
 
       tc.test('- TaskTimeOutException', () async {
         await ErrorWorker(tc).useAsync((w) async {
-          final errors = w.stats.totalErrors;
+          final errors = w.getStats().totalErrors;
           try {
             final res = await w.throwTaskTimeOutException();
             throw unexpectedSuccess('throwTaskTimeOutException()', res);
           } on SquadronTimeoutException catch (ex) {
             expect(ex, reports('intentional timeout exception'));
           }
-          expect(w.stats.totalErrors, errors + 1);
+          expect(w.getStats().totalErrors, errors + 1);
         });
       });
 
       tc.test('- CanceledException', () async {
         await ErrorWorker(tc).useAsync((w) async {
-          final errors = w.stats.totalErrors;
+          final errors = w.getStats().totalErrors;
           try {
             final res = await w.throwCanceledException();
             throw unexpectedSuccess('throwCanceledException()', res);
           } on SquadronCanceledException catch (ex) {
             expect(ex, reports('intentional canceled exception'));
           }
-          expect(w.stats.totalErrors, errors + 1);
+          expect(w.getStats().totalErrors, errors + 1);
         });
       });
 
       tc.test('- TestException (unregistered)', () async {
         await ErrorWorker(tc).useAsync((w) async {
-          final errors = w.stats.totalErrors;
+          final errors = w.getStats().totalErrors;
           try {
             final res = await w.throwTestException();
             throw unexpectedSuccess('throwTestException()', res);
@@ -178,7 +178,7 @@ void execute(TestContext? tc) {
             expect(ex, reports('Failed to deserialize'));
             expect(ex, reports('#TEST'));
           }
-          expect(w.stats.totalErrors, errors + 1);
+          expect(w.getStats().totalErrors, errors + 1);
         });
       });
 
@@ -189,7 +189,7 @@ void execute(TestContext? tc) {
               TestException.typeId,
               TestException.deserialize,
             );
-            final errors = w.stats.totalErrors;
+            final errors = w.getStats().totalErrors;
             try {
               final res = await w.throwTestException();
               throw unexpectedSuccess('throwTestException()', res);
@@ -198,7 +198,7 @@ void execute(TestContext? tc) {
               expect(ex.stackTrace, hasCalled('throwTestException'));
               expect(ex.command, ErrorService.throwTestExceptionCommand);
             }
-            expect(w.stats.totalErrors, errors + 1);
+            expect(w.getStats().totalErrors, errors + 1);
           } finally {
             w.exceptionManager.unregister(TestException.typeId);
           }
