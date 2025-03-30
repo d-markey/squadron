@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="worker.stats.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-30" filename="worker.stats.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="35" lines-valid="35" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of 'worker.dart';</code>
@@ -181,9 +181,9 @@
         <line number="54">
             <code/>
         </line>
-        <line hits="22" number="55">
+        <line hits="12" number="55">
             <code>  Duration _getUpTime(int microsec) =&gt; (_started == null)</code>
-            <hit count="22" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="56">
             <code>      ? Duration.zero</code>
@@ -195,16 +195,16 @@
         <line number="58">
             <code/>
         </line>
-        <line hits="33" number="59">
+        <line hits="18" number="59">
             <code>  Duration _getIdleTime(int microsec) =&gt; (_workload &gt; 0)</code>
-            <hit count="33" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="60">
             <code>      ? Duration.zero</code>
         </line>
-        <line hits="33" number="61">
+        <line hits="18" number="61">
             <code>      : Duration(microseconds: microsec - _idle);</code>
-            <hit count="33" name="&lt;unnamed&gt;"/>
+            <hit count="18" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
             <code/>
@@ -228,53 +228,53 @@
         <line number="68">
             <code/>
         </line>
-        <line hits="11" number="69">
+        <line hits="6" number="69">
             <code>  WorkerStat get snapshot {</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="70">
+        <line hits="6" number="70">
             <code>    final ts = microsecTimeStamp();</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="71">
+        <line hits="6" number="71">
             <code>    return WorkerStatImpl.create(</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="72">
+        <line hits="6" number="72">
             <code>      _workerType,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="73">
+        <line hits="6" number="73">
             <code>      _workerHashCode,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="74">
+        <line hits="6" number="74">
             <code>      isStopped,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="75">
+        <line hits="6" number="75">
             <code>      _workload,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="76">
+        <line hits="6" number="76">
             <code>      _maxWorkload,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="77">
+        <line hits="6" number="77">
             <code>      _totalWorkload,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="78">
+        <line hits="6" number="78">
             <code>      _totalErrors,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="79">
+        <line hits="12" number="79">
             <code>      _getUpTime(_stopped ?? ts),</code>
-            <hit count="22" name="&lt;unnamed&gt;"/>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="80">
+        <line hits="6" number="80">
             <code>      _getIdleTime(ts),</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="81">
             <code>    );</code>

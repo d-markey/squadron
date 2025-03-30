@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-26</dd>
+                    <dd>2025-03-30</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -223,7 +223,7 @@
                     <td>54</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>22</td><td><code>  Duration _getUpTime(int microsec) =&gt; (_started == null)</code></td>
+                    <td>55</td><td></td><td>12</td><td><code>  Duration _getUpTime(int microsec) =&gt; (_started == null)</code></td>
                 </tr>
                 <tr class="noop" title="Line 56" id="line56">
                     <td>56</td><td></td><td></td><td><code>      ? Duration.zero</code></td>
@@ -235,13 +235,13 @@
                     <td>58</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>33</td><td><code>  Duration _getIdleTime(int microsec) =&gt; (_workload &gt; 0)</code></td>
+                    <td>59</td><td></td><td>18</td><td><code>  Duration _getIdleTime(int microsec) =&gt; (_workload &gt; 0)</code></td>
                 </tr>
                 <tr class="noop" title="Line 60" id="line60">
                     <td>60</td><td></td><td></td><td><code>      ? Duration.zero</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>33</td><td><code>      : Duration(microseconds: microsec - _idle);</code></td>
+                    <td>61</td><td></td><td>18</td><td><code>      : Duration(microseconds: microsec - _idle);</code></td>
                 </tr>
                 <tr class="noop" title="Line 62" id="line62">
                     <td>62</td><td></td><td></td><td><code></code></td>
@@ -265,40 +265,40 @@
                     <td>68</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>11</td><td><code>  WorkerStat get snapshot {</code></td>
+                    <td>69</td><td></td><td>6</td><td><code>  WorkerStat get snapshot {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 70" id="line70">
-                    <td>70</td><td></td><td>11</td><td><code>    final ts = microsecTimeStamp();</code></td>
+                    <td>70</td><td></td><td>6</td><td><code>    final ts = microsecTimeStamp();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>11</td><td><code>    return WorkerStatImpl.create(</code></td>
+                    <td>71</td><td></td><td>6</td><td><code>    return WorkerStatImpl.create(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>11</td><td><code>      _workerType,</code></td>
+                    <td>72</td><td></td><td>6</td><td><code>      _workerType,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>11</td><td><code>      _workerHashCode,</code></td>
+                    <td>73</td><td></td><td>6</td><td><code>      _workerHashCode,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 74" id="line74">
-                    <td>74</td><td></td><td>11</td><td><code>      isStopped,</code></td>
+                    <td>74</td><td></td><td>6</td><td><code>      isStopped,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>11</td><td><code>      _workload,</code></td>
+                    <td>75</td><td></td><td>6</td><td><code>      _workload,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>11</td><td><code>      _maxWorkload,</code></td>
+                    <td>76</td><td></td><td>6</td><td><code>      _maxWorkload,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>11</td><td><code>      _totalWorkload,</code></td>
+                    <td>77</td><td></td><td>6</td><td><code>      _totalWorkload,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 78" id="line78">
-                    <td>78</td><td></td><td>11</td><td><code>      _totalErrors,</code></td>
+                    <td>78</td><td></td><td>6</td><td><code>      _totalErrors,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 79" id="line79">
-                    <td>79</td><td></td><td>22</td><td><code>      _getUpTime(_stopped ?? ts),</code></td>
+                    <td>79</td><td></td><td>12</td><td><code>      _getUpTime(_stopped ?? ts),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>11</td><td><code>      _getIdleTime(ts),</code></td>
+                    <td>80</td><td></td><td>6</td><td><code>      _getIdleTime(ts),</code></td>
                 </tr>
                 <tr class="noop" title="Line 81" id="line81">
                     <td>81</td><td></td><td></td><td><code>    );</code></td>

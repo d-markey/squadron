@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-26" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="3" lines-valid="6" package="src/stats" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-30" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="3" lines-valid="6" package="src/stats" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -13,9 +13,9 @@
         <line number="4">
             <code>class WorkerStat {</code>
         </line>
-        <line hits="11" number="5">
+        <line hits="6" number="5">
             <code>  WorkerStat._(</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
             <code>      this.workerType,</code>
@@ -143,66 +143,81 @@
         <line number="47">
             <code>extension WorkerStatsExt on Iterable&lt;WorkerStat&gt; {</code>
         </line>
-        <line hits="0" number="48">
-            <code>  int get workload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.workload);</code>
+        <line number="48">
+            <code>  /// Gets the total workload from a collection of worker stats.</code>
         </line>
         <line hits="0" number="49">
-            <code>  int get totalWorkload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
+            <code>  int get workload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.workload);</code>
         </line>
-        <line hits="0" number="50">
-            <code>  int get totalErrors =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
-        </line>
-        <line number="51">
-            <code>}</code>
-        </line>
-        <line number="52">
+        <line number="50">
             <code/>
         </line>
+        <line number="51">
+            <code>  /// Gets the grand total of workloads from a collection of worker stats.</code>
+        </line>
+        <line hits="0" number="52">
+            <code>  int get totalWorkload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
+        </line>
         <line number="53">
-            <code>@internal</code>
+            <code/>
         </line>
         <line number="54">
-            <code>extension WorkerStatImpl on WorkerStat {</code>
+            <code>  /// Gets the grand total of errors from a collection of worker stats.</code>
         </line>
-        <line hits="11" number="55">
-            <code>  static WorkerStat create(</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line hits="0" number="55">
+            <code>  int get totalErrors =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
         </line>
         <line number="56">
-            <code>          Type workerType,</code>
+            <code>}</code>
         </line>
         <line number="57">
-            <code>          int workerHashCode,</code>
+            <code/>
         </line>
         <line number="58">
-            <code>          bool isStopped,</code>
+            <code>@internal</code>
         </line>
         <line number="59">
-            <code>          int workload,</code>
+            <code>extension WorkerStatImpl on WorkerStat {</code>
         </line>
-        <line number="60">
-            <code>          int maxWorkload,</code>
+        <line hits="6" number="60">
+            <code>  static WorkerStat create(</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="61">
-            <code>          int totalWorkload,</code>
+            <code>          Type workerType,</code>
         </line>
         <line number="62">
-            <code>          int totalErrors,</code>
+            <code>          int workerHashCode,</code>
         </line>
         <line number="63">
-            <code>          Duration upTime,</code>
+            <code>          bool isStopped,</code>
         </line>
         <line number="64">
-            <code>          Duration idleTime) =&gt;</code>
+            <code>          int workload,</code>
         </line>
-        <line hits="11" number="65">
-            <code>      WorkerStat._(workerType, workerHashCode, isStopped, workload, maxWorkload,</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line number="65">
+            <code>          int maxWorkload,</code>
         </line>
         <line number="66">
-            <code>          totalWorkload, totalErrors, upTime, idleTime);</code>
+            <code>          int totalWorkload,</code>
         </line>
         <line number="67">
+            <code>          int totalErrors,</code>
+        </line>
+        <line number="68">
+            <code>          Duration upTime,</code>
+        </line>
+        <line number="69">
+            <code>          Duration idleTime) =&gt;</code>
+        </line>
+        <line hits="6" number="70">
+            <code>      WorkerStat._(workerType, workerHashCode, isStopped, workload, maxWorkload,</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="71">
+            <code>          totalWorkload, totalErrors, upTime, idleTime);</code>
+        </line>
+        <line number="72">
             <code>}</code>
         </line>
     </lines>

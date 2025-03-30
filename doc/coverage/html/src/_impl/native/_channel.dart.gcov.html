@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-26</dd>
+                    <dd>2025-03-30</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -469,31 +469,31 @@
                     <td>136</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>1</td><td><code>@internal</code></td>
+                    <td>137</td><td></td><td>2</td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 138" id="line138">
                     <td>138</td><td></td><td></td><td><code>void terminateChannel(Channel channel, TaskTerminatedException ex) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>1</td><td><code>  if (channel is _VmChannel) {</code></td>
+                    <td>139</td><td></td><td>2</td><td><code>  if (channel is _VmChannel) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>2</td><td><code>    channel._thread?.kill(priority: vm.Isolate.immediate);</code></td>
+                    <td>140</td><td></td><td>4</td><td><code>    channel._thread?.kill(priority: vm.Isolate.immediate);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>1</td><td><code>    final pendingConnections = channel._activeConnections;</code></td>
+                    <td>141</td><td></td><td>2</td><td><code>    final pendingConnections = channel._activeConnections;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>2</td><td><code>    for (var c in pendingConnections) {</code></td>
+                    <td>142</td><td></td><td>4</td><td><code>    for (var c in pendingConnections) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 143" id="line143">
-                    <td>143</td><td></td><td>2</td><td><code>      c.subscription?.cancel();</code></td>
+                    <td>143</td><td></td><td>4</td><td><code>      c.subscription?.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>1</td><td><code>      c.addError(ex);</code></td>
+                    <td>144</td><td></td><td>2</td><td><code>      c.addError(ex);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 145" id="line145">
-                    <td>145</td><td></td><td>1</td><td><code>      c.close();</code></td>
+                    <td>145</td><td></td><td>2</td><td><code>      c.close();</code></td>
                 </tr>
                 <tr class="noop" title="Line 146" id="line146">
                     <td>146</td><td></td><td></td><td><code>    }</code></td>
