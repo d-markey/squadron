@@ -62,7 +62,7 @@ void main(List<String> args) async {
 
   try {
     final results = await Future.wait(targets.map((t) => _compile(t, sw)));
-    final date = DateTime.now();
+    final date = DateTime.now().toUtc();
     await Future.wait([
       if (compileRunners)
         _updateCompilationDate('runners', 'Test Console', date),
@@ -129,7 +129,7 @@ Future<void> _updateCompilationDate(
   final htmlFile = path.join(projectRoot, 'test', 'test-console', 'includes',
       'compilation_date_$target.inc.html');
   await File(htmlFile).writeAsString(
-      '<span><b>$label</b> compiled on <b>${datePart(date)} ${timePart(date)}</b></span>');
+      '<span><b>$label</b> compiled on <b>${datePart(date)} ${timePart(date)} GMT</b></span>');
 }
 
 String datePart(DateTime d) => '${d.year}-${nn(d.month)}-${nn(d.day)}';
@@ -162,7 +162,10 @@ extension type Compilation._(List<String> _args) {
   String get source => File(_args[3]).projectPath;
   String get output => File(_args[5]).projectPath;
 
-  Future<Process> start() => Process.start('dart', _args);
+  Future<Process> start() {
+    print('*** dart ${_args.join(' ')}');
+    return Process.start('dart', _args);
+  }
 }
 
 extension on Process {

@@ -163,6 +163,33 @@ void execute(TestContext? tc) {
           expect((t.$at(0) as JSArrayBuffer).$byteLength, data.length * 16 / 8);
           expect(t.$at(1).isA<MessagePort>(), isTrue);
         });
+
+        tc.group('- PERFS', () {
+          void unused(Object? _) {}
+
+          tc.test('List<String>', () {
+            final data = List.generate(1000, (n) => 'String $n ${'*' * n}');
+
+            final sw = Stopwatch();
+
+            sw.start();
+            for (var i = 0; i < 10; i++) {
+              final res = $jsify(data, null);
+              unused(res);
+            }
+            print('\$jsify --> ${sw.elapsedMilliseconds} ms');
+
+            sw.stop();
+            sw.reset();
+
+            sw.start();
+            for (var i = 0; i < 10; i++) {
+              final res = $jsify2(data, null);
+              unused(res);
+            }
+            print('\$jsify2 --> ${sw.elapsedMilliseconds} ms');
+          });
+        });
       });
 
       tc.group('- DARTIFY', () {

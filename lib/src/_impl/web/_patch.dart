@@ -101,6 +101,12 @@ void $transferify(JSAny? message, JSArray transfer) {
   squadronTransferify(message);
 }
 
+JSAny? _toJSStr(Object? value) => (value as String?)?.toJS;
+JSAny? _toJSBool(Object? value) => (value as bool?)?.toJS;
+JSAny? _toJSNum(Object? value) => (value as num?)?.toJS;
+JSAny? _toJSBigInt(Object? value) =>
+    (value == null) ? null : $JSBigInt((value as BigInt).toString().toJS);
+
 JSAny? $jsify(Object? message, JSArray? transfer) {
   final cache = HashMap<Object, JSAny>(equals: Squadron.identical);
 
@@ -125,7 +131,126 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     var cached = cache[obj];
     if (cached != null) return cached;
 
-    // process List object recursively
+    if (obj is List && obj is! TypedData) {
+      final jsifier = switch (obj) {
+        List<String?>() => _toJSStr,
+        List<bool?>() => _toJSBool,
+        List<num?>() => _toJSNum,
+        List<BigInt?>() => _toJSBigInt,
+        _ => squadronJsify,
+      };
+
+      final len = obj.length, jsArray = JSArray();
+      cache[obj] = jsArray;
+      for (var i = 0; i < len; i++) {
+        jsArray.$push(jsifier(obj[i]));
+      }
+      return jsArray;
+    }
+
+    // process Map object recursively
+    if (obj is Map) {
+      final kjsifier = switch (obj) {
+        Map<String?, dynamic>() => _toJSStr,
+        Map<bool?, dynamic>() => _toJSBool,
+        Map<num?, dynamic>() => _toJSNum,
+        Map<BigInt?, dynamic>() => _toJSBigInt,
+        _ => squadronJsify,
+      };
+
+      final vjsifier = switch (obj) {
+        Map<dynamic, String?>() => _toJSStr,
+        Map<dynamic, bool?>() => _toJSBool,
+        Map<dynamic, num?>() => _toJSNum,
+        Map<dynamic, BigInt?>() => _toJSBigInt,
+        _ => squadronJsify,
+      };
+
+      final jsMap = $JSMap();
+      cache[obj] = jsMap;
+      for (var entry in obj.entries) {
+        jsMap.set(
+          kjsifier(entry.key),
+          vjsifier(entry.value),
+        );
+      }
+      return jsMap;
+    }
+
+    // process Set object recursively
+    if (obj is Set) {
+      final jsifier = switch (obj) {
+        Set<String?>() => _toJSStr,
+        Set<bool?>() => _toJSBool,
+        Set<num?>() => _toJSNum,
+        Set<BigInt?>() => _toJSBigInt,
+        _ => squadronJsify,
+      };
+
+      final jsSet = $JSSet();
+      cache[obj] = jsSet;
+      for (var value in obj) {
+        jsSet.add(jsifier(value));
+      }
+      return jsSet;
+    }
+
+    // support BigInt object
+    if (obj is BigInt) {
+      return _toJSBigInt(obj);
+    }
+
+    // delegate to Dart's jsify()
+    var res = obj.jsify();
+
+    // cache result and update list of transferable objects
+    if (res.isDefinedAndNotNull) {
+      res as JSAny;
+      if (obj is! num && obj is! bool && obj is! String) {
+        cache[obj] = res;
+      }
+      $registerTransferable(res);
+    }
+
+    return res;
+  }
+
+  final jsMessage = squadronJsify(message);
+
+  /////////// >>> using Dart's jsify implementation
+  // final jsMessage = message.jsify();
+  // if (transfer != null) {
+  //   $transferify(jsMessage, transfer);
+  // }
+  /////////// <<< using Dart's jsify implementation
+
+  return jsMessage;
+}
+
+JSAny? $jsify2(Object? message, JSArray? transfer) {
+  final cache = HashMap<Object, JSAny>(equals: Squadron.identical);
+
+  final $registerTransferable = (transfer == null)
+      ? ((JSAny js) {})
+      : ((JSAny js) {
+          // for typed array, transfer the underlying buffer
+          if (js.isA<JSTypedArray>()) {
+            js = (js as JSTypedArray).$buffer!;
+            if (cache.containsKey(js)) return;
+            cache[js] = js;
+          }
+          if (_isTransferable(js)) {
+            transfer.$push(js);
+          }
+        });
+
+  JSAny? squadronJsify(Object? obj) {
+    if (obj == null) return null;
+
+    // use cached object if available
+    var cached = cache[obj];
+    if (cached != null) return cached;
+
     if (obj is List && obj is! TypedData) {
       final len = obj.length, jsArray = JSArray();
       cache[obj] = jsArray;
@@ -160,7 +285,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // support BigInt object
     if (obj is BigInt) {
-      return $JSBigInt(obj.toString().toJS);
+      return _toJSBigInt(obj);
     }
 
     // delegate to Dart's jsify()
