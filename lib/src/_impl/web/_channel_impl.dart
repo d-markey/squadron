@@ -230,6 +230,10 @@ final class _WebChannel implements Channel {
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
     return _getResponseStream(com, req, post, streaming: true);
   }
+  
+  @override
+  // TODO: implement activeConnectionsCount
+  int get activeConnectionsCount => throw UnimplementedError();
 }
 
 extension on WorkerRequest {

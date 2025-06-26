@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:logger/web.dart';
+import 'package:meta/meta.dart';
 import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
@@ -76,6 +77,12 @@ abstract class Worker
 
   /// Shared [Channel] that can be used to communicate with the worker.
   Channel? getSharedChannel() => _channel?.share();
+
+  @visibleForTesting
+  int get activeConnectionsCount =>
+      // rationale: valid, at this itself is @visibleForTesting.
+      // ignore: invalid_use_of_visible_for_testing_member
+      _channel?.activeConnectionsCount ?? 0;
 
   Channel? _channel;
   Future<Channel>? _openChannel;

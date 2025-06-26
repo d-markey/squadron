@@ -87,6 +87,87 @@ void execute(TestContext? tc) {
           });
         });
       });
+
+      tc.group(
+          '- #70 - ForwardStreamController released after stream is closed',
+          () {
+        tc.test('- sendRequest should clean up controllers', () async {
+          // This test only applies to VM platform where we can access internals
+          if (!tc.runnerPlatform.isVm) return;
+
+          await IssuesWorker(tc).useAsync((w) async {
+            await w.start();
+
+            final initialCount = w.activeConnectionsCount;
+            expect(initialCount, greaterThanOrEqualTo(0),
+                reason:
+                    'activeConnectionsCount should be accessible on VM platform');
+
+            // Make multiple sendRequest calls
+            for (int i = 0; i < 10; i++) {
+              await w.getVersion();
+            }
+
+            // Give time for any async cleanup
+            await Future.delayed(Duration(milliseconds: 100));
+
+            // Verify controllers were cleaned up
+            final finalCount = w.activeConnectionsCount;
+            expect(finalCount, equals(initialCount),
+                reason:
+                    'Memory leak detected: ${finalCount - initialCount} ForwardStreamControllers retained after 10 requests');
+          });
+        });
+
+        tc.test('- sendStreamingRequest should clean up controllers', () async {
+          // This test only applies to VM platform where we can access internals
+          if (!tc.runnerPlatform.isVm) return;
+
+          await IssuesWorker(tc).useAsync((w) async {
+            await w.start();
+
+            final initialCount = w.activeConnectionsCount;
+
+            // Make a streaming request and fully consume it
+            final values = <dynamic>[];
+            await for (final value in w.issue_8([0, 1])) {
+              values.add(value);
+            }
+
+            // Give time for cleanup
+            await Future.delayed(Duration(milliseconds: 100));
+
+            final finalCount = w.activeConnectionsCount;
+            expect(finalCount, equals(initialCount),
+                reason:
+                    'Memory leak detected: ${finalCount - initialCount} ForwardStreamControllers retained after streaming request');
+          });
+        });
+
+        tc.test('- Early canceled streams should clean up controllers',
+            () async {
+          // This test only applies to VM platform where we can access internals
+          if (!tc.runnerPlatform.isVm) return;
+
+          await IssuesWorker(tc).useAsync((w) async {
+            await w.start();
+
+            final initialCount = w.activeConnectionsCount;
+
+            // Create a streaming request but cancel it early by only taking first value
+            final firstValue = await w.issue_8([0, 1, 2, 3, 4]).first;
+            expect(firstValue, {'id': 1, 'num': 0});
+
+            // Give time for cleanup after early cancellation
+            await Future.delayed(Duration(milliseconds: 200));
+
+            final finalCount = w.activeConnectionsCount;
+            expect(finalCount, equals(initialCount),
+                reason:
+                    'Memory leak detected: ${finalCount - initialCount} ForwardStreamControllers retained after early stream cancellation');
+          });
+        });
+      });
     });
   });
 }

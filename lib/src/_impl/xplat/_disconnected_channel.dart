@@ -58,4 +58,8 @@ final class DisconnectedChannel implements Channel {
 
   @override
   Channel share() => _disconnectedError();
+  
+  @visibleForTesting
+  @override
+  int get activeConnectionsCount => 0;
 }

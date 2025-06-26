@@ -78,6 +78,9 @@ abstract interface class Channel {
     ExceptionManager? exceptionManager,
   ]) =>
       impl.deserialize(channelInfo, logger, exceptionManager);
+
+  @visibleForTesting
+  int get activeConnectionsCount;
 }
 
 @internal

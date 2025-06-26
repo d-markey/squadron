@@ -12,6 +12,10 @@ final class _VmChannel implements Channel {
   final _activeConnections = <ForwardStreamController<WorkerResponse>>[];
 
   @override
+  @visibleForTesting
+  int get activeConnectionsCount => _activeConnections.length;
+
+  @override
   final ExceptionManager exceptionManager;
 
   @override
@@ -80,6 +84,7 @@ final class _VmChannel implements Channel {
     required bool streaming,
   }) {
     final command = req.command;
+    ForwardStreamController<WorkerResponse>? activeController;
 
     // send the request, return a stream of responses
     Stream<WorkerResponse> $sendRequest() {
@@ -97,6 +102,7 @@ final class _VmChannel implements Channel {
 
       void $done() {
         _leave(controller);
+        activeController = null;
       }
 
       controller = ForwardStreamController(onListen: () {
@@ -114,10 +120,12 @@ final class _VmChannel implements Channel {
         // send the request
         try {
           _enter(controller);
+          activeController = controller;
           post(req);
         } catch (ex, st) {
           $forwardError(ex, st);
           _leave(controller);
+          activeController = null;
         }
       });
       return controller.stream;
@@ -125,7 +133,13 @@ final class _VmChannel implements Channel {
 
     // return a stream of decoded responses
     final res = ResultStream(this, req, $sendRequest, streaming);
-    res.done.whenComplete(() => port.close()).ignore();
+    res.done.whenComplete(() {
+      port.close();
+      // Clean up the active controller if it exists and wasn't cleaned up
+      if (activeController != null && _activeConnections.contains(activeController)) {
+        _leave(activeController!);
+      }
+    }).ignore();
     return res.stream;
   }
 
