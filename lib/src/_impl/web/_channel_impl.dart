@@ -232,8 +232,8 @@ final class _WebChannel implements Channel {
   }
   
   @override
-  // TODO: implement activeConnectionsCount
-  int get activeConnectionsCount => throw UnimplementedError();
+  @visibleForTesting
+  int get activeConnectionsCount => _activeConnections.length;
 }
 
 extension on WorkerRequest {

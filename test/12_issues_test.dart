@@ -92,16 +92,13 @@ void execute(TestContext? tc) {
           '- #70 - ForwardStreamController released after stream is closed',
           () {
         tc.test('- sendRequest should clean up controllers', () async {
-          // This test only applies to VM platform where we can access internals
-          if (!tc.runnerPlatform.isVm) return;
 
           await IssuesWorker(tc).useAsync((w) async {
             await w.start();
 
             final initialCount = w.activeConnectionsCount;
             expect(initialCount, greaterThanOrEqualTo(0),
-                reason:
-                    'activeConnectionsCount should be accessible on VM platform');
+                reason: 'activeConnectionsCount should be accessible');
 
             // Make multiple sendRequest calls
             for (int i = 0; i < 10; i++) {
@@ -120,8 +117,6 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- sendStreamingRequest should clean up controllers', () async {
-          // This test only applies to VM platform where we can access internals
-          if (!tc.runnerPlatform.isVm) return;
 
           await IssuesWorker(tc).useAsync((w) async {
             await w.start();
@@ -146,8 +141,6 @@ void execute(TestContext? tc) {
 
         tc.test('- Early canceled streams should clean up controllers',
             () async {
-          // This test only applies to VM platform where we can access internals
-          if (!tc.runnerPlatform.isVm) return;
 
           await IssuesWorker(tc).useAsync((w) async {
             await w.start();
