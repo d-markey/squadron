@@ -37,7 +37,8 @@ bool _$is(JSAny a, JSAny b) => $is(a, b);
 void $transferify(JSAny? message, JSArray transfer) {
   final registered = HashSet<JSAny>(equals: _$is);
 
-  void squadronTransferify(JSAny? js) {
+  late final void Function(JSAny?) squadronTransferify;
+  squadronTransferify = (JSAny? js) {
     if (js.isUndefinedOrNull) return;
     js as JSAny;
 
@@ -96,7 +97,7 @@ void $transferify(JSAny? message, JSArray transfer) {
     if (_isTransferable(js)) {
       transfer.$push(js);
     }
-  }
+  };
 
   squadronTransferify(message);
 }
@@ -124,7 +125,8 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
           }
         });
 
-  JSAny? squadronJsify(Object? obj) {
+  late final JSAny? Function(Object?) squadronJsify;
+  squadronJsify = (Object? obj) {
     if (obj == null) return null;
 
     // use cached object if available
@@ -132,13 +134,18 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     if (cached != null) return cached;
 
     if (obj is List && obj is! TypedData) {
-      final jsifier = switch (obj) {
-        List<String?>() => _toJSStr,
-        List<bool?>() => _toJSBool,
-        List<num?>() => _toJSNum,
-        List<BigInt?>() => _toJSBigInt,
-        _ => squadronJsify,
-      };
+      Function(Object?) jsifier;
+      if (obj is List<String?>) {
+        jsifier = _toJSStr;
+      } else if (obj is List<bool?>) {
+        jsifier = _toJSBool;
+      } else if (obj is List<num?>) {
+        jsifier = _toJSNum;
+      } else if (obj is List<BigInt?>) {
+        jsifier = _toJSBigInt;
+      } else {
+        jsifier = squadronJsify;
+      }
 
       final len = obj.length, jsArray = JSArray();
       cache[obj] = jsArray;
@@ -150,21 +157,31 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // process Map object recursively
     if (obj is Map) {
-      final kjsifier = switch (obj) {
-        Map<String?, dynamic>() => _toJSStr,
-        Map<bool?, dynamic>() => _toJSBool,
-        Map<num?, dynamic>() => _toJSNum,
-        Map<BigInt?, dynamic>() => _toJSBigInt,
-        _ => squadronJsify,
-      };
+      Function(Object?) kjsifier;
+      if (obj is Map<String?, dynamic>) {
+        kjsifier = _toJSStr;
+      } else if (obj is Map<bool?, dynamic>) {
+        kjsifier = _toJSBool;
+      } else if (obj is Map<num?, dynamic>) {
+        kjsifier = _toJSNum;
+      } else if (obj is Map<BigInt?, dynamic>) {
+        kjsifier = _toJSBigInt;
+      } else {
+        kjsifier = squadronJsify;
+      }
 
-      final vjsifier = switch (obj) {
-        Map<dynamic, String?>() => _toJSStr,
-        Map<dynamic, bool?>() => _toJSBool,
-        Map<dynamic, num?>() => _toJSNum,
-        Map<dynamic, BigInt?>() => _toJSBigInt,
-        _ => squadronJsify,
-      };
+      Function(Object?) vjsifier;
+      if (obj is Map<dynamic, String?>) {
+        vjsifier = _toJSStr;
+      } else if (obj is Map<dynamic, bool?>) {
+        vjsifier = _toJSBool;
+      } else if (obj is Map<dynamic, num?>) {
+        vjsifier = _toJSNum;
+      } else if (obj is Map<dynamic, BigInt?>) {
+        vjsifier = _toJSBigInt;
+      } else {
+        vjsifier = squadronJsify;
+      }
 
       final jsMap = $JSMap();
       cache[obj] = jsMap;
@@ -179,13 +196,18 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
     // process Set object recursively
     if (obj is Set) {
-      final jsifier = switch (obj) {
-        Set<String?>() => _toJSStr,
-        Set<bool?>() => _toJSBool,
-        Set<num?>() => _toJSNum,
-        Set<BigInt?>() => _toJSBigInt,
-        _ => squadronJsify,
-      };
+      Function(Object?) jsifier;
+      if (obj is Set<String?>) {
+        jsifier = _toJSStr;
+      } else if (obj is Set<bool?>) {
+        jsifier = _toJSBool;
+      } else if (obj is Set<num?>) {
+        jsifier = _toJSNum;
+      } else if (obj is Set<BigInt?>) {
+        jsifier = _toJSBigInt;
+      } else {
+        jsifier = squadronJsify;
+      }
 
       final jsSet = $JSSet();
       cache[obj] = jsSet;
@@ -213,7 +235,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     }
 
     return res;
-  }
+  };
 
   final jsMessage = squadronJsify(message);
 
@@ -244,7 +266,8 @@ JSAny? $jsify2(Object? message, JSArray? transfer) {
           }
         });
 
-  JSAny? squadronJsify(Object? obj) {
+  late final JSAny? Function(Object?) squadronJsify;
+  squadronJsify = (Object? obj) {
     if (obj == null) return null;
 
     // use cached object if available
@@ -301,7 +324,7 @@ JSAny? $jsify2(Object? message, JSArray? transfer) {
     }
 
     return res;
-  }
+  };
 
   final jsMessage = squadronJsify(message);
 
@@ -318,7 +341,8 @@ JSAny? $jsify2(Object? message, JSArray? transfer) {
 Object? $dartify(JSAny? message) {
   final cache = HashMap<JSAny, Object>(equals: Squadron.identical);
 
-  Object? squadronDartify(JSAny? js) {
+  late final Object? Function(JSAny?) squadronDartify;
+  squadronDartify = (JSAny? js) {
     if (js.isUndefinedOrNull) return null;
 
     // use cached object if available
@@ -374,7 +398,7 @@ Object? $dartify(JSAny? message) {
     }
 
     return res;
-  }
+  };
 
   final dartMessage = squadronDartify(message);
 
