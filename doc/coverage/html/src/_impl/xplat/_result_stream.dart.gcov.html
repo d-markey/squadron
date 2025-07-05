@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-30</dd>
+                    <dd>2025-07-05</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -310,7 +310,7 @@
                     <td>83</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>3</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code></td>
+                    <td>84</td><td></td><td>4</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code></td>
                 </tr>
                 <tr class="noop" title="Line 85" id="line85">
                     <td>85</td><td></td><td></td><td><code>      streamIdCompleter as Completer&lt;int?&gt;;</code></td>
@@ -319,7 +319,7 @@
                     <td>86</td><td></td><td></td><td><code>      var count = 0;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 87" id="line87">
-                    <td>87</td><td></td><td>4</td><td><code>      if (sub.isPaused &amp;&amp; !streamIdCompleter.isCompleted) {</code></td>
+                    <td>87</td><td></td><td>5</td><td><code>      if (sub.isPaused &amp;&amp; !streamIdCompleter.isCompleted) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 88" id="line88">
                     <td>88</td><td></td><td></td><td><code>        // if the subscription was paused and the streamId is not available,</code></td>
@@ -346,13 +346,13 @@
                     <td>95</td><td></td><td></td><td><code>      // wait for the streamId...</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>3</td><td><code>      final streamId = await streamIdCompleter.future;</code></td>
+                    <td>96</td><td></td><td>4</td><td><code>      final streamId = await streamIdCompleter.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 97" id="line97">
                     <td>97</td><td></td><td></td><td><code>      // restore subscription pause</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
-                    <td>98</td><td></td><td>3</td><td><code>      while (count &gt; 0) {</code></td>
+                    <td>98</td><td></td><td>4</td><td><code>      while (count &gt; 0) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 99" id="line99">
                     <td>99</td><td></td><td>0</td><td><code>        count--;</code></td>
@@ -388,19 +388,19 @@
                     <td>109</td><td></td><td></td><td><code>        // we need to inform the worker that the stream has been canceled</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>3</td><td><code>        final streamId = await $getStreamId(sub);</code></td>
+                    <td>110</td><td></td><td>4</td><td><code>        final streamId = await $getStreamId(sub);</code></td>
                 </tr>
                 <tr class="noop" title="Line 111" id="line111">
                     <td>111</td><td></td><td></td><td><code>        if (streamId != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>3</td><td><code>          channel.cancelStream(streamId);</code></td>
+                    <td>112</td><td></td><td>4</td><td><code>          channel.cancelStream(streamId);</code></td>
                 </tr>
                 <tr class="noop" title="Line 113" id="line113">
                     <td>113</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 114" id="line114">
-                    <td>114</td><td></td><td>3</td><td><code>        await sub.cancel();</code></td>
+                    <td>114</td><td></td><td>4</td><td><code>        await sub.cancel();</code></td>
                 </tr>
                 <tr class="noop" title="Line 115" id="line115">
                     <td>115</td><td></td><td></td><td><code>      }</code></td>
