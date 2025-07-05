@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-03-30</dd>
+                    <dd>2025-07-05</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>6</td><td>6</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -310,13 +310,19 @@
                     <td>83</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
-                    <td>84</td><td></td><td></td><td><code>extension ChannelTerminationImpl on Channel {</code></td>
+                    <td>84</td><td></td><td></td><td><code>extension ChannelImpl on Channel {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 85" id="line85">
                     <td>85</td><td></td><td>4</td><td><code>  void terminate(TaskTerminatedException ex) =&gt; impl.terminateChannel(this, ex);</code></td>
                 </tr>
                 <tr class="noop" title="Line 86" id="line86">
-                    <td>86</td><td></td><td></td><td><code>}</code></td>
+                    <td>86</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 87" id="line87">
+                    <td>87</td><td></td><td>12</td><td><code>  int get activeConnections =&gt; impl.getActiveConnections(this);</code></td>
+                </tr>
+                <tr class="noop" title="Line 88" id="line88">
+                    <td>88</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

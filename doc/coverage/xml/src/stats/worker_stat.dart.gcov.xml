@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-03-30" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="3" lines-valid="6" package="src/stats" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-07-05" filename="worker_stat.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="3" lines-valid="6" package="src/stats" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -18,206 +18,224 @@
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
-            <code>      this.workerType,</code>
+            <code>    this.workerType,</code>
         </line>
         <line number="7">
-            <code>      this.workerHashCode,</code>
+            <code>    this.workerHashCode,</code>
         </line>
         <line number="8">
-            <code>      this.isStopped,</code>
+            <code>    this.isStopped,</code>
         </line>
         <line number="9">
-            <code>      this.workload,</code>
+            <code>    this.workload,</code>
         </line>
         <line number="10">
-            <code>      this.maxWorkload,</code>
+            <code>    this.maxWorkload,</code>
         </line>
         <line number="11">
-            <code>      this.totalWorkload,</code>
+            <code>    this.totalWorkload,</code>
         </line>
         <line number="12">
-            <code>      this.totalErrors,</code>
+            <code>    this.totalErrors,</code>
         </line>
         <line number="13">
-            <code>      this.upTime,</code>
+            <code>    this.upTime,</code>
         </line>
         <line number="14">
-            <code>      this.idleTime);</code>
+            <code>    this.idleTime,</code>
         </line>
         <line number="15">
-            <code/>
+            <code>    this.activeConnections,</code>
         </line>
         <line number="16">
-            <code>  /// Timestamp of this snapshot</code>
+            <code>  );</code>
         </line>
         <line number="17">
-            <code>  final timestamp = DateTime.now().toUtc();</code>
+            <code/>
         </line>
         <line number="18">
-            <code/>
+            <code>  /// Timestamp of this snapshot</code>
         </line>
         <line number="19">
-            <code>  /// The worker's runtime type.</code>
+            <code>  final timestamp = DateTime.now().toUtc();</code>
         </line>
         <line number="20">
-            <code>  final Type workerType;</code>
+            <code/>
         </line>
         <line number="21">
-            <code/>
+            <code>  /// The worker's runtime type.</code>
         </line>
         <line number="22">
-            <code>  /// The worker's hashCode.</code>
+            <code>  final Type workerType;</code>
         </line>
         <line number="23">
-            <code>  final int workerHashCode;</code>
+            <code/>
         </line>
         <line number="24">
-            <code/>
+            <code>  /// The worker's hashCode.</code>
         </line>
         <line number="25">
-            <code>  /// Worker running flag.</code>
+            <code>  final int workerHashCode;</code>
         </line>
         <line number="26">
-            <code>  final bool isStopped;</code>
+            <code/>
         </line>
         <line number="27">
-            <code/>
+            <code>  /// Worker running flag.</code>
         </line>
         <line number="28">
-            <code>  /// Current workload being processed by the worker.</code>
+            <code>  final bool isStopped;</code>
         </line>
         <line number="29">
-            <code>  final int workload;</code>
+            <code/>
         </line>
         <line number="30">
-            <code/>
+            <code>  /// Current workload being processed by the worker.</code>
         </line>
         <line number="31">
-            <code>  /// Maximum concurrent workload processed by the worker.</code>
+            <code>  final int workload;</code>
         </line>
         <line number="32">
-            <code>  final int maxWorkload;</code>
+            <code/>
         </line>
         <line number="33">
-            <code/>
+            <code>  /// Maximum concurrent workload processed by the worker.</code>
         </line>
         <line number="34">
-            <code>  /// Total workload processed by the worker.</code>
+            <code>  final int maxWorkload;</code>
         </line>
         <line number="35">
-            <code>  final int totalWorkload;</code>
+            <code/>
         </line>
         <line number="36">
-            <code/>
+            <code>  /// Total workload processed by the worker.</code>
         </line>
         <line number="37">
-            <code>  /// Total errors raised during processing.</code>
+            <code>  final int totalWorkload;</code>
         </line>
         <line number="38">
-            <code>  final int totalErrors;</code>
+            <code/>
         </line>
         <line number="39">
-            <code/>
+            <code>  /// Total errors raised during processing.</code>
         </line>
         <line number="40">
-            <code>  /// The worker's up-time.</code>
+            <code>  final int totalErrors;</code>
         </line>
         <line number="41">
-            <code>  Duration upTime;</code>
+            <code/>
         </line>
         <line number="42">
-            <code/>
+            <code>  /// The worker's up-time.</code>
         </line>
         <line number="43">
-            <code>  /// The worker's idle-time.</code>
+            <code>  Duration upTime;</code>
         </line>
         <line number="44">
-            <code>  Duration idleTime;</code>
+            <code/>
         </line>
         <line number="45">
-            <code>}</code>
+            <code>  /// The worker's idle-time.</code>
         </line>
         <line number="46">
-            <code/>
+            <code>  Duration idleTime;</code>
         </line>
         <line number="47">
-            <code>extension WorkerStatsExt on Iterable&lt;WorkerStat&gt; {</code>
+            <code/>
         </line>
         <line number="48">
-            <code>  /// Gets the total workload from a collection of worker stats.</code>
+            <code>  /// The worker channel's count of active connections.</code>
         </line>
-        <line hits="0" number="49">
-            <code>  int get workload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.workload);</code>
+        <line number="49">
+            <code>  final int activeConnections;</code>
         </line>
         <line number="50">
-            <code/>
-        </line>
-        <line number="51">
-            <code>  /// Gets the grand total of workloads from a collection of worker stats.</code>
-        </line>
-        <line hits="0" number="52">
-            <code>  int get totalWorkload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
-        </line>
-        <line number="53">
-            <code/>
-        </line>
-        <line number="54">
-            <code>  /// Gets the grand total of errors from a collection of worker stats.</code>
-        </line>
-        <line hits="0" number="55">
-            <code>  int get totalErrors =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
-        </line>
-        <line number="56">
             <code>}</code>
         </line>
-        <line number="57">
+        <line number="51">
             <code/>
         </line>
+        <line number="52">
+            <code>extension WorkerStatsExt on Iterable&lt;WorkerStat&gt; {</code>
+        </line>
+        <line number="53">
+            <code>  /// Gets the total workload from a collection of worker stats.</code>
+        </line>
+        <line hits="0" number="54">
+            <code>  int get workload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.workload);</code>
+        </line>
+        <line number="55">
+            <code/>
+        </line>
+        <line number="56">
+            <code>  /// Gets the grand total of workloads from a collection of worker stats.</code>
+        </line>
+        <line hits="0" number="57">
+            <code>  int get totalWorkload =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalWorkload);</code>
+        </line>
         <line number="58">
-            <code>@internal</code>
+            <code/>
         </line>
         <line number="59">
+            <code>  /// Gets the grand total of errors from a collection of worker stats.</code>
+        </line>
+        <line hits="0" number="60">
+            <code>  int get totalErrors =&gt; fold&lt;int&gt;(0, (p, s) =&gt; p + s.totalErrors);</code>
+        </line>
+        <line number="61">
+            <code>}</code>
+        </line>
+        <line number="62">
+            <code/>
+        </line>
+        <line number="63">
+            <code>@internal</code>
+        </line>
+        <line number="64">
             <code>extension WorkerStatImpl on WorkerStat {</code>
         </line>
-        <line hits="6" number="60">
+        <line hits="6" number="65">
             <code>  static WorkerStat create(</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="61">
+        <line number="66">
             <code>          Type workerType,</code>
         </line>
-        <line number="62">
+        <line number="67">
             <code>          int workerHashCode,</code>
         </line>
-        <line number="63">
+        <line number="68">
             <code>          bool isStopped,</code>
         </line>
-        <line number="64">
+        <line number="69">
             <code>          int workload,</code>
         </line>
-        <line number="65">
+        <line number="70">
             <code>          int maxWorkload,</code>
         </line>
-        <line number="66">
+        <line number="71">
             <code>          int totalWorkload,</code>
         </line>
-        <line number="67">
+        <line number="72">
             <code>          int totalErrors,</code>
         </line>
-        <line number="68">
+        <line number="73">
             <code>          Duration upTime,</code>
         </line>
-        <line number="69">
-            <code>          Duration idleTime) =&gt;</code>
+        <line number="74">
+            <code>          Duration idleTime,</code>
         </line>
-        <line hits="6" number="70">
+        <line number="75">
+            <code>          int activeConnections) =&gt;</code>
+        </line>
+        <line hits="6" number="76">
             <code>      WorkerStat._(workerType, workerHashCode, isStopped, workload, maxWorkload,</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="71">
-            <code>          totalWorkload, totalErrors, upTime, idleTime);</code>
+        <line number="77">
+            <code>          totalWorkload, totalErrors, upTime, idleTime, activeConnections);</code>
         </line>
-        <line number="72">
+        <line number="78">
             <code>}</code>
         </line>
     </lines>
