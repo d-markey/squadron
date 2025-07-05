@@ -147,6 +147,7 @@ void execute(TestContext? tc) {
           var stats = w.getStats();
           expect(stats.upTime, Duration.zero);
           expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
@@ -156,6 +157,7 @@ void execute(TestContext? tc) {
           await Future.delayed(delay_80ms * 2);
           stats = w.getStats();
           expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
           expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
 
@@ -164,6 +166,7 @@ void execute(TestContext? tc) {
           expect(stats.isStopped, isTrue);
           final upTime = stats.upTime;
           expect(w.isConnected, isFalse);
+          expect(stats.activeConnections, isZero);
           expect(stats.upTime, greaterThan(Duration.zero));
 
           await Future.delayed(delay_80ms);
@@ -179,6 +182,7 @@ void execute(TestContext? tc) {
           var stats = w.getStats();
           expect(stats.upTime, Duration.zero);
           expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
@@ -189,12 +193,14 @@ void execute(TestContext? tc) {
           stats = w.getStats();
           expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
           expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
 
           final duration = delay_80ms * 4;
           Future.delayed(duration * 0.5, () {
             w.terminate();
             stats = w.getStats();
+            expect(stats.activeConnections, isZero);
             expect(stats.isStopped, isTrue);
             expect(w.isConnected, isFalse);
           });
@@ -209,11 +215,13 @@ void execute(TestContext? tc) {
           stats = w.getStats();
           final upTime = stats.upTime;
           expect(stats.upTime, greaterThan(Duration.zero));
+          expect(stats.activeConnections, isZero);
 
           await Future.delayed(delay_80ms);
           stats = w.getStats();
           expect(stats.upTime, upTime);
           expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.activeConnections, isZero);
         });
       });
 
@@ -223,6 +231,7 @@ void execute(TestContext? tc) {
           var stats = w.getStats();
           expect(stats.upTime, Duration.zero);
           expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
 
           final channel = await w.start();
@@ -233,12 +242,14 @@ void execute(TestContext? tc) {
           stats = w.getStats();
           expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
           expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
+          expect(stats.activeConnections, isZero);
           expect(stats.isStopped, isFalse);
 
           final duration = delay_80ms * 4;
           Future.delayed(duration * 0.5, () {
             w.terminate();
             stats = w.getStats();
+            expect(stats.activeConnections, isZero);
             expect(stats.isStopped, isTrue);
             expect(w.isConnected, isFalse);
           });
@@ -253,11 +264,13 @@ void execute(TestContext? tc) {
           stats = w.getStats();
           final savedUpTime = stats.upTime;
           expect(stats.upTime, greaterThan(Duration.zero));
+          expect(stats.activeConnections, isZero);
 
           await Future.delayed(delay_80ms);
           stats = w.getStats();
           expect(stats.upTime, savedUpTime);
           expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
+          expect(stats.activeConnections, isZero);
         });
       });
 
@@ -317,6 +330,8 @@ void execute(TestContext? tc) {
           } on WorkerException catch (ex) {
             expect(ex, reports('worker is stopped'));
           }
+
+          expect(w.getStats().activeConnections, isZero);
         });
       });
     });

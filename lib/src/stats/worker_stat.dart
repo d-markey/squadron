@@ -3,15 +3,17 @@ import 'package:meta/meta.dart';
 /// Base statistics for worker.
 class WorkerStat {
   WorkerStat._(
-      this.workerType,
-      this.workerHashCode,
-      this.isStopped,
-      this.workload,
-      this.maxWorkload,
-      this.totalWorkload,
-      this.totalErrors,
-      this.upTime,
-      this.idleTime);
+    this.workerType,
+    this.workerHashCode,
+    this.isStopped,
+    this.workload,
+    this.maxWorkload,
+    this.totalWorkload,
+    this.totalErrors,
+    this.upTime,
+    this.idleTime,
+    this.activeConnections,
+  );
 
   /// Timestamp of this snapshot
   final timestamp = DateTime.now().toUtc();
@@ -42,6 +44,9 @@ class WorkerStat {
 
   /// The worker's idle-time.
   Duration idleTime;
+
+  /// The worker channel's count of active connections.
+  final int activeConnections;
 }
 
 extension WorkerStatsExt on Iterable<WorkerStat> {
@@ -66,7 +71,8 @@ extension WorkerStatImpl on WorkerStat {
           int totalWorkload,
           int totalErrors,
           Duration upTime,
-          Duration idleTime) =>
+          Duration idleTime,
+          int activeConnections) =>
       WorkerStat._(workerType, workerHashCode, isStopped, workload, maxWorkload,
-          totalWorkload, totalErrors, upTime, idleTime);
+          totalWorkload, totalErrors, upTime, idleTime, activeConnections);
 }

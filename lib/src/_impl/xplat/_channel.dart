@@ -19,6 +19,10 @@ Future<Channel> openChannel(
     throw SquadronErrorImpl.create('Platform not supported');
 
 @internal
+int getActiveConnections(Channel channel) =>
+    throw SquadronErrorImpl.create('Platform not supported');
+
+@internal
 void terminateChannel(Channel channel, TaskTerminatedException ex) =>
     throw SquadronErrorImpl.create('Platform not supported');
 

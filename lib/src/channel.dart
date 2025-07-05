@@ -81,6 +81,8 @@ abstract interface class Channel {
 }
 
 @internal
-extension ChannelTerminationImpl on Channel {
+extension ChannelImpl on Channel {
   void terminate(TaskTerminatedException ex) => impl.terminateChannel(this, ex);
+
+  int get activeConnections => impl.getActiveConnections(this);
 }

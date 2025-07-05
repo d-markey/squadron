@@ -63,7 +63,7 @@ a[t]=b[t]}},
 c(){A.d("I'm not a worker!")}}
 var w=[A]
 var $={}
-var v={typeUniverse:{eC:new Map(),tR:{},eT:{},tPV:{},sEA:[]},mangledGlobalNames:{o:"int",n:"double",p:"num",j:"String",m:"bool",h:"Null",e:"List",i:"Object",f:"Map"},mangledNames:{},types:[],arrayRti:Symbol("$ti")};(function nativeSupport(){hunkHelpers.setOrUpdateInterceptorsByTag({})
+var v={G:typeof self!="undefined"?self:globalThis,typeUniverse:{eC:new Map(),tR:{},eT:{},tPV:{},sEA:[]},mangledGlobalNames:{o:"int",n:"double",p:"num",j:"String",m:"bool",h:"Null",e:"List",i:"Object",f:"Map"},mangledNames:{},types:[],arrayRti:Symbol("$ti")};(function nativeSupport(){hunkHelpers.setOrUpdateInterceptorsByTag({})
 hunkHelpers.setOrUpdateLeafTags({})})()
 convertAllToFastObject(w)
 convertToFastObject($);(function(a){if(typeof document==="undefined"){a(null)

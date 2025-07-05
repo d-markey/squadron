@@ -272,7 +272,7 @@ extension _FeatureTestExt<V> on MapEntry<String, _FeatureTest<V>> {
   void test(TestContext tc, _DataContext<V> data) {
     tc.test('- $key', () {
       expect(data.lazy, data.ref);
-      checkOutcome(key, data.lazy, data.ref, value);
+      checkOutcome(key, data.lazy, data.ref, value, tc.runnerPlatform);
       expect(data.lazy, data.ref);
     });
   }

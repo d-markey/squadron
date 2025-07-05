@@ -135,6 +135,10 @@ Future<Channel> openChannel(
 }
 
 @internal
+int getActiveConnections(Channel channel) =>
+    (channel is _VmChannel) ? channel._activeConnections.length : 0;
+
+@internal
 void terminateChannel(Channel channel, TaskTerminatedException ex) {
   if (channel is _VmChannel) {
     channel._thread?.kill(priority: vm.Isolate.immediate);

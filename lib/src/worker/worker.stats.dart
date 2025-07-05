@@ -3,8 +3,9 @@ part of 'worker.dart';
 class _Stats {
   _Stats(Worker w)
       : _idle = microsecTimeStamp(),
-        _workerType = w.runtimeType,
-        _workerHashCode = w.hashCode;
+        _worker = w;
+
+  final Worker _worker;
 
   void start() {
     _idle = _started = microsecTimeStamp();
@@ -63,14 +64,11 @@ class _Stats {
   /// Indicates if the [Worker] has been stopped.
   bool get isStopped => _stopped != null;
 
-  final Type _workerType;
-  final int _workerHashCode;
-
   WorkerStat get snapshot {
     final ts = microsecTimeStamp();
     return WorkerStatImpl.create(
-      _workerType,
-      _workerHashCode,
+      _worker.runtimeType,
+      _worker.hashCode,
       isStopped,
       _workload,
       _maxWorkload,
@@ -78,6 +76,7 @@ class _Stats {
       _totalErrors,
       _getUpTime(_stopped ?? ts),
       _getIdleTime(ts),
+      _worker._channel?.activeConnections ?? 0,
     );
   }
 }

@@ -86,13 +86,13 @@ final class _WebChannel implements Channel {
     }
   }
 
-  void _enter(StreamController<WorkerResponse>? controller) {
-    if (controller != null) _activeConnections.add(controller);
+  void _enter(StreamController<WorkerResponse> controller) {
+    _activeConnections.add(controller);
   }
 
-  Future<void>? _leave(StreamController<WorkerResponse>? controller) {
+  Future<void> _leave(StreamController<WorkerResponse> controller) {
     _activeConnections.remove(controller);
-    return controller?.close();
+    return controller.close();
   }
 
   Stream _getResponseStream(
@@ -105,28 +105,25 @@ final class _WebChannel implements Channel {
 
     // return a stream of responses
     Stream<WorkerResponse> $sendRequest() {
-      StreamController<WorkerResponse>? controller;
+      late final StreamController<WorkerResponse> controller;
 
-      void $forwardMessage(WorkerResponse msg) => controller?.add(msg);
+      void $forwardMessage(WorkerResponse msg) => controller.add(msg);
 
       void $forwardError(Object error, StackTrace? st) =>
-          controller?.addError(SquadronException.from(error, st, command));
+          controller.addError(SquadronException.from(error, st, command));
 
       final buffer = EventBuffer($forwardMessage, $forwardError);
 
-      Future<void> $close() async {
+      Future<void> $close() {
         com.port1.close();
         com.port2.close();
-        final future = _leave(controller);
-        controller = null;
-        await future;
+        return _leave(controller);
       }
 
       controller = StreamController<WorkerResponse>(
         onListen: () {
           // do nothing if the controller is closed already
-          final ctrlr = controller;
-          if (ctrlr == null) return;
+          if (controller.isClosed) return;
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
@@ -161,7 +158,7 @@ final class _WebChannel implements Channel {
         onCancel: $close,
       );
 
-      return controller!.stream;
+      return controller.stream;
     }
 
     // return a stream of decoded responses

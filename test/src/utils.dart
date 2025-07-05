@@ -64,7 +64,8 @@ class Reported extends CustomMatcher {
       (actual is SquadronException) ? actual.message : actual.toString();
 }
 
-void checkOutcome<X, Y>(String process, X a, X b, Y Function(X) test) {
+void checkOutcome<X, Y>(String process, X a, X b, Y Function(X) test,
+    SquadronPlatformType platform) {
   try {
     final ra = test(a);
     final rb = test(b);
@@ -79,10 +80,15 @@ void checkOutcome<X, Y>(String process, X a, X b, Y Function(X) test) {
         expect(exa.runtimeType, exb.runtimeType);
         expect(exa.toString(), exb.toString());
       } catch (_) {
-        print('$process failed for $a with $exa, for $b with $exb');
-        print('Stacktrace (a): $sta');
-        print('Stacktrace (b): $stb');
-        rethrow;
+        print(
+            '$process failed with inconsistent errors: for $a with $exa, for $b with $exb');
+        if (platform.isWasm && process == 'subList (invalid range)') {
+          // ignore until https://github.com/dart-lang/sdk/issues/61045 is fixed
+        } else {
+          print('Stacktrace (a): $sta');
+          print('Stacktrace (b): $stb');
+          rethrow;
+        }
       }
     }
   }

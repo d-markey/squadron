@@ -119,6 +119,8 @@ final class _VmChannel implements Channel {
           $forwardError(ex, st);
           _leave(controller);
         }
+      }, onCancel: () {
+        _leave(controller);
       });
       return controller.stream;
     }

@@ -2,7 +2,7 @@ export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/annotations/target_platform.dart';
 export 'src/bootstrapper.dart';
-export 'src/channel.dart' hide ChannelTerminationImpl;
+export 'src/channel.dart' hide ChannelImpl;
 export 'src/concurrency_settings.dart';
 export 'src/converters/cast_converter.dart';
 export 'src/converters/context_aware_converter.dart'

@@ -173,6 +173,10 @@ Future<Channel> openChannel(
 }
 
 @internal
+int getActiveConnections(Channel channel) =>
+    (channel is _WebChannel) ? channel._activeConnections.length : 0;
+
+@internal
 void terminateChannel(Channel channel, TaskTerminatedException ex) {
   if (channel is _WebChannel) {
     channel._thread?.terminate();

@@ -583,9 +583,9 @@ class _Features<T> {
 extension _FeatureTestExt<T> on MapEntry<String, _FeatureTest<T>> {
   void check(TestContext tc, _DataContext<T> data) {
     tc.test('- $key', () {
-      expect(data.lazy, data.ref);
-      checkOutcome(key, data.lazy, data.ref, value);
-      expect(data.lazy, data.ref);
+      expect(data.lazy, data.ref, reason: '1');
+      checkOutcome(key, data.lazy, data.ref, value, tc.runnerPlatform);
+      expect(data.lazy, data.ref, reason: '2');
     });
   }
 }
