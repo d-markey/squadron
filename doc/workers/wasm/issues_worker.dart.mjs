@@ -455,7 +455,7 @@ class CompiledApp {
 "Cannot add event while adding a stream",
 "computation",
 "The type parameter is not nullable",
-"7.1.2",
+"7.1.2+1",
 "Aw==",
 "Deferred message failed with error: ",
 "$!",

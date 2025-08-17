@@ -441,7 +441,7 @@ class CompiledApp {
 "No events after a done.",
 "Cannot add event after closing",
 "Cannot add event while adding a stream",
-"7.1.2",
+"7.1.2+1",
 "Aw==",
 "Deferred message failed with error: ",
 "$!",

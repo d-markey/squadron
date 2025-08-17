@@ -42,16 +42,16 @@ FutureOr<T> run<T>(FutureOr<T> Function() task,
       throw Error.throwWithStackTrace(ex, st);
     },
     zoneSpecification: ZoneSpecification(
-      run: <T>(self, parent, zone, f) {
+      run: <R>(self, parent, zone, f) {
         final ex = cancelationToken?.exception;
         if (ex != null) {
           $failure(ex);
-          return null as T;
+          return null as R;
         } else {
           return parent.run(zone, f);
         }
       },
-      runUnary: <R, T>(self, parent, zone, f, x) {
+      runUnary: <R, P>(self, parent, zone, f, x) {
         final ex = cancelationToken?.exception;
         if (ex != null) {
           $failure(ex);
@@ -60,7 +60,7 @@ FutureOr<T> run<T>(FutureOr<T> Function() task,
           return parent.runUnary(zone, f, x);
         }
       },
-      runBinary: <R, T1, T2>(self, parent, zone, f, x, y) {
+      runBinary: <R, P1, P2>(self, parent, zone, f, x, y) {
         final ex = cancelationToken?.exception;
         if (ex != null) {
           $failure(ex);

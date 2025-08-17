@@ -468,6 +468,15 @@
         return J.UnknownJavaScriptObject.prototype;
       return receiver;
     },
+    getInterceptor$n(receiver) {
+      if (typeof receiver == "number")
+        return J.JSNumber.prototype;
+      if (receiver == null)
+        return receiver;
+      if (!(receiver instanceof A.Object))
+        return J.UnknownJavaScriptObject.prototype;
+      return receiver;
+    },
     getInterceptor$ns(receiver) {
       if (typeof receiver == "number")
         return J.JSNumber.prototype;
@@ -527,6 +536,11 @@
       if (typeof receiver != "object")
         return a0 != null && receiver === a0;
       return J.getInterceptor$(receiver).$eq(receiver, a0);
+    },
+    $ge$n(receiver, a0) {
+      if (typeof receiver == "number" && typeof a0 == "number")
+        return receiver >= a0;
+      return J.getInterceptor$n(receiver).$ge(receiver, a0);
     },
     $index$ax(receiver, a0) {
       if (typeof a0 === "number")
@@ -11052,13 +11066,11 @@
   };
   A.ProductionFilter.prototype = {
     shouldLog$1($event) {
-      var t1 = type$.LogEvent._as($event).level.value,
-        t2 = this.get$level().value;
-      if (typeof t1 !== "number")
-        return t1.$ge();
-      if (typeof t2 !== "number")
-        return A.iae(t2);
-      return t1 >= t2;
+      var t1;
+      type$.LogEvent._as($event);
+      t1 = this.get$level();
+      t1.toString;
+      return J.$ge$n($event.level, t1);
     }
   };
   A.LogEvent.prototype = {};
@@ -11090,6 +11102,15 @@
   A.Level.prototype = {
     _enumToString$0() {
       return "Level." + A.S(this._core$_name);
+    },
+    $ge(_, other) {
+      var t1 = this.value,
+        t2 = type$.Level._as(other).value;
+      if (typeof t1 !== "number")
+        return t1.$ge();
+      if (typeof t2 !== "number")
+        return A.iae(t2);
+      return t1 >= t2;
     }
   };
   A.LogOutput.prototype = {
@@ -12215,7 +12236,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.1.2";
+              $async$returnValue = "7.1.2+1";
               // goto return
               $async$goto = 1;
               break;

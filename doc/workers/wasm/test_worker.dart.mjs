@@ -460,7 +460,7 @@ class CompiledApp {
 "The type parameter is not nullable",
 "controller",
 "Frequency is too high!",
-"7.1.2",
+"7.1.2+1",
 "Aw==",
 "Deferred message failed with error: ",
 "Type argument '",

@@ -1,3 +1,7 @@
+## 7.1.2+1
+
+- Fix warnings from [pub.dev](https://pub.dev/packages/squadron/score).
+
 ## 7.1.2
 
 - Expose the count of active connections via the worker's stats.

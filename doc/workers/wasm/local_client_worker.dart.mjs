@@ -537,7 +537,7 @@ class CompiledApp {
 "Bw==",
 "CA==",
 "CQ==",
-"7.1.2",
+"7.1.2+1",
 "$C1",
 "$K",
 "Task canceled"

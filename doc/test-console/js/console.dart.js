@@ -15168,7 +15168,7 @@
               _box_0 = {};
               t1 = init.G;
               t2 = type$.JSObject;
-              t2._as(t1.document).title = "Squadron 7.1.2 Test Console";
+              t2._as(t1.document).title = "Squadron 7.1.2+1 Test Console";
               t3 = type$.nullable_JSObject;
               t4 = t3._as(t3._as(t2._as(t1.document).querySelector("#test-runner")));
               t4.toString;
@@ -16057,7 +16057,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.1.2") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.1.2+1") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -29113,6 +29113,12 @@
   A.Level.prototype = {
     _enumToString$0() {
       return "Level." + this._name;
+    },
+    $lt(_, other) {
+      return B.JSInt_methods.$lt(this.value, type$.Level._as(other).get$value());
+    },
+    $gt(_, other) {
+      return B.JSInt_methods.$gt(this.value, type$.Level._as(other).get$value());
     }
   };
   A.LogOutput.prototype = {
@@ -61077,7 +61083,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.1.2";
+              $async$returnValue = "7.1.2+1";
               // goto return
               $async$goto = 1;
               break;

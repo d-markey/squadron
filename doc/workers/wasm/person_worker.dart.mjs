@@ -458,7 +458,7 @@ class CompiledApp {
 "JavaScript",
 "js",
 "SquadronPlatformType.",
-"7.1.2",
+"7.1.2+1",
 "Aw==",
 "Deferred message failed with error: ",
 "Type argument '",

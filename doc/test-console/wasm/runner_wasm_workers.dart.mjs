@@ -1246,7 +1246,7 @@ class CompiledApp {
 "dartPrint",
 "Test Runner: ",
 " platform using Squadron ",
-"7.1.2",
+"7.1.2+1",
 "@@READY@@",
 "Unhandled dartifyRaw type case: ",
 "message",
