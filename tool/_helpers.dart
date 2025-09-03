@@ -5,8 +5,16 @@ import 'package:path/path.dart' as path;
 final projectRoot = findRootOfProject();
 
 List<String> overrideDefaultArgs(
-        List<String> args, String def, List<String> defaultArgs) =>
-    (args.isEmpty || args.contains(def)) ? defaultArgs : args.toList();
+    List<String> args, String def, Iterable<String> defaultArgs) {
+  args = args.toList(); // make args a modifiable list
+  if (args.isEmpty || args.contains(def)) {
+    args.remove(def);
+    for (var arg in defaultArgs) {
+      if (!args.contains(arg)) args.add(arg);
+    }
+  }
+  return args;
+}
 
 bool takeArg(List<String> args, String arg) {
   if (args.contains(arg)) {
