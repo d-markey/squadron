@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-09-03</dd>
+                    <dd>2025-09-28</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -181,7 +181,7 @@
                     <td>40</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>11</td><td><code>  void failure(Object error, [StackTrace? stackTrace]) {</code></td>
+                    <td>41</td><td></td><td>11</td><td><code>  void $failure(Object error, [StackTrace? stackTrace]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
                     <td>42</td><td></td><td>11</td><td><code>    if (!completer.isCompleted) {</code></td>
@@ -199,7 +199,7 @@
                     <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>10</td><td><code>  void success(_VmChannel channel) {</code></td>
+                    <td>47</td><td></td><td>10</td><td><code>  void $success(_VmChannel channel) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
                     <td>48</td><td></td><td>10</td><td><code>    if (!completer.isCompleted) {</code></td>
@@ -232,7 +232,7 @@
                     <td>57</td><td></td><td>22</td><td><code>  exitPort.listen((message) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 58" id="line58">
-                    <td>58</td><td></td><td>22</td><td><code>    failure(SquadronErrorImpl.create('Connection to worker failed'));</code></td>
+                    <td>58</td><td></td><td>22</td><td><code>    $failure(SquadronErrorImpl.create('Connection to worker failed'));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 59" id="line59">
                     <td>59</td><td></td><td>6</td><td><code>    logger?.t('Isolate terminated with message $message.');</code></td>
@@ -307,7 +307,7 @@
                     <td>82</td><td></td><td>0</td><td><code>    logger?.d(() =&gt; 'Unhandled error from Isolate: ${error?.message}.');</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 83" id="line83">
-                    <td>83</td><td></td><td>0</td><td><code>    failure(error);</code></td>
+                    <td>83</td><td></td><td>0</td><td><code>    $failure(error);</code></td>
                 </tr>
                 <tr class="noop" title="Line 84" id="line84">
                     <td>84</td><td></td><td></td><td><code>  });</code></td>
@@ -349,7 +349,7 @@
                     <td>96</td><td></td><td>3</td><td><code>      logger?.e(() =&gt; 'Connection to Isolate failed: $error');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 97" id="line97">
-                    <td>97</td><td></td><td>2</td><td><code>      failure(error);</code></td>
+                    <td>97</td><td></td><td>2</td><td><code>      $failure(error);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 98" id="line98">
                     <td>98</td><td></td><td>10</td><td><code>    } else if (response.endOfStream) {</code></td>
@@ -376,7 +376,7 @@
                     <td>105</td><td></td><td></td><td><code>      channel = platformChannel;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>10</td><td><code>      success(platformChannel);</code></td>
+                    <td>106</td><td></td><td>10</td><td><code>      $success(platformChannel);</code></td>
                 </tr>
                 <tr class="noop" title="Line 107" id="line107">
                     <td>107</td><td></td><td></td><td><code>    } else {</code></td>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-09-03</dd>
+                    <dd>2025-09-28</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>29</td><td>29</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>30</td><td>30</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -208,82 +208,85 @@
                     <td>49</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>12</td><td><code>  void _onError(ex, st) =&gt; _controller.addError(SquadronException.from(ex, st));</code></td>
+                    <td>50</td><td></td><td>3</td><td><code>  void _onError(Object ex, [StackTrace? st]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 51" id="line51">
+                    <td>51</td><td></td><td>9</td><td><code>      _controller.addError(SquadronException.from(ex, st));</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>2</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 52" id="line52">
+                    <td>52</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 53" id="line53">
-                    <td>53</td><td></td><td></td><td><code>  void cancel([String? message]) {</code></td>
+                <tr class="lineCov" title="Line 53" id="line53">
+                    <td>53</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>2</td><td><code>    super.cancel(message);</code></td>
+                <tr class="noop" title="Line 54" id="line54">
+                    <td>54</td><td></td><td></td><td><code>  void cancel([String? message]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 55" id="line55">
-                    <td>55</td><td></td><td>4</td><td><code>    if (!_worker.isCompleted) {</code></td>
+                    <td>55</td><td></td><td>2</td><td><code>    super.cancel(message);</code></td>
                 </tr>
-                <tr class="noop" title="Line 56" id="line56">
-                    <td>56</td><td></td><td></td><td><code>      // task canceled before it got scheduled</code></td>
+                <tr class="lineCov" title="Line 56" id="line56">
+                    <td>56</td><td></td><td>4</td><td><code>    if (!_worker.isCompleted) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>4</td><td><code>      _worker.complete(null);</code></td>
+                <tr class="noop" title="Line 57" id="line57">
+                    <td>57</td><td></td><td></td><td><code>      // task canceled before it got scheduled</code></td>
                 </tr>
-                <tr class="noop" title="Line 58" id="line58">
-                    <td>58</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 58" id="line58">
+                    <td>58</td><td></td><td>4</td><td><code>      _worker.complete(null);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 59" id="line59">
-                    <td>59</td><td></td><td>4</td><td><code>    if (_controller.subscription != null) {</code></td>
+                <tr class="noop" title="Line 59" id="line59">
+                    <td>59</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 60" id="line60">
-                    <td>60</td><td></td><td></td><td><code>      // task canceled after a listener subscribed to the stream</code></td>
+                <tr class="lineCov" title="Line 60" id="line60">
+                    <td>60</td><td></td><td>4</td><td><code>    if (_controller.subscription != null) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 61" id="line61">
-                    <td>61</td><td></td><td>2</td><td><code>      _closeWithError(canceledException!);</code></td>
+                <tr class="noop" title="Line 61" id="line61">
+                    <td>61</td><td></td><td></td><td><code>      // task canceled after a listener subscribed to the stream</code></td>
                 </tr>
-                <tr class="noop" title="Line 62" id="line62">
-                    <td>62</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 62" id="line62">
+                    <td>62</td><td></td><td>2</td><td><code>      _closeWithError(canceledException!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
-                    <td>63</td><td></td><td></td><td><code>  }</code></td>
+                    <td>63</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 64" id="line64">
-                    <td>64</td><td></td><td></td><td><code></code></td>
+                    <td>64</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>4</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 65" id="line65">
+                    <td>65</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 66" id="line66">
-                    <td>66</td><td></td><td></td><td><code>  Future&lt;bool&gt; execute(W worker) {</code></td>
+                <tr class="lineCov" title="Line 66" id="line66">
+                    <td>66</td><td></td><td>4</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 67" id="line67">
-                    <td>67</td><td></td><td>4</td><td><code>    if (canceledException == null) {</code></td>
+                <tr class="noop" title="Line 67" id="line67">
+                    <td>67</td><td></td><td></td><td><code>  Future&lt;bool&gt; execute(W worker) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 68" id="line68">
-                    <td>68</td><td></td><td></td><td><code>      // run with worker</code></td>
+                <tr class="lineCov" title="Line 68" id="line68">
+                    <td>68</td><td></td><td>4</td><td><code>    if (canceledException == null) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>8</td><td><code>      _worker.complete(worker);</code></td>
+                <tr class="noop" title="Line 69" id="line69">
+                    <td>69</td><td></td><td></td><td><code>      // run with worker</code></td>
                 </tr>
-                <tr class="noop" title="Line 70" id="line70">
-                    <td>70</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 70" id="line70">
+                    <td>70</td><td></td><td>8</td><td><code>      _worker.complete(worker);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>8</td><td><code>    return _controller.done</code></td>
+                <tr class="noop" title="Line 71" id="line71">
+                    <td>71</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>12</td><td><code>        .then((_) =&gt; canceledException == null)</code></td>
+                    <td>72</td><td></td><td>8</td><td><code>    return _controller.done</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 73" id="line73">
-                    <td>73</td><td></td><td>4</td><td><code>        .catchError((_) =&gt; false);</code></td>
+                    <td>73</td><td></td><td>12</td><td><code>        .then((_) =&gt; canceledException == null)</code></td>
                 </tr>
-                <tr class="noop" title="Line 74" id="line74">
-                    <td>74</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 74" id="line74">
+                    <td>74</td><td></td><td>4</td><td><code>        .catchError((_) =&gt; false);</code></td>
                 </tr>
                 <tr class="noop" title="Line 75" id="line75">
-                    <td>75</td><td></td><td></td><td><code>}</code></td>
+                    <td>75</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 76" id="line76">
+                    <td>76</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

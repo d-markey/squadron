@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-03" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8943662" lines-covered="127" lines-valid="142" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-28" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8943662" lines-covered="127" lines-valid="142" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -654,7 +654,7 @@
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="197">
-            <code>          void postError(Object exception, [StackTrace? stackTrace]) {</code>
+            <code>          void $postError(Object exception, [StackTrace? stackTrace]) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="198">
@@ -682,7 +682,7 @@
             <code>            } catch (ex, st) {</code>
         </line>
         <line hits="0" number="205">
-            <code>              postError(ex, st);</code>
+            <code>              $postError(ex, st);</code>
         </line>
         <line number="206">
             <code>            }</code>
@@ -694,7 +694,7 @@
             <code/>
         </line>
         <line hits="5" number="209">
-            <code>          await _pipe(result, channel, post, postError, token);</code>
+            <code>          await _pipe(result, channel, post, $postError, token);</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="210">
