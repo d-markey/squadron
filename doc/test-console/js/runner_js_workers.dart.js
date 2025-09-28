@@ -15940,7 +15940,7 @@
               t3.onscroll = A._functionToJS1(htmlLogger.get$_onScroll());
               t4.start$0();
               A._asJSObject(t2.window).dartPrint = A._functionToJS1(htmlLogger.get$log());
-              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.1.2+2", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
+              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.2.0", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
               t1.$$context = null;
               A._EventStreamSubscription$(A._asJSObject(t2.window), "message", type$.nullable_void_Function_JSObject._as(new A.bootstrap_closure(t1, new A.bootstrap_execute(t1, workerPlatform, htmlLogger), htmlLogger)), false, type$.JSObject);
               A.NotifyParentExt_notify(A._asJSObject(t2.window), "@@READY@@");
@@ -16226,7 +16226,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.1.2+2") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.2.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -61409,7 +61409,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.1.2+2";
+              $async$returnValue = "7.2.0";
               // goto return
               $async$goto = 1;
               break;

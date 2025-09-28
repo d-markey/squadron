@@ -12131,7 +12131,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.1.2+2";
+              $async$returnValue = "7.2.0";
               // goto return
               $async$goto = 1;
               break;

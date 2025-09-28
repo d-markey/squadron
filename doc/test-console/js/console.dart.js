@@ -15354,7 +15354,7 @@
               // Function start
               _box_0 = {};
               t1 = init.G;
-              A._asJSObject(t1.document).title = "Squadron 7.1.2+2 Test Console";
+              A._asJSObject(t1.document).title = "Squadron 7.2.0 Test Console";
               t2 = A._asJSObjectQ(A._asJSObject(t1.document).querySelector("#test-runner"));
               t2.toString;
               A._asJSObject(t1.window).dartPrint = A._functionToJS1(A.NotifyChildExt_get_notify(t2));
@@ -16240,7 +16240,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.1.2+2") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.2.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -61328,7 +61328,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.1.2+2";
+              $async$returnValue = "7.2.0";
               // goto return
               $async$goto = 1;
               break;
