@@ -14,12 +14,6 @@ const testScript = '00_not_a_worker_test.dart';
 void execute(TestContext? tc) {
   if (tc == null) return;
 
-  // print('client = ${tc.clientPlatform} / worker = ${tc.workerPlatform}');
-  // print('  * supportsWasmGC = ${tc.supportsWasmGC}');
-  // print('  * hasChromiumBreakIterators = ${tc.hasChromiumBreakIterators}');
-  // print('  * hasImageCodecs = ${tc.hasImageCodecs}');
-  // print('  * isCrossOriginIsolated = ${tc.isCrossOriginIsolated}');
-
   tc.launch(() {
     tc.group('- NOT A WORKER', () {
       tc.test('- Dart program (VM)', () async {

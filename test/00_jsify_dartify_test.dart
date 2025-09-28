@@ -193,64 +193,6 @@ void execute(TestContext? tc) {
           expect((t.$at(0) as JSArrayBuffer).$byteLength, data.length * 16 / 8);
           expect(t.$at(1).isA<MessagePort>(), isTrue);
         });
-
-        tc.group('- PERFS', () {
-          void unused(Object? _) {}
-
-          tc.test('List<String>', () {
-            final data = List.generate(1000, (n) => 'String $n ${'*' * n}');
-
-            final sw = Stopwatch();
-
-            sw.start();
-            dynamic res;
-            unused(res);
-            for (var i = 0; i < 10; i++) {
-              res = $jsify(data, null);
-            }
-            print('\$jsify --> ${sw.elapsedMilliseconds} ms');
-
-            sw.stop();
-            sw.reset();
-
-            sw.start();
-            for (var i = 0; i < 10; i++) {
-              // ignore: deprecated_member_use_from_same_package
-              res = $jsify2(data, null);
-            }
-            print('\$jsify2 --> ${sw.elapsedMilliseconds} ms');
-          });
-
-          tc.test('Map<String, DateTime?>', () {
-            final data = Map.fromEntries(List.generate(
-                1000,
-                (n) => MapEntry(
-                    'String $n ${'*' * n}',
-                    (n % 7 == 0)
-                        ? null
-                        : DateTime.now().add(Duration(hours: n)))));
-
-            final sw = Stopwatch();
-
-            sw.start();
-            dynamic res;
-            unused(res);
-            for (var i = 0; i < 10; i++) {
-              res = $jsify(data, null);
-            }
-            print('\$jsify --> ${sw.elapsedMilliseconds} ms');
-
-            sw.stop();
-            sw.reset();
-
-            sw.start();
-            for (var i = 0; i < 10; i++) {
-              // ignore: deprecated_member_use_from_same_package
-              res = $jsify2(data, null);
-            }
-            print('\$jsify2 --> ${sw.elapsedMilliseconds} ms');
-          });
-        });
       });
 
       tc.group('- DARTIFY', () {
@@ -281,7 +223,6 @@ void execute(TestContext? tc) {
           for (var i = 1; i < 8; i++) {
             val = val * val;
           }
-          print(val);
           final x = $dartify($JSBigInt(val.toString().toJS));
           expect(x, isA<BigInt>());
           expect(x, val);
