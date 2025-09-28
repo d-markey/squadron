@@ -194,7 +194,7 @@ class WorkerRunner {
         if (result is Stream && channel.canStream(result)) {
           // result is a stream: forward data to the client
           final replyWithError = channel.error;
-          void postError(Object exception, [StackTrace? stackTrace]) {
+          void $postError(Object exception, [StackTrace? stackTrace]) {
             replyWithError(exception, stackTrace, cmd);
           }
 
@@ -202,11 +202,11 @@ class WorkerRunner {
             try {
               reply(data);
             } catch (ex, st) {
-              postError(ex, st);
+              $postError(ex, st);
             }
           }
 
-          await _pipe(result, channel, post, postError, token);
+          await _pipe(result, channel, post, $postError, token);
         } else {
           // result is a value: send to the client
           reply(result);

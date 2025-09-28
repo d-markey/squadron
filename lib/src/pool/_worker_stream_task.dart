@@ -47,7 +47,8 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
 
   void _onData(T data) => _controller.add(data);
 
-  void _onError(ex, st) => _controller.addError(SquadronException.from(ex, st));
+  void _onError(Object ex, [StackTrace? st]) =>
+      _controller.addError(SquadronException.from(ex, st));
 
   @override
   void cancel([String? message]) {

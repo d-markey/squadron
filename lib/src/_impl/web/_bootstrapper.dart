@@ -24,7 +24,7 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
 
   self.onmessage = (web.MessageEvent e) {
     com.port1.onmessage = runner.handle.toJS;
-    runner.connect(WorkerRequestExt.from(e.dartData!), com.port2, initializer);
+    runner.connect(WorkerRequestExt.from(e.$dartData!), com.port2, initializer);
   }.toJS;
 
   // initial message indicating the worker is up and running

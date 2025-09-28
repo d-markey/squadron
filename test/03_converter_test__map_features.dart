@@ -188,13 +188,13 @@ final _ndbl = Converter.allowNull(_dbl);
 final _int = NumConverter.instance.value<int>();
 final _nint = Converter.allowNull(_int);
 
-bool _isGt3(n) => (n != null) && (_dbl(n) > 3);
-bool _isNeg(n) => (n != null) && (_dbl(n) < 0);
+bool _isGt3(num? n) => (n != null) && (_dbl(n) > 3);
+bool _isNeg(num? n) => (n != null) && (_dbl(n) < 0);
 
-int _intSq(n) => _int(n ?? 0) * _int(n ?? 0);
-double _dblSq(n) => _dbl(n ?? 0) * _dbl(n ?? 0);
+int _intSq(num? n) => _int(n ?? 0) * _int(n ?? 0);
+double _dblSq(num? n) => _dbl(n ?? 0) * _dbl(n ?? 0);
 
-double? _neg(n) => (n == null) ? null : -_dbl(n);
+double? _neg(num? n) => (n == null) ? null : -_dbl(n);
 
 T _nf<T>() => -1 as T;
 

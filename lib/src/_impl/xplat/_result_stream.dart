@@ -115,7 +115,7 @@ class ResultStream {
       }
     }
 
-    void $closeWithError(Object error, StackTrace? st) {
+    void $closeWithError(Object error, [StackTrace? st]) {
       _controller.addError(SquadronException.from(error, st, command));
       _controller.close();
     }

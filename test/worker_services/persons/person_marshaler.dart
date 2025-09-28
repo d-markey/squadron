@@ -13,7 +13,7 @@ class PersonMarshaler extends GenericMarshaler<Person> {
     res = [
       data.lastName, // 0
       data.firstName, // 1
-      data.dateOfBirth.millisecondsSinceEpoch, // 2
+      data.dateOfBirth, // 2
       null, // 3 - city
       null, // 4 - parent1
       null, // 5 - parent2
@@ -40,11 +40,10 @@ class PersonMarshaler extends GenericMarshaler<Person> {
     var res = context?.getReference<Person>(data);
     if (res != null) return res;
 
-    final toInt = context.converter.value<int>();
     res = Person._(
       data[0],
       data[1],
-      DateTime.fromMillisecondsSinceEpoch(toInt(data[2])),
+      data[2],
     );
 
     // set reference now before unmarshaling anything else

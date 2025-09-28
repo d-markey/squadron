@@ -25,6 +25,27 @@ void execute(TestContext? tc) {
 
   tc.launch(() {
     tc.group('- PATCH', () {
+      tc.group('- JS TYPES', () {
+        tc.test('Date', () {
+          final d = $JSDate.$fromUnixTimestamp(42);
+          expect(d, isA<$JSDate>());
+          expect(d.isA<$JSDate>(), isTrue);
+          expect(d.$getTime(), equals(42));
+        });
+
+        tc.test('BigInt', () {
+          final maxInt = 9007199254740991;
+          final bigintFromStr = $JSBigInt('$maxInt$maxInt'.toJS);
+          expect(bigintFromStr, isA<JSBigInt>());
+          expect(bigintFromStr.isA<JSBigInt>(), isTrue);
+          expect(bigintFromStr.toString(), '$maxInt$maxInt');
+          final bigintFromInt = $JSBigInt(maxInt.toJS);
+          expect(bigintFromInt, isA<JSBigInt>());
+          expect(bigintFromInt.isA<JSBigInt>(), isTrue);
+          expect(bigintFromInt.toString(), maxInt.toString());
+        });
+      });
+
       tc.group('- JSIFY', () {
         tc.test('- int', () {
           final t = <JSAny?>[].toJS;
@@ -51,6 +72,15 @@ void execute(TestContext? tc) {
           final t = <JSAny?>[].toJS;
           final x = $jsify(BigInt.two, t);
           expect(x.isA<JSBigInt>(), isTrue);
+          expect((x as JSBigInt).toString(), '2');
+          expect(t.$length, 0);
+        });
+
+        tc.test('- DateTime', () {
+          final t = <JSAny?>[].toJS;
+          final x = $jsify(DateTime.fromMillisecondsSinceEpoch(42), t);
+          expect(x.isA<$JSDate>(), isTrue);
+          expect((x as $JSDate).$getTime(), 42);
           expect(t.$length, 0);
         });
 
@@ -173,9 +203,10 @@ void execute(TestContext? tc) {
             final sw = Stopwatch();
 
             sw.start();
+            dynamic res;
+            unused(res);
             for (var i = 0; i < 10; i++) {
-              final res = $jsify(data, null);
-              unused(res);
+              res = $jsify(data, null);
             }
             print('\$jsify --> ${sw.elapsedMilliseconds} ms');
 
@@ -184,8 +215,38 @@ void execute(TestContext? tc) {
 
             sw.start();
             for (var i = 0; i < 10; i++) {
-              final res = $jsify2(data, null);
-              unused(res);
+              // ignore: deprecated_member_use_from_same_package
+              res = $jsify2(data, null);
+            }
+            print('\$jsify2 --> ${sw.elapsedMilliseconds} ms');
+          });
+
+          tc.test('Map<String, DateTime?>', () {
+            final data = Map.fromEntries(List.generate(
+                1000,
+                (n) => MapEntry(
+                    'String $n ${'*' * n}',
+                    (n % 7 == 0)
+                        ? null
+                        : DateTime.now().add(Duration(hours: n)))));
+
+            final sw = Stopwatch();
+
+            sw.start();
+            dynamic res;
+            unused(res);
+            for (var i = 0; i < 10; i++) {
+              res = $jsify(data, null);
+            }
+            print('\$jsify --> ${sw.elapsedMilliseconds} ms');
+
+            sw.stop();
+            sw.reset();
+
+            sw.start();
+            for (var i = 0; i < 10; i++) {
+              // ignore: deprecated_member_use_from_same_package
+              res = $jsify2(data, null);
             }
             print('\$jsify2 --> ${sw.elapsedMilliseconds} ms');
           });
@@ -216,9 +277,20 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- BigInt', () {
-          final x = $dartify($JSBigInt('2'.toJS));
+          var val = BigInt.parse('123456789');
+          for (var i = 1; i < 8; i++) {
+            val = val * val;
+          }
+          print(val);
+          final x = $dartify($JSBigInt(val.toString().toJS));
           expect(x, isA<BigInt>());
-          expect(x, BigInt.two);
+          expect(x, val);
+        });
+
+        tc.test('- DateTime', () {
+          final x = $dartify($JSDate.$fromUnixTimestamp(42));
+          expect(x, isA<DateTime>());
+          expect(x, DateTime.fromMillisecondsSinceEpoch(42));
         });
 
         tc.test('- List', () {
@@ -232,10 +304,10 @@ void execute(TestContext? tc) {
 
         tc.test('- Set', () {
           final s = $JSSet();
-          s.add(1.toJS);
-          s.add(1.toJS);
-          s.add('Test'.toJS);
-          s.add('Test'.toJS);
+          s.$add(1.toJS);
+          s.$add(1.toJS);
+          s.$add('Test'.toJS);
+          s.$add('Test'.toJS);
           final x = $dartify(s);
           expect(x, isA<Set>());
           expect(x, hasLength(2));
@@ -245,8 +317,8 @@ void execute(TestContext? tc) {
 
         tc.test('- Map', () {
           final m = $JSMap();
-          m.set(1.toJS, 2.toJS);
-          m.set('Test'.toJS, 4.toJS);
+          m.$set(1.toJS, 2.toJS);
+          m.$set('Test'.toJS, 4.toJS);
           final x = $dartify(m);
           expect(x, isA<Map>());
           x as Map;
@@ -326,6 +398,7 @@ void execute(TestContext? tc) {
           $transferify('Test'.toJS, t);
           $transferify(true.toJS, t);
           $transferify($JSBigInt('2'.toJS), t);
+          $transferify($JSDate.$fromUnixTimestamp(100), t);
 
           final array = JSArray();
           array.$push(0.toJS);
@@ -333,8 +406,8 @@ void execute(TestContext? tc) {
           $transferify(array, t);
 
           final map = $JSMap();
-          map.set('zero'.toJS, 0.toJS);
-          map.set('one'.toJS, 1.toJS);
+          map.$set('zero'.toJS, 0.toJS);
+          map.$set('one'.toJS, 1.toJS);
           $transferify(map, t);
 
           expect(t.$length, isZero);

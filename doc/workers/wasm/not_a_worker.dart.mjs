@@ -46,6 +46,13 @@ class CompiledApp {
   //   wasm file produced by the dart2wasm compiler and returns the bytes to
   //   load the module. These bytes can be in either a format supported by
   //   `WebAssembly.compile` or `WebAssembly.compileStreaming`.
+  // `loadDynamicModule` is a JS function that takes two string names matching,
+  //   in order, a wasm file produced by the dart2wasm compiler during dynamic
+  //   module compilation and a corresponding js file produced by the same
+  //   compilation. It should return a JS Array containing 2 elements. The first
+  //   should be the bytes for the wasm module in a format supported by
+  //   `WebAssembly.compile` or `WebAssembly.compileStreaming`. The second
+  //   should be the result of using the JS 'import' API on the js file path.
   async instantiate(additionalImports, {loadDeferredWasm, loadDynamicModule} = {}) {
     let dartInstance;
 
@@ -64,7 +71,7 @@ class CompiledApp {
         return;
       }
 
-      throw "Unable to print message: " + js;
+      throw "Unable to print message: " + value;
     }
 
     // A special symbol attached to functions that wrap Dart functions.
@@ -90,28 +97,31 @@ class CompiledApp {
       _99: s => JSON.stringify(s),
       _100: s => printToConsole(s),
       _109: Function.prototype.call.bind(String.prototype.indexOf),
-      _142: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
-      _146: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
-      _149: Function.prototype.call.bind(DataView.prototype.getUint8),
-      _151: Function.prototype.call.bind(DataView.prototype.getInt8),
-      _153: Function.prototype.call.bind(DataView.prototype.getUint16),
-      _155: Function.prototype.call.bind(DataView.prototype.getInt16),
-      _157: Function.prototype.call.bind(DataView.prototype.getUint32),
-      _159: Function.prototype.call.bind(DataView.prototype.getInt32),
-      _165: Function.prototype.call.bind(DataView.prototype.getFloat32),
-      _167: Function.prototype.call.bind(DataView.prototype.getFloat64),
-      _190: (c) =>
+      _110: (s, p, i) => s.lastIndexOf(p, i),
+      _132: o => o instanceof Uint8Array,
+      _154: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
+      _158: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
+      _161: Function.prototype.call.bind(DataView.prototype.getUint8),
+      _163: Function.prototype.call.bind(DataView.prototype.getInt8),
+      _165: Function.prototype.call.bind(DataView.prototype.getUint16),
+      _167: Function.prototype.call.bind(DataView.prototype.getInt16),
+      _169: Function.prototype.call.bind(DataView.prototype.getUint32),
+      _171: Function.prototype.call.bind(DataView.prototype.getInt32),
+      _177: Function.prototype.call.bind(DataView.prototype.getFloat32),
+      _179: Function.prototype.call.bind(DataView.prototype.getFloat64),
+      _197: (c) =>
       queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
-      _197: o => o === undefined,
-      _199: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
-      _203: (l, r) => l === r,
-      _204: o => o,
-      _206: o => o,
-      _208: o => o.length,
-      _210: (o, i) => o[i],
-      _211: f => f.dartFunction,
-      _222: o => String(o),
-      _224: o => {
+      _209: o => o === undefined,
+      _211: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
+      _215: (l, r) => l === r,
+      _216: o => o,
+      _217: o => o,
+      _218: o => o,
+      _220: o => o.length,
+      _222: (o, i) => o[i],
+      _223: f => f.dartFunction,
+      _234: o => String(o),
+      _236: o => {
         if (o === undefined) return 1;
         var type = typeof o;
         if (type === 'boolean') return 2;
@@ -131,13 +141,18 @@ class CompiledApp {
           if (o instanceof DataView) return 15;
         }
         if (o instanceof ArrayBuffer) return 16;
-        return 17;
+        // Feature check for `SharedArrayBuffer` before doing a type-check.
+        if (globalThis.SharedArrayBuffer !== undefined &&
+            o instanceof SharedArrayBuffer) {
+            return 17;
+        }
+        return 18;
       },
-      _254: x0 => x0.random(),
-      _257: () => globalThis.Math,
-      _258: Function.prototype.call.bind(Number.prototype.toString),
-      _259: Function.prototype.call.bind(BigInt.prototype.toString),
-      _260: Function.prototype.call.bind(Number.prototype.toString),
+      _266: x0 => x0.random(),
+      _269: () => globalThis.Math,
+      _270: Function.prototype.call.bind(Number.prototype.toString),
+      _271: Function.prototype.call.bind(BigInt.prototype.toString),
+      _272: Function.prototype.call.bind(Number.prototype.toString),
 
     };
 
@@ -148,63 +163,7 @@ class CompiledApp {
       Object: Object,
       Array: Array,
       Reflect: Reflect,
-            s: [
-        "Attempt to execute code removed by Dart AOT compiler (TFA)",
-"Could not call main",
-"null",
-"0.0",
-"-0.0",
-"1.0",
-"-1.0",
-"NaN",
-"-Infinity",
-"Infinity",
-"e",
-".0",
-"Infinity or NaN toInt",
-"Unsupported operation: ",
-"RangeError (details omitted due to --minify)",
-"",
-" (",
-")",
-": ",
-"Instance of '",
-"'",
-"Object?",
-"Object",
-"dynamic",
-"void",
-"Invalid top type kind",
-"Invalid argument",
-"(s)",
-"minified:Class",
-"<",
-", ",
-">",
-"?",
-"true",
-"false",
-"JavaScriptError",
-"[",
-"]",
-"...",
-"Runtime type check failed (details omitted due to --minify)",
-"Type argument substitution not supported for ",
-"X",
-" extends ",
-"(",
-"{",
-"}",
-" => ",
-"Closure: ",
-" ",
-"FutureOr",
-"required ",
-"Null check operator used on a null value",
-"Concurrent modification during iteration: ",
-".",
-"I'm not a worker!"
-      ],
+      S: new Proxy({}, { get(_, prop) { return prop; } }),
 
     };
 
@@ -241,7 +200,7 @@ class CompiledApp {
         return result;
       },
       "intoCharCodeArray": (s, a, start) => {
-        if (s == '') return 0;
+        if (s === '') return 0;
 
         const write = dartInstance.exports.$wasmI16ArraySet;
         for (var i = 0; i < s.length; ++i) {
@@ -249,6 +208,7 @@ class CompiledApp {
         }
         return s.length;
       },
+      "test": (s) => typeof s == "string",
     };
 
 

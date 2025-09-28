@@ -1,3 +1,8 @@
+## 7.1.2+2
+
+- Support sending Dart `DateTime` / JS `Date` instances to/from Workers.
+- Fix warnings from [pub.dev](https://pub.dev/packages/squadron/score).
+
 ## 7.1.2+1
 
 - Fix warnings from [pub.dev](https://pub.dev/packages/squadron/score).

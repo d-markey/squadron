@@ -407,12 +407,12 @@ final _nint = Converter.allowNull(_int);
 final _dbl = NumConverter.instance.value<double>();
 final _ndbl = Converter.allowNull(_dbl);
 
-bool _isNum(n) => n is num;
-bool _isGt3(n) => (n != null) && (_dbl(n) > 3);
-bool _isGt4(n) => (n != null) && (_dbl(n) > 4);
-bool _isInt(n) => _isNum(n) && (_dbl(n).toInt().toDouble() == _dbl(n));
+bool _isNum(num? n) => n is num;
+bool _isGt3(num? n) => (n != null) && (_dbl(n) > 3);
+bool _isGt4(num? n) => (n != null) && (_dbl(n) > 4);
+bool _isInt(num? n) => _isNum(n) && (_dbl(n).toInt().toDouble() == _dbl(n));
 
-bool _isNeg(n) => (n != null) && (_dbl(n) < 0);
+bool _isNeg(num? n) => (n != null) && (_dbl(n) < 0);
 
 T _nf<T>() => -1 as T;
 

@@ -127,13 +127,13 @@ final class _WebChannel implements Channel {
 
           // bind the controller
           com.port1.onmessageerror = (web.ErrorEvent e) {
-            final ex = SquadronException.from(e.dartError, null, command);
+            final ex = SquadronException.from(e.$dartError, null, command);
             final handler = buffer.isActive ? buffer.addError : $forwardError;
             handler(ex, null);
           }.toJS;
 
           com.port1.onmessage = (web.MessageEvent e) {
-            final res = WorkerResponseImpl.from(e.dartData!);
+            final res = WorkerResponseImpl.from(e.$dartData!);
             final handler = buffer.isActive ? buffer.add : $forwardMessage;
             handler(res);
           }.toJS;

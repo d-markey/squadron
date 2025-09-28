@@ -63,7 +63,8 @@ Future<Channel> openChannel(
     worker = web.Worker(webEntryPoint.uri.toJS);
 
     void $errorHandler(web.ErrorEvent? e) {
-      final err = e.dartError, error = SquadronErrorImpl.create(err.toString());
+      final err = e.$dartError,
+          error = SquadronErrorImpl.create(err.toString());
       logger?.e(() => 'Connection to Web Worker failed: $error');
       fail(error);
 
@@ -89,7 +90,7 @@ Future<Channel> openChannel(
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
-        final response = WorkerResponseImpl.from(e.dartData!);
+        final response = WorkerResponseImpl.from(e.$dartData!);
         if (!response.unwrapInPlace(disconnected)) {
           return;
         }
@@ -115,7 +116,7 @@ Future<Channel> openChannel(
     final startRequest = WorkerRequest.start(com.port2, startArguments);
 
     com.port1.onmessage = (web.MessageEvent e) {
-      final response = WorkerResponseImpl.from(e.dartData!);
+      final response = WorkerResponseImpl.from(e.$dartData!);
       if (!response.unwrapInPlace(disconnected)) {
         return;
       }

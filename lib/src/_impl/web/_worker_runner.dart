@@ -6,5 +6,5 @@ import '_patch.dart';
 
 extension JsWorkerRunnerExt on WorkerRunner {
   void handle(web.MessageEvent event) =>
-      processRequest(WorkerRequestExt.from(event.dartData!));
+      processRequest(WorkerRequestExt.from(event.$dartData!));
 }

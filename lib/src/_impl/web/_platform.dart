@@ -35,6 +35,9 @@ Uri mapUrl(String url) {
 }
 
 @internal
+// ignore: invalid_runtime_check_with_js_interop_types
 bool isSameInstance(Object a, Object b) => (a is JSObject)
+    // ignore: invalid_runtime_check_with_js_interop_types
     ? ((b is JSObject) && $is(a, b))
+    // ignore: invalid_runtime_check_with_js_interop_types
     : ((b is! JSObject) && identical(a, b));

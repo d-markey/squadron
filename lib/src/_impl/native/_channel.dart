@@ -38,13 +38,13 @@ Future<Channel> openChannel(
   final completer = Completer<_VmChannel>();
   Channel? channel;
 
-  void failure(Object error, [StackTrace? stackTrace]) {
+  void $failure(Object error, [StackTrace? stackTrace]) {
     if (!completer.isCompleted) {
       completer.completeError(SquadronException.from(error, stackTrace));
     }
   }
 
-  void success(_VmChannel channel) {
+  void $success(_VmChannel channel) {
     if (!completer.isCompleted) {
       completer.complete(channel);
     }
@@ -55,7 +55,7 @@ Future<Channel> openChannel(
   final errorPort = vm.ReceivePort();
 
   exitPort.listen((message) {
-    failure(SquadronErrorImpl.create('Connection to worker failed'));
+    $failure(SquadronErrorImpl.create('Connection to worker failed'));
     logger?.t('Isolate terminated with message $message.');
     channel?.close();
     receiver.close();
@@ -80,7 +80,7 @@ Future<Channel> openChannel(
     );
 
     logger?.d(() => 'Unhandled error from Isolate: ${error?.message}.');
-    failure(error);
+    $failure(error);
   });
 
   final disconnected = DisconnectedChannel(exceptionManager, logger);
@@ -94,7 +94,7 @@ Future<Channel> openChannel(
     final error = response.error;
     if (error != null) {
       logger?.e(() => 'Connection to Isolate failed: $error');
-      failure(error);
+      $failure(error);
     } else if (response.endOfStream) {
       logger?.w('Disconnecting from Isolate');
       channel?.close();
@@ -103,7 +103,7 @@ Future<Channel> openChannel(
       final platformChannel =
           _VmChannel._(response.result, logger, exceptionManager);
       channel = platformChannel;
-      success(platformChannel);
+      $success(platformChannel);
     } else {
       logger?.e(() => 'Unexpected response: $response');
     }
