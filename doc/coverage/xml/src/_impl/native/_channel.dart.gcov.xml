@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-03" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8484849" lines-covered="56" lines-valid="66" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-28" filename="_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8484849" lines-covered="56" lines-valid="66" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -124,7 +124,7 @@
             <code/>
         </line>
         <line hits="11" number="41">
-            <code>  void failure(Object error, [StackTrace? stackTrace]) {</code>
+            <code>  void $failure(Object error, [StackTrace? stackTrace]) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="11" number="42">
@@ -145,7 +145,7 @@
             <code/>
         </line>
         <line hits="10" number="47">
-            <code>  void success(_VmChannel channel) {</code>
+            <code>  void $success(_VmChannel channel) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="48">
@@ -185,7 +185,7 @@
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="22" number="58">
-            <code>    failure(SquadronErrorImpl.create('Connection to worker failed'));</code>
+            <code>    $failure(SquadronErrorImpl.create('Connection to worker failed'));</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6" number="59">
@@ -267,7 +267,7 @@
             <code>    logger?.d(() =&gt; 'Unhandled error from Isolate: ${error?.message}.');</code>
         </line>
         <line hits="0" number="83">
-            <code>    failure(error);</code>
+            <code>    $failure(error);</code>
         </line>
         <line number="84">
             <code>  });</code>
@@ -315,7 +315,7 @@
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="97">
-            <code>      failure(error);</code>
+            <code>      $failure(error);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="98">
@@ -349,7 +349,7 @@
             <code>      channel = platformChannel;</code>
         </line>
         <line hits="10" number="106">
-            <code>      success(platformChannel);</code>
+            <code>      $success(platformChannel);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="107">
