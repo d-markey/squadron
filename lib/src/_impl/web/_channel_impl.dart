@@ -17,7 +17,10 @@ final class _WebChannel implements Channel {
   @override
   final Logger? logger;
 
-  bool _closed = false;
+  final _closed = Completer<void>();
+
+  @override
+  Future<void> get closed => _closed.future;
 
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   @override
@@ -29,7 +32,7 @@ final class _WebChannel implements Channel {
       _sendPort, web.MessageChannel(), logger, exceptionManager);
 
   void _postRequest(WorkerRequest req, {bool force = false}) {
-    if (_closed && !force) {
+    if (_closed.isCompleted && !force) {
       throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
@@ -48,7 +51,7 @@ final class _WebChannel implements Channel {
   }
 
   void _inspectAndPostRequest(WorkerRequest req) {
-    if (_closed) {
+    if (_closed.isCompleted) {
       throw SquadronErrorImpl.create('Channel is closed');
     }
     req.cancelToken?.ensureStarted();
@@ -66,10 +69,11 @@ final class _WebChannel implements Channel {
   /// Sends a termination [WorkerRequest] to the [web.Worker].
   @override
   FutureOr<void> close() {
-    if (!_closed) {
+    if (!_closed.isCompleted) {
       _postRequest(WorkerRequest.stop());
-      _closed = true;
+      _closed.complete();
     }
+    return _closed.future;
   }
 
   /// Sends a close stream [WorkerRequest] to the [web.Worker].

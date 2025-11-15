@@ -18,7 +18,11 @@ base class _WebLocalWorker<W> with Releasable implements LocalWorker<W> {
     final runner = WorkerRunner.use(this);
     _port.port1.onmessage = runner.handle.toJS;
     _channel = Channel.deserialize(
-        _port.port2, runner.internalLogger, exceptionManager);
+        _port.port2, runner.internalLogger, exceptionManager)
+      ?..closed.then((_) {
+        _port.port1.close();
+        _port.port2.close();
+      });
   }
 
   @override

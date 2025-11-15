@@ -4,8 +4,8 @@ part of '_channel.dart';
 final class _VmChannel implements Channel {
   _VmChannel._(this._sendPort, this.logger, this.exceptionManager);
 
-  /// [SendPort] to communicate with the [Isolate] if the channel is owned by
-  /// the worker owner. Otherwise, [SendPort] to return values to the client.
+  /// [vm.SendPort] to communicate with the [vm.Isolate] if the channel is owned by
+  /// the worker owner. Otherwise, [vm.SendPort] to return values to the client.
   final vm.SendPort _sendPort;
 
   PlatformThread? _thread;
@@ -17,19 +17,22 @@ final class _VmChannel implements Channel {
   @override
   final Logger? logger;
 
-  bool _closed = false;
+  final _closed = Completer<void>();
 
-  /// [Channel] serialization in Native world returns the [SendPort].
+  @override
+  Future<void> get closed => _closed.future;
+
+  /// [Channel] serialization in Native world returns the [vm.SendPort].
   @override
   PlatformChannel serialize() => _sendPort;
 
-  /// [Channel] sharing in JavaScript world returns a [_VmForwardChannel].
+  /// [Channel] sharing in native world returns a [_VmForwardChannel].
   @override
   Channel share() => _VmForwardChannel._(
       _sendPort, vm.ReceivePort(), logger, exceptionManager);
 
   void _postRequest(WorkerRequest req, {bool force = false}) {
-    if (_closed && !force) {
+    if (_closed.isCompleted && !force) {
       throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
@@ -44,10 +47,11 @@ final class _VmChannel implements Channel {
   /// Sends a termination [WorkerRequest] to the [vm.Isolate].
   @override
   FutureOr<void> close() {
-    if (!_closed) {
+    if (!_closed.isCompleted) {
       _postRequest(WorkerRequest.stop());
-      _closed = true;
+      _closed.complete();
     }
+    return _closed.future;
   }
 
   /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
@@ -131,8 +135,8 @@ final class _VmChannel implements Channel {
     return res.stream;
   }
 
-  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the
-  /// [Isolate]. This method expects a single value from the [Isolate]
+  /// creates a [vm.ReceivePort] and a [WorkerRequest] and sends it to the
+  /// [vm.Isolate]. This method expects a single value from the [Isolate]
   @override
   Future<dynamic> sendRequest(
     int command,
@@ -169,9 +173,9 @@ final class _VmChannel implements Channel {
     return completer.future;
   }
 
-  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the
-  /// [Isolate]. This method expects a stream of values from the [Isolate].
-  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the
+  /// Creates a [vm.ReceivePort] and a [WorkerRequest] and sends it to the
+  /// [vm.Isolate]. This method expects a stream of values from the [vm.Isolate].
+  /// The [vm.Isolate] must send a [WorkerResponse.endOfStream] to close the
   /// [Stream].
   @override
   Stream<dynamic> sendStreamingRequest(

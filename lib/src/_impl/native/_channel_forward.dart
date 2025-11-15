@@ -19,7 +19,7 @@ final class _VmForwardChannel extends _VmChannel {
 
   /// Forwards [data] to the worker.
   void _forward(dynamic data) {
-    if (_closed) {
+    if (_closed.isCompleted) {
       throw SquadronErrorImpl.create('Channel is closed');
     }
     _remote.send(data);
@@ -27,10 +27,11 @@ final class _VmForwardChannel extends _VmChannel {
 
   /// Closes this [Channel], effectively stopping message forwarding.
   @override
-  void close() {
-    if (!_closed) {
+  FutureOr<void> close() {
+    if (!_closed.isCompleted) {
       _com.close();
-      _closed = true;
+      _closed.complete();
     }
+    return _closed.future;
   }
 }

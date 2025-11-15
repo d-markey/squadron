@@ -13,7 +13,7 @@ mixin WorkerVersion on Worker implements SquadronVersion {
       .then(Squadron.converter.value<String>());
 }
 
-mixin LocalWorkerVersion on LocalWorkerClient implements SquadronVersion {
+mixin LocalWorkerVersion on WorkerClient implements SquadronVersion {
   @override
   Future<String> getVersion() => send(SquadronVersion.versionCommand)
       .then(Squadron.converter.value<String>());

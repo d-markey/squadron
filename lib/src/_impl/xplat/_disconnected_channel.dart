@@ -31,6 +31,9 @@ final class DisconnectedChannel implements Channel {
       _disconnectedError();
 
   @override
+  Future<void> get closed async => _disconnectedError();
+
+  @override
   FutureOr<void> close() => _disconnectedError();
 
   @override

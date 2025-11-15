@@ -375,3 +375,10 @@ abstract class WorkerPool<W extends Worker>
   @override
   OperationsMap get operations => WorkerService.noOperations;
 }
+
+extension ConcurrencySettingsExt on WorkerPool {
+  int get minWorkers => concurrencySettings.minWorkers;
+  int get maxWorkers => concurrencySettings.maxWorkers;
+  int get maxParallel => concurrencySettings.maxParallel;
+  int get maxConcurrency => concurrencySettings.maxConcurrency;
+}

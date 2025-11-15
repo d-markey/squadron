@@ -3,23 +3,26 @@ import 'dart:async';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:using/using.dart';
 
-import '../channel.dart';
-import '../invoker.dart';
-import '../tokens/_squadron_cancelation_token.dart';
-import '../typedefs.dart';
-import '../worker/worker_request.dart';
-import '../worker_service.dart';
-import 'local_worker.dart';
+import 'channel.dart';
+import 'invoker.dart';
+import 'tokens/_squadron_cancelation_token.dart';
+import 'typedefs.dart';
+import 'worker/worker.dart';
+import 'worker/worker_request.dart';
+import 'worker_service.dart';
 
-/// Base class used to communicate with a [LocalWorker].
+@Deprecated('Use WorkerClient instead.')
+typedef LocalWorkerClient = WorkerClient;
+
+/// Base class used to communicate with a [Worker] over a [Channel].
 ///
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.
-class LocalWorkerClient with Releasable implements WorkerService, Invoker {
-  /// Create a client for a [LocalWorker]. The [channel] passed to this client must have been obtained by
-  /// calling [Channel.share] on the [LocalWorker.channel].
-  LocalWorkerClient(this.channel);
+class WorkerClient with Releasable implements WorkerService, Invoker {
+  /// Create a client for a [Worker]. The [channel] passed to this client must have been obtained
+  /// from the target [Worker].
+  WorkerClient(this.channel);
 
-  /// The [Channel] to communicate with the [LocalWorker].
+  /// The [Channel] to communicate with the [Worker].
   final Channel channel;
 
   @override
@@ -28,7 +31,7 @@ class LocalWorkerClient with Releasable implements WorkerService, Invoker {
     super.release();
   }
 
-  /// Sends a command to the [LocalWorker].
+  /// Sends a command to the [Worker].
   @override
   Future<dynamic> send(int command,
           {List args = const [],
@@ -40,7 +43,7 @@ class LocalWorkerClient with Releasable implements WorkerService, Invoker {
           inspectRequest: inspectRequest,
           inspectResponse: inspectResponse);
 
-  /// Sends a streaming command to the [LocalWorker].
+  /// Sends a streaming command to the [Worker].
   @override
   Stream<dynamic> stream(int command,
           {List args = const [],

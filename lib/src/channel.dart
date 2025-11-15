@@ -32,6 +32,10 @@ abstract interface class Channel {
   /// enable another worker to call the channel's worker.
   Channel share();
 
+  /// Returns a [Future] that will complete when the channel is closed. This is
+  /// the same [Future] as the one returned by [close].
+  Future<void> get closed;
+
   /// Sends a termination [WorkerRequest] to the worker. The [Channel] should
   /// release any resource related to the worker and should not be used after
   /// this method has been called.

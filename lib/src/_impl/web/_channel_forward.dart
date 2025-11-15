@@ -20,7 +20,7 @@ final class _WebForwardChannel extends _WebChannel {
 
   /// Forwards [web.MessageEvent.data] to the worker.
   void _forward(web.MessageEvent e) {
-    if (_closed) {
+    if (_closed.isCompleted) {
       throw SquadronErrorImpl.create('Channel is closed');
     }
     try {
@@ -35,10 +35,11 @@ final class _WebForwardChannel extends _WebChannel {
 
   /// Closes this [Channel], effectively stopping message forwarding.
   @override
-  void close() {
-    if (!_closed) {
+  FutureOr<void> close() {
+    if (!_closed.isCompleted) {
       _com.port1.close();
-      _closed = true;
+      _closed.complete();
     }
+    return _closed.future;
   }
 }

@@ -17,7 +17,8 @@ base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
     final runner = WorkerRunner.use(this);
     _port.listen(runner.handle);
     _channel = Channel.deserialize(
-        _port.sendPort, runner.internalLogger, exceptionManager)!;
+        _port.sendPort, runner.internalLogger, exceptionManager)!
+      ..closed.then((_) => _port.close());
   }
 
   @override

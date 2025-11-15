@@ -10,7 +10,6 @@ import 'package:using/using.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 import 'test_constants.dart';
-import 'test_extensions.dart';
 import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);

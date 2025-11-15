@@ -289,11 +289,6 @@
         throw A.wrapException(A.ArgumentError$("Length must be a non-negative integer: " + $length, null));
       return A._setArrayType(new Array($length), $E._eval$1("JSArray<0>"));
     },
-    JSArray_JSArray$allocateGrowable($length, $E) {
-      if ($length < 0)
-        throw A.wrapException(A.ArgumentError$("Length must be a non-negative integer: " + $length, null));
-      return A._setArrayType(new Array($length), $E._eval$1("JSArray<0>"));
-    },
     JSArray_JSArray$markFixed(allocation, $E) {
       var t1 = A._setArrayType(allocation, $E._eval$1("JSArray<0>"));
       t1.$flags = 1;
@@ -6790,8 +6785,8 @@
         return "" + n;
       return "0" + n;
     },
-    Duration$(days, hours, microseconds, milliseconds, seconds) {
-      return new A.Duration(microseconds + 1000 * milliseconds + 1000000 * seconds + 3600000000 * hours + 864e8 * days);
+    Duration$(days, microseconds, milliseconds, seconds) {
+      return new A.Duration(microseconds + 1000 * milliseconds + 1000000 * seconds + 864e8 * days);
     },
     Error_safeToString(object) {
       if (typeof object == "number" || A._isBool(object) || object == null)
@@ -7006,11 +7001,6 @@
     },
     Map_castFrom(source, $K, $V, $K2, $V2) {
       return new A.CastMap(source, $K._eval$1("@<0>")._bind$1($V)._bind$1($K2)._bind$1($V2)._eval$1("CastMap<1,2,3,4>"));
-    },
-    Map_Map$fromEntries(entries, $K, $V) {
-      var t1 = A.LinkedHashMap_LinkedHashMap$_empty($K, $V);
-      t1.addEntries$1(entries);
-      return t1;
     },
     Object_hash(object1, object2, object3, object4) {
       var t1;
@@ -9451,7 +9441,7 @@
     openChannel_closure2: function openChannel_closure2(t0) {
       this.ex = t0;
     },
-    _WebForwardChannel: function _WebForwardChannel(t0, t1, t2, t3, t4, t5) {
+    _WebForwardChannel: function _WebForwardChannel(t0, t1, t2, t3, t4, t5, t6) {
       var _ = this;
       _._remote = t0;
       _._com = t1;
@@ -9460,20 +9450,20 @@
       _._activeConnections = t3;
       _.exceptionManager = t4;
       _.logger = t5;
-      _.__channel$_closed = false;
+      _.__channel$_closed = t6;
     },
     _WebForwardChannel__forward_closure: function _WebForwardChannel__forward_closure(t0, t1) {
       this.e = t0;
       this.ex = t1;
     },
-    _WebChannel: function _WebChannel(t0, t1, t2, t3) {
+    _WebChannel: function _WebChannel(t0, t1, t2, t3, t4) {
       var _ = this;
       _._sendPort = t0;
       _._thread = null;
       _._activeConnections = t1;
       _.exceptionManager = t2;
       _.logger = t3;
-      _.__channel$_closed = false;
+      _.__channel$_closed = t4;
     },
     _WebChannel__postRequest_closure: function _WebChannel__postRequest_closure(t0, t1) {
       this.req = t0;
@@ -9589,6 +9579,11 @@
       this.err = t1;
       this.st = t2;
     },
+    _WebLocalWorker$_(service, operations, exceptionManager, $W) {
+      var t1 = new A._WebLocalWorker(operations, exceptionManager, A._asJSObject(new init.G.MessageChannel()), false, new A.Object(), $W._eval$1("_WebLocalWorker<0>"));
+      t1._WebLocalWorker$_$3(service, operations, exceptionManager, $W);
+      return t1;
+    },
     _WebLocalWorker: function _WebLocalWorker(t0, t1, t2, t3, t4, t5) {
       var _ = this;
       _.operations = t0;
@@ -9598,6 +9593,9 @@
       _.Releasable__released = t3;
       _.Releasable__token = t4;
       _.$ti = t5;
+    },
+    _WebLocalWorker$__closure: function _WebLocalWorker$__closure(t0) {
+      this.$this = t0;
     },
     __WebLocalWorker_Object_Releasable: function __WebLocalWorker_Object_Releasable() {
     },
@@ -9688,13 +9686,6 @@
       squadronJsify.set$finalLocalValue(new A.$jsify_closure1(cache, squadronJsify, $$registerTransferable));
       return squadronJsify._readLocal$0().call$1(message);
     },
-    $jsify2(message, transfer) {
-      var t1 = type$.Object,
-        cache = A.HashMap_HashMap(A._platform__isSameInstance$closure(), t1, t1),
-        squadronJsify = A._Cell$named("squadronJsify");
-      squadronJsify.set$finalLocalValue(new A.$jsify2_closure(cache, squadronJsify, new A.$jsify2_closure0()));
-      return squadronJsify._readLocal$0().call$1(message);
-    },
     $dartify(message) {
       var t1 = type$.Object,
         cache = A.HashMap_HashMap(A._platform__isSameInstance$closure(), t1, t1),
@@ -9727,13 +9718,6 @@
       this.transfer = t1;
     },
     $jsify_closure1: function $jsify_closure1(t0, t1, t2) {
-      this.cache = t0;
-      this.squadronJsify = t1;
-      this.$$registerTransferable = t2;
-    },
-    $jsify2_closure0: function $jsify2_closure0() {
-    },
-    $jsify2_closure: function $jsify2_closure(t0, t1, t2) {
       this.cache = t0;
       this.squadronJsify = t1;
       this.$$registerTransferable = t2;
@@ -10289,7 +10273,7 @@
       microSecs = t2 == null ? _null : B.JSNumber_methods.toInt$0(t2);
       t2 = A._asString(t1.$index(props, 1));
       t3 = A._asString(t1.$index(props, 2));
-      t4 = microSecs == null ? _null : A.Duration$(0, 0, microSecs, 0, 0);
+      t4 = microSecs == null ? _null : A.Duration$(0, microSecs, 0, 0);
       return A.SquadronTimeoutException$(t2, t3, t4, A.SquadronException_loadStackTrace(A._asStringQ(t1.$index(props, 3))));
     },
     SquadronTimeoutException: function SquadronTimeoutException(t0, t1, t2, t3) {
@@ -10634,7 +10618,7 @@
         t6 = t4.$index(t3, 1);
         t7 = A._asNumQ(t4.$index(t3, 2));
         t7 = t7 == null ? _null : B.JSNumber_methods.toInt$0(t7);
-        t7 = t7 == null ? _null : $.$get$_latestUPDEpoch()._addMicroseconds$1(A.Duration$(0, 0, t7, 0, 0)._duration);
+        t7 = t7 == null ? _null : $.$get$_latestUPDEpoch()._addMicroseconds$1(A.Duration$(0, t7, 0, 0)._duration);
         t8 = t4.$index(t3, 3);
         t3 = A.SquadronException_loadStackTrace(A._asStringQ(t4.$index(t3, 4)));
         log = new A.LogEvent(t5, t6, t8, t3, t7 == null ? new A.DateTime(Date.now(), 0, false) : t7);
@@ -11692,9 +11676,9 @@
     execute___closure106: function execute___closure106(t0) {
       this.tc = t0;
     },
-    execute____closure170: function execute____closure170() {
+    execute____closure169: function execute____closure169() {
     },
-    execute____closure171: function execute____closure171() {
+    execute____closure170: function execute____closure170() {
     },
     execute___closure107: function execute___closure107(t0) {
       this.tc = t0;
@@ -11724,17 +11708,6 @@
     execute____closure167: function execute____closure167() {
     },
     execute____closure168: function execute____closure168() {
-    },
-    execute____closure169: function execute____closure169(t0) {
-      this.tc = t0;
-    },
-    execute____closure_unused: function execute____closure_unused() {
-    },
-    execute_____closure71: function execute_____closure71(t0) {
-      this.unused = t0;
-    },
-    execute_____closure72: function execute_____closure72(t0) {
-      this.unused = t0;
     },
     execute___closure108: function execute___closure108(t0) {
       this.tc = t0;
@@ -11792,29 +11765,29 @@
     execute___closure110: function execute___closure110(t0) {
       this.tc = t0;
     },
-    execute____closure173: function execute____closure173() {
+    execute____closure172: function execute____closure172() {
+    },
+    execute_____closure74: function execute_____closure74(t0) {
+      this._box_0 = t0;
+    },
+    execute_____closure75: function execute_____closure75(t0) {
+      this._box_0 = t0;
     },
     execute_____closure76: function execute_____closure76(t0) {
-      this._box_0 = t0;
-    },
-    execute_____closure77: function execute_____closure77(t0) {
-      this._box_0 = t0;
-    },
-    execute_____closure78: function execute_____closure78(t0) {
       this._box_0 = t0;
     },
     execute___closure111: function execute___closure111(t0) {
       this.tc = t0;
     },
-    execute____closure172: function execute____closure172() {
+    execute____closure171: function execute____closure171() {
+    },
+    execute_____closure71: function execute_____closure71(t0) {
+      this._box_1 = t0;
+    },
+    execute_____closure72: function execute_____closure72(t0) {
+      this._box_1 = t0;
     },
     execute_____closure73: function execute_____closure73(t0) {
-      this._box_1 = t0;
-    },
-    execute_____closure74: function execute_____closure74(t0) {
-      this._box_1 = t0;
-    },
-    execute_____closure75: function execute_____closure75(t0) {
       this._box_1 = t0;
     },
     execute1(tc) {
@@ -15940,7 +15913,7 @@
               t3.onscroll = A._functionToJS1(htmlLogger.get$_onScroll());
               t4.start$0();
               A._asJSObject(t2.window).dartPrint = A._functionToJS1(htmlLogger.get$log());
-              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.2.0", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
+              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.3.0", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
               t1.$$context = null;
               A._EventStreamSubscription$(A._asJSObject(t2.window), "message", type$.nullable_void_Function_JSObject._as(new A.bootstrap_closure(t1, new A.bootstrap_execute(t1, workerPlatform, htmlLogger), htmlLogger)), false, type$.JSObject);
               A.NotifyParentExt_notify(A._asJSObject(t2.window), "@@READY@@");
@@ -16226,7 +16199,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.2.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.3.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -16536,18 +16509,10 @@
       this._custom_matcher$_matcher = t2;
     },
     LocalWorker_LocalWorker$create(service, $W) {
-      var t2, t3, runner,
-        operations = service.get$operations(),
+      var operations = service.get$operations(),
         t1 = type$.dynamic;
-      t1 = new A.ExceptionManager(A.LinkedHashMap_LinkedHashMap$from($.builtinExceptions, t1, t1));
-      t2 = A._asJSObject(new init.G.MessageChannel());
-      t3 = new A._WebLocalWorker(operations, t1, t2, false, new A.Object(), $W._eval$1("_WebLocalWorker<0>"));
-      runner = A.WorkerRunner_WorkerRunner$use(t3);
-      A._asJSObject(t2.port1).onmessage = A._functionToJS1(A.JsWorkerRunnerExt_get_handle(runner));
-      t2 = A._asJSObject(t2.port2);
-      t1 = new A._WebChannel(t2, A._setArrayType([], type$.JSArray_StreamController_List_dynamic), t1, runner.internalLogger);
-      t3.___WebLocalWorker__channel_A = t1;
-      return t3;
+      t1 = A.LinkedHashMap_LinkedHashMap$from($.builtinExceptions, t1, t1);
+      return A._WebLocalWorker$_(service, operations, new A.ExceptionManager(t1), $W);
     },
     printString(string) {
       if (typeof dartPrint == "function") {
@@ -20262,19 +20227,19 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 80
+    $signature: 87
   };
   A.initHooks_closure0.prototype = {
     call$2(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 223
+    $signature: 222
   };
   A.initHooks_closure1.prototype = {
     call$1(tag) {
       return this.prototypeForTag(A._asString(tag));
     },
-    $signature: 250
+    $signature: 246
   };
   A._Record.prototype = {
     get$runtimeType(_) {
@@ -20323,8 +20288,7 @@
         joinedNames = recipe.substring(1, position),
         fields = recipe.substring(position),
         arity = fields === "()" ? 0 : fields.replace(/[^,]/g, "").length + 1,
-        t1 = type$.Object,
-        result = J.JSArray_JSArray$allocateGrowable(arity, t1);
+        result = A._setArrayType(new Array(arity), type$.JSArray_Object);
       for (i = 0; i < arity; ++i)
         result[i] = i;
       if (joinedNames !== "") {
@@ -20336,7 +20300,7 @@
           B.JSArray_methods.$indexSet(result, last, names[i]);
         }
       }
-      return A.List_List$unmodifiable(result, t1);
+      return A.List_List$unmodifiable(result, type$.Object);
     }
   };
   A._Record2.prototype = {
@@ -20892,7 +20856,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 39
+    $signature: 37
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -21008,7 +20972,7 @@
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, new A.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 281
+    $signature: 250
   };
   A._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
@@ -21593,7 +21557,7 @@
       }
       _this.doneSignal._complete$1(null);
     },
-    $signature: 103
+    $signature: 100
   };
   A.FutureExtensions_onError_onError.prototype = {
     call$2(error, stackTrace) {
@@ -21972,7 +21936,7 @@
     call$1(__wc0_formal) {
       this.joinedResult._completeWithResultOf$1(this.originalSource);
     },
-    $signature: 39
+    $signature: 37
   };
   A._Future__propagateToListeners_handleWhenCompleteCallback_closure0.prototype = {
     call$2(e, s) {
@@ -21980,7 +21944,7 @@
       type$.StackTrace._as(s);
       this.joinedResult._completeErrorObject$1(new A.AsyncError(e, s));
     },
-    $signature: 68
+    $signature: 70
   };
   A._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -22766,7 +22730,7 @@
       else
         t1._completeErrorObject$1(new A.AsyncError(error, stackTrace));
     },
-    $signature: 68
+    $signature: 70
   };
   A._BufferingStreamSubscription_asFuture__closure.prototype = {
     call$0() {
@@ -24496,13 +24460,13 @@
     call$2(k, v) {
       this.result.$indexSet(0, this.K._as(k), this.V._as(v));
     },
-    $signature: 85
+    $signature: 92
   };
   A.LinkedHashMap_LinkedHashMap$from_closure.prototype = {
     call$2(k, v) {
       this.result.$indexSet(0, this.K._as(k), this.V._as(v));
     },
-    $signature: 85
+    $signature: 92
   };
   A.ListBase.prototype = {
     get$iterator(receiver) {
@@ -25122,7 +25086,8 @@
     },
     addEntries$1(newEntries) {
       var t1, t2;
-      for (t1 = J.get$iterator$ax(A._instanceType(this)._eval$1("Iterable<MapEntry<MapBase.K,MapBase.V>>")._as(newEntries)); t1.moveNext$0();) {
+      A._instanceType(this)._eval$1("Iterable<MapEntry<MapBase.K,MapBase.V>>")._as(newEntries);
+      for (t1 = newEntries.get$iterator(newEntries); t1.moveNext$0();) {
         t2 = t1.get$current();
         this.$indexSet(0, t2.key, t2.value);
       }
@@ -25202,7 +25167,7 @@
       t2 = A.S(v);
       t1._contents += t2;
     },
-    $signature: 86
+    $signature: 80
   };
   A.UnmodifiableMapBase.prototype = {};
   A._MapBaseValueIterable.prototype = {
@@ -25761,7 +25726,7 @@
       }
       return null;
     },
-    $signature: 121
+    $signature: 117
   };
   A._Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0() {
@@ -25773,7 +25738,7 @@
       }
       return null;
     },
-    $signature: 121
+    $signature: 117
   };
   A.AsciiCodec.prototype = {
     encode$1(source) {
@@ -26166,7 +26131,7 @@
       B.JSArray_methods.$indexSet(t1, t2.i++, key);
       B.JSArray_methods.$indexSet(t1, t2.i++, value);
     },
-    $signature: 86
+    $signature: 80
   };
   A._JsonPrettyPrintMixin.prototype = {
     writeList$1(list) {
@@ -26230,7 +26195,7 @@
       B.JSArray_methods.$indexSet(t1, t2.i++, key);
       B.JSArray_methods.$indexSet(t1, t2.i++, value);
     },
-    $signature: 86
+    $signature: 80
   };
   A._JsonStringStringifier.prototype = {
     get$_partialResult() {
@@ -26916,7 +26881,7 @@
       hash = hash + ((hash & 524287) << 10) & 536870911;
       return hash ^ hash >>> 6;
     },
-    $signature: 120
+    $signature: 116
   };
   A._BigIntImpl_hashCode_finish.prototype = {
     call$1(hash) {
@@ -26924,7 +26889,7 @@
       hash ^= hash >>> 11;
       return hash + ((hash & 16383) << 15) & 536870911;
     },
-    $signature: 119
+    $signature: 115
   };
   A.DateTime.prototype = {
     _addMicroseconds$1(durationMicroseconds) {
@@ -26937,7 +26902,7 @@
       return new A.DateTime(A.DateTime__validate(this._value + B.JSInt_methods._tdivFast$1(sumLo - microsecond, _1000) + durationHi, microsecond, t1), microsecond, t1);
     },
     difference$1(other) {
-      return A.Duration$(0, 0, this._microsecond - other._microsecond, this._value - other._value, 0);
+      return A.Duration$(0, this._microsecond - other._microsecond, this._value - other._value, 0);
     },
     $eq(_, other) {
       if (other == null)
@@ -27521,16 +27486,14 @@
   };
   A.Stopwatch.prototype = {
     get$elapsedMicroseconds() {
-      var ticks = this.get$elapsedTicks();
+      var ticks,
+        t1 = this._stop;
+      if (t1 == null)
+        t1 = $.Primitives_timerTicks.call$0();
+      ticks = t1 - this._core$_start;
       if ($.$get$Stopwatch__frequency() === 1000000)
         return ticks;
       return ticks * 1000;
-    },
-    get$elapsedMilliseconds() {
-      var ticks = this.get$elapsedTicks();
-      if ($.$get$Stopwatch__frequency() === 1000)
-        return ticks;
-      return B.JSInt_methods._tdivFast$1(ticks, 1000);
     },
     start$0() {
       var _this = this,
@@ -27539,16 +27502,6 @@
         _this._core$_start = _this._core$_start + ($.Primitives_timerTicks.call$0() - $stop);
         _this._stop = null;
       }
-    },
-    reset$0() {
-      var t1 = this._stop;
-      this._core$_start = t1 == null ? $.Primitives_timerTicks.call$0() : t1;
-    },
-    get$elapsedTicks() {
-      var t1 = this._stop;
-      if (t1 == null)
-        t1 = $.Primitives_timerTicks.call$0();
-      return t1 - this._core$_start;
     }
   };
   A.Runes.prototype = {
@@ -27629,13 +27582,13 @@
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 243
+    $signature: 242
   };
   A.Uri_parseIPv6Address_error.prototype = {
     call$2(msg, position) {
       throw A.wrapException(A.FormatException$("Illegal IPv6 address, " + msg, this.host, position));
     },
-    $signature: 118
+    $signature: 113
   };
   A.Uri_parseIPv6Address_parseHex.prototype = {
     call$2(start, end) {
@@ -27647,7 +27600,7 @@
         this.error.call$2("each part must be in the range of `0x0..0xFFFF`", start);
       return value;
     },
-    $signature: 120
+    $signature: 116
   };
   A._Uri.prototype = {
     get$_text() {
@@ -28308,7 +28261,7 @@
       } else
         return o;
     },
-    $signature: 33
+    $signature: 39
   };
   A.promiseToFuture_closure.prototype = {
     call$1(r) {
@@ -28369,7 +28322,7 @@
       }
       return o;
     },
-    $signature: 33
+    $signature: 39
   };
   A.NullRejectionException.prototype = {
     toString$0(_) {
@@ -28563,7 +28516,7 @@
         return null;
       t1.completeError$2(error, stackTrace);
     },
-    $signature: 68
+    $signature: 70
   };
   A.StreamGroup.prototype = {
     add$1(_, stream) {
@@ -28664,7 +28617,7 @@
   A.StreamGroup__onListen_closure.prototype = {
     call$1(_) {
     },
-    $signature: 39
+    $signature: 37
   };
   A.StreamGroup__onCancel_closure.prototype = {
     call$1(entry) {
@@ -28784,7 +28737,7 @@
     call$1(e) {
       return type$.CanceledException._as(e).get$message();
     },
-    $signature: 282
+    $signature: 281
   };
   A.TimeoutCanceledException.prototype = {$isTimeoutException: 1,
     get$duration() {
@@ -28929,7 +28882,7 @@
       this.$this._timeout_token$_cancel$0();
       t.cancel$0();
     },
-    $signature: 88
+    $signature: 103
   };
   A.EmptyUnmodifiableSet.prototype = {
     get$iterator(_) {
@@ -29648,7 +29601,7 @@
     call$1(frame) {
       return frame.get$$package() === "test" || frame.get$$package() === "stream_channel" || frame.get$$package() === "matcher";
     },
-    $signature: 91
+    $signature: 76
   };
   A.StringDescription.prototype = {
     get$length(_) {
@@ -29968,7 +29921,7 @@
         A.fail(A.formatFailure(this.$this, this.item, A._asString(realResult), null));
       this.outstandingWork.complete$0();
     },
-    $signature: 39
+    $signature: 37
   };
   A._expect_closure2.prototype = {
     call$5(actual, matcher, reason, matchState, verbose) {
@@ -29987,7 +29940,7 @@
       t1 = this._box_0;
       A.fail(A.formatFailure(type$.Matcher._as(t1.matcher), this.actual, A._asString(realResult), t1.reason));
     },
-    $signature: 39
+    $signature: 37
   };
   A._expect_closure0.prototype = {
     call$0() {
@@ -30281,7 +30234,7 @@
     call$1(m) {
       return A._asIntQ(m) == null;
     },
-    $signature: 102
+    $signature: 99
   };
   A._UnorderedMatches__findPairingInner_closure.prototype = {
     call$1(m) {
@@ -30446,7 +30399,7 @@
     call$1(child) {
       return this.prettyPrintImpl.call$4(child, this.indent + 2, this._box_0.seen, false);
     },
-    $signature: 99
+    $signature: 96
   };
   A.prettyPrint_prettyPrintImpl_closure.prototype = {
     call$1(string) {
@@ -31271,7 +31224,7 @@
       var t1 = this.$this;
       t1._onReleaseCompleters.removeFirst$0().complete$1(new A.PoolResource(t1));
     },
-    $signature: 221
+    $signature: 123
   };
   A.Pool__runOnRelease_closure0.prototype = {
     call$2(error, stackTrace) {
@@ -31279,7 +31232,7 @@
       type$.StackTrace._as(stackTrace);
       this.$this._onReleaseCompleters.removeFirst$0().completeError$2(error, stackTrace);
     },
-    $signature: 68
+    $signature: 70
   };
   A.PoolResource.prototype = {};
   A.openChannel_fail.prototype = {
@@ -31317,7 +31270,7 @@
       t2 = this.entryPoint;
       A.UriChecker_exists(t2).then$1$1(new A.openChannel_$errorHandler_closure0(e, t2, err, t1), type$.Null);
     },
-    $signature: 127
+    $signature: 128
   };
   A.openChannel_$errorHandler_closure.prototype = {
     call$0() {
@@ -31391,7 +31344,7 @@
         return t1;
       }
     },
-    $signature: 127
+    $signature: 128
   };
   A.openChannel__closure1.prototype = {
     call$0() {
@@ -31425,7 +31378,7 @@
         if ((_this.completer.future._state & 30) === 0) {
           if (t1 != null)
             t1.t$1("Connected to Web Worker");
-          webCh = new A._WebChannel(A._asJSObject(A.WorkerResponse_get_result(response)), A._setArrayType([], type$.JSArray_StreamController_List_dynamic), _this.exceptionManager, t1);
+          webCh = new A._WebChannel(A._asJSObject(A.WorkerResponse_get_result(response)), A._setArrayType([], type$.JSArray_StreamController_List_dynamic), _this.exceptionManager, t1, new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_void), type$._AsyncCompleter_void));
           webCh.set$_thread(_this.worker._readLocal$0());
           _this._box_0.channel = webCh;
           _this.success.call$1(webCh);
@@ -31463,7 +31416,7 @@
     _forward$1(e) {
       var transfer, ex, st, exception, t1;
       A._asJSObject(e);
-      if (this.__channel$_closed)
+      if ((this.__channel$_closed.future._state & 30) !== 0)
         throw A.wrapException(A.SquadronError$_("Channel is closed", null, null));
       try {
         transfer = type$.JSArray_nullable_Object._as(new init.G.Array());
@@ -31479,10 +31432,13 @@
       }
     },
     close$0() {
-      if (!this.__channel$_closed) {
+      var t1 = this.__channel$_closed,
+        t2 = t1.future;
+      if ((t2._state & 30) === 0) {
         A._asJSObject(this._com.port1).close();
-        this.__channel$_closed = true;
+        t1.complete$0();
       }
+      return t2;
     }
   };
   A._WebForwardChannel__forward_closure.prototype = {
@@ -31494,13 +31450,13 @@
   A._WebChannel.prototype = {
     share$0() {
       var t1 = A._asJSObject(new init.G.MessageChannel()),
-        t2 = new A._WebForwardChannel(this._sendPort, t1, A._asJSObject(t1.port2), A._setArrayType([], type$.JSArray_StreamController_List_dynamic), this.exceptionManager, this.logger);
+        t2 = new A._WebForwardChannel(this._sendPort, t1, A._asJSObject(t1.port2), A._setArrayType([], type$.JSArray_StreamController_List_dynamic), this.exceptionManager, this.logger, new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_void), type$._AsyncCompleter_void));
       A._asJSObject(t1.port1).onmessage = A._functionToJS1(t2.get$_forward());
       return t2;
     },
     _postRequest$2$force(req, force) {
       var data, transfer, msg, ex, st, t1, t2, exception, _null = null;
-      if (this.__channel$_closed && !force)
+      if ((this.__channel$_closed.future._state & 30) !== 0 && !force)
         throw A.wrapException(A.SquadronError$_("Channel is closed", _null, _null));
       try {
         t1 = J.getInterceptor$asx(req);
@@ -31527,7 +31483,7 @@
     },
     _inspectAndPostRequest$1(req) {
       var transfer, msg, ex, st, t1, t2, t3, exception;
-      if (this.__channel$_closed)
+      if ((this.__channel$_closed.future._state & 30) !== 0)
         throw A.wrapException(A.SquadronError$_("Channel is closed", null, null));
       t1 = J.getInterceptor$asx(req);
       t2 = type$.nullable_SquadronCancelationToken;
@@ -31551,10 +31507,13 @@
       }
     },
     close$0() {
-      if (!this.__channel$_closed) {
+      var t1 = this.__channel$_closed,
+        t2 = t1.future;
+      if ((t2._state & 30) === 0) {
         this._postRequest$1([A.microsecTimeStamp(), null, -4, null, null, null, null]);
-        this.__channel$_closed = true;
+        t1.complete$0();
       }
+      return t2;
     },
     cancelToken$1(token) {
       if (token != null)
@@ -31641,7 +31600,7 @@
       type$.List_dynamic._as(msg);
       return J.add$1$ax(this.controller._readLocal$0(), msg);
     },
-    $signature: 74
+    $signature: 72
   };
   A._WebChannel__getResponseStream_$sendRequest_$forwardError.prototype = {
     call$2(error, st) {
@@ -31649,7 +31608,7 @@
       type$.nullable_StackTrace._as(st);
       return this.controller._readLocal$0().addError$1(A.SquadronException_from(error, st, this.command));
     },
-    $signature: 145
+    $signature: 146
   };
   A._WebChannel__getResponseStream_$sendRequest_$close.prototype = {
     call$0() {
@@ -31855,7 +31814,31 @@
     },
     $signature: 2
   };
-  A._WebLocalWorker.prototype = {$isLocalWorker: 1, $isWorkerService: 1};
+  A._WebLocalWorker.prototype = {
+    _WebLocalWorker$_$3(service, operations, exceptionManager, $W) {
+      var _this = this,
+        runner = A.WorkerRunner_WorkerRunner$use(_this),
+        t1 = _this.__local_worker$_port;
+      A._asJSObject(t1.port1).onmessage = A._functionToJS1(A.JsWorkerRunnerExt_get_handle(runner));
+      t1 = A._asJSObject(t1.port2);
+      t1 = new A._WebChannel(t1, A._setArrayType([], type$.JSArray_StreamController_List_dynamic), _this.exceptionManager, runner.internalLogger, new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_void), type$._AsyncCompleter_void));
+      if (t1 == null)
+        t1 = null;
+      else
+        t1.__channel$_closed.future.then$1$1(new A._WebLocalWorker$__closure(_this), type$.Null);
+      _this.___WebLocalWorker__channel_A = t1;
+    },
+    $isLocalWorker: 1,
+    $isWorkerService: 1
+  };
+  A._WebLocalWorker$__closure.prototype = {
+    call$1(_) {
+      var t1 = this.$this.__local_worker$_port;
+      A._asJSObject(t1.port1).close();
+      A._asJSObject(t1.port2).close();
+    },
+    $signature: 123
+  };
   A.__WebLocalWorker_Object_Releasable.prototype = {};
   A.$transferify_closure.prototype = {
     call$1(js) {
@@ -31926,13 +31909,13 @@
       if (A._isTransferable(js))
         A._asInt(_this.transfer.push(js));
     },
-    $signature: 32
+    $signature: 38
   };
   A.$jsify_closure.prototype = {
     call$1(js) {
       A._asObject(js);
     },
-    $signature: 97
+    $signature: 120
   };
   A.$jsify_closure0.prototype = {
     call$1(js) {
@@ -31953,7 +31936,7 @@
       if (A._isTransferable(js))
         A._asInt(this.transfer.push(js));
     },
-    $signature: 97
+    $signature: 120
   };
   A.$jsify_closure1.prototype = {
     call$1(obj) {
@@ -32044,80 +32027,7 @@
       }
       return res;
     },
-    $signature: 33
-  };
-  A.$jsify2_closure0.prototype = {
-    call$1(js) {
-      A._asObject(js);
-    },
-    $signature: 97
-  };
-  A.$jsify2_closure.prototype = {
-    call$1(obj) {
-      var t1, cached, t2, len, jsArray, t3, i, t4, jsMap, t5, t6, jsSet, value, res, _this = this;
-      if (obj == null)
-        return null;
-      t1 = _this.cache;
-      cached = t1.$index(0, obj);
-      if (cached != null)
-        return cached;
-      if (type$.List_dynamic._is(obj) && !type$.TypedData._is(obj)) {
-        t2 = J.getInterceptor$asx(obj);
-        len = t2.get$length(obj);
-        jsArray = type$.JSArray_nullable_Object._as(new init.G.Array());
-        t1.$indexSet(0, obj, jsArray);
-        for (t1 = _this.squadronJsify, t3 = t1.__late_helper$_name, i = 0; i < len; ++i) {
-          t4 = t1.__late_helper$_value;
-          if (t4 === t1)
-            A.throwExpression(A.LateError$localNI(t3));
-          A._asInt(jsArray.push(t4.call$1(t2.$index(obj, i))));
-        }
-        return jsArray;
-      }
-      if (type$.Map_dynamic_dynamic._is(obj)) {
-        jsMap = A._asJSObject(new init.G.Map());
-        t1.$indexSet(0, obj, jsMap);
-        for (t1 = obj.get$entries(), t1 = t1.get$iterator(t1), t2 = _this.squadronJsify, t3 = t2.__late_helper$_name; t1.moveNext$0();) {
-          t4 = t1.get$current();
-          t5 = t2.__late_helper$_value;
-          if (t5 === t2)
-            A.throwExpression(A.LateError$localNI(t3));
-          t5 = t5.call$1(t4.key);
-          t6 = t2.__late_helper$_value;
-          if (t6 === t2)
-            A.throwExpression(A.LateError$localNI(t3));
-          A._asJSObject(jsMap.set(t5, t6.call$1(t4.value)));
-        }
-        return jsMap;
-      }
-      if (type$.Set_dynamic._is(obj)) {
-        jsSet = A._asJSObject(new init.G.Set());
-        t1.$indexSet(0, obj, jsSet);
-        for (t1 = obj.get$iterator(obj), t2 = _this.squadronJsify, t3 = t2.__late_helper$_name; t1.moveNext$0();) {
-          value = t1.get$current();
-          t4 = t2.__late_helper$_value;
-          if (t4 === t2)
-            A.throwExpression(A.LateError$localNI(t3));
-          A._asJSObject(jsSet.add(t4.call$1(value)));
-        }
-        return jsSet;
-      }
-      if (obj instanceof A._BigIntImpl)
-        return A._toJSBigInt(obj);
-      if (obj instanceof A.DateTime) {
-        _this = obj._value;
-        t1 = A.JSFunctionUnsafeUtilExtension_callAsConstructor($.$get$_$JSDateFunction(), _this, type$.JSObject);
-        return t1;
-      }
-      res = A.jsify(obj);
-      if (res != null) {
-        if (typeof obj != "number" && !A._isBool(obj) && typeof obj != "string")
-          t1.$indexSet(0, obj, res);
-        _this.$$registerTransferable.call$1(res);
-      }
-      return res;
-    },
-    $signature: 33
+    $signature: 39
   };
   A.$dartify_closure.prototype = {
     call$1(js) {
@@ -32192,7 +32102,7 @@
         t1.$indexSet(0, js, res);
       return res;
     },
-    $signature: 33
+    $signature: 39
   };
   A._WebWorkerChannel.prototype = {
     _postResponse$1(res) {
@@ -32499,7 +32409,7 @@
         t1.close$0();
       }
     },
-    $signature: 74
+    $signature: 72
   };
   A.ResultStream_$decodeSingleResponse.prototype = {
     call$1(res) {
@@ -32561,7 +32471,7 @@
       t1 === $ && A.throwLateFieldNI(_s11_);
       t1.close$0();
     },
-    $signature: 74
+    $signature: 72
   };
   A.ResultStream_$getStreamId.prototype = {
     call$1(sub) {
@@ -32604,7 +32514,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 324
+    $signature: 323
   };
   A.ResultStream_$onCancel.prototype = {
     call$0() {
@@ -33016,7 +32926,7 @@
     call$0() {
       return new A.CancelationTokenReference(this.token.get$id(), new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_SquadronCanceledException), type$._AsyncCompleter_SquadronCanceledException), true);
     },
-    $signature: 237
+    $signature: 236
   };
   A.WorkerRunner__pipe_onDone.prototype = {
     call$0() {
@@ -33049,7 +32959,7 @@
     call$0() {
       return true;
     },
-    $signature: 117
+    $signature: 144
   };
   A.WorkerRunner__pipe_closure0.prototype = {
     call$0() {
@@ -33061,7 +32971,7 @@
       }
       return t1;
     },
-    $signature: 117
+    $signature: 144
   };
   A.WorkerRunner__pipe_closure1.prototype = {
     call$1(data) {
@@ -34592,7 +34502,7 @@
       var t1 = this.$this.$ti._precomputed1;
       return this.compare.call$2(t1._as(a), t1._as(b));
     },
-    $signature: 101
+    $signature: 98
   };
   A.LazyInPlaceMap.prototype = {
     get$entries() {
@@ -34797,7 +34707,7 @@
     call$1(v) {
       return v != null && !this.$this.$ti._rest[1]._is(v) ? this.$this._vcast.call$1(v) : v;
     },
-    $signature: 80
+    $signature: 87
   };
   A.NumConverter.prototype = {
     value$1$0($T) {
@@ -34900,7 +34810,7 @@
     call$1(e) {
       return type$.SquadronCanceledException._as(e).serialize$0();
     },
-    $signature: 224
+    $signature: 223
   };
   A.SquadronError.prototype = {
     serialize$0() {
@@ -35212,7 +35122,7 @@
     call$1(_) {
       return this.$this._canceledException == null;
     },
-    $signature: 229
+    $signature: 225
   };
   A.WorkerStreamTask_execute_closure0.prototype = {
     call$1(_) {
@@ -35239,7 +35149,7 @@
           t1 = A.microsecTimeStamp();
         t2 = _this._scheduled;
         t2.toString;
-        t2 = A.Duration$(0, 0, t1 - t2, 0, 0);
+        t2 = A.Duration$(0, t1 - t2, 0, 0);
         t1 = t2;
       }
       return t1;
@@ -35621,7 +35531,7 @@
       B.JSArray_methods.add$1(t1._workers, t2);
       t1._notify$2$removed(t2.worker.get$_stats().get$snapshot(), false);
     },
-    $signature: 231
+    $signature: 229
   };
   A.WorkerPool__provisionWorkers_closure1.prototype = {
     call$2(ex, st) {
@@ -35690,7 +35600,7 @@
     call$1(_) {
       return this.$this._dispatchTasks$0();
     },
-    $signature: 137
+    $signature: 142
   };
   A.WorkerPool___schedule_closure0.prototype = {
     call$1(ex) {
@@ -35701,7 +35611,7 @@
       else
         t1._schedule$0();
     },
-    $signature: 39
+    $signature: 37
   };
   A.WorkerPool__dispatchTasks_closure.prototype = {
     call$0() {
@@ -35715,7 +35625,7 @@
     call$1(t) {
       return type$.WorkerTask_dynamic_Worker._as(t) === this.task;
     },
-    $signature: 246
+    $signature: 243
   };
   A._WorkerPool_Object_Releasable.prototype = {};
   A.SquadronPlatformType.prototype = {
@@ -36027,7 +35937,7 @@
       if ((t2.future._state & 30) === 0)
         t2.completeError$1(t1);
     },
-    $signature: 113
+    $signature: 139
   };
   A.Worker_stream_closure.prototype = {
     call$1(ex) {
@@ -36065,7 +35975,7 @@
       if (t1 != null)
         t1.cancelToken$1(_this.squadronToken);
     },
-    $signature: 113
+    $signature: 139
   };
   A.Worker_stream_closure0.prototype = {
     call$0() {
@@ -36211,7 +36121,7 @@
       }
       return null;
     },
-    $signature: 85
+    $signature: 92
   };
   A._Stats.prototype = {
     beginWork$0() {
@@ -36242,8 +36152,8 @@
       if (t3)
         t2 = ts;
       t8 = _this._started;
-      t2 = t8 == null ? B.Duration_0 : A.Duration$(0, 0, t2 - t8, 0, 0);
-      t8 = t4 > 0 ? B.Duration_0 : A.Duration$(0, 0, ts - _this._idle, 0, 0);
+      t2 = t8 == null ? B.Duration_0 : A.Duration$(0, t2 - t8, 0, 0);
+      t8 = t4 > 0 ? B.Duration_0 : A.Duration$(0, ts - _this._idle, 0, 0);
       t1 = t1._channel;
       if (t1 == null)
         t1 = null;
@@ -36296,13 +36206,13 @@
       B.JSArray_methods.addAll$1(t2, A.SubListIterable$(t1, 1, null, A._arrayInstanceType(t1)._precomputed1));
       return new A.Chain(A.List_List$unmodifiable(t2, type$.Trace));
     },
-    $signature: 69
+    $signature: 71
   };
   A.Chain_Chain$forTrace_closure.prototype = {
     call$0() {
       return A.Chain_Chain$parse(this.trace.toString$0(0));
     },
-    $signature: 69
+    $signature: 71
   };
   A.Chain_Chain$parse_closure.prototype = {
     call$1(line) {
@@ -36341,7 +36251,7 @@
         t2 = A._arrayInstanceType(t1);
       return new A.MappedListIterable(t1, t2._eval$1("int(1)")._as(new A.Chain_toString__closure0()), t2._eval$1("MappedListIterable<1,int>")).fold$1$2(0, 0, B.CONSTANT, type$.int);
     },
-    $signature: 222
+    $signature: 221
   };
   A.Chain_toString__closure0.prototype = {
     call$1(frame) {
@@ -36355,14 +36265,14 @@
         t2 = A._arrayInstanceType(t1);
       return new A.MappedListIterable(t1, t2._eval$1("String(1)")._as(new A.Chain_toString__closure(this.longest)), t2._eval$1("MappedListIterable<1,String>")).join$0(0);
     },
-    $signature: 225
+    $signature: 224
   };
   A.Chain_toString__closure.prototype = {
     call$1(frame) {
       type$.Frame._as(frame);
       return B.JSString_methods.padRight$1(frame.get$location(), this.longest) + "  " + A.S(frame.get$member()) + "\n";
     },
-    $signature: 143
+    $signature: 147
   };
   A.Frame.prototype = {
     get$isCore() {
@@ -36525,7 +36435,7 @@
       columnMatch = t1[3];
       return new A.Frame(uri, line, columnMatch != null ? A.int_parse(columnMatch, _null) : _null, member);
     },
-    $signature: 233
+    $signature: 231
   };
   A.Frame_Frame$_parseFirefoxEval_closure.prototype = {
     call$0() {
@@ -36713,7 +36623,7 @@
     call$0() {
       return this.$this.get$_chain().foldFrames$2$terse(this.predicate, this.terse);
     },
-    $signature: 69
+    $signature: 71
   };
   A.LazyTrace.prototype = {
     get$_lazy_trace$_trace() {
@@ -36752,7 +36662,7 @@
     call$0() {
       return A.Chain_Chain$parse(this._box_0.trace.toString$0(0));
     },
-    $signature: 69
+    $signature: 71
   };
   A.StackZoneSpecification_chainFor_closure0.prototype = {
     call$0() {
@@ -36868,7 +36778,7 @@
         return false;
       return frame.get$line() == null;
     },
-    $signature: 91
+    $signature: 76
   };
   A.Trace_foldFrames_closure0.prototype = {
     call$1(frame) {
@@ -36880,7 +36790,7 @@
       t2 = $.$get$_terseRegExp();
       return new A.Frame(A.Uri_parse(A.stringReplaceAllUnchecked(t1, t2, "")), null, null, frame.get$member());
     },
-    $signature: 236
+    $signature: 233
   };
   A.Trace_toString_closure0.prototype = {
     call$1(frame) {
@@ -36895,7 +36805,7 @@
         return frame.toString$0(0) + "\n";
       return B.JSString_methods.padRight$1(frame.get$location(), this.longest) + "  " + A.S(frame.get$member()) + "\n";
     },
-    $signature: 143
+    $signature: 147
   };
   A.UnparsedFrame.prototype = {
     toString$0(_) {
@@ -37209,7 +37119,7 @@
       t1 = this.$this._soloEntries;
       return t1.length !== 0 && !B.JSArray_methods.contains$1(t1, entry) ? new A.LocalTest(entry.get$name(), entry.get$metadata().change$2$skip$skipReason(true, 'does not have "solo"'), null, null, false, new A.Declarer_build__closure(), true) : entry;
     },
-    $signature: 238
+    $signature: 237
   };
   A.Declarer_build__closure.prototype = {
     call$0() {
@@ -37220,7 +37130,7 @@
     call$1(setUp) {
       return type$.Function._as(setUp).call$0();
     },
-    $signature: 239
+    $signature: 238
   };
   A.Declarer__tearDownAll_closure.prototype = {
     call$0() {
@@ -37285,13 +37195,13 @@
     call$1(entry) {
       return entry.forPlatform$1(this.platform);
     },
-    $signature: 140
+    $signature: 127
   };
   A.Group__map_closure.prototype = {
     call$1(entry) {
       return this.callback.call$1(type$.GroupEntry._as(entry));
     },
-    $signature: 140
+    $signature: 127
   };
   A.LocalTest.prototype = {
     load$2$groups(suite, groups) {
@@ -37418,7 +37328,7 @@
       else
         $self.get$parent().handleUncaughtError$2(error, stackTrace);
     },
-    $signature: 308
+    $signature: 290
   };
   A.Invoker_guard__closure.prototype = {
     call$0() {
@@ -37486,7 +37396,7 @@
       t1.get$_outstandingCallbacks().decrement$0();
       return null;
     },
-    $signature: 137
+    $signature: 142
   };
   A.Invoker__waitForOutstandingCallbacks_closure.prototype = {
     call$0() {
@@ -37689,7 +37599,7 @@
       t1 === $ && A.throwLateFieldNI("_controller");
       return t1.message$1(new A.Message(B.MessageType_print, line));
     },
-    $signature: 133
+    $signature: 134
   };
   A._AsyncCounter.prototype = {
     decrement$0() {
@@ -37836,7 +37746,7 @@
         t2 = t1.tags;
       return A.Metadata$_(_this.chainStackTraces, t1.forTag, _this.languageVersionComment, _this.onPlatform, _this.retry, _this.skip, _this.skipReason, t2, _this.testOn, _this.timeout, _this.verboseTrace);
     },
-    $signature: 326
+    $signature: 325
   };
   A.Metadata_Metadata_closure.prototype = {
     call$2(merged, selector) {
@@ -37851,7 +37761,7 @@
       t1.toString;
       return merged.merge$1(t1);
     },
-    $signature: 148
+    $signature: 327
   };
   A.Metadata__validateTags_closure.prototype = {
     call$1(tag) {
@@ -37874,21 +37784,21 @@
       selector.validate$1(t1);
       metadata.validatePlatformSelectors$1(t1);
     },
-    $signature: 132
+    $signature: 125
   };
   A.Metadata_merge_closure.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 131
+    $signature: 124
   };
   A.Metadata_merge_closure0.prototype = {
     call$2(metadata1, metadata2) {
       var t1 = type$.Metadata;
       return t1._as(metadata1).merge$1(t1._as(metadata2));
     },
-    $signature: 131
+    $signature: 124
   };
   A.Metadata_forPlatform_closure.prototype = {
     call$2(platformSelector, platformMetadata) {
@@ -37900,7 +37810,7 @@
       t1 = this._box_0;
       t1.metadata = t1.metadata.merge$1(platformMetadata);
     },
-    $signature: 132
+    $signature: 125
   };
   A.OperatingSystem.prototype = {
     toString$0(_) {
@@ -38031,7 +37941,7 @@
         return !t2.contains$1(0, frame.get$$package());
       return t1._except.contains$1(0, frame.get$$package());
     },
-    $signature: 91
+    $signature: 76
   };
   A.State.prototype = {
     $eq(_, other) {
@@ -38088,7 +37998,7 @@
     call$0() {
       return A.pumpEventQueue(this.times - 1);
     },
-    $signature: 78
+    $signature: 83
   };
   A.Engine.prototype = {
     get$_onUnpaused() {
@@ -38545,7 +38455,7 @@
       t1 = this.$this._active;
       t1.remove$1(t1, this.liveTest);
     },
-    $signature: 79
+    $signature: 84
   };
   A.Engine__runLiveTest_closure0.prototype = {
     call$0() {
@@ -38624,7 +38534,7 @@
         t1._failed.remove$1(0, t2);
       }
     },
-    $signature: 79
+    $signature: 84
   };
   A.LiveSuiteController_close_closure.prototype = {
     call$0() {
@@ -38769,7 +38679,7 @@
         message += suffix;
       if (color == null)
         color = "";
-      t4 = A.Duration$(0, 0, _this._stopwatch.get$elapsedMicroseconds(), 0, 0)._duration;
+      t4 = A.Duration$(0, _this._stopwatch.get$elapsedMicroseconds(), 0, 0)._duration;
       t5 = _this._noColor;
       t2 = B.JSString_methods.padLeft$2(B.JSInt_methods.toString$0(B.JSInt_methods._tdivFast$1(t4, 60000000)), 2, "0") + ":" + B.JSString_methods.padLeft$2(B.JSInt_methods.toString$0(B.JSInt_methods.$mod(B.JSInt_methods._tdivFast$1(t4, 1000000), 60)), 2, "0") + " " + _this._green + "+" + t2.get$length(0) + t5;
       if (t3.get$length(0) !== 0)
@@ -38794,7 +38704,7 @@
     call$1(state) {
       return this.$this._expanded$_onStateChange$2(this.liveTest, type$.State._as(state));
     },
-    $signature: 79
+    $signature: 84
   };
   A.ExpandedReporter__onTestStarted_closure0.prototype = {
     call$1(error) {
@@ -39146,12 +39056,12 @@
   A.execute___closure106.prototype = {
     call$0() {
       var t1 = this.tc;
-      t1.test$2("Date", new A.execute____closure170());
-      t1.test$2("BigInt", new A.execute____closure171());
+      t1.test$2("Date", new A.execute____closure169());
+      t1.test$2("BigInt", new A.execute____closure170());
     },
     $signature: 1
   };
-  A.execute____closure170.prototype = {
+  A.execute____closure169.prototype = {
     call$0() {
       var t1,
         d = A.JSFunctionUnsafeUtilExtension_callAsConstructor($.$get$_$JSDateFunction(), 42, type$.JSObject);
@@ -39163,7 +39073,7 @@
     },
     $signature: 1
   };
-  A.execute____closure171.prototype = {
+  A.execute____closure170.prototype = {
     call$0() {
       var bigintFromStr, t3, bigintFromInt, _null = null,
         t1 = init.G,
@@ -39198,7 +39108,6 @@
       t1.test$2("- Mixed list", new A.execute____closure166());
       t1.test$2("- Acyclic reference", new A.execute____closure167());
       t1.test$2("- Cyclic reference", new A.execute____closure168());
-      t1.group$2("- PERFS", new A.execute____closure169(t1));
     },
     $signature: 1
   };
@@ -39390,71 +39299,6 @@
     },
     $signature: 1
   };
-  A.execute____closure169.prototype = {
-    call$0() {
-      var t1 = new A.execute____closure_unused(),
-        t2 = this.tc;
-      t2.test$2("List<String>", new A.execute_____closure71(t1));
-      t2.test$2("Map<String, DateTime?>", new A.execute_____closure72(t1));
-    },
-    $signature: 1
-  };
-  A.execute____closure_unused.prototype = {
-    call$1(_) {
-    },
-    $signature: 32
-  };
-  A.execute_____closure71.prototype = {
-    call$0() {
-      var n, sw, i,
-        data = J.JSArray_JSArray$allocateGrowable(1000, type$.String);
-      for (n = 0; n < 1000; ++n)
-        data[n] = "String " + n + " " + B.JSString_methods.$mul("*", n);
-      sw = new A.Stopwatch();
-      $.$get$Stopwatch__frequency();
-      sw.start$0();
-      this.unused.call$1(null);
-      for (i = 0; i < 10; ++i)
-        A.$jsify(data, null);
-      A.print("$jsify --> " + sw.get$elapsedMilliseconds() + " ms");
-      if (sw._stop == null)
-        sw._stop = $.Primitives_timerTicks.call$0();
-      sw.reset$0();
-      sw.start$0();
-      for (i = 0; i < 10; ++i)
-        A.$jsify2(data, null);
-      A.print("$jsify2 --> " + sw.get$elapsedMilliseconds() + " ms");
-    },
-    $signature: 1
-  };
-  A.execute_____closure72.prototype = {
-    call$0() {
-      var n, t2, t3, data, sw, i, _null = null,
-        t1 = type$.MapEntry_of_String_and_nullable_DateTime,
-        _list = J.JSArray_JSArray$allocateGrowable(1000, t1);
-      for (n = 0; n < 1000; ++n) {
-        t2 = B.JSString_methods.$mul("*", n);
-        t3 = B.JSInt_methods.$mod(n, 7) === 0 ? _null : new A.DateTime(Date.now(), 0, false)._addMicroseconds$1(3600000000 * n);
-        _list[n] = new A.MapEntry("String " + n + " " + t2, t3, t1);
-      }
-      data = A.Map_Map$fromEntries(_list, type$.String, type$.nullable_DateTime);
-      sw = new A.Stopwatch();
-      $.$get$Stopwatch__frequency();
-      sw.start$0();
-      this.unused.call$1(_null);
-      for (i = 0; i < 10; ++i)
-        A.$jsify(data, _null);
-      A.print("$jsify --> " + sw.get$elapsedMilliseconds() + " ms");
-      if (sw._stop == null)
-        sw._stop = $.Primitives_timerTicks.call$0();
-      sw.reset$0();
-      sw.start$0();
-      for (i = 0; i < 10; ++i)
-        A.$jsify2(data, _null);
-      A.print("$jsify2 --> " + sw.get$elapsedMilliseconds() + " ms");
-    },
-    $signature: 1
-  };
   A.execute___closure108.prototype = {
     call$0() {
       var t1 = this.tc;
@@ -39509,7 +39353,6 @@
         val = A._BigIntImpl_parse("123456789", null);
       for (i = 1; i < 8; ++i)
         val = val.$mul(0, val);
-      A.print(val);
       x = A.$dartify(type$.JavaScriptBigInt._as(init.G.BigInt(val.toString$0(0))));
       A.expect(x, new A.TypeMatcher(type$.TypeMatcher_BigInt), null);
       A.expect(x, val, null);
@@ -39807,7 +39650,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure173(), type$.NotAWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure172(), type$.NotAWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39818,7 +39661,7 @@
     },
     $signature: 0
   };
-  A.execute____closure173.prototype = {
+  A.execute____closure172.prototype = {
     call$1(w) {
       return this.$call$body$execute____closure66(type$.NotAWorker._as(w));
     },
@@ -39838,7 +39681,7 @@
               t1.error = null;
               t2 = type$.bool;
               $async$goto = 2;
-              return A._asyncAwait(A.Future_wait(A._setArrayType([w.start$0().then$1$2$onError(new A.execute_____closure76(t1), new A.execute_____closure77(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure78(t1), t2)], type$.JSArray_Future_bool), false, t2), $async$call$1);
+              return A._asyncAwait(A.Future_wait(A._setArrayType([w.start$0().then$1$2$onError(new A.execute_____closure74(t1), new A.execute_____closure75(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure76(t1), t2)], type$.JSArray_Future_bool), false, t2), $async$call$1);
             case 2:
               // returning from await.
               A.expect(t1.expired, B.C__IsTrue, null);
@@ -39850,23 +39693,23 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 126
+    $signature: 108
   };
-  A.execute_____closure76.prototype = {
+  A.execute_____closure74.prototype = {
     call$1(_) {
       type$.Channel._as(_);
       return this._box_0.started = true;
     },
-    $signature: 124
+    $signature: 119
   };
-  A.execute_____closure77.prototype = {
+  A.execute_____closure75.prototype = {
     call$1(ex) {
       this._box_0.error = ex;
       return ex == null;
     },
     $signature: 18
   };
-  A.execute_____closure78.prototype = {
+  A.execute_____closure76.prototype = {
     call$1(_) {
       return this._box_0.expired = true;
     },
@@ -39885,7 +39728,7 @@
             case 0:
               // Function start
               $async$goto = 2;
-              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure172(), type$.NotAWorker, type$.Null), $async$call$0);
+              return A._asyncAwait(A.Using_useAsync(A.NotAWorker$($async$self.tc), new A.execute____closure171(), type$.NotAWorker, type$.Null), $async$call$0);
             case 2:
               // returning from await.
               // implicit return
@@ -39896,7 +39739,7 @@
     },
     $signature: 0
   };
-  A.execute____closure172.prototype = {
+  A.execute____closure171.prototype = {
     call$1(w) {
       return this.$call$body$execute____closure65(type$.NotAWorker._as(w));
     },
@@ -39916,7 +39759,7 @@
               t1.error = null;
               t2 = type$.bool;
               $async$goto = 2;
-              return A._asyncAwait(A.Future_any(A._setArrayType([w.start$0().then$1$2$onError(new A.execute_____closure73(t1), new A.execute_____closure74(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure75(t1), t2)], type$.JSArray_Future_bool), t2), $async$call$1);
+              return A._asyncAwait(A.Future_any(A._setArrayType([w.start$0().then$1$2$onError(new A.execute_____closure71(t1), new A.execute_____closure72(t1), t2), A.Future_Future$delayed(A.Duration$(0, 0, 0, 1), null, type$.dynamic).then$1$1(new A.execute_____closure73(t1), t2)], type$.JSArray_Future_bool), t2), $async$call$1);
             case 2:
               // returning from await.
               A.expect(t1.expired || type$.SquadronError._is(t1.error), B.C__IsTrue, null);
@@ -39927,23 +39770,23 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 126
+    $signature: 108
   };
-  A.execute_____closure73.prototype = {
+  A.execute_____closure71.prototype = {
     call$1(_) {
       type$.Channel._as(_);
       return this._box_1.started = true;
     },
-    $signature: 124
+    $signature: 119
   };
-  A.execute_____closure74.prototype = {
+  A.execute_____closure72.prototype = {
     call$1(ex) {
       this._box_1.error = ex;
       return ex == null;
     },
     $signature: 18
   };
-  A.execute_____closure75.prototype = {
+  A.execute_____closure73.prototype = {
     call$1(_) {
       return this._box_1.expired = true;
     },
@@ -41712,7 +41555,7 @@
     call$0() {
       return type$.List_nullable_int._as(this.data);
     },
-    $signature: 81
+    $signature: 88
   };
   A.testCastConverter___closure17.prototype = {
     call$0() {
@@ -41876,7 +41719,7 @@
     call$0() {
       return type$.List_nullable_double._as(this.data);
     },
-    $signature: 82
+    $signature: 89
   };
   A.testCastConverter___closure21.prototype = {
     call$0() {
@@ -42044,7 +41887,7 @@
     call$0() {
       return type$.Set_nullable_int._as(this.data);
     },
-    $signature: 84
+    $signature: 91
   };
   A.testCastConverter___closure9.prototype = {
     call$0() {
@@ -42204,7 +42047,7 @@
     call$0() {
       return type$.Set_nullable_double._as(this.data);
     },
-    $signature: 90
+    $signature: 93
   };
   A.testCastConverter___closure13.prototype = {
     call$0() {
@@ -43160,7 +43003,7 @@
     call$0() {
       return type$.List_nullable_int._as(this.data);
     },
-    $signature: 81
+    $signature: 88
   };
   A.testContextAwareConverter___closure17.prototype = {
     call$0() {
@@ -43314,7 +43157,7 @@
     call$0() {
       return type$.List_nullable_double._as(this.data);
     },
-    $signature: 82
+    $signature: 89
   };
   A.testContextAwareConverter___closure21.prototype = {
     call$0() {
@@ -43472,7 +43315,7 @@
     call$0() {
       return type$.Set_nullable_int._as(this.data);
     },
-    $signature: 84
+    $signature: 91
   };
   A.testContextAwareConverter___closure9.prototype = {
     call$0() {
@@ -43630,7 +43473,7 @@
     call$0() {
       return type$.Set_nullable_double._as(this.data);
     },
-    $signature: 90
+    $signature: 93
   };
   A.testContextAwareConverter___closure13.prototype = {
     call$0() {
@@ -44563,7 +44406,7 @@
     call$0() {
       return type$.List_nullable_int._as(this.data);
     },
-    $signature: 81
+    $signature: 88
   };
   A.testNumConverter___closure17.prototype = {
     call$0() {
@@ -44717,7 +44560,7 @@
     call$0() {
       return type$.List_nullable_double._as(this.data);
     },
-    $signature: 82
+    $signature: 89
   };
   A.testNumConverter___closure21.prototype = {
     call$0() {
@@ -44875,7 +44718,7 @@
     call$0() {
       return type$.Set_nullable_int._as(this.data);
     },
-    $signature: 84
+    $signature: 91
   };
   A.testNumConverter___closure9.prototype = {
     call$0() {
@@ -45033,7 +44876,7 @@
     call$0() {
       return type$.Set_nullable_double._as(this.data);
     },
-    $signature: 90
+    $signature: 93
   };
   A.testNumConverter___closure13.prototype = {
     call$0() {
@@ -45340,7 +45183,7 @@
     call$2(data, cast) {
       return this.call$1$2(data, cast, type$.dynamic);
     },
-    $signature: 242
+    $signature: 239
   };
   A.testLazyLists_closure.prototype = {
     call$0() {
@@ -45692,7 +45535,7 @@
       t1 = $.$get$_dblFeats0().$ti;
       return J.map$1$1$ax(t1._eval$1("List<1>")._as(l), t1._eval$1("bool(1)")._as(A.lib_03_converter_test__list_features___isGt3$closure()), type$.bool);
     },
-    $signature: 283
+    $signature: 282
   };
   A._dblTests_closure61.prototype = {
     call$1(l) {
@@ -45708,7 +45551,7 @@
       A._asDouble(n);
       return A._setArrayType([n, n * n], type$.JSArray_double);
     },
-    $signature: 290
+    $signature: 283
   };
   A._dblTests_closure62.prototype = {
     call$1(l) {
@@ -45723,7 +45566,7 @@
     call$2(s, n) {
       return A._asDouble(s) + A._asDouble(n);
     },
-    $signature: 116
+    $signature: 112
   };
   A._dblTests_closure63.prototype = {
     call$1(l) {
@@ -45738,7 +45581,7 @@
     call$2(s, n) {
       return A._asDouble(s) + A._asDouble(n);
     },
-    $signature: 116
+    $signature: 112
   };
   A._dblTests_closure64.prototype = {
     call$1(l) {
@@ -45817,7 +45660,7 @@
       t2 = A._instanceType(t1);
       return A.MappedIterable_MappedIterable(t1, t2._eval$1("double?(Iterable.E)")._as($.$get$_ndbl0()), t2._eval$1("Iterable.E"), type$.nullable_double);
     },
-    $signature: 323
+    $signature: 308
   };
   A._dblTests_closure73.prototype = {
     call$1(l) {
@@ -45859,7 +45702,7 @@
     call$1(n) {
       return A._asDouble(n) === 2.2;
     },
-    $signature: 115
+    $signature: 111
   };
   A._dblTests_closure77.prototype = {
     call$1(l) {
@@ -45874,7 +45717,7 @@
     call$1(n) {
       return A._asDouble(n) === 2.2;
     },
-    $signature: 115
+    $signature: 111
   };
   A._dblTests_closure78.prototype = {
     call$1(l) {
@@ -45977,7 +45820,7 @@
     call$1(n) {
       A._asDouble(n);
     },
-    $signature: 325
+    $signature: 324
   };
   A._dblTests_closure89.prototype = {
     call$1(l) {
@@ -46037,7 +45880,7 @@
       t1 = t1.$ti;
       return J.fillRange$3$ax(t1._eval$1("List<1>")._as(l), 3, 5, t1._eval$1("1?")._as(t2));
     },
-    $signature: 87
+    $signature: 101
   };
   A._dblTests_closure95.prototype = {
     call$1(l) {
@@ -46050,7 +45893,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), 0, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 87
+    $signature: 101
   };
   A._dblTests_closure96.prototype = {
     call$1(l) {
@@ -46063,7 +45906,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), -1, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 87
+    $signature: 101
   };
   A._dblTests_closure97.prototype = {
     call$1(l) {
@@ -46248,7 +46091,7 @@
       A._asDouble(a);
       return B.JSNumber_methods.compareTo$1(A._asDouble(b), a);
     },
-    $signature: 327
+    $signature: 326
   };
   A._dblTests_closure119.prototype = {
     call$1(l) {
@@ -46269,7 +46112,7 @@
       $.$get$_dblFeats0().$ti._eval$1("List<1>")._as(l);
       return J.join$1$ax(l, "");
     },
-    $signature: 112
+    $signature: 110
   };
   A._dblTests_closure121.prototype = {
     call$1(l) {
@@ -46277,7 +46120,7 @@
       $.$get$_dblFeats0().$ti._eval$1("List<1>")._as(l);
       return J.join$1$ax(l, " $ ");
     },
-    $signature: 112
+    $signature: 110
   };
   A._ndblTests_closure26.prototype = {
     call$1(l) {
@@ -46609,7 +46452,7 @@
       A._asDoubleQ(n);
       return A._setArrayType([n, n == null ? null : n * n], type$.JSArray_nullable_double);
     },
-    $signature: 147
+    $signature: 148
   };
   A._ndblTests_closure62.prototype = {
     call$1(l) {
@@ -46764,7 +46607,7 @@
     call$1(n) {
       return A._asDoubleQ(n) === 2.2;
     },
-    $signature: 110
+    $signature: 121
   };
   A._ndblTests_closure77.prototype = {
     call$1(l) {
@@ -46779,7 +46622,7 @@
     call$1(n) {
       return A._asDoubleQ(n) === 2.2;
     },
-    $signature: 110
+    $signature: 121
   };
   A._ndblTests_closure78.prototype = {
     call$1(l) {
@@ -46942,7 +46785,7 @@
       t1 = t1.$ti;
       return J.fillRange$3$ax(t1._eval$1("List<1>")._as(l), 3, 5, t1._eval$1("1?")._as(t2));
     },
-    $signature: 89
+    $signature: 105
   };
   A._ndblTests_closure95.prototype = {
     call$1(l) {
@@ -46955,7 +46798,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), 0, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 89
+    $signature: 105
   };
   A._ndblTests_closure96.prototype = {
     call$1(l) {
@@ -46968,7 +46811,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), -1, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 89
+    $signature: 105
   };
   A._ndblTests_closure97.prototype = {
     call$1(l) {
@@ -47159,7 +47002,7 @@
       $.$get$_ndblFeats0().$ti._eval$1("List<1>")._as(l);
       return J.join$1$ax(l, "");
     },
-    $signature: 146
+    $signature: 133
   };
   A._ndblTests_closure119.prototype = {
     call$1(l) {
@@ -47167,7 +47010,7 @@
       $.$get$_ndblFeats0().$ti._eval$1("List<1>")._as(l);
       return J.join$1$ax(l, " $ ");
     },
-    $signature: 146
+    $signature: 133
   };
   A._nintTests_closure26.prototype = {
     call$1(l) {
@@ -47654,7 +47497,7 @@
     call$1(n) {
       return A._asIntQ(n) === 2;
     },
-    $signature: 102
+    $signature: 99
   };
   A._nintTests_closure77.prototype = {
     call$1(l) {
@@ -47669,7 +47512,7 @@
     call$1(n) {
       return A._asIntQ(n) === 2;
     },
-    $signature: 102
+    $signature: 99
   };
   A._nintTests_closure78.prototype = {
     call$1(l) {
@@ -47832,7 +47675,7 @@
       t1 = t1.$ti;
       return J.fillRange$3$ax(t1._eval$1("List<1>")._as(l), 3, 5, t1._eval$1("1?")._as(t2));
     },
-    $signature: 92
+    $signature: 104
   };
   A._nintTests_closure95.prototype = {
     call$1(l) {
@@ -47845,7 +47688,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), 0, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 92
+    $signature: 104
   };
   A._nintTests_closure96.prototype = {
     call$1(l) {
@@ -47858,7 +47701,7 @@
       t1 = t1.$ti;
       return t2.fillRange$3(t1._eval$1("List<1>")._as(l), -1, t3, t1._eval$1("1?")._as(t4));
     },
-    $signature: 92
+    $signature: 104
   };
   A._nintTests_closure97.prototype = {
     call$1(l) {
@@ -48216,12 +48059,14 @@
   };
   A.testLazyMaps_$initDataContext.prototype = {
     call$1$2(data, cast, $V) {
-      var t1, t2;
+      var t1, t2, t3;
       $V._eval$1("0(@)")._as(cast);
       t1 = type$.dynamic;
       t1 = A.LinkedHashMap_LinkedHashMap$of(data, t1, t1);
       t2 = data.get$entries();
-      return new A._Record_2_lazy_ref(new A.LazyInPlaceMap(t1, cast, type$.$env_1_1_String._bind$1($V)._eval$1("LazyInPlaceMap<1,2>")), A.Map_Map$fromEntries(t2.map$1$1(t2, new A.testLazyMaps_$initDataContext_closure(cast, $V), $V._eval$1("MapEntry<String,0>")), type$.String, $V));
+      t3 = A.LinkedHashMap_LinkedHashMap$_empty(type$.String, $V);
+      t3.addEntries$1(t2.map$1$1(t2, new A.testLazyMaps_$initDataContext_closure(cast, $V), $V._eval$1("MapEntry<String,0>")));
+      return new A._Record_2_lazy_ref(new A.LazyInPlaceMap(t1, cast, type$.$env_1_1_String._bind$1($V)._eval$1("LazyInPlaceMap<1,2>")), t3);
     },
     call$2(data, cast) {
       return this.call$1$2(data, cast, type$.dynamic);
@@ -48297,14 +48142,14 @@
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "one");
     },
-    $signature: 71
+    $signature: 67
   };
   A._dblTests_closure1.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "!");
     },
-    $signature: 71
+    $signature: 67
   };
   A._dblTests_closure2.prototype = {
     call$1(m) {
@@ -48320,7 +48165,7 @@
       m.$indexSet(0, t2, t1._precomputed1._as(t3));
       return m;
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure3.prototype = {
     call$1(m) {
@@ -48335,21 +48180,21 @@
       m.$indexSet(0, t3, t1._precomputed1._as(t2));
       return m;
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure4.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("one");
     },
-    $signature: 72
+    $signature: 75
   };
   A._dblTests_closure5.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("!");
     },
-    $signature: 72
+    $signature: 75
   };
   A._dblTests_closure6.prototype = {
     call$1(m) {
@@ -48360,14 +48205,14 @@
       t2 = t2.elementAt$1(t2, 2);
       return t1.$ti._eval$1("Map<String,1>")._as(m).containsValue$1(t2);
     },
-    $signature: 72
+    $signature: 75
   };
   A._dblTests_closure7.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1(-1);
     },
-    $signature: 72
+    $signature: 75
   };
   A._dblTests_closure8.prototype = {
     call$1(m) {
@@ -48404,28 +48249,28 @@
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().addAll$2(0, m, $._dx);
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure11.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().addAll$2(0, m, A.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.double));
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure12.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable($._dx, A._instanceType($._dx)._eval$1("LinkedHashMapEntriesIterable<1,2>")));
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure13.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable(new A.JsLinkedHashMap(type$.JsLinkedHashMap_String_double), type$.LinkedHashMapEntriesIterable_String_double));
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests_closure14.prototype = {
     call$1(m) {
@@ -48501,7 +48346,7 @@
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().updateAll$2(m, new A._dblTests__closure2());
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests__closure2.prototype = {
     call$2(k, v) {
@@ -48515,21 +48360,21 @@
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "one");
     },
-    $signature: 71
+    $signature: 67
   };
   A._dblTests_closure22.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "!");
     },
-    $signature: 71
+    $signature: 67
   };
   A._dblTests_closure23.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().removeWhere$2(0, m, new A._dblTests__closure1());
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests__closure1.prototype = {
     call$2(k, v) {
@@ -48537,14 +48382,14 @@
       A._asDouble(v);
       return k.length > 4;
     },
-    $signature: 100
+    $signature: 97
   };
   A._dblTests_closure24.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().removeWhere$2(0, m, new A._dblTests__closure0());
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests__closure0.prototype = {
     call$2(k, v) {
@@ -48556,14 +48401,14 @@
         return t1.$gt();
       return t1 > 3;
     },
-    $signature: 100
+    $signature: 97
   };
   A._dblTests_closure25.prototype = {
     call$1(m) {
       type$.Map_String_double._as(m);
       return $.$get$_dblFeats().removeWhere$2(0, m, new A._dblTests__closure());
     },
-    $signature: 34
+    $signature: 32
   };
   A._dblTests__closure.prototype = {
     call$2(k, v) {
@@ -48575,7 +48420,7 @@
         return t1.$lt();
       return t1 < 0;
     },
-    $signature: 100
+    $signature: 97
   };
   A._ndblTests_closure.prototype = {
     call$1(m) {
@@ -48598,14 +48443,14 @@
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "one");
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure1.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "!");
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure2.prototype = {
     call$1(m) {
@@ -48621,7 +48466,7 @@
       m.$indexSet(0, t2, t1._precomputed1._as(t3));
       return m;
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure3.prototype = {
     call$1(m) {
@@ -48636,21 +48481,21 @@
       m.$indexSet(0, t3, t1._precomputed1._as(t2));
       return m;
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure4.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("one");
     },
-    $signature: 73
+    $signature: 74
   };
   A._ndblTests_closure5.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("!");
     },
-    $signature: 73
+    $signature: 74
   };
   A._ndblTests_closure6.prototype = {
     call$1(m) {
@@ -48661,14 +48506,14 @@
       t2 = t2.elementAt$1(t2, 2);
       return t1.$ti._eval$1("Map<String,1>")._as(m).containsValue$1(t2);
     },
-    $signature: 73
+    $signature: 74
   };
   A._ndblTests_closure7.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1(-1);
     },
-    $signature: 73
+    $signature: 74
   };
   A._ndblTests_closure8.prototype = {
     call$1(m) {
@@ -48705,28 +48550,28 @@
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().addAll$2(0, m, $._dx);
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure11.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().addAll$2(0, m, A.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.nullable_double));
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure12.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable($._dx, A._instanceType($._dx)._eval$1("LinkedHashMapEntriesIterable<1,2>")));
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure13.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable(new A.JsLinkedHashMap(type$.JsLinkedHashMap_String_double), type$.LinkedHashMapEntriesIterable_String_double));
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests_closure14.prototype = {
     call$1(m) {
@@ -48737,7 +48582,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).putIfAbsent$2(t2, t1._eval$1("1()")._as(B.CONSTANT2));
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure15.prototype = {
     call$1(m) {
@@ -48749,7 +48594,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).putIfAbsent$2(t2, t1._eval$1("1()")._as(B.CONSTANT2));
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure16.prototype = {
     call$1(m) {
@@ -48761,7 +48606,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___dblSq$closure()), t1._eval$1("1()?")._as(B.CONSTANT2));
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure17.prototype = {
     call$1(m) {
@@ -48773,7 +48618,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___dblSq$closure()), null);
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure18.prototype = {
     call$1(m) {
@@ -48784,7 +48629,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___dblSq$closure()), t1._eval$1("1()?")._as(B.CONSTANT2));
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure19.prototype = {
     call$1(m) {
@@ -48795,14 +48640,14 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___dblSq$closure()), null);
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure20.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().updateAll$2(m, new A._ndblTests__closure2());
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests__closure2.prototype = {
     call$2(k, v) {
@@ -48816,21 +48661,21 @@
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "one");
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure22.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "!");
     },
-    $signature: 35
+    $signature: 33
   };
   A._ndblTests_closure23.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().removeWhere$2(0, m, new A._ndblTests__closure1());
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests__closure1.prototype = {
     call$2(k, v) {
@@ -48838,14 +48683,14 @@
       A._asDoubleQ(v);
       return k.length > 4;
     },
-    $signature: 98
+    $signature: 94
   };
   A._ndblTests_closure24.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().removeWhere$2(0, m, new A._ndblTests__closure0());
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests__closure0.prototype = {
     call$2(k, v) {
@@ -48861,14 +48706,14 @@
         t1 = false;
       return t1;
     },
-    $signature: 98
+    $signature: 94
   };
   A._ndblTests_closure25.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_double._as(m);
       return $.$get$_ndblFeats().removeWhere$2(0, m, new A._ndblTests__closure());
     },
-    $signature: 36
+    $signature: 34
   };
   A._ndblTests__closure.prototype = {
     call$2(k, v) {
@@ -48884,7 +48729,7 @@
         t1 = false;
       return t1;
     },
-    $signature: 98
+    $signature: 94
   };
   A._nintTests_closure.prototype = {
     call$1(m) {
@@ -48907,14 +48752,14 @@
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "one");
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure1.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).$index(0, "!");
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure2.prototype = {
     call$1(m) {
@@ -48930,7 +48775,7 @@
       m.$indexSet(0, t2, t1._precomputed1._as(t3));
       return m;
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure3.prototype = {
     call$1(m) {
@@ -48945,21 +48790,21 @@
       m.$indexSet(0, t3, t1._precomputed1._as(t2));
       return m;
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure4.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("one");
     },
-    $signature: 70
+    $signature: 73
   };
   A._nintTests_closure5.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1("!");
     },
-    $signature: 70
+    $signature: 73
   };
   A._nintTests_closure6.prototype = {
     call$1(m) {
@@ -48970,14 +48815,14 @@
       t2 = t2.elementAt$1(t2, 2);
       return t1.$ti._eval$1("Map<String,1>")._as(m).containsValue$1(t2);
     },
-    $signature: 70
+    $signature: 73
   };
   A._nintTests_closure7.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).containsKey$1(-1);
     },
-    $signature: 70
+    $signature: 73
   };
   A._nintTests_closure8.prototype = {
     call$1(m) {
@@ -49007,35 +48852,35 @@
     call$2(_, __) {
       A._asIntQ(__);
     },
-    $signature: 118
+    $signature: 113
   };
   A._nintTests_closure10.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().addAll$2(0, m, $._ix);
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure11.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().addAll$2(0, m, A.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.nullable_int));
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure12.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable($._ix, A._instanceType($._ix)._eval$1("LinkedHashMapEntriesIterable<1,2>")));
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure13.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().addEntries$2(m, new A.LinkedHashMapEntriesIterable(new A.JsLinkedHashMap(type$.JsLinkedHashMap_String_int), type$.LinkedHashMapEntriesIterable_String_int));
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests_closure14.prototype = {
     call$1(m) {
@@ -49046,7 +48891,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).putIfAbsent$2(t2, t1._eval$1("1()")._as(B.CONSTANT1));
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure15.prototype = {
     call$1(m) {
@@ -49058,7 +48903,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).putIfAbsent$2(t2, t1._eval$1("1()")._as(B.CONSTANT1));
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure16.prototype = {
     call$1(m) {
@@ -49070,7 +48915,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___intSq$closure()), t1._eval$1("1()?")._as(B.CONSTANT1));
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure17.prototype = {
     call$1(m) {
@@ -49082,7 +48927,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___intSq$closure()), null);
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure18.prototype = {
     call$1(m) {
@@ -49093,7 +48938,7 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___intSq$closure()), t1._eval$1("1()?")._as(B.CONSTANT1));
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure19.prototype = {
     call$1(m) {
@@ -49104,14 +48949,14 @@
       t1 = t1.$ti;
       return t1._eval$1("Map<String,1>")._as(m).update$3$ifAbsent(t2, t1._eval$1("1(1)")._as(A.lib_03_converter_test__map_features___intSq$closure()), null);
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure20.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().updateAll$2(m, new A._nintTests__closure2());
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests__closure2.prototype = {
     call$2(k, v) {
@@ -49125,21 +48970,21 @@
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "one");
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure22.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().$ti._eval$1("Map<String,1>")._as(m).remove$1(0, "!");
     },
-    $signature: 37
+    $signature: 35
   };
   A._nintTests_closure23.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().removeWhere$2(0, m, new A._nintTests__closure1());
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests__closure1.prototype = {
     call$2(k, v) {
@@ -49147,14 +48992,14 @@
       A._asIntQ(v);
       return k.length > 4;
     },
-    $signature: 96
+    $signature: 106
   };
   A._nintTests_closure24.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().removeWhere$2(0, m, new A._nintTests__closure0());
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests__closure0.prototype = {
     call$2(k, v) {
@@ -49170,14 +49015,14 @@
         t1 = false;
       return t1;
     },
-    $signature: 96
+    $signature: 106
   };
   A._nintTests_closure25.prototype = {
     call$1(m) {
       type$.Map_of_String_and_nullable_int._as(m);
       return $.$get$_nintFeats().removeWhere$2(0, m, new A._nintTests__closure());
     },
-    $signature: 38
+    $signature: 36
   };
   A._nintTests__closure.prototype = {
     call$2(k, v) {
@@ -49193,7 +49038,7 @@
         t1 = false;
       return t1;
     },
-    $signature: 96
+    $signature: 106
   };
   A._Features.prototype = {
     isEmpty$1(_, m) {
@@ -50006,7 +49851,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 95
+    $signature: 85
   };
   A.execute___closure87.prototype = {
     call$0() {
@@ -51307,7 +51152,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 95
+    $signature: 85
   };
   A.execute___closure62.prototype = {
     call$0() {
@@ -51387,7 +51232,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 95
+    $signature: 85
   };
   A.execute___closure63.prototype = {
     call$0() {
@@ -52332,7 +52177,7 @@
       if (t1.length >= _this.maxErrors)
         _this.sub._readLocal$0().cancel$0().then$1$1(type$.void_Function_$opt_dynamic._as(_this.done.get$complete()), type$.void);
     },
-    $signature: 39
+    $signature: 37
   };
   A.execute___closure50.prototype = {
     call$0() {
@@ -53261,7 +53106,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 93
+    $signature: 82
   };
   A.execute____closure60.prototype = {
     call$0() {
@@ -53375,7 +53220,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 94
+    $signature: 81
   };
   A.execute___closure36.prototype = {
     call$0() {
@@ -53557,7 +53402,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 93
+    $signature: 82
   };
   A.execute____closure57.prototype = {
     call$0() {
@@ -53640,7 +53485,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 94
+    $signature: 81
   };
   A.execute___closure37.prototype = {
     call$0() {
@@ -53793,13 +53638,13 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 93
+    $signature: 82
   };
   A.execute_______closure4.prototype = {
     call$1(e) {
       return type$.Map_String_dynamic._as(e).$index(0, "ok");
     },
-    $signature: 125
+    $signature: 126
   };
   A.execute____closure54.prototype = {
     call$0() {
@@ -53885,13 +53730,13 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 94
+    $signature: 81
   };
   A.execute_______closure3.prototype = {
     call$1(e) {
       return type$.Map_String_dynamic._as(e).$index(0, "ok");
     },
-    $signature: 125
+    $signature: 126
   };
   A.execute_closure5.prototype = {
     call$0() {
@@ -53981,7 +53826,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 108
+    $signature: 79
   };
   A.execute___closure39.prototype = {
     call$0() {
@@ -54049,7 +53894,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 108
+    $signature: 79
   };
   A.execute_____closure43.prototype = {
     call$1(w) {
@@ -54111,7 +53956,8 @@
               A.expect(t5.cacheStats.miss, cacheSize, null);
               A.expect(t5.cacheStats.expired, B._OrderingMatcher_HCW, null);
               A.expect(t5.cacheStats.maxSize, cacheSize, null);
-              sw.reset$0();
+              t6 = sw._stop;
+              sw._core$_start = t6 == null ? $.Primitives_timerTicks.call$0() : t6;
               t6 = B.Set_qRjxp.get$iterator(B.Set_qRjxp);
             case 6:
               // for condition
@@ -55250,7 +55096,7 @@
       B.JSArray_methods.$indexSet(t1, t2, t1[t2] === "started" ? "interrupted" : "canceled");
       ++this._box_4.errors;
     },
-    $signature: 39
+    $signature: 37
   };
   A.execute______closure13.prototype = {
     call$0() {
@@ -55279,7 +55125,7 @@
     call$1(t) {
       return type$.StreamTask_dynamic._as(t)._done.future;
     },
-    $signature: 128
+    $signature: 129
   };
   A.execute______closure18.prototype = {
     call$1(t) {
@@ -55445,7 +55291,7 @@
       B.JSArray_methods.$indexSet(t1, t2, t1[t2] === "started" ? "interrupted" : "canceled");
       ++this._box_5.errors;
     },
-    $signature: 39
+    $signature: 37
   };
   A.execute______closure0.prototype = {
     call$0() {
@@ -55474,7 +55320,7 @@
     call$1(t) {
       return type$.StreamTask_dynamic._as(t)._done.future;
     },
-    $signature: 128
+    $signature: 129
   };
   A.execute______closure5.prototype = {
     call$1(t) {
@@ -56467,7 +56313,7 @@
       type$.List_int._as(_);
       return this._box_0.success++;
     },
-    $signature: 129
+    $signature: 130
   };
   A._testFinitePoolCancelation_closure0.prototype = {
     call$1(_) {
@@ -56480,7 +56326,7 @@
       type$.List_int._as(_);
       return this._box_0.success++;
     },
-    $signature: 129
+    $signature: 130
   };
   A._testInfinitePoolCancelation_closure0.prototype = {
     call$1(_) {
@@ -56491,7 +56337,7 @@
   A.execute_dob.prototype = {
     call$0() {
       var t1 = Date.now();
-      return new A.DateTime(t1, 0, false)._addMicroseconds$1(0 - A.Duration$((1 + B.C__JSRandom.nextInt$1(60)) * 365, 0, 0, 0, 0)._duration);
+      return new A.DateTime(t1, 0, false)._addMicroseconds$1(0 - A.Duration$((1 + B.C__JSRandom.nextInt$1(60)) * 365, 0, 0, 0)._duration);
     },
     $signature: 234
   };
@@ -56611,13 +56457,13 @@
       var t1 = B.C_PersonMarshaler.marshal$2(type$.Person._as(x), this.context1);
       return t1;
     },
-    $signature: 130
+    $signature: 131
   };
   A.execute_____closure33.prototype = {
     call$1(x) {
       return B.C_PersonMarshaler.unmarshal$2(x, this.context2);
     },
-    $signature: 105
+    $signature: 78
   };
   A.execute____closure42.prototype = {
     call$0() {
@@ -56645,13 +56491,13 @@
       var t1 = B.C_PersonMarshaler.marshal$2(type$.Person._as(x), this.context1);
       return t1;
     },
-    $signature: 130
+    $signature: 131
   };
   A.execute_____closure31.prototype = {
     call$1(x) {
       return B.C_PersonMarshaler.unmarshal$2(x, this.context2);
     },
-    $signature: 105
+    $signature: 78
   };
   A.execute___closure8.prototype = {
     call$0() {
@@ -57618,7 +57464,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 108
+    $signature: 79
   };
   A.execute_____closure65.prototype = {
     call$1(p) {
@@ -57660,14 +57506,14 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 76
+    $signature: 107
   };
   A.execute______closure54.prototype = {
     call$1(_) {
       A._asBool(_);
       return B.JSArray_methods.add$1(this.completedTasks, this.i);
     },
-    $signature: 103
+    $signature: 100
   };
   A.execute______closure55.prototype = {
     call$1(s) {
@@ -57789,7 +57635,7 @@
       t1 = this._box_0;
       t1.stopped = t1.stopped + this.p.stop$1(new A.execute______closure53());
     },
-    $signature: 88
+    $signature: 103
   };
   A.execute______closure53.prototype = {
     call$1(w) {
@@ -58070,7 +57916,7 @@
     call$2(t, s) {
       return A._asInt(t) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 135
+    $signature: 136
   };
   A.execute____closure81.prototype = {
     call$0() {
@@ -58165,7 +58011,7 @@
     call$2(t, s) {
       return A._asInt(t) + type$.WorkerStat._as(s).totalErrors;
     },
-    $signature: 135
+    $signature: 136
   };
   A.execute____closure82.prototype = {
     call$0() {
@@ -58611,7 +58457,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 76
+    $signature: 107
   };
   A.execute____closure76.prototype = {
     call$0() {
@@ -58699,7 +58545,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 76
+    $signature: 107
   };
   A.execute___closure44.prototype = {
     call$0() {
@@ -59159,7 +59005,7 @@
       if (t1.length >= 3)
         this.token.cancel$1(new A.CanceledException("forced"));
     },
-    $signature: 39
+    $signature: 37
   };
   A.execute______closure48.prototype = {
     call$1(e) {
@@ -60063,7 +59909,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 136
+    $signature: 137
   };
   A.execute___closure0.prototype = {
     call$0() {
@@ -60183,7 +60029,7 @@
       });
       return A._asyncStartSync($async$call$1, $async$completer);
     },
-    $signature: 136
+    $signature: 137
   };
   A.execute___closure1.prototype = {
     call$0() {
@@ -60261,7 +60107,7 @@
             case 5:
               // after for
               $async$goto = 7;
-              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 0, 100, 0), null, type$.dynamic), $async$call$1);
+              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 100, 0), null, type$.dynamic), $async$call$1);
             case 7:
               // returning from await.
               finalCount = t1.get$snapshot().activeConnections;
@@ -60363,7 +60209,7 @@
             case 5:
               // after finally
               $async$goto = 10;
-              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 0, 100, 0), null, type$.dynamic), $async$call$1);
+              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 100, 0), null, type$.dynamic), $async$call$1);
             case 10:
               // returning from await.
               finalCount = t1.get$snapshot().activeConnections;
@@ -60432,7 +60278,7 @@
               // returning from await.
               $async$temp1.expect($async$result, A.LinkedHashMap_LinkedHashMap$_literal(["id", 1, "num", 0], type$.String, type$.int), null);
               $async$goto = 4;
-              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 0, 200, 0), null, type$.dynamic), $async$call$1);
+              return A._asyncAwait(A.Future_Future$delayed(A.Duration$(0, 0, 200, 0), null, type$.dynamic), $async$call$1);
             case 4:
               // returning from await.
               finalCount = t1.get$snapshot().activeConnections;
@@ -60773,7 +60619,7 @@
     },
     log$1(message) {
       var t2, t3, t4, element, red, info, fail, error, _this = this,
-        ts = A.Duration$(0, 0, _this._sw.get$elapsedMicroseconds(), 0, 0),
+        ts = A.Duration$(0, _this._sw.get$elapsedMicroseconds(), 0, 0),
         t1 = A.dartify(message),
         text = t1 == null ? null : J.toString$0$(t1);
       for (t1 = A.ConsoleToHtml_convert(text == null ? "null" : text), t2 = t1.$ti, t1 = new A._SyncStarIterator(t1._outerHelper(), t2._eval$1("_SyncStarIterator<1>")), t2 = t2._precomputed1, t3 = _this._errorLines; t1.moveNext$0();) {
@@ -61117,7 +60963,7 @@
     call$1(data) {
       return this.$this.unmarshal$2(data, this.context);
     },
-    $signature: 105
+    $signature: 78
   };
   A.PersonWorker.prototype = {
     getStartArgs$0() {
@@ -61255,7 +61101,7 @@
               t2.$$context = context;
               t1.stalledCount = t1.pending = 0;
               t3 = $async$self.htmlLogger;
-              timer = A.Timer_Timer$periodic(A.Duration$(0, 0, 0, 100, 0), new A.bootstrap_execute_closure(t1, context, t3));
+              timer = A.Timer_Timer$periodic(A.Duration$(0, 0, 100, 0), new A.bootstrap_execute_closure(t1, context, t3));
               A.launch(context, tests);
               t1 = init.G;
               A.NotifyParentExt_notify(A._asJSObject(t1.window), "@@STARTED@@");
@@ -61298,7 +61144,7 @@
             A.NotifyParentExt_notify(A._asJSObject(init.G.window), "Stalled at " + t4 + " (" + t2 + " / 200)...");
           else if (t2 > 200) {
             A.NotifyParentExt_notify(A._asJSObject(init.G.window), "Stalled at " + t4 + ", cancelling tests...");
-            A.Future_Future$delayed(A.Duration$(0, 0, 0, 250, 0), t1.get$cancel(), type$.void);
+            A.Future_Future$delayed(A.Duration$(0, 0, 250, 0), t1.get$cancel(), type$.void);
           }
       } else {
         t3.stalledCount = 0;
@@ -61314,7 +61160,7 @@
         A.NotifyParentExt_notify(A._asJSObject(init.G.window), $status + pending + " tests pending...");
       }
     },
-    $signature: 88
+    $signature: 103
   };
   A.bootstrap_closure.prototype = {
     call$1(m) {
@@ -61409,7 +61255,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.2.0";
+              $async$returnValue = "7.3.0";
               // goto return
               $async$goto = 1;
               break;
@@ -61536,7 +61382,7 @@
               break;
             case 4:
               // else
-              timeout = new A.TestTimeout(A.Duration$(0, 0, 0, 0, 25), new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_void), type$._AsyncCompleter_void));
+              timeout = new A.TestTimeout(A.Duration$(0, 0, 0, 25), new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_void), type$._AsyncCompleter_void));
               $async$goto = 5;
               return A._asyncAwait(A.Future_any(A._setArrayType([A.Future_Future$value($async$self.body.call$0(), type$.dynamic), timeout.get$completion()], type$.JSArray_Future_void), type$.void).catchError$1(new A.TestContext_test__closure(t1)).whenComplete$1(new A.TestContext_test__closure0(timeout, t1)), $async$call$0);
             case 5:
@@ -61769,7 +61615,7 @@
     call$1(exceptionManager) {
       return A.TestWorker$(this.context, type$.ExceptionManager._as(exceptionManager), null);
     },
-    $signature: 75
+    $signature: 69
   };
   A.TestWorkerPool$throws_closure.prototype = {
     call$1(exceptionManager) {
@@ -61779,7 +61625,7 @@
       t1.toString;
       return new A.TestWorker([1], t1, exceptionManager, null, false, new A.Object());
     },
-    $signature: 75
+    $signature: 69
   };
   A.TestWorkerPool$missingStartRequest_closure.prototype = {
     call$1(exceptionManager) {
@@ -61787,7 +61633,7 @@
       null.toString;
       return new A.TestWorker([0], null, exceptionManager, null, false, new A.Object());
     },
-    $signature: 75
+    $signature: 69
   };
   A.TestWorkerPool$invalid_closure.prototype = {
     call$1(exceptionManager) {
@@ -61797,25 +61643,25 @@
       t1.toString;
       return new A.TestWorker([2], t1, exceptionManager, null, false, new A.Object());
     },
-    $signature: 75
+    $signature: 69
   };
   A.TestWorkerPool_io_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).send$2$args(11, [this.ms]);
     },
-    $signature: 139
+    $signature: 140
   };
   A.TestWorkerPool_cpu_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).send$2$args(12, [this.ms]);
     },
-    $signature: 139
+    $signature: 140
   };
   A.TestWorkerPool_delayed_80ms_closure.prototype = {
     call$1(w) {
       return type$.TestWorker._as(w).delayed_80ms$1(this.n);
     },
-    $signature: 107
+    $signature: 95
   };
   A.TestWorkerPool_ping_closure.prototype = {
     call$1(w) {
@@ -61840,7 +61686,7 @@
     call$1(w) {
       return type$.TestWorker._as(w).getPendingInfiniteWithErrors$0();
     },
-    $signature: 107
+    $signature: 95
   };
   A.TestWorkerPool_infiniteWithErrors_closure.prototype = {
     call$1(w) {
@@ -61852,7 +61698,7 @@
     call$1(w) {
       return type$.TestWorker._as(w).delayed_80ms$1(this.n);
     },
-    $signature: 107
+    $signature: 95
   };
   A.TestWorkerPool_finiteTask_closure.prototype = {
     call$1(w) {
@@ -62057,13 +61903,13 @@
       _instance_0_u = hunkHelpers._instance_0u,
       _instance_2_u = hunkHelpers._instance_2u,
       _instance_1_u = hunkHelpers._instance_1u;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 101);
-    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 32);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 98);
+    _instance_1_i(J.JSArray.prototype, "get$add", "add$1", 38);
     _instance(J.JSString.prototype, "get$startsWith", 1, 1, null, ["call$2", "call$1"], ["startsWith$2", "startsWith$1"], 214, 0, 0);
     _static_0(A, "_js_helper_Primitives_dateNow$closure", "Primitives_dateNow", 12);
-    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 106);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 106);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 106);
+    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 86);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 86);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 86);
     _static_1(A, "async_Future__kTrue$closure", "Future__kTrue", 24);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 2);
     _static_1(A, "async___nullDataHandler$closure", "_nullDataHandler", 16);
@@ -62093,49 +61939,49 @@
     _static(A, "async___rootScheduleMicrotask$closure", 4, null, ["call$4"], ["_rootScheduleMicrotask"], 299, 0);
     _static(A, "async___rootCreateTimer$closure", 5, null, ["call$5"], ["_rootCreateTimer"], 300, 0);
     _static(A, "async___rootCreatePeriodicTimer$closure", 5, null, ["call$5"], ["_rootCreatePeriodicTimer"], 301, 0);
-    _static(A, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 133, 0);
+    _static(A, "async___rootPrint$closure", 4, null, ["call$4"], ["_rootPrint"], 134, 0);
     _static_1(A, "async___printToZone$closure", "_printToZone", 302);
     _static(A, "async___rootFork$closure", 5, null, ["call$5"], ["_rootFork"], 303, 0);
     _instance_0_u(A._TimerImpl.prototype, "get$cancel", "cancel$0", 2);
     var _;
     _instance_0_u(_ = A._BroadcastSubscription.prototype, "get$_onPause", "_onPause$0", 2);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
-    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 32);
+    _instance_1_i(_ = A._BroadcastStreamController.prototype, "get$add", "add$1", 38);
     _instance(_, "get$addError", 0, 1, null, ["call$2", "call$1"], ["addError$2", "addError$1"], 57, 0, 0);
     _instance_0_u(_, "get$close", "close$0", 14);
     _instance(A._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 57, 0, 0);
-    _instance(A._AsyncCompleter.prototype, "get$complete", 0, 0, null, ["call$1", "call$0"], ["complete$1", "complete$0"], 134, 0, 0);
+    _instance(A._AsyncCompleter.prototype, "get$complete", 0, 0, null, ["call$1", "call$0"], ["complete$1", "complete$0"], 135, 0, 0);
     _instance_2_u(A._Future.prototype, "get$_completeError", "_completeError$2", 59);
     _instance_0_u(_ = A._ControllerSubscription.prototype, "get$_onPause", "_onPause$0", 2);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
-    _instance(_ = A._BufferingStreamSubscription.prototype, "get$pause", 0, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 141, 0, 0);
+    _instance(_ = A._BufferingStreamSubscription.prototype, "get$pause", 0, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 132, 0, 0);
     _instance_0_u(_, "get$resume", "resume$0", 2);
-    _instance_0_u(_, "get$cancel", "cancel$0", 78);
+    _instance_0_u(_, "get$cancel", "cancel$0", 83);
     _instance_0_u(_, "get$_onPause", "_onPause$0", 2);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
-    _instance(_ = A._DoneStreamSubscription.prototype, "get$pause", 0, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 141, 0, 0);
+    _instance(_ = A._DoneStreamSubscription.prototype, "get$pause", 0, 0, null, ["call$1", "call$0"], ["pause$1", "pause$0"], 132, 0, 0);
     _instance_0_u(_, "get$resume", "resume$0", 2);
-    _instance_0_u(_, "get$cancel", "cancel$0", 78);
+    _instance_0_u(_, "get$cancel", "cancel$0", 83);
     _instance_0_u(_, "get$_onMicrotask", "_onMicrotask$0", 2);
-    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 32);
+    _instance_1_u(_ = A._StreamIterator.prototype, "get$_async$_onData", "_async$_onData$1", 38);
     _instance_2_u(_, "get$_onError", "_onError$2", 59);
     _instance_0_u(_, "get$_async$_onDone", "_async$_onDone$0", 2);
     _instance_0_u(_ = A._ForwardingStreamSubscription.prototype, "get$_onPause", "_onPause$0", 2);
     _instance_0_u(_, "get$_onResume", "_onResume$0", 2);
-    _instance_1_u(_, "get$_handleData", "_handleData$1", 32);
+    _instance_1_u(_, "get$_handleData", "_handleData$1", 38);
     _instance_2_u(_, "get$_async$_handleError", "_async$_handleError$2", 215);
     _instance_0_u(_, "get$_handleDone", "_handleDone$0", 2);
-    _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 104);
-    _static_2(A, "collection_ListBase__compareAny$closure", "ListBase__compareAny", 101);
-    _instance(_ = A._HashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 83, 0, 0);
+    _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 102);
+    _static_2(A, "collection_ListBase__compareAny$closure", "ListBase__compareAny", 98);
+    _instance(_ = A._HashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 90, 0, 0);
     _instance_1_i(_, "get$contains", "contains$1", 24);
-    _instance(_ = A._CustomHashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 83, 0, 0);
+    _instance(_ = A._CustomHashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 90, 0, 0);
     _instance_1_i(_, "get$contains", "contains$1", 24);
-    _instance(_ = A._LinkedHashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 83, 0, 0);
+    _instance(_ = A._LinkedHashSet.prototype, "get$_newSimilarSet", 0, 0, null, ["call$1$0", "call$0"], ["_newSimilarSet$1$0", "_newSimilarSet$0"], 90, 0, 0);
     _instance_1_i(_, "get$contains", "contains$1", 24);
-    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 80);
+    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 87);
     _static_2(A, "core__identical$closure", "identical", 304);
-    _static_1(A, "core__GeneratorIterable__id$closure", "_GeneratorIterable__id", 119);
+    _static_1(A, "core__GeneratorIterable__id$closure", "_GeneratorIterable__id", 115);
     _static_1(A, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 29);
     _static(A, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return A.max(a, b, type$.num);
@@ -62154,21 +62000,21 @@
     _instance_0_u(A.Pool.prototype, "get$_close", "_close$0", 14);
     _instance_1_u(A._WebForwardChannel.prototype, "get$_forward", "_forward$1", 48);
     _instance(_ = A._WebChannel.prototype, "get$_postRequest", 0, 1, null, ["call$2$force", "call$1"], ["_postRequest$2$force", "_postRequest$1"], 245, 0, 0);
-    _instance_1_u(_, "get$_inspectAndPostRequest", "_inspectAndPostRequest$1", 74);
+    _instance_1_u(_, "get$_inspectAndPostRequest", "_inspectAndPostRequest$1", 72);
     _instance_0_u(_ = A.EventBuffer.prototype, "get$activate", "activate$0", 2);
     _instance_0_u(_, "get$deactivate", "deactivate$0", 2);
-    _instance_1_i(_, "get$add", "add$1", 32);
-    _instance_2_u(_, "get$addError", "addError$2", 145);
-    _static_2(A, "_patch___$is$closure", "_$is", 142);
-    _static_1(A, "_patch___toJSStr$closure", "_toJSStr", 33);
-    _static_1(A, "_patch___toJSBool$closure", "_toJSBool", 33);
-    _static_1(A, "_patch___toJSNum$closure", "_toJSNum", 33);
-    _static_1(A, "_patch___toJSBigInt$closure", "_toJSBigInt", 33);
-    _static_1(A, "_patch___toJSDate$closure", "_toJSDate", 33);
+    _instance_1_i(_, "get$add", "add$1", 38);
+    _instance_2_u(_, "get$addError", "addError$2", 146);
+    _static_2(A, "_patch___$is$closure", "_$is", 143);
+    _static_1(A, "_patch___toJSStr$closure", "_toJSStr", 39);
+    _static_1(A, "_patch___toJSBool$closure", "_toJSBool", 39);
+    _static_1(A, "_patch___toJSNum$closure", "_toJSNum", 39);
+    _static_1(A, "_patch___toJSBigInt$closure", "_toJSBigInt", 39);
+    _static_1(A, "_patch___toJSDate$closure", "_toJSDate", 39);
     _instance_1_u(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 16);
     _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 16);
     _instance(_, "get$error", 0, 1, null, ["call$3", "call$1", "call$2"], ["error$3", "error$1", "error$2"], 155, 0, 0);
-    _instance_1_i(_ = A.ForwardStreamController.prototype, "get$add", "add$1", 32);
+    _instance_1_i(_ = A.ForwardStreamController.prototype, "get$add", "add$1", 38);
     _instance_0_u(_, "get$close", "close$0", 14);
     _instance_0_u(_, "get$_pause", "_pause$0", 2);
     _instance_0_u(_, "get$_resume", "_resume$0", 2);
@@ -62196,21 +62042,21 @@
     _static_1(A, "worker_exception__WorkerExceptionImpl_deserialize$closure", "WorkerExceptionImpl_deserialize", 320);
     _static_2(A, "_pool_worker_PoolWorker_compareCapacity$closure", "PoolWorker_compareCapacity", 321);
     _static_1(A, "_pool_worker_PoolWorker_getStats$closure", "PoolWorker_getStats", 322);
-    _instance_1_u(_ = A.WorkerStreamTask.prototype, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 32);
+    _instance_1_u(_ = A.WorkerStreamTask.prototype, "get$__worker_stream_task$_onData", "__worker_stream_task$_onData$1", 38);
     _instance(_, "get$__worker_stream_task$_onError", 0, 1, null, ["call$2", "call$1"], ["__worker_stream_task$_onError$2", "__worker_stream_task$_onError$1"], 57, 0, 0);
-    _instance_1_u(_ = A.WorkerTask.prototype, "get$_success", "_success$1", 103);
-    _instance(_, "get$_fail", 0, 0, null, ["call$1", "call$0"], ["_fail$1", "_fail$0"], 134, 0, 0);
+    _instance_1_u(_ = A.WorkerTask.prototype, "get$_success", "_success$1", 100);
+    _instance(_, "get$_fail", 0, 0, null, ["call$1", "call$0"], ["_fail$1", "_fail$0"], 135, 0, 0);
     _instance_0_u(A.WorkerPool.prototype, "get$__schedule", "__schedule$0", 2);
-    _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, null, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 111, 0, 0);
-    _instance(A._Stats.prototype, "get$endWork", 0, 0, null, ["call$1", "call$0"], ["endWork$1", "endWork$0"], 111, 0, 0);
+    _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, null, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 141, 0, 0);
+    _instance(A._Stats.prototype, "get$endWork", 0, 0, null, ["call$1", "call$0"], ["endWork$1", "endWork$0"], 141, 0, 0);
     _instance_0_u(A.Chain.prototype, "get$toTrace", "toTrace$0", 51);
-    _static_1(A, "frame_Frame___parseVM_tearOff$closure", "Frame___parseVM_tearOff", 67);
-    _static_1(A, "frame_Frame___parseV8_tearOff$closure", "Frame___parseV8_tearOff", 67);
-    _static_1(A, "frame_Frame___parseFirefox_tearOff$closure", "Frame___parseFirefox_tearOff", 67);
-    _static_1(A, "frame_Frame___parseFriendly_tearOff$closure", "Frame___parseFriendly_tearOff", 67);
+    _static_1(A, "frame_Frame___parseVM_tearOff$closure", "Frame___parseVM_tearOff", 68);
+    _static_1(A, "frame_Frame___parseV8_tearOff$closure", "Frame___parseV8_tearOff", 68);
+    _static_1(A, "frame_Frame___parseFirefox_tearOff$closure", "Frame___parseFirefox_tearOff", 68);
+    _static_1(A, "frame_Frame___parseFriendly_tearOff$closure", "Frame___parseFriendly_tearOff", 68);
     _instance_0_u(A.LazyChain.prototype, "get$toTrace", "toTrace$0", 51);
-    _static_1(A, "trace_Trace___parseVM_tearOff$closure", "Trace___parseVM_tearOff", 144);
-    _static_1(A, "trace_Trace___parseFriendly_tearOff$closure", "Trace___parseFriendly_tearOff", 144);
+    _static_1(A, "trace_Trace___parseVM_tearOff$closure", "Trace___parseVM_tearOff", 145);
+    _static_1(A, "trace_Trace___parseFriendly_tearOff$closure", "Trace___parseFriendly_tearOff", 145);
     _instance_0_u(A.OutstandingWork.prototype, "get$complete", "complete$0", 2);
     _instance_0_u(_ = A.Invoker.prototype, "get$removeOutstandingCallback", "removeOutstandingCallback$0", 2);
     _instance_0_u(_, "get$_onRun", "_onRun$0", 2);
@@ -62234,15 +62080,15 @@
     _static_1(A, "lib_03_converter_test__list_features___isNeg$closure", "_isNeg", 61);
     _static(A, "lib_03_converter_test__list_features___nf$closure", 0, null, ["call$1$0", "call$0"], ["_nf", function() {
       return A._nf(type$.dynamic);
-    }], 123, 0);
+    }], 118, 0);
     _instance_1_i(_ = A._Features0.prototype, "get$asMap", "asMap$1", "Map<int,1>(Object?)");
     _instance(_, "get$cast", 1, 1, null, ["call$1$1", "call$1"], ["cast$1$1", "cast$1"], 175, 0, 0);
     _instance_1_i(_, "get$clear", "clear$1", "List<1>(Object?)");
     _instance_1_u(_, "get$getFirst", "getFirst$1", "1(Object?)");
     _instance_1_u(_, "get$getLast", "getLast$1", "1(Object?)");
-    _instance_1_u(_, "get$getLength", "getLength$1", 104);
+    _instance_1_u(_, "get$getLength", "getLength$1", 102);
     _instance_1_u(_, "get$getSingle", "getSingle$1", "1(Object?)");
-    _instance_1_u(_, "get$getString", "getString$1", 99);
+    _instance_1_u(_, "get$getString", "getString$1", 96);
     _instance_1_i(_, "get$isEmpty", "isEmpty$1", 24);
     _instance_1_i(_, "get$isNotEmpty", "isNotEmpty$1", 24);
     _instance_1_i(_, "get$removeLast", "removeLast$1", "1(Object?)");
@@ -62254,15 +62100,15 @@
     _static_1(A, "lib_03_converter_test__map_features___dblSq$closure", "_dblSq", 241);
     _static(A, "lib_03_converter_test__map_features___nf$closure", 0, null, ["call$1$0", "call$0"], ["_nf0", function() {
       return A._nf0(type$.dynamic);
-    }], 123, 0);
+    }], 118, 0);
     _instance_1_i(_ = A._Features.prototype, "get$isEmpty", "isEmpty$1", 24);
     _instance_1_i(_, "get$isNotEmpty", "isNotEmpty$1", 24);
     _instance_1_u(_, "get$keys", "keys$1", 212);
-    _instance_1_u(_, "get$getLength", "getLength$1", 104);
+    _instance_1_u(_, "get$getLength", "getLength$1", 102);
     _instance_1_u(_, "get$values", "values$1", "Iterable<1>(Object?)");
     _instance(_, "get$cast", 1, 1, null, ["call$2$1", "call$1"], ["cast$2$1", "cast$1"], 213, 0, 0);
     _instance_1_i(_, "get$clear", "clear$1", "Map<String,1>(Object?)");
-    _instance_1_u(_, "get$getString", "getString$1", 99);
+    _instance_1_u(_, "get$getString", "getString$1", 96);
     _static_1(A, "lib_04_worker_test__execute$closure", "execute4", 21);
     _static_1(A, "lib_05_worker_errors_test__execute$closure", "execute5", 21);
     _static_1(A, "lib_06_worker_streaming_test__execute$closure", "execute6", 21);
@@ -62276,11 +62122,11 @@
     _static_1(A, "console_to_html_Log_red$closure", "Log_red", 29);
     _static_1(A, "console_to_html_Log_green$closure", "Log_green", 29);
     _instance_1_u(_ = A.HtmlLogger.prototype, "get$_onScroll", "_onScroll$1", 48);
-    _instance_1_u(_, "get$log", "log$1", 32);
+    _instance_1_u(_, "get$log", "log$1", 38);
     _instance_0_u(A.TestContext.prototype, "get$cancel", "cancel$0", 2);
     _static_1(A, "test_exception_TestException_deserialize$closure", "TestException_deserialize", 220);
     _instance_1_u(A.TestResult.prototype, "get$isMatch", "isMatch$1", 271);
-    _static_2(A, "_platform__isSameInstance$closure", "isSameInstance", 142);
+    _static_2(A, "_platform__isSameInstance$closure", "isSameInstance", 143);
     _static_0(A, "_platform_web__unsendable$closure", "unsendable", 2);
   })();
   (function inheritance() {
@@ -62296,8 +62142,8 @@
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
     _inheritMany(A.Iterable, [A._CastIterableBase, A.EfficientLengthIterable, A.MappedIterable, A.WhereIterable, A.ExpandIterable, A.TakeIterable, A.TakeWhileIterable, A.SkipIterable, A.SkipWhileIterable, A.FollowedByIterable, A.WhereTypeIterable, A.NonNullsIterable, A._KeysOrValues, A._AllMatchesIterable, A._StringAllMatchesIterable, A._SyncStarIterable, A.Runes, A._EmptyUnmodifiableSet_IterableBase_UnmodifiableSetMixin]);
-    _inheritMany(A.Closure, [A._CastIterableBase_lastWhere_closure0, A.Closure0Args, A.Closure2Args, A._CastListBase_removeWhere_closure, A._CastListBase_retainWhere_closure, A.CastMap_update_closure0, A.CastMap_entries_closure, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_containsValue_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_any_onValue, A.Future_doWhile_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._HashMap_containsValue_closure, A._CustomHashMap_closure, A._CustomHashSet_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A._Contains_matches_closure, A.CustomMatcher_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A._UnorderedMatches__test_closure, A._UnorderedMatches__findPairingInner_closure, A._wrapArgs_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A.openChannel_fail, A.openChannel_success, A.openChannel_$errorHandler, A.openChannel_$errorHandler_closure0, A.openChannel_closure, A.openChannel_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardMessage, A._WebChannel__getResponseStream_$sendRequest__closure, A._WebChannel__getResponseStream_$sendRequest__closure0, A._WebChannel_sendRequest_$success, A._WebChannel_sendRequest_$fail, A.$transferify_closure, A.$jsify_closure, A.$jsify_closure0, A.$jsify_closure1, A.$jsify2_closure0, A.$jsify2_closure, A.$dartify_closure, A.JsWorkerRunnerExt_get_handle_closure, A.ResultStream_$decodeStreamOfResponses, A.ResultStream_$decodeSingleResponse, A.ResultStream_$getStreamId, A.ResultStream_$closeWithError, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__checkOperations_closure, A.WorkerRunner_processRequest_$postError, A.WorkerRunner_processRequest_post, A.WorkerRunner__pipe_closure1, A.ContextAwareConverter_value_closure, A.ContextAwareConverter_list_closure, A.ContextAwareConverter_list_closure0, A.ContextAwareConverter_nlist_closure, A.ContextAwareConverter_nlist_closure0, A.ContextAwareConverter_set_closure, A.ContextAwareConverter_set_closure0, A.ContextAwareConverter_nset_closure, A.ContextAwareConverter_nset_closure0, A.ContextAwareConverter_map_closure, A.ContextAwareConverter_map_closure0, A.ContextAwareConverter_map_closure1, A.ContextAwareConverter_map__closure, A.ContextAwareConverter_nmap_closure, A.ContextAwareConverter_nmap_closure0, A.ContextAwareConverter_nmap_closure1, A.ContextAwareConverter_nmap__closure, A.Converter__mapList_closure, A.Converter__mapSet_closure, A.Converter__mapMap_closure, A.Converter_allowNull_closure, A.LazyInPlaceList_retainWhere_closure, A.LazyInPlaceMap_entries_closure, A.LazyInPlaceMap_values_closure, A.LazyInPlaceMap_containsValue_closure, A.LazyInPlaceMap_update_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerStreamTask_execute_closure, A.WorkerStreamTask_execute_closure0, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool___schedule_closure, A.WorkerPool___schedule_closure0, A.WorkerPool_cancel_closure, A.Worker_send_closure, A.Worker_stream_closure, A._LogEventSerializationExt__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.execute____closure_unused, A.execute____closure173, A.execute_____closure76, A.execute_____closure77, A.execute_____closure78, A.execute____closure172, A.execute_____closure73, A.execute_____closure74, A.execute_____closure75, A.execute____closure135, A.execute____closure136, A.execute____closure133, A.execute____closure134, A.execute____closure131, A.execute____closure132, A.execute____closure129, A.execute____closure130, A.execute____closure127, A.execute____closure128, A.execute____closure51, A.execute____closure50, A.execute____closure49, A.execute____closure48, A.execute____closure47, A.execute____closure46, A.execute____closure45, A.execute____closure44, A.testCastConverter__closure_$platformSensitive0, A.testCastConverter__closure_$fails0, A.testCastConverter__closure_$succeeds0, A.testCastConverter__closure_$platformSensitive, A.testCastConverter__closure_$fails, A.testCastConverter__closure_$succeeds, A.testLazyLists_$initDataContext, A._dblTests_closure26, A._dblTests_closure27, A._dblTests_closure28, A._dblTests_closure29, A._dblTests_closure30, A._dblTests_closure31, A._dblTests_closure32, A._dblTests_closure33, A._dblTests_closure34, A._dblTests_closure35, A._dblTests_closure36, A._dblTests_closure37, A._dblTests_closure38, A._dblTests_closure39, A._dblTests_closure40, A._dblTests_closure41, A._dblTests_closure42, A._dblTests_closure43, A._dblTests_closure44, A._dblTests_closure45, A._dblTests_closure46, A._dblTests_closure47, A._dblTests_closure48, A._dblTests_closure49, A._dblTests_closure50, A._dblTests_closure51, A._dblTests_closure52, A._dblTests_closure53, A._dblTests_closure54, A._dblTests_closure55, A._dblTests_closure56, A._dblTests_closure57, A._dblTests_closure58, A._dblTests_closure59, A._dblTests_closure60, A._dblTests_closure61, A._dblTests__closure12, A._dblTests_closure62, A._dblTests_closure63, A._dblTests_closure64, A._dblTests_closure65, A._dblTests_closure66, A._dblTests_closure67, A._dblTests_closure68, A._dblTests_closure69, A._dblTests_closure70, A._dblTests_closure71, A._dblTests_closure72, A._dblTests_closure73, A._dblTests_closure74, A._dblTests_closure75, A._dblTests_closure76, A._dblTests__closure9, A._dblTests_closure77, A._dblTests__closure8, A._dblTests_closure78, A._dblTests_closure79, A._dblTests_closure80, A._dblTests_closure81, A._dblTests_closure82, A._dblTests_closure83, A._dblTests_closure84, A._dblTests_closure85, A._dblTests_closure86, A._dblTests_closure87, A._dblTests_closure88, A._dblTests__closure7, A._dblTests_closure89, A._dblTests_closure90, A._dblTests_closure91, A._dblTests_closure92, A._dblTests_closure93, A._dblTests_closure94, A._dblTests_closure95, A._dblTests_closure96, A._dblTests_closure97, A._dblTests_closure98, A._dblTests_closure99, A._dblTests_closure100, A._dblTests_closure101, A._dblTests_closure102, A._dblTests_closure103, A._dblTests_closure104, A._dblTests_closure105, A._dblTests_closure106, A._dblTests_closure107, A._dblTests_closure108, A._dblTests_closure109, A._dblTests_closure110, A._dblTests_closure111, A._dblTests_closure112, A._dblTests_closure113, A._dblTests_closure114, A._dblTests_closure115, A._dblTests_closure116, A._dblTests_closure117, A._dblTests_closure118, A._dblTests_closure119, A._dblTests_closure120, A._dblTests_closure121, A._ndblTests_closure26, A._ndblTests_closure27, A._ndblTests_closure28, A._ndblTests_closure29, A._ndblTests_closure30, A._ndblTests_closure31, A._ndblTests_closure32, A._ndblTests_closure33, A._ndblTests_closure34, A._ndblTests_closure35, A._ndblTests_closure36, A._ndblTests_closure37, A._ndblTests_closure38, A._ndblTests_closure39, A._ndblTests_closure40, A._ndblTests_closure41, A._ndblTests_closure42, A._ndblTests_closure43, A._ndblTests_closure44, A._ndblTests_closure45, A._ndblTests_closure46, A._ndblTests_closure47, A._ndblTests_closure48, A._ndblTests_closure49, A._ndblTests_closure50, A._ndblTests_closure51, A._ndblTests_closure52, A._ndblTests_closure53, A._ndblTests_closure54, A._ndblTests_closure55, A._ndblTests_closure56, A._ndblTests_closure57, A._ndblTests_closure58, A._ndblTests_closure59, A._ndblTests_closure60, A._ndblTests_closure61, A._ndblTests__closure11, A._ndblTests_closure62, A._ndblTests_closure63, A._ndblTests_closure64, A._ndblTests_closure65, A._ndblTests_closure66, A._ndblTests_closure67, A._ndblTests_closure68, A._ndblTests_closure69, A._ndblTests_closure70, A._ndblTests_closure71, A._ndblTests_closure72, A._ndblTests_closure73, A._ndblTests_closure74, A._ndblTests_closure75, A._ndblTests_closure76, A._ndblTests__closure8, A._ndblTests_closure77, A._ndblTests__closure7, A._ndblTests_closure78, A._ndblTests_closure79, A._ndblTests_closure80, A._ndblTests_closure81, A._ndblTests_closure82, A._ndblTests_closure83, A._ndblTests_closure84, A._ndblTests_closure85, A._ndblTests_closure86, A._ndblTests_closure87, A._ndblTests_closure88, A._ndblTests__closure6, A._ndblTests_closure89, A._ndblTests_closure90, A._ndblTests_closure91, A._ndblTests_closure92, A._ndblTests_closure93, A._ndblTests_closure94, A._ndblTests_closure95, A._ndblTests_closure96, A._ndblTests_closure97, A._ndblTests_closure98, A._ndblTests_closure99, A._ndblTests_closure100, A._ndblTests_closure101, A._ndblTests_closure102, A._ndblTests_closure103, A._ndblTests_closure104, A._ndblTests_closure105, A._ndblTests_closure106, A._ndblTests_closure107, A._ndblTests_closure108, A._ndblTests_closure109, A._ndblTests_closure110, A._ndblTests_closure111, A._ndblTests_closure112, A._ndblTests_closure113, A._ndblTests_closure114, A._ndblTests_closure115, A._ndblTests_closure116, A._ndblTests_closure117, A._ndblTests_closure118, A._ndblTests_closure119, A._nintTests_closure26, A._nintTests_closure27, A._nintTests_closure28, A._nintTests_closure29, A._nintTests_closure30, A._nintTests_closure31, A._nintTests_closure32, A._nintTests_closure33, A._nintTests_closure34, A._nintTests_closure35, A._nintTests_closure36, A._nintTests_closure37, A._nintTests_closure38, A._nintTests_closure39, A._nintTests_closure40, A._nintTests_closure41, A._nintTests_closure42, A._nintTests_closure43, A._nintTests_closure44, A._nintTests_closure45, A._nintTests_closure46, A._nintTests_closure47, A._nintTests_closure48, A._nintTests_closure49, A._nintTests_closure50, A._nintTests_closure51, A._nintTests_closure52, A._nintTests_closure53, A._nintTests_closure54, A._nintTests_closure55, A._nintTests_closure56, A._nintTests_closure57, A._nintTests_closure58, A._nintTests_closure59, A._nintTests_closure60, A._nintTests_closure61, A._nintTests__closure11, A._nintTests_closure62, A._nintTests_closure63, A._nintTests_closure64, A._nintTests_closure65, A._nintTests_closure66, A._nintTests_closure67, A._nintTests_closure68, A._nintTests_closure69, A._nintTests_closure70, A._nintTests_closure71, A._nintTests_closure72, A._nintTests_closure73, A._nintTests_closure74, A._nintTests_closure75, A._nintTests_closure76, A._nintTests__closure8, A._nintTests_closure77, A._nintTests__closure7, A._nintTests_closure78, A._nintTests_closure79, A._nintTests_closure80, A._nintTests_closure81, A._nintTests_closure82, A._nintTests_closure83, A._nintTests_closure84, A._nintTests_closure85, A._nintTests_closure86, A._nintTests_closure87, A._nintTests_closure88, A._nintTests__closure6, A._nintTests_closure89, A._nintTests_closure90, A._nintTests_closure91, A._nintTests_closure92, A._nintTests_closure93, A._nintTests_closure94, A._nintTests_closure95, A._nintTests_closure96, A._nintTests_closure97, A._nintTests_closure98, A._nintTests_closure99, A._nintTests_closure100, A._nintTests_closure101, A._nintTests_closure102, A._nintTests_closure103, A._nintTests_closure104, A._nintTests_closure105, A._nintTests_closure106, A._nintTests_closure107, A._nintTests_closure108, A._nintTests_closure109, A._nintTests_closure110, A._nintTests_closure111, A._nintTests_closure112, A._nintTests_closure113, A._nintTests_closure114, A._nintTests_closure115, A._nintTests_closure116, A._nintTests_closure117, A._nintTests_closure118, A._nintTests_closure119, A._Features_forEach_$a0, A.testLazyMaps_$initDataContext, A.testLazyMaps_$initDataContext_closure, A._dblTests_closure, A._dblTests__closure5, A._dblTests_closure0, A._dblTests_closure1, A._dblTests_closure2, A._dblTests_closure3, A._dblTests_closure4, A._dblTests_closure5, A._dblTests_closure6, A._dblTests_closure7, A._dblTests_closure8, A._dblTests_closure9, A._dblTests_closure10, A._dblTests_closure11, A._dblTests_closure12, A._dblTests_closure13, A._dblTests_closure14, A._dblTests_closure15, A._dblTests_closure16, A._dblTests_closure17, A._dblTests_closure18, A._dblTests_closure19, A._dblTests_closure20, A._dblTests_closure21, A._dblTests_closure22, A._dblTests_closure23, A._dblTests_closure24, A._dblTests_closure25, A._ndblTests_closure, A._ndblTests__closure5, A._ndblTests_closure0, A._ndblTests_closure1, A._ndblTests_closure2, A._ndblTests_closure3, A._ndblTests_closure4, A._ndblTests_closure5, A._ndblTests_closure6, A._ndblTests_closure7, A._ndblTests_closure8, A._ndblTests_closure9, A._ndblTests_closure10, A._ndblTests_closure11, A._ndblTests_closure12, A._ndblTests_closure13, A._ndblTests_closure14, A._ndblTests_closure15, A._ndblTests_closure16, A._ndblTests_closure17, A._ndblTests_closure18, A._ndblTests_closure19, A._ndblTests_closure20, A._ndblTests_closure21, A._ndblTests_closure22, A._ndblTests_closure23, A._ndblTests_closure24, A._ndblTests_closure25, A._nintTests_closure, A._nintTests__closure5, A._nintTests_closure0, A._nintTests_closure1, A._nintTests_closure2, A._nintTests_closure3, A._nintTests_closure4, A._nintTests_closure5, A._nintTests_closure6, A._nintTests_closure7, A._nintTests_closure8, A._nintTests_closure9, A._nintTests_closure10, A._nintTests_closure11, A._nintTests_closure12, A._nintTests_closure13, A._nintTests_closure14, A._nintTests_closure15, A._nintTests_closure16, A._nintTests_closure17, A._nintTests_closure18, A._nintTests_closure19, A._nintTests_closure20, A._nintTests_closure21, A._nintTests_closure22, A._nintTests_closure23, A._nintTests_closure24, A._nintTests_closure25, A.execute____closure126, A.execute____closure125, A.execute____closure124, A.execute___closure_hook0, A.execute____closure123, A.execute____closure122, A.execute____closure121, A.execute____closure120, A.execute____closure119, A.execute____closure118, A.execute____closure117, A.execute____closure116, A.execute____closure115, A.execute____closure114, A.execute____closure113, A.execute____closure112, A.execute____closure_createTask0, A.execute____closure111, A.execute____closure_createTask, A.execute____closure110, A.execute____closure109, A.execute____closure108, A.execute____closure107, A.execute___closure_hook, A.execute____closure106, A.execute____closure105, A.execute____closure104, A.execute____closure103, A.execute____closure102, A.execute____closure101, A.execute____closure100, A.execute____closure99, A.execute____closure98, A.execute____closure97, A.execute____closure96, A.execute____closure95, A.execute____closure94, A.execute_____closure68, A.execute____closure93, A.execute____closure92, A.execute____closure91, A.execute____closure90, A.execute____closure89, A.execute____closure88, A.execute_____closure66, A.execute_____closure67, A.execute_____closure42, A.execute_____closure41, A.execute______closure46, A.execute_____closure40, A.execute______closure45, A.execute_____closure39, A.execute_____closure38, A.execute______closure44, A.execute_____closure37, A.execute______closure43, A.execute_____closure36, A.execute_____closure35, A.execute______closure42, A.execute_______closure4, A.execute_____closure34, A.execute______closure41, A.execute_______closure3, A.execute____closure62, A.execute____closure61, A.execute_____closure43, A.execute_____closure29, A.execute______closure40, A.execute_____closure28, A.execute_____closure27, A.execute_____closure26, A.execute______closure39, A.execute_____closure25, A.execute______closure34, A.execute______closure35, A.execute______closure36, A.execute______closure37, A.execute______closure38, A.execute_____closure24, A.execute______closure29, A.execute______closure30, A.execute______closure31, A.execute______closure32, A.execute______closure33, A.execute_____closure23, A.execute_____closure22, A.execute_____closure21, A.execute_____closure20, A.execute______closure25, A.execute_______closure2, A.execute______closure26, A.execute_______closure0, A.execute_______closure1, A.execute______closure27, A.execute_______closure, A.execute______closure28, A.execute_____closure19, A.execute______closure12, A.execute______closure14, A.execute______closure15, A.execute______closure16, A.execute______closure17, A.execute______closure18, A.execute______closure19, A.execute______closure20, A.execute______closure21, A.execute______closure22, A.execute______closure23, A.execute______closure24, A.execute_____closure18, A.execute______closure, A.execute______closure1, A.execute______closure2, A.execute______closure3, A.execute______closure4, A.execute______closure5, A.execute______closure6, A.execute______closure7, A.execute______closure8, A.execute______closure9, A.execute______closure10, A.execute______closure11, A.execute_____closure17, A.execute_____closure16, A.execute_____closure15, A.execute_____closure14, A.execute_____closure13, A.execute_____closure12, A.execute_____closure11, A.execute_____closure10, A.execute_____closure9, A.execute_____closure8, A.execute_____closure7, A.execute_____closure6, A._testFinitePoolCancelation_closure, A._testFinitePoolCancelation_closure0, A._testInfinitePoolCancelation_closure, A._testInfinitePoolCancelation_closure0, A.execute__closure_testSum, A.execute_____closure32, A.execute_____closure33, A.execute_____closure30, A.execute_____closure31, A.execute____closure40, A.execute____closure39, A.execute____closure38, A.execute____closure37, A.execute____closure36, A.execute____closure35, A.execute____closure34, A.execute____closure33, A.execute____closure32, A.execute____closure31, A.execute____closure30, A.execute____closure87, A.execute_____closure65, A.execute______closure54, A.execute______closure55, A.execute____closure86, A.execute_____closure64, A.execute______closure53, A.execute_____closure63, A.execute_____closure62, A.execute_____closure61, A.execute_____closure60, A.execute_____closure59, A.execute_____closure58, A.execute_____closure57, A.execute_____closure56, A.execute_____closure55, A.execute_____closure54, A.execute_____closure53, A.execute____closure74, A.execute____closure73, A.execute____closure72, A.execute____closure71, A.execute_____closure51, A.execute______closure47, A.execute______closure48, A.execute______closure49, A.execute______closure50, A.execute_____closure50, A.execute_____closure49, A.execute_____closure48, A.execute_____closure47, A.execute_____closure46, A.execute_____closure45, A.execute_____closure44, A.execute_____closure5, A.execute_____closure4, A.execute_____closure3, A.execute_____closure2, A.execute_____closure1, A.execute_____closure0, A.execute_____closure, A._checkWebWorkers_closure, A.ConsoleToHtml_convert_closure, A.ErrorWorkerPool_closure, A.ErrorWorkerPool_throwException_closure, A.ErrorWorkerPool_throwWorkerException_closure, A.ErrorWorkerPool_throwTaskTimeOutException_closure, A.ErrorWorkerPool_throwCanceledException_closure, A.ErrorWorkerPool_throwTestException_closure, A.HtmlLogger__findDisplayableError_closure, A.IssuesWorkerPool_closure, A.IssuesWorkerPool_issue_8_closure, A.IssuesWorkerPool_issue_23_closure, A.LocalClientWorkerPool_closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.LocalServiceImpl_operations_closure2, A.MemoryLogger_logs_closure, A.PersonMarshaler_marshal_closure, A.PersonMarshaler_unmarshal_$unmarshal, A.PrimeWorkerPool_closure, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.bootstrap_execute, A.bootstrap_execute_closure, A.bootstrap_closure, A.TestContext_pending_closure, A.TestContext_wait_closure, A.launch_closure, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$missingStartRequest_closure, A.TestWorkerPool$invalid_closure, A.TestWorkerPool_io_closure, A.TestWorkerPool_cpu_closure, A.TestWorkerPool_delayed_80ms_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_20ms_closure, A.TestWorkerPool_infinite_20ms_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.TestWorkerPool_map_closure, A.TestWorker_fractionAdd_closure, A.TestWorker_fractionAdd_closure0, A.TestWorker_getPlatformType_closure]);
-    _inheritMany(A.Closure0Args, [A._CastIterableBase_lastWhere_closure, A.CastMap_putIfAbsent_closure, A.CastMap_update_closure, A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainCoreFuture_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteErrorObject_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A._expect_closure0, A._expect_closure1, A.Pool__onResourceReleaseAllowed_closure, A.openChannel_$errorHandler_closure, A.openChannel_$errorHandler__closure, A.openChannel_$errorHandler__closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure1, A.openChannel_closure2, A._WebForwardChannel__forward_closure, A._WebChannel__postRequest_closure, A._WebChannel__inspectAndPostRequest_closure, A._WebChannel__getResponseStream_$sendRequest, A._WebChannel__getResponseStream_$sendRequest_$close, A._WebChannel__getResponseStream_$sendRequest_closure, A._WebChannel__getResponseStream_closure, A._WebChannel_sendRequest_$done, A.EventBuffer_add_closure, A.EventBuffer_addError_closure, A._WebWorkerChannel__postResponse_closure, A._WebWorkerChannel__inspectAndPostResponse_closure, A.ResultStream_$onCancel, A.ResultStream_$onListen, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure, A.WorkerRunner__pipe_closure0, A.PoolWorker_run_closure, A.WorkerStreamTask_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_stream_closure0, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure11, A.execute__closure16, A.execute___closure106, A.execute____closure170, A.execute____closure171, A.execute___closure107, A.execute____closure156, A.execute____closure157, A.execute____closure158, A.execute____closure159, A.execute____closure160, A.execute____closure161, A.execute____closure162, A.execute____closure163, A.execute____closure164, A.execute____closure165, A.execute____closure166, A.execute____closure167, A.execute____closure168, A.execute____closure169, A.execute_____closure71, A.execute_____closure72, A.execute___closure108, A.execute____closure143, A.execute____closure144, A.execute____closure145, A.execute____closure146, A.execute____closure147, A.execute____closure148, A.execute____closure149, A.execute____closure150, A.execute____closure151, A.execute____closure152, A.execute____closure153, A.execute____closure154, A.execute____closure155, A.execute___closure109, A.execute____closure137, A.execute____closure138, A.execute____closure139, A.execute____closure140, A.execute____closure141, A.execute____closure142, A.execute_closure12, A.execute__closure17, A.execute___closure110, A.execute___closure111, A.execute_closure10, A.execute__closure15, A.execute___closure101, A.execute___closure102, A.execute___closure103, A.execute___closure104, A.execute___closure105, A.execute_closure3, A.execute__closure4, A.execute___closure25, A.execute___closure26, A.execute___closure27, A.execute___closure28, A.execute___closure29, A.execute___closure30, A.execute___closure31, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute_closure2, A.execute__closure2, A.execute___closure23, A.execute___closure24, A.execute__closure3, A.execute___closure19, A.execute____closure43, A.execute___closure20, A.execute___closure21, A.execute___closure_check, A.execute___closure22, A.execute___closure_check1, A.execute___closure_check2, A.testCastConverter_closure, A.testCastConverter__closure, A.testCastConverter___closure29, A.testCastConverter___closure30, A.testCastConverter___closure31, A.testCastConverter___closure32, A.testCastConverter___closure33, A.testCastConverter___closure34, A.testCastConverter___closure35, A.testCastConverter__closure0, A.testCastConverter___closure22, A.testCastConverter___closure23, A.testCastConverter___closure24, A.testCastConverter___closure25, A.testCastConverter___closure26, A.testCastConverter___closure27, A.testCastConverter___closure28, A.testCastConverter__closure1, A.testCastConverter___closure14, A.testCastConverter____closure19, A.testCastConverter___closure15, A.testCastConverter____closure18, A.testCastConverter___closure16, A.testCastConverter____closure17, A.testCastConverter___closure17, A.testCastConverter____closure16, A.testCastConverter___closure18, A.testCastConverter____closure15, A.testCastConverter___closure19, A.testCastConverter____closure14, A.testCastConverter___closure20, A.testCastConverter____closure13, A.testCastConverter___closure21, A.testCastConverter____closure12, A.testCastConverter__closure2, A.testCastConverter___closure6, A.testCastConverter____closure11, A.testCastConverter___closure7, A.testCastConverter____closure10, A.testCastConverter___closure8, A.testCastConverter____closure9, A.testCastConverter___closure9, A.testCastConverter____closure8, A.testCastConverter___closure10, A.testCastConverter____closure7, A.testCastConverter___closure11, A.testCastConverter____closure6, A.testCastConverter___closure12, A.testCastConverter____closure5, A.testCastConverter___closure13, A.testCastConverter____closure4, A.testCastConverter__closure3, A.testCastConverter___closure1, A.testCastConverter____closure3, A.testCastConverter___closure2, A.testCastConverter____closure2, A.testCastConverter___closure3, A.testCastConverter____closure1, A.testCastConverter___closure4, A.testCastConverter____closure0, A.testCastConverter___closure5, A.testCastConverter____closure, A.testCastConverter__closure4, A.testCastConverter___closure, A.testCastConverter___closure0, A.testContextAwareConverter_closure, A.testContextAwareConverter__closure, A.testContextAwareConverter__closure0, A.testContextAwareConverter___closure29, A.testContextAwareConverter___closure30, A.testContextAwareConverter___closure31, A.testContextAwareConverter____closure35, A.testContextAwareConverter____closure36, A.testContextAwareConverter____closure37, A.testContextAwareConverter____closure38, A.testContextAwareConverter____closure39, A.testContextAwareConverter____closure40, A.testContextAwareConverter____closure41, A.testContextAwareConverter____closure42, A.testContextAwareConverter___closure32, A.testContextAwareConverter____closure34, A.testContextAwareConverter___closure33, A.testContextAwareConverter____closure32, A.testContextAwareConverter____closure33, A.testContextAwareConverter___closure34, A.testContextAwareConverter____closure28, A.testContextAwareConverter____closure29, A.testContextAwareConverter____closure30, A.testContextAwareConverter____closure31, A.testContextAwareConverter___closure35, A.testContextAwareConverter____closure26, A.testContextAwareConverter____closure27, A.testContextAwareConverter__closure1, A.testContextAwareConverter___closure22, A.testContextAwareConverter___closure23, A.testContextAwareConverter___closure24, A.testContextAwareConverter___closure25, A.testContextAwareConverter____closure25, A.testContextAwareConverter___closure26, A.testContextAwareConverter____closure23, A.testContextAwareConverter____closure24, A.testContextAwareConverter___closure27, A.testContextAwareConverter____closure21, A.testContextAwareConverter____closure22, A.testContextAwareConverter___closure28, A.testContextAwareConverter____closure19, A.testContextAwareConverter____closure20, A.testContextAwareConverter__closure2, A.testContextAwareConverter___closure14, A.testContextAwareConverter____closure18, A.testContextAwareConverter___closure15, A.testContextAwareConverter___closure16, A.testContextAwareConverter____closure17, A.testContextAwareConverter___closure17, A.testContextAwareConverter____closure16, A.testContextAwareConverter___closure18, A.testContextAwareConverter____closure15, A.testContextAwareConverter___closure19, A.testContextAwareConverter____closure14, A.testContextAwareConverter___closure20, A.testContextAwareConverter____closure13, A.testContextAwareConverter___closure21, A.testContextAwareConverter____closure12, A.testContextAwareConverter__closure3, A.testContextAwareConverter___closure6, A.testContextAwareConverter____closure11, A.testContextAwareConverter___closure7, A.testContextAwareConverter____closure10, A.testContextAwareConverter___closure8, A.testContextAwareConverter____closure9, A.testContextAwareConverter___closure9, A.testContextAwareConverter____closure8, A.testContextAwareConverter___closure10, A.testContextAwareConverter____closure7, A.testContextAwareConverter___closure11, A.testContextAwareConverter____closure6, A.testContextAwareConverter___closure12, A.testContextAwareConverter____closure5, A.testContextAwareConverter___closure13, A.testContextAwareConverter____closure4, A.testContextAwareConverter__closure4, A.testContextAwareConverter___closure1, A.testContextAwareConverter____closure3, A.testContextAwareConverter___closure2, A.testContextAwareConverter____closure2, A.testContextAwareConverter___closure3, A.testContextAwareConverter____closure1, A.testContextAwareConverter___closure4, A.testContextAwareConverter____closure0, A.testContextAwareConverter___closure5, A.testContextAwareConverter____closure, A.testContextAwareConverter__closure5, A.testContextAwareConverter___closure, A.testContextAwareConverter___closure0, A.testNumConverter_closure, A.testNumConverter__closure, A.testNumConverter___closure29, A.testNumConverter___closure30, A.testNumConverter___closure31, A.testNumConverter____closure35, A.testNumConverter____closure36, A.testNumConverter____closure37, A.testNumConverter____closure38, A.testNumConverter____closure39, A.testNumConverter____closure40, A.testNumConverter____closure41, A.testNumConverter____closure42, A.testNumConverter___closure32, A.testNumConverter____closure34, A.testNumConverter___closure33, A.testNumConverter____closure32, A.testNumConverter____closure33, A.testNumConverter___closure34, A.testNumConverter____closure28, A.testNumConverter____closure29, A.testNumConverter____closure30, A.testNumConverter____closure31, A.testNumConverter___closure35, A.testNumConverter____closure26, A.testNumConverter____closure27, A.testNumConverter__closure0, A.testNumConverter___closure22, A.testNumConverter___closure23, A.testNumConverter___closure24, A.testNumConverter___closure25, A.testNumConverter____closure25, A.testNumConverter___closure26, A.testNumConverter____closure23, A.testNumConverter____closure24, A.testNumConverter___closure27, A.testNumConverter____closure21, A.testNumConverter____closure22, A.testNumConverter___closure28, A.testNumConverter____closure19, A.testNumConverter____closure20, A.testNumConverter__closure1, A.testNumConverter___closure14, A.testNumConverter____closure18, A.testNumConverter___closure15, A.testNumConverter___closure16, A.testNumConverter____closure17, A.testNumConverter___closure17, A.testNumConverter____closure16, A.testNumConverter___closure18, A.testNumConverter____closure15, A.testNumConverter___closure19, A.testNumConverter____closure14, A.testNumConverter___closure20, A.testNumConverter____closure13, A.testNumConverter___closure21, A.testNumConverter____closure12, A.testNumConverter__closure2, A.testNumConverter___closure6, A.testNumConverter____closure11, A.testNumConverter___closure7, A.testNumConverter____closure10, A.testNumConverter___closure8, A.testNumConverter____closure9, A.testNumConverter___closure9, A.testNumConverter____closure8, A.testNumConverter___closure10, A.testNumConverter____closure7, A.testNumConverter___closure11, A.testNumConverter____closure6, A.testNumConverter___closure12, A.testNumConverter____closure5, A.testNumConverter___closure13, A.testNumConverter____closure4, A.testNumConverter__closure3, A.testNumConverter___closure1, A.testNumConverter____closure3, A.testNumConverter___closure2, A.testNumConverter____closure2, A.testNumConverter___closure3, A.testNumConverter____closure1, A.testNumConverter___closure4, A.testNumConverter____closure0, A.testNumConverter___closure5, A.testNumConverter____closure, A.testNumConverter__closure4, A.testNumConverter___closure, A.testNumConverter___closure0, A.testLazyLists_closure, A.testLazyLists_closure0, A.testLazyLists_closure1, A._FeatureTestExt_check_closure, A.testLazyMaps_closure, A.testLazyMaps_closure0, A.testLazyMaps_closure1, A._FeatureTestExt_test_closure, A.execute_closure9, A.execute__closure10, A.execute___closure97, A.execute___closure98, A.execute___closure99, A.execute___closure100, A.execute__closure11, A.execute___closure94, A.execute___closure95, A.execute___closure96, A.execute__closure12, A.execute___closure88, A.execute___closure89, A.execute___closure90, A.execute___closure91, A.execute___closure92, A.execute___closure93, A.execute__closure13, A.execute___closure82, A.execute___closure83, A.execute_____closure70, A.execute___closure84, A.execute_____closure69, A.execute___closure85, A.execute___closure86, A.execute___closure87, A.execute__closure14, A.execute___closure72, A.execute___closure73, A.execute___closure74, A.execute___closure75, A.execute___closure76, A.execute___closure77, A.execute___closure78, A.execute___closure79, A.execute___closure80, A.execute_____createTask_closure0, A.execute___closure81, A.execute_____createTask_closure, A.execute_closure8, A.execute__closure9, A.execute___closure56, A.execute___closure57, A.execute___closure58, A.execute___closure59, A.execute___closure60, A.execute___closure61, A.execute___closure62, A.execute___closure63, A.execute___closure64, A.execute___closure65, A.execute___closure66, A.execute___closure67, A.execute___closure68, A.execute___closure69, A.execute___closure70, A.execute___closure71, A.execute_closure7, A.execute__closure8, A.execute___closure49, A.execute___closure50, A.execute___closure51, A.execute___closure52, A.execute___closure53, A.execute____closure_pause, A.execute____closure_resume, A.execute___closure54, A.execute___closure55, A.execute_closure4, A.execute__closure5, A.execute___closure35, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute___closure36, A.execute____closure55, A.execute____closure56, A.execute____closure57, A.execute___closure37, A.execute____closure52, A.execute____closure53, A.execute____closure54, A.execute_closure5, A.execute__closure6, A.execute___closure38, A.execute___closure39, A.execute_closure0, A.execute__closure0, A.execute___closure2, A.execute____closure24, A.execute____closure25, A.execute____closure26, A.execute____closure27, A.execute____closure28, A.execute____closure29, A.execute___closure3, A.execute____closure18, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute____closure22, A.execute______closure13, A.execute____closure23, A.execute______closure0, A.execute___closure4, A.execute____closure14, A.execute____closure15, A.execute____closure16, A.execute____closure17, A.execute___closure5, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute___closure6, A.execute____closure6, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute_dob, A.execute_closure1, A.execute__closure1, A.execute___closure7, A.execute____closure41, A.execute____closure42, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute_closure6, A.execute__closure7, A.execute___closure40, A.execute___closure41, A.execute___closure42, A.execute____closure77, A.execute____closure78, A.execute____closure79, A.execute____closure80, A.execute____closure81, A.execute____closure82, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute___closure43, A.execute____closure75, A.execute____closure76, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute_____closure52, A.execute___closure48, A.execute____closure63, A.execute____closure64, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute_____closure_pause, A.execute_____closure_resume, A.execute____closure68, A.execute____closure69, A.execute____closure70, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure4, A.execute____closure5, A.execute___closure0, A.execute____closure2, A.execute____closure3, A.execute___closure1, A.execute____closure, A.execute____closure0, A.execute____closure1, A.TestContext_test_closure, A.TestContext_test__closure0, A.TestResult_skip_closure, A.TestResult_cancel_closure, A.TestResult_pass_closure, A.TestResult_fail_closure, A.displayVersions_closure, A.displayVersions_closure0, A.displayVersions_closure1, A.displayVersions_closure2, A.displayVersions_closure3, A.displayVersions_closure4, A.displayVersions_closure5, A.displayVersions_closure6, A.displayVersions_closure7, A.TestTimeout_completion_closure]);
+    _inheritMany(A.Closure, [A._CastIterableBase_lastWhere_closure0, A.Closure0Args, A.Closure2Args, A._CastListBase_removeWhere_closure, A._CastListBase_retainWhere_closure, A.CastMap_update_closure0, A.CastMap_entries_closure, A.Instantiation, A.TearOffClosure, A.JsLinkedHashMap_containsValue_closure, A.initHooks_closure, A.initHooks_closure1, A._AsyncRun__initializeScheduleImmediate_internalCallback, A._AsyncRun__initializeScheduleImmediate_closure, A._awaitOnObject_closure, A._SyncBroadcastStreamController__sendData_closure, A._SyncBroadcastStreamController__sendError_closure, A._SyncBroadcastStreamController__sendDone_closure, A.Future_wait_closure, A.Future_any_onValue, A.Future_doWhile_closure, A._Future__propagateToListeners_handleWhenCompleteCallback_closure, A.Stream_Stream$fromFuture_closure, A.Stream_Stream$fromIterable_closure, A.Stream_length_closure, A.Stream_isEmpty_closure0, A.Stream_toList_closure, A.Stream_first_closure0, A._CustomZone_bindUnaryCallback_closure, A._CustomZone_bindUnaryCallbackGuarded_closure, A._RootZone_bindUnaryCallback_closure, A._RootZone_bindUnaryCallbackGuarded_closure, A._HashMap_values_closure, A._HashMap_containsValue_closure, A._CustomHashMap_closure, A._CustomHashSet_closure, A.MapBase_entries_closure, A._BigIntImpl_hashCode_finish, A._Uri__makePath_closure, A.jsify__convert, A.promiseToFuture_closure, A.promiseToFuture_closure0, A.dartify_convert, A.FutureGroup_add_closure, A.StreamGroup__onListen_closure, A.StreamGroup__onCancel_closure, A.CanceledExceptions_message_closure, A.CompositeToken$__closure, A.CompositeToken__checkTokens_closure, A.TimeoutToken_ensureStarted_closure, A.UnionSet__iterable_closure, A.UnionSet_contains_closure, A._Contains_matches_closure, A.CustomMatcher_matches_closure, A._DeepMatcher__compareSets_closure, A.AsyncMatcher_matches_closure, A._expect_closure2, A._expect_closure, A._UnorderedMatches__test_closure, A._UnorderedMatches__findPairingInner_closure, A._wrapArgs_closure, A.prettyPrint_prettyPrintImpl, A.prettyPrint_prettyPrintImpl_pp, A.prettyPrint_prettyPrintImpl_closure, A.prettyPrint_prettyPrintImpl_closure0, A.prettyPrint_prettyPrintImpl_closure1, A.wrapMatcher_closure, A.escape_closure, A.Context_joinAll_closure, A.Context_split_closure, A._validateArgList_closure, A.WindowsStyle_absolutePathToUri_closure, A.Pool__runOnRelease_closure, A.openChannel_fail, A.openChannel_success, A.openChannel_$errorHandler, A.openChannel_$errorHandler_closure0, A.openChannel_closure, A.openChannel_closure0, A._WebChannel__getResponseStream_$sendRequest_$forwardMessage, A._WebChannel__getResponseStream_$sendRequest__closure, A._WebChannel__getResponseStream_$sendRequest__closure0, A._WebChannel_sendRequest_$success, A._WebChannel_sendRequest_$fail, A._WebLocalWorker$__closure, A.$transferify_closure, A.$jsify_closure, A.$jsify_closure0, A.$jsify_closure1, A.$dartify_closure, A.JsWorkerRunnerExt_get_handle_closure, A.ResultStream_$decodeStreamOfResponses, A.ResultStream_$decodeSingleResponse, A.ResultStream_$getStreamId, A.ResultStream_$closeWithError, A.WorkerRunner_WorkerRunner$use_closure, A.WorkerRunner__checkOperations_closure, A.WorkerRunner_processRequest_$postError, A.WorkerRunner_processRequest_post, A.WorkerRunner__pipe_closure1, A.ContextAwareConverter_value_closure, A.ContextAwareConverter_list_closure, A.ContextAwareConverter_list_closure0, A.ContextAwareConverter_nlist_closure, A.ContextAwareConverter_nlist_closure0, A.ContextAwareConverter_set_closure, A.ContextAwareConverter_set_closure0, A.ContextAwareConverter_nset_closure, A.ContextAwareConverter_nset_closure0, A.ContextAwareConverter_map_closure, A.ContextAwareConverter_map_closure0, A.ContextAwareConverter_map_closure1, A.ContextAwareConverter_map__closure, A.ContextAwareConverter_nmap_closure, A.ContextAwareConverter_nmap_closure0, A.ContextAwareConverter_nmap_closure1, A.ContextAwareConverter_nmap__closure, A.Converter__mapList_closure, A.Converter__mapSet_closure, A.Converter__mapMap_closure, A.Converter_allowNull_closure, A.LazyInPlaceList_retainWhere_closure, A.LazyInPlaceMap_entries_closure, A.LazyInPlaceMap_values_closure, A.LazyInPlaceMap_containsValue_closure, A.LazyInPlaceMap_update_closure, A.SquadronCanceledException_SquadronCanceledException$from_closure, A.SquadronCanceledExceptions_message_closure, A.SquadronCanceledExceptions_serialize_closure, A.WorkerStreamTask_execute_closure, A.WorkerStreamTask_execute_closure0, A.WorkerPool__provisionWorkers_closure0, A.WorkerPool__provisionWorkers__closure, A.WorkerPool__provisionWorkers__closure1, A.WorkerPool_stop_closure, A.WorkerPool___schedule_closure, A.WorkerPool___schedule_closure0, A.WorkerPool_cancel_closure, A.Worker_send_closure, A.Worker_stream_closure, A._LogEventSerializationExt__getLevel_closure, A.Chain_Chain$parse_closure, A.Chain_foldFrames_closure, A.Chain_foldFrames_closure0, A.Chain_toTrace_closure, A.Chain_toString_closure0, A.Chain_toString__closure0, A.Chain_toString_closure, A.Chain_toString__closure, A.Trace__parseVM_closure, A.Trace$parseV8_closure, A.Trace$parseJSCore_closure, A.Trace$parseFirefox_closure, A.Trace$parseFriendly_closure, A.Trace_foldFrames_closure, A.Trace_foldFrames_closure0, A.Trace_toString_closure0, A.Trace_toString_closure, A.Declarer_build_closure, A.Declarer__runSetUps_closure, A.Group_forPlatform_closure, A.Group__map_closure, A.Invoker_guard_closure, A.Invoker_runTearDowns__closure0, A.Invoker__onRun___closure0, A.Metadata__validateTags_closure, A.Metadata__validateTags_closure0, A.PlatformSelector_validate__closure, A.PlatformSelector_evaluate_closure, A.StackTraceFormatter_formatStackTrace_closure, A.Engine_success_closure, A.Engine_closure, A.Engine_run_closure, A.Engine__runLiveTest_closure, A.LiveSuiteController_reportLiveTest_closure, A.ExpandedReporter__onTestStarted_closure, A.ExpandedReporter__onTestStarted_closure0, A.ExpandedReporter__onTestStarted_closure1, A._EventStreamSubscription_closure, A._EventStreamSubscription_onData_closure, A.execute____closure172, A.execute_____closure74, A.execute_____closure75, A.execute_____closure76, A.execute____closure171, A.execute_____closure71, A.execute_____closure72, A.execute_____closure73, A.execute____closure135, A.execute____closure136, A.execute____closure133, A.execute____closure134, A.execute____closure131, A.execute____closure132, A.execute____closure129, A.execute____closure130, A.execute____closure127, A.execute____closure128, A.execute____closure51, A.execute____closure50, A.execute____closure49, A.execute____closure48, A.execute____closure47, A.execute____closure46, A.execute____closure45, A.execute____closure44, A.testCastConverter__closure_$platformSensitive0, A.testCastConverter__closure_$fails0, A.testCastConverter__closure_$succeeds0, A.testCastConverter__closure_$platformSensitive, A.testCastConverter__closure_$fails, A.testCastConverter__closure_$succeeds, A.testLazyLists_$initDataContext, A._dblTests_closure26, A._dblTests_closure27, A._dblTests_closure28, A._dblTests_closure29, A._dblTests_closure30, A._dblTests_closure31, A._dblTests_closure32, A._dblTests_closure33, A._dblTests_closure34, A._dblTests_closure35, A._dblTests_closure36, A._dblTests_closure37, A._dblTests_closure38, A._dblTests_closure39, A._dblTests_closure40, A._dblTests_closure41, A._dblTests_closure42, A._dblTests_closure43, A._dblTests_closure44, A._dblTests_closure45, A._dblTests_closure46, A._dblTests_closure47, A._dblTests_closure48, A._dblTests_closure49, A._dblTests_closure50, A._dblTests_closure51, A._dblTests_closure52, A._dblTests_closure53, A._dblTests_closure54, A._dblTests_closure55, A._dblTests_closure56, A._dblTests_closure57, A._dblTests_closure58, A._dblTests_closure59, A._dblTests_closure60, A._dblTests_closure61, A._dblTests__closure12, A._dblTests_closure62, A._dblTests_closure63, A._dblTests_closure64, A._dblTests_closure65, A._dblTests_closure66, A._dblTests_closure67, A._dblTests_closure68, A._dblTests_closure69, A._dblTests_closure70, A._dblTests_closure71, A._dblTests_closure72, A._dblTests_closure73, A._dblTests_closure74, A._dblTests_closure75, A._dblTests_closure76, A._dblTests__closure9, A._dblTests_closure77, A._dblTests__closure8, A._dblTests_closure78, A._dblTests_closure79, A._dblTests_closure80, A._dblTests_closure81, A._dblTests_closure82, A._dblTests_closure83, A._dblTests_closure84, A._dblTests_closure85, A._dblTests_closure86, A._dblTests_closure87, A._dblTests_closure88, A._dblTests__closure7, A._dblTests_closure89, A._dblTests_closure90, A._dblTests_closure91, A._dblTests_closure92, A._dblTests_closure93, A._dblTests_closure94, A._dblTests_closure95, A._dblTests_closure96, A._dblTests_closure97, A._dblTests_closure98, A._dblTests_closure99, A._dblTests_closure100, A._dblTests_closure101, A._dblTests_closure102, A._dblTests_closure103, A._dblTests_closure104, A._dblTests_closure105, A._dblTests_closure106, A._dblTests_closure107, A._dblTests_closure108, A._dblTests_closure109, A._dblTests_closure110, A._dblTests_closure111, A._dblTests_closure112, A._dblTests_closure113, A._dblTests_closure114, A._dblTests_closure115, A._dblTests_closure116, A._dblTests_closure117, A._dblTests_closure118, A._dblTests_closure119, A._dblTests_closure120, A._dblTests_closure121, A._ndblTests_closure26, A._ndblTests_closure27, A._ndblTests_closure28, A._ndblTests_closure29, A._ndblTests_closure30, A._ndblTests_closure31, A._ndblTests_closure32, A._ndblTests_closure33, A._ndblTests_closure34, A._ndblTests_closure35, A._ndblTests_closure36, A._ndblTests_closure37, A._ndblTests_closure38, A._ndblTests_closure39, A._ndblTests_closure40, A._ndblTests_closure41, A._ndblTests_closure42, A._ndblTests_closure43, A._ndblTests_closure44, A._ndblTests_closure45, A._ndblTests_closure46, A._ndblTests_closure47, A._ndblTests_closure48, A._ndblTests_closure49, A._ndblTests_closure50, A._ndblTests_closure51, A._ndblTests_closure52, A._ndblTests_closure53, A._ndblTests_closure54, A._ndblTests_closure55, A._ndblTests_closure56, A._ndblTests_closure57, A._ndblTests_closure58, A._ndblTests_closure59, A._ndblTests_closure60, A._ndblTests_closure61, A._ndblTests__closure11, A._ndblTests_closure62, A._ndblTests_closure63, A._ndblTests_closure64, A._ndblTests_closure65, A._ndblTests_closure66, A._ndblTests_closure67, A._ndblTests_closure68, A._ndblTests_closure69, A._ndblTests_closure70, A._ndblTests_closure71, A._ndblTests_closure72, A._ndblTests_closure73, A._ndblTests_closure74, A._ndblTests_closure75, A._ndblTests_closure76, A._ndblTests__closure8, A._ndblTests_closure77, A._ndblTests__closure7, A._ndblTests_closure78, A._ndblTests_closure79, A._ndblTests_closure80, A._ndblTests_closure81, A._ndblTests_closure82, A._ndblTests_closure83, A._ndblTests_closure84, A._ndblTests_closure85, A._ndblTests_closure86, A._ndblTests_closure87, A._ndblTests_closure88, A._ndblTests__closure6, A._ndblTests_closure89, A._ndblTests_closure90, A._ndblTests_closure91, A._ndblTests_closure92, A._ndblTests_closure93, A._ndblTests_closure94, A._ndblTests_closure95, A._ndblTests_closure96, A._ndblTests_closure97, A._ndblTests_closure98, A._ndblTests_closure99, A._ndblTests_closure100, A._ndblTests_closure101, A._ndblTests_closure102, A._ndblTests_closure103, A._ndblTests_closure104, A._ndblTests_closure105, A._ndblTests_closure106, A._ndblTests_closure107, A._ndblTests_closure108, A._ndblTests_closure109, A._ndblTests_closure110, A._ndblTests_closure111, A._ndblTests_closure112, A._ndblTests_closure113, A._ndblTests_closure114, A._ndblTests_closure115, A._ndblTests_closure116, A._ndblTests_closure117, A._ndblTests_closure118, A._ndblTests_closure119, A._nintTests_closure26, A._nintTests_closure27, A._nintTests_closure28, A._nintTests_closure29, A._nintTests_closure30, A._nintTests_closure31, A._nintTests_closure32, A._nintTests_closure33, A._nintTests_closure34, A._nintTests_closure35, A._nintTests_closure36, A._nintTests_closure37, A._nintTests_closure38, A._nintTests_closure39, A._nintTests_closure40, A._nintTests_closure41, A._nintTests_closure42, A._nintTests_closure43, A._nintTests_closure44, A._nintTests_closure45, A._nintTests_closure46, A._nintTests_closure47, A._nintTests_closure48, A._nintTests_closure49, A._nintTests_closure50, A._nintTests_closure51, A._nintTests_closure52, A._nintTests_closure53, A._nintTests_closure54, A._nintTests_closure55, A._nintTests_closure56, A._nintTests_closure57, A._nintTests_closure58, A._nintTests_closure59, A._nintTests_closure60, A._nintTests_closure61, A._nintTests__closure11, A._nintTests_closure62, A._nintTests_closure63, A._nintTests_closure64, A._nintTests_closure65, A._nintTests_closure66, A._nintTests_closure67, A._nintTests_closure68, A._nintTests_closure69, A._nintTests_closure70, A._nintTests_closure71, A._nintTests_closure72, A._nintTests_closure73, A._nintTests_closure74, A._nintTests_closure75, A._nintTests_closure76, A._nintTests__closure8, A._nintTests_closure77, A._nintTests__closure7, A._nintTests_closure78, A._nintTests_closure79, A._nintTests_closure80, A._nintTests_closure81, A._nintTests_closure82, A._nintTests_closure83, A._nintTests_closure84, A._nintTests_closure85, A._nintTests_closure86, A._nintTests_closure87, A._nintTests_closure88, A._nintTests__closure6, A._nintTests_closure89, A._nintTests_closure90, A._nintTests_closure91, A._nintTests_closure92, A._nintTests_closure93, A._nintTests_closure94, A._nintTests_closure95, A._nintTests_closure96, A._nintTests_closure97, A._nintTests_closure98, A._nintTests_closure99, A._nintTests_closure100, A._nintTests_closure101, A._nintTests_closure102, A._nintTests_closure103, A._nintTests_closure104, A._nintTests_closure105, A._nintTests_closure106, A._nintTests_closure107, A._nintTests_closure108, A._nintTests_closure109, A._nintTests_closure110, A._nintTests_closure111, A._nintTests_closure112, A._nintTests_closure113, A._nintTests_closure114, A._nintTests_closure115, A._nintTests_closure116, A._nintTests_closure117, A._nintTests_closure118, A._nintTests_closure119, A._Features_forEach_$a0, A.testLazyMaps_$initDataContext, A.testLazyMaps_$initDataContext_closure, A._dblTests_closure, A._dblTests__closure5, A._dblTests_closure0, A._dblTests_closure1, A._dblTests_closure2, A._dblTests_closure3, A._dblTests_closure4, A._dblTests_closure5, A._dblTests_closure6, A._dblTests_closure7, A._dblTests_closure8, A._dblTests_closure9, A._dblTests_closure10, A._dblTests_closure11, A._dblTests_closure12, A._dblTests_closure13, A._dblTests_closure14, A._dblTests_closure15, A._dblTests_closure16, A._dblTests_closure17, A._dblTests_closure18, A._dblTests_closure19, A._dblTests_closure20, A._dblTests_closure21, A._dblTests_closure22, A._dblTests_closure23, A._dblTests_closure24, A._dblTests_closure25, A._ndblTests_closure, A._ndblTests__closure5, A._ndblTests_closure0, A._ndblTests_closure1, A._ndblTests_closure2, A._ndblTests_closure3, A._ndblTests_closure4, A._ndblTests_closure5, A._ndblTests_closure6, A._ndblTests_closure7, A._ndblTests_closure8, A._ndblTests_closure9, A._ndblTests_closure10, A._ndblTests_closure11, A._ndblTests_closure12, A._ndblTests_closure13, A._ndblTests_closure14, A._ndblTests_closure15, A._ndblTests_closure16, A._ndblTests_closure17, A._ndblTests_closure18, A._ndblTests_closure19, A._ndblTests_closure20, A._ndblTests_closure21, A._ndblTests_closure22, A._ndblTests_closure23, A._ndblTests_closure24, A._ndblTests_closure25, A._nintTests_closure, A._nintTests__closure5, A._nintTests_closure0, A._nintTests_closure1, A._nintTests_closure2, A._nintTests_closure3, A._nintTests_closure4, A._nintTests_closure5, A._nintTests_closure6, A._nintTests_closure7, A._nintTests_closure8, A._nintTests_closure9, A._nintTests_closure10, A._nintTests_closure11, A._nintTests_closure12, A._nintTests_closure13, A._nintTests_closure14, A._nintTests_closure15, A._nintTests_closure16, A._nintTests_closure17, A._nintTests_closure18, A._nintTests_closure19, A._nintTests_closure20, A._nintTests_closure21, A._nintTests_closure22, A._nintTests_closure23, A._nintTests_closure24, A._nintTests_closure25, A.execute____closure126, A.execute____closure125, A.execute____closure124, A.execute___closure_hook0, A.execute____closure123, A.execute____closure122, A.execute____closure121, A.execute____closure120, A.execute____closure119, A.execute____closure118, A.execute____closure117, A.execute____closure116, A.execute____closure115, A.execute____closure114, A.execute____closure113, A.execute____closure112, A.execute____closure_createTask0, A.execute____closure111, A.execute____closure_createTask, A.execute____closure110, A.execute____closure109, A.execute____closure108, A.execute____closure107, A.execute___closure_hook, A.execute____closure106, A.execute____closure105, A.execute____closure104, A.execute____closure103, A.execute____closure102, A.execute____closure101, A.execute____closure100, A.execute____closure99, A.execute____closure98, A.execute____closure97, A.execute____closure96, A.execute____closure95, A.execute____closure94, A.execute_____closure68, A.execute____closure93, A.execute____closure92, A.execute____closure91, A.execute____closure90, A.execute____closure89, A.execute____closure88, A.execute_____closure66, A.execute_____closure67, A.execute_____closure42, A.execute_____closure41, A.execute______closure46, A.execute_____closure40, A.execute______closure45, A.execute_____closure39, A.execute_____closure38, A.execute______closure44, A.execute_____closure37, A.execute______closure43, A.execute_____closure36, A.execute_____closure35, A.execute______closure42, A.execute_______closure4, A.execute_____closure34, A.execute______closure41, A.execute_______closure3, A.execute____closure62, A.execute____closure61, A.execute_____closure43, A.execute_____closure29, A.execute______closure40, A.execute_____closure28, A.execute_____closure27, A.execute_____closure26, A.execute______closure39, A.execute_____closure25, A.execute______closure34, A.execute______closure35, A.execute______closure36, A.execute______closure37, A.execute______closure38, A.execute_____closure24, A.execute______closure29, A.execute______closure30, A.execute______closure31, A.execute______closure32, A.execute______closure33, A.execute_____closure23, A.execute_____closure22, A.execute_____closure21, A.execute_____closure20, A.execute______closure25, A.execute_______closure2, A.execute______closure26, A.execute_______closure0, A.execute_______closure1, A.execute______closure27, A.execute_______closure, A.execute______closure28, A.execute_____closure19, A.execute______closure12, A.execute______closure14, A.execute______closure15, A.execute______closure16, A.execute______closure17, A.execute______closure18, A.execute______closure19, A.execute______closure20, A.execute______closure21, A.execute______closure22, A.execute______closure23, A.execute______closure24, A.execute_____closure18, A.execute______closure, A.execute______closure1, A.execute______closure2, A.execute______closure3, A.execute______closure4, A.execute______closure5, A.execute______closure6, A.execute______closure7, A.execute______closure8, A.execute______closure9, A.execute______closure10, A.execute______closure11, A.execute_____closure17, A.execute_____closure16, A.execute_____closure15, A.execute_____closure14, A.execute_____closure13, A.execute_____closure12, A.execute_____closure11, A.execute_____closure10, A.execute_____closure9, A.execute_____closure8, A.execute_____closure7, A.execute_____closure6, A._testFinitePoolCancelation_closure, A._testFinitePoolCancelation_closure0, A._testInfinitePoolCancelation_closure, A._testInfinitePoolCancelation_closure0, A.execute__closure_testSum, A.execute_____closure32, A.execute_____closure33, A.execute_____closure30, A.execute_____closure31, A.execute____closure40, A.execute____closure39, A.execute____closure38, A.execute____closure37, A.execute____closure36, A.execute____closure35, A.execute____closure34, A.execute____closure33, A.execute____closure32, A.execute____closure31, A.execute____closure30, A.execute____closure87, A.execute_____closure65, A.execute______closure54, A.execute______closure55, A.execute____closure86, A.execute_____closure64, A.execute______closure53, A.execute_____closure63, A.execute_____closure62, A.execute_____closure61, A.execute_____closure60, A.execute_____closure59, A.execute_____closure58, A.execute_____closure57, A.execute_____closure56, A.execute_____closure55, A.execute_____closure54, A.execute_____closure53, A.execute____closure74, A.execute____closure73, A.execute____closure72, A.execute____closure71, A.execute_____closure51, A.execute______closure47, A.execute______closure48, A.execute______closure49, A.execute______closure50, A.execute_____closure50, A.execute_____closure49, A.execute_____closure48, A.execute_____closure47, A.execute_____closure46, A.execute_____closure45, A.execute_____closure44, A.execute_____closure5, A.execute_____closure4, A.execute_____closure3, A.execute_____closure2, A.execute_____closure1, A.execute_____closure0, A.execute_____closure, A._checkWebWorkers_closure, A.ConsoleToHtml_convert_closure, A.ErrorWorkerPool_closure, A.ErrorWorkerPool_throwException_closure, A.ErrorWorkerPool_throwWorkerException_closure, A.ErrorWorkerPool_throwTaskTimeOutException_closure, A.ErrorWorkerPool_throwCanceledException_closure, A.ErrorWorkerPool_throwTestException_closure, A.HtmlLogger__findDisplayableError_closure, A.IssuesWorkerPool_closure, A.IssuesWorkerPool_issue_8_closure, A.IssuesWorkerPool_issue_23_closure, A.LocalClientWorkerPool_closure, A.LocalClientWorkerPool_checkIds_closure, A.LocalClientWorkerPool_checkException_closure, A.LocalClientWorkerPool_checkSequence_closure, A.LocalServiceImpl_operations_closure, A.LocalServiceImpl_operations_closure0, A.LocalServiceImpl_operations_closure1, A.LocalServiceImpl_operations_closure2, A.MemoryLogger_logs_closure, A.PersonMarshaler_marshal_closure, A.PersonMarshaler_unmarshal_$unmarshal, A.PrimeWorkerPool_closure, A.PrimeWorkerPool_isPrime_closure, A.PrimeWorkerPool_getPrimes_closure, A.bootstrap_execute, A.bootstrap_execute_closure, A.bootstrap_closure, A.TestContext_pending_closure, A.TestContext_wait_closure, A.launch_closure, A.TestWorkerPool_closure, A.TestWorkerPool$throws_closure, A.TestWorkerPool$missingStartRequest_closure, A.TestWorkerPool$invalid_closure, A.TestWorkerPool_io_closure, A.TestWorkerPool_cpu_closure, A.TestWorkerPool_delayed_80ms_closure, A.TestWorkerPool_ping_closure, A.TestWorkerPool_finite_20ms_closure, A.TestWorkerPool_infinite_20ms_closure, A.TestWorkerPool_getPendingInfiniteWithErrors_closure, A.TestWorkerPool_infiniteWithErrors_closure, A.TestWorkerPool_delayedTask_closure, A.TestWorkerPool_finiteTask_closure, A.TestWorkerPool_infiniteWithErrorsTask_closure, A.TestWorkerPool_map_closure, A.TestWorker_fractionAdd_closure, A.TestWorker_fractionAdd_closure0, A.TestWorker_getPlatformType_closure]);
+    _inheritMany(A.Closure0Args, [A._CastIterableBase_lastWhere_closure, A.CastMap_putIfAbsent_closure, A.CastMap_update_closure, A.nullFuture_closure, A.Primitives_initTicker_closure, A._AsyncRun__scheduleImmediateJsOverride_internalCallback, A._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, A._TimerImpl_internalCallback, A._TimerImpl$periodic_closure, A.Future_Future_closure, A.Future_Future$microtask_closure, A.Future_Future$delayed_closure, A.Future_forEach_closure, A._Future__addListener_closure, A._Future__prependListeners_closure, A._Future__chainCoreFuture_closure, A._Future__asyncCompleteWithValue_closure, A._Future__asyncCompleteErrorObject_closure, A._Future__propagateToListeners_handleWhenCompleteCallback, A._Future__propagateToListeners_handleValueCallback, A._Future__propagateToListeners_handleError, A.Stream_Stream$fromIterable_closure_next, A.Stream_Stream$fromIterable__closure, A.Stream_length_closure0, A.Stream_isEmpty_closure, A.Stream_toList_closure0, A.Stream_first_closure, A._StreamController__subscribe_closure, A._StreamController__recordCancel_complete, A._BufferingStreamSubscription_asFuture_closure, A._BufferingStreamSubscription_asFuture__closure, A._BufferingStreamSubscription__sendError_sendError, A._BufferingStreamSubscription__sendDone_sendDone, A._PendingEvents_schedule_closure, A._DoneStreamSubscription_asFuture_closure, A._MultiStream_listen_closure, A._cancelAndValue_closure, A._CustomZone_bindCallback_closure, A._CustomZone_bindCallbackGuarded_closure, A._rootHandleError_closure, A._RootZone_bindCallback_closure, A._RootZone_bindCallbackGuarded_closure, A._Utf8Decoder__decoder_closure, A._Utf8Decoder__decoderNonfatal_closure, A.StreamGroup_add_closure, A.StreamGroup_add_closure0, A.StreamGroup__listenToStream_closure, A.Logger_defaultFilter_closure, A._expect_closure0, A._expect_closure1, A.Pool__onResourceReleaseAllowed_closure, A.openChannel_$errorHandler_closure, A.openChannel_$errorHandler__closure, A.openChannel_$errorHandler__closure0, A.openChannel__closure1, A.openChannel__closure, A.openChannel__closure0, A.openChannel_closure1, A.openChannel_closure2, A._WebForwardChannel__forward_closure, A._WebChannel__postRequest_closure, A._WebChannel__inspectAndPostRequest_closure, A._WebChannel__getResponseStream_$sendRequest, A._WebChannel__getResponseStream_$sendRequest_$close, A._WebChannel__getResponseStream_$sendRequest_closure, A._WebChannel__getResponseStream_closure, A._WebChannel_sendRequest_$done, A.EventBuffer_add_closure, A.EventBuffer_addError_closure, A._WebWorkerChannel__postResponse_closure, A._WebWorkerChannel__inspectAndPostResponse_closure, A.ResultStream_$onCancel, A.ResultStream_$onListen, A.WorkerRunner__getTokenRef_closure, A.WorkerRunner__pipe_onDone, A.WorkerRunner__pipe_closure, A.WorkerRunner__pipe_closure0, A.PoolWorker_run_closure, A.WorkerStreamTask_closure, A.WorkerPool__provisionWorkers_closure, A.WorkerPool__provisionWorkers_closure2, A.WorkerPool__provisionWorkers__closure0, A.WorkerPool__provisionWorkers__closure2, A.WorkerPool__dispatchTasks_closure, A.Worker_stream_closure0, A.Chain_Chain$current_closure, A.Chain_Chain$forTrace_closure, A.Frame_Frame$parseVM_closure, A.Frame_Frame$parseV8_closure, A.Frame_Frame$_parseFirefoxEval_closure, A.Frame_Frame$parseFirefox_closure, A.Frame_Frame$parseFriendly_closure, A.LazyChain_foldFrames_closure, A.LazyTrace_foldFrames_closure, A.StackZoneSpecification_chainFor_closure, A.StackZoneSpecification_chainFor_closure0, A.StackZoneSpecification__currentTrace_closure, A.Trace_Trace$from_closure, A.Declarer_test_closure, A.Declarer_test__closure, A.Declarer_group_closure, A.Declarer_build__closure, A.Declarer__tearDownAll_closure, A.Declarer__tearDownAll__closure, A.Invoker_guard__closure, A.Invoker_runTearDowns_closure, A.Invoker_runTearDowns__closure, A.Invoker__waitForOutstandingCallbacks_closure, A.Invoker__waitForOutstandingCallbacks_closure0, A.Invoker_heartbeat_message, A.Invoker_heartbeat_closure, A.Invoker_heartbeat__closure, A.Invoker__handleError_closure, A.Invoker__onRun_closure, A.Invoker__onRun__closure, A.Invoker__onRun___closure, A.Invoker__onRun____closure, A.Invoker__onRun____closure0, A.Metadata_Metadata_unresolved, A.PlatformSelector_validate_closure, A.pumpEventQueue_closure, A.Engine_run__closure, A.Engine_run___closure, A.Engine_run_closure0, A.Engine__runLiveTest_closure0, A.Engine__runLiveTest_closure1, A.Engine__runSkippedTest_closure, A.Engine__runSkippedTest_closure0, A.Engine__runSkippedTest_closure1, A.LiveSuiteController_close_closure, A.RunnerSuiteController__close_closure, A._declarer_closure, A._declarer__closure, A.currentOSGuess_closure, A.Using_useAsync_closure, A.execute_closure11, A.execute__closure16, A.execute___closure106, A.execute____closure169, A.execute____closure170, A.execute___closure107, A.execute____closure156, A.execute____closure157, A.execute____closure158, A.execute____closure159, A.execute____closure160, A.execute____closure161, A.execute____closure162, A.execute____closure163, A.execute____closure164, A.execute____closure165, A.execute____closure166, A.execute____closure167, A.execute____closure168, A.execute___closure108, A.execute____closure143, A.execute____closure144, A.execute____closure145, A.execute____closure146, A.execute____closure147, A.execute____closure148, A.execute____closure149, A.execute____closure150, A.execute____closure151, A.execute____closure152, A.execute____closure153, A.execute____closure154, A.execute____closure155, A.execute___closure109, A.execute____closure137, A.execute____closure138, A.execute____closure139, A.execute____closure140, A.execute____closure141, A.execute____closure142, A.execute_closure12, A.execute__closure17, A.execute___closure110, A.execute___closure111, A.execute_closure10, A.execute__closure15, A.execute___closure101, A.execute___closure102, A.execute___closure103, A.execute___closure104, A.execute___closure105, A.execute_closure3, A.execute__closure4, A.execute___closure25, A.execute___closure26, A.execute___closure27, A.execute___closure28, A.execute___closure29, A.execute___closure30, A.execute___closure31, A.execute___closure32, A.execute___closure33, A.execute___closure34, A.execute_closure2, A.execute__closure2, A.execute___closure23, A.execute___closure24, A.execute__closure3, A.execute___closure19, A.execute____closure43, A.execute___closure20, A.execute___closure21, A.execute___closure_check, A.execute___closure22, A.execute___closure_check1, A.execute___closure_check2, A.testCastConverter_closure, A.testCastConverter__closure, A.testCastConverter___closure29, A.testCastConverter___closure30, A.testCastConverter___closure31, A.testCastConverter___closure32, A.testCastConverter___closure33, A.testCastConverter___closure34, A.testCastConverter___closure35, A.testCastConverter__closure0, A.testCastConverter___closure22, A.testCastConverter___closure23, A.testCastConverter___closure24, A.testCastConverter___closure25, A.testCastConverter___closure26, A.testCastConverter___closure27, A.testCastConverter___closure28, A.testCastConverter__closure1, A.testCastConverter___closure14, A.testCastConverter____closure19, A.testCastConverter___closure15, A.testCastConverter____closure18, A.testCastConverter___closure16, A.testCastConverter____closure17, A.testCastConverter___closure17, A.testCastConverter____closure16, A.testCastConverter___closure18, A.testCastConverter____closure15, A.testCastConverter___closure19, A.testCastConverter____closure14, A.testCastConverter___closure20, A.testCastConverter____closure13, A.testCastConverter___closure21, A.testCastConverter____closure12, A.testCastConverter__closure2, A.testCastConverter___closure6, A.testCastConverter____closure11, A.testCastConverter___closure7, A.testCastConverter____closure10, A.testCastConverter___closure8, A.testCastConverter____closure9, A.testCastConverter___closure9, A.testCastConverter____closure8, A.testCastConverter___closure10, A.testCastConverter____closure7, A.testCastConverter___closure11, A.testCastConverter____closure6, A.testCastConverter___closure12, A.testCastConverter____closure5, A.testCastConverter___closure13, A.testCastConverter____closure4, A.testCastConverter__closure3, A.testCastConverter___closure1, A.testCastConverter____closure3, A.testCastConverter___closure2, A.testCastConverter____closure2, A.testCastConverter___closure3, A.testCastConverter____closure1, A.testCastConverter___closure4, A.testCastConverter____closure0, A.testCastConverter___closure5, A.testCastConverter____closure, A.testCastConverter__closure4, A.testCastConverter___closure, A.testCastConverter___closure0, A.testContextAwareConverter_closure, A.testContextAwareConverter__closure, A.testContextAwareConverter__closure0, A.testContextAwareConverter___closure29, A.testContextAwareConverter___closure30, A.testContextAwareConverter___closure31, A.testContextAwareConverter____closure35, A.testContextAwareConverter____closure36, A.testContextAwareConverter____closure37, A.testContextAwareConverter____closure38, A.testContextAwareConverter____closure39, A.testContextAwareConverter____closure40, A.testContextAwareConverter____closure41, A.testContextAwareConverter____closure42, A.testContextAwareConverter___closure32, A.testContextAwareConverter____closure34, A.testContextAwareConverter___closure33, A.testContextAwareConverter____closure32, A.testContextAwareConverter____closure33, A.testContextAwareConverter___closure34, A.testContextAwareConverter____closure28, A.testContextAwareConverter____closure29, A.testContextAwareConverter____closure30, A.testContextAwareConverter____closure31, A.testContextAwareConverter___closure35, A.testContextAwareConverter____closure26, A.testContextAwareConverter____closure27, A.testContextAwareConverter__closure1, A.testContextAwareConverter___closure22, A.testContextAwareConverter___closure23, A.testContextAwareConverter___closure24, A.testContextAwareConverter___closure25, A.testContextAwareConverter____closure25, A.testContextAwareConverter___closure26, A.testContextAwareConverter____closure23, A.testContextAwareConverter____closure24, A.testContextAwareConverter___closure27, A.testContextAwareConverter____closure21, A.testContextAwareConverter____closure22, A.testContextAwareConverter___closure28, A.testContextAwareConverter____closure19, A.testContextAwareConverter____closure20, A.testContextAwareConverter__closure2, A.testContextAwareConverter___closure14, A.testContextAwareConverter____closure18, A.testContextAwareConverter___closure15, A.testContextAwareConverter___closure16, A.testContextAwareConverter____closure17, A.testContextAwareConverter___closure17, A.testContextAwareConverter____closure16, A.testContextAwareConverter___closure18, A.testContextAwareConverter____closure15, A.testContextAwareConverter___closure19, A.testContextAwareConverter____closure14, A.testContextAwareConverter___closure20, A.testContextAwareConverter____closure13, A.testContextAwareConverter___closure21, A.testContextAwareConverter____closure12, A.testContextAwareConverter__closure3, A.testContextAwareConverter___closure6, A.testContextAwareConverter____closure11, A.testContextAwareConverter___closure7, A.testContextAwareConverter____closure10, A.testContextAwareConverter___closure8, A.testContextAwareConverter____closure9, A.testContextAwareConverter___closure9, A.testContextAwareConverter____closure8, A.testContextAwareConverter___closure10, A.testContextAwareConverter____closure7, A.testContextAwareConverter___closure11, A.testContextAwareConverter____closure6, A.testContextAwareConverter___closure12, A.testContextAwareConverter____closure5, A.testContextAwareConverter___closure13, A.testContextAwareConverter____closure4, A.testContextAwareConverter__closure4, A.testContextAwareConverter___closure1, A.testContextAwareConverter____closure3, A.testContextAwareConverter___closure2, A.testContextAwareConverter____closure2, A.testContextAwareConverter___closure3, A.testContextAwareConverter____closure1, A.testContextAwareConverter___closure4, A.testContextAwareConverter____closure0, A.testContextAwareConverter___closure5, A.testContextAwareConverter____closure, A.testContextAwareConverter__closure5, A.testContextAwareConverter___closure, A.testContextAwareConverter___closure0, A.testNumConverter_closure, A.testNumConverter__closure, A.testNumConverter___closure29, A.testNumConverter___closure30, A.testNumConverter___closure31, A.testNumConverter____closure35, A.testNumConverter____closure36, A.testNumConverter____closure37, A.testNumConverter____closure38, A.testNumConverter____closure39, A.testNumConverter____closure40, A.testNumConverter____closure41, A.testNumConverter____closure42, A.testNumConverter___closure32, A.testNumConverter____closure34, A.testNumConverter___closure33, A.testNumConverter____closure32, A.testNumConverter____closure33, A.testNumConverter___closure34, A.testNumConverter____closure28, A.testNumConverter____closure29, A.testNumConverter____closure30, A.testNumConverter____closure31, A.testNumConverter___closure35, A.testNumConverter____closure26, A.testNumConverter____closure27, A.testNumConverter__closure0, A.testNumConverter___closure22, A.testNumConverter___closure23, A.testNumConverter___closure24, A.testNumConverter___closure25, A.testNumConverter____closure25, A.testNumConverter___closure26, A.testNumConverter____closure23, A.testNumConverter____closure24, A.testNumConverter___closure27, A.testNumConverter____closure21, A.testNumConverter____closure22, A.testNumConverter___closure28, A.testNumConverter____closure19, A.testNumConverter____closure20, A.testNumConverter__closure1, A.testNumConverter___closure14, A.testNumConverter____closure18, A.testNumConverter___closure15, A.testNumConverter___closure16, A.testNumConverter____closure17, A.testNumConverter___closure17, A.testNumConverter____closure16, A.testNumConverter___closure18, A.testNumConverter____closure15, A.testNumConverter___closure19, A.testNumConverter____closure14, A.testNumConverter___closure20, A.testNumConverter____closure13, A.testNumConverter___closure21, A.testNumConverter____closure12, A.testNumConverter__closure2, A.testNumConverter___closure6, A.testNumConverter____closure11, A.testNumConverter___closure7, A.testNumConverter____closure10, A.testNumConverter___closure8, A.testNumConverter____closure9, A.testNumConverter___closure9, A.testNumConverter____closure8, A.testNumConverter___closure10, A.testNumConverter____closure7, A.testNumConverter___closure11, A.testNumConverter____closure6, A.testNumConverter___closure12, A.testNumConverter____closure5, A.testNumConverter___closure13, A.testNumConverter____closure4, A.testNumConverter__closure3, A.testNumConverter___closure1, A.testNumConverter____closure3, A.testNumConverter___closure2, A.testNumConverter____closure2, A.testNumConverter___closure3, A.testNumConverter____closure1, A.testNumConverter___closure4, A.testNumConverter____closure0, A.testNumConverter___closure5, A.testNumConverter____closure, A.testNumConverter__closure4, A.testNumConverter___closure, A.testNumConverter___closure0, A.testLazyLists_closure, A.testLazyLists_closure0, A.testLazyLists_closure1, A._FeatureTestExt_check_closure, A.testLazyMaps_closure, A.testLazyMaps_closure0, A.testLazyMaps_closure1, A._FeatureTestExt_test_closure, A.execute_closure9, A.execute__closure10, A.execute___closure97, A.execute___closure98, A.execute___closure99, A.execute___closure100, A.execute__closure11, A.execute___closure94, A.execute___closure95, A.execute___closure96, A.execute__closure12, A.execute___closure88, A.execute___closure89, A.execute___closure90, A.execute___closure91, A.execute___closure92, A.execute___closure93, A.execute__closure13, A.execute___closure82, A.execute___closure83, A.execute_____closure70, A.execute___closure84, A.execute_____closure69, A.execute___closure85, A.execute___closure86, A.execute___closure87, A.execute__closure14, A.execute___closure72, A.execute___closure73, A.execute___closure74, A.execute___closure75, A.execute___closure76, A.execute___closure77, A.execute___closure78, A.execute___closure79, A.execute___closure80, A.execute_____createTask_closure0, A.execute___closure81, A.execute_____createTask_closure, A.execute_closure8, A.execute__closure9, A.execute___closure56, A.execute___closure57, A.execute___closure58, A.execute___closure59, A.execute___closure60, A.execute___closure61, A.execute___closure62, A.execute___closure63, A.execute___closure64, A.execute___closure65, A.execute___closure66, A.execute___closure67, A.execute___closure68, A.execute___closure69, A.execute___closure70, A.execute___closure71, A.execute_closure7, A.execute__closure8, A.execute___closure49, A.execute___closure50, A.execute___closure51, A.execute___closure52, A.execute___closure53, A.execute____closure_pause, A.execute____closure_resume, A.execute___closure54, A.execute___closure55, A.execute_closure4, A.execute__closure5, A.execute___closure35, A.execute____closure58, A.execute____closure59, A.execute____closure60, A.execute___closure36, A.execute____closure55, A.execute____closure56, A.execute____closure57, A.execute___closure37, A.execute____closure52, A.execute____closure53, A.execute____closure54, A.execute_closure5, A.execute__closure6, A.execute___closure38, A.execute___closure39, A.execute_closure0, A.execute__closure0, A.execute___closure2, A.execute____closure24, A.execute____closure25, A.execute____closure26, A.execute____closure27, A.execute____closure28, A.execute____closure29, A.execute___closure3, A.execute____closure18, A.execute____closure19, A.execute____closure20, A.execute____closure21, A.execute____closure22, A.execute______closure13, A.execute____closure23, A.execute______closure0, A.execute___closure4, A.execute____closure14, A.execute____closure15, A.execute____closure16, A.execute____closure17, A.execute___closure5, A.execute____closure10, A.execute____closure11, A.execute____closure12, A.execute____closure13, A.execute___closure6, A.execute____closure6, A.execute____closure7, A.execute____closure8, A.execute____closure9, A.execute_dob, A.execute_closure1, A.execute__closure1, A.execute___closure7, A.execute____closure41, A.execute____closure42, A.execute___closure8, A.execute___closure9, A.execute___closure10, A.execute___closure11, A.execute___closure12, A.execute___closure13, A.execute___closure14, A.execute___closure15, A.execute___closure16, A.execute___closure17, A.execute___closure18, A.execute_closure6, A.execute__closure7, A.execute___closure40, A.execute___closure41, A.execute___closure42, A.execute____closure77, A.execute____closure78, A.execute____closure79, A.execute____closure80, A.execute____closure81, A.execute____closure82, A.execute____closure83, A.execute____closure84, A.execute____closure85, A.execute___closure43, A.execute____closure75, A.execute____closure76, A.execute___closure44, A.execute___closure45, A.execute___closure46, A.execute___closure47, A.execute_____closure52, A.execute___closure48, A.execute____closure63, A.execute____closure64, A.execute____closure65, A.execute____closure66, A.execute____closure67, A.execute_____closure_pause, A.execute_____closure_resume, A.execute____closure68, A.execute____closure69, A.execute____closure70, A.execute_closure, A.execute__closure, A.execute___closure, A.execute____closure4, A.execute____closure5, A.execute___closure0, A.execute____closure2, A.execute____closure3, A.execute___closure1, A.execute____closure, A.execute____closure0, A.execute____closure1, A.TestContext_test_closure, A.TestContext_test__closure0, A.TestResult_skip_closure, A.TestResult_cancel_closure, A.TestResult_pass_closure, A.TestResult_fail_closure, A.displayVersions_closure, A.displayVersions_closure0, A.displayVersions_closure1, A.displayVersions_closure2, A.displayVersions_closure3, A.displayVersions_closure4, A.displayVersions_closure5, A.displayVersions_closure6, A.displayVersions_closure7, A.TestTimeout_completion_closure]);
     _inheritMany(A._CastIterableBase, [A.CastIterable, A.__CastListBase__CastIterableBase_ListMixin, A.CastSet, A.CastQueue]);
     _inherit(A._EfficientLengthCastIterable, A.CastIterable);
     _inherit(A._CastListBase, A.__CastListBase__CastIterableBase_ListMixin);
@@ -62467,7 +62313,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map", JSObject: "JSObject"},
     mangledNames: {},
-    types: ["Future<Null>()", "Null()", "~()", "Future<Null>(TestWorkerPool)", "List<double>(List<double>)", "Future<Null>(TestWorker)", "List<int?>(List<int?>)", "List<double?>(List<double?>)", "bool(String)", "double(List<double>)", "int?(List<int?>)", "double?(List<double?>)", "int()", "int?()", "Future<~>()", "int(List<int?>)", "~(@)", "int(List<double?>)", "bool(@)", "int(List<double>)", "Map<String,int>()", "~(TestContext?)", "String()", "Null(JSObject)", "bool(Object?)", "Future<Null>(ErrorWorker)", "Set<int>()", "Iterable<int?>(List<int?>)", "Iterable<double?>(List<double?>)", "String(String)", "List<int>()", "Iterable<double>(List<double>)", "~(Object?)", "Object?(Object?)", "Map<String,double>(Map<String,double>)", "double?(Map<String,double?>)", "Map<String,double?>(Map<String,double?>)", "int?(Map<String,int?>)", "Map<String,int?>(Map<String,int?>)", "Null(@)", "Future<Null>(LocalWorker<LocalServiceImpl>)", "bool(ValueTask<@>)", "Future<Null>(LogWorker)", "double()", "int(@)", "bool(List<double>)", "Future<Null>(PersonWorker)", "bool(List<double?>)", "~(JSObject)", "~(Description,bool)", "bool(List<int?>)", "Trace()", "bool(StreamTask<@>)", "Set<double>()", "Future<Null>(ErrorWorkerPool)", "List<double>()", "double?()", "~(Object[StackTrace?])", "double(Map<String,double>)", "~(Object,StackTrace)", "Frame()", "bool(num?)", "Future<Null>(IssuesWorker)", "Future<int>(ErrorWorker)", "Stream<int>(TestWorker)", "bool(List<@>)", "~(int)", "Frame(String)", "Null(Object,StackTrace)", "Chain()", "bool(Map<String,int?>)", "double?(Map<String,double>)", "bool(Map<String,double>)", "bool(Map<String,double?>)", "~(List<@>)", "TestWorker(ExceptionManager)", "Future<Null>(PrimeWorkerPool)", "Null(@,@)", "Future<@>()", "~(State)", "@(@)", "List<int?>()", "List<double?>()", "Set<0^>()<Object?>", "Set<int?>()", "~(@,@)", "~(Object?,Object?)", "~(List<double>)", "~(Timer)", "~(List<double?>)", "Set<double?>()", "bool(Frame)", "~(List<int?>)", "Future<Null>(LocalClientWorker)", "Future<Null>(LocalClientWorkerPool)", "Future<Null>(InstallableWorker)", "bool(String,int?)", "Null(Object)", "bool(String,double?)", "String(Object?)", "bool(String,double)", "int(@,@)", "bool(int?)", "~(bool)", "int(Object?)", "Person(@)", "~(~())", "Future<int>(TestWorker)", "Future<Null>(CacheWorker)", "String(List<int?>)", "bool(double?)", "~([@])", "String(List<double>)", "Null(CanceledException)", "bool(int)", "bool(double)", "double(double,double)", "bool()", "~(String,int?)", "int(int)", "int(int,int)", "@()", "Future<@>(Duration)", "0^()<Object?>", "bool(Channel)", "@(Map<String,@>)", "Future<Null>(NotAWorker)", "~(JSObject?)", "Future<~>(StreamTask<@>)", "int(List<int>)", "Object(@)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "~(Zone,ZoneDelegate,Zone,String)", "~([Object?])", "int(int,WorkerStat)", "Future<Null>(IssuesWorkerPool)", "~(~)", "int(Frame)", "Future<~>(TestWorker)", "GroupEntry?(GroupEntry)", "~([Future<~>?])", "bool(Object,Object)", "String(Frame)", "Trace(String)", "~(Object,StackTrace?)", "String(List<double?>)", "List<double?>(double?)", "Metadata(Metadata,BooleanSelector)", "Future<~>([CanceledException?])", "~(CanceledException)", "CanceledException?(CancelationToken)", "~(WorkerRunner)", "DevelopmentFilter()", "Iterable<bool>(List<double?>)", "~(Object[StackTrace?,int?])", "double(List<double?>)", "double(double,double?)", "double(double?,double?)", "bool(Level)", "~(double?)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "_Mismatch?(Object?,Object?,String,int)", "Future<@>?()", "~(int,@)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "Iterable<bool>(List<int?>)", "List<int?>(int?)", "int(int,int?)", "int(int?,int?)", "~(int?)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "List<0^>(Object?)<Object?>", "SquadronCanceledException(CanceledException)", "Iterable<0^>(Object?)<Object?>", "+lazy,ref(LazyInPlaceMap<String,0^>,Map<String,0^>)(Map<@,@>,0^(@))<Object?>", "Iterable<String>(Map<String,double>)", "String(MapEntry<String,double>)", "String(SquadronCanceledException)", "~(LiveTest)", "~(bool?)", "Map<String?,num?>(Map<String,double>)", "MapEntry<String?,num?>(String,double)", "int(Map<String,double>)", "~(String,double)", "~(AsyncError)", "double(String,double)", "~(Message)", "Iterable<String>(Map<String,double?>)", "String(MapEntry<String,double?>)", "String(Object?,int,Set<Object?>,bool)", "Future<bool?>?()", "OperatingSystem()", "Map<String?,num?>(Map<String,double?>)", "MapEntry<String?,num?>(String,double?)", "int(Map<String,double?>)", "~(String,double?)", "double(String,double?)", "~([Future<@>?])", "Iterable<String>(Map<String,int?>)", "String(MapEntry<String,int?>)", "String(@)", "String(Match)", "Trace(Trace)", "Map<String?,num?>(Map<String,int?>)", "MapEntry<String?,num?>(String,int?)", "int(Map<String,int?>)", "int(String,int?)", "bool(Trace)", "Iterable<String>(Object?)", "Map<0^,1^>(Object?)<Object?,Object?>", "bool(Pattern[int])", "~(@,StackTrace)", "List<Frame>(Trace)", "Future<Null>(MissingWorker)", "String(String?)", "Future<Null>(StreamingServiceWorker)", "TestException?(List<@>)", "Null(~)", "int(Trace)", "@(@,String)", "List<@>(SquadronCanceledException)", "String(Trace)", "Future<Null>(PrimeWorker)", "Null(~())", "~(_WebChannel)", "bool(~)", "bool/()", "Null(Channel)", "Null(bool)", "Frame(String,String)", "DateTime()", "Future<Fraction>(TestWorker{marshalIn!bool,marshalOut!bool})", "Frame(Frame)", "CancelationTokenReference()", "GroupEntry(GroupEntry)", "@(Function)", "int(WorkerStat)", "double(num?)", "+lazy,ref(LazyInPlaceList<0^>,List<0^>)(List<@>,0^(@))<Object?>", "~(String,int)", "String(SquadronException)", "~(List<@>{force:bool})", "bool(WorkerTask<@,Worker>)", "bool(Uri)", "bool(SequenceReplacement)", "ErrorWorker(ExceptionManager)", "@(String)", "bool(JSObject)", "IssuesWorker(ExceptionManager[Logger?])", "Stream<Map<String,int>>(IssuesWorker)", "Future<ByteBuffer?>(IssuesWorker)", "LocalClientWorker(ExceptionManager)", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<Map<String,@>>(LocalClientWorker)", "Future<String>(List<@>)", "String(List<@>)", "Stream<int>(List<@>)", "@(Person)", "PrimeWorker(ExceptionManager)", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "Future<~>(Iterable<String>)", "Future<~>(JSObject)", "bool(TestResult)", "Future<~>(TestResult)", "0&(@,@)", "bool(Pattern)", "CacheWorker()", "InstallableWorker()", "IssuesWorker()", "LocalClientWorker()", "PrimeWorker()", "LogWorker()", "StreamingServiceWorker()", "TestWorker()", "ErrorWorker()", "Null(@,StackTrace)", "String(CanceledException)", "Iterable<bool>(List<double>)", "Future<bool>(TestWorker)", "Stream<List<@>>()", "Future<Map<BigInt,String>>(TestWorker)", "List<int>(@)", "Fraction(@)", "SquadronPlatformType(@)", "List<double>(double)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "bool(Object?,Object?)", "0^(0^,0^)<num>", "0^(0^)<Object?>", "Matcher(Object?)", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "0^(@)<Object?>", "List<0^>(@)<Object?>", "Set<0^>(@)<Object?>", "Map<0^,1^>(@)<Object?,Object?>", "double(@)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "TaskCanceledException?(List<@>?)", "TaskTerminatedException?(List<@>?)", "WorkerException?(List<@>)", "int(PoolWorker<Worker>,PoolWorker<Worker>)", "WorkerStat(PoolWorker<Worker>)", "Iterable<double?>(List<double>)", "Future<int?>(StreamSubscription<@>)", "~(double)", "Metadata()", "int(double,double)", "int(num?)", "bool(TestWorker)", "~(SquadronException)"],
+    types: ["Future<Null>()", "Null()", "~()", "Future<Null>(TestWorkerPool)", "List<double>(List<double>)", "Future<Null>(TestWorker)", "List<int?>(List<int?>)", "List<double?>(List<double?>)", "bool(String)", "double(List<double>)", "int?(List<int?>)", "double?(List<double?>)", "int()", "int?()", "Future<~>()", "int(List<int?>)", "~(@)", "int(List<double?>)", "bool(@)", "int(List<double>)", "Map<String,int>()", "~(TestContext?)", "String()", "Null(JSObject)", "bool(Object?)", "Future<Null>(ErrorWorker)", "Set<int>()", "Iterable<int?>(List<int?>)", "Iterable<double?>(List<double?>)", "String(String)", "List<int>()", "Iterable<double>(List<double>)", "Map<String,double>(Map<String,double>)", "double?(Map<String,double?>)", "Map<String,double?>(Map<String,double?>)", "int?(Map<String,int?>)", "Map<String,int?>(Map<String,int?>)", "Null(@)", "~(Object?)", "Object?(Object?)", "Future<Null>(LocalWorker<LocalServiceImpl>)", "bool(ValueTask<@>)", "Future<Null>(LogWorker)", "double()", "int(@)", "bool(List<double>)", "Future<Null>(PersonWorker)", "bool(List<double?>)", "~(JSObject)", "~(Description,bool)", "bool(List<int?>)", "Trace()", "bool(StreamTask<@>)", "Set<double>()", "Future<Null>(ErrorWorkerPool)", "List<double>()", "double?()", "~(Object[StackTrace?])", "double(Map<String,double>)", "~(Object,StackTrace)", "Frame()", "bool(num?)", "Future<Null>(IssuesWorker)", "Future<int>(ErrorWorker)", "Stream<int>(TestWorker)", "bool(List<@>)", "~(int)", "double?(Map<String,double>)", "Frame(String)", "TestWorker(ExceptionManager)", "Null(Object,StackTrace)", "Chain()", "~(List<@>)", "bool(Map<String,int?>)", "bool(Map<String,double?>)", "bool(Map<String,double>)", "bool(Frame)", "Null(@,@)", "Person(@)", "Future<Null>(CacheWorker)", "~(Object?,Object?)", "Future<Null>(LocalClientWorkerPool)", "Future<Null>(LocalClientWorker)", "Future<@>()", "~(State)", "Future<Null>(InstallableWorker)", "~(~())", "@(@)", "List<int?>()", "List<double?>()", "Set<0^>()<Object?>", "Set<int?>()", "~(@,@)", "Set<double?>()", "bool(String,double?)", "Future<int>(TestWorker)", "String(Object?)", "bool(String,double)", "int(@,@)", "bool(int?)", "~(bool)", "~(List<double>)", "int(Object?)", "~(Timer)", "~(List<int?>)", "~(List<double?>)", "bool(String,int?)", "Future<Null>(PrimeWorkerPool)", "Future<Null>(NotAWorker)", "String(List<int?>)", "String(List<double>)", "bool(double)", "double(double,double)", "~(String,int?)", "bool(int)", "int(int)", "int(int,int)", "@()", "0^()<Object?>", "bool(Channel)", "Null(Object)", "bool(double?)", "Future<@>(Duration)", "Null(~)", "Metadata(Metadata,Metadata)", "~(PlatformSelector,Metadata)", "@(Map<String,@>)", "GroupEntry?(GroupEntry)", "~(JSObject?)", "Future<~>(StreamTask<@>)", "int(List<int>)", "Object(@)", "~([Future<~>?])", "String(List<double?>)", "~(Zone,ZoneDelegate,Zone,String)", "~([Object?])", "int(int,WorkerStat)", "Future<Null>(IssuesWorkerPool)", "int(Frame)", "Null(CanceledException)", "Future<~>(TestWorker)", "~([@])", "~(~)", "bool(Object,Object)", "bool()", "Trace(String)", "~(Object,StackTrace?)", "String(Frame)", "List<double?>(double?)", "Future<~>([CanceledException?])", "~(CanceledException)", "CanceledException?(CancelationToken)", "~(WorkerRunner)", "DevelopmentFilter()", "Iterable<bool>(List<double?>)", "~(Object[StackTrace?,int?])", "double(List<double?>)", "double(double,double?)", "double(double?,double?)", "bool(Level)", "~(double?)", "Future<bool?>()", "bool(LiveTest)", "Null(List<~>)", "_Mismatch?(Object?,Object?,String,int)", "Future<@>?()", "~(int,@)", "String(Object?,Matcher,String?,Map<@,@>,bool)", "Iterable<bool>(List<int?>)", "List<int?>(int?)", "int(int,int?)", "int(int?,int?)", "~(int?)", "Null(Object?,StackTrace)", "~(RunnerSuite)", "List<0^>(Object?)<Object?>", "SquadronCanceledException(CanceledException)", "Iterable<0^>(Object?)<Object?>", "+lazy,ref(LazyInPlaceMap<String,0^>,Map<String,0^>)(Map<@,@>,0^(@))<Object?>", "Iterable<String>(Map<String,double>)", "String(MapEntry<String,double>)", "String(SquadronCanceledException)", "~(LiveTest)", "~(bool?)", "Map<String?,num?>(Map<String,double>)", "MapEntry<String?,num?>(String,double)", "int(Map<String,double>)", "~(String,double)", "~(AsyncError)", "double(String,double)", "~(Message)", "Iterable<String>(Map<String,double?>)", "String(MapEntry<String,double?>)", "String(Object?,int,Set<Object?>,bool)", "Future<bool?>?()", "OperatingSystem()", "Map<String?,num?>(Map<String,double?>)", "MapEntry<String?,num?>(String,double?)", "int(Map<String,double?>)", "~(String,double?)", "double(String,double?)", "~([Future<@>?])", "Iterable<String>(Map<String,int?>)", "String(MapEntry<String,int?>)", "String(@)", "String(Match)", "Trace(Trace)", "Map<String?,num?>(Map<String,int?>)", "MapEntry<String?,num?>(String,int?)", "int(Map<String,int?>)", "int(String,int?)", "bool(Trace)", "Iterable<String>(Object?)", "Map<0^,1^>(Object?)<Object?,Object?>", "bool(Pattern[int])", "~(@,StackTrace)", "List<Frame>(Trace)", "Future<Null>(MissingWorker)", "String(String?)", "Future<Null>(StreamingServiceWorker)", "TestException?(List<@>)", "int(Trace)", "@(@,String)", "List<@>(SquadronCanceledException)", "String(Trace)", "bool(~)", "Future<Null>(PrimeWorker)", "Null(~())", "~(_WebChannel)", "Null(Channel)", "bool/()", "Frame(String,String)", "Null(bool)", "Frame(Frame)", "DateTime()", "Future<Fraction>(TestWorker{marshalIn!bool,marshalOut!bool})", "CancelationTokenReference()", "GroupEntry(GroupEntry)", "@(Function)", "+lazy,ref(LazyInPlaceList<0^>,List<0^>)(List<@>,0^(@))<Object?>", "int(WorkerStat)", "double(num?)", "~(String,int)", "bool(WorkerTask<@,Worker>)", "String(SquadronException)", "~(List<@>{force:bool})", "@(String)", "bool(Uri)", "bool(SequenceReplacement)", "ErrorWorker(ExceptionManager)", "Null(@,StackTrace)", "bool(JSObject)", "IssuesWorker(ExceptionManager[Logger?])", "Stream<Map<String,int>>(IssuesWorker)", "Future<ByteBuffer?>(IssuesWorker)", "LocalClientWorker(ExceptionManager)", "Future<String>(LocalClientWorker)", "Future<bool>(LocalClientWorker)", "Stream<Map<String,@>>(LocalClientWorker)", "Future<String>(List<@>)", "String(List<@>)", "Stream<int>(List<@>)", "@(Person)", "PrimeWorker(ExceptionManager)", "Future<bool>(PrimeWorker)", "Stream<int>(PrimeWorker)", "Future<~>(Iterable<String>)", "Future<~>(JSObject)", "bool(TestResult)", "Future<~>(TestResult)", "0&(@,@)", "bool(Pattern)", "CacheWorker()", "InstallableWorker()", "IssuesWorker()", "LocalClientWorker()", "PrimeWorker()", "LogWorker()", "StreamingServiceWorker()", "TestWorker()", "ErrorWorker()", "String(CanceledException)", "Iterable<bool>(List<double>)", "List<double>(double)", "Future<bool>(TestWorker)", "Stream<List<@>>()", "Future<Map<BigInt,String>>(TestWorker)", "List<int>(@)", "Fraction(@)", "SquadronPlatformType(@)", "~(Zone,ZoneDelegate,Zone,Object,StackTrace)", "~(Zone?,ZoneDelegate?,Zone,Object,StackTrace)", "0^(Zone?,ZoneDelegate?,Zone,0^())<Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^),1^)<Object?,Object?>", "0^(Zone?,ZoneDelegate?,Zone,0^(1^,2^),1^,2^)<Object?,Object?,Object?>", "0^()(Zone,ZoneDelegate,Zone,0^())<Object?>", "0^(1^)(Zone,ZoneDelegate,Zone,0^(1^))<Object?,Object?>", "0^(1^,2^)(Zone,ZoneDelegate,Zone,0^(1^,2^))<Object?,Object?,Object?>", "AsyncError?(Zone,ZoneDelegate,Zone,Object,StackTrace?)", "~(Zone?,ZoneDelegate?,Zone,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~())", "Timer(Zone,ZoneDelegate,Zone,Duration,~(Timer))", "~(String)", "Zone(Zone?,ZoneDelegate?,Zone,ZoneSpecification?,Map<Object?,Object?>?)", "bool(Object?,Object?)", "0^(0^,0^)<num>", "0^(0^)<Object?>", "Matcher(Object?)", "Iterable<double?>(List<double>)", "0^(@)<Object?>", "List<0^>(@)<Object?>", "Set<0^>(@)<Object?>", "Map<0^,1^>(@)<Object?,Object?>", "double(@)", "SquadronCanceledException?(List<@>?)", "SquadronCanceledExceptions?(List<@>?)", "SquadronException?(List<@>)", "SquadronTimeoutException?(List<@>?)", "TaskCanceledException?(List<@>?)", "TaskTerminatedException?(List<@>?)", "WorkerException?(List<@>)", "int(PoolWorker<Worker>,PoolWorker<Worker>)", "WorkerStat(PoolWorker<Worker>)", "Future<int?>(StreamSubscription<@>)", "~(double)", "Metadata()", "int(double,double)", "Metadata(Metadata,BooleanSelector)", "int(num?)", "bool(TestWorker)", "~(SquadronException)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti"),
@@ -62651,7 +62497,6 @@
       LogWorker: findType("LogWorker"),
       MapEntry_String_double: findType("MapEntry<String,double>"),
       MapEntry_dynamic_dynamic: findType("MapEntry<@,@>"),
-      MapEntry_of_String_and_nullable_DateTime: findType("MapEntry<String,DateTime?>"),
       MapEntry_of_String_and_nullable_double: findType("MapEntry<String,double?>"),
       MapEntry_of_String_and_nullable_int: findType("MapEntry<String,int?>"),
       MapEntry_of_nullable_String_and_nullable_num: findType("MapEntry<String?,num?>"),
@@ -62877,7 +62722,6 @@
       nullable_ByteBuffer: findType("ByteBuffer?"),
       nullable_CanceledException: findType("CanceledException?"),
       nullable_Channel: findType("Channel?"),
-      nullable_DateTime: findType("DateTime?"),
       nullable_Declarer: findType("Declarer?"),
       nullable_FutureOr_bool: findType("bool/?"),
       nullable_Future_Null: findType("Future<Null>?"),

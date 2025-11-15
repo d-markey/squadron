@@ -3,7 +3,7 @@ import 'package:squadron/squadron.dart';
 import '../squadron_version.dart';
 import 'local_service.dart';
 
-class LocalClient extends LocalWorkerClient
+class LocalClient extends WorkerClient
     with LocalWorkerVersion
     implements LocalService {
   LocalClient(super.channel);

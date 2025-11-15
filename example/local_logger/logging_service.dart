@@ -24,7 +24,7 @@ class LoggingServiceImpl extends LoggingService {
 }
 
 // The service client: this class will be used in workers that need to call the service implementation
-class LoggingClient extends LocalWorkerClient implements LoggingService {
+class LoggingClient extends WorkerClient implements LoggingService {
   LoggingClient(super.channel);
 
   @override

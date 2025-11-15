@@ -1,3 +1,8 @@
+## 7.3.0
+
+- Deprecate `localWorker` in favor of `sharedService` and `LocalWorkerClient` in favor of `WorkerClient`. See [squadron_builder](https://pub.dev/packages/squadron_builder) and https://github.com/d-markey/squadron/issues/75.
+- Added `Channel.closed`, which returns a `Future<void>` that completes when the channel is closed. This is the same future as the one returned by `Channel.close()`.
+
 ## 7.2.0
 
 - Support sending Dart `DateTime` / JS `Date` instances to/from Workers.

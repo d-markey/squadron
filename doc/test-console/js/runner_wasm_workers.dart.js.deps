@@ -516,7 +516,6 @@ file:///C:/_Projects/github/squadron/lib/src/exceptions/worker_exception.dart
 file:///C:/_Projects/github/squadron/lib/src/invoker.dart
 file:///C:/_Projects/github/squadron/lib/src/iworker.dart
 file:///C:/_Projects/github/squadron/lib/src/local_worker/local_worker.dart
-file:///C:/_Projects/github/squadron/lib/src/local_worker/local_worker_client.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/generic_marshaler.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/identity_marshaler.dart
 file:///C:/_Projects/github/squadron/lib/src/marshalers/marshaling_context.dart
@@ -545,6 +544,7 @@ file:///C:/_Projects/github/squadron/lib/src/worker/worker_channel.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_message.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_request.dart
 file:///C:/_Projects/github/squadron/lib/src/worker/worker_response.dart
+file:///C:/_Projects/github/squadron/lib/src/worker_client.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
 file:///C:/_Projects/github/squadron/lib/version.dart
 file:///C:/_Projects/github/squadron/test/00_jsify_dartify_test.dart
@@ -587,7 +587,6 @@ file:///C:/_Projects/github/squadron/test/src/test_timeout.dart
 file:///C:/_Projects/github/squadron/test/src/utils.dart
 file:///C:/_Projects/github/squadron/test/test_constants.dart
 file:///C:/_Projects/github/squadron/test/test_exception.dart
-file:///C:/_Projects/github/squadron/test/test_extensions.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service_worker.dart
 file:///C:/_Projects/github/squadron/test/worker_services/error_service.dart

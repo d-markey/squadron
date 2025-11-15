@@ -28,7 +28,6 @@ export 'src/exceptions/worker_exception.dart' hide WorkerExceptionImpl;
 export 'src/invoker.dart';
 export 'src/iworker.dart';
 export 'src/local_worker/local_worker.dart';
-export 'src/local_worker/local_worker_client.dart';
 export 'src/marshalers/generic_marshaler.dart';
 export 'src/marshalers/identity_marshaler.dart';
 export 'src/marshalers/marshaling_context.dart';
@@ -51,4 +50,5 @@ export 'src/worker/worker_message.dart' hide WorkerMessageImpl;
 export 'src/worker/worker_request.dart'
     hide WorkerRequestExt, CancelationTokenExt;
 export 'src/worker/worker_response.dart' hide WorkerResponseImpl;
+export 'src/worker_client.dart';
 export 'src/worker_service.dart';

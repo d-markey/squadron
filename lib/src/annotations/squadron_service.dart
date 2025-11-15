@@ -1,12 +1,16 @@
 import '../pool/worker_pool.dart';
+import '../worker/worker.dart';
 import 'target_platform.dart';
 
 const localService = SquadronService.local();
 const vmService = SquadronService.vm();
-const localWorker = LocalWorkerParam._();
+const sharedService = SharedServiceParam._();
 
-class LocalWorkerParam {
-  const LocalWorkerParam._();
+@Deprecated('Use sharedService instead.')
+const localWorker = SharedServiceParam._();
+
+class SharedServiceParam {
+  const SharedServiceParam._();
 }
 
 /// Annotation for service classes to be wrapped as workers.
@@ -34,8 +38,9 @@ class SquadronService {
   /// class. `true` by default.
   final bool pool;
 
-  /// Controls code generation of a [LocalWorkerClient] exposing the target
-  /// service class. `false` by default.
+  /// Controls code generation of [Worker] and [WorkerPool]. When `true`, no
+  /// [Worker] and no [WorkerPool] will be generated but instances of the service
+  /// class can be shared with other workers.
   final bool local;
 
   /// Controls code generation of a entry points for various platforms.
