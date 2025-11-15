@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-28" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8522167" lines-covered="173" lines-valid="203" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-15" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85096157" lines-covered="177" lines-valid="208" package="src/_impl/native" testname="lcov.info" version="1.6">
     <sources>
         <source branches-hit="0" branches-valid="0" filename="_bootstrapper.dart" functions-hit="0" functions-valid="0" lines-hit="8" lines-valid="8" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="8" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_channel_impl.dart" functions-hit="0" functions-valid="0" lines-hit="65" lines-valid="72" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="65" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_channel_impl.dart" functions-hit="0" functions-valid="0" lines-hit="68" lines-valid="75" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="68" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="_worker_runner.dart" functions-hit="0" functions-valid="0" lines-hit="2" lines-valid="2" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="2" name="&lt;unnamed&gt;"/>
@@ -13,14 +13,14 @@
         <source branches-hit="0" branches-valid="0" filename="_worker_channel.dart" functions-hit="0" functions-valid="0" lines-hit="23" lines-valid="23" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="23" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_channel_forward.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="11" prefix="/home/runner/work/squadron/squadron/lib/">
+        <source branches-hit="0" branches-valid="0" filename="_channel_forward.dart" functions-hit="0" functions-valid="0" lines-hit="6" lines-valid="12" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="6" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="_channel.dart" functions-hit="0" functions-valid="0" lines-hit="56" lines-valid="66" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="56" name="&lt;unnamed&gt;"/>
         </source>
-        <source branches-hit="0" branches-valid="0" filename="_local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="9" lines-valid="16" prefix="/home/runner/work/squadron/squadron/lib/">
-            <testCase branches-hit="0" functions-hit="0" lines-hit="9" name="&lt;unnamed&gt;"/>
+        <source branches-hit="0" branches-valid="0" filename="_local_worker.dart" functions-hit="0" functions-valid="0" lines-hit="10" lines-valid="17" prefix="/home/runner/work/squadron/squadron/lib/">
+            <testCase branches-hit="0" functions-hit="0" lines-hit="10" name="&lt;unnamed&gt;"/>
         </source>
         <source branches-hit="0" branches-valid="0" filename="_platform.dart" functions-hit="0" functions-valid="0" lines-hit="4" lines-valid="5" prefix="/home/runner/work/squadron/squadron/lib/">
             <testCase branches-hit="0" functions-hit="0" lines-hit="4" name="&lt;unnamed&gt;"/>

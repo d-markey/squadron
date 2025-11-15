@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-28" filename="local_worker_client.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="5" lines-valid="10" package="src/local_worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-15" filename="worker_client.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="5" lines-valid="10" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -17,171 +17,180 @@
             <code/>
         </line>
         <line number="6">
-            <code>import '../channel.dart';</code>
+            <code>import 'channel.dart';</code>
         </line>
         <line number="7">
-            <code>import '../invoker.dart';</code>
+            <code>import 'invoker.dart';</code>
         </line>
         <line number="8">
-            <code>import '../tokens/_squadron_cancelation_token.dart';</code>
+            <code>import 'tokens/_squadron_cancelation_token.dart';</code>
         </line>
         <line number="9">
-            <code>import '../typedefs.dart';</code>
+            <code>import 'typedefs.dart';</code>
         </line>
         <line number="10">
-            <code>import '../worker/worker_request.dart';</code>
+            <code>import 'worker/worker.dart';</code>
         </line>
         <line number="11">
-            <code>import '../worker_service.dart';</code>
+            <code>import 'worker/worker_request.dart';</code>
         </line>
         <line number="12">
-            <code>import 'local_worker.dart';</code>
+            <code>import 'worker_service.dart';</code>
         </line>
         <line number="13">
             <code/>
         </line>
         <line number="14">
-            <code>/// Base class used to communicate with a [LocalWorker].</code>
+            <code>@Deprecated('Use WorkerClient instead.')</code>
         </line>
         <line number="15">
-            <code>///</code>
+            <code>typedef LocalWorkerClient = WorkerClient;</code>
         </line>
         <line number="16">
-            <code>/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.</code>
-        </line>
-        <line number="17">
-            <code>class LocalWorkerClient with Releasable implements WorkerService, Invoker {</code>
-        </line>
-        <line number="18">
-            <code>  /// Create a client for a [LocalWorker]. The [channel] passed to this client must have been obtained by</code>
-        </line>
-        <line number="19">
-            <code>  /// calling [Channel.share] on the [LocalWorker.channel].</code>
-        </line>
-        <line hits="1" number="20">
-            <code>  LocalWorkerClient(this.channel);</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="21">
             <code/>
         </line>
-        <line number="22">
-            <code>  /// The [Channel] to communicate with the [LocalWorker].</code>
+        <line number="17">
+            <code>/// Base class used to communicate with a [Worker] over a [Channel].</code>
         </line>
-        <line number="23">
-            <code>  final Channel channel;</code>
+        <line number="18">
+            <code>///</code>
+        </line>
+        <line number="19">
+            <code>/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.</code>
+        </line>
+        <line number="20">
+            <code>class WorkerClient with Releasable implements WorkerService, Invoker {</code>
+        </line>
+        <line number="21">
+            <code>  /// Create a client for a [Worker]. The [channel] passed to this client must have been obtained</code>
+        </line>
+        <line number="22">
+            <code>  /// from the target [Worker].</code>
+        </line>
+        <line hits="1" number="23">
+            <code>  WorkerClient(this.channel);</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="24">
             <code/>
         </line>
-        <line hits="0" number="25">
-            <code>  @override</code>
+        <line number="25">
+            <code>  /// The [Channel] to communicate with the [Worker].</code>
         </line>
         <line number="26">
-            <code>  void release() {</code>
+            <code>  final Channel channel;</code>
         </line>
-        <line hits="0" number="27">
-            <code>    channel.close();</code>
-        </line>
-        <line hits="0" number="28">
-            <code>    super.release();</code>
-        </line>
-        <line number="29">
-            <code>  }</code>
-        </line>
-        <line number="30">
+        <line number="27">
             <code/>
         </line>
-        <line number="31">
-            <code>  /// Sends a command to the [LocalWorker].</code>
+        <line hits="0" number="28">
+            <code>  @override</code>
         </line>
-        <line hits="1" number="32">
+        <line number="29">
+            <code>  void release() {</code>
+        </line>
+        <line hits="0" number="30">
+            <code>    channel.close();</code>
+        </line>
+        <line hits="0" number="31">
+            <code>    super.release();</code>
+        </line>
+        <line number="32">
+            <code>  }</code>
+        </line>
+        <line number="33">
+            <code/>
+        </line>
+        <line number="34">
+            <code>  /// Sends a command to the [Worker].</code>
+        </line>
+        <line hits="1" number="35">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="33">
+        <line number="36">
             <code>  Future&lt;dynamic&gt; send(int command,</code>
         </line>
-        <line number="34">
+        <line number="37">
             <code>          {List args = const [],</code>
         </line>
-        <line number="35">
+        <line number="38">
             <code>          CancelationToken? token,</code>
         </line>
-        <line number="36">
+        <line number="39">
             <code>          bool inspectRequest = false,</code>
         </line>
-        <line number="37">
+        <line number="40">
             <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
-        <line hits="2" number="38">
+        <line hits="2" number="41">
             <code>      channel.sendRequest(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="39">
+        <line hits="0" number="42">
             <code>          token: token?.wrap(),</code>
         </line>
-        <line number="40">
+        <line number="43">
             <code>          inspectRequest: inspectRequest,</code>
         </line>
-        <line number="41">
+        <line number="44">
             <code>          inspectResponse: inspectResponse);</code>
         </line>
-        <line number="42">
+        <line number="45">
             <code/>
         </line>
-        <line number="43">
-            <code>  /// Sends a streaming command to the [LocalWorker].</code>
+        <line number="46">
+            <code>  /// Sends a streaming command to the [Worker].</code>
         </line>
-        <line hits="1" number="44">
+        <line hits="1" number="47">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="45">
+        <line number="48">
             <code>  Stream&lt;dynamic&gt; stream(int command,</code>
         </line>
-        <line number="46">
+        <line number="49">
             <code>          {List args = const [],</code>
         </line>
-        <line number="47">
+        <line number="50">
             <code>          CancelationToken? token,</code>
         </line>
-        <line number="48">
+        <line number="51">
             <code>          bool inspectRequest = false,</code>
         </line>
-        <line number="49">
+        <line number="52">
             <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
-        <line hits="2" number="50">
+        <line hits="2" number="53">
             <code>      channel.sendStreamingRequest(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="51">
+        <line hits="0" number="54">
             <code>          token: token?.wrap(),</code>
         </line>
-        <line number="52">
+        <line number="55">
             <code>          inspectRequest: inspectRequest,</code>
         </line>
-        <line number="53">
+        <line number="56">
             <code>          inspectResponse: inspectResponse);</code>
         </line>
-        <line number="54">
+        <line number="57">
             <code/>
         </line>
-        <line number="55">
+        <line number="58">
             <code>  /// Local worker clients do not need an [operations] map.</code>
         </line>
-        <line number="56">
+        <line number="59">
             <code>  @override</code>
         </line>
-        <line number="57">
+        <line number="60">
             <code>  final OperationsMap operations = WorkerService.noOperations;</code>
         </line>
-        <line number="58">
+        <line number="61">
             <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>
-    <base href="../../"/>
-    <base href="../../"/>
+    <base href="../"/>
+    <base href="../"/>
 </coverage>

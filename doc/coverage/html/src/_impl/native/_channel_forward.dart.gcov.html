@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-09-28</dd>
+                    <dd>2025-11-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>6</td><td>11</td><td class="low">54.5%</td>
+                            <th scope="row">Lines</th><td>6</td><td>12</td><td class="low">50.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -124,7 +124,7 @@
                     <td>21</td><td></td><td>3</td><td><code>  void _forward(dynamic data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>3</td><td><code>    if (_closed) {</code></td>
+                    <td>22</td><td></td><td>6</td><td><code>    if (_closed.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 23" id="line23">
                     <td>23</td><td></td><td>0</td><td><code>      throw SquadronErrorImpl.create('Channel is closed');</code></td>
@@ -148,25 +148,28 @@
                     <td>29</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  void close() {</code></td>
+                    <td>30</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; close() {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>0</td><td><code>    if (!_closed) {</code></td>
+                    <td>31</td><td></td><td>0</td><td><code>    if (!_closed.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 32" id="line32">
                     <td>32</td><td></td><td>0</td><td><code>      _com.close();</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>0</td><td><code>      _closed = true;</code></td>
+                    <td>33</td><td></td><td>0</td><td><code>      _closed.complete();</code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
                     <td>34</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineNoCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>0</td><td><code>    return _closed.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>}</code></td>
+                    <td>36</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 37" id="line37">
+                    <td>37</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

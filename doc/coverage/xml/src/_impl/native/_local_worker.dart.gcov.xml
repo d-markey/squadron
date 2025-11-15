@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-09-28" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5625" lines-covered="9" lines-valid="16" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-15" filename="_local_worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5882353" lines-covered="10" lines-valid="17" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -63,124 +63,128 @@
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4" number="20">
-            <code>        _port.sendPort, runner.internalLogger, exceptionManager)!;</code>
+            <code>        _port.sendPort, runner.internalLogger, exceptionManager)!</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="21">
-            <code>  }</code>
+        <line hits="2" number="21">
+            <code>      ..closed.then((_) =&gt; _port.close());</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="22">
-            <code/>
+            <code>  }</code>
         </line>
         <line number="23">
-            <code>  @override</code>
+            <code/>
         </line>
         <line number="24">
-            <code>  final W service;</code>
+            <code>  @override</code>
         </line>
         <line number="25">
-            <code/>
+            <code>  final W service;</code>
         </line>
         <line number="26">
-            <code>  @override</code>
+            <code/>
         </line>
         <line number="27">
-            <code>  final OperationsMap operations;</code>
+            <code>  @override</code>
         </line>
         <line number="28">
-            <code/>
+            <code>  final OperationsMap operations;</code>
         </line>
         <line number="29">
-            <code>  @override</code>
+            <code/>
         </line>
         <line number="30">
-            <code>  final ExceptionManager exceptionManager;</code>
-        </line>
-        <line number="31">
-            <code/>
-        </line>
-        <line number="32">
             <code>  @override</code>
         </line>
+        <line number="31">
+            <code>  final ExceptionManager exceptionManager;</code>
+        </line>
+        <line number="32">
+            <code/>
+        </line>
         <line number="33">
-            <code>  Logger? channelLogger;</code>
+            <code>  @override</code>
         </line>
         <line number="34">
-            <code/>
+            <code>  Logger? channelLogger;</code>
         </line>
         <line number="35">
-            <code>  final _port = ReceivePort();</code>
-        </line>
-        <line number="36">
-            <code>  late Channel? _channel;</code>
-        </line>
-        <line number="37">
             <code/>
         </line>
-        <line hits="1" number="38">
+        <line number="36">
+            <code>  final _port = ReceivePort();</code>
+        </line>
+        <line number="37">
+            <code>  late Channel? _channel;</code>
+        </line>
+        <line number="38">
+            <code/>
+        </line>
+        <line hits="1" number="39">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="39">
+        <line hits="1" number="40">
             <code>  Channel? get channel =&gt; _channel;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="40">
+        <line number="41">
             <code/>
         </line>
-        <line hits="0" number="41">
+        <line hits="0" number="42">
             <code>  @override</code>
-        </line>
-        <line number="42">
-            <code>  FutureOr&lt;void&gt; start() {}</code>
         </line>
         <line number="43">
+            <code>  FutureOr&lt;void&gt; start() {}</code>
+        </line>
+        <line number="44">
             <code/>
         </line>
-        <line hits="0" number="44">
+        <line hits="0" number="45">
             <code>  @override</code>
         </line>
-        <line number="45">
+        <line number="46">
             <code>  void stop() {</code>
         </line>
-        <line hits="0" number="46">
+        <line hits="0" number="47">
             <code>    _port.close();</code>
         </line>
-        <line hits="0" number="47">
+        <line hits="0" number="48">
             <code>    _channel?.close();</code>
         </line>
-        <line hits="0" number="48">
+        <line hits="0" number="49">
             <code>    _channel = null;</code>
         </line>
-        <line number="49">
+        <line number="50">
             <code>  }</code>
         </line>
-        <line number="50">
+        <line number="51">
             <code/>
-        </line>
-        <line hits="0" number="51">
-            <code>  @override</code>
         </line>
         <line hits="0" number="52">
+            <code>  @override</code>
+        </line>
+        <line hits="0" number="53">
             <code>  void terminate([TaskTerminatedException? ex]) =&gt; stop();</code>
         </line>
-        <line number="53">
+        <line number="54">
             <code>}</code>
         </line>
-        <line number="54">
+        <line number="55">
             <code/>
         </line>
-        <line number="55">
+        <line number="56">
             <code>/// Creates a [LocalWorker] on a native platform.</code>
         </line>
-        <line hits="1" number="56">
+        <line hits="1" number="57">
             <code>LocalWorker&lt;W&gt; createLocalWorker&lt;W&gt;(W service, OperationsMap operations,</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="57">
+        <line number="58">
             <code>        ExceptionManager exceptionManager) =&gt;</code>
         </line>
-        <line hits="1" number="58">
+        <line hits="1" number="59">
             <code>    _VmLocalWorker&lt;W&gt;._(service, operations, exceptionManager);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
