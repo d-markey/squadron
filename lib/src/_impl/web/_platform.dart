@@ -10,8 +10,12 @@ import '../../squadron_platform_type.dart';
 import '../../utils.dart';
 import '_patch.dart';
 
-// threadIDs may not be unique on Web...
-final threadId = Random.secure().nextInt(0x100000000).hex;
+final _rnd = Random.secure();
+
+int getRndHash() => _rnd.nextInt(0x100000000);
+
+/// threadIDs may not be unique on Web...
+final String threadId = _rnd.nextInt(0x100000000).hex;
 
 const double _one = 1.0;
 final _platformType = (_one is int)

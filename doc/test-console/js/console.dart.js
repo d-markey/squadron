@@ -9223,7 +9223,7 @@
               t1.channel = null;
               t2 = init.G;
               com = A._asJSObject(new t2.MessageChannel());
-              webEntryPoint = A.EntryPointUri_EntryPointUri$from(entryPoint);
+              webEntryPoint = A.EntryPointUri_EntryPointUri$from(entryPoint, false);
               worker = A._Cell$named("worker");
               fail = new A.openChannel_fail(ready, completer);
               success = new A.openChannel_success(ready, completer);
@@ -9518,7 +9518,7 @@
       _.$$fail = t2;
       _.command = t3;
     },
-    EntryPointUri_EntryPointUri$from(workerEntrypoint) {
+    EntryPointUri_EntryPointUri$from(workerEntrypoint, addHash) {
       var url, t2, blob,
         t1 = A.IterableExtensions_get_lastOrNull(workerEntrypoint.get$pathSegments(), type$.String),
         fileName = t1 == null ? null : t1.toLowerCase();
@@ -9526,16 +9526,20 @@
         fileName = "";
       url = workerEntrypoint.toString$0(0);
       if (B.JSString_methods.endsWith$1(fileName, ".js"))
-        return new A.EntryPointUri(url, false, false, new A.Object());
+        return new A.EntryPointUri(A._extension_0_patch(url, false), false, false, new A.Object());
       else if (B.JSString_methods.endsWith$1(fileName, ".wasm")) {
-        t1 = init.G;
-        t2 = t1.Blob;
-        blob = A._asJSObject(new t2(A._setArrayType(['(async function() {\n  const workerUri = new URL("' + A.stringReplaceAllUnchecked(url, '"', '\\"') + "\", self.location.origin).href;\n  try {\n    let dart2wasm_runtime; let moduleInstance;\n    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');\n    try {\n      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));\n      dart2wasm_runtime = await import(runtimeUri);\n      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});\n    } catch (exception) {\n      console.error(`Failed to fetch and instantiate wasm module ${workerUri}: ${exception}`);\n      console.error('See https://dart.dev/web/wasm for more information.');\n      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');\n    }\n    try {\n      await dart2wasm_runtime.invoke(moduleInstance);\n      //console.log(`Succesfully loaded and invoked ${workerUri}`);\n    } catch (exception) {\n      console.error(`Exception while invoking wasm module ${workerUri}: ${exception}`);\n      throw new Error(exception.message ?? 'Unknown error when invoking worker module');\n    }\n  } catch (ex) {\n    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;\n    postMessage([ts, null, [\"$!\", `Failed to load Web Worker from ${workerUri}: ${ex}`, null, null], null, null]);\n  }\n})()"], type$.JSArray_String), {type: "application/javascript"}));
-        return new A.EntryPointUri(A._asString(t1.URL.createObjectURL(blob)), true, false, new A.Object());
+        t1 = A._extension_0_patch(url, false);
+        t1 = A.stringReplaceAllUnchecked(t1, '"', '\\"');
+        t2 = init.G;
+        blob = A._asJSObject(new t2.Blob(A._setArrayType(['(async function() {\n  const workerUri = new URL("' + t1 + "\", self.location.origin).href;\n  try {\n    let dart2wasm_runtime; let moduleInstance;\n    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');\n    try {\n      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));\n      dart2wasm_runtime = await import(runtimeUri);\n      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});\n    } catch (exception) {\n      console.error(`Failed to fetch and instantiate wasm module ${workerUri}: ${exception}`);\n      console.error('See https://dart.dev/web/wasm for more information.');\n      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');\n    }\n    try {\n      await dart2wasm_runtime.invoke(moduleInstance);\n      //console.log(`Succesfully loaded and invoked ${workerUri}`);\n    } catch (exception) {\n      console.error(`Exception while invoking wasm module ${workerUri}: ${exception}`);\n      throw new Error(exception.message ?? 'Unknown error when invoking worker module');\n    }\n  } catch (ex) {\n    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;\n    postMessage([ts, null, [\"$!\", `Failed to load Web Worker from ${workerUri}: ${ex}`, null, null], null, null]);\n  }\n})()"], type$.JSArray_String), {type: "application/javascript"}));
+        return new A.EntryPointUri(A._asString(t2.URL.createObjectURL(blob)), true, false, new A.Object());
       } else if (workerEntrypoint.isScheme$1("data") || workerEntrypoint.isScheme$1("javascript"))
         return new A.EntryPointUri(url, false, false, new A.Object());
       else
         throw A.wrapException(A.SquadronError$_("Invalid entry point URI", null, null));
+    },
+    _extension_0_patch(_this, addHash) {
+      return _this;
     },
     EntryPointUri: function EntryPointUri(t0, t1, t2, t3) {
       var _ = this;
@@ -9872,7 +9876,7 @@
       this._box_0 = t0;
       this.postError = t1;
     },
-    SquadronService$(baseUrl, pool, targetPlatform) {
+    SquadronService$(baseUrl, pool, targetPlatform, version) {
       return new A.SquadronService(pool, false, targetPlatform, baseUrl);
     },
     SquadronService: function SquadronService(t0, t1, t2, t3) {
@@ -10527,12 +10531,9 @@
       return token;
     },
     SquadronCancelationTokenExt_wrap(_this) {
-      var token,
-        t1 = $.TokenId__id + 1;
+      var t1 = $.TokenId__id + 1;
       $.TokenId__id = t1;
-      token = A.SquadronCancelationToken$_(_this, "" + t1 + "@" + $.$get$threadId());
-      token._checkToken$0();
-      return token;
+      A.SquadronCancelationToken$_(_this, "" + t1 + "@" + A.S(A.threadId()));
     },
     SquadronCancelationToken: function SquadronCancelationToken(t0, t1, t2) {
       var _ = this;
@@ -15327,7 +15328,7 @@
               // Function start
               _box_0 = {};
               t1 = init.G;
-              A._asJSObject(t1.document).title = "Squadron 7.3.0 Test Console";
+              A._asJSObject(t1.document).title = "Squadron 7.3.1 Test Console";
               t2 = A._asJSObjectQ(A._asJSObject(t1.document).querySelector("#test-runner"));
               t2.toString;
               A._asJSObject(t1.window).dartPrint = A._functionToJS1(A.NotifyChildExt_get_notify(t2));
@@ -16213,7 +16214,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.3.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.3.1") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -16733,6 +16734,9 @@
           }
       });
       return A._asyncStartSync($async$UriChecker_exists, $async$completer);
+    },
+    threadId() {
+      return A.throwExpression(A.SquadronError$_("Platform not supported", null, null));
     },
     microsecTimeStamp() {
       var t1 = Date.now();
@@ -39795,7 +39799,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.native;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -39875,7 +39879,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.inMemory;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -39955,7 +39959,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.echo;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               t1 = $.Zone__current;
@@ -40046,7 +40050,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.js"));
+              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.js"), false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -40113,7 +40117,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.wasm"));
+              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.wasm"), false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               completer = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -49244,7 +49248,7 @@
   A.execute___closure89.prototype = {
     call$0() {
       var t1, _null = null,
-        jsService = A.SquadronService$("~/", true, 2);
+        jsService = A.SquadronService$("~/", true, 2, _null);
       A.expect(jsService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(jsService.pool, B.C__IsTrue, _null);
@@ -49258,7 +49262,7 @@
   A.execute___closure90.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", true, 4);
+        wasmService = A.SquadronService$("~/", true, 4, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsTrue, _null);
@@ -49284,7 +49288,7 @@
   A.execute___closure92.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", true, 7);
+        wasmService = A.SquadronService$("~/", true, 7, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsTrue, _null);
@@ -49298,7 +49302,7 @@
   A.execute___closure93.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", false, 7);
+        wasmService = A.SquadronService$("~/", false, 7, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsFalse, _null);
@@ -61174,7 +61178,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.3.0";
+              $async$returnValue = "7.3.1";
               // goto return
               $async$goto = 1;
               break;
@@ -63197,7 +63201,8 @@
     _lazyFinal($, "_$JSProps_next", "$get$_$JSProps_next", () => "next");
     _lazyFinal($, "_$JSProps_done", "$get$_$JSProps_done", () => "done");
     _lazyFinal($, "_$JSProps_value", "$get$_$JSProps_value", () => "value");
-    _lazyFinal($, "threadId", "$get$threadId", () => "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1($.$get$Random__secureRandom().nextInt$1(4294967296), 16), 8, "0"));
+    _lazyFinal($, "_rnd", "$get$_rnd", () => $.$get$Random__secureRandom());
+    _lazyFinal($, "threadId0", "$get$threadId", () => "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1($.$get$_rnd().nextInt$1(4294967296), 16), 8, "0"));
     _lazyFinal($, "UriChecker__headers", "$get$UriChecker__headers", () => {
       var t1 = type$.String;
       return A.NullableObjectUtilExtension_jsify(A.LinkedHashMap_LinkedHashMap$_literal(["method", "HEAD"], t1, t1));

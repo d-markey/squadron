@@ -5,6 +5,7 @@ import 'package:web/web.dart' as web;
 
 import '../../exceptions/squadron_error.dart';
 import '../../typedefs.dart';
+import '_platform.dart';
 import '_typedefs.dart' as impl;
 
 class EntryPointUri with Releasable {
@@ -21,7 +22,10 @@ class EntryPointUri with Releasable {
     super.release();
   }
 
-  factory EntryPointUri.from(EntryPoint workerEntrypoint) {
+  factory EntryPointUri.from(
+    EntryPoint workerEntrypoint, {
+    required bool addHash,
+  }) {
     workerEntrypoint as impl.EntryPoint;
 
     final fileName =
@@ -29,13 +33,15 @@ class EntryPointUri with Releasable {
             '';
 
     final url = workerEntrypoint.toString();
+
     if (fileName.endsWith('.js')) {
       // a JavaScript worker
-      return EntryPointUri._(url, revoke: false);
+      return EntryPointUri._(url.patch(addHash), revoke: false);
     } else if (fileName.endsWith('.wasm')) {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
+      final loaderUrl = wasmLoaderScript(url.patch(addHash));
       final blob = web.Blob(
-        [wasmLoaderScript(url).toJS].toJS,
+        [loaderUrl.toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
       return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
@@ -74,4 +80,10 @@ class EntryPointUri with Releasable {
     postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
   }
 })()''';
+}
+
+extension on String {
+  String patch(bool addHash) => addHash
+      ? (contains('?') ? '$this&h=${getRndHash()}' : '$this?h=${getRndHash()}')
+      : this;
 }

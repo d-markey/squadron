@@ -158,9 +158,9 @@ class CompiledApp {
       _197: (c) =>
       queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
       _203: o => Object.keys(o),
-      _220: () => globalThis.self,
-      _221: (x0,x1) => x0.postMessage(x1),
-      _222: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._222(f,arguments.length,x0) }),
+      _224: () => globalThis.self,
+      _225: (x0,x1) => x0.postMessage(x1),
+      _226: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._226(f,arguments.length,x0) }),
       _276: o => o === undefined,
       _278: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
       _280: o => {

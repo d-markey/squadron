@@ -1,7 +1,12 @@
+## 7.3.1
+
+- Add `Squadron.disableBrowserCache` to force browsers into reloading the code of Workers. When set to `true`, Squadron will append a query parameter to the Worker URL, passing a random number that should prevent browsers from using their cache.
+- Add `version` parameter to `SquadronService` annotation. This parameter is used by [squadron_builder](https://pub.dev/packages/squadron_builder) to include the version as a query parameter in the generated Worker URI. See also https://github.com/d-markey/squadron_builder/issues/40.
+
 ## 7.3.0
 
 - Deprecate `localWorker` in favor of `sharedService` and `LocalWorkerClient` in favor of `WorkerClient`. See [squadron_builder](https://pub.dev/packages/squadron_builder) and https://github.com/d-markey/squadron/issues/75.
-- Added `Channel.closed`, which returns a `Future<void>` that completes when the channel is closed. This is the same future as the one returned by `Channel.close()`.
+- Add `Channel.closed`, which returns a `Future<void>` that completes when the channel is closed. This is the same future as the one returned by `Channel.close()`.
 
 ## 7.2.0
 

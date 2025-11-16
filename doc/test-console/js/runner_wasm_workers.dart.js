@@ -2852,7 +2852,7 @@
     NativeTypedData: function NativeTypedData() {
     },
     _UnmodifiableNativeByteBufferView: function _UnmodifiableNativeByteBufferView(t0) {
-      this._data = t0;
+      this.__native_typed_data$_data = t0;
     },
     NativeByteData: function NativeByteData() {
     },
@@ -9238,7 +9238,7 @@
               t1.channel = null;
               t2 = init.G;
               com = A._asJSObject(new t2.MessageChannel());
-              webEntryPoint = A.EntryPointUri_EntryPointUri$from(entryPoint);
+              webEntryPoint = A.EntryPointUri_EntryPointUri$from(entryPoint, false);
               worker = A._Cell$named("worker");
               fail = new A.openChannel_fail(ready, completer);
               success = new A.openChannel_success(ready, completer);
@@ -9533,7 +9533,7 @@
       _.$$fail = t2;
       _.command = t3;
     },
-    EntryPointUri_EntryPointUri$from(workerEntrypoint) {
+    EntryPointUri_EntryPointUri$from(workerEntrypoint, addHash) {
       var url, t2, blob,
         t1 = A.IterableExtensions_get_lastOrNull(workerEntrypoint.get$pathSegments(), type$.String),
         fileName = t1 == null ? null : t1.toLowerCase();
@@ -9541,16 +9541,20 @@
         fileName = "";
       url = workerEntrypoint.toString$0(0);
       if (B.JSString_methods.endsWith$1(fileName, ".js"))
-        return new A.EntryPointUri(url, false, false, new A.Object());
+        return new A.EntryPointUri(A._extension_0_patch(url, false), false, false, new A.Object());
       else if (B.JSString_methods.endsWith$1(fileName, ".wasm")) {
-        t1 = init.G;
-        t2 = t1.Blob;
-        blob = A._asJSObject(new t2(A._setArrayType(['(async function() {\n  const workerUri = new URL("' + A.stringReplaceAllUnchecked(url, '"', '\\"') + "\", self.location.origin).href;\n  try {\n    let dart2wasm_runtime; let moduleInstance;\n    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');\n    try {\n      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));\n      dart2wasm_runtime = await import(runtimeUri);\n      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});\n    } catch (exception) {\n      console.error(`Failed to fetch and instantiate wasm module ${workerUri}: ${exception}`);\n      console.error('See https://dart.dev/web/wasm for more information.');\n      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');\n    }\n    try {\n      await dart2wasm_runtime.invoke(moduleInstance);\n      //console.log(`Succesfully loaded and invoked ${workerUri}`);\n    } catch (exception) {\n      console.error(`Exception while invoking wasm module ${workerUri}: ${exception}`);\n      throw new Error(exception.message ?? 'Unknown error when invoking worker module');\n    }\n  } catch (ex) {\n    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;\n    postMessage([ts, null, [\"$!\", `Failed to load Web Worker from ${workerUri}: ${ex}`, null, null], null, null]);\n  }\n})()"], type$.JSArray_String), {type: "application/javascript"}));
-        return new A.EntryPointUri(A._asString(t1.URL.createObjectURL(blob)), true, false, new A.Object());
+        t1 = A._extension_0_patch(url, false);
+        t1 = A.stringReplaceAllUnchecked(t1, '"', '\\"');
+        t2 = init.G;
+        blob = A._asJSObject(new t2.Blob(A._setArrayType(['(async function() {\n  const workerUri = new URL("' + t1 + "\", self.location.origin).href;\n  try {\n    let dart2wasm_runtime; let moduleInstance;\n    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');\n    try {\n      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));\n      dart2wasm_runtime = await import(runtimeUri);\n      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});\n    } catch (exception) {\n      console.error(`Failed to fetch and instantiate wasm module ${workerUri}: ${exception}`);\n      console.error('See https://dart.dev/web/wasm for more information.');\n      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');\n    }\n    try {\n      await dart2wasm_runtime.invoke(moduleInstance);\n      //console.log(`Succesfully loaded and invoked ${workerUri}`);\n    } catch (exception) {\n      console.error(`Exception while invoking wasm module ${workerUri}: ${exception}`);\n      throw new Error(exception.message ?? 'Unknown error when invoking worker module');\n    }\n  } catch (ex) {\n    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;\n    postMessage([ts, null, [\"$!\", `Failed to load Web Worker from ${workerUri}: ${ex}`, null, null], null, null]);\n  }\n})()"], type$.JSArray_String), {type: "application/javascript"}));
+        return new A.EntryPointUri(A._asString(t2.URL.createObjectURL(blob)), true, false, new A.Object());
       } else if (workerEntrypoint.isScheme$1("data") || workerEntrypoint.isScheme$1("javascript"))
         return new A.EntryPointUri(url, false, false, new A.Object());
       else
         throw A.wrapException(A.SquadronError$_("Invalid entry point URI", null, null));
+    },
+    _extension_0_patch(_this, addHash) {
+      return _this;
     },
     EntryPointUri: function EntryPointUri(t0, t1, t2, t3) {
       var _ = this;
@@ -9887,7 +9891,7 @@
       this._box_0 = t0;
       this.postError = t1;
     },
-    SquadronService$(baseUrl, pool, targetPlatform) {
+    SquadronService$(baseUrl, pool, targetPlatform, version) {
       return new A.SquadronService(pool, false, targetPlatform, baseUrl);
     },
     SquadronService: function SquadronService(t0, t1, t2, t3) {
@@ -10095,7 +10099,7 @@
       return new A.StateError("Too many elements");
     },
     LazyInPlaceList: function LazyInPlaceList(t0, t1, t2) {
-      this._lazy_in_place_list$_data = t0;
+      this._data = t0;
       this._cast = t1;
       this.$ti = t2;
     },
@@ -10542,12 +10546,9 @@
       return token;
     },
     SquadronCancelationTokenExt_wrap(_this) {
-      var token,
-        t1 = $.TokenId__id + 1;
+      var t1 = $.TokenId__id + 1;
       $.TokenId__id = t1;
-      token = A.SquadronCancelationToken$_(_this, "" + t1 + "@" + $.$get$threadId());
-      token._checkToken$0();
-      return token;
+      A.SquadronCancelationToken$_(_this, "" + t1 + "@" + A.S(A.threadId()));
     },
     SquadronCancelationToken: function SquadronCancelationToken(t0, t1, t2) {
       var _ = this;
@@ -15913,7 +15914,7 @@
               t3.onscroll = A._functionToJS1(htmlLogger.get$_onScroll());
               t4.start$0();
               A._asJSObject(t2.window).dartPrint = A._functionToJS1(htmlLogger.get$log());
-              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.3.0", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
+              A.Log_writeln("Test Runner: " + $.$get$Squadron_platformType().label + " platform using Squadron 7.3.1", A._setArrayType([A.console_to_html_Log_bold$closure()], type$.JSArray_of_String_Function_String));
               t1.$$context = null;
               A._EventStreamSubscription$(A._asJSObject(t2.window), "message", type$.nullable_void_Function_JSObject._as(new A.bootstrap_closure(t1, new A.bootstrap_execute(t1, workerPlatform, htmlLogger), htmlLogger)), false, type$.JSObject);
               A.NotifyParentExt_notify(A._asJSObject(t2.window), "@@READY@@");
@@ -16199,7 +16200,7 @@
             case 7:
               // returning from await.
               version = $async$result;
-              color = J.$eq$(version, "7.3.0") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
+              color = J.$eq$(version, "7.3.1") ? A.console_to_html_Log_green$closure() : A.console_to_html_Log_red$closure();
               A.Log_writeln("Worker " + entryPoint.toString$0(0) + ": compiled with Squadron " + A.S(version), A._setArrayType([color], type$.JSArray_of_String_Function_String));
               $async$next.push(6);
               // goto finally
@@ -16723,6 +16724,9 @@
           }
       });
       return A._asyncStartSync($async$UriChecker_exists, $async$completer);
+    },
+    threadId() {
+      return A.throwExpression(A.SquadronError$_("Platform not supported", null, null));
     },
     microsecTimeStamp() {
       var t1 = Date.now();
@@ -20593,10 +20597,10 @@
   };
   A._UnmodifiableNativeByteBufferView.prototype = {
     get$lengthInBytes(_) {
-      return this._data.byteLength;
+      return this.__native_typed_data$_data.byteLength;
     },
     asUint8List$2(_, offsetInBytes, $length) {
-      var result = A.NativeUint8List_NativeUint8List$view(this._data, offsetInBytes, $length);
+      var result = A.NativeUint8List_NativeUint8List$view(this.__native_typed_data$_data, offsetInBytes, $length);
       result.$flags = 3;
       return result;
     },
@@ -20604,7 +20608,7 @@
       return this.asUint8List$2(0, 0, null);
     },
     asUint32List$0(_) {
-      var result = A.NativeUint32List_NativeUint32List$view(this._data, 0, null);
+      var result = A.NativeUint32List_NativeUint32List$view(this.__native_typed_data$_data, 0, null);
       result.$flags = 3;
       return result;
     },
@@ -33510,33 +33514,33 @@
       return this._lazy_in_place_list$_get$1(0);
     },
     set$first(_, value) {
-      J.$indexSet$ax(this._lazy_in_place_list$_data, 0, this.$ti._precomputed1._as(value));
+      J.$indexSet$ax(this._data, 0, this.$ti._precomputed1._as(value));
     },
     get$isEmpty(_) {
-      return J.get$isEmpty$asx(this._lazy_in_place_list$_data);
+      return J.get$isEmpty$asx(this._data);
     },
     get$isNotEmpty(_) {
-      return J.get$isNotEmpty$asx(this._lazy_in_place_list$_data);
+      return J.get$isNotEmpty$asx(this._data);
     },
     get$iterator(_) {
       var t1 = this._iterate$0();
       return new A._SyncStarIterator(t1._outerHelper(), t1.$ti._eval$1("_SyncStarIterator<1>"));
     },
     get$last(_) {
-      return this._lazy_in_place_list$_get$1(J.get$length$asx(this._lazy_in_place_list$_data) - 1);
+      return this._lazy_in_place_list$_get$1(J.get$length$asx(this._data) - 1);
     },
     set$last(_, value) {
       var t1, t2;
       this.$ti._precomputed1._as(value);
-      t1 = this._lazy_in_place_list$_data;
+      t1 = this._data;
       t2 = J.getInterceptor$asx(t1);
       t2.$indexSet(t1, t2.get$length(t1) - 1, value);
     },
     get$length(_) {
-      return J.get$length$asx(this._lazy_in_place_list$_data);
+      return J.get$length$asx(this._data);
     },
     set$length(_, value) {
-      var t1 = this._lazy_in_place_list$_data,
+      var t1 = this._data,
         t2 = J.getInterceptor$asx(t1);
       if (value > t2.get$length(t1))
         this.$ti._precomputed1._as(null);
@@ -33559,7 +33563,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                i = J.get$length$asx($async$self._lazy_in_place_list$_data) - 1;
+                i = J.get$length$asx($async$self._data) - 1;
               case 2:
                 // for condition
                 if (!(i >= 0)) {
@@ -33589,7 +33593,7 @@
       };
     },
     get$single(_) {
-      var t1 = this._lazy_in_place_list$_data,
+      var t1 = this._data,
         t2 = J.getInterceptor$asx(t1);
       if (t2.get$isEmpty(t1))
         throw A.wrapException(A._ListError_noElement());
@@ -33601,7 +33605,7 @@
       var l, t2, tl, r, i, _this = this,
         t1 = _this.$ti;
       t1._eval$1("List<1>")._as(other);
-      l = J.get$length$asx(_this._lazy_in_place_list$_data);
+      l = J.get$length$asx(_this._data);
       t2 = other.length;
       tl = l + t2;
       if (tl === l)
@@ -33619,19 +33623,19 @@
     },
     $indexSet(_, index, value) {
       this.$ti._precomputed1._as(value);
-      J.$indexSet$ax(this._lazy_in_place_list$_data, index, value);
+      J.$indexSet$ax(this._data, index, value);
       return value;
     },
     add$1(_, value) {
-      return J.add$1$ax(this._lazy_in_place_list$_data, this.$ti._precomputed1._as(value));
+      return J.add$1$ax(this._data, this.$ti._precomputed1._as(value));
     },
     addAll$1(_, iterable) {
-      return J.addAll$1$ax(this._lazy_in_place_list$_data, this.$ti._eval$1("Iterable<1>")._as(iterable));
+      return J.addAll$1$ax(this._data, this.$ti._eval$1("Iterable<1>")._as(iterable));
     },
     any$1(_, test) {
       var l, i;
       this.$ti._eval$1("bool(1)")._as(test);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i)
         if (test.call$1(this._lazy_in_place_list$_get$1(i)))
           return true;
@@ -33640,7 +33644,7 @@
     asMap$0(_) {
       var i,
         r = A.LinkedHashMap_LinkedHashMap$_empty(type$.int, this.$ti._precomputed1),
-        l = J.get$length$asx(this._lazy_in_place_list$_data);
+        l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i)
         r.$indexSet(0, i, this._lazy_in_place_list$_get$1(i));
       return r;
@@ -33649,11 +33653,11 @@
       return J.cast$1$0$ax(this._forceCast$0(), $R);
     },
     clear$0(_) {
-      return J.clear$0$ax(this._lazy_in_place_list$_data);
+      return J.clear$0$ax(this._data);
     },
     contains$1(_, element) {
       var t1, i,
-        l = J.get$length$asx(this._lazy_in_place_list$_data);
+        l = J.get$length$asx(this._data);
       for (t1 = J.getInterceptor$(element), i = 0; i < l; ++i)
         if (t1.$eq(element, this._lazy_in_place_list$_get$1(i)))
           return true;
@@ -33665,7 +33669,7 @@
     every$1(_, test) {
       var l, i;
       this.$ti._eval$1("bool(1)")._as(test);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i)
         if (!test.call$1(this._lazy_in_place_list$_get$1(i)))
           return false;
@@ -33690,7 +33694,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -33721,14 +33725,14 @@
       };
     },
     fillRange$3(_, start, end, fillValue) {
-      return J.fillRange$3$ax(this._lazy_in_place_list$_data, start, end, this.$ti._eval$1("1?")._as(fillValue));
+      return J.fillRange$3$ax(this._data, start, end, this.$ti._eval$1("1?")._as(fillValue));
     },
     firstWhere$2$orElse(_, test, orElse) {
       var l, i, v,
         t1 = this.$ti;
       t1._eval$1("bool(1)")._as(test);
       t1._eval$1("1()?")._as(orElse);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i) {
         v = this._lazy_in_place_list$_get$1(i);
         if (test.call$1(v))
@@ -33742,7 +33746,7 @@
       var l, res, i;
       $U._as(initialValue);
       this.$ti._bind$1($U)._eval$1("1(1,2)")._as(combine);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (res = initialValue, i = 0; i < l; ++i)
         res = combine.call$2(res, this._lazy_in_place_list$_get$1(i));
       return res;
@@ -33766,7 +33770,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -33803,7 +33807,7 @@
     forEach$1(_, action) {
       var l, i;
       this.$ti._eval$1("~(1)")._as(action);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i)
         action.call$1(this._lazy_in_place_list$_get$1(i));
     },
@@ -33826,7 +33830,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                A.RangeError_checkValidRange(start, end, J.get$length$asx($async$self._lazy_in_place_list$_data));
+                A.RangeError_checkValidRange(start, end, J.get$length$asx($async$self._data));
                 i = start;
               case 2:
                 // for condition
@@ -33859,7 +33863,7 @@
     indexOf$2(_, element, start) {
       var l, i;
       this.$ti._precomputed1._as(element);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = start; i < l; ++i)
         if (J.$eq$(this._lazy_in_place_list$_get$1(i), element))
           return i;
@@ -33868,21 +33872,21 @@
     indexWhere$2(_, test, start) {
       var l, i;
       this.$ti._eval$1("bool(1)")._as(test);
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (i = start; i < l; ++i)
         if (test.call$1(this._lazy_in_place_list$_get$1(i)))
           return i;
       return -1;
     },
     insert$2(_, index, element) {
-      return J.insert$2$ax(this._lazy_in_place_list$_data, index, this.$ti._precomputed1._as(element));
+      return J.insert$2$ax(this._data, index, this.$ti._precomputed1._as(element));
     },
     insertAll$2(_, index, iterable) {
-      return J.insertAll$2$ax(this._lazy_in_place_list$_data, index, this.$ti._eval$1("Iterable<1>")._as(iterable));
+      return J.insertAll$2$ax(this._data, index, this.$ti._eval$1("Iterable<1>")._as(iterable));
     },
     join$1(_, separator) {
       var t1, i,
-        l = J.get$length$asx(this._lazy_in_place_list$_data);
+        l = J.get$length$asx(this._data);
       if (l > 0) {
         t1 = J.toString$0$(this._lazy_in_place_list$_get$1(0));
         for (i = 1; i < l; ++i)
@@ -33894,7 +33898,7 @@
     lastIndexOf$2(_, element, start) {
       var i;
       this.$ti._precomputed1._as(element);
-      i = start == null ? J.get$length$asx(this._lazy_in_place_list$_data) - 1 : start;
+      i = start == null ? J.get$length$asx(this._data) - 1 : start;
       for (; i >= 0; --i)
         if (element === this._lazy_in_place_list$_get$1(i))
           return i;
@@ -33903,7 +33907,7 @@
     lastIndexWhere$2(_, test, start) {
       var i;
       this.$ti._eval$1("bool(1)")._as(test);
-      i = start == null ? J.get$length$asx(this._lazy_in_place_list$_data) - 1 : start;
+      i = start == null ? J.get$length$asx(this._data) - 1 : start;
       for (; i >= 0; --i)
         if (test.call$1(this._lazy_in_place_list$_get$1(i)))
           return i;
@@ -33914,7 +33918,7 @@
         t1 = this.$ti;
       t1._eval$1("bool(1)")._as(test);
       t1._eval$1("1()?")._as(orElse);
-      for (i = J.get$length$asx(this._lazy_in_place_list$_data) - 1; i >= 0; --i) {
+      for (i = J.get$length$asx(this._data) - 1; i >= 0; --i) {
         v = this._lazy_in_place_list$_get$1(i);
         if (test.call$1(v))
           return v;
@@ -33945,7 +33949,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -33978,7 +33982,7 @@
     reduce$1(_, combine) {
       var l, res, i, _this = this;
       _this.$ti._eval$1("1(1,1)")._as(combine);
-      l = J.get$length$asx(_this._lazy_in_place_list$_data);
+      l = J.get$length$asx(_this._data);
       if (l === 0)
         throw A.wrapException(A._ListError_noElement());
       res = _this._lazy_in_place_list$_get$1(0);
@@ -33987,27 +33991,27 @@
       return res;
     },
     remove$1(_, value) {
-      return J.remove$1$ax(this._lazy_in_place_list$_data, value);
+      return J.remove$1$ax(this._data, value);
     },
     removeAt$1(_, index) {
       var v = this._lazy_in_place_list$_get$1(index);
-      J.removeAt$1$ax(this._lazy_in_place_list$_data, index);
+      J.removeAt$1$ax(this._data, index);
       return v;
     },
     removeLast$0(_) {
-      var t1 = this._lazy_in_place_list$_data,
+      var t1 = this._data,
         t2 = J.getInterceptor$asx(t1),
         v = this._lazy_in_place_list$_get$1(t2.get$length(t1) - 1);
       t2.removeLast$0(t1);
       return v;
     },
     removeRange$2(_, start, end) {
-      return J.removeRange$2$ax(this._lazy_in_place_list$_data, start, end);
+      return J.removeRange$2$ax(this._data, start, end);
     },
     removeWhere$1(_, test) {
       var t1, t2, i, i0, _this = this;
       _this.$ti._eval$1("bool(1)")._as(test);
-      t1 = _this._lazy_in_place_list$_data;
+      t1 = _this._data;
       t2 = J.getInterceptor$asx(t1);
       i = t2.get$length(t1) - 1;
       for (; i >= 0;) {
@@ -34025,19 +34029,19 @@
       }
     },
     replaceRange$3(_, start, end, replacements) {
-      return J.replaceRange$3$asx(this._lazy_in_place_list$_data, start, end, this.$ti._eval$1("Iterable<1>")._as(replacements));
+      return J.replaceRange$3$asx(this._data, start, end, this.$ti._eval$1("Iterable<1>")._as(replacements));
     },
     retainWhere$1(_, test) {
       return this.removeWhere$1(0, new A.LazyInPlaceList_retainWhere_closure(this, this.$ti._eval$1("bool(1)")._as(test)));
     },
     setAll$2(_, index, iterable) {
-      return J.setAll$2$ax(this._lazy_in_place_list$_data, index, this.$ti._eval$1("Iterable<1>")._as(iterable));
+      return J.setAll$2$ax(this._data, index, this.$ti._eval$1("Iterable<1>")._as(iterable));
     },
     setRange$4(_, start, end, iterable, skipCount) {
-      return J.setRange$4$ax(this._lazy_in_place_list$_data, start, end, this.$ti._eval$1("Iterable<1>")._as(iterable), skipCount);
+      return J.setRange$4$ax(this._data, start, end, this.$ti._eval$1("Iterable<1>")._as(iterable), skipCount);
     },
     shuffle$1(_, random) {
-      return J.shuffle$1$ax(this._lazy_in_place_list$_data, random);
+      return J.shuffle$1$ax(this._data, random);
     },
     singleWhere$2$orElse(_, test, orElse) {
       var res, l, found, i, v,
@@ -34045,7 +34049,7 @@
       t1._eval$1("bool(1)")._as(test);
       t1._eval$1("1()?")._as(orElse);
       res = A._Cell$named("res");
-      l = J.get$length$asx(this._lazy_in_place_list$_data);
+      l = J.get$length$asx(this._data);
       for (found = false, i = 0; i < l; ++i) {
         v = this._lazy_in_place_list$_get$1(i);
         if (test.call$1(v)) {
@@ -34079,7 +34083,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = count;
               case 2:
                 // for condition
@@ -34128,7 +34132,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
                 while (true) {
                   if (!(i < l && test.call$1($async$self._lazy_in_place_list$_get$1(i))))
@@ -34166,7 +34170,7 @@
         t1 = _this.$ti;
       t1._eval$1("int(1,1)?")._as(compare);
       _this._forceCast$0();
-      t2 = _this._lazy_in_place_list$_data;
+      t2 = _this._data;
       t3 = J.getInterceptor$ax(t2);
       if (compare == null) {
         d = t3.cast$1$0(t2, t1._precomputed1);
@@ -34175,7 +34179,7 @@
         t3.sort$1(t2, new A.LazyInPlaceList_sort_closure(_this, compare));
     },
     sublist$2(_, start, end) {
-      var t1 = this.getRange$2(0, start, end == null ? J.get$length$asx(this._lazy_in_place_list$_data) : end);
+      var t1 = this.getRange$2(0, start, end == null ? J.get$length$asx(this._data) : end);
       t1 = A.List_List$_of(t1, t1.$ti._eval$1("Iterable.E"));
       return t1;
     },
@@ -34197,7 +34201,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                c = Math.min(count, J.get$length$asx($async$self._lazy_in_place_list$_data));
+                c = Math.min(count, J.get$length$asx($async$self._data));
                 i = 0;
               case 2:
                 // for condition
@@ -34246,7 +34250,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -34284,7 +34288,7 @@
     },
     toList$1$growable(_, growable) {
       var t1, res, i, _this = this,
-        l = J.get$length$asx(_this._lazy_in_place_list$_data);
+        l = J.get$length$asx(_this._data);
       if (l === 0) {
         t1 = A._setArrayType([], _this.$ti._eval$1("JSArray<1>"));
         return t1;
@@ -34300,14 +34304,14 @@
     toSet$0(_) {
       var i,
         s = A.LinkedHashSet_LinkedHashSet$_empty(this.$ti._precomputed1),
-        l = J.get$length$asx(this._lazy_in_place_list$_data);
+        l = J.get$length$asx(this._data);
       for (i = 0; i < l; ++i)
         s.add$1(0, this._lazy_in_place_list$_get$1(i));
       return s;
     },
     toString$0(_) {
       this._forceCast$0();
-      return J.toString$0$(this._lazy_in_place_list$_data);
+      return J.toString$0$(this._data);
     },
     where$1(_, test) {
       var t1 = this.$ti;
@@ -34328,7 +34332,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -34383,7 +34387,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -34422,7 +34426,7 @@
     },
     _forceCast$0() {
       var i,
-        t1 = this._lazy_in_place_list$_data,
+        t1 = this._data,
         l = J.get$length$asx(t1);
       for (i = 0; i < l; ++i)
         this._lazy_in_place_list$_get$1(i);
@@ -34430,7 +34434,7 @@
     },
     _lazy_in_place_list$_get$1(idx) {
       var _this = this,
-        t1 = _this._lazy_in_place_list$_data,
+        t1 = _this._data,
         t2 = J.getInterceptor$asx(t1),
         v = t2.$index(t1, idx);
       if (v != null && !_this.$ti._precomputed1._is(v)) {
@@ -34455,7 +34459,7 @@
             switch ($async$goto) {
               case 0:
                 // Function start
-                l = J.get$length$asx($async$self._lazy_in_place_list$_data);
+                l = J.get$length$asx($async$self._data);
                 i = 0;
               case 2:
                 // for condition
@@ -39826,7 +39830,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.native;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -39906,7 +39910,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.inMemory;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -39986,7 +39990,7 @@
               // Function start
               t1 = $async$self.tc.entryPoints.echo;
               t1.toString;
-              ep = A.EntryPointUri_EntryPointUri$from(t1);
+              ep = A.EntryPointUri_EntryPointUri$from(t1, false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               t1 = $.Zone__current;
@@ -40077,7 +40081,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.js"));
+              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.js"), false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               res = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -40144,7 +40148,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.wasm"));
+              ep = A.EntryPointUri_EntryPointUri$from(A.Uri_parse("not_found.wasm"), false);
               w = A._asJSObject(new init.G.Worker(ep.uri));
               $async$handler = 2;
               completer = new A._AsyncCompleter(new A._Future($.Zone__current, type$._Future_String), type$._AsyncCompleter_String);
@@ -49275,7 +49279,7 @@
   A.execute___closure89.prototype = {
     call$0() {
       var t1, _null = null,
-        jsService = A.SquadronService$("~/", true, 2);
+        jsService = A.SquadronService$("~/", true, 2, _null);
       A.expect(jsService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(jsService.pool, B.C__IsTrue, _null);
@@ -49289,7 +49293,7 @@
   A.execute___closure90.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", true, 4);
+        wasmService = A.SquadronService$("~/", true, 4, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsTrue, _null);
@@ -49315,7 +49319,7 @@
   A.execute___closure92.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", true, 7);
+        wasmService = A.SquadronService$("~/", true, 7, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsTrue, _null);
@@ -49329,7 +49333,7 @@
   A.execute___closure93.prototype = {
     call$0() {
       var t1, _null = null,
-        wasmService = A.SquadronService$("~/", false, 7);
+        wasmService = A.SquadronService$("~/", false, 7, _null);
       A.expect(wasmService.baseUrl, "~/", _null);
       A.expect(false, B.C__IsFalse, _null);
       A.expect(wasmService.pool, B.C__IsFalse, _null);
@@ -61255,7 +61259,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              $async$returnValue = "7.3.0";
+              $async$returnValue = "7.3.1";
               // goto return
               $async$goto = 1;
               break;
@@ -63261,7 +63265,8 @@
     _lazyFinal($, "_$JSProps_next", "$get$_$JSProps_next", () => "next");
     _lazyFinal($, "_$JSProps_done", "$get$_$JSProps_done", () => "done");
     _lazyFinal($, "_$JSProps_value", "$get$_$JSProps_value", () => "value");
-    _lazyFinal($, "threadId", "$get$threadId", () => "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1($.$get$Random__secureRandom().nextInt$1(4294967296), 16), 8, "0"));
+    _lazyFinal($, "_rnd", "$get$_rnd", () => $.$get$Random__secureRandom());
+    _lazyFinal($, "threadId0", "$get$threadId", () => "0x" + B.JSString_methods.padLeft$2(B.JSInt_methods.toRadixString$1($.$get$_rnd().nextInt$1(4294967296), 16), 8, "0"));
     _lazyFinal($, "UriChecker__headers", "$get$UriChecker__headers", () => {
       var t1 = type$.String;
       return A.NullableObjectUtilExtension_jsify(A.LinkedHashMap_LinkedHashMap$_literal(["method", "HEAD"], t1, t1));

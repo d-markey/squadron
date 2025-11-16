@@ -27,7 +27,7 @@ void execute(TestContext? tc) {
   tc.launch(() {
     tc.group('- WEB WORKER', () {
       tc.test('- JavaScript Web Worker', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.native!);
+        final ep = EntryPointUri.from(tc.entryPoints.native!, addHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -52,7 +52,7 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- JavaScript Web Worker (in-memory)', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.inMemory!);
+        final ep = EntryPointUri.from(tc.entryPoints.inMemory!, addHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -77,7 +77,7 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Dart Web Worker', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.echo!);
+        final ep = EntryPointUri.from(tc.entryPoints.echo!, addHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -108,7 +108,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Missing Web Worker (JavaScript)', () async {
-        final ep = EntryPointUri.from(Uri.parse('not_found.js'));
+        final ep =
+            EntryPointUri.from(Uri.parse('not_found.js'), addHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -129,7 +130,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Missing Web Worker (WebAssembly)', () async {
-        final ep = EntryPointUri.from(Uri.parse('not_found.wasm'));
+        final ep =
+            EntryPointUri.from(Uri.parse('not_found.wasm'), addHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {

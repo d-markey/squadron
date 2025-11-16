@@ -15,15 +15,21 @@ class SharedServiceParam {
 
 /// Annotation for service classes to be wrapped as workers.
 class SquadronService {
-  const SquadronService({
-    this.pool = true,
-    this.targetPlatform = TargetPlatform.all,
-    String? baseUrl,
-  })  : baseUrl = baseUrl ?? '',
+  const SquadronService(
+      {this.pool = true,
+      this.targetPlatform = TargetPlatform.all,
+      String? baseUrl,
+      this.version})
+      : baseUrl = baseUrl ?? '',
         local = false;
 
-  const SquadronService.web({bool pool = true, String? baseUrl})
-      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);
+  const SquadronService.web({bool pool = true, String? baseUrl, int? version})
+      : this(
+          pool: pool,
+          targetPlatform: TargetPlatform.web,
+          baseUrl: baseUrl,
+          version: version,
+        );
 
   const SquadronService.vm({bool pool = true})
       : this(pool: pool, targetPlatform: TargetPlatform.vm);
@@ -32,7 +38,8 @@ class SquadronService {
       : pool = false,
         local = true,
         targetPlatform = TargetPlatform.none,
-        baseUrl = '';
+        baseUrl = '',
+        version = null;
 
   /// Controls code generation of a [WorkerPool] exposing the target service
   /// class. `true` by default.
@@ -49,4 +56,8 @@ class SquadronService {
   /// For Web-based workers, indicates the [baseUrl] where the Web Worker will
   /// be exposed in production.
   final String baseUrl;
+
+  /// For Web-based workers, indicates the Worker's [version]. When provided, this
+  /// number will be included in the worker's URL as a query parameter.
+  final int? version;
 }

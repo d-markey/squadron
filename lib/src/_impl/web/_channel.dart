@@ -11,6 +11,7 @@ import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../exceptions/task_terminated_exception.dart';
 import '../../exceptions/worker_exception.dart';
+import '../../squadron_singleton.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
@@ -44,7 +45,8 @@ Future<Channel> openChannel(
   Channel? channel;
 
   final com = web.MessageChannel();
-  final webEntryPoint = EntryPointUri.from(entryPoint);
+  final webEntryPoint =
+      EntryPointUri.from(entryPoint, addHash: Squadron.disableBrowserCache);
   late web.Worker worker;
 
   void fail(SquadronException ex) {
