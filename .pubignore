@@ -9,7 +9,7 @@ build/
 test/
 
 # Code coverage outputs.
-doc/browser-tests/
+doc/test-console/
 doc/coverage/
 doc/workers/
 
