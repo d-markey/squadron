@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-15" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947368" lines-covered="17" lines-valid="19" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947368" lines-covered="17" lines-valid="19" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '_impl/xplat/_platform.dart'</code>
@@ -69,142 +69,145 @@
         <line number="22">
             <code/>
         </line>
-        <line hits="8" number="23">
-            <code>  static final identical = impl.isSameInstance;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line number="23">
+            <code>  static bool disableBrowserCache = false;</code>
         </line>
         <line number="24">
             <code/>
         </line>
-        <line hits="30" number="25">
+        <line hits="8" number="25">
+            <code>  static final identical = impl.isSameInstance;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="30" number="26">
             <code>  static final _platformConverter = impl.getPlatformConverter();</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="26">
+        <line hits="30" number="27">
             <code>  static Converter _converter = _platformConverter;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="27">
+        <line number="28">
             <code/>
         </line>
-        <line number="28">
+        <line number="29">
             <code>  /// Gets the current converter.</code>
         </line>
-        <line hits="20" number="29">
+        <line hits="20" number="30">
             <code>  static Converter get converter =&gt; _converter;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
+        <line number="31">
             <code/>
         </line>
-        <line number="31">
+        <line number="32">
             <code>  /// Sets the current converter. If [value] is `null`, the default converter</code>
         </line>
-        <line number="32">
+        <line number="33">
             <code>  /// will be restored. If the converter was updated, handlers registered with</code>
         </line>
-        <line number="33">
+        <line number="34">
             <code>  /// [onConverterChanged] will be notified of the change.</code>
         </line>
-        <line hits="1" number="34">
+        <line hits="1" number="35">
             <code>  static set converter(Converter? value) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="35">
+        <line hits="1" number="36">
             <code>    value ??= _platformConverter;</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="36">
+        <line hits="2" number="37">
             <code>    if (_converter != value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="37">
+        <line number="38">
             <code>      _converter = value;</code>
         </line>
-        <line hits="3" number="38">
+        <line hits="3" number="39">
             <code>      for (var handler in _converterChangeHandlers.values) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="39">
+        <line number="40">
             <code>        try {</code>
         </line>
-        <line hits="1" number="40">
+        <line hits="1" number="41">
             <code>          handler();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="41">
+        <line number="42">
             <code>        } catch (_) {</code>
         </line>
-        <line number="42">
+        <line number="43">
             <code>          // ignore</code>
         </line>
-        <line number="43">
+        <line number="44">
             <code>        }</code>
         </line>
-        <line number="44">
+        <line number="45">
             <code>      }</code>
         </line>
-        <line number="45">
+        <line number="46">
             <code>    }</code>
         </line>
-        <line number="46">
+        <line number="47">
             <code>  }</code>
         </line>
-        <line number="47">
+        <line number="48">
             <code/>
         </line>
-        <line hits="3" number="48">
+        <line hits="3" number="49">
             <code>  static final _converterChangeHandlers = &lt;Object, void Function()&gt;{};</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="49">
+        <line number="50">
             <code/>
         </line>
-        <line number="50">
+        <line number="51">
             <code>  /// Registers a callback that will be called whenever `converter` is changed.</code>
         </line>
-        <line number="51">
+        <line number="52">
             <code>  /// Returns an object that can be used to unregister the callback by passing</code>
         </line>
-        <line number="52">
+        <line number="53">
             <code>  /// it to [unregisterConverterChanged].</code>
         </line>
-        <line hits="1" number="53">
+        <line hits="1" number="54">
             <code>  static Object onConverterChanged(void Function() handler) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="54">
+        <line hits="1" number="55">
             <code>    final key = Object();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="55">
+        <line hits="2" number="56">
             <code>    _converterChangeHandlers[key] = handler;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="56">
+        <line number="57">
             <code>    return key;</code>
         </line>
-        <line number="57">
+        <line number="58">
             <code>  }</code>
         </line>
-        <line number="58">
+        <line number="59">
             <code/>
         </line>
-        <line number="59">
+        <line number="60">
             <code>  /// Unregisters a callback that was registered with [onConverterChanged].</code>
         </line>
-        <line hits="1" number="60">
+        <line hits="1" number="61">
             <code>  static void unregisterConverterChanged(Object key) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="61">
+        <line hits="2" number="62">
             <code>    _converterChangeHandlers.remove(key);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="62">
+        <line number="63">
             <code>  }</code>
         </line>
-        <line number="63">
+        <line number="64">
             <code>}</code>
         </line>
     </lines>

@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-15</dd>
+                    <dd>2025-11-17</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -124,97 +124,130 @@
                     <td>21</td><td></td><td></td><td><code>    String? baseUrl,</code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code>  })  : baseUrl = baseUrl ?? '',</code></td>
+                    <td>22</td><td></td><td></td><td><code>    this.version,</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>        local = false;</code></td>
+                    <td>23</td><td></td><td></td><td><code>  })  : baseUrl = baseUrl ?? '',</code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code></code></td>
+                    <td>24</td><td></td><td></td><td><code>        local = false;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>1</td><td><code>  const SquadronService.web({bool pool = true, String? baseUrl})</code></td>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>1</td><td><code>      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);</code></td>
+                    <td>26</td><td></td><td>1</td><td><code>  const SquadronService.web({bool pool = true, String? baseUrl, int? version})</code></td>
                 </tr>
-                <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>1</td><td><code>      : this(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>12</td><td><code>  const SquadronService.vm({bool pool = true})</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code>          pool: pool,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>12</td><td><code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>          targetPlatform: TargetPlatform.web,</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code></code></td>
+                    <td>30</td><td></td><td></td><td><code>          baseUrl: baseUrl,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>12</td><td><code>  const SquadronService.local()</code></td>
+                <tr class="noop" title="Line 31" id="line31">
+                    <td>31</td><td></td><td></td><td><code>          version: version,</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code>      : pool = false,</code></td>
+                    <td>32</td><td></td><td></td><td><code>        );</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>        local = true,</code></td>
+                    <td>33</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>        targetPlatform = TargetPlatform.none,</code></td>
+                <tr class="lineCov" title="Line 34" id="line34">
+                    <td>34</td><td></td><td>12</td><td><code>  const SquadronService.vm({bool pool = true})</code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>        baseUrl = '';</code></td>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>12</td><td><code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
                     <td>36</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>  /// Controls code generation of a [WorkerPool] exposing the target service</code></td>
+                <tr class="lineCov" title="Line 37" id="line37">
+                    <td>37</td><td></td><td>12</td><td><code>  const SquadronService.local()</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code>  /// class. `true` by default.</code></td>
+                    <td>38</td><td></td><td></td><td><code>      : pool = false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>  final bool pool;</code></td>
+                    <td>39</td><td></td><td></td><td><code>        local = true,</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
-                    <td>40</td><td></td><td></td><td><code></code></td>
+                    <td>40</td><td></td><td></td><td><code>        targetPlatform = TargetPlatform.none,</code></td>
                 </tr>
                 <tr class="noop" title="Line 41" id="line41">
-                    <td>41</td><td></td><td></td><td><code>  /// Controls code generation of [Worker] and [WorkerPool]. When `true`, no</code></td>
+                    <td>41</td><td></td><td></td><td><code>        baseUrl = '',</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>  /// [Worker] and no [WorkerPool] will be generated but instances of the service</code></td>
+                    <td>42</td><td></td><td></td><td><code>        version = null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
-                    <td>43</td><td></td><td></td><td><code>  /// class can be shared with other workers.</code></td>
+                    <td>43</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 44" id="line44">
-                    <td>44</td><td></td><td></td><td><code>  final bool local;</code></td>
+                    <td>44</td><td></td><td></td><td><code>  /// Controls code generation of a [WorkerPool] exposing the target service</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code></code></td>
+                    <td>45</td><td></td><td></td><td><code>  /// class. `true` by default.</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code>  /// Controls code generation of a entry points for various platforms.</code></td>
+                    <td>46</td><td></td><td></td><td><code>  final bool pool;</code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
-                    <td>47</td><td></td><td></td><td><code>  final int targetPlatform;</code></td>
+                    <td>47</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code></code></td>
+                    <td>48</td><td></td><td></td><td><code>  /// Controls code generation of [Worker] and [WorkerPool]. When `true`, no</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
-                    <td>49</td><td></td><td></td><td><code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code></td>
+                    <td>49</td><td></td><td></td><td><code>  /// [Worker] and no [WorkerPool] will be generated but instances of the service</code></td>
                 </tr>
                 <tr class="noop" title="Line 50" id="line50">
-                    <td>50</td><td></td><td></td><td><code>  /// be exposed in production.</code></td>
+                    <td>50</td><td></td><td></td><td><code>  /// class can be shared with other workers.</code></td>
                 </tr>
                 <tr class="noop" title="Line 51" id="line51">
-                    <td>51</td><td></td><td></td><td><code>  final String baseUrl;</code></td>
+                    <td>51</td><td></td><td></td><td><code>  final bool local;</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
-                    <td>52</td><td></td><td></td><td><code>}</code></td>
+                    <td>52</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 53" id="line53">
+                    <td>53</td><td></td><td></td><td><code>  /// Controls code generation of a entry points for various platforms.</code></td>
+                </tr>
+                <tr class="noop" title="Line 54" id="line54">
+                    <td>54</td><td></td><td></td><td><code>  final int targetPlatform;</code></td>
+                </tr>
+                <tr class="noop" title="Line 55" id="line55">
+                    <td>55</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 56" id="line56">
+                    <td>56</td><td></td><td></td><td><code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code></td>
+                </tr>
+                <tr class="noop" title="Line 57" id="line57">
+                    <td>57</td><td></td><td></td><td><code>  /// be exposed in production.</code></td>
+                </tr>
+                <tr class="noop" title="Line 58" id="line58">
+                    <td>58</td><td></td><td></td><td><code>  final String baseUrl;</code></td>
+                </tr>
+                <tr class="noop" title="Line 59" id="line59">
+                    <td>59</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 60" id="line60">
+                    <td>60</td><td></td><td></td><td><code>  /// For Web-based workers, indicates the Worker's [version]. When provided, this</code></td>
+                </tr>
+                <tr class="noop" title="Line 61" id="line61">
+                    <td>61</td><td></td><td></td><td><code>  /// number will be included in the worker's URL as a query parameter.</code></td>
+                </tr>
+                <tr class="noop" title="Line 62" id="line62">
+                    <td>62</td><td></td><td></td><td><code>  final int? version;</code></td>
+                </tr>
+                <tr class="noop" title="Line 63" id="line63">
+                    <td>63</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

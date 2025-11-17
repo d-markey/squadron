@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-15" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="src/annotations" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="squadron_service.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="7" lines-valid="7" package="src/annotations" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../pool/worker_pool.dart';</code>
@@ -67,101 +67,134 @@
             <code>    String? baseUrl,</code>
         </line>
         <line number="22">
-            <code>  })  : baseUrl = baseUrl ?? '',</code>
+            <code>    this.version,</code>
         </line>
         <line number="23">
-            <code>        local = false;</code>
+            <code>  })  : baseUrl = baseUrl ?? '',</code>
         </line>
         <line number="24">
-            <code/>
+            <code>        local = false;</code>
         </line>
-        <line hits="1" number="25">
-            <code>  const SquadronService.web({bool pool = true, String? baseUrl})</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
+        <line number="25">
+            <code/>
         </line>
         <line hits="1" number="26">
-            <code>      : this(pool: pool, targetPlatform: TargetPlatform.web, baseUrl: baseUrl);</code>
+            <code>  const SquadronService.web({bool pool = true, String? baseUrl, int? version})</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="27">
+        <line hits="1" number="27">
+            <code>      : this(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="28">
+            <code>          pool: pool,</code>
+        </line>
+        <line number="29">
+            <code>          targetPlatform: TargetPlatform.web,</code>
+        </line>
+        <line number="30">
+            <code>          baseUrl: baseUrl,</code>
+        </line>
+        <line number="31">
+            <code>          version: version,</code>
+        </line>
+        <line number="32">
+            <code>        );</code>
+        </line>
+        <line number="33">
             <code/>
         </line>
-        <line hits="12" number="28">
+        <line hits="12" number="34">
             <code>  const SquadronService.vm({bool pool = true})</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="29">
+        <line hits="12" number="35">
             <code>      : this(pool: pool, targetPlatform: TargetPlatform.vm);</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="30">
-            <code/>
-        </line>
-        <line hits="12" number="31">
-            <code>  const SquadronService.local()</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="32">
-            <code>      : pool = false,</code>
-        </line>
-        <line number="33">
-            <code>        local = true,</code>
-        </line>
-        <line number="34">
-            <code>        targetPlatform = TargetPlatform.none,</code>
-        </line>
-        <line number="35">
-            <code>        baseUrl = '';</code>
         </line>
         <line number="36">
             <code/>
         </line>
-        <line number="37">
-            <code>  /// Controls code generation of a [WorkerPool] exposing the target service</code>
+        <line hits="12" number="37">
+            <code>  const SquadronService.local()</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="38">
-            <code>  /// class. `true` by default.</code>
+            <code>      : pool = false,</code>
         </line>
         <line number="39">
-            <code>  final bool pool;</code>
+            <code>        local = true,</code>
         </line>
         <line number="40">
-            <code/>
+            <code>        targetPlatform = TargetPlatform.none,</code>
         </line>
         <line number="41">
-            <code>  /// Controls code generation of [Worker] and [WorkerPool]. When `true`, no</code>
+            <code>        baseUrl = '',</code>
         </line>
         <line number="42">
-            <code>  /// [Worker] and no [WorkerPool] will be generated but instances of the service</code>
+            <code>        version = null;</code>
         </line>
         <line number="43">
-            <code>  /// class can be shared with other workers.</code>
+            <code/>
         </line>
         <line number="44">
-            <code>  final bool local;</code>
+            <code>  /// Controls code generation of a [WorkerPool] exposing the target service</code>
         </line>
         <line number="45">
-            <code/>
+            <code>  /// class. `true` by default.</code>
         </line>
         <line number="46">
-            <code>  /// Controls code generation of a entry points for various platforms.</code>
+            <code>  final bool pool;</code>
         </line>
         <line number="47">
-            <code>  final int targetPlatform;</code>
-        </line>
-        <line number="48">
             <code/>
         </line>
+        <line number="48">
+            <code>  /// Controls code generation of [Worker] and [WorkerPool]. When `true`, no</code>
+        </line>
         <line number="49">
-            <code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code>
+            <code>  /// [Worker] and no [WorkerPool] will be generated but instances of the service</code>
         </line>
         <line number="50">
-            <code>  /// be exposed in production.</code>
+            <code>  /// class can be shared with other workers.</code>
         </line>
         <line number="51">
-            <code>  final String baseUrl;</code>
+            <code>  final bool local;</code>
         </line>
         <line number="52">
+            <code/>
+        </line>
+        <line number="53">
+            <code>  /// Controls code generation of a entry points for various platforms.</code>
+        </line>
+        <line number="54">
+            <code>  final int targetPlatform;</code>
+        </line>
+        <line number="55">
+            <code/>
+        </line>
+        <line number="56">
+            <code>  /// For Web-based workers, indicates the [baseUrl] where the Web Worker will</code>
+        </line>
+        <line number="57">
+            <code>  /// be exposed in production.</code>
+        </line>
+        <line number="58">
+            <code>  final String baseUrl;</code>
+        </line>
+        <line number="59">
+            <code/>
+        </line>
+        <line number="60">
+            <code>  /// For Web-based workers, indicates the Worker's [version]. When provided, this</code>
+        </line>
+        <line number="61">
+            <code>  /// number will be included in the worker's URL as a query parameter.</code>
+        </line>
+        <line number="62">
+            <code>  final int? version;</code>
+        </line>
+        <line number="63">
             <code>}</code>
         </line>
     </lines>
