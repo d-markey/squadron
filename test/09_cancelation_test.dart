@@ -733,9 +733,7 @@ Future<({List<int> digits, Object? exception})> _testFiniteCancelation(
   Object? exception;
   final digits = <int>[];
   try {
-    await for (final n in worker.finite_20ms(50 * N, token)) {
-      digits.add(n);
-    }
+    await worker.finite_20ms(50 * N, token).map(digits.add).toList();
   } catch (ex) {
     exception = ex;
   }
@@ -748,9 +746,7 @@ Future<({List<int> digits, Object? exception})> _testInfiniteCancelation(
   Object? exception;
   final digits = <int>[];
   try {
-    await for (final n in worker.infinite_20ms(token)) {
-      digits.add(n);
-    }
+    await worker.infinite_20ms(token).map(digits.add).toList();
   } catch (ex) {
     exception = ex;
   }

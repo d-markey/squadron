@@ -4302,7 +4302,7 @@ $S:32}
 A.dv.prototype={
 ao(){var s=0,r=A.a_(t.N),q
 var $async$ao=A.a0(function(a,b){if(a===1)return A.X(b,r)
-while(true)switch(s){case 0:q="7.3.1"
+while(true)switch(s){case 0:q="7.4.0"
 s=1
 break
 case 1:return A.Y(q,r)}})

@@ -26,8 +26,37 @@ void execute(TestContext? tc) {
 
   tc.launch(() {
     tc.group('- WEB WORKER', () {
+      tc.test('- Add random hash - without version', () {
+        final webEntryPoint = EntryPointUri.from(
+          Uri.parse('test/worker.js'),
+          addRandomHash: true,
+        );
+        expect(webEntryPoint.uri, contains('?h='));
+        final uri = Uri.parse(webEntryPoint.uri);
+        expect(uri.path, 'test/worker.js');
+        expect(uri.queryParameters, hasLength(1));
+        expect(uri.queryParameters.keys, contains('h'));
+        expect(int.tryParse(uri.queryParameters['h']!), isNotNull);
+      });
+
+      tc.test('- Add random hash - with version', () {
+        final webEntryPoint = EntryPointUri.from(
+          Uri.parse('test/worker.js?v=1'),
+          addRandomHash: true,
+        );
+        expect(webEntryPoint.uri, contains('?v=1&h='));
+        final uri = Uri.parse(webEntryPoint.uri);
+        expect(uri.path, 'test/worker.js');
+        expect(uri.queryParameters, hasLength(2));
+        expect(uri.queryParameters.keys, contains('v'));
+        expect(uri.queryParameters['v'], '1');
+        expect(uri.queryParameters.keys, contains('h'));
+        expect(int.tryParse(uri.queryParameters['h']!), isNotNull);
+      });
+
       tc.test('- JavaScript Web Worker', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.native!, addHash: false);
+        final ep =
+            EntryPointUri.from(tc.entryPoints.native!, addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -52,7 +81,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- JavaScript Web Worker (in-memory)', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.inMemory!, addHash: false);
+        final ep =
+            EntryPointUri.from(tc.entryPoints.inMemory!, addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -77,7 +107,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Dart Web Worker', () async {
-        final ep = EntryPointUri.from(tc.entryPoints.echo!, addHash: false);
+        final ep =
+            EntryPointUri.from(tc.entryPoints.echo!, addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -109,7 +140,7 @@ void execute(TestContext? tc) {
 
       tc.test('- Missing Web Worker (JavaScript)', () async {
         final ep =
-            EntryPointUri.from(Uri.parse('not_found.js'), addHash: false);
+            EntryPointUri.from(Uri.parse('not_found.js'), addRandomHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -130,8 +161,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Missing Web Worker (WebAssembly)', () async {
-        final ep =
-            EntryPointUri.from(Uri.parse('not_found.wasm'), addHash: false);
+        final ep = EntryPointUri.from(Uri.parse('not_found.wasm'),
+            addRandomHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {

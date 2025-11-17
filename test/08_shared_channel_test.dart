@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
 import 'package:using/using.dart';
 
@@ -17,6 +18,14 @@ void execute(TestContext? tc) {
 
   tc.launch(() {
     tc.group('- SHARED CHANNEL', () {
+      setUp(() {
+        Squadron.disableBrowserCache = true;
+      });
+
+      tearDown(() {
+        Squadron.disableBrowserCache = false;
+      });
+
       tc.test('- Standalone cache worker', () async {
         await CacheWorker(tc).useAsync((cache) async {
           expect(await cache.get(1), isNull);

@@ -43,7 +43,7 @@ abstract class Worker
   }
 
   /// The [Worker]'s entry point; typically, a top-level function in native
-  /// world, or the Uri to a JavaScript file in browser world.
+  /// world or the Uri to a JavaScript file in browser world.
   final EntryPoint _entryPoint;
 
   @override

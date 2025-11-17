@@ -53,13 +53,13 @@ extension TestEntryPointsExt on TestEntryPoints {
     native = Squadron.uri('$root/native_worker.js');
 
     notAWorker = Squadron.uri('$root/not_a_worker.dart.$ext');
-    echo = Squadron.uri('$root/echo_worker.dart.$ext');
-    cache = Squadron.uri('$root/cache_worker.dart.$ext');
+    echo = Squadron.uri('$root/echo_worker.dart.$ext?v=1');
+    cache = Squadron.uri('$root/cache_worker.dart.$ext?v=1');
     installable = Squadron.uri('$root/installable_worker.dart.$ext');
     issues = Squadron.uri('$root/issues_worker.dart.$ext');
     local = Squadron.uri('$root/local_client_worker.dart.$ext');
     prime = Squadron.uri('$root/prime_worker.dart.$ext');
-    log = Squadron.uri('$root/log_worker.dart.$ext');
+    log = Squadron.uri('$root/log_worker.dart.$ext?v=1');
     streaming = Squadron.uri('$root/streaming_worker.dart.$ext');
     test = Squadron.uri('$root/test_worker.dart.$ext');
     person = Squadron.uri('$root/person_worker.dart.$ext');

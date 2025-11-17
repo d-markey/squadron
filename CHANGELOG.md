@@ -1,6 +1,6 @@
-## 7.3.1
+## 7.4.0
 
-- Add `Squadron.disableBrowserCache` to force browsers into reloading the code of Workers. When set to `true`, Squadron will append a query parameter to the Worker URL, passing a random number that should prevent browsers from using their cache.
+- Add `Squadron.disableBrowserCache` to force browsers into reloading the code of Workers. When set to `true`, Squadron will append a query parameter to the Worker URL, passing a random number that should prevent browsers from using the cache.
 - Add `version` parameter to `SquadronService` annotation. This parameter is used by [squadron_builder](https://pub.dev/packages/squadron_builder) to include the version as a query parameter in the generated Worker URI. See also https://github.com/d-markey/squadron_builder/issues/40.
 
 ## 7.3.0

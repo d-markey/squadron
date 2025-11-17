@@ -24,8 +24,8 @@ class Fraction {
     if (other is Fraction) {
       return numerator == other.numerator && denominator == other.denominator;
     } else if (other is num) {
-      final val = numerator / denominator;
-      return val == other;
+      if (numerator == 0) return other == 0;
+      return other == (numerator / denominator);
     } else {
       return false;
     }

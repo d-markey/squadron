@@ -5606,11 +5606,12 @@ gbm(){return this.c},
 gcb(){return this.d.a},
 gaU(){return this.a}}
 A.b5.prototype={
-F(a,b){var s=this
+F(a,b){var s,r=this
 if(b==null)return!1
-if(b instanceof A.b5)return s.a===b.a&&s.b===b.b
-else if(typeof b=="number")return s.a/s.b===b
-else return!1},
+if(b instanceof A.b5)return r.a===b.a&&r.b===b.b
+else if(typeof b=="number"){s=r.a
+if(s===0)return b===0
+return b===s/r.b}else return!1},
 gB(a){return A.ia(this.a,this.b)}}
 A.ez.prototype={
 dD(a,b){var s=t.J,r=b.Y(a,s)
@@ -5631,7 +5632,7 @@ return r}}
 A.eX.prototype={
 b0(){var s=0,r=A.a1(t.N),q
 var $async$b0=A.S(function(a,b){if(a===1)return A.Z(b,r)
-while(true)switch(s){case 0:q="7.3.1"
+while(true)switch(s){case 0:q="7.4.0"
 s=1
 break
 case 1:return A.a_(q,r)}})

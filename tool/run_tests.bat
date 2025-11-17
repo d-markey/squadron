@@ -47,14 +47,16 @@ IF "%__REBUILD__%" == "1" (
     CALL dart run .\tool\compile_tests.dart js wasm
 )
 
-RMDIR .\test\coverage /s /q
-MKDIR .\test\coverage
-CALL dart test -j 1 --coverage=.\test\coverage %__ARGS__%
 IF "%__COV__%" == "1" (
+    RMDIR .\test\coverage /s /q
+    MKDIR .\test\coverage
+    CALL dart test -j 1 --coverage=.\test\coverage %__ARGS__%
     CALL dart run coverage:format_coverage --packages=.\.dart_tool\package_config.json --report-on=lib --lcov -o .\test\coverage\lcov.info -i .\test\coverage
     RMDIR .\doc\coverage /s /q
     java -jar .\tool\jgenhtml\jgenhtml-1.6.jar .\test\coverage\lcov.info --output-directory .\doc\coverage
     CALL dart run .\tool\xtractcov\main.dart
+) ELSE (
+    CALL dart test -j 1 %__ARGS__%
 )
 
 POPD

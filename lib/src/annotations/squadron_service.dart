@@ -15,12 +15,12 @@ class SharedServiceParam {
 
 /// Annotation for service classes to be wrapped as workers.
 class SquadronService {
-  const SquadronService(
-      {this.pool = true,
-      this.targetPlatform = TargetPlatform.all,
-      String? baseUrl,
-      this.version})
-      : baseUrl = baseUrl ?? '',
+  const SquadronService({
+    this.pool = true,
+    this.targetPlatform = TargetPlatform.all,
+    String? baseUrl,
+    this.version,
+  })  : baseUrl = baseUrl ?? '',
         local = false;
 
   const SquadronService.web({bool pool = true, String? baseUrl, int? version})

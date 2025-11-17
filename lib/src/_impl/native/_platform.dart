@@ -8,13 +8,13 @@ import '../../squadron_platform_type.dart';
 import '../../utils.dart';
 
 /// threadIDs may not be unique on VM...
-final String threadId = Isolate.current.hashCode.hex;
+final threadId = Isolate.current.hashCode.hex;
 
 Converter getPlatformConverter() => CastConverter.instance;
 
 SquadronPlatformType getPlatformType() => SquadronPlatformType.vm;
 
-Uri mapUrl(String url) => Uri.parse(url).normalizePath();
+Uri mapUrl(String url) => Uri.parse(url);
 
 @internal
 bool isSameInstance(Object a, Object b) => identical(a, b);

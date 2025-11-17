@@ -45,8 +45,10 @@ Future<Channel> openChannel(
   Channel? channel;
 
   final com = web.MessageChannel();
-  final webEntryPoint =
-      EntryPointUri.from(entryPoint, addHash: Squadron.disableBrowserCache);
+  final webEntryPoint = EntryPointUri.from(
+    entryPoint,
+    addRandomHash: Squadron.disableBrowserCache,
+  );
   late web.Worker worker;
 
   void fail(SquadronException ex) {

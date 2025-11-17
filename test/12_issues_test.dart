@@ -121,10 +121,8 @@ void execute(TestContext? tc) {
             expect(initialCount, isZero);
 
             // Make a streaming request and fully consume it
-            final values = <dynamic>[];
-            await for (final value in w.issue_8([0, 1])) {
-              values.add(value);
-            }
+            final values = await w.issue_8([0, 1]).toList();
+            expect(values, hasLength(2));
 
             // Give time for cleanup
             await Future.delayed(Duration(milliseconds: 100));

@@ -339,7 +339,7 @@ class CarService {
 }
 ```
 
-If your application is designed to run both on native and Web platforms, it is possible to optimize for VM platforms by providing different marshalers depending on the platform and conditionally import the proper implementation. Eg. on VM platforms, marshalers would mostly be 'no-ops'.
+If your application is designed to run both on native and Web platforms, it is possible to optimize for VM platforms by providing different marshalers, then conditionally import the proper platform implementation. Eg. on VM platforms, marshalers would mostly be 'no-ops'.
 
 ```dart
 ///////////// file car_marshaler.web.dart /////////////
@@ -430,9 +430,9 @@ If an exception occurs in the worker code ("background thread" or callee side), 
 
 ## <a name="logging"></a>Logging
 
-Logging is easy: just use Dart's `print()` function! There's one caveat when debugging your code in the browser: Web workers are not attached to Dart's debugger, so log messages will end-up in the browser's console.
+If you can use Dart's `print()` function to debug your programs, please note that there is one caveat when debugging Web Worker code in browsers: Web workers are not attached to Dart's debugger, so log messages will end-up in the browser's console.
 
-It is possible to implement a logger and have log messages get redirected to the main thread, which is attached to Dart's debugger. This can be done by using a local worker. For more information, please refer to the `local_logger` example.
+You can also implement a logger service running as a local worker in the main thread. Pass this logger ot the Worker you want to debug and log messages will be redirected to the main thread, which is attached to Dart's debugger. For more information, please refer to the `local_logger` example.
 
 ## <a name="thanks"></a>Thanks!
 

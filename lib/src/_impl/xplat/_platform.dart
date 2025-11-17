@@ -1,20 +1,18 @@
 import 'package:meta/meta.dart';
 
+import '../../converters/cast_converter.dart';
 import '../../converters/converter.dart';
-import '../../exceptions/squadron_error.dart';
 import '../../squadron_platform_type.dart';
+import '../web/_platform.dart' if (dart.library.io) '../native/_platform.dart'
+    as impl;
 
-String get threadId => throw SquadronErrorImpl.create('Platform not supported');
+String get threadId => impl.threadId;
 
-Converter getPlatformConverter() =>
-    throw SquadronErrorImpl.create('Platform not supported');
+Converter getPlatformConverter() => CastConverter.instance;
 
-SquadronPlatformType getPlatformType() =>
-    throw SquadronErrorImpl.create('Platform not supported');
+SquadronPlatformType getPlatformType() => SquadronPlatformType.unknown;
 
-Uri mapUrl(String url) =>
-    throw SquadronErrorImpl.create('Platform not supported');
+Uri mapUrl(String url) => Uri.parse(url);
 
 @internal
-bool isSameInstance(Object a, Object b) =>
-    throw SquadronErrorImpl.create('Platform not supported');
+bool isSameInstance(Object a, Object b) => identical(a, b);

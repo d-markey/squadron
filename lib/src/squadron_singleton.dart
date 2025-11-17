@@ -4,7 +4,6 @@ import '_impl/xplat/_platform.dart'
     if (dart.library.js) '_impl/web/_platform.dart'
     if (dart.library.js_interop) '_impl/web/_platform.dart' as impl;
 import 'converters/converter.dart';
-import 'worker/worker.dart';
 
 String get threadId => impl.threadId;
 
@@ -14,13 +13,14 @@ class Squadron {
   /// Gets the current platform type.
   static final platformType = impl.getPlatformType();
 
-  /// Disable the browser's cache; Squadron will be appending a unique hash to
-  /// Web [Worker] URIs.
-  static bool disableBrowserCache = false;
-
-  /// Parse a URIs. On Web platforms, a leading '~' character can be used to
-  /// represent the application root URL.
+  /// Parse [url] and returns the corresponding [Uri].
+  ///
+  /// On Web platforms, a leading '~' character will be replaced with the
+  /// current page's root URL. E.g. '~/workers' from '/path/to/index.html'
+  /// will return '/path/to/workers'.
   static Uri uri(String url) => impl.mapUrl(url);
+
+  static bool disableBrowserCache = false;
 
   static final identical = impl.isSameInstance;
   static final _platformConverter = impl.getPlatformConverter();

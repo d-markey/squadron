@@ -27,6 +27,14 @@ void execute(TestContext? tc) {
 
   tc.launch(() {
     tc.group('- SQUADRON WORKER - POOL', () {
+      setUp(() {
+        Squadron.disableBrowserCache = true;
+      });
+
+      tearDown(() {
+        Squadron.disableBrowserCache = false;
+      });
+
       tc.test('- Prime worker pool + cache worker', () async {
         await CacheWorker(tc).useAsync((cache) async {
           // important, the cache worker must be started to share its channel

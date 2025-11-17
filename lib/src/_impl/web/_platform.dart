@@ -11,11 +11,10 @@ import '../../utils.dart';
 import '_patch.dart';
 
 final _rnd = Random.secure();
+int getRandomHash() => _rnd.nextInt(0x100000000);
 
-int getRndHash() => _rnd.nextInt(0x100000000);
-
-/// threadIDs may not be unique on Web...
-final String threadId = _rnd.nextInt(0x100000000).hex;
+// threadIDs may not be unique on Web...
+final threadId = getRandomHash().hex;
 
 const double _one = 1.0;
 final _platformType = (_one is int)

@@ -22,26 +22,24 @@ class EntryPointUri with Releasable {
     super.release();
   }
 
-  factory EntryPointUri.from(
-    EntryPoint workerEntrypoint, {
-    required bool addHash,
-  }) {
+  factory EntryPointUri.from(EntryPoint workerEntrypoint,
+      {required bool addRandomHash}) {
     workerEntrypoint as impl.EntryPoint;
 
     final fileName =
         workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??
             '';
 
-    final url = workerEntrypoint.toString();
-
+    var url = workerEntrypoint.toString();
     if (fileName.endsWith('.js')) {
       // a JavaScript worker
-      return EntryPointUri._(url.patch(addHash), revoke: false);
+      if (addRandomHash) url = _addRandomHash(url);
+      return EntryPointUri._(url, revoke: false);
     } else if (fileName.endsWith('.wasm')) {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
-      final loaderUrl = wasmLoaderScript(url.patch(addHash));
+      if (addRandomHash) url = _addRandomHash(url);
       final blob = web.Blob(
-        [loaderUrl.toJS].toJS,
+        [wasmLoaderScript(url).toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
       return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
@@ -52,6 +50,11 @@ class EntryPointUri with Releasable {
     } else {
       throw SquadronErrorImpl.create('Invalid entry point URI');
     }
+  }
+
+  static String _addRandomHash(String url) {
+    final hash = getRandomHash();
+    return url.contains('?') ? '$url&h=$hash' : '$url?h=$hash';
   }
 
   static String wasmLoaderScript(String url) => '''(async function() {
@@ -80,10 +83,4 @@ class EntryPointUri with Releasable {
     postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
   }
 })()''';
-}
-
-extension on String {
-  String patch(bool addHash) => addHash
-      ? (contains('?') ? '$this&h=${getRndHash()}' : '$this?h=${getRndHash()}')
-      : this;
 }
