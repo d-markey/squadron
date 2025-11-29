@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="utils.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="1" lines-valid="1" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="utils.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
+            <code>import 'dart:async';</code>
+        </line>
+        <line number="2">
+            <code/>
+        </line>
+        <line number="3">
             <code>extension HexExt on int {</code>
         </line>
-        <line hits="12" number="2">
+        <line hits="12" number="4">
             <code>  String get hex =&gt; '0x${toRadixString(16).padLeft(8, '0')}';</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="3">
+        <line number="5">
+            <code>}</code>
+        </line>
+        <line number="6">
+            <code/>
+        </line>
+        <line number="7">
+            <code>extension ControllerSafeExt&lt;T&gt; on StreamController&lt;T&gt; {</code>
+        </line>
+        <line hits="10" number="8">
+            <code>  void safeAdd(T data) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20" number="9">
+            <code>    if (!isClosed) add(data);</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code>  }</code>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line hits="7" number="12">
+            <code>  void safeAddError(Object error, [StackTrace? stackTrace]) {</code>
+            <hit count="7" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="14" number="13">
+            <code>    if (!isClosed) addError(error, stackTrace);</code>
+            <hit count="14" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="14">
+            <code>  }</code>
+        </line>
+        <line number="15">
             <code>}</code>
         </line>
     </lines>

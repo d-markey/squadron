@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_disconnected_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_disconnected_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.05" lines-covered="1" lines-valid="20" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -81,7 +81,7 @@
             <code>  @override</code>
         </line>
         <line hits="0" number="27">
-            <code>  FutureOr&lt;void&gt; cancelStream(int streamId) =&gt; _disconnectedError();</code>
+            <code>  void cancelStream(int streamId) =&gt; _disconnectedError();</code>
         </line>
         <line number="28">
             <code/>
@@ -89,109 +89,106 @@
         <line hits="0" number="29">
             <code>  @override</code>
         </line>
-        <line number="30">
-            <code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token) =&gt;</code>
+        <line hits="0" number="30">
+            <code>  void cancelToken(SquadronCancelationToken? token) =&gt; _disconnectedError();</code>
         </line>
-        <line hits="0" number="31">
-            <code>      _disconnectedError();</code>
-        </line>
-        <line number="32">
+        <line number="31">
             <code/>
+        </line>
+        <line hits="0" number="32">
+            <code>  @override</code>
         </line>
         <line hits="0" number="33">
-            <code>  @override</code>
+            <code>  Future&lt;void&gt; get closed =&gt; _disconnectedError();</code>
         </line>
-        <line hits="0" number="34">
-            <code>  Future&lt;void&gt; get closed async =&gt; _disconnectedError();</code>
-        </line>
-        <line number="35">
+        <line number="34">
             <code/>
+        </line>
+        <line hits="0" number="35">
+            <code>  @override</code>
         </line>
         <line hits="0" number="36">
-            <code>  @override</code>
+            <code>  Future&lt;void&gt; close() async =&gt; _disconnectedError();</code>
         </line>
-        <line hits="0" number="37">
-            <code>  FutureOr&lt;void&gt; close() =&gt; _disconnectedError();</code>
-        </line>
-        <line number="38">
+        <line number="37">
             <code/>
         </line>
-        <line hits="0" number="39">
+        <line hits="0" number="38">
             <code>  @override</code>
         </line>
-        <line number="40">
+        <line number="39">
             <code>  Future&lt;dynamic&gt; sendRequest(</code>
         </line>
-        <line number="41">
+        <line number="40">
             <code>    int command,</code>
+        </line>
+        <line number="41">
+            <code>    List args, {</code>
         </line>
         <line number="42">
-            <code>    List args, {</code>
+            <code>    SquadronCancelationToken? token,</code>
         </line>
         <line number="43">
-            <code>    SquadronCancelationToken? token,</code>
+            <code>    bool inspectRequest = false,</code>
         </line>
         <line number="44">
-            <code>    bool inspectRequest = false,</code>
+            <code>    bool inspectResponse = false,</code>
         </line>
         <line number="45">
-            <code>    bool inspectResponse = false,</code>
-        </line>
-        <line number="46">
             <code>  }) =&gt;</code>
         </line>
-        <line hits="0" number="47">
+        <line hits="0" number="46">
             <code>      _disconnectedError();</code>
         </line>
-        <line number="48">
+        <line number="47">
             <code/>
         </line>
-        <line hits="0" number="49">
+        <line hits="0" number="48">
             <code>  @override</code>
         </line>
-        <line number="50">
+        <line number="49">
             <code>  Stream&lt;dynamic&gt; sendStreamingRequest(</code>
         </line>
-        <line number="51">
+        <line number="50">
             <code>    int command,</code>
         </line>
-        <line number="52">
+        <line number="51">
             <code>    List args, {</code>
         </line>
-        <line number="53">
+        <line number="52">
             <code>    SquadronCancelationToken? token,</code>
         </line>
-        <line number="54">
+        <line number="53">
             <code>    bool inspectRequest = false,</code>
         </line>
-        <line number="55">
+        <line number="54">
             <code>    bool inspectResponse = false,</code>
         </line>
-        <line number="56">
+        <line number="55">
             <code>  }) =&gt;</code>
         </line>
-        <line hits="0" number="57">
+        <line hits="0" number="56">
             <code>      _disconnectedError();</code>
         </line>
-        <line number="58">
+        <line number="57">
             <code/>
+        </line>
+        <line hits="0" number="58">
+            <code>  @override</code>
         </line>
         <line hits="0" number="59">
-            <code>  @override</code>
-        </line>
-        <line hits="0" number="60">
             <code>  PlatformChannel serialize() =&gt; _disconnectedError();</code>
         </line>
-        <line number="61">
+        <line number="60">
             <code/>
         </line>
-        <line hits="0" number="62">
+        <line hits="0" number="61">
             <code>  @override</code>
         </line>
-        <line hits="0" number="63">
+        <line hits="0" number="62">
             <code>  Channel share() =&gt; _disconnectedError();</code>
         </line>
-        <line number="64">
+        <line number="63">
             <code>}</code>
         </line>
     </lines>

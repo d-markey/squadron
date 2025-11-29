@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-17</dd>
+                    <dd>2025-11-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -184,7 +184,7 @@
                     <td>41</td><td></td><td></td><td><code>  /// this method has been called.</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
-                    <td>42</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; close();</code></td>
+                    <td>42</td><td></td><td></td><td><code>  Future&lt;void&gt; close();</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
                     <td>43</td><td></td><td></td><td><code></code></td>
@@ -193,7 +193,7 @@
                     <td>44</td><td></td><td></td><td><code>  /// Sends a close stream [WorkerRequest] to the worker.</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; cancelStream(int streamId);</code></td>
+                    <td>45</td><td></td><td></td><td><code>  void cancelStream(int streamId);</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code></code></td>
@@ -202,7 +202,7 @@
                     <td>47</td><td></td><td></td><td><code>  /// Sends a cancel token [WorkerRequest] to the worker.</code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; cancelToken(SquadronCancelationToken? token);</code></td>
+                    <td>48</td><td></td><td></td><td><code>  void cancelToken(SquadronCancelationToken? token);</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
                     <td>49</td><td></td><td></td><td><code></code></td>
@@ -331,7 +331,7 @@
                     <td>90</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 91" id="line91">
-                    <td>91</td><td></td><td>12</td><td><code>  int get activeConnections =&gt; impl.getActiveConnections(this);</code></td>
+                    <td>91</td><td></td><td>12</td><td><code>  int getActiveConnections() =&gt; impl.getActiveConnections(this);</code></td>
                 </tr>
                 <tr class="noop" title="Line 92" id="line92">
                     <td>92</td><td></td><td></td><td><code>}</code></td>

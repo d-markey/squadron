@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-17</dd>
+                    <dd>2025-11-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -148,7 +148,7 @@
                     <td>29</td><td></td><td>0</td><td><code>              ?.e('Invalid state: unexpected endOfStream for command $command');</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>0</td><td><code>          _controller.addError(SquadronErrorImpl.create(</code></td>
+                    <td>30</td><td></td><td>0</td><td><code>          _controller.safeAddError(SquadronErrorImpl.create(</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
                     <td>31</td><td></td><td></td><td><code>            'Invalid state: unexpected endOfStream',</code></td>
@@ -193,7 +193,7 @@
                     <td>44</td><td></td><td></td><td><code>      } else if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>6</td><td><code>        _controller.addError(error);</code></td>
+                    <td>45</td><td></td><td>6</td><td><code>        _controller.safeAddError(error);</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code>        if (!hasStreamId) {</code></td>
@@ -220,13 +220,13 @@
                     <td>53</td><td></td><td></td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 54" id="line54">
-                    <td>54</td><td></td><td>15</td><td><code>          _controller.add(res.result);</code></td>
+                    <td>54</td><td></td><td>15</td><td><code>          _controller.safeAdd(res.result);</code></td>
                 </tr>
                 <tr class="noop" title="Line 55" id="line55">
                     <td>55</td><td></td><td></td><td><code>        } catch (ex, st) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>0</td><td><code>          _controller.addError(SquadronException.from(ex, st, command));</code></td>
+                    <td>56</td><td></td><td>0</td><td><code>          _controller.safeAddError(SquadronException.from(ex, st, command));</code></td>
                 </tr>
                 <tr class="noop" title="Line 57" id="line57">
                     <td>57</td><td></td><td></td><td><code>        }</code></td>
@@ -244,7 +244,7 @@
                     <td>61</td><td></td><td></td><td><code>      if (canceled != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 62" id="line62">
-                    <td>62</td><td></td><td>0</td><td><code>        _controller.addError(canceled);</code></td>
+                    <td>62</td><td></td><td>0</td><td><code>        _controller.safeAddError(canceled);</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 63" id="line63">
                     <td>63</td><td></td><td>0</td><td><code>        _controller.close();</code></td>
@@ -274,7 +274,7 @@
                     <td>71</td><td></td><td></td><td><code>      if (error != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
-                    <td>72</td><td></td><td>6</td><td><code>        _controller.addError(error);</code></td>
+                    <td>72</td><td></td><td>6</td><td><code>        _controller.safeAddError(error);</code></td>
                 </tr>
                 <tr class="noop" title="Line 73" id="line73">
                     <td>73</td><td></td><td></td><td><code>      } else {</code></td>
@@ -283,13 +283,13 @@
                     <td>74</td><td></td><td></td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 75" id="line75">
-                    <td>75</td><td></td><td>30</td><td><code>          _controller.add(res.result);</code></td>
+                    <td>75</td><td></td><td>30</td><td><code>          _controller.safeAdd(res.result);</code></td>
                 </tr>
                 <tr class="noop" title="Line 76" id="line76">
                     <td>76</td><td></td><td></td><td><code>        } catch (ex, st) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>0</td><td><code>          _controller.addError(SquadronException.from(ex, st, command));</code></td>
+                    <td>77</td><td></td><td>0</td><td><code>          _controller.safeAddError(SquadronException.from(ex, st, command));</code></td>
                 </tr>
                 <tr class="noop" title="Line 78" id="line78">
                     <td>78</td><td></td><td></td><td><code>        }</code></td>
@@ -310,7 +310,7 @@
                     <td>83</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 84" id="line84">
-                    <td>84</td><td></td><td>4</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code></td>
+                    <td>84</td><td></td><td>4</td><td><code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 85" id="line85">
                     <td>85</td><td></td><td></td><td><code>      streamIdCompleter as Completer&lt;int?&gt;;</code></td>
@@ -346,169 +346,172 @@
                     <td>95</td><td></td><td></td><td><code>      // wait for the streamId...</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 96" id="line96">
-                    <td>96</td><td></td><td>4</td><td><code>      final streamId = await streamIdCompleter.future;</code></td>
+                    <td>96</td><td></td><td>12</td><td><code>      return streamIdCompleter.future.then((streamId) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 97" id="line97">
-                    <td>97</td><td></td><td></td><td><code>      // restore subscription pause</code></td>
+                <tr class="lineCov" title="Line 97" id="line97">
+                    <td>97</td><td></td><td>4</td><td><code>        while (count &gt; 0) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 98" id="line98">
-                    <td>98</td><td></td><td>4</td><td><code>      while (count &gt; 0) {</code></td>
+                <tr class="lineNoCov" title="Line 98" id="line98">
+                    <td>98</td><td></td><td>0</td><td><code>          count--;</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 99" id="line99">
-                    <td>99</td><td></td><td>0</td><td><code>        count--;</code></td>
+                    <td>99</td><td></td><td>0</td><td><code>          sub.pause();</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 100" id="line100">
-                    <td>100</td><td></td><td>0</td><td><code>        sub.pause();</code></td>
+                <tr class="noop" title="Line 100" id="line100">
+                    <td>100</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="noop" title="Line 101" id="line101">
-                    <td>101</td><td></td><td></td><td><code>      }</code></td>
+                    <td>101</td><td></td><td></td><td><code>        return streamId;</code></td>
                 </tr>
                 <tr class="noop" title="Line 102" id="line102">
-                    <td>102</td><td></td><td></td><td><code>      return streamId;</code></td>
+                    <td>102</td><td></td><td></td><td><code>      });</code></td>
                 </tr>
                 <tr class="noop" title="Line 103" id="line103">
-                    <td>103</td><td></td><td></td><td><code>    }</code></td>
+                    <td>103</td><td></td><td></td><td><code>      // restore subscription pause</code></td>
                 </tr>
                 <tr class="noop" title="Line 104" id="line104">
-                    <td>104</td><td></td><td></td><td><code></code></td>
+                    <td>104</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 105" id="line105">
-                    <td>105</td><td></td><td>10</td><td><code>    Future&lt;void&gt; $onCancel() async {</code></td>
+                <tr class="noop" title="Line 105" id="line105">
+                    <td>105</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 106" id="line106">
-                    <td>106</td><td></td><td>20</td><td><code>      final sub = _controller.subscription;</code></td>
+                    <td>106</td><td></td><td>10</td><td><code>    Future&lt;void&gt; $onCancel() async {</code></td>
                 </tr>
-                <tr class="noop" title="Line 107" id="line107">
-                    <td>107</td><td></td><td></td><td><code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code></td>
+                <tr class="lineCov" title="Line 107" id="line107">
+                    <td>107</td><td></td><td>20</td><td><code>      final sub = _controller.subscription;</code></td>
                 </tr>
                 <tr class="noop" title="Line 108" id="line108">
-                    <td>108</td><td></td><td></td><td><code>        // this is a streaming operation and the subscription is active, so</code></td>
+                    <td>108</td><td></td><td></td><td><code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 109" id="line109">
-                    <td>109</td><td></td><td></td><td><code>        // we need to inform the worker that the stream has been canceled</code></td>
+                    <td>109</td><td></td><td></td><td><code>        // this is a streaming operation and the subscription is active, so</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 110" id="line110">
-                    <td>110</td><td></td><td>4</td><td><code>        final streamId = await $getStreamId(sub);</code></td>
+                <tr class="noop" title="Line 110" id="line110">
+                    <td>110</td><td></td><td></td><td><code>        // we need to inform the worker that the stream has been canceled</code></td>
                 </tr>
-                <tr class="noop" title="Line 111" id="line111">
-                    <td>111</td><td></td><td></td><td><code>        if (streamId != null) {</code></td>
+                <tr class="lineCov" title="Line 111" id="line111">
+                    <td>111</td><td></td><td>4</td><td><code>        final streamId = await $getStreamId(sub);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 112" id="line112">
-                    <td>112</td><td></td><td>4</td><td><code>          channel.cancelStream(streamId);</code></td>
+                <tr class="noop" title="Line 112" id="line112">
+                    <td>112</td><td></td><td></td><td><code>        if (streamId != null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 113" id="line113">
-                    <td>113</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineCov" title="Line 113" id="line113">
+                    <td>113</td><td></td><td>4</td><td><code>          channel.cancelStream(streamId);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 114" id="line114">
-                    <td>114</td><td></td><td>4</td><td><code>        await sub.cancel();</code></td>
+                <tr class="noop" title="Line 114" id="line114">
+                    <td>114</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
-                <tr class="noop" title="Line 115" id="line115">
-                    <td>115</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 115" id="line115">
+                    <td>115</td><td></td><td>4</td><td><code>        await sub.cancel();</code></td>
                 </tr>
                 <tr class="noop" title="Line 116" id="line116">
-                    <td>116</td><td></td><td></td><td><code>    }</code></td>
+                    <td>116</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
-                    <td>117</td><td></td><td></td><td><code></code></td>
+                    <td>117</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 118" id="line118">
-                    <td>118</td><td></td><td>3</td><td><code>    void $closeWithError(Object error, [StackTrace? st]) {</code></td>
+                <tr class="noop" title="Line 118" id="line118">
+                    <td>118</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 119" id="line119">
-                    <td>119</td><td></td><td>9</td><td><code>      _controller.addError(SquadronException.from(error, st, command));</code></td>
+                    <td>119</td><td></td><td>3</td><td><code>    void $closeWithError(Object error, [StackTrace? st]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 120" id="line120">
-                    <td>120</td><td></td><td>6</td><td><code>      _controller.close();</code></td>
+                    <td>120</td><td></td><td>9</td><td><code>      _controller.safeAddError(SquadronException.from(error, st, command));</code></td>
                 </tr>
-                <tr class="noop" title="Line 121" id="line121">
-                    <td>121</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 121" id="line121">
+                    <td>121</td><td></td><td>6</td><td><code>      _controller.close();</code></td>
                 </tr>
                 <tr class="noop" title="Line 122" id="line122">
-                    <td>122</td><td></td><td></td><td><code></code></td>
+                    <td>122</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 123" id="line123">
-                    <td>123</td><td></td><td>10</td><td><code>    void $onListen() {</code></td>
+                <tr class="noop" title="Line 123" id="line123">
+                    <td>123</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 124" id="line124">
-                    <td>124</td><td></td><td></td><td><code>      try {</code></td>
+                <tr class="lineCov" title="Line 124" id="line124">
+                    <td>124</td><td></td><td>10</td><td><code>    void $onListen() {</code></td>
                 </tr>
                 <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code>        // do not send the request if the token is already canceled</code></td>
+                    <td>125</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>2</td><td><code>        token?.throwIfCanceled();</code></td>
+                <tr class="noop" title="Line 126" id="line126">
+                    <td>126</td><td></td><td></td><td><code>        // do not send the request if the token is already canceled</code></td>
                 </tr>
-                <tr class="noop" title="Line 127" id="line127">
-                    <td>127</td><td></td><td></td><td><code>        // send the request and start decoding responses</code></td>
+                <tr class="lineCov" title="Line 127" id="line127">
+                    <td>127</td><td></td><td>2</td><td><code>        token?.throwIfCanceled();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>40</td><td><code>        _controller.attachSubscription(sendRequest().listen(</code></td>
+                <tr class="noop" title="Line 128" id="line128">
+                    <td>128</td><td></td><td></td><td><code>        // send the request and start decoding responses</code></td>
                 </tr>
-                <tr class="noop" title="Line 129" id="line129">
-                    <td>129</td><td></td><td></td><td><code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code></td>
+                <tr class="lineCov" title="Line 129" id="line129">
+                    <td>129</td><td></td><td>40</td><td><code>        _controller.attachSubscription(sendRequest().listen(</code></td>
                 </tr>
                 <tr class="noop" title="Line 130" id="line130">
-                    <td>130</td><td></td><td></td><td><code>          onError: $closeWithError,</code></td>
+                    <td>130</td><td></td><td></td><td><code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>20</td><td><code>          onDone: _controller.close,</code></td>
+                <tr class="noop" title="Line 131" id="line131">
+                    <td>131</td><td></td><td></td><td><code>          onError: $closeWithError,</code></td>
                 </tr>
-                <tr class="noop" title="Line 132" id="line132">
-                    <td>132</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
+                <tr class="lineCov" title="Line 132" id="line132">
+                    <td>132</td><td></td><td>20</td><td><code>          onDone: _controller.close,</code></td>
                 </tr>
                 <tr class="noop" title="Line 133" id="line133">
-                    <td>133</td><td></td><td></td><td><code>        ));</code></td>
+                    <td>133</td><td></td><td></td><td><code>          cancelOnError: false,</code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
-                    <td>134</td><td></td><td></td><td><code>      } catch (ex, st) {</code></td>
+                    <td>134</td><td></td><td></td><td><code>        ));</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 135" id="line135">
-                    <td>135</td><td></td><td>0</td><td><code>        $closeWithError(ex, st);</code></td>
+                <tr class="noop" title="Line 135" id="line135">
+                    <td>135</td><td></td><td></td><td><code>      } catch (ex, st) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 136" id="line136">
-                    <td>136</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineNoCov" title="Line 136" id="line136">
+                    <td>136</td><td></td><td>0</td><td><code>        $closeWithError(ex, st);</code></td>
                 </tr>
                 <tr class="noop" title="Line 137" id="line137">
-                    <td>137</td><td></td><td></td><td><code>    }</code></td>
+                    <td>137</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 138" id="line138">
-                    <td>138</td><td></td><td></td><td><code></code></td>
+                    <td>138</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>20</td><td><code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code></td>
+                <tr class="noop" title="Line 139" id="line139">
+                    <td>139</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 140" id="line140">
-                    <td>140</td><td></td><td></td><td><code>      onListen: $onListen,</code></td>
+                <tr class="lineCov" title="Line 140" id="line140">
+                    <td>140</td><td></td><td>20</td><td><code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code></td>
                 </tr>
                 <tr class="noop" title="Line 141" id="line141">
-                    <td>141</td><td></td><td></td><td><code>      onCancel: $onCancel,</code></td>
+                    <td>141</td><td></td><td></td><td><code>      onListen: $onListen,</code></td>
                 </tr>
                 <tr class="noop" title="Line 142" id="line142">
-                    <td>142</td><td></td><td></td><td><code>    );</code></td>
+                    <td>142</td><td></td><td></td><td><code>      onCancel: $onCancel,</code></td>
                 </tr>
                 <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code>  }</code></td>
+                    <td>143</td><td></td><td></td><td><code>    );</code></td>
                 </tr>
                 <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code></code></td>
+                    <td>144</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code>  late final ForwardStreamController&lt;dynamic&gt; _controller;</code></td>
+                    <td>145</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code></code></td>
+                    <td>146</td><td></td><td></td><td><code>  late final ForwardStreamController&lt;dynamic&gt; _controller;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 147" id="line147">
-                    <td>147</td><td></td><td>30</td><td><code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code></td>
+                <tr class="noop" title="Line 147" id="line147">
+                    <td>147</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 148" id="line148">
+                    <td>148</td><td></td><td>30</td><td><code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>30</td><td><code>  Future&lt;void&gt; get done =&gt; _controller.done;</code></td>
+                <tr class="noop" title="Line 149" id="line149">
+                    <td>149</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 150" id="line150">
-                    <td>150</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 150" id="line150">
+                    <td>150</td><td></td><td>30</td><td><code>  Future&lt;void&gt; get done =&gt; _controller.done;</code></td>
+                </tr>
+                <tr class="noop" title="Line 151" id="line151">
+                    <td>151</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

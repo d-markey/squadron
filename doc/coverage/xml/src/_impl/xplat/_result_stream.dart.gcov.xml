@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7037037" lines-covered="38" lines-valid="54" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7037037" lines-covered="38" lines-valid="54" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -96,7 +96,7 @@
             <code>              ?.e('Invalid state: unexpected endOfStream for command $command');</code>
         </line>
         <line hits="0" number="30">
-            <code>          _controller.addError(SquadronErrorImpl.create(</code>
+            <code>          _controller.safeAddError(SquadronErrorImpl.create(</code>
         </line>
         <line number="31">
             <code>            'Invalid state: unexpected endOfStream',</code>
@@ -144,7 +144,7 @@
             <code>      } else if (error != null) {</code>
         </line>
         <line hits="6" number="45">
-            <code>        _controller.addError(error);</code>
+            <code>        _controller.safeAddError(error);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="46">
@@ -172,14 +172,14 @@
             <code>        try {</code>
         </line>
         <line hits="15" number="54">
-            <code>          _controller.add(res.result);</code>
+            <code>          _controller.safeAdd(res.result);</code>
             <hit count="15" name="&lt;unnamed&gt;"/>
         </line>
         <line number="55">
             <code>        } catch (ex, st) {</code>
         </line>
         <line hits="0" number="56">
-            <code>          _controller.addError(SquadronException.from(ex, st, command));</code>
+            <code>          _controller.safeAddError(SquadronException.from(ex, st, command));</code>
         </line>
         <line number="57">
             <code>        }</code>
@@ -198,7 +198,7 @@
             <code>      if (canceled != null) {</code>
         </line>
         <line hits="0" number="62">
-            <code>        _controller.addError(canceled);</code>
+            <code>        _controller.safeAddError(canceled);</code>
         </line>
         <line hits="0" number="63">
             <code>        _controller.close();</code>
@@ -231,7 +231,7 @@
             <code>      if (error != null) {</code>
         </line>
         <line hits="6" number="72">
-            <code>        _controller.addError(error);</code>
+            <code>        _controller.safeAddError(error);</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line number="73">
@@ -241,14 +241,14 @@
             <code>        try {</code>
         </line>
         <line hits="30" number="75">
-            <code>          _controller.add(res.result);</code>
+            <code>          _controller.safeAdd(res.result);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="76">
             <code>        } catch (ex, st) {</code>
         </line>
         <line hits="0" number="77">
-            <code>          _controller.addError(SquadronException.from(ex, st, command));</code>
+            <code>          _controller.safeAddError(SquadronException.from(ex, st, command));</code>
         </line>
         <line number="78">
             <code>        }</code>
@@ -270,7 +270,7 @@
             <code/>
         </line>
         <line hits="4" number="84">
-            <code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) async {</code>
+            <code>    Future&lt;int?&gt; $getStreamId(StreamSubscription sub) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="85">
@@ -307,186 +307,189 @@
         <line number="95">
             <code>      // wait for the streamId...</code>
         </line>
-        <line hits="4" number="96">
-            <code>      final streamId = await streamIdCompleter.future;</code>
+        <line hits="12" number="96">
+            <code>      return streamIdCompleter.future.then((streamId) {</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="97">
+            <code>        while (count &gt; 0) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="97">
-            <code>      // restore subscription pause</code>
-        </line>
-        <line hits="4" number="98">
-            <code>      while (count &gt; 0) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="0" number="98">
+            <code>          count--;</code>
         </line>
         <line hits="0" number="99">
-            <code>        count--;</code>
+            <code>          sub.pause();</code>
         </line>
-        <line hits="0" number="100">
-            <code>        sub.pause();</code>
+        <line number="100">
+            <code>        }</code>
         </line>
         <line number="101">
-            <code>      }</code>
+            <code>        return streamId;</code>
         </line>
         <line number="102">
-            <code>      return streamId;</code>
+            <code>      });</code>
         </line>
         <line number="103">
-            <code>    }</code>
+            <code>      // restore subscription pause</code>
         </line>
         <line number="104">
+            <code>    }</code>
+        </line>
+        <line number="105">
             <code/>
         </line>
-        <line hits="10" number="105">
+        <line hits="10" number="106">
             <code>    Future&lt;void&gt; $onCancel() async {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="106">
+        <line hits="20" number="107">
             <code>      final sub = _controller.subscription;</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="107">
+        <line number="108">
             <code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code>
         </line>
-        <line number="108">
+        <line number="109">
             <code>        // this is a streaming operation and the subscription is active, so</code>
         </line>
-        <line number="109">
+        <line number="110">
             <code>        // we need to inform the worker that the stream has been canceled</code>
         </line>
-        <line hits="4" number="110">
+        <line hits="4" number="111">
             <code>        final streamId = await $getStreamId(sub);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="111">
+        <line number="112">
             <code>        if (streamId != null) {</code>
         </line>
-        <line hits="4" number="112">
+        <line hits="4" number="113">
             <code>          channel.cancelStream(streamId);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="113">
+        <line number="114">
             <code>        }</code>
         </line>
-        <line hits="4" number="114">
+        <line hits="4" number="115">
             <code>        await sub.cancel();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="115">
+        <line number="116">
             <code>      }</code>
         </line>
-        <line number="116">
+        <line number="117">
             <code>    }</code>
         </line>
-        <line number="117">
+        <line number="118">
             <code/>
         </line>
-        <line hits="3" number="118">
+        <line hits="3" number="119">
             <code>    void $closeWithError(Object error, [StackTrace? st]) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="119">
-            <code>      _controller.addError(SquadronException.from(error, st, command));</code>
+        <line hits="9" number="120">
+            <code>      _controller.safeAddError(SquadronException.from(error, st, command));</code>
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="120">
+        <line hits="6" number="121">
             <code>      _controller.close();</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="121">
+        <line number="122">
             <code>    }</code>
         </line>
-        <line number="122">
+        <line number="123">
             <code/>
         </line>
-        <line hits="10" number="123">
+        <line hits="10" number="124">
             <code>    void $onListen() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="124">
+        <line number="125">
             <code>      try {</code>
         </line>
-        <line number="125">
+        <line number="126">
             <code>        // do not send the request if the token is already canceled</code>
         </line>
-        <line hits="2" number="126">
+        <line hits="2" number="127">
             <code>        token?.throwIfCanceled();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="127">
+        <line number="128">
             <code>        // send the request and start decoding responses</code>
         </line>
-        <line hits="40" number="128">
+        <line hits="40" number="129">
             <code>        _controller.attachSubscription(sendRequest().listen(</code>
             <hit count="40" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="129">
+        <line number="130">
             <code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code>
         </line>
-        <line number="130">
+        <line number="131">
             <code>          onError: $closeWithError,</code>
         </line>
-        <line hits="20" number="131">
+        <line hits="20" number="132">
             <code>          onDone: _controller.close,</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="132">
+        <line number="133">
             <code>          cancelOnError: false,</code>
         </line>
-        <line number="133">
+        <line number="134">
             <code>        ));</code>
         </line>
-        <line number="134">
+        <line number="135">
             <code>      } catch (ex, st) {</code>
         </line>
-        <line hits="0" number="135">
+        <line hits="0" number="136">
             <code>        $closeWithError(ex, st);</code>
         </line>
-        <line number="136">
+        <line number="137">
             <code>      }</code>
         </line>
-        <line number="137">
+        <line number="138">
             <code>    }</code>
         </line>
-        <line number="138">
+        <line number="139">
             <code/>
         </line>
-        <line hits="20" number="139">
+        <line hits="20" number="140">
             <code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="140">
+        <line number="141">
             <code>      onListen: $onListen,</code>
         </line>
-        <line number="141">
+        <line number="142">
             <code>      onCancel: $onCancel,</code>
         </line>
-        <line number="142">
+        <line number="143">
             <code>    );</code>
         </line>
-        <line number="143">
+        <line number="144">
             <code>  }</code>
         </line>
-        <line number="144">
-            <code/>
-        </line>
         <line number="145">
-            <code>  late final ForwardStreamController&lt;dynamic&gt; _controller;</code>
+            <code/>
         </line>
         <line number="146">
+            <code>  late final ForwardStreamController&lt;dynamic&gt; _controller;</code>
+        </line>
+        <line number="147">
             <code/>
         </line>
-        <line hits="30" number="147">
+        <line hits="30" number="148">
             <code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="148">
+        <line number="149">
             <code/>
         </line>
-        <line hits="30" number="149">
+        <line hits="30" number="150">
             <code>  Future&lt;void&gt; get done =&gt; _controller.done;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="150">
+        <line number="151">
             <code>}</code>
         </line>
     </lines>

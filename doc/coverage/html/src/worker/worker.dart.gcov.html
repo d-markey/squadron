@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-17</dd>
+                    <dd>2025-11-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>70</td><td>79</td><td class="med">88.6%</td>
+                            <th scope="row">Lines</th><td>72</td><td>81</td><td class="med">88.9%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -481,7 +481,7 @@
                     <td>140</td><td></td><td>4</td><td><code>        controller.subscription?.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>4</td><td><code>        controller.addError(SquadronException.from(ex, null, command));</code></td>
+                    <td>141</td><td></td><td>4</td><td><code>        controller.safeAddError(SquadronException.from(ex, null, command));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 142" id="line142">
                     <td>142</td><td></td><td>2</td><td><code>        controller.close();</code></td>
@@ -556,13 +556,13 @@
                     <td>165</td><td></td><td>5</td><td><code>            .listen(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>5</td><td><code>              controller.add,</code></td>
+                    <td>166</td><td></td><td>5</td><td><code>              controller.safeAdd,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 167" id="line167">
-                    <td>167</td><td></td><td>3</td><td><code>              onError: (ex, st) =&gt;</code></td>
+                    <td>167</td><td></td><td>3</td><td><code>              onError: (ex, st) =&gt; controller</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>6</td><td><code>                  controller.addError(SquadronException.from(ex, st, command)),</code></td>
+                    <td>168</td><td></td><td>6</td><td><code>                  .safeAddError(SquadronException.from(ex, st, command)),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 169" id="line169">
                     <td>169</td><td></td><td>5</td><td><code>              onDone: controller.close,</code></td>
@@ -583,7 +583,7 @@
                     <td>174</td><td></td><td>1</td><td><code>        controller.subscription?.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 175" id="line175">
-                    <td>175</td><td></td><td>2</td><td><code>        controller.addError(SquadronException.from(ex, st, command));</code></td>
+                    <td>175</td><td></td><td>2</td><td><code>        controller.safeAddError(SquadronException.from(ex, st, command));</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 176" id="line176">
                     <td>176</td><td></td><td>1</td><td><code>        controller.close();</code></td>
@@ -613,7 +613,7 @@
                     <td>184</td><td></td><td>11</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 185" id="line185">
-                    <td>185</td><td></td><td></td><td><code>  Future&lt;Channel&gt; start() async {</code></td>
+                    <td>185</td><td></td><td></td><td><code>  Future&lt;Channel&gt; start() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 186" id="line186">
                     <td>186</td><td></td><td>11</td><td><code>    if (isStopped) {</code></td>
@@ -628,112 +628,130 @@
                     <td>189</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 190" id="line190">
-                    <td>190</td><td></td><td>11</td><td><code>    final args = getStartArgs() ?? const [];</code></td>
+                    <td>190</td><td></td><td>11</td><td><code>    if (_channel != null) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 191" id="line191">
-                    <td>191</td><td></td><td>22</td><td><code>    _openChannel ??= Channel.open(</code></td>
+                <tr class="lineNoCov" title="Line 191" id="line191">
+                    <td>191</td><td></td><td>0</td><td><code>      return Future.value(_channel!);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 192" id="line192">
-                    <td>192</td><td></td><td>44</td><td><code>        exceptionManager, channelLogger, _entryPoint, args, _threadHook);</code></td>
+                <tr class="noop" title="Line 192" id="line192">
+                    <td>192</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 193" id="line193">
-                    <td>193</td><td></td><td>22</td><td><code>    final channel = _channel ?? await _openChannel;</code></td>
+                <tr class="noop" title="Line 193" id="line193">
+                    <td>193</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 194" id="line194">
-                    <td>194</td><td></td><td>10</td><td><code>    if (_channel == null) {</code></td>
+                    <td>194</td><td></td><td>22</td><td><code>    return _openChannel ??= Channel.open(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 195" id="line195">
-                    <td>195</td><td></td><td>10</td><td><code>      _channel = channel;</code></td>
+                    <td>195</td><td></td><td>11</td><td><code>      exceptionManager,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 196" id="line196">
-                    <td>196</td><td></td><td>20</td><td><code>      _stats.start();</code></td>
+                    <td>196</td><td></td><td>11</td><td><code>      channelLogger,</code></td>
                 </tr>
-                <tr class="noop" title="Line 197" id="line197">
-                    <td>197</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 197" id="line197">
+                    <td>197</td><td></td><td>11</td><td><code>      _entryPoint,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 198" id="line198">
-                    <td>198</td><td></td><td>10</td><td><code>    return _channel!;</code></td>
+                    <td>198</td><td></td><td>11</td><td><code>      getStartArgs() ?? const [],</code></td>
                 </tr>
-                <tr class="noop" title="Line 199" id="line199">
-                    <td>199</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 199" id="line199">
+                    <td>199</td><td></td><td>11</td><td><code>      _threadHook,</code></td>
                 </tr>
-                <tr class="noop" title="Line 200" id="line200">
-                    <td>200</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 200" id="line200">
+                    <td>200</td><td></td><td>21</td><td><code>    ).then((channel) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 201" id="line201">
-                    <td>201</td><td></td><td></td><td><code>  /// Stops this worker.</code></td>
+                <tr class="lineCov" title="Line 201" id="line201">
+                    <td>201</td><td></td><td>10</td><td><code>      _channel = channel;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 202" id="line202">
-                    <td>202</td><td></td><td>11</td><td><code>  @override</code></td>
+                    <td>202</td><td></td><td>20</td><td><code>      _stats.start();</code></td>
                 </tr>
                 <tr class="noop" title="Line 203" id="line203">
-                    <td>203</td><td></td><td></td><td><code>  void stop() {</code></td>
+                    <td>203</td><td></td><td></td><td><code>      return channel;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 204" id="line204">
-                    <td>204</td><td></td><td>11</td><td><code>    if (!isStopped) {</code></td>
+                <tr class="noop" title="Line 204" id="line204">
+                    <td>204</td><td></td><td></td><td><code>    });</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 205" id="line205">
-                    <td>205</td><td></td><td>14</td><td><code>      channelLogger?.d('Stop worker');</code></td>
+                <tr class="noop" title="Line 205" id="line205">
+                    <td>205</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 206" id="line206">
-                    <td>206</td><td></td><td>22</td><td><code>      _stats.stop();</code></td>
+                <tr class="noop" title="Line 206" id="line206">
+                    <td>206</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 207" id="line207">
-                    <td>207</td><td></td><td>11</td><td><code>      _openChannel = null;</code></td>
+                <tr class="noop" title="Line 207" id="line207">
+                    <td>207</td><td></td><td></td><td><code>  /// Stops this worker.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 208" id="line208">
-                    <td>208</td><td></td><td>21</td><td><code>      _channel?.close();</code></td>
+                    <td>208</td><td></td><td>11</td><td><code>  @override</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 209" id="line209">
-                    <td>209</td><td></td><td>11</td><td><code>      _channel = null;</code></td>
+                <tr class="noop" title="Line 209" id="line209">
+                    <td>209</td><td></td><td></td><td><code>  void stop() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 210" id="line210">
-                    <td>210</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 210" id="line210">
+                    <td>210</td><td></td><td>11</td><td><code>    if (!isStopped) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 211" id="line211">
-                    <td>211</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 211" id="line211">
+                    <td>211</td><td></td><td>14</td><td><code>      channelLogger?.d('Stop worker');</code></td>
                 </tr>
-                <tr class="noop" title="Line 212" id="line212">
-                    <td>212</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 212" id="line212">
+                    <td>212</td><td></td><td>22</td><td><code>      _stats.stop();</code></td>
                 </tr>
-                <tr class="noop" title="Line 213" id="line213">
-                    <td>213</td><td></td><td></td><td><code>  /// Terminates this worker.</code></td>
+                <tr class="lineCov" title="Line 213" id="line213">
+                    <td>213</td><td></td><td>11</td><td><code>      _openChannel = null;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 214" id="line214">
-                    <td>214</td><td></td><td>2</td><td><code>  @override</code></td>
+                    <td>214</td><td></td><td>21</td><td><code>      _channel?.close();</code></td>
                 </tr>
-                <tr class="noop" title="Line 215" id="line215">
-                    <td>215</td><td></td><td></td><td><code>  void terminate([TaskTerminatedException? ex]) {</code></td>
+                <tr class="lineCov" title="Line 215" id="line215">
+                    <td>215</td><td></td><td>11</td><td><code>      _channel = null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 216" id="line216">
-                    <td>216</td><td></td><td></td><td><code>    // terminate channel and stop worker</code></td>
+                    <td>216</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 217" id="line217">
-                    <td>217</td><td></td><td>2</td><td><code>    ex ??= TaskTerminatedException('Worker has been terminated');</code></td>
+                <tr class="noop" title="Line 217" id="line217">
+                    <td>217</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 218" id="line218">
-                    <td>218</td><td></td><td>4</td><td><code>    _channel?.terminate(ex);</code></td>
+                <tr class="noop" title="Line 218" id="line218">
+                    <td>218</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 219" id="line219">
-                    <td>219</td><td></td><td>2</td><td><code>    stop();</code></td>
+                <tr class="noop" title="Line 219" id="line219">
+                    <td>219</td><td></td><td></td><td><code>  /// Terminates this worker.</code></td>
                 </tr>
-                <tr class="noop" title="Line 220" id="line220">
-                    <td>220</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 220" id="line220">
+                    <td>220</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 221" id="line221">
-                    <td>221</td><td></td><td></td><td><code></code></td>
+                    <td>221</td><td></td><td></td><td><code>  void terminate([TaskTerminatedException? ex]) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 222" id="line222">
-                    <td>222</td><td></td><td></td><td><code>  /// Workers do not need an [operations] map.</code></td>
+                    <td>222</td><td></td><td></td><td><code>    // terminate channel and stop worker</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 223" id="line223">
-                    <td>223</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="lineCov" title="Line 223" id="line223">
+                    <td>223</td><td></td><td>2</td><td><code>    ex ??= TaskTerminatedException('Worker has been terminated');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 224" id="line224">
-                    <td>224</td><td></td><td>0</td><td><code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code></td>
+                <tr class="lineCov" title="Line 224" id="line224">
+                    <td>224</td><td></td><td>4</td><td><code>    _channel?.terminate(ex);</code></td>
                 </tr>
-                <tr class="noop" title="Line 225" id="line225">
-                    <td>225</td><td></td><td></td><td><code>}</code></td>
+                <tr class="lineCov" title="Line 225" id="line225">
+                    <td>225</td><td></td><td>2</td><td><code>    stop();</code></td>
+                </tr>
+                <tr class="noop" title="Line 226" id="line226">
+                    <td>226</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 227" id="line227">
+                    <td>227</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 228" id="line228">
+                    <td>228</td><td></td><td></td><td><code>  /// Workers do not need an [operations] map.</code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 229" id="line229">
+                    <td>229</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 230" id="line230">
+                    <td>230</td><td></td><td></td><td><code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code></td>
+                </tr>
+                <tr class="noop" title="Line 231" id="line231">
+                    <td>231</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -67,404 +67,411 @@
         <line number="22">
             <code>extension type WorkerRequest._(List data) implements WorkerMessage {</code>
         </line>
-        <line number="23">
-            <code>  /// Creates a new request with the specified [command] ID and optional arguments.</code>
-        </line>
-        <line hits="10" number="24">
-            <code>  static WorkerRequest userCommand(PlatformChannel channelInfo, int command,</code>
+        <line hits="10" number="23">
+            <code>  factory WorkerRequest.from(List data) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="25">
-            <code>          List args, SquadronCancelationToken? token, bool inspectResponse) =&gt;</code>
-        </line>
-        <line hits="20" number="26">
-            <code>      WorkerRequest._([</code>
+        <line hits="20" number="24">
+            <code>    if (data.length != 7) {</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
+        <line hits="0" number="25">
+            <code>      throw SquadronErrorImpl.create('Invalid worker request');</code>
+        </line>
+        <line number="26">
+            <code>    }</code>
+        </line>
         <line hits="10" number="27">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>    return WorkerRequest._(data);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="28">
-            <code>        channelInfo, // 1 - channel</code>
+            <code>  }</code>
         </line>
         <line number="29">
-            <code>        command, // 2 - command</code>
-        </line>
-        <line number="30">
-            <code>        args, // 3 - args</code>
-        </line>
-        <line number="31">
-            <code>        token, // 4 - cancelation token</code>
-        </line>
-        <line number="32">
-            <code>        null, // 5 - stream id</code>
-        </line>
-        <line number="33">
-            <code>        inspectResponse, // 6 - inspect response</code>
-        </line>
-        <line number="34">
-            <code>      ]);</code>
-        </line>
-        <line number="35">
             <code/>
         </line>
+        <line number="30">
+            <code>  /// Creates a new request with the specified [command] ID and optional arguments.</code>
+        </line>
+        <line hits="10" number="31">
+            <code>  factory WorkerRequest.userCommand(PlatformChannel channelInfo, int command,</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="32">
+            <code>          List args, SquadronCancelationToken? token, bool inspectResponse) =&gt;</code>
+        </line>
+        <line hits="20" number="33">
+            <code>      WorkerRequest._([</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="34">
+            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="35">
+            <code>        channelInfo, // 1 - channel</code>
+        </line>
         <line number="36">
+            <code>        command, // 2 - command</code>
+        </line>
+        <line number="37">
+            <code>        args, // 3 - args</code>
+        </line>
+        <line number="38">
+            <code>        token, // 4 - cancelation token</code>
+        </line>
+        <line number="39">
+            <code>        null, // 5 - stream id</code>
+        </line>
+        <line number="40">
+            <code>        inspectResponse, // 6 - inspect response</code>
+        </line>
+        <line number="41">
+            <code>      ]);</code>
+        </line>
+        <line number="42">
+            <code/>
+        </line>
+        <line number="43">
             <code>  /// Creates a new start request.</code>
         </line>
-        <line hits="11" number="37">
-            <code>  static WorkerRequest start(PlatformChannel channelInfo, List args) =&gt;</code>
+        <line hits="11" number="44">
+            <code>  factory WorkerRequest.start(PlatformChannel channelInfo, List args) =&gt;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="38">
+        <line hits="22" number="45">
             <code>      WorkerRequest._([</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="39">
+        <line hits="11" number="46">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="40">
+        <line number="47">
             <code>        channelInfo, // 1 - channel</code>
         </line>
-        <line number="41">
+        <line number="48">
             <code>        _connectCommand, // 2 - command</code>
         </line>
-        <line number="42">
+        <line number="49">
             <code>        args, // 3 - args</code>
         </line>
-        <line number="43">
+        <line number="50">
             <code>        null, // 4 - cancelation token</code>
         </line>
-        <line number="44">
+        <line number="51">
             <code>        null, // 5 - stream id</code>
         </line>
-        <line number="45">
+        <line number="52">
             <code>        true, // 6 - inspect response</code>
         </line>
-        <line number="46">
+        <line number="53">
             <code>      ]);</code>
         </line>
-        <line number="47">
+        <line number="54">
             <code/>
         </line>
-        <line number="48">
+        <line number="55">
             <code>  /// Creates a new stream cancelation request.</code>
         </line>
-        <line hits="12" number="49">
-            <code>  static WorkerRequest cancelStream(int streamId) =&gt; WorkerRequest._([</code>
+        <line hits="12" number="56">
+            <code>  factory WorkerRequest.cancelStream(int streamId) =&gt; WorkerRequest._([</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="50">
+        <line hits="4" number="57">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="51">
+        <line number="58">
             <code>        null, // 1 - channel</code>
         </line>
-        <line number="52">
+        <line number="59">
             <code>        _cancelStreamCommand, // 2 - command</code>
         </line>
-        <line number="53">
+        <line number="60">
             <code>        null, // 3 - args</code>
         </line>
-        <line number="54">
+        <line number="61">
             <code>        null, // 4 - cancelation token</code>
         </line>
-        <line number="55">
+        <line number="62">
             <code>        streamId, // 5 - stream id</code>
         </line>
-        <line number="56">
+        <line number="63">
             <code>        null, // 6 - inspect response</code>
         </line>
-        <line number="57">
+        <line number="64">
             <code>      ]);</code>
         </line>
-        <line number="58">
+        <line number="65">
             <code/>
         </line>
-        <line number="59">
+        <line number="66">
             <code>  /// Creates a new cancelation request.</code>
         </line>
-        <line hits="2" number="60">
-            <code>  static WorkerRequest cancel(SquadronCancelationToken token) =&gt;</code>
+        <line hits="2" number="67">
+            <code>  factory WorkerRequest.cancel(SquadronCancelationToken token) =&gt;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="61">
+        <line hits="4" number="68">
             <code>      WorkerRequest._([</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="62">
+        <line hits="2" number="69">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="63">
+        <line number="70">
             <code>        null, // 1 - channel</code>
         </line>
-        <line number="64">
+        <line number="71">
             <code>        _cancelTokenCommand, // 2 - command</code>
         </line>
-        <line number="65">
+        <line number="72">
             <code>        null, // 3 - args</code>
         </line>
-        <line number="66">
+        <line number="73">
             <code>        token, // 4 - cancelation token</code>
         </line>
-        <line number="67">
+        <line number="74">
             <code>        null, // 5 - stream id</code>
         </line>
-        <line number="68">
+        <line number="75">
             <code>        null, // 6 - inspect response</code>
         </line>
-        <line number="69">
+        <line number="76">
             <code>      ]);</code>
         </line>
-        <line number="70">
+        <line number="77">
             <code/>
         </line>
-        <line number="71">
+        <line number="78">
             <code>  /// Creates a new termination request.</code>
         </line>
-        <line hits="30" number="72">
-            <code>  static WorkerRequest stop() =&gt; WorkerRequest._([</code>
+        <line hits="30" number="79">
+            <code>  factory WorkerRequest.stop() =&gt; WorkerRequest._([</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="73">
+        <line hits="10" number="80">
             <code>        microsecTimeStamp(), // 0 - travel time</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="74">
+        <line number="81">
             <code>        null, // 1 - channel</code>
         </line>
-        <line number="75">
+        <line number="82">
             <code>        _terminateCommand, // 2 - command</code>
         </line>
-        <line number="76">
+        <line number="83">
             <code>        null, // 3 - args</code>
         </line>
-        <line number="77">
+        <line number="84">
             <code>        null, // 4 - cancelation token</code>
         </line>
-        <line number="78">
+        <line number="85">
             <code>        null, // 5 - stream id</code>
         </line>
-        <line number="79">
+        <line number="86">
             <code>        null, // 6 - inspect response</code>
         </line>
-        <line number="80">
+        <line number="87">
             <code>      ]);</code>
-        </line>
-        <line number="81">
-            <code/>
-        </line>
-        <line number="82">
-            <code>  /// The client's [WorkerChannel]. Only valid on the receiving end.</code>
-        </line>
-        <line hits="20" number="83">
-            <code>  WorkerChannel? get channel =&gt; data[_$channel];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="84">
-            <code/>
-        </line>
-        <line number="85">
-            <code>  /// The channel method to be used for sending data back.</code>
-        </line>
-        <line hits="10" number="86">
-            <code>  void Function(dynamic)? get reply =&gt;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="34" number="87">
-            <code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code>
-            <hit count="34" name="&lt;unnamed&gt;"/>
         </line>
         <line number="88">
             <code/>
         </line>
         <line number="89">
-            <code>  /// The client's channel info.</code>
+            <code>  /// The client's [WorkerChannel]. Only valid on the receiving end.</code>
         </line>
-        <line hits="0" number="90">
-            <code>  PlatformChannel? get channelInfo =&gt; data[_$channel];</code>
+        <line hits="20" number="90">
+            <code>  WorkerChannel? get channel =&gt; data[_$channel];</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="91">
             <code/>
         </line>
         <line number="92">
+            <code>  /// The channel method to be used for sending data back.</code>
+        </line>
+        <line hits="10" number="93">
+            <code>  void Function(dynamic)? get reply =&gt;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="34" number="94">
+            <code>      inspectResponse ? channel?.inspectAndReply : channel?.reply;</code>
+            <hit count="34" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="95">
+            <code/>
+        </line>
+        <line number="96">
+            <code>  /// The client's channel info.</code>
+        </line>
+        <line hits="0" number="97">
+            <code>  PlatformChannel? get channelInfo =&gt; data[_$channel];</code>
+        </line>
+        <line number="98">
+            <code/>
+        </line>
+        <line number="99">
             <code>  /// Cancelation token.</code>
         </line>
-        <line hits="20" number="93">
+        <line hits="20" number="100">
             <code>  SquadronCancelationToken? get cancelToken =&gt; data[_$token];</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="94">
+        <line number="101">
             <code/>
         </line>
-        <line number="95">
+        <line number="102">
             <code>  /// Stream id.</code>
         </line>
-        <line hits="8" number="96">
+        <line hits="8" number="103">
             <code>  int? get streamId =&gt; data[_$streamId];</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="97">
-            <code/>
-        </line>
-        <line number="98">
-            <code>  /// The [command]'s ID.</code>
-        </line>
-        <line hits="20" number="99">
-            <code>  int get command =&gt; data[_$command];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="100">
-            <code/>
-        </line>
-        <line number="101">
-            <code>  /// The command's arguments, if any.</code>
-        </line>
-        <line hits="20" number="102">
-            <code>  List get args =&gt; data[_$args];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="103">
-            <code/>
-        </line>
         <line number="104">
-            <code>  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In</code>
+            <code/>
         </line>
         <line number="105">
-            <code>  /// Web Workers, ownership of these objects must be transfered across threads.</code>
+            <code>  /// The [command]'s ID.</code>
         </line>
         <line hits="20" number="106">
-            <code>  bool get inspectResponse =&gt; data[_$inspectResponse];</code>
+            <code>  int get command =&gt; data[_$command];</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="107">
             <code/>
         </line>
         <line number="108">
-            <code>  /// flag for start requests.</code>
+            <code>  /// The command's arguments, if any.</code>
         </line>
-        <line hits="30" number="109">
-            <code>  bool get isConnection =&gt; (command == _connectCommand);</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+        <line hits="20" number="109">
+            <code>  List get args =&gt; data[_$args];</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line number="110">
             <code/>
         </line>
         <line number="111">
+            <code>  /// Flag indicating whether the Channel should inspect the payload to identify non-base type objects. In</code>
+        </line>
+        <line number="112">
+            <code>  /// Web Workers, ownership of these objects must be transfered across threads.</code>
+        </line>
+        <line hits="20" number="113">
+            <code>  bool get inspectResponse =&gt; data[_$inspectResponse];</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="114">
+            <code/>
+        </line>
+        <line number="115">
+            <code>  /// flag for start requests.</code>
+        </line>
+        <line hits="30" number="116">
+            <code>  bool get isConnection =&gt; (command == _connectCommand);</code>
+            <hit count="30" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="117">
+            <code/>
+        </line>
+        <line number="118">
             <code>  /// flag for stream cancelation requests.</code>
         </line>
-        <line hits="30" number="112">
+        <line hits="30" number="119">
             <code>  bool get isStreamCancelation =&gt; (command == _cancelStreamCommand);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="113">
+        <line number="120">
             <code/>
         </line>
-        <line number="114">
+        <line number="121">
             <code>  /// flag for cancelation requests.</code>
         </line>
-        <line hits="30" number="115">
+        <line hits="30" number="122">
             <code>  bool get isTokenCancelation =&gt; (command == _cancelTokenCommand);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="116">
+        <line number="123">
             <code/>
         </line>
-        <line number="117">
+        <line number="124">
             <code>  /// flag for termination requests.</code>
         </line>
-        <line hits="30" number="118">
+        <line hits="30" number="125">
             <code>  bool get isTermination =&gt; (command == _terminateCommand);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="119">
-            <code/>
-        </line>
-        <line number="120">
-            <code>  static const int _connectCommand = -1;</code>
-        </line>
-        <line number="121">
-            <code>  static const int _cancelStreamCommand = -2;</code>
-        </line>
-        <line number="122">
-            <code>  static const int _cancelTokenCommand = -3;</code>
-        </line>
-        <line number="123">
-            <code>  static const int _terminateCommand = -4;</code>
-        </line>
-        <line number="124">
-            <code>}</code>
-        </line>
-        <line number="125">
-            <code/>
-        </line>
         <line number="126">
-            <code>// 0 is reserved for travel time</code>
+            <code/>
         </line>
         <line number="127">
-            <code>const _$channel = 1;</code>
-        </line>
-        <line number="128">
-            <code>const _$command = 2;</code>
-        </line>
-        <line number="129">
-            <code>const _$args = 3;</code>
-        </line>
-        <line number="130">
-            <code>const _$token = 4;</code>
-        </line>
-        <line number="131">
-            <code>const _$streamId = 5;</code>
-        </line>
-        <line number="132">
-            <code>const _$inspectResponse = 6;</code>
-        </line>
-        <line number="133">
-            <code/>
-        </line>
-        <line number="134">
-            <code>@internal</code>
-        </line>
-        <line number="135">
-            <code>extension WorkerRequestExt on WorkerRequest {</code>
-        </line>
-        <line number="136">
             <code>  /// In-place deserialization of a [WorkerRequest] received by the worker.</code>
         </line>
-        <line hits="10" number="137">
+        <line hits="10" number="128">
             <code>  void unwrapInPlace(InternalLogger? logger) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="138">
+        <line hits="10" number="129">
             <code>    unwrapTravelTime();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="139">
+        <line hits="30" number="130">
             <code>    data[_$command] = (data[_$command] as num).toInt();</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="24" number="140">
+        <line hits="24" number="131">
             <code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code>
             <hit count="24" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="141">
+        <line hits="30" number="132">
             <code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="142">
+        <line hits="30" number="133">
             <code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="143">
+        <line hits="10" number="134">
             <code>    data[_$inspectResponse] ??= false;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="144">
+        <line hits="10" number="135">
             <code>    data[_$args] ??= const [];</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="136">
+            <code>  }</code>
+        </line>
+        <line number="137">
+            <code/>
+        </line>
+        <line number="138">
+            <code>  /// In-place serialization of a [WorkerRequest].</code>
+        </line>
+        <line hits="11" number="139">
+            <code>  List wrapInPlace() {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="140">
+            <code>    final token = data[_$token];</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="141">
+            <code>    if (token is SquadronCancelationToken) {</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="142">
+            <code>      data[_$token] = token.serialize();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="143">
+            <code>    }</code>
+        </line>
+        <line number="144">
+            <code>    return data;</code>
         </line>
         <line number="145">
             <code>  }</code>
@@ -473,91 +480,75 @@
             <code/>
         </line>
         <line number="147">
-            <code>  /// In-place serialization of a [WorkerRequest].</code>
+            <code>  static const int _connectCommand = -1;</code>
         </line>
-        <line hits="11" number="148">
-            <code>  List wrapInPlace() {</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line number="148">
+            <code>  static const int _cancelStreamCommand = -2;</code>
         </line>
-        <line hits="11" number="149">
-            <code>    final token = data[_$token];</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line number="149">
+            <code>  static const int _cancelTokenCommand = -3;</code>
         </line>
-        <line hits="11" number="150">
-            <code>    if (token is SquadronCancelationToken) {</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line number="150">
+            <code>  static const int _terminateCommand = -4;</code>
         </line>
-        <line hits="4" number="151">
-            <code>      data[_$token] = token.serialize();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="152">
-            <code>    }</code>
-        </line>
-        <line number="153">
-            <code>    return data;</code>
-        </line>
-        <line number="154">
-            <code>  }</code>
-        </line>
-        <line number="155">
-            <code/>
-        </line>
-        <line hits="10" number="156">
-            <code>  static WorkerRequest from(List data) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="157">
-            <code>    if (data.length != 7) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="0" number="158">
-            <code>      throw SquadronErrorImpl.create('Invalid worker request');</code>
-        </line>
-        <line number="159">
-            <code>    }</code>
-        </line>
-        <line hits="10" number="160">
-            <code>    return WorkerRequest._(data);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="161">
-            <code>  }</code>
-        </line>
-        <line number="162">
+        <line number="151">
             <code>}</code>
         </line>
-        <line number="163">
+        <line number="152">
             <code/>
         </line>
-        <line number="164">
+        <line number="153">
+            <code>// 0 is reserved for travel time</code>
+        </line>
+        <line number="154">
+            <code>const _$channel = 1;</code>
+        </line>
+        <line number="155">
+            <code>const _$command = 2;</code>
+        </line>
+        <line number="156">
+            <code>const _$args = 3;</code>
+        </line>
+        <line number="157">
+            <code>const _$token = 4;</code>
+        </line>
+        <line number="158">
+            <code>const _$streamId = 5;</code>
+        </line>
+        <line number="159">
+            <code>const _$inspectResponse = 6;</code>
+        </line>
+        <line number="160">
+            <code/>
+        </line>
+        <line number="161">
             <code>@internal</code>
         </line>
-        <line number="165">
+        <line number="162">
             <code>extension CancelationTokenExt on WorkerRequest {</code>
         </line>
-        <line hits="2" number="166">
+        <line hits="2" number="163">
             <code>  void overrideCancelToken(SquadronCancelationToken token) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="167">
+        <line hits="10" number="164">
             <code>    if (cancelToken == null || cancelToken!.id != token.id) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="168">
+        <line hits="0" number="165">
             <code>      throw SquadronErrorImpl.create('Cancelation token mismatch');</code>
         </line>
-        <line number="169">
+        <line number="166">
             <code>    }</code>
         </line>
-        <line hits="2" number="170">
+        <line hits="2" number="167">
             <code>    data[_$token] = token;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="171">
+        <line number="168">
             <code>  }</code>
         </line>
-        <line number="172">
+        <line number="169">
             <code>}</code>
         </line>
     </lines>

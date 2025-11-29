@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_channel_forward.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="6" lines-valid="12" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_channel_forward.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="6" lines-valid="12" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of '_channel.dart';</code>
@@ -95,7 +95,7 @@
             <code>  @override</code>
         </line>
         <line number="30">
-            <code>  FutureOr&lt;void&gt; close() {</code>
+            <code>  Future&lt;void&gt; close() {</code>
         </line>
         <line hits="0" number="31">
             <code>    if (!_closed.isCompleted) {</code>

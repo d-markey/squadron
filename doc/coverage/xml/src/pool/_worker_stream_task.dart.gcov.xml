@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="30" lines-valid="30" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="30" lines-valid="30" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -48,129 +48,129 @@
         <line number="15">
             <code>      try {</code>
         </line>
-        <line hits="8" number="16">
+        <line hits="4" number="16">
+            <code>        if (canceledException != null) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="17">
+            <code>          // the task was canceled</code>
+        </line>
+        <line hits="1" number="18">
+            <code>          throw canceledException!;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="19">
+            <code>        }</code>
+        </line>
+        <line hits="8" number="20">
             <code>        final worker = await _worker.future;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="17">
+        <line hits="4" number="21">
             <code>        if (canceledException != null || worker == null) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="18">
+        <line number="22">
             <code>          // the task was canceled</code>
         </line>
-        <line hits="2" number="19">
+        <line hits="1" number="23">
             <code>          throw canceledException!;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="20">
+        <line number="24">
             <code>        } else {</code>
         </line>
-        <line number="21">
+        <line number="25">
             <code>          // otherwise, forward data from the worker</code>
         </line>
-        <line hits="20" number="22">
+        <line hits="20" number="26">
             <code>          _controller.attachSubscription(_producer(worker).listen(</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="23">
-            <code>            _onData,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="8" number="27">
+            <code>            _controller.safeAdd,</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="24">
-            <code>            onError: _onError,</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line hits="3" number="28">
+            <code>            onError: (ex, st) =&gt;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="25">
+        <line hits="9" number="29">
+            <code>                _controller.safeAddError(SquadronException.from(ex, st)),</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="30">
             <code>            onDone: _controller.close,</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="26">
+        <line number="31">
             <code>            cancelOnError: false,</code>
         </line>
-        <line number="27">
+        <line number="32">
             <code>          ));</code>
         </line>
-        <line number="28">
+        <line number="33">
             <code>        }</code>
         </line>
-        <line number="29">
+        <line number="34">
             <code>      } catch (ex, st) {</code>
         </line>
-        <line hits="4" number="30">
+        <line hits="4" number="35">
             <code>        _closeWithError(SquadronException.from(ex, st));</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="31">
+        <line number="36">
             <code>      }</code>
         </line>
-        <line number="32">
+        <line number="37">
             <code>    });</code>
         </line>
-        <line number="33">
-            <code>  }</code>
-        </line>
-        <line number="34">
-            <code/>
-        </line>
-        <line number="35">
-            <code>  final Stream&lt;T&gt; Function(W worker) _producer;</code>
-        </line>
-        <line number="36">
-            <code>  final _worker = Completer&lt;W?&gt;();</code>
-        </line>
-        <line number="37">
-            <code/>
-        </line>
         <line number="38">
-            <code>  late final ForwardStreamController&lt;T&gt; _controller;</code>
+            <code>  }</code>
         </line>
         <line number="39">
             <code/>
         </line>
-        <line hits="4" number="40">
-            <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line number="40">
+            <code>  final Stream&lt;T&gt; Function(W worker) _producer;</code>
         </line>
-        <line hits="8" number="41">
-            <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line number="41">
+            <code>  final _worker = Completer&lt;W?&gt;();</code>
         </line>
         <line number="42">
             <code/>
         </line>
-        <line hits="2" number="43">
-            <code>  void _closeWithError(SquadronException ex) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+        <line number="43">
+            <code>  late final ForwardStreamController&lt;T&gt; _controller;</code>
         </line>
-        <line hits="4" number="44">
-            <code>    _controller.addError(ex);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+        <line number="44">
+            <code/>
         </line>
         <line hits="4" number="45">
-            <code>    _controller.close();</code>
+            <code>  @override</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="46">
-            <code>  }</code>
+        <line hits="8" number="46">
+            <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line number="47">
             <code/>
         </line>
-        <line hits="12" number="48">
-            <code>  void _onData(T data) =&gt; _controller.add(data);</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="48">
+            <code>  void _closeWithError(SquadronException ex) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="49">
-            <code/>
+        <line hits="4" number="49">
+            <code>    _controller.safeAddError(ex);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="50">
-            <code>  void _onError(Object ex, [StackTrace? st]) =&gt;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="4" number="50">
+            <code>    _controller.close();</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="51">
-            <code>      _controller.addError(SquadronException.from(ex, st));</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+        <line number="51">
+            <code>  }</code>
         </line>
         <line number="52">
             <code/>

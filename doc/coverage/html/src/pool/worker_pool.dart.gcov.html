@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-17</dd>
+                    <dd>2025-11-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>128</td><td>148</td><td class="med">86.5%</td>
+                            <th scope="row">Lines</th><td>127</td><td>146</td><td class="med">87.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -553,7 +553,7 @@
                     <td>164</td><td></td><td>2</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 165" id="line165">
-                    <td>165</td><td></td><td></td><td><code>  FutureOr&lt;void&gt; start() {</code></td>
+                    <td>165</td><td></td><td></td><td><code>  Future&lt;void&gt; start() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 166" id="line166">
                     <td>166</td><td></td><td>2</td><td><code>    _stopped = false;</code></td>
@@ -562,655 +562,649 @@
                     <td>167</td><td></td><td>6</td><td><code>    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>2</td><td><code>    if (needs &gt; 0) {</code></td>
+                    <td>168</td><td></td><td>4</td><td><code>    return (needs &gt; 0) ? _provisionWorkers(needs) : Future.value();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 169" id="line169">
-                    <td>169</td><td></td><td>2</td><td><code>      return _provisionWorkers(needs);</code></td>
+                <tr class="noop" title="Line 169" id="line169">
+                    <td>169</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 170" id="line170">
-                    <td>170</td><td></td><td></td><td><code>    }</code></td>
+                    <td>170</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 171" id="line171">
-                    <td>171</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 171" id="line171">
+                    <td>171</td><td></td><td>4</td><td><code>  void _notify(WorkerStat stats, {required bool removed}) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 172" id="line172">
+                    <td>172</td><td></td><td>8</td><td><code>    if (_workerPoolListeners.isNotEmpty) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 173" id="line173">
-                    <td>173</td><td></td><td>4</td><td><code>  void _notify(WorkerStat stats, {required bool removed}) {</code></td>
+                <tr class="lineNoCov" title="Line 173" id="line173">
+                    <td>173</td><td></td><td>0</td><td><code>      for (var listener in _workerPoolListeners.values) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 174" id="line174">
-                    <td>174</td><td></td><td>8</td><td><code>    if (_workerPoolListeners.isNotEmpty) {</code></td>
+                <tr class="noop" title="Line 174" id="line174">
+                    <td>174</td><td></td><td></td><td><code>        try {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 175" id="line175">
-                    <td>175</td><td></td><td>0</td><td><code>      for (var listener in _workerPoolListeners.values) {</code></td>
+                    <td>175</td><td></td><td>0</td><td><code>          listener(stats, removed);</code></td>
                 </tr>
                 <tr class="noop" title="Line 176" id="line176">
-                    <td>176</td><td></td><td></td><td><code>        try {</code></td>
+                    <td>176</td><td></td><td></td><td><code>        } catch (ex) {</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 177" id="line177">
-                    <td>177</td><td></td><td>0</td><td><code>          listener(stats, removed);</code></td>
+                <tr class="noop" title="Line 177" id="line177">
+                    <td>177</td><td></td><td></td><td><code>          // swallow error from user land</code></td>
                 </tr>
                 <tr class="noop" title="Line 178" id="line178">
-                    <td>178</td><td></td><td></td><td><code>        } catch (ex) {</code></td>
+                    <td>178</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="noop" title="Line 179" id="line179">
-                    <td>179</td><td></td><td></td><td><code>          // swallow error from user land</code></td>
+                    <td>179</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 180" id="line180">
-                    <td>180</td><td></td><td></td><td><code>        }</code></td>
+                    <td>180</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 181" id="line181">
-                    <td>181</td><td></td><td></td><td><code>      }</code></td>
+                    <td>181</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 182" id="line182">
-                    <td>182</td><td></td><td></td><td><code>    }</code></td>
+                    <td>182</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 183" id="line183">
-                    <td>183</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 183" id="line183">
+                    <td>183</td><td></td><td>4</td><td><code>  int _removeWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker, bool force) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 184" id="line184">
-                    <td>184</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 184" id="line184">
+                    <td>184</td><td></td><td>5</td><td><code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 185" id="line185">
-                    <td>185</td><td></td><td>4</td><td><code>  int _removeWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker, bool force) {</code></td>
+                    <td>185</td><td></td><td>4</td><td><code>      final worker = poolWorker.worker;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 186" id="line186">
-                    <td>186</td><td></td><td>5</td><td><code>    if (force || _workers.length &gt; concurrencySettings.minWorkers) {</code></td>
+                    <td>186</td><td></td><td>4</td><td><code>      worker.stop();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 187" id="line187">
-                    <td>187</td><td></td><td>4</td><td><code>      final worker = poolWorker.worker;</code></td>
+                    <td>187</td><td></td><td>8</td><td><code>      if (_workers.remove(poolWorker)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 188" id="line188">
-                    <td>188</td><td></td><td>4</td><td><code>      worker.stop();</code></td>
+                    <td>188</td><td></td><td>4</td><td><code>        final stats = worker.getStats();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 189" id="line189">
-                    <td>189</td><td></td><td>8</td><td><code>      if (_workers.remove(poolWorker)) {</code></td>
+                    <td>189</td><td></td><td>8</td><td><code>        _deadWorkerStats.add(stats);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 190" id="line190">
-                    <td>190</td><td></td><td>4</td><td><code>        final stats = worker.getStats();</code></td>
+                    <td>190</td><td></td><td>4</td><td><code>        _notify(stats, removed: true);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 191" id="line191">
-                    <td>191</td><td></td><td>8</td><td><code>        _deadWorkerStats.add(stats);</code></td>
+                <tr class="noop" title="Line 191" id="line191">
+                    <td>191</td><td></td><td></td><td><code>        return 1;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 192" id="line192">
-                    <td>192</td><td></td><td>4</td><td><code>        _notify(stats, removed: true);</code></td>
+                <tr class="noop" title="Line 192" id="line192">
+                    <td>192</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 193" id="line193">
-                    <td>193</td><td></td><td></td><td><code>        return 1;</code></td>
+                    <td>193</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 194" id="line194">
-                    <td>194</td><td></td><td></td><td><code>      }</code></td>
+                    <td>194</td><td></td><td></td><td><code>    return 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 195" id="line195">
-                    <td>195</td><td></td><td></td><td><code>    }</code></td>
+                    <td>195</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 196" id="line196">
-                    <td>196</td><td></td><td></td><td><code>    return 0;</code></td>
+                    <td>196</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 197" id="line197">
-                    <td>197</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 197" id="line197">
+                    <td>197</td><td></td><td>4</td><td><code>  void _addWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 198" id="line198">
-                    <td>198</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 198" id="line198">
+                    <td>198</td><td></td><td>8</td><td><code>    _workers.add(poolWorker);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 199" id="line199">
-                    <td>199</td><td></td><td>4</td><td><code>  void _addWorkerAndNotify(PoolWorker&lt;W&gt; poolWorker) {</code></td>
+                    <td>199</td><td></td><td>12</td><td><code>    _notify(poolWorker.worker.getStats(), removed: false);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 200" id="line200">
-                    <td>200</td><td></td><td>8</td><td><code>    _workers.add(poolWorker);</code></td>
+                <tr class="noop" title="Line 200" id="line200">
+                    <td>200</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 201" id="line201">
-                    <td>201</td><td></td><td>12</td><td><code>    _notify(poolWorker.worker.getStats(), removed: false);</code></td>
+                <tr class="noop" title="Line 201" id="line201">
+                    <td>201</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 202" id="line202">
-                    <td>202</td><td></td><td></td><td><code>  }</code></td>
+                    <td>202</td><td></td><td></td><td><code>  /// Stop idle pool workers matching the [predicate].</code></td>
                 </tr>
                 <tr class="noop" title="Line 203" id="line203">
-                    <td>203</td><td></td><td></td><td><code></code></td>
+                    <td>203</td><td></td><td></td><td><code>  /// If [predicate] is null or not provided, all workers will be stopped.</code></td>
                 </tr>
                 <tr class="noop" title="Line 204" id="line204">
-                    <td>204</td><td></td><td></td><td><code>  /// Stop idle pool workers matching the [predicate].</code></td>
+                    <td>204</td><td></td><td></td><td><code>  /// Stopping a worker does not interrupt or cancel processing. Workers will</code></td>
                 </tr>
                 <tr class="noop" title="Line 205" id="line205">
-                    <td>205</td><td></td><td></td><td><code>  /// If [predicate] is null or not provided, all workers will be stopped.</code></td>
+                    <td>205</td><td></td><td></td><td><code>  /// complete pending tasks before shutting down. In the meantime, they will</code></td>
                 </tr>
                 <tr class="noop" title="Line 206" id="line206">
-                    <td>206</td><td></td><td></td><td><code>  /// Stopping a worker does not interrupt or cancel processing. Workers will</code></td>
+                    <td>206</td><td></td><td></td><td><code>  /// not receive any new workload.</code></td>
                 </tr>
                 <tr class="noop" title="Line 207" id="line207">
-                    <td>207</td><td></td><td></td><td><code>  /// complete pending tasks before shutting down. In the meantime, they will</code></td>
+                    <td>207</td><td></td><td></td><td><code>  /// Returns the number of workers that have been stopped.</code></td>
                 </tr>
-                <tr class="noop" title="Line 208" id="line208">
-                    <td>208</td><td></td><td></td><td><code>  /// not receive any new workload.</code></td>
+                <tr class="lineCov" title="Line 208" id="line208">
+                    <td>208</td><td></td><td>4</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 209" id="line209">
-                    <td>209</td><td></td><td></td><td><code>  /// Returns the number of workers that have been stopped.</code></td>
+                    <td>209</td><td></td><td></td><td><code>  int stop([bool Function(W worker)? predicate]) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 210" id="line210">
-                    <td>210</td><td></td><td>4</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 210" id="line210">
+                    <td>210</td><td></td><td></td><td><code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code></td>
                 </tr>
                 <tr class="noop" title="Line 211" id="line211">
-                    <td>211</td><td></td><td></td><td><code>  int stop([bool Function(W worker)? predicate]) {</code></td>
+                    <td>211</td><td></td><td></td><td><code>    bool force = (predicate == null);</code></td>
                 </tr>
-                <tr class="noop" title="Line 212" id="line212">
-                    <td>212</td><td></td><td></td><td><code>    List&lt;PoolWorker&lt;W&gt;&gt; targets;</code></td>
+                <tr class="lineCov" title="Line 212" id="line212">
+                    <td>212</td><td></td><td>8</td><td><code>    _workers.sort(PoolWorker.compareCapacity);</code></td>
                 </tr>
                 <tr class="noop" title="Line 213" id="line213">
-                    <td>213</td><td></td><td></td><td><code>    bool force = (predicate == null);</code></td>
+                    <td>213</td><td></td><td></td><td><code>    if (force) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 214" id="line214">
-                    <td>214</td><td></td><td>8</td><td><code>    _workers.sort(PoolWorker.compareCapacity);</code></td>
+                <tr class="noop" title="Line 214" id="line214">
+                    <td>214</td><td></td><td></td><td><code>      // kill workers while keeping enough workers alive to process pending tasks</code></td>
                 </tr>
-                <tr class="noop" title="Line 215" id="line215">
-                    <td>215</td><td></td><td></td><td><code>    if (force) {</code></td>
+                <tr class="lineCov" title="Line 215" id="line215">
+                    <td>215</td><td></td><td>24</td><td><code>      targets = _workers.reversed.skip(_queue.length).toList();</code></td>
                 </tr>
-                <tr class="noop" title="Line 216" id="line216">
-                    <td>216</td><td></td><td></td><td><code>      // kill workers while keeping enough workers alive to process pending tasks</code></td>
+                <tr class="lineCov" title="Line 216" id="line216">
+                    <td>216</td><td></td><td>4</td><td><code>      _stopped = true;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 217" id="line217">
-                    <td>217</td><td></td><td>24</td><td><code>      targets = _workers.reversed.skip(_queue.length).toList();</code></td>
+                <tr class="noop" title="Line 217" id="line217">
+                    <td>217</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 218" id="line218">
-                    <td>218</td><td></td><td>4</td><td><code>      _stopped = true;</code></td>
+                <tr class="noop" title="Line 218" id="line218">
+                    <td>218</td><td></td><td></td><td><code>      // kill workers that are idle and satisfy the predicate</code></td>
                 </tr>
-                <tr class="noop" title="Line 219" id="line219">
-                    <td>219</td><td></td><td></td><td><code>    } else {</code></td>
+                <tr class="lineCov" title="Line 219" id="line219">
+                    <td>219</td><td></td><td>7</td><td><code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code></td>
                 </tr>
                 <tr class="noop" title="Line 220" id="line220">
-                    <td>220</td><td></td><td></td><td><code>      // kill workers that are idle and satisfy the predicate</code></td>
+                    <td>220</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 221" id="line221">
-                    <td>221</td><td></td><td>7</td><td><code>      targets = _workers.where((w) =&gt; w.isIdle &amp;&amp; predicate(w.worker)).toList();</code></td>
+                <tr class="noop" title="Line 221" id="line221">
+                    <td>221</td><td></td><td></td><td><code>    var stopped = 0;</code></td>
                 </tr>
-                <tr class="noop" title="Line 222" id="line222">
-                    <td>222</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 222" id="line222">
+                    <td>222</td><td></td><td>8</td><td><code>    for (var poolWorker in targets) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 223" id="line223">
-                    <td>223</td><td></td><td></td><td><code>    var stopped = 0;</code></td>
+                <tr class="lineCov" title="Line 223" id="line223">
+                    <td>223</td><td></td><td>8</td><td><code>      stopped += _removeWorkerAndNotify(poolWorker, force);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 224" id="line224">
-                    <td>224</td><td></td><td>8</td><td><code>    for (var poolWorker in targets) {</code></td>
+                <tr class="noop" title="Line 224" id="line224">
+                    <td>224</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 225" id="line225">
-                    <td>225</td><td></td><td>8</td><td><code>      stopped += _removeWorkerAndNotify(poolWorker, force);</code></td>
+                <tr class="noop" title="Line 225" id="line225">
+                    <td>225</td><td></td><td></td><td><code>    return stopped;</code></td>
                 </tr>
                 <tr class="noop" title="Line 226" id="line226">
-                    <td>226</td><td></td><td></td><td><code>    }</code></td>
+                    <td>226</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 227" id="line227">
-                    <td>227</td><td></td><td></td><td><code>    return stopped;</code></td>
+                    <td>227</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 228" id="line228">
-                    <td>228</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 228" id="line228">
+                    <td>228</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 229" id="line229">
-                    <td>229</td><td></td><td></td><td><code></code></td>
+                    <td>229</td><td></td><td></td><td><code>  void terminate([TaskTerminatedException? ex]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 230" id="line230">
-                    <td>230</td><td></td><td>1</td><td><code>  @override</code></td>
+                    <td>230</td><td></td><td>1</td><td><code>    _stopped = true;</code></td>
                 </tr>
-                <tr class="noop" title="Line 231" id="line231">
-                    <td>231</td><td></td><td></td><td><code>  void terminate([TaskTerminatedException? ex]) {</code></td>
+                <tr class="lineCov" title="Line 231" id="line231">
+                    <td>231</td><td></td><td>5</td><td><code>    for (var i = _workers.length - 1; i &gt;= 0; i--) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 232" id="line232">
-                    <td>232</td><td></td><td>1</td><td><code>    _stopped = true;</code></td>
+                    <td>232</td><td></td><td>2</td><td><code>      final w = _workers[i];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 233" id="line233">
-                    <td>233</td><td></td><td>5</td><td><code>    for (var i = _workers.length - 1; i &gt;= 0; i--) {</code></td>
+                    <td>233</td><td></td><td>2</td><td><code>      w.worker.terminate(ex);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 234" id="line234">
-                    <td>234</td><td></td><td>2</td><td><code>      final w = _workers[i];</code></td>
+                    <td>234</td><td></td><td>1</td><td><code>      _removeWorkerAndNotify(w, true);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 235" id="line235">
-                    <td>235</td><td></td><td>2</td><td><code>      w.worker.terminate(ex);</code></td>
+                <tr class="noop" title="Line 235" id="line235">
+                    <td>235</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 236" id="line236">
-                    <td>236</td><td></td><td>1</td><td><code>      _removeWorkerAndNotify(w, true);</code></td>
+                <tr class="noop" title="Line 236" id="line236">
+                    <td>236</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 237" id="line237">
-                    <td>237</td><td></td><td></td><td><code>    }</code></td>
+                    <td>237</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 238" id="line238">
-                    <td>238</td><td></td><td></td><td><code>  }</code></td>
+                    <td>238</td><td></td><td></td><td><code>  final _queue = Queue&lt;WorkerTask&gt;();</code></td>
                 </tr>
                 <tr class="noop" title="Line 239" id="line239">
-                    <td>239</td><td></td><td></td><td><code></code></td>
+                    <td>239</td><td></td><td></td><td><code>  final _executing = &lt;WorkerTask&gt;{};</code></td>
                 </tr>
                 <tr class="noop" title="Line 240" id="line240">
-                    <td>240</td><td></td><td></td><td><code>  final _queue = Queue&lt;WorkerTask&gt;();</code></td>
+                    <td>240</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 241" id="line241">
-                    <td>241</td><td></td><td></td><td><code>  final _executing = &lt;WorkerTask&gt;{};</code></td>
+                    <td>241</td><td></td><td></td><td><code>  /// Gets remaining workload</code></td>
                 </tr>
-                <tr class="noop" title="Line 242" id="line242">
-                    <td>242</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 242" id="line242">
+                    <td>242</td><td></td><td>6</td><td><code>  int get pendingWorkload =&gt; _queue.length;</code></td>
                 </tr>
                 <tr class="noop" title="Line 243" id="line243">
-                    <td>243</td><td></td><td></td><td><code>  /// Gets remaining workload</code></td>
+                    <td>243</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 244" id="line244">
-                    <td>244</td><td></td><td>6</td><td><code>  int get pendingWorkload =&gt; _queue.length;</code></td>
+                    <td>244</td><td></td><td>4</td><td><code>  WorkerTask&lt;T, W&gt; _enqueue&lt;T&gt;(WorkerTask&lt;T, W&gt; task) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 245" id="line245">
-                    <td>245</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 245" id="line245">
+                    <td>245</td><td></td><td>4</td><td><code>    if (_stopped) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 246" id="line246">
-                    <td>246</td><td></td><td>4</td><td><code>  WorkerTask&lt;T, W&gt; _enqueue&lt;T&gt;(WorkerTask&lt;T, W&gt; task) {</code></td>
+                    <td>246</td><td></td><td>1</td><td><code>      throw SquadronErrorImpl.create(</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 247" id="line247">
-                    <td>247</td><td></td><td>4</td><td><code>    if (_stopped) {</code></td>
+                <tr class="noop" title="Line 247" id="line247">
+                    <td>247</td><td></td><td></td><td><code>        'The pool cannot accept new requests because it is stopped',</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 248" id="line248">
-                    <td>248</td><td></td><td>1</td><td><code>      throw SquadronErrorImpl.create(</code></td>
+                <tr class="noop" title="Line 248" id="line248">
+                    <td>248</td><td></td><td></td><td><code>      );</code></td>
                 </tr>
                 <tr class="noop" title="Line 249" id="line249">
-                    <td>249</td><td></td><td></td><td><code>        'The pool cannot accept new requests because it is stopped',</code></td>
+                    <td>249</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 250" id="line250">
-                    <td>250</td><td></td><td></td><td><code>      );</code></td>
+                <tr class="lineCov" title="Line 250" id="line250">
+                    <td>250</td><td></td><td>8</td><td><code>    _queue.addLast(task);</code></td>
                 </tr>
-                <tr class="noop" title="Line 251" id="line251">
-                    <td>251</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 251" id="line251">
+                    <td>251</td><td></td><td>4</td><td><code>    _schedule();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 252" id="line252">
-                    <td>252</td><td></td><td>8</td><td><code>    _queue.addLast(task);</code></td>
+                <tr class="noop" title="Line 252" id="line252">
+                    <td>252</td><td></td><td></td><td><code>    return task;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 253" id="line253">
-                    <td>253</td><td></td><td>4</td><td><code>    _schedule();</code></td>
+                <tr class="noop" title="Line 253" id="line253">
+                    <td>253</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 254" id="line254">
-                    <td>254</td><td></td><td></td><td><code>    return task;</code></td>
+                    <td>254</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 255" id="line255">
-                    <td>255</td><td></td><td></td><td><code>  }</code></td>
+                    <td>255</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a single value.</code></td>
                 </tr>
                 <tr class="noop" title="Line 256" id="line256">
-                    <td>256</td><td></td><td></td><td><code></code></td>
+                    <td>256</td><td></td><td></td><td><code>  /// Returns a future that completes with the task's value.</code></td>
                 </tr>
-                <tr class="noop" title="Line 257" id="line257">
-                    <td>257</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a single value.</code></td>
+                <tr class="lineCov" title="Line 257" id="line257">
+                    <td>257</td><td></td><td>4</td><td><code>  Future&lt;T&gt; execute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code></td>
                 </tr>
                 <tr class="noop" title="Line 258" id="line258">
-                    <td>258</td><td></td><td></td><td><code>  /// Returns a future that completes with the task's value.</code></td>
+                    <td>258</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 259" id="line259">
-                    <td>259</td><td></td><td>4</td><td><code>  Future&lt;T&gt; execute&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code></td>
+                    <td>259</td><td></td><td>8</td><td><code>      scheduleValueTask(task, counter: counter).value;</code></td>
                 </tr>
                 <tr class="noop" title="Line 260" id="line260">
-                    <td>260</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
+                    <td>260</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 261" id="line261">
-                    <td>261</td><td></td><td>8</td><td><code>      scheduleValueTask(task, counter: counter).value;</code></td>
+                <tr class="noop" title="Line 261" id="line261">
+                    <td>261</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a stream of values.</code></td>
                 </tr>
                 <tr class="noop" title="Line 262" id="line262">
-                    <td>262</td><td></td><td></td><td><code></code></td>
+                    <td>262</td><td></td><td></td><td><code>  /// Returns a stream containing the task's values.</code></td>
                 </tr>
-                <tr class="noop" title="Line 263" id="line263">
-                    <td>263</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a stream of values.</code></td>
+                <tr class="lineCov" title="Line 263" id="line263">
+                    <td>263</td><td></td><td>4</td><td><code>  Stream&lt;T&gt; stream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code></td>
                 </tr>
                 <tr class="noop" title="Line 264" id="line264">
-                    <td>264</td><td></td><td></td><td><code>  /// Returns a stream containing the task's values.</code></td>
+                    <td>264</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 265" id="line265">
-                    <td>265</td><td></td><td>4</td><td><code>  Stream&lt;T&gt; stream&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code></td>
+                    <td>265</td><td></td><td>8</td><td><code>      scheduleStreamTask(task, counter: counter).stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 266" id="line266">
-                    <td>266</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
+                    <td>266</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 267" id="line267">
-                    <td>267</td><td></td><td>8</td><td><code>      scheduleStreamTask(task, counter: counter).stream;</code></td>
+                <tr class="noop" title="Line 267" id="line267">
+                    <td>267</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a single value.</code></td>
                 </tr>
                 <tr class="noop" title="Line 268" id="line268">
-                    <td>268</td><td></td><td></td><td><code></code></td>
+                    <td>268</td><td></td><td></td><td><code>  /// Returns a [ValueTask].</code></td>
                 </tr>
-                <tr class="noop" title="Line 269" id="line269">
-                    <td>269</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a single value.</code></td>
+                <tr class="lineCov" title="Line 269" id="line269">
+                    <td>269</td><td></td><td>4</td><td><code>  ValueTask&lt;T&gt; scheduleValueTask&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code></td>
                 </tr>
                 <tr class="noop" title="Line 270" id="line270">
-                    <td>270</td><td></td><td></td><td><code>  /// Returns a [ValueTask].</code></td>
+                    <td>270</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 271" id="line271">
-                    <td>271</td><td></td><td>4</td><td><code>  ValueTask&lt;T&gt; scheduleValueTask&lt;T&gt;(Future&lt;T&gt; Function(W worker) task,</code></td>
+                    <td>271</td><td></td><td>8</td><td><code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code></td>
                 </tr>
                 <tr class="noop" title="Line 272" id="line272">
-                    <td>272</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
+                    <td>272</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 273" id="line273">
-                    <td>273</td><td></td><td>8</td><td><code>      _enqueue&lt;T&gt;(WorkerValueTask&lt;T, W&gt;(task, counter)) as ValueTask&lt;T&gt;;</code></td>
+                <tr class="noop" title="Line 273" id="line273">
+                    <td>273</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a stream of values.</code></td>
                 </tr>
                 <tr class="noop" title="Line 274" id="line274">
-                    <td>274</td><td></td><td></td><td><code></code></td>
+                    <td>274</td><td></td><td></td><td><code>  /// Returns a [StreamTask].</code></td>
                 </tr>
-                <tr class="noop" title="Line 275" id="line275">
-                    <td>275</td><td></td><td></td><td><code>  /// Registers and schedules a [task] that returns a stream of values.</code></td>
+                <tr class="lineCov" title="Line 275" id="line275">
+                    <td>275</td><td></td><td>4</td><td><code>  StreamTask&lt;T&gt; scheduleStreamTask&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code></td>
                 </tr>
                 <tr class="noop" title="Line 276" id="line276">
-                    <td>276</td><td></td><td></td><td><code>  /// Returns a [StreamTask].</code></td>
+                    <td>276</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 277" id="line277">
-                    <td>277</td><td></td><td>4</td><td><code>  StreamTask&lt;T&gt; scheduleStreamTask&lt;T&gt;(Stream&lt;T&gt; Function(W worker) task,</code></td>
+                    <td>277</td><td></td><td>8</td><td><code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code></td>
                 </tr>
                 <tr class="noop" title="Line 278" id="line278">
-                    <td>278</td><td></td><td></td><td><code>          {PerfCounter? counter}) =&gt;</code></td>
+                    <td>278</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 279" id="line279">
-                    <td>279</td><td></td><td>8</td><td><code>      _enqueue&lt;T&gt;(WorkerStreamTask&lt;T, W&gt;(task, counter)) as StreamTask&lt;T&gt;;</code></td>
+                <tr class="noop" title="Line 279" id="line279">
+                    <td>279</td><td></td><td></td><td><code>  Timer? _timer;</code></td>
                 </tr>
                 <tr class="noop" title="Line 280" id="line280">
                     <td>280</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 281" id="line281">
-                    <td>281</td><td></td><td></td><td><code>  Timer? _timer;</code></td>
+                <tr class="lineCov" title="Line 281" id="line281">
+                    <td>281</td><td></td><td>4</td><td><code>  void _schedule() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 282" id="line282">
-                    <td>282</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 282" id="line282">
+                    <td>282</td><td></td><td>12</td><td><code>    if (_timer?.isActive != true) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 283" id="line283">
-                    <td>283</td><td></td><td>4</td><td><code>  void _schedule() {</code></td>
+                    <td>283</td><td></td><td>12</td><td><code>      _timer = Timer(Duration.zero, __schedule);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 284" id="line284">
-                    <td>284</td><td></td><td>12</td><td><code>    if (_timer?.isActive != true) {</code></td>
+                <tr class="noop" title="Line 284" id="line284">
+                    <td>284</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 285" id="line285">
-                    <td>285</td><td></td><td>12</td><td><code>      _timer = Timer(Duration.zero, __schedule);</code></td>
+                <tr class="noop" title="Line 285" id="line285">
+                    <td>285</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 286" id="line286">
-                    <td>286</td><td></td><td></td><td><code>    }</code></td>
+                    <td>286</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 287" id="line287">
-                    <td>287</td><td></td><td></td><td><code>  }</code></td>
+                    <td>287</td><td></td><td></td><td><code>  /// Schedule tasks.</code></td>
                 </tr>
-                <tr class="noop" title="Line 288" id="line288">
-                    <td>288</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 288" id="line288">
+                    <td>288</td><td></td><td>4</td><td><code>  void __schedule() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 289" id="line289">
-                    <td>289</td><td></td><td></td><td><code>  /// Schedule tasks.</code></td>
+                <tr class="lineCov" title="Line 289" id="line289">
+                    <td>289</td><td></td><td>16</td><td><code>    if (_workers.isEmpty &amp;&amp; _startingWorkers &gt; 0) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 290" id="line290">
-                    <td>290</td><td></td><td>4</td><td><code>  void __schedule() {</code></td>
+                <tr class="noop" title="Line 290" id="line290">
+                    <td>290</td><td></td><td></td><td><code>      // workers are still starting, defer</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 291" id="line291">
-                    <td>291</td><td></td><td>16</td><td><code>    if (_workers.isEmpty &amp;&amp; _startingWorkers &gt; 0) {</code></td>
+                    <td>291</td><td></td><td>1</td><td><code>      _schedule();</code></td>
                 </tr>
                 <tr class="noop" title="Line 292" id="line292">
-                    <td>292</td><td></td><td></td><td><code>      // workers are still starting, defer</code></td>
+                    <td>292</td><td></td><td></td><td><code>      return;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 293" id="line293">
-                    <td>293</td><td></td><td>1</td><td><code>      _schedule();</code></td>
+                <tr class="noop" title="Line 293" id="line293">
+                    <td>293</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 294" id="line294">
-                    <td>294</td><td></td><td></td><td><code>      return;</code></td>
+                    <td>294</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 295" id="line295">
-                    <td>295</td><td></td><td></td><td><code>    }</code></td>
+                    <td>295</td><td></td><td></td><td><code>    // any work to do?</code></td>
                 </tr>
-                <tr class="noop" title="Line 296" id="line296">
-                    <td>296</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 296" id="line296">
+                    <td>296</td><td></td><td>8</td><td><code>    if (_queue.isEmpty) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 297" id="line297">
-                    <td>297</td><td></td><td></td><td><code>    // any work to do?</code></td>
+                    <td>297</td><td></td><td></td><td><code>      // no: effectively stop the pool if needed and return</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 298" id="line298">
-                    <td>298</td><td></td><td>8</td><td><code>    if (_queue.isEmpty) {</code></td>
+                    <td>298</td><td></td><td>12</td><td><code>      if (_stopped &amp;&amp; _executing.isEmpty) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 299" id="line299">
-                    <td>299</td><td></td><td></td><td><code>      // no: effectively stop the pool if needed and return</code></td>
+                <tr class="lineCov" title="Line 299" id="line299">
+                    <td>299</td><td></td><td>4</td><td><code>        stop();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 300" id="line300">
-                    <td>300</td><td></td><td>12</td><td><code>      if (_stopped &amp;&amp; _executing.isEmpty) {</code></td>
+                <tr class="noop" title="Line 300" id="line300">
+                    <td>300</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 301" id="line301">
-                    <td>301</td><td></td><td>4</td><td><code>        stop();</code></td>
+                <tr class="noop" title="Line 301" id="line301">
+                    <td>301</td><td></td><td></td><td><code>      return;</code></td>
                 </tr>
                 <tr class="noop" title="Line 302" id="line302">
-                    <td>302</td><td></td><td></td><td><code>      }</code></td>
+                    <td>302</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 303" id="line303">
-                    <td>303</td><td></td><td></td><td><code>      return;</code></td>
+                    <td>303</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 304" id="line304">
-                    <td>304</td><td></td><td></td><td><code>    }</code></td>
+                    <td>304</td><td></td><td></td><td><code>    // yes: dispatch tasks to workers</code></td>
                 </tr>
-                <tr class="noop" title="Line 305" id="line305">
-                    <td>305</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 305" id="line305">
+                    <td>305</td><td></td><td>4</td><td><code>    _dispatchTasks();</code></td>
                 </tr>
                 <tr class="noop" title="Line 306" id="line306">
-                    <td>306</td><td></td><td></td><td><code>    // yes: dispatch tasks to workers</code></td>
+                    <td>306</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 307" id="line307">
-                    <td>307</td><td></td><td>4</td><td><code>    _dispatchTasks();</code></td>
+                <tr class="noop" title="Line 307" id="line307">
+                    <td>307</td><td></td><td></td><td><code>    // and provision more workers if possible and necessary</code></td>
                 </tr>
-                <tr class="noop" title="Line 308" id="line308">
-                    <td>308</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 308" id="line308">
+                    <td>308</td><td></td><td>12</td><td><code>    final needs = _getProvisionNeeds(_queue.length);</code></td>
                 </tr>
-                <tr class="noop" title="Line 309" id="line309">
-                    <td>309</td><td></td><td></td><td><code>    // and provision more workers if possible and necessary</code></td>
+                <tr class="lineCov" title="Line 309" id="line309">
+                    <td>309</td><td></td><td>4</td><td><code>    if (needs &gt; 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 310" id="line310">
-                    <td>310</td><td></td><td>12</td><td><code>    final needs = _getProvisionNeeds(_queue.length);</code></td>
+                    <td>310</td><td></td><td>8</td><td><code>      _provisionWorkers(needs).then(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 311" id="line311">
-                    <td>311</td><td></td><td>4</td><td><code>    if (needs &gt; 0) {</code></td>
+                    <td>311</td><td></td><td>8</td><td><code>        (_) =&gt; _dispatchTasks(),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 312" id="line312">
-                    <td>312</td><td></td><td>8</td><td><code>      _provisionWorkers(needs).then(</code></td>
+                    <td>312</td><td></td><td>1</td><td><code>        onError: (ex) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 313" id="line313">
-                    <td>313</td><td></td><td>8</td><td><code>        (_) =&gt; _dispatchTasks(),</code></td>
+                    <td>313</td><td></td><td>1</td><td><code>          channelLogger?.e(() =&gt; 'Provisionning workers failed with error $ex');</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 314" id="line314">
-                    <td>314</td><td></td><td>1</td><td><code>        onError: (ex) {</code></td>
+                    <td>314</td><td></td><td>2</td><td><code>          if (_workers.isEmpty) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 315" id="line315">
-                    <td>315</td><td></td><td>1</td><td><code>          channelLogger?.e(() =&gt; 'Provisionning workers failed with error $ex');</code></td>
+                    <td>315</td><td></td><td>2</td><td><code>            while (_queue.isNotEmpty) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 316" id="line316">
-                    <td>316</td><td></td><td>2</td><td><code>          if (_workers.isEmpty) {</code></td>
+                    <td>316</td><td></td><td>3</td><td><code>              _queue.removeFirst().cancel('Provisionning workers failed');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 317" id="line317">
-                    <td>317</td><td></td><td>2</td><td><code>            while (_queue.isNotEmpty) {</code></td>
+                <tr class="noop" title="Line 317" id="line317">
+                    <td>317</td><td></td><td></td><td><code>            }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 318" id="line318">
-                    <td>318</td><td></td><td>3</td><td><code>              _queue.removeFirst().cancel('Provisionning workers failed');</code></td>
+                <tr class="noop" title="Line 318" id="line318">
+                    <td>318</td><td></td><td></td><td><code>          } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 319" id="line319">
-                    <td>319</td><td></td><td></td><td><code>            }</code></td>
+                <tr class="lineNoCov" title="Line 319" id="line319">
+                    <td>319</td><td></td><td>0</td><td><code>            _schedule();</code></td>
                 </tr>
                 <tr class="noop" title="Line 320" id="line320">
-                    <td>320</td><td></td><td></td><td><code>          } else {</code></td>
+                    <td>320</td><td></td><td></td><td><code>          }</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 321" id="line321">
-                    <td>321</td><td></td><td>0</td><td><code>            _schedule();</code></td>
+                <tr class="noop" title="Line 321" id="line321">
+                    <td>321</td><td></td><td></td><td><code>        },</code></td>
                 </tr>
                 <tr class="noop" title="Line 322" id="line322">
-                    <td>322</td><td></td><td></td><td><code>          }</code></td>
+                    <td>322</td><td></td><td></td><td><code>      );</code></td>
                 </tr>
                 <tr class="noop" title="Line 323" id="line323">
-                    <td>323</td><td></td><td></td><td><code>        },</code></td>
+                    <td>323</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 324" id="line324">
-                    <td>324</td><td></td><td></td><td><code>      );</code></td>
+                    <td>324</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 325" id="line325">
-                    <td>325</td><td></td><td></td><td><code>    }</code></td>
+                    <td>325</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 326" id="line326">
-                    <td>326</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 326" id="line326">
+                    <td>326</td><td></td><td>4</td><td><code>  void _dispatchTasks() {</code></td>
                 </tr>
-                <tr class="noop" title="Line 327" id="line327">
-                    <td>327</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 327" id="line327">
+                    <td>327</td><td></td><td>8</td><td><code>    _workers.sort(PoolWorker.compareCapacity);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 328" id="line328">
-                    <td>328</td><td></td><td>4</td><td><code>  void _dispatchTasks() {</code></td>
+                    <td>328</td><td></td><td>20</td><td><code>    for (var idx = _workers.length - 1; idx &gt;= 0; idx--) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 329" id="line329">
-                    <td>329</td><td></td><td>8</td><td><code>    _workers.sort(PoolWorker.compareCapacity);</code></td>
+                    <td>329</td><td></td><td>8</td><td><code>      final w = _workers[idx];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 330" id="line330">
-                    <td>330</td><td></td><td>20</td><td><code>    for (var idx = _workers.length - 1; idx &gt;= 0; idx--) {</code></td>
+                    <td>330</td><td></td><td>4</td><td><code>      if (w.isStopped) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 331" id="line331">
-                    <td>331</td><td></td><td>8</td><td><code>      final w = _workers[idx];</code></td>
+                <tr class="lineNoCov" title="Line 331" id="line331">
+                    <td>331</td><td></td><td>0</td><td><code>        _removeWorkerAndNotify(w, false);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 332" id="line332">
-                    <td>332</td><td></td><td>4</td><td><code>      if (w.isStopped) {</code></td>
+                <tr class="noop" title="Line 332" id="line332">
+                    <td>332</td><td></td><td></td><td><code>        continue;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 333" id="line333">
-                    <td>333</td><td></td><td>0</td><td><code>        _removeWorkerAndNotify(w, false);</code></td>
+                <tr class="noop" title="Line 333" id="line333">
+                    <td>333</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
-                <tr class="noop" title="Line 334" id="line334">
-                    <td>334</td><td></td><td></td><td><code>        continue;</code></td>
+                <tr class="lineCov" title="Line 334" id="line334">
+                    <td>334</td><td></td><td>16</td><td><code>      while (_queue.isNotEmpty &amp;&amp; w.capacity &gt; 0) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 335" id="line335">
-                    <td>335</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 335" id="line335">
+                    <td>335</td><td></td><td>8</td><td><code>        final task = _queue.removeFirst();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 336" id="line336">
-                    <td>336</td><td></td><td>16</td><td><code>      while (_queue.isNotEmpty &amp;&amp; w.capacity &gt; 0) {</code></td>
+                    <td>336</td><td></td><td>4</td><td><code>        if (!task.isCanceled) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 337" id="line337">
-                    <td>337</td><td></td><td>8</td><td><code>        final task = _queue.removeFirst();</code></td>
+                    <td>337</td><td></td><td>8</td><td><code>          _executing.add(task);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 338" id="line338">
-                    <td>338</td><td></td><td>4</td><td><code>        if (!task.isCanceled) {</code></td>
+                    <td>338</td><td></td><td>12</td><td><code>          w.run(task).whenComplete(() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 339" id="line339">
-                    <td>339</td><td></td><td>8</td><td><code>          _executing.add(task);</code></td>
+                    <td>339</td><td></td><td>8</td><td><code>            _executing.remove(task);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 340" id="line340">
-                    <td>340</td><td></td><td>12</td><td><code>          w.run(task).whenComplete(() {</code></td>
+                    <td>340</td><td></td><td>4</td><td><code>            _schedule();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 341" id="line341">
-                    <td>341</td><td></td><td>8</td><td><code>            _executing.remove(task);</code></td>
+                <tr class="noop" title="Line 341" id="line341">
+                    <td>341</td><td></td><td></td><td><code>          });</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 342" id="line342">
-                    <td>342</td><td></td><td>4</td><td><code>            _schedule();</code></td>
+                <tr class="noop" title="Line 342" id="line342">
+                    <td>342</td><td></td><td></td><td><code>        }</code></td>
                 </tr>
                 <tr class="noop" title="Line 343" id="line343">
-                    <td>343</td><td></td><td></td><td><code>          });</code></td>
+                    <td>343</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 344" id="line344">
-                    <td>344</td><td></td><td></td><td><code>        }</code></td>
+                    <td>344</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 345" id="line345">
-                    <td>345</td><td></td><td></td><td><code>      }</code></td>
+                    <td>345</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 346" id="line346">
-                    <td>346</td><td></td><td></td><td><code>    }</code></td>
+                    <td>346</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 347" id="line347">
-                    <td>347</td><td></td><td></td><td><code>  }</code></td>
+                    <td>347</td><td></td><td></td><td><code>  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.</code></td>
                 </tr>
                 <tr class="noop" title="Line 348" id="line348">
-                    <td>348</td><td></td><td></td><td><code></code></td>
+                    <td>348</td><td></td><td></td><td><code>  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.</code></td>
                 </tr>
-                <tr class="noop" title="Line 349" id="line349">
-                    <td>349</td><td></td><td></td><td><code>  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.</code></td>
+                <tr class="lineCov" title="Line 349" id="line349">
+                    <td>349</td><td></td><td>1</td><td><code>  void cancel(Task task, [String? message]) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 350" id="line350">
-                    <td>350</td><td></td><td></td><td><code>  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.</code></td>
+                <tr class="lineCov" title="Line 350" id="line350">
+                    <td>350</td><td></td><td>2</td><td><code>    _executing.remove(task);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 351" id="line351">
-                    <td>351</td><td></td><td>1</td><td><code>  void cancel(Task task, [String? message]) {</code></td>
+                    <td>351</td><td></td><td>4</td><td><code>    _queue.removeWhere((t) =&gt; t == task);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 352" id="line352">
-                    <td>352</td><td></td><td>2</td><td><code>    _executing.remove(task);</code></td>
+                    <td>352</td><td></td><td>1</td><td><code>    task.cancel(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 353" id="line353">
-                    <td>353</td><td></td><td>4</td><td><code>    _queue.removeWhere((t) =&gt; t == task);</code></td>
+                <tr class="noop" title="Line 353" id="line353">
+                    <td>353</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 354" id="line354">
-                    <td>354</td><td></td><td>1</td><td><code>    task.cancel(message);</code></td>
+                <tr class="noop" title="Line 354" id="line354">
+                    <td>354</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 355" id="line355">
-                    <td>355</td><td></td><td></td><td><code>  }</code></td>
+                    <td>355</td><td></td><td></td><td><code>  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.</code></td>
                 </tr>
                 <tr class="noop" title="Line 356" id="line356">
-                    <td>356</td><td></td><td></td><td><code></code></td>
+                    <td>356</td><td></td><td></td><td><code>  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.</code></td>
                 </tr>
-                <tr class="noop" title="Line 357" id="line357">
-                    <td>357</td><td></td><td></td><td><code>  /// Task cancelation. If a specific [task] is provided, only this task will be canceled.</code></td>
+                <tr class="lineCov" title="Line 357" id="line357">
+                    <td>357</td><td></td><td>1</td><td><code>  void cancelAll([String? message]) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 358" id="line358">
-                    <td>358</td><td></td><td></td><td><code>  /// Otherwise, all tasks registered with the [WorkerPool] are canceled.</code></td>
+                <tr class="lineCov" title="Line 358" id="line358">
+                    <td>358</td><td></td><td>4</td><td><code>    final toBeCanceled = _executing.followedBy(_queue).toList();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 359" id="line359">
-                    <td>359</td><td></td><td>1</td><td><code>  void cancelAll([String? message]) {</code></td>
+                    <td>359</td><td></td><td>2</td><td><code>    _executing.clear();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 360" id="line360">
-                    <td>360</td><td></td><td>4</td><td><code>    final toBeCanceled = _executing.followedBy(_queue).toList();</code></td>
+                    <td>360</td><td></td><td>2</td><td><code>    _queue.clear();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 361" id="line361">
-                    <td>361</td><td></td><td>2</td><td><code>    _executing.clear();</code></td>
+                    <td>361</td><td></td><td>2</td><td><code>    for (var task in toBeCanceled) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 362" id="line362">
-                    <td>362</td><td></td><td>2</td><td><code>    _queue.clear();</code></td>
+                    <td>362</td><td></td><td>1</td><td><code>      task.cancel(message);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 363" id="line363">
-                    <td>363</td><td></td><td>2</td><td><code>    for (var task in toBeCanceled) {</code></td>
+                <tr class="noop" title="Line 363" id="line363">
+                    <td>363</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 364" id="line364">
-                    <td>364</td><td></td><td>1</td><td><code>      task.cancel(message);</code></td>
+                <tr class="noop" title="Line 364" id="line364">
+                    <td>364</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 365" id="line365">
-                    <td>365</td><td></td><td></td><td><code>    }</code></td>
+                    <td>365</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 366" id="line366">
-                    <td>366</td><td></td><td></td><td><code>  }</code></td>
+                    <td>366</td><td></td><td></td><td><code>  /// Worker statistics.</code></td>
                 </tr>
-                <tr class="noop" title="Line 367" id="line367">
-                    <td>367</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 367" id="line367">
+                    <td>367</td><td></td><td>3</td><td><code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(PoolWorker.getStats);</code></td>
                 </tr>
                 <tr class="noop" title="Line 368" id="line368">
-                    <td>368</td><td></td><td></td><td><code>  /// Worker statistics.</code></td>
+                    <td>368</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 369" id="line369">
-                    <td>369</td><td></td><td>3</td><td><code>  Iterable&lt;WorkerStat&gt; get stats =&gt; _workers.map(PoolWorker.getStats);</code></td>
+                <tr class="noop" title="Line 369" id="line369">
+                    <td>369</td><td></td><td></td><td><code>  /// Full worker statistics.</code></td>
                 </tr>
-                <tr class="noop" title="Line 370" id="line370">
-                    <td>370</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 370" id="line370">
+                    <td>370</td><td></td><td>0</td><td><code>  Iterable&lt;WorkerStat&gt; get fullStats =&gt; _deadWorkerStats.followedBy(stats);</code></td>
                 </tr>
                 <tr class="noop" title="Line 371" id="line371">
-                    <td>371</td><td></td><td></td><td><code>  /// Full worker statistics.</code></td>
+                    <td>371</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 372" id="line372">
-                    <td>372</td><td></td><td>0</td><td><code>  Iterable&lt;WorkerStat&gt; get fullStats =&gt; _deadWorkerStats.followedBy(stats);</code></td>
+                <tr class="noop" title="Line 372" id="line372">
+                    <td>372</td><td></td><td></td><td><code>  /// Worker pools do not need an [operations] map.</code></td>
                 </tr>
-                <tr class="noop" title="Line 373" id="line373">
-                    <td>373</td><td></td><td></td><td><code></code></td>
+                <tr class="lineNoCov" title="Line 373" id="line373">
+                    <td>373</td><td></td><td>0</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 374" id="line374">
-                    <td>374</td><td></td><td></td><td><code>  /// Worker pools do not need an [operations] map.</code></td>
+                    <td>374</td><td></td><td></td><td><code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 375" id="line375">
-                    <td>375</td><td></td><td>0</td><td><code>  @override</code></td>
+                <tr class="noop" title="Line 375" id="line375">
+                    <td>375</td><td></td><td></td><td><code>}</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 376" id="line376">
-                    <td>376</td><td></td><td>0</td><td><code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code></td>
+                <tr class="noop" title="Line 376" id="line376">
+                    <td>376</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 377" id="line377">
-                    <td>377</td><td></td><td></td><td><code>}</code></td>
+                    <td>377</td><td></td><td></td><td><code>extension ConcurrencySettingsExt on WorkerPool {</code></td>
                 </tr>
-                <tr class="noop" title="Line 378" id="line378">
-                    <td>378</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 378" id="line378">
+                    <td>378</td><td></td><td>3</td><td><code>  int get minWorkers =&gt; concurrencySettings.minWorkers;</code></td>
                 </tr>
-                <tr class="noop" title="Line 379" id="line379">
-                    <td>379</td><td></td><td></td><td><code>extension ConcurrencySettingsExt on WorkerPool {</code></td>
+                <tr class="lineCov" title="Line 379" id="line379">
+                    <td>379</td><td></td><td>3</td><td><code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 380" id="line380">
-                    <td>380</td><td></td><td>3</td><td><code>  int get minWorkers =&gt; concurrencySettings.minWorkers;</code></td>
+                <tr class="lineNoCov" title="Line 380" id="line380">
+                    <td>380</td><td></td><td>0</td><td><code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 381" id="line381">
-                    <td>381</td><td></td><td>3</td><td><code>  int get maxWorkers =&gt; concurrencySettings.maxWorkers;</code></td>
+                    <td>381</td><td></td><td>9</td><td><code>  int get maxConcurrency =&gt; concurrencySettings.maxConcurrency;</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 382" id="line382">
-                    <td>382</td><td></td><td>0</td><td><code>  int get maxParallel =&gt; concurrencySettings.maxParallel;</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 383" id="line383">
-                    <td>383</td><td></td><td>9</td><td><code>  int get maxConcurrency =&gt; concurrencySettings.maxConcurrency;</code></td>
-                </tr>
-                <tr class="noop" title="Line 384" id="line384">
-                    <td>384</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 382" id="line382">
+                    <td>382</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

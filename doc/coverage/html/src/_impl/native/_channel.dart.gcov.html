@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2025-11-17</dd>
+                    <dd>2025-11-29</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -325,7 +325,7 @@
                     <td>88</td><td></td><td>21</td><td><code>  receiver.listen((message) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 89" id="line89">
-                    <td>89</td><td></td><td>10</td><td><code>    final response = WorkerResponseImpl.from(message);</code></td>
+                    <td>89</td><td></td><td>10</td><td><code>    final response = WorkerResponse.from(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 90" id="line90">
                     <td>90</td><td></td><td>10</td><td><code>    if (!response.unwrapInPlace(disconnected)) {</code></td>
@@ -502,7 +502,7 @@
                     <td>147</td><td></td><td>4</td><td><code>      c.subscription?.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 148" id="line148">
-                    <td>148</td><td></td><td>2</td><td><code>      c.addError(ex);</code></td>
+                    <td>148</td><td></td><td>2</td><td><code>      c.safeAddError(ex);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
                     <td>149</td><td></td><td>2</td><td><code>      c.close();</code></td>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.886076" lines-covered="70" lines-valid="79" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="worker.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8888889" lines-covered="72" lines-valid="81" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -448,7 +448,7 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4" number="141">
-            <code>        controller.addError(SquadronException.from(ex, null, command));</code>
+            <code>        controller.safeAddError(SquadronException.from(ex, null, command));</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="142">
@@ -536,15 +536,15 @@
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5" number="166">
-            <code>              controller.add,</code>
+            <code>              controller.safeAdd,</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="3" number="167">
-            <code>              onError: (ex, st) =&gt;</code>
+            <code>              onError: (ex, st) =&gt; controller</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="6" number="168">
-            <code>                  controller.addError(SquadronException.from(ex, st, command)),</code>
+            <code>                  .safeAddError(SquadronException.from(ex, st, command)),</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="5" number="169">
@@ -569,7 +569,7 @@
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="175">
-            <code>        controller.addError(SquadronException.from(ex, st, command));</code>
+            <code>        controller.safeAddError(SquadronException.from(ex, st, command));</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="1" number="176">
@@ -603,7 +603,7 @@
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="185">
-            <code>  Future&lt;Channel&gt; start() async {</code>
+            <code>  Future&lt;Channel&gt; start() {</code>
         </line>
         <line hits="11" number="186">
             <code>    if (isStopped) {</code>
@@ -620,130 +620,150 @@
             <code/>
         </line>
         <line hits="11" number="190">
-            <code>    final args = getStartArgs() ?? const [];</code>
+            <code>    if (_channel != null) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="191">
-            <code>    _openChannel ??= Channel.open(</code>
+        <line hits="0" number="191">
+            <code>      return Future.value(_channel!);</code>
+        </line>
+        <line number="192">
+            <code>    }</code>
+        </line>
+        <line number="193">
+            <code/>
+        </line>
+        <line hits="22" number="194">
+            <code>    return _openChannel ??= Channel.open(</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="44" number="192">
-            <code>        exceptionManager, channelLogger, _entryPoint, args, _threadHook);</code>
-            <hit count="44" name="&lt;unnamed&gt;"/>
+        <line hits="11" number="195">
+            <code>      exceptionManager,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="193">
-            <code>    final channel = _channel ?? await _openChannel;</code>
-            <hit count="22" name="&lt;unnamed&gt;"/>
+        <line hits="11" number="196">
+            <code>      channelLogger,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="194">
-            <code>    if (_channel == null) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="11" number="197">
+            <code>      _entryPoint,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="195">
+        <line hits="11" number="198">
+            <code>      getStartArgs() ?? const [],</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="11" number="199">
+            <code>      _threadHook,</code>
+            <hit count="11" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="21" number="200">
+            <code>    ).then((channel) {</code>
+            <hit count="21" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="201">
             <code>      _channel = channel;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="196">
+        <line hits="20" number="202">
             <code>      _stats.start();</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="197">
-            <code>    }</code>
+        <line number="203">
+            <code>      return channel;</code>
         </line>
-        <line hits="10" number="198">
-            <code>    return _channel!;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line number="204">
+            <code>    });</code>
         </line>
-        <line number="199">
+        <line number="205">
             <code>  }</code>
         </line>
-        <line number="200">
+        <line number="206">
             <code/>
         </line>
-        <line number="201">
+        <line number="207">
             <code>  /// Stops this worker.</code>
         </line>
-        <line hits="11" number="202">
+        <line hits="11" number="208">
             <code>  @override</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="203">
+        <line number="209">
             <code>  void stop() {</code>
         </line>
-        <line hits="11" number="204">
+        <line hits="11" number="210">
             <code>    if (!isStopped) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="14" number="205">
+        <line hits="14" number="211">
             <code>      channelLogger?.d('Stop worker');</code>
             <hit count="14" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="22" number="206">
+        <line hits="22" number="212">
             <code>      _stats.stop();</code>
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="207">
+        <line hits="11" number="213">
             <code>      _openChannel = null;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="21" number="208">
+        <line hits="21" number="214">
             <code>      _channel?.close();</code>
             <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="209">
+        <line hits="11" number="215">
             <code>      _channel = null;</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="210">
+        <line number="216">
             <code>    }</code>
         </line>
-        <line number="211">
+        <line number="217">
             <code>  }</code>
         </line>
-        <line number="212">
+        <line number="218">
             <code/>
         </line>
-        <line number="213">
+        <line number="219">
             <code>  /// Terminates this worker.</code>
         </line>
-        <line hits="2" number="214">
+        <line hits="2" number="220">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="215">
+        <line number="221">
             <code>  void terminate([TaskTerminatedException? ex]) {</code>
         </line>
-        <line number="216">
+        <line number="222">
             <code>    // terminate channel and stop worker</code>
         </line>
-        <line hits="2" number="217">
+        <line hits="2" number="223">
             <code>    ex ??= TaskTerminatedException('Worker has been terminated');</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="218">
+        <line hits="4" number="224">
             <code>    _channel?.terminate(ex);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="219">
+        <line hits="2" number="225">
             <code>    stop();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="220">
+        <line number="226">
             <code>  }</code>
         </line>
-        <line number="221">
+        <line number="227">
             <code/>
         </line>
-        <line number="222">
+        <line number="228">
             <code>  /// Workers do not need an [operations] map.</code>
         </line>
-        <line hits="0" number="223">
+        <line hits="0" number="229">
             <code>  @override</code>
         </line>
-        <line hits="0" number="224">
+        <line number="230">
             <code>  OperationsMap get operations =&gt; WorkerService.noOperations;</code>
         </line>
-        <line number="225">
+        <line number="231">
             <code>}</code>
         </line>
     </lines>

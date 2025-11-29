@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.84210527" lines-covered="32" lines-valid="38" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_worker_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8684211" lines-covered="33" lines-valid="38" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -8,311 +8,294 @@
             <code/>
         </line>
         <line number="3">
-            <code>import 'package:meta/meta.dart';</code>
-        </line>
-        <line number="4">
-            <code/>
-        </line>
-        <line number="5">
             <code>import '../_impl/xplat/_time_stamp.dart';</code>
         </line>
-        <line number="6">
+        <line number="4">
             <code>import '../exceptions/task_canceled_exception.dart';</code>
         </line>
-        <line number="7">
+        <line number="5">
             <code>import '../stats/perf_counter.dart';</code>
         </line>
-        <line number="8">
+        <line number="6">
             <code>import '../worker/worker.dart';</code>
         </line>
-        <line number="9">
+        <line number="7">
             <code>import 'task.dart';</code>
         </line>
-        <line number="10">
+        <line number="8">
             <code>import 'worker_pool.dart';</code>
         </line>
-        <line number="11">
+        <line number="9">
             <code/>
         </line>
-        <line number="12">
+        <line number="10">
             <code>/// [WorkerTask] registered in the [WorkerPool].</code>
         </line>
-        <line number="13">
+        <line number="11">
             <code>abstract base class WorkerTask&lt;T, W extends Worker&gt; implements Task&lt;T&gt; {</code>
         </line>
-        <line hits="8" number="14">
+        <line hits="8" number="12">
             <code>  WorkerTask(this._counter) : submitted = microsecTimeStamp();</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="15">
+        <line number="13">
             <code/>
         </line>
-        <line number="16">
+        <line number="14">
             <code>  final int submitted;</code>
         </line>
-        <line number="17">
+        <line number="15">
             <code>  int? _scheduled;</code>
         </line>
-        <line number="18">
+        <line number="16">
             <code>  int? _finished;</code>
         </line>
-        <line number="19">
+        <line number="17">
             <code>  int? _canceled;</code>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line number="19">
+            <code>  final PerfCounter? _counter;</code>
         </line>
         <line number="20">
             <code/>
         </line>
-        <line number="21">
-            <code>  final PerfCounter? _counter;</code>
-        </line>
-        <line number="22">
-            <code/>
-        </line>
-        <line hits="4" number="23">
+        <line hits="4" number="21">
             <code>  @override</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="24">
+        <line hits="4" number="22">
             <code>  bool get isCanceled =&gt; _canceled != null;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="25">
+        <line number="23">
             <code/>
         </line>
-        <line hits="1" number="26">
+        <line hits="1" number="24">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="27">
+        <line hits="2" number="25">
             <code>  bool get isPending =&gt; _scheduled == null &amp;&amp; _canceled == null;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="28">
+        <line number="26">
             <code/>
         </line>
-        <line hits="2" number="29">
+        <line hits="2" number="27">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="30">
+        <line number="28">
             <code>  bool get isFinished =&gt;</code>
         </line>
-        <line hits="6" number="31">
+        <line hits="6" number="29">
             <code>      _scheduled != null &amp;&amp; _finished != null &amp;&amp; _canceled == null;</code>
             <hit count="6" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="32">
+        <line number="30">
             <code/>
         </line>
-        <line hits="2" number="33">
+        <line hits="2" number="31">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="34">
+        <line number="32">
             <code>  bool get isRunning =&gt;</code>
         </line>
-        <line hits="4" number="35">
+        <line hits="4" number="33">
             <code>      _scheduled != null &amp;&amp; _finished == null &amp;&amp; _canceled == null;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="36">
+        <line number="34">
             <code/>
         </line>
-        <line hits="1" number="37">
+        <line hits="1" number="35">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="38">
+        <line hits="1" number="36">
             <code>  Duration get runningTime =&gt; _scheduled == null</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="39">
+        <line number="37">
             <code>      ? Duration.zero</code>
         </line>
-        <line hits="0" number="40">
+        <line hits="0" number="38">
             <code>      : Duration(</code>
         </line>
-        <line number="41">
+        <line number="39">
             <code>          microseconds:</code>
         </line>
-        <line hits="0" number="42">
+        <line hits="0" number="40">
             <code>              (_canceled ?? _finished ?? microsecTimeStamp()) - _scheduled!);</code>
         </line>
-        <line number="43">
+        <line number="41">
             <code/>
         </line>
-        <line hits="0" number="44">
+        <line hits="0" number="42">
             <code>  @override</code>
         </line>
-        <line hits="0" number="45">
+        <line hits="0" number="43">
             <code>  Duration get waitTime =&gt; Duration(</code>
         </line>
-        <line number="46">
+        <line number="44">
             <code>      microseconds:</code>
         </line>
-        <line hits="0" number="47">
+        <line hits="0" number="45">
             <code>          (_scheduled ?? _canceled ?? microsecTimeStamp()) - submitted);</code>
+        </line>
+        <line number="46">
+            <code/>
+        </line>
+        <line number="47">
+            <code>  final _done = Completer&lt;void&gt;();</code>
         </line>
         <line number="48">
             <code/>
         </line>
-        <line number="49">
-            <code>  final _done = Completer&lt;void&gt;();</code>
-        </line>
-        <line number="50">
-            <code/>
-        </line>
-        <line hits="1" number="51">
+        <line hits="1" number="49">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="52">
+        <line hits="2" number="50">
             <code>  Future&lt;void&gt; get done =&gt; _done.future;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="53">
+        <line number="51">
             <code/>
         </line>
-        <line number="54">
+        <line number="52">
             <code>  TaskCanceledException? _canceledException;</code>
         </line>
-        <line hits="8" number="55">
+        <line hits="8" number="53">
             <code>  TaskCanceledException? get canceledException =&gt; _canceledException;</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="56">
+        <line number="54">
             <code/>
         </line>
-        <line hits="4" number="57">
+        <line hits="4" number="55">
             <code>  void throwIfCanceled() {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="58">
+        <line hits="4" number="56">
             <code>    if (_canceledException != null) throw _canceledException!;</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="59">
+        <line number="57">
             <code>  }</code>
         </line>
-        <line number="60">
+        <line number="58">
             <code/>
         </line>
-        <line hits="2" number="61">
+        <line hits="2" number="59">
             <code>  @override</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="62">
+        <line number="60">
             <code>  void cancel([String? message]) {</code>
         </line>
-        <line hits="4" number="63">
+        <line hits="4" number="61">
             <code>    _canceled ??= microsecTimeStamp();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="64">
+        <line hits="4" number="62">
             <code>    _canceledException ??= TaskCanceledException(message);</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="65">
+        <line hits="2" number="63">
             <code>    if (_scheduled == null) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="66">
+        <line number="64">
             <code>      // task will not be scheduled, make sure it reports as errored</code>
         </line>
-        <line hits="2" number="67">
+        <line hits="2" number="65">
             <code>      _fail();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="68">
+        <line number="66">
             <code>    }</code>
         </line>
-        <line number="69">
+        <line number="67">
             <code>  }</code>
         </line>
-        <line number="70">
+        <line number="68">
             <code/>
         </line>
-        <line hits="4" number="71">
-            <code>  void _success(bool res) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="8" number="72">
-            <code>    _finished ??= microsecTimeStamp();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="8" number="73">
-            <code>    _counter?.update(_finished! - _scheduled!, res);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="16" number="74">
-            <code>    if (!_done.isCompleted) _done.complete();</code>
-            <hit count="16" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="75">
-            <code>  }</code>
-        </line>
-        <line number="76">
-            <code/>
-        </line>
-        <line hits="2" number="77">
+        <line hits="2" number="69">
             <code>  void _fail([Object? _]) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="78">
+        <line hits="4" number="70">
             <code>    _finished ??= microsecTimeStamp();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="79">
+        <line hits="2" number="71">
             <code>    _counter?.update(_finished! - _scheduled!, false);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="80">
+        <line hits="8" number="72">
             <code>    if (!_done.isCompleted) _done.complete();</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="81">
+        <line number="73">
             <code>  }</code>
         </line>
-        <line number="82">
+        <line number="74">
             <code/>
         </line>
-        <line hits="4" number="83">
+        <line hits="4" number="75">
             <code>  Future&lt;void&gt; run(W worker) {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="84">
+        <line hits="8" number="76">
             <code>    _scheduled ??= microsecTimeStamp();</code>
             <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="16" number="85">
-            <code>    return execute(worker).then(_success, onError: _fail);</code>
+        <line hits="8" number="77">
+            <code>    return execute(worker).then(</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="4" number="78">
+            <code>      (res) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="79">
+            <code>        _finished ??= microsecTimeStamp();</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="80">
+            <code>        _counter?.update(_finished! - _scheduled!, res);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="16" number="81">
+            <code>        if (!_done.isCompleted) _done.complete();</code>
             <hit count="16" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="86">
+        <line number="82">
+            <code>      },</code>
+        </line>
+        <line hits="4" number="83">
+            <code>      onError: _fail,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="84">
+            <code>    );</code>
+        </line>
+        <line number="85">
             <code>  }</code>
         </line>
-        <line number="87">
+        <line number="86">
             <code/>
         </line>
-        <line number="88">
+        <line number="87">
             <code>  Future&lt;bool&gt; execute(W worker);</code>
         </line>
-        <line number="89">
-            <code>}</code>
-        </line>
-        <line number="90">
-            <code/>
-        </line>
-        <line number="91">
-            <code>@internal</code>
-        </line>
-        <line number="92">
-            <code>extension WorkerTaskExt on WorkerTask {</code>
-        </line>
-        <line hits="0" number="93">
-            <code>  void fail() =&gt; _fail();</code>
-        </line>
-        <line number="94">
+        <line number="88">
             <code>}</code>
         </line>
     </lines>

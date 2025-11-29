@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-17" filename="_forward_stream_controller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96875" lines-covered="31" lines-valid="32" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2025-11-29" filename="_forward_stream_controller.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.96666664" lines-covered="29" lines-valid="30" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -14,71 +14,71 @@
             <code>import '../../exceptions/squadron_exception.dart';</code>
         </line>
         <line number="5">
-            <code/>
+            <code>import '../../utils.dart';</code>
         </line>
         <line number="6">
+            <code/>
+        </line>
+        <line number="7">
             <code>class ForwardStreamController&lt;T&gt; {</code>
         </line>
-        <line hits="10" number="7">
+        <line hits="10" number="8">
             <code>  ForwardStreamController(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="8">
+        <line number="9">
             <code>      {void Function()? onListen, FutureOr&lt;void&gt; Function()? onCancel}) {</code>
         </line>
-        <line hits="20" number="9">
+        <line hits="20" number="10">
             <code>    _controller = StreamController(</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="10">
+        <line number="11">
             <code>      onListen: onListen,</code>
         </line>
-        <line hits="10" number="11">
+        <line hits="10" number="12">
             <code>      onPause: _pause,</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="12">
+        <line hits="10" number="13">
             <code>      onResume: _resume,</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="13">
+        <line number="14">
             <code>      onCancel: onCancel,</code>
         </line>
-        <line number="14">
+        <line number="15">
             <code>    );</code>
         </line>
-        <line number="15">
+        <line number="16">
             <code>  }</code>
         </line>
-        <line number="16">
-            <code/>
-        </line>
         <line number="17">
-            <code>  late final StreamController&lt;T&gt; _controller;</code>
+            <code/>
         </line>
         <line number="18">
+            <code>  late final StreamController&lt;T&gt; _controller;</code>
+        </line>
+        <line number="19">
             <code/>
         </line>
-        <line hits="30" number="19">
+        <line hits="30" number="20">
             <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="20">
+        <line number="21">
             <code/>
         </line>
-        <line hits="30" number="21">
+        <line hits="30" number="22">
             <code>  Future&lt;void&gt; get done =&gt; _controller.done;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="22">
+        <line number="23">
             <code/>
         </line>
-        <line number="23">
-            <code>  var _closed = false;</code>
-        </line>
-        <line hits="40" number="24">
-            <code>  bool get isClosed =&gt; _closed || _controller.isClosed;</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+        <line hits="30" number="24">
+            <code>  bool get isClosed =&gt; _controller.isClosed;</code>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="25">
             <code/>
@@ -96,195 +96,184 @@
         <line number="29">
             <code/>
         </line>
-        <line hits="10" number="30">
-            <code>  void add(T data) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="30" number="31">
-            <code>    if (!isClosed) _controller.add(data);</code>
+        <line hits="30" number="30">
+            <code>  void safeAdd(T data) =&gt; _controller.safeAdd(data);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="32">
-            <code>  }</code>
+        <line number="31">
+            <code/>
+        </line>
+        <line hits="21" number="32">
+            <code>  void safeAddError(SquadronException ex) =&gt; _controller.safeAddError(ex);</code>
+            <hit count="21" name="&lt;unnamed&gt;"/>
         </line>
         <line number="33">
             <code/>
         </line>
-        <line hits="7" number="34">
-            <code>  void addError(SquadronException ex) {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="21" number="35">
-            <code>    if (!isClosed) _controller.addError(ex);</code>
-            <hit count="21" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="36">
-            <code>  }</code>
-        </line>
-        <line number="37">
-            <code/>
-        </line>
-        <line hits="10" number="38">
-            <code>  Future&lt;void&gt; close() async {</code>
+        <line hits="10" number="34">
+            <code>  void close() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="39">
-            <code>    _closed = true;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="40">
-            <code>    await _sub?.cancel();</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="41">
-            <code>    _sub = null;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="42">
+        <line hits="20" number="35">
             <code>    _controller.close();</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="43">
-            <code>  }</code>
-        </line>
-        <line number="44">
-            <code/>
-        </line>
-        <line number="45">
-            <code>  int _pauses = 0;</code>
-        </line>
-        <line number="46">
-            <code/>
-        </line>
-        <line hits="1" number="47">
-            <code>  void _pause() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="48">
-            <code>    // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/pause.html</code>
-        </line>
-        <line number="49">
-            <code>    // If the subscription is paused more than once, an equal number of resumes</code>
-        </line>
-        <line number="50">
-            <code>    // must be performed to resume the stream</code>
-        </line>
-        <line hits="2" number="51">
-            <code>    _pauses++;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="52">
-            <code>  }</code>
-        </line>
-        <line number="53">
-            <code/>
-        </line>
-        <line hits="1" number="54">
-            <code>  void _resume() {</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="2" number="55">
-            <code>    if (_pauses &gt; 0) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="56">
-            <code>      // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/pause.html</code>
-        </line>
-        <line number="57">
-            <code>      // If the subscription is paused more than once, an equal number of resumes</code>
-        </line>
-        <line number="58">
-            <code>      // must be performed to resume the stream</code>
-        </line>
-        <line hits="2" number="59">
-            <code>      _pauses--;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="60">
-            <code>    } else {</code>
-        </line>
-        <line number="61">
-            <code>      // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/resume.html</code>
-        </line>
-        <line number="62">
-            <code>      // It is safe to resume even when the subscription is not paused, and the</code>
-        </line>
-        <line number="63">
-            <code>      // resume will have no effect.</code>
-        </line>
-        <line number="64">
-            <code>    }</code>
-        </line>
-        <line number="65">
-            <code>  }</code>
-        </line>
-        <line number="66">
-            <code/>
-        </line>
-        <line hits="10" number="67">
-            <code>  void attachSubscription(StreamSubscription&lt;T&gt; sub) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="68">
+        <line hits="10" number="36">
             <code>    if (_sub != null) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="69">
-            <code>      throw SquadronErrorImpl.create(</code>
-        </line>
-        <line number="70">
-            <code>          'Invalid state: a subscription is already attached');</code>
-        </line>
-        <line number="71">
-            <code>    }</code>
-        </line>
-        <line hits="10" number="72">
-            <code>    _sub = sub;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="73">
-            <code>    // pass pending pause events on to the subscription</code>
-        </line>
-        <line hits="20" number="74">
-            <code>    while (_pauses &gt; 0) {</code>
+        <line hits="20" number="37">
+            <code>      _sub!.cancel();</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="75">
+        <line hits="10" number="38">
+            <code>      _sub = null;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="39">
+            <code>    }</code>
+        </line>
+        <line number="40">
+            <code>  }</code>
+        </line>
+        <line number="41">
+            <code/>
+        </line>
+        <line number="42">
+            <code>  int _pauses = 0;</code>
+        </line>
+        <line number="43">
+            <code/>
+        </line>
+        <line hits="1" number="44">
+            <code>  void _pause() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="45">
+            <code>    // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/pause.html</code>
+        </line>
+        <line number="46">
+            <code>    // If the subscription is paused more than once, an equal number of resumes</code>
+        </line>
+        <line number="47">
+            <code>    // must be performed to resume the stream</code>
+        </line>
+        <line hits="2" number="48">
+            <code>    _pauses++;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="49">
+            <code>  }</code>
+        </line>
+        <line number="50">
+            <code/>
+        </line>
+        <line hits="1" number="51">
+            <code>  void _resume() {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="52">
+            <code>    if (_pauses &gt; 0) {</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="53">
+            <code>      // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/pause.html</code>
+        </line>
+        <line number="54">
+            <code>      // If the subscription is paused more than once, an equal number of resumes</code>
+        </line>
+        <line number="55">
+            <code>      // must be performed to resume the stream</code>
+        </line>
+        <line hits="2" number="56">
             <code>      _pauses--;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="76">
+        <line number="57">
+            <code>    } else {</code>
+        </line>
+        <line number="58">
+            <code>      // per Dart documentation https://api.dart.dev/dart-async/StreamSubscription/resume.html</code>
+        </line>
+        <line number="59">
+            <code>      // It is safe to resume even when the subscription is not paused, and the</code>
+        </line>
+        <line number="60">
+            <code>      // resume will have no effect.</code>
+        </line>
+        <line number="61">
+            <code>    }</code>
+        </line>
+        <line number="62">
+            <code>  }</code>
+        </line>
+        <line number="63">
+            <code/>
+        </line>
+        <line hits="10" number="64">
+            <code>  void attachSubscription(StreamSubscription&lt;T&gt; sub) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="65">
+            <code>    if (_sub != null) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="66">
+            <code>      throw SquadronErrorImpl.create(</code>
+        </line>
+        <line number="67">
+            <code>          'Invalid state: a subscription is already attached');</code>
+        </line>
+        <line number="68">
+            <code>    }</code>
+        </line>
+        <line hits="10" number="69">
+            <code>    _sub = sub;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="70">
+            <code>    // pass pending pause events on to the subscription</code>
+        </line>
+        <line hits="20" number="71">
+            <code>    while (_pauses &gt; 0) {</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="72">
+            <code>      _pauses--;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="73">
             <code>      sub.pause();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="77">
+        <line number="74">
             <code>    }</code>
         </line>
-        <line number="78">
+        <line number="75">
             <code>    // have the subscription handle pause/resume events from now on</code>
         </line>
-        <line hits="30" number="79">
+        <line hits="30" number="76">
             <code>    _controller.onPause = sub.pause;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="80">
+        <line hits="30" number="77">
             <code>    _controller.onResume = sub.resume;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="81">
+        <line number="78">
             <code>    // have the subscription handle the cancel event if the controller doesn't</code>
         </line>
-        <line number="82">
+        <line number="79">
             <code>    // handle it already</code>
         </line>
-        <line hits="25" number="83">
+        <line hits="25" number="80">
             <code>    _controller.onCancel ??= sub.cancel;</code>
             <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="84">
+        <line number="81">
             <code>  }</code>
         </line>
-        <line number="85">
+        <line number="82">
             <code>}</code>
         </line>
     </lines>
