@@ -27,7 +27,7 @@ final class _VmForwardChannel extends _VmChannel {
 
   /// Closes this [Channel], effectively stopping message forwarding.
   @override
-  FutureOr<void> close() {
+  Future<void> close() {
     if (!_closed.isCompleted) {
       _com.close();
       _closed.complete();

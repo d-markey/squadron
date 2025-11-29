@@ -138,7 +138,7 @@ abstract class Worker
     squadronToken?.onCanceled.then((ex) {
       if (!controller.isClosed) {
         controller.subscription?.cancel();
-        controller.addError(SquadronException.from(ex, null, command));
+        controller.safeAddError(SquadronException.from(ex, null, command));
         controller.close();
       }
       _channel?.cancelToken(squadronToken);
@@ -163,16 +163,16 @@ abstract class Worker
               inspectResponse: inspectResponse,
             )
             .listen(
-              controller.add,
-              onError: (ex, st) =>
-                  controller.addError(SquadronException.from(ex, st, command)),
+              controller.safeAdd,
+              onError: (ex, st) => controller
+                  .safeAddError(SquadronException.from(ex, st, command)),
               onDone: controller.close,
               cancelOnError: false,
             ));
       } catch (ex, st) {
         _stats.failed();
         controller.subscription?.cancel();
-        controller.addError(SquadronException.from(ex, st, command));
+        controller.safeAddError(SquadronException.from(ex, st, command));
         controller.close();
       }
     });
@@ -182,20 +182,26 @@ abstract class Worker
 
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
-  Future<Channel> start() async {
+  Future<Channel> start() {
     if (isStopped) {
       throw WorkerException('Invalid state: worker is stopped');
     }
 
-    final args = getStartArgs() ?? const [];
-    _openChannel ??= Channel.open(
-        exceptionManager, channelLogger, _entryPoint, args, _threadHook);
-    final channel = _channel ?? await _openChannel;
-    if (_channel == null) {
+    if (_channel != null) {
+      return Future.value(_channel!);
+    }
+
+    return _openChannel ??= Channel.open(
+      exceptionManager,
+      channelLogger,
+      _entryPoint,
+      getStartArgs() ?? const [],
+      _threadHook,
+    ).then((channel) {
       _channel = channel;
       _stats.start();
-    }
-    return _channel!;
+      return channel;
+    });
   }
 
   /// Stops this worker.

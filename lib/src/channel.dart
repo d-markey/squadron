@@ -39,13 +39,13 @@ abstract interface class Channel {
   /// Sends a termination [WorkerRequest] to the worker. The [Channel] should
   /// release any resource related to the worker and should not be used after
   /// this method has been called.
-  FutureOr<void> close();
+  Future<void> close();
 
   /// Sends a close stream [WorkerRequest] to the worker.
-  FutureOr<void> cancelStream(int streamId);
+  void cancelStream(int streamId);
 
   /// Sends a cancel token [WorkerRequest] to the worker.
-  FutureOr<void> cancelToken(SquadronCancelationToken? token);
+  void cancelToken(SquadronCancelationToken? token);
 
   /// Creates a [WorkerRequest] and sends it to the worker. This method expects
   /// a single value from the worker.
@@ -88,5 +88,5 @@ abstract interface class Channel {
 extension ChannelImpl on Channel {
   void terminate(TaskTerminatedException ex) => impl.terminateChannel(this, ex);
 
-  int get activeConnections => impl.getActiveConnections(this);
+  int getActiveConnections() => impl.getActiveConnections(this);
 }

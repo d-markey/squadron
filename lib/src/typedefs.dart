@@ -20,7 +20,7 @@ typedef StreamCanceler = void Function();
 
 typedef Cast<T> = T Function(dynamic);
 
-extension type OperationsMap(Map<int, CommandHandler> _ops) {
+extension type const OperationsMap(Map<int, CommandHandler> _ops) {
   CommandHandler? operator [](int key) => _ops[key];
 
   Iterable<int> get keys => _ops.keys;

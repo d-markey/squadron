@@ -35,7 +35,7 @@ final class _WebForwardChannel extends _WebChannel {
 
   /// Closes this [Channel], effectively stopping message forwarding.
   @override
-  FutureOr<void> close() {
+  Future<void> close() {
     if (!_closed.isCompleted) {
       _com.port1.close();
       _closed.complete();

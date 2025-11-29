@@ -85,7 +85,20 @@ class CompiledApp {
 
     // Imports
     const dart2wasm = {
-            _78: () => {
+            _36: x0 => new Array(x0),
+      _41: (x0,x1,x2) => { x0[x1] = x2 },
+      _45: (x0,x1,x2) => new DataView(x0,x1,x2),
+      _47: x0 => new Int8Array(x0),
+      _48: (x0,x1,x2) => new Uint8Array(x0,x1,x2),
+      _49: x0 => new Uint8Array(x0),
+      _51: x0 => new Uint8ClampedArray(x0),
+      _53: x0 => new Int16Array(x0),
+      _55: x0 => new Uint16Array(x0),
+      _57: x0 => new Int32Array(x0),
+      _59: x0 => new Uint32Array(x0),
+      _61: x0 => new Float32Array(x0),
+      _63: x0 => new Float64Array(x0),
+      _78: () => {
         let stackString = new Error().stack.toString();
         let frames = stackString.split('\n');
         let drop = 2;
@@ -99,29 +112,64 @@ class CompiledApp {
       _109: Function.prototype.call.bind(String.prototype.indexOf),
       _110: (s, p, i) => s.lastIndexOf(p, i),
       _132: o => o instanceof Uint8Array,
+      _133: (o, start, length) => new Uint8Array(o.buffer, o.byteOffset + start, length),
+      _134: o => o instanceof Int8Array,
+      _135: (o, start, length) => new Int8Array(o.buffer, o.byteOffset + start, length),
+      _136: o => o instanceof Uint8ClampedArray,
+      _137: (o, start, length) => new Uint8ClampedArray(o.buffer, o.byteOffset + start, length),
+      _138: o => o instanceof Uint16Array,
+      _139: (o, start, length) => new Uint16Array(o.buffer, o.byteOffset + start, length),
+      _140: o => o instanceof Int16Array,
+      _141: (o, start, length) => new Int16Array(o.buffer, o.byteOffset + start, length),
+      _142: o => o instanceof Uint32Array,
+      _143: (o, start, length) => new Uint32Array(o.buffer, o.byteOffset + start, length),
+      _144: o => o instanceof Int32Array,
+      _145: (o, start, length) => new Int32Array(o.buffer, o.byteOffset + start, length),
+      _148: o => o instanceof Float32Array,
+      _149: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
+      _150: o => o instanceof Float64Array,
+      _151: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
+      _152: (t, s) => t.set(s),
       _154: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
+      _156: o => o.buffer,
+      _157: o => o.byteOffset,
       _158: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
+      _159: (b, o) => new DataView(b, o),
+      _160: (b, o, l) => new DataView(b, o, l),
       _161: Function.prototype.call.bind(DataView.prototype.getUint8),
+      _162: Function.prototype.call.bind(DataView.prototype.setUint8),
       _163: Function.prototype.call.bind(DataView.prototype.getInt8),
+      _164: Function.prototype.call.bind(DataView.prototype.setInt8),
       _165: Function.prototype.call.bind(DataView.prototype.getUint16),
+      _166: Function.prototype.call.bind(DataView.prototype.setUint16),
       _167: Function.prototype.call.bind(DataView.prototype.getInt16),
+      _168: Function.prototype.call.bind(DataView.prototype.setInt16),
       _169: Function.prototype.call.bind(DataView.prototype.getUint32),
+      _170: Function.prototype.call.bind(DataView.prototype.setUint32),
       _171: Function.prototype.call.bind(DataView.prototype.getInt32),
+      _172: Function.prototype.call.bind(DataView.prototype.setInt32),
       _177: Function.prototype.call.bind(DataView.prototype.getFloat32),
+      _178: Function.prototype.call.bind(DataView.prototype.setFloat32),
       _179: Function.prototype.call.bind(DataView.prototype.getFloat64),
+      _180: Function.prototype.call.bind(DataView.prototype.setFloat64),
       _197: (c) =>
       queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
-      _209: o => o === undefined,
-      _211: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
-      _215: (l, r) => l === r,
-      _216: o => o,
-      _217: o => o,
-      _218: o => o,
-      _220: o => o.length,
-      _222: (o, i) => o[i],
-      _223: f => f.dartFunction,
-      _234: o => String(o),
-      _236: o => {
+      _204: o => o === undefined,
+      _206: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
+      _210: (l, r) => l === r,
+      _211: o => o,
+      _212: o => o,
+      _213: o => o,
+      _214: b => !!b,
+      _215: o => o.length,
+      _217: (o, i) => o[i],
+      _218: f => f.dartFunction,
+      _225: (o, p) => o[p],
+      _229: o => String(o),
+      _230: (p, s, f) => p.then(s, (e) => f(e, e === undefined)),
+      _231: f => finalizeWrapper(f, function(x0) { return dartInstance.exports._231(f,arguments.length,x0) }),
+      _232: f => finalizeWrapper(f, function(x0,x1) { return dartInstance.exports._232(f,arguments.length,x0,x1) }),
+      _233: o => {
         if (o === undefined) return 1;
         var type = typeof o;
         if (type === 'boolean') return 2;
@@ -146,13 +194,15 @@ class CompiledApp {
             o instanceof SharedArrayBuffer) {
             return 17;
         }
-        return 18;
+        if (o instanceof Promise) return 18;
+        return 19;
       },
-      _266: x0 => x0.random(),
-      _269: () => globalThis.Math,
-      _270: Function.prototype.call.bind(Number.prototype.toString),
-      _271: Function.prototype.call.bind(BigInt.prototype.toString),
-      _272: Function.prototype.call.bind(Number.prototype.toString),
+      _248: x0 => new ArrayBuffer(x0),
+      _263: x0 => x0.random(),
+      _266: () => globalThis.Math,
+      _267: Function.prototype.call.bind(Number.prototype.toString),
+      _268: Function.prototype.call.bind(BigInt.prototype.toString),
+      _269: Function.prototype.call.bind(Number.prototype.toString),
 
     };
 

@@ -5,12 +5,10 @@ export 'src/bootstrapper.dart';
 export 'src/channel.dart' hide ChannelImpl;
 export 'src/concurrency_settings.dart';
 export 'src/converters/cast_converter.dart';
-export 'src/converters/context_aware_converter.dart'
-    hide ContextAwareConverterImpl;
+export 'src/converters/context_aware_converter.dart';
 export 'src/converters/converter.dart';
 export 'src/converters/num_converter.dart';
-export 'src/converters/serialization_context.dart'
-    hide SerializationContextImpl;
+export 'src/converters/serialization_context.dart';
 export 'src/exceptions/exception_manager.dart';
 export 'src/exceptions/squadron_canceled_exception.dart'
     hide SquadronCanceledExceptionExt;
@@ -46,9 +44,7 @@ export 'src/typedefs.dart';
 export 'src/utils.dart';
 export 'src/worker/worker.dart';
 export 'src/worker/worker_channel.dart';
-export 'src/worker/worker_message.dart' hide WorkerMessageImpl;
-export 'src/worker/worker_request.dart'
-    hide WorkerRequestExt, CancelationTokenExt;
-export 'src/worker/worker_response.dart' hide WorkerResponseImpl;
+export 'src/worker/worker_request.dart' hide CancelationTokenExt;
+export 'src/worker/worker_response.dart';
 export 'src/worker_client.dart';
 export 'src/worker_service.dart';

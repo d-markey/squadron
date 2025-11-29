@@ -76,7 +76,7 @@ class _Stats {
       _totalErrors,
       _getUpTime(_stopped ?? ts),
       _getIdleTime(ts),
-      _worker._channel?.activeConnections ?? 0,
+      _worker._channel?.getActiveConnections() ?? 0,
     );
   }
 }

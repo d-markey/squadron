@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:logger/web.dart';
-import 'package:meta/meta.dart';
 
 import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
@@ -16,9 +15,16 @@ import 'worker_message.dart';
 /// [WorkerResponse.closeStream] message to indicate completion.
 /// [WorkerResponse]s can also send error messages and log events.
 extension type WorkerResponse._(List data) implements WorkerMessage {
+  factory WorkerResponse.from(List data) {
+    if (data.length != 5) {
+      throw SquadronErrorImpl.create('Invalid worker response');
+    }
+    return WorkerResponse._(data);
+  }
+
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
-  static WorkerResponse ready([bool status = true]) => WorkerResponse._([
+  factory WorkerResponse.ready([bool status = true]) => WorkerResponse._([
         microsecTimeStamp(), // 0 - travel time
         status, // 1 - ready
         null, // 2 - error
@@ -28,7 +34,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
 
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
-  static WorkerResponse withResult(dynamic result) => WorkerResponse._([
+  factory WorkerResponse.withResult(dynamic result) => WorkerResponse._([
         microsecTimeStamp(), // 0 - travel time
         result, // 1 - result
         null, // 2 - error
@@ -37,7 +43,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       ]);
 
   /// [WorkerResponse] with an error message and an optional (string) [StackTrace].
-  static WorkerResponse withError(SquadronException exception,
+  factory WorkerResponse.withError(SquadronException exception,
           [StackTrace? stackTrace]) =>
       WorkerResponse._([
         microsecTimeStamp(), // 0 - travel time
@@ -48,7 +54,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       ]);
 
   /// [WorkerResponse] with log event information.
-  static WorkerResponse log(LogEvent message) => WorkerResponse._([
+  factory WorkerResponse.log(LogEvent message) => WorkerResponse._([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
@@ -57,7 +63,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       ]);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
-  static WorkerResponse closeStream() => WorkerResponse._([
+  factory WorkerResponse.closeStream() => WorkerResponse._([
         microsecTimeStamp(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
@@ -81,16 +87,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       return data[_$result];
     }
   }
-}
 
-// 0 is reserved for travel time
-const _$result = 1;
-const _$error = 2;
-const _$endOfStream = 3;
-const _$log = 4;
-
-@internal
-extension WorkerResponseImpl on WorkerResponse {
   /// In-place deserialization of a [WorkerResponse] sent by the worker.
   /// Returns `false` if the message requires no further processing (currently
   /// used for log messages only).
@@ -117,14 +114,13 @@ extension WorkerResponseImpl on WorkerResponse {
     data[_$error] = (data[_$error] as SquadronException?)?.serialize();
     return data;
   }
-
-  static WorkerResponse from(List data) {
-    if (data.length != 5) {
-      throw SquadronErrorImpl.create('Invalid worker response');
-    }
-    return WorkerResponse._(data);
-  }
 }
+
+// 0 is reserved for travel time
+const _$result = 1;
+const _$error = 2;
+const _$endOfStream = 3;
+const _$log = 4;
 
 extension _LogEventSerializationExt on LogEvent {
   List serialize() => [

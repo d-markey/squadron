@@ -27,7 +27,7 @@ class ResultStream {
           streamIdCompleter.complete(null);
           channel.logger
               ?.e('Invalid state: unexpected endOfStream for command $command');
-          _controller.addError(SquadronErrorImpl.create(
+          _controller.safeAddError(SquadronErrorImpl.create(
             'Invalid state: unexpected endOfStream',
             null,
             command,
@@ -42,7 +42,7 @@ class ResultStream {
         // the first result from a streaming operation is the stream ID
         streamIdCompleter.complete((res.result as num).toInt());
       } else if (error != null) {
-        _controller.addError(error);
+        _controller.safeAddError(error);
         if (!hasStreamId) {
           // if any error comes before the stream ID, somethind bad happened
           streamIdCompleter.complete(null);
@@ -51,15 +51,15 @@ class ResultStream {
         }
       } else {
         try {
-          _controller.add(res.result);
+          _controller.safeAdd(res.result);
         } catch (ex, st) {
-          _controller.addError(SquadronException.from(ex, st, command));
+          _controller.safeAddError(SquadronException.from(ex, st, command));
         }
       }
 
       final canceled = token?.exception;
       if (canceled != null) {
-        _controller.addError(canceled);
+        _controller.safeAddError(canceled);
         _controller.close();
       }
     }
@@ -69,19 +69,19 @@ class ResultStream {
 
       final error = res.error;
       if (error != null) {
-        _controller.addError(error);
+        _controller.safeAddError(error);
       } else {
         try {
-          _controller.add(res.result);
+          _controller.safeAdd(res.result);
         } catch (ex, st) {
-          _controller.addError(SquadronException.from(ex, st, command));
+          _controller.safeAddError(SquadronException.from(ex, st, command));
         }
       }
 
       _controller.close();
     }
 
-    Future<int?> $getStreamId(StreamSubscription sub) async {
+    Future<int?> $getStreamId(StreamSubscription sub) {
       streamIdCompleter as Completer<int?>;
       var count = 0;
       if (sub.isPaused && !streamIdCompleter.isCompleted) {
@@ -93,13 +93,14 @@ class ResultStream {
         }
       }
       // wait for the streamId...
-      final streamId = await streamIdCompleter.future;
+      return streamIdCompleter.future.then((streamId) {
+        while (count > 0) {
+          count--;
+          sub.pause();
+        }
+        return streamId;
+      });
       // restore subscription pause
-      while (count > 0) {
-        count--;
-        sub.pause();
-      }
-      return streamId;
     }
 
     Future<void> $onCancel() async {
@@ -116,7 +117,7 @@ class ResultStream {
     }
 
     void $closeWithError(Object error, [StackTrace? st]) {
-      _controller.addError(SquadronException.from(error, st, command));
+      _controller.safeAddError(SquadronException.from(error, st, command));
       _controller.close();
     }
 

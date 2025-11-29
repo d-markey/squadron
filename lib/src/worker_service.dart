@@ -9,5 +9,5 @@ abstract interface class WorkerService {
   OperationsMap get operations;
 
   /// Empty command handlers map.
-  static final OperationsMap noOperations = OperationsMap({});
+  static const OperationsMap noOperations = OperationsMap({});
 }

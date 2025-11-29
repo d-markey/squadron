@@ -24,17 +24,16 @@ final class DisconnectedChannel implements Channel {
       throw SquadronErrorImpl.create('Channel is not connected');
 
   @override
-  FutureOr<void> cancelStream(int streamId) => _disconnectedError();
+  void cancelStream(int streamId) => _disconnectedError();
 
   @override
-  FutureOr<void> cancelToken(SquadronCancelationToken? token) =>
-      _disconnectedError();
+  void cancelToken(SquadronCancelationToken? token) => _disconnectedError();
 
   @override
-  Future<void> get closed async => _disconnectedError();
+  Future<void> get closed => _disconnectedError();
 
   @override
-  FutureOr<void> close() => _disconnectedError();
+  Future<void> close() async => _disconnectedError();
 
   @override
   Future<dynamic> sendRequest(

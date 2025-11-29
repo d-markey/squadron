@@ -86,7 +86,7 @@ Future<Channel> openChannel(
   final disconnected = DisconnectedChannel(exceptionManager, logger);
 
   receiver.listen((message) {
-    final response = WorkerResponseImpl.from(message);
+    final response = WorkerResponse.from(message);
     if (!response.unwrapInPlace(disconnected)) {
       return;
     }
@@ -145,7 +145,7 @@ void terminateChannel(Channel channel, TaskTerminatedException ex) {
     final pendingConnections = channel._activeConnections;
     for (var c in pendingConnections) {
       c.subscription?.cancel();
-      c.addError(ex);
+      c.safeAddError(ex);
       c.close();
     }
   }

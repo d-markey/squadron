@@ -57,7 +57,7 @@ abstract interface class LocalWorker<W>
 
   /// Starts the local worker.
   @override
-  FutureOr<void> start();
+  Future<void> start();
 
   /// Stops the local worker.
   @override

@@ -13,6 +13,10 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   WorkerStreamTask(this._producer, PerfCounter? counter) : super(counter) {
     _controller = ForwardStreamController<T>(onListen: () async {
       try {
+        if (canceledException != null) {
+          // the task was canceled
+          throw canceledException!;
+        }
         final worker = await _worker.future;
         if (canceledException != null || worker == null) {
           // the task was canceled
@@ -20,8 +24,9 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
         } else {
           // otherwise, forward data from the worker
           _controller.attachSubscription(_producer(worker).listen(
-            _onData,
-            onError: _onError,
+            _controller.safeAdd,
+            onError: (ex, st) =>
+                _controller.safeAddError(SquadronException.from(ex, st)),
             onDone: _controller.close,
             cancelOnError: false,
           ));
@@ -41,14 +46,9 @@ final class WorkerStreamTask<T, W extends Worker> extends WorkerTask<T, W>
   Stream<T> get stream => _controller.stream;
 
   void _closeWithError(SquadronException ex) {
-    _controller.addError(ex);
+    _controller.safeAddError(ex);
     _controller.close();
   }
-
-  void _onData(T data) => _controller.add(data);
-
-  void _onError(Object ex, [StackTrace? st]) =>
-      _controller.addError(SquadronException.from(ex, st));
 
   @override
   void cancel([String? message]) {

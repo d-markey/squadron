@@ -11,8 +11,7 @@ abstract interface class IWorker implements Releasable {
 
   ExceptionManager get exceptionManager;
 
-  FutureOr<void> start();
-  FutureOr<void> stop();
-
+  Future<void> start();
+  void stop();
   void terminate([TaskTerminatedException? ex]);
 }

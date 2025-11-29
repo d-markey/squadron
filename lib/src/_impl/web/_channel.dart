@@ -51,12 +51,12 @@ Future<Channel> openChannel(
   );
   late web.Worker worker;
 
-  void fail(SquadronException ex) {
+  void $failure(SquadronException ex) {
     if (!ready.isCompleted) ready.completeError(ex);
     if (!completer.isCompleted) completer.completeError(ex);
   }
 
-  void success(_WebChannel channel) {
+  void $success(_WebChannel channel) {
     if (!ready.isCompleted) {
       throw SquadronErrorImpl.create('Invalid state: worker is not ready');
     }
@@ -70,7 +70,7 @@ Future<Channel> openChannel(
       final err = e.$dartError,
           error = SquadronErrorImpl.create(err.toString());
       logger?.e(() => 'Connection to Web Worker failed: $error');
-      fail(error);
+      $failure(error);
 
       UriChecker.exists(entryPoint).then((found) {
         try {
@@ -94,7 +94,7 @@ Future<Channel> openChannel(
 
     worker.onmessage = (web.MessageEvent? e) {
       try {
-        final response = WorkerResponseImpl.from(e.$dartData!);
+        final response = WorkerResponse.from(e.$dartData!);
         if (!response.unwrapInPlace(disconnected)) {
           return;
         }
@@ -102,13 +102,13 @@ Future<Channel> openChannel(
         final error = response.error;
         if (error != null) {
           logger?.e(() => 'Connection to Web Worker failed: $error');
-          fail(error);
+          $failure(error);
         } else if (!ready.isCompleted) {
           logger?.t('Web Worker is ready');
           ready.complete(response.result);
         }
       } catch (ex, st) {
-        return fail(SquadronException.from(ex, st));
+        return $failure(SquadronException.from(ex, st));
       }
     }.toJS;
 
@@ -120,7 +120,7 @@ Future<Channel> openChannel(
     final startRequest = WorkerRequest.start(com.port2, startArguments);
 
     com.port1.onmessage = (web.MessageEvent e) {
-      final response = WorkerResponseImpl.from(e.$dartData!);
+      final response = WorkerResponse.from(e.$dartData!);
       if (!response.unwrapInPlace(disconnected)) {
         return;
       }
@@ -128,7 +128,7 @@ Future<Channel> openChannel(
       final error = response.error;
       if (error != null) {
         logger?.e(() => 'Connection to Web Worker failed: $error');
-        fail(error);
+        $failure(error);
       } else if (response.endOfStream) {
         logger?.w('Disconnecting from Web Worker');
         channel?.close();
@@ -137,7 +137,7 @@ Future<Channel> openChannel(
         final webCh = _WebChannel._(response.result, logger, exceptionManager);
         webCh._thread = worker;
         channel = webCh;
-        success(webCh);
+        $success(webCh);
       } else {
         logger?.d(() => 'Unexpected response: $response');
       }

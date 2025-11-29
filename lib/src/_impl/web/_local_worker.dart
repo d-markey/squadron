@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:js_interop';
 
 import 'package:logger/web.dart';
@@ -44,7 +43,7 @@ base class _WebLocalWorker<W> with Releasable implements LocalWorker<W> {
   Channel? get channel => _channel;
 
   @override
-  FutureOr<void> start() {}
+  Future<void> start() => Future.value();
 
   @override
   void stop() {

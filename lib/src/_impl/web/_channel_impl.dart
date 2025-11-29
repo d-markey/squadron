@@ -68,7 +68,7 @@ final class _WebChannel implements Channel {
 
   /// Sends a termination [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr<void> close() {
+  Future<void> close() {
     if (!_closed.isCompleted) {
       _postRequest(WorkerRequest.stop());
       _closed.complete();
@@ -78,13 +78,13 @@ final class _WebChannel implements Channel {
 
   /// Sends a close stream [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr<void> cancelStream(int streamId) {
+  void cancelStream(int streamId) {
     _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 
   /// Sends a cancel token [WorkerRequest] to the [web.Worker].
   @override
-  FutureOr<void> cancelToken(SquadronCancelationToken? token) {
+  void cancelToken(SquadronCancelationToken? token) {
     if (token != null) {
       _postRequest(WorkerRequest.cancel(token), force: true);
     }
@@ -137,7 +137,7 @@ final class _WebChannel implements Channel {
           }.toJS;
 
           com.port1.onmessage = (web.MessageEvent e) {
-            final res = WorkerResponseImpl.from(e.$dartData!);
+            final res = WorkerResponse.from(e.$dartData!);
             final handler = buffer.isActive ? buffer.add : $forwardMessage;
             handler(res);
           }.toJS;
@@ -188,21 +188,24 @@ final class _WebChannel implements Channel {
     final completer = Completer();
     late final StreamSubscription sub;
 
-    void $success(dynamic data) async {
-      await sub.cancel();
-      if (!completer.isCompleted) completer.complete(data);
+    void $success(dynamic data) {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) completer.complete(data);
+      });
     }
 
-    void $fail(Object ex, [StackTrace? st]) async {
-      await sub.cancel();
-      if (!completer.isCompleted) completer.completeError(ex, st);
+    void $failure(Object ex, [StackTrace? st]) {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) completer.completeError(ex, st);
+      });
     }
 
-    void $done() async {
-      await sub.cancel();
-      if (!completer.isCompleted) {
-        $fail(WorkerException('No response from worker', null, command));
-      }
+    void $done() {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) {
+          $failure(WorkerException('No response from worker', null, command));
+        }
+      });
     }
 
     final com = web.MessageChannel();
@@ -210,7 +213,7 @@ final class _WebChannel implements Channel {
         com.port2, command, args, token, inspectResponse);
     final post = inspectRequest ? _inspectAndPostRequest : _postRequest;
     sub = _getResponseStream(com, req, post, streaming: false)
-        .listen($success, onError: $fail, onDone: $done);
+        .listen($success, onError: $failure, onDone: $done);
     return completer.future;
   }
 

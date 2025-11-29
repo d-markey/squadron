@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:squadron/squadron.dart';
-import 'package:squadron/src/converters/context_aware_converter.dart';
 import 'package:test/test.dart';
 
 import '03_converter_test__list_features.dart';

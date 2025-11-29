@@ -162,12 +162,10 @@ abstract class WorkerPool<W extends Worker>
   /// Ensure at least [ConcurrencySettings.minWorkers] workers are started
   /// (defaulting to 1 if [ConcurrencySettings.minWorkers] is zero).
   @override
-  FutureOr<void> start() {
+  Future<void> start() {
     _stopped = false;
     final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);
-    if (needs > 0) {
-      return _provisionWorkers(needs);
-    }
+    return (needs > 0) ? _provisionWorkers(needs) : Future.value();
   }
 
   void _notify(WorkerStat stats, {required bool removed}) {

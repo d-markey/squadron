@@ -42,14 +42,14 @@ class WorkerRunner {
       r._service = null;
       r._operations = null;
     });
+    _checkOperations(localWorker.operations);
     runner._service = localWorker;
     runner._operations = localWorker.operations;
-    runner._checkOperations();
     return runner;
   }
 
-  void _checkOperations() {
-    final invalidKeys = _operations!.keys.where((k) => k <= 0).toList();
+  static void _checkOperations(OperationsMap ops) {
+    final invalidKeys = ops.keys.where((k) => k <= 0).toList();
     if (invalidKeys.isNotEmpty) {
       throw SquadronErrorImpl.create(
         'Invalid command identifier${(invalidKeys.length > 1) ? 's' : ''} in service operations map: ${invalidKeys.join(', ')}. Command ids must be positive.',
@@ -64,9 +64,9 @@ class WorkerRunner {
   /// or a [MessagePort] (browser). [initializer] is called to build the
   /// [WorkerService] associated to the worker. The runner's [_service] map
   /// will be set with operations from the service.
-  Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
+  void connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
-    WorkerChannel? channel;
+    late final WorkerChannel? channel;
     try {
       startRequest?.unwrapInPlace(internalLogger);
       channel = startRequest?.channel;
@@ -89,24 +89,28 @@ class WorkerRunner {
         throw SquadronErrorImpl.create('Already connected');
       }
 
-      _service = await initializer(startRequest);
-      _operations = _service!.operations;
-      _checkOperations();
+      var service = initializer(startRequest);
+      if (service is Future<WorkerService>) service = await service;
+      service as WorkerService;
+      _checkOperations(service.operations);
+      _service = service;
+      _operations = service.operations;
 
       channel.connect(channelInfo);
 
-      if (_service is ServiceInstaller) {
-        _installCompleter = Completer()
-          ..complete((() async {
-            try {
-              await (_service as ServiceInstaller).install();
-            } catch (ex, st) {
-              internalLogger.e(() => 'Service installation failed: $ex');
-              channel?.error(ex, st);
-              channel?.closeStream();
-              _installError = SquadronException.from(ex, st);
-            }
-          })());
+      if (service is ServiceInstaller) {
+        _installCompleter = Completer<void>();
+        try {
+          final result = (service as ServiceInstaller).install();
+          if (result is Future) await result;
+        } catch (ex, st) {
+          internalLogger.e(() => 'Service installation failed: $ex');
+          channel.error(ex, st);
+          channel.closeStream();
+          _installError = SquadronException.from(ex, st);
+        } finally {
+          _installCompleter?.complete();
+        }
       }
     } catch (ex, st) {
       internalLogger.e(() => 'Connection failed: $ex');
@@ -267,11 +271,10 @@ class WorkerRunner {
     late final int streamId;
 
     // send endOfStream to client
-    Future<void> onDone() async {
+    Future<void> onDone() {
       _unregisterStreamCanceler(streamId);
       channel.closeStream();
-      await subscription.cancel();
-      done.complete();
+      return subscription.cancel().whenComplete(done.complete);
     }
 
     final bool Function() checkToken;

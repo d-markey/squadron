@@ -121,7 +121,7 @@ void execute(TestContext? tc) {
           }.toJS;
           w.onmessage = (MessageEvent e) {
             if (!ready.isCompleted) {
-              final status = WorkerResponseImpl.from(e.data.dartify() as List);
+              final status = WorkerResponse.from(e.data.dartify() as List);
               ready.complete(status.result);
             } else {
               res.complete(e.data.dartify()?.toString() ?? '');
@@ -172,7 +172,7 @@ void execute(TestContext? tc) {
           }.toJS;
           w.onmessage = (MessageEvent e) {
             try {
-              final res = WorkerResponseImpl.from(e.data.dartify() as List);
+              final res = WorkerResponse.from(e.data.dartify() as List);
               if (res.unwrapInPlace(DisconnectedChannel())) {
                 final error = res.error;
                 if (error != null) {

@@ -46,7 +46,7 @@ final class _VmChannel implements Channel {
 
   /// Sends a termination [WorkerRequest] to the [vm.Isolate].
   @override
-  FutureOr<void> close() {
+  Future<void> close() {
     if (!_closed.isCompleted) {
       _postRequest(WorkerRequest.stop());
       _closed.complete();
@@ -56,13 +56,13 @@ final class _VmChannel implements Channel {
 
   /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
   @override
-  FutureOr<void> cancelStream(int streamId) {
+  void cancelStream(int streamId) {
     _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 
   /// Sends a cancel token [WorkerRequest] to the [vm.Isolate].
   @override
-  FutureOr<void> cancelToken(SquadronCancelationToken? token) {
+  void cancelToken(SquadronCancelationToken? token) {
     if (token != null) {
       _postRequest(WorkerRequest.cancel(token), force: true);
     }
@@ -89,19 +89,8 @@ final class _VmChannel implements Channel {
     Stream<WorkerResponse> $sendRequest() {
       late final ForwardStreamController<WorkerResponse> controller;
 
-      void $forwardMessage(WorkerResponse msg) {
-        if (!controller.isClosed) controller.add(msg);
-      }
-
-      void $forwardError(Object error, [StackTrace? st]) {
-        if (!controller.isClosed) {
-          controller.addError(SquadronException.from(error, st, command));
-        }
-      }
-
-      void $done() {
-        _leave(controller);
-      }
+      void $forwardError(Object error, [StackTrace? st]) =>
+          controller.safeAddError(SquadronException.from(error, st, command));
 
       controller = ForwardStreamController(onListen: () {
         // do nothing if the controller is closed already
@@ -109,9 +98,9 @@ final class _VmChannel implements Channel {
 
         // bind the controller
         controller.attachSubscription(port.cast<WorkerResponse>().listen(
-              $forwardMessage,
+              controller.safeAdd,
               onError: $forwardError,
-              onDone: $done,
+              onDone: () => _leave(controller),
               cancelOnError: false,
             ));
 
@@ -148,28 +137,31 @@ final class _VmChannel implements Channel {
     final completer = Completer();
     late final StreamSubscription sub;
 
-    void $success(dynamic data) async {
-      await sub.cancel();
-      if (!completer.isCompleted) completer.complete(data);
+    void $success(dynamic data) {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) completer.complete(data);
+      });
     }
 
-    void $fail(Object ex, [StackTrace? st]) async {
-      await sub.cancel();
-      if (!completer.isCompleted) completer.completeError(ex, st);
+    void $failure(Object ex, [StackTrace? st]) {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) completer.completeError(ex, st);
+      });
     }
 
-    void $done() async {
-      await sub.cancel();
-      if (!completer.isCompleted) {
-        $fail(WorkerException('No response from worker', null, command));
-      }
+    void $done() {
+      sub.cancel().whenComplete(() {
+        if (!completer.isCompleted) {
+          $failure(WorkerException('No response from worker', null, command));
+        }
+      });
     }
 
     final receiver = vm.ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
     sub = _getResponseStream(receiver, req, _postRequest, streaming: false)
-        .listen($success, onError: $fail, onDone: $done);
+        .listen($success, onError: $failure, onDone: $done);
     return completer.future;
   }
 

@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import '../squadron_singleton.dart';
 import '../typedefs.dart';
 import 'converter.dart';
@@ -205,9 +203,4 @@ class ContextAwareConverter extends Converter {
       };
     }
   }
-}
-
-@internal
-extension ContextAwareConverterImpl on ContextAwareConverter {
-  void reset() => _arguments.reset();
 }

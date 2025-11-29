@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:isolate';
 
 import 'package:logger/web.dart';
@@ -40,7 +39,7 @@ base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
   Channel? get channel => _channel;
 
   @override
-  FutureOr<void> start() {}
+  Future<void> start() => Future.value();
 
   @override
   void stop() {

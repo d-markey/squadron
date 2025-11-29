@@ -2,6 +2,7 @@ import 'dart:async';
 
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../utils.dart';
 
 class ForwardStreamController<T> {
   ForwardStreamController(
@@ -20,26 +21,22 @@ class ForwardStreamController<T> {
 
   Future<void> get done => _controller.done;
 
-  var _closed = false;
-  bool get isClosed => _closed || _controller.isClosed;
+  bool get isClosed => _controller.isClosed;
 
   StreamSubscription<T>? _sub;
 
   StreamSubscription<T>? get subscription => _sub;
 
-  void add(T data) {
-    if (!isClosed) _controller.add(data);
-  }
+  void safeAdd(T data) => _controller.safeAdd(data);
 
-  void addError(SquadronException ex) {
-    if (!isClosed) _controller.addError(ex);
-  }
+  void safeAddError(SquadronException ex) => _controller.safeAddError(ex);
 
-  Future<void> close() async {
-    _closed = true;
-    await _sub?.cancel();
-    _sub = null;
+  void close() {
     _controller.close();
+    if (_sub != null) {
+      _sub!.cancel();
+      _sub = null;
+    }
   }
 
   int _pauses = 0;

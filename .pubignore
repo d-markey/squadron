@@ -5,8 +5,14 @@
 # Conventional directory for build outputs.
 build/
 
+# Examples.
+example/
+
 # Tests.
 test/
+
+# Tools.
+tool/
 
 # Code coverage outputs.
 doc/test-console/
