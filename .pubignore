@@ -5,9 +5,6 @@
 # Conventional directory for build outputs.
 build/
 
-# Examples.
-example/
-
 # Tests.
 test/
 
