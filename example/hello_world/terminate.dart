@@ -32,7 +32,8 @@ void main() async {
     // will throw because of worker termination at 3.5 seconds
     $log(await worker.sayHello('Bob', delayInSec: 2, echo: true));
   } on TaskTerminatedException catch (ex) {
-    $log('Could not say hello to Bob, because the worker was terminated: $ex');
+    $log(
+        'Could not say hello to Bob, because the worker was terminated: ${ex.runtimeType}: "${ex.message}"');
   }
 
   $log('Making sure the worker will never say hello to Bob...');

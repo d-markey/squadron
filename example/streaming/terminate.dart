@@ -17,7 +17,8 @@ void main() async {
 
   clock.infiniteClock(periodInMs: 500).listen(
         (n) => log('Received $n from worker'),
-        onError: (ex, st) => log('Received error $ex'),
+        onError: (ex, st) => log(
+            'Received error ${ex.runtimeType}: "${ex is SquadronException ? ex.message : ex.toString()}"'),
       );
 
   Future.delayed(Duration(seconds: 3), () {
