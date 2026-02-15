@@ -136,12 +136,11 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   }
 
   /// In-place serialization of a [WorkerRequest].
-  List wrapInPlace() {
+  void wrapInPlace() {
     final token = data[_$token];
     if (token is SquadronCancelationToken) {
       data[_$token] = token.serialize();
     }
-    return data;
   }
 
   static const int _connectCommand = -1;

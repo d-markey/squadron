@@ -29,6 +29,8 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
 
   // initial message indicating the worker is up and running
   final transfer = JSArray();
-  final message = $jsify(WorkerResponse.ready().wrapInPlace(), transfer);
+  final resp = WorkerResponse.ready();
+  resp.wrapInPlace();
+  final message = $jsify(resp, transfer);
   self.postMessage(message, transfer);
 }

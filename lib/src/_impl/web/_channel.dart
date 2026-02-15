@@ -145,7 +145,8 @@ Future<Channel> openChannel(
 
     try {
       final transfer = JSArray();
-      final msg = $jsify(startRequest.wrapInPlace(), transfer);
+      startRequest.wrapInPlace();
+      final msg = $jsify(startRequest, transfer);
       worker.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post connection request $startRequest: $ex');

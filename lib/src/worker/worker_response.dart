@@ -106,13 +106,12 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   }
 
   /// In-place serialization of a [WorkerResponse].
-  List wrapInPlace() {
+  void wrapInPlace() {
     final result = data[_$result];
     if (result is Iterable && result is! List) {
       data[_$result] = result.toList();
     }
     data[_$error] = (data[_$error] as SquadronException?)?.serialize();
-    return data;
   }
 }
 

@@ -37,13 +37,15 @@ final class _WebChannel implements Channel {
     }
     try {
       req.cancelToken?.ensureStarted();
-      final data = req.wrapInPlace();
-      final transfer = JSArray();
+      req.wrapInPlace();
+      final msg = $jsify(req, null);
       if (req.channelInfo != null) {
-        transfer.$push(req.messagePort);
+        final transfer = JSArray();
+        transfer.$add(req.messagePort);
+        _sendPort.postMessage(msg, transfer);
+      } else {
+        _sendPort.postMessage(msg);
       }
-      final msg = $jsify(data, null);
-      _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
       throw SquadronErrorImpl.create('Failed to post request: $ex', st);
@@ -57,8 +59,9 @@ final class _WebChannel implements Channel {
     req.cancelToken?.ensureStarted();
     req.cancelToken?.throwIfCanceled();
     try {
+      req.wrapInPlace();
       final transfer = JSArray();
-      final msg = $jsify(req.wrapInPlace(), transfer);
+      final msg = $jsify(req, transfer);
       _sendPort.postMessage(msg, transfer);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');

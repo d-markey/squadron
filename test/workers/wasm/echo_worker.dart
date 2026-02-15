@@ -15,5 +15,7 @@ void main() {
     scope.postMessage('ECHO "$data"'.toJS);
   }.toJS;
   // post a message indicating that the Web worker is up and running
-  self.postMessage(WorkerResponse.ready().wrapInPlace().jsify());
+  final resp = WorkerResponse.ready();
+  resp.wrapInPlace();
+  self.postMessage(resp.jsify());
 }

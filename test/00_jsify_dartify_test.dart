@@ -315,7 +315,7 @@ void execute(TestContext? tc) {
           final channel = MessageChannel();
           final data = td.Uint16List.fromList([1, 2, 3]).toJS;
           final l = [data, channel.port1, data, channel.port1].toJS;
-          l.$push(l);
+          l.$add(l);
           final x = $dartify(l);
           expect(x, isA<List>());
           x as List;
@@ -342,8 +342,8 @@ void execute(TestContext? tc) {
           $transferify($JSDate.$fromUnixTimestamp(100), t);
 
           final array = JSArray();
-          array.$push(0.toJS);
-          array.$push(1.toJS);
+          array.$add(0.toJS);
+          array.$add(1.toJS);
           $transferify(array, t);
 
           final map = $JSMap();

@@ -26,7 +26,8 @@ final class _WebWorkerChannel implements WorkerChannel {
 
   void _postResponse(WorkerResponse res) {
     try {
-      _sendPort.postMessage($jsify(res.wrapInPlace(), null));
+      res.wrapInPlace();
+      _sendPort.postMessage($jsify(res, null));
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');
       throw SquadronErrorImpl.create('Failed to post response: $ex', st);
@@ -35,9 +36,9 @@ final class _WebWorkerChannel implements WorkerChannel {
 
   void _inspectAndPostResponse(WorkerResponse res) {
     try {
-      final data = res.wrapInPlace();
+      res.wrapInPlace();
       final transfer = JSArray();
-      final message = $jsify(data, transfer);
+      final message = $jsify(res, transfer);
       _sendPort.postMessage(message, transfer);
     } catch (ex, st) {
       _logger?.e(() => 'Failed to post response $res: $ex');

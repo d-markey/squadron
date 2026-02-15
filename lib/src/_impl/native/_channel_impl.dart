@@ -37,7 +37,8 @@ final class _VmChannel implements Channel {
     }
     try {
       req.cancelToken?.ensureStarted();
-      _sendPort.send(req.wrapInPlace());
+      req.wrapInPlace();
+      _sendPort.send(req);
     } catch (ex, st) {
       logger?.e(() => 'Failed to post request $req: $ex');
       throw SquadronErrorImpl.create('Failed to post request: $ex', st);

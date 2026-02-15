@@ -32,19 +32,22 @@ bool _isTransferable(JSAny js) {
   return false;
 }
 
-bool _$is(JSAny a, JSAny b) => $is(a, b);
+typedef ToJsFunc = JSAny? Function(Object?);
+typedef ToDartFunc = Object? Function(JSAny?);
 
 void $transferify(JSAny? message, JSArray transfer) {
-  final registered = HashSet<JSAny>(equals: _$is);
+  final registered = HashSet<JSAny>(equals: (a, b) => $is(a, b));
 
   late final void Function(JSAny?) squadronTransferify;
-  squadronTransferify = (JSAny? js) {
+  squadronTransferify = (js) {
     if (js.isUndefinedOrNull) return;
     js as JSAny;
 
     // for typed array, transfer the underlying buffer
     if (js.isA<JSTypedArray>()) {
-      js = (js as JSTypedArray).$buffer!;
+      js = js.$buffer;
+      if (registered.add(js)) transfer.$add(js);
+      return;
     }
 
     // nothing to do if already visited
@@ -52,7 +55,7 @@ void $transferify(JSAny? message, JSArray transfer) {
 
     // array buffer are transfered as is
     if (js.isA<JSArrayBuffer>()) {
-      transfer.$push(js);
+      transfer.$add(js);
       return;
     }
 
@@ -95,7 +98,7 @@ void $transferify(JSAny? message, JSArray transfer) {
 
     // register other JS objects
     if (_isTransferable(js)) {
-      transfer.$push(js);
+      transfer.$add(js);
     }
   };
 
@@ -119,25 +122,26 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
       : ((JSAny js) {
           // for typed array, transfer the underlying buffer
           if (js.isA<JSTypedArray>()) {
-            js = (js as JSTypedArray).$buffer!;
+            js = js.$buffer;
             if (cache.containsKey(js)) return;
             cache[js] = js;
-          }
-          if (_isTransferable(js)) {
-            transfer.$push(js);
+            transfer.$add(js);
+          } else if (_isTransferable(js)) {
+            transfer.$add(js);
           }
         });
 
-  late final JSAny? Function(Object?) squadronJsify;
-  squadronJsify = (Object? obj) {
+  late final ToJsFunc squadronJsify;
+  squadronJsify = (obj) {
     if (obj == null) return null;
 
     // use cached object if available
     var cached = cache[obj];
     if (cached != null) return cached;
 
+    // process non-TypedData List object recursively
     if (obj is List && obj is! TypedData) {
-      Function(Object?) jsifier;
+      ToJsFunc jsifier;
       if (obj is List<String?>) {
         jsifier = _toJSStr;
       } else if (obj is List<bool?>) {
@@ -152,17 +156,17 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
         jsifier = squadronJsify;
       }
 
-      final len = obj.length, jsArray = JSArray();
+      final jsArray = JSArray();
       cache[obj] = jsArray;
-      for (var i = 0; i < len; i++) {
-        jsArray.$push(jsifier(obj[i]));
+      for (var o in obj.map(jsifier)) {
+        jsArray.$add(o);
       }
       return jsArray;
     }
 
     // process Map object recursively
     if (obj is Map) {
-      Function(Object?) kjsifier;
+      ToJsFunc kjsifier;
       if (obj is Map<String?, dynamic>) {
         kjsifier = _toJSStr;
       } else if (obj is Map<bool?, dynamic>) {
@@ -177,7 +181,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
         kjsifier = squadronJsify;
       }
 
-      Function(Object?) vjsifier;
+      ToJsFunc vjsifier;
       if (obj is Map<dynamic, String?>) {
         vjsifier = _toJSStr;
       } else if (obj is Map<dynamic, bool?>) {
@@ -192,20 +196,20 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
         vjsifier = squadronJsify;
       }
 
+      (JSAny?, JSAny?) jsifier(MapEntry e) =>
+          (kjsifier(e.key), vjsifier(e.value));
+
       final jsMap = $JSMap();
       cache[obj] = jsMap;
-      for (var entry in obj.entries) {
-        jsMap.$set(
-          kjsifier(entry.key),
-          vjsifier(entry.value),
-        );
+      for (var o in obj.entries.map(jsifier)) {
+        jsMap.$add(o);
       }
       return jsMap;
     }
 
     // process Set object recursively
     if (obj is Set) {
-      Function(Object?) jsifier;
+      ToJsFunc jsifier;
       if (obj is Set<String?>) {
         jsifier = _toJSStr;
       } else if (obj is Set<bool?>) {
@@ -222,8 +226,8 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
       final jsSet = $JSSet();
       cache[obj] = jsSet;
-      for (var value in obj) {
-        jsSet.$add(jsifier(value));
+      for (var o in obj.map(jsifier)) {
+        jsSet.$add(o);
       }
       return jsSet;
     }
@@ -239,7 +243,7 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     }
 
     // delegate to Dart's jsify()
-    var res = obj.jsify();
+    final res = obj.jsify();
 
     // cache result and update list of transferable objects
     if (res.isDefinedAndNotNull) {
@@ -253,27 +257,19 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     return res;
   };
 
-  final jsMessage = squadronJsify(message);
-
-  /////////// >>> using Dart's jsify implementation
-  // final jsMessage = message.jsify();
-  // if (transfer != null) {
-  //   $transferify(jsMessage, transfer);
-  // }
-  /////////// <<< using Dart's jsify implementation
-
-  return jsMessage;
+  return squadronJsify(message);
 }
 
 Object? $dartify(JSAny? message) {
   final cache = HashMap<JSAny, Object>(equals: Squadron.identical);
 
-  late final Object? Function(JSAny?) squadronDartify;
-  squadronDartify = (JSAny? js) {
+  late final ToDartFunc squadronDartify;
+  squadronDartify = (js) {
     if (js.isUndefinedOrNull) return null;
+    js as JSAny;
 
     // use cached object if available
-    final cached = cache[js!];
+    final cached = cache[js];
     if (cached != null) return cached;
 
     // process JS Array object recursively
@@ -332,13 +328,7 @@ Object? $dartify(JSAny? message) {
     return res;
   };
 
-  final dartMessage = squadronDartify(message);
-
-  ///////////// >>> using Dart's dartify implementation
-  // final dartMessage = js.dartify();
-  ///////////// <<< using Dart's dartify implementation
-
-  return dartMessage;
+  return squadronDartify(message);
 }
 
 extension $JSEventExt on web.Event? {
@@ -364,7 +354,7 @@ external bool $is(JSAny? a, JSAny? b);
 
 extension $JSArrayExt on JSArray {
   @JS('push')
-  external int $push(JSAny? value);
+  external int $add(JSAny? value);
   @JS('at')
   external JSAny? $at(int index);
   @JS('length')
@@ -402,6 +392,7 @@ extension type $JSMap._(JSObject _) implements JSObject {
   external factory $JSMap();
   @JS('set')
   external $JSMap $set(JSAny? key, JSAny? value);
+  void $add((JSAny?, JSAny?) entry) => $set(entry.$1, entry.$2);
   @JS('entries')
   external $JSIterator $entries();
 }
@@ -424,9 +415,10 @@ extension $JSIteratorResultExt on $JSIteratorResult {
   JSAny? get $value => getProperty(_$JSProps.value);
 }
 
-extension $JSTypedArrayExt on JSTypedArray {
+extension $JSTypedArrayExt on JSAny {
   @JS('buffer')
-  external JSAny? get $buffer;
+  // use after a successful call to `isA<JSTypedArray>()`
+  external JSAny get $buffer;
 }
 
 sealed class _$JSProps {
