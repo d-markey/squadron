@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>9</td><td>9</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -104,6 +104,36 @@
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 17" id="line17">
+                    <td>17</td><td></td><td></td><td><code>extension CompleterSafeExt&lt;T&gt; on Completer&lt;T&gt; {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 18" id="line18">
+                    <td>18</td><td></td><td>10</td><td><code>  void safeComplete([FutureOr&lt;T&gt;? value]) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 19" id="line19">
+                    <td>19</td><td></td><td>20</td><td><code>    if (!isCompleted) complete(value);</code></td>
+                </tr>
+                <tr class="noop" title="Line 20" id="line20">
+                    <td>20</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 21" id="line21">
+                    <td>21</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 22" id="line22">
+                    <td>22</td><td></td><td>4</td><td><code>  void safeCompleteError(Object error, [StackTrace? stackTrace]) {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 23" id="line23">
+                    <td>23</td><td></td><td>8</td><td><code>    if (!isCompleted) completeError(error, stackTrace);</code></td>
+                </tr>
+                <tr class="noop" title="Line 24" id="line24">
+                    <td>24</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

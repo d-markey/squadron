@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>4</td><td>4</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -61,28 +61,19 @@
             </thead>
             <tbody>
                 <tr class="lineCov" title="Line 1" id="line1">
-                    <td>1</td><td></td><td>33</td><td><code>final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date</code></td>
+                    <td>1</td><td></td><td>11</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 2" id="line2">
-                    <td>2</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 2" id="line2">
+                    <td>2</td><td></td><td>32</td><td><code>    time?.microsecondsSinceEpoch ?? DateTime.now().microsecondsSinceEpoch;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 3" id="line3">
-                    <td>3</td><td></td><td>11</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
+                <tr class="noop" title="Line 3" id="line3">
+                    <td>3</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 4" id="line4">
-                    <td>4</td><td></td><td>55</td><td><code>    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;</code></td>
+                    <td>4</td><td></td><td>10</td><td><code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt;</code></td>
                 </tr>
-                <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code></code></td>
-                </tr>
-                <tr class="lineCov" title="Line 6" id="line6">
-                    <td>6</td><td></td><td>10</td><td><code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt; (microsecs == null)</code></td>
-                </tr>
-                <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code>    ? null</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>30</td><td><code>    : _latestUPDEpoch.add(Duration(microseconds: microsecs));</code></td>
+                <tr class="lineCov" title="Line 5" id="line5">
+                    <td>5</td><td></td><td>10</td><td><code>    (microsecs == null) ? null : DateTime.fromMicrosecondsSinceEpoch(microsecs);</code></td>
                 </tr>
             </tbody>
         </table>

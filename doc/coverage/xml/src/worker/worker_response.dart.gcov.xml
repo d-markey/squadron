@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9245283" lines-covered="49" lines-valid="53" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.92727274" lines-covered="51" lines-valid="55" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -470,61 +470,66 @@
         <line number="142">
             <code/>
         </line>
-        <line hits="10" number="143">
-            <code>  static Level _getLevel(int? value) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="20" number="143">
+            <code>  static final _levelMap =</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="144">
-            <code>    if (value == null) return Level.debug;</code>
-        </line>
-        <line hits="50" number="145">
-            <code>    return Level.values.where((l) =&gt; l.value == value).first;</code>
+        <line hits="50" number="144">
+            <code>      Map.fromEntries(Level.values.map((l) =&gt; MapEntry(l.value, l)));</code>
             <hit count="50" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="146">
-            <code>  }</code>
-        </line>
-        <line number="147">
+        <line number="145">
             <code/>
         </line>
-        <line hits="10" number="148">
+        <line hits="10" number="146">
+            <code>  static Level _getLevel(int? value) =&gt;</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20" number="147">
+            <code>      _levelMap[value ?? Level.debug.value] ?? Level.debug;</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="148">
+            <code/>
+        </line>
+        <line hits="10" number="149">
             <code>  static String? _stringify(dynamic message) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="149">
+        <line hits="10" number="150">
             <code>    if (message is Function) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="150">
+        <line number="151">
             <code>      try {</code>
         </line>
-        <line hits="4" number="151">
+        <line hits="4" number="152">
             <code>        return message().toString();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="152">
+        <line number="153">
             <code>      } catch (ex) {</code>
         </line>
-        <line hits="0" number="153">
+        <line hits="0" number="154">
             <code>        return 'Deferred message failed with error: $ex';</code>
         </line>
-        <line number="154">
+        <line number="155">
             <code>      }</code>
         </line>
-        <line number="155">
+        <line number="156">
             <code>    } else {</code>
         </line>
-        <line hits="10" number="156">
+        <line hits="10" number="157">
             <code>      return message.toString();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="157">
+        <line number="158">
             <code>    }</code>
         </line>
-        <line number="158">
+        <line number="159">
             <code>  }</code>
         </line>
-        <line number="159">
+        <line number="160">
             <code>}</code>
         </line>
     </lines>

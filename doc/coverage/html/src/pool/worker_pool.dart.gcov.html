@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>127</td><td>146</td><td class="med">87.0%</td>
+                            <th scope="row">Lines</th><td>129</td><td>150</td><td class="med">86.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -895,7 +895,7 @@
                     <td>278</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 279" id="line279">
-                    <td>279</td><td></td><td></td><td><code>  Timer? _timer;</code></td>
+                    <td>279</td><td></td><td></td><td><code>  Timer _timer = const _InactiveTimer();</code></td>
                 </tr>
                 <tr class="noop" title="Line 280" id="line280">
                     <td>280</td><td></td><td></td><td><code></code></td>
@@ -904,7 +904,7 @@
                     <td>281</td><td></td><td>4</td><td><code>  void _schedule() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 282" id="line282">
-                    <td>282</td><td></td><td>12</td><td><code>    if (_timer?.isActive != true) {</code></td>
+                    <td>282</td><td></td><td>8</td><td><code>    if (!_timer.isActive) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 283" id="line283">
                     <td>283</td><td></td><td>12</td><td><code>      _timer = Timer(Duration.zero, __schedule);</code></td>
@@ -1205,6 +1205,45 @@
                 </tr>
                 <tr class="noop" title="Line 382" id="line382">
                     <td>382</td><td></td><td></td><td><code>}</code></td>
+                </tr>
+                <tr class="noop" title="Line 383" id="line383">
+                    <td>383</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="noop" title="Line 384" id="line384">
+                    <td>384</td><td></td><td></td><td><code>class _InactiveTimer implements Timer {</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 385" id="line385">
+                    <td>385</td><td></td><td>12</td><td><code>  const _InactiveTimer();</code></td>
+                </tr>
+                <tr class="noop" title="Line 386" id="line386">
+                    <td>386</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 387" id="line387">
+                    <td>387</td><td></td><td>4</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 388" id="line388">
+                    <td>388</td><td></td><td></td><td><code>  bool get isActive =&gt; false;</code></td>
+                </tr>
+                <tr class="noop" title="Line 389" id="line389">
+                    <td>389</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 390" id="line390">
+                    <td>390</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 391" id="line391">
+                    <td>391</td><td></td><td></td><td><code>  int get tick =&gt; 0;</code></td>
+                </tr>
+                <tr class="noop" title="Line 392" id="line392">
+                    <td>392</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineNoCov" title="Line 393" id="line393">
+                    <td>393</td><td></td><td>0</td><td><code>  @override</code></td>
+                </tr>
+                <tr class="noop" title="Line 394" id="line394">
+                    <td>394</td><td></td><td></td><td><code>  void cancel() {}</code></td>
+                </tr>
+                <tr class="noop" title="Line 395" id="line395">
+                    <td>395</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

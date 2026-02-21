@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>128</td><td>143</td><td class="med">89.5%</td>
+                            <th scope="row">Lines</th><td>128</td><td>142</td><td class="high">90.1%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -561,32 +561,32 @@
                 <tr class="lineNoCov" title="Line 167" id="line167">
                     <td>167</td><td></td><td>0</td><td><code>            'Unexpected connection request: $request');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 168" id="line168">
-                    <td>168</td><td></td><td>10</td><td><code>      } else if (_operations == null) {</code></td>
+                <tr class="noop" title="Line 168" id="line168">
+                    <td>168</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 169" id="line169">
-                    <td>169</td><td></td><td></td><td><code>        // commands are not available yet (maybe connect() wasn't called or awaited)</code></td>
+                    <td>169</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 170" id="line170">
-                    <td>170</td><td></td><td>0</td><td><code>        throw SquadronErrorImpl.create('Worker service is not ready');</code></td>
+                <tr class="noop" title="Line 170" id="line170">
+                    <td>170</td><td></td><td></td><td><code>      // find the operation matching the request command</code></td>
                 </tr>
-                <tr class="noop" title="Line 171" id="line171">
-                    <td>171</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 171" id="line171">
+                    <td>171</td><td></td><td>30</td><td><code>      final cmd = request.command, op = _operations![cmd];</code></td>
                 </tr>
                 <tr class="noop" title="Line 172" id="line172">
-                    <td>172</td><td></td><td></td><td><code></code></td>
+                    <td>172</td><td></td><td></td><td><code>      if (op == null) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 173" id="line173">
-                    <td>173</td><td></td><td></td><td><code>      // ==== other requests require a client to send the response ====</code></td>
+                    <td>173</td><td></td><td></td><td><code>        // unknown command, or commands are not available yet (maybe connect() wasn't called or awaited)</code></td>
                 </tr>
-                <tr class="noop" title="Line 174" id="line174">
-                    <td>174</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 174" id="line174">
+                    <td>174</td><td></td><td>2</td><td><code>        throw SquadronErrorImpl.create((_operations == null)</code></td>
                 </tr>
                 <tr class="noop" title="Line 175" id="line175">
-                    <td>175</td><td></td><td></td><td><code>      if (channel == null) {</code></td>
+                    <td>175</td><td></td><td></td><td><code>            ? 'Worker service is not ready'</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 176" id="line176">
-                    <td>176</td><td></td><td>0</td><td><code>        throw SquadronErrorImpl.create('Missing client for request: $request');</code></td>
+                <tr class="lineCov" title="Line 176" id="line176">
+                    <td>176</td><td></td><td>1</td><td><code>            : 'Unknown command: $cmd');</code></td>
                 </tr>
                 <tr class="noop" title="Line 177" id="line177">
                     <td>177</td><td></td><td></td><td><code>      }</code></td>
@@ -594,41 +594,41 @@
                 <tr class="noop" title="Line 178" id="line178">
                     <td>178</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 179" id="line179">
-                    <td>179</td><td></td><td>10</td><td><code>      final token = request.cancelToken;</code></td>
+                <tr class="noop" title="Line 179" id="line179">
+                    <td>179</td><td></td><td></td><td><code>      // ==== other requests require a client to send the response ====</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 180" id="line180">
-                    <td>180</td><td></td><td>2</td><td><code>      token?.throwIfCanceled();</code></td>
+                <tr class="noop" title="Line 180" id="line180">
+                    <td>180</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 181" id="line181">
-                    <td>181</td><td></td><td></td><td><code></code></td>
+                    <td>181</td><td></td><td></td><td><code>      if (channel == null) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 182" id="line182">
-                    <td>182</td><td></td><td></td><td><code>      // start monitoring execution</code></td>
+                <tr class="lineNoCov" title="Line 182" id="line182">
+                    <td>182</td><td></td><td>0</td><td><code>        throw SquadronErrorImpl.create('Missing client for request: $request');</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 183" id="line183">
-                    <td>183</td><td></td><td>10</td><td><code>      final tokenRef = _begin(request);</code></td>
+                <tr class="noop" title="Line 183" id="line183">
+                    <td>183</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 184" id="line184">
-                    <td>184</td><td></td><td></td><td><code>      try {</code></td>
+                    <td>184</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 185" id="line185">
-                    <td>185</td><td></td><td></td><td><code>        // find the operation matching the request command</code></td>
+                <tr class="lineCov" title="Line 185" id="line185">
+                    <td>185</td><td></td><td>10</td><td><code>      final token = request.cancelToken;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 186" id="line186">
-                    <td>186</td><td></td><td>30</td><td><code>        final cmd = request.command, op = _operations![cmd];</code></td>
+                    <td>186</td><td></td><td>2</td><td><code>      token?.throwIfCanceled();</code></td>
                 </tr>
                 <tr class="noop" title="Line 187" id="line187">
-                    <td>187</td><td></td><td></td><td><code>        if (op == null) {</code></td>
+                    <td>187</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 188" id="line188">
-                    <td>188</td><td></td><td>2</td><td><code>          throw SquadronErrorImpl.create('Unknown command: $cmd');</code></td>
+                <tr class="noop" title="Line 188" id="line188">
+                    <td>188</td><td></td><td></td><td><code>      // start monitoring execution</code></td>
                 </tr>
-                <tr class="noop" title="Line 189" id="line189">
-                    <td>189</td><td></td><td></td><td><code>        }</code></td>
+                <tr class="lineCov" title="Line 189" id="line189">
+                    <td>189</td><td></td><td>10</td><td><code>      final tokenRef = _begin(request);</code></td>
                 </tr>
                 <tr class="noop" title="Line 190" id="line190">
-                    <td>190</td><td></td><td></td><td><code></code></td>
+                    <td>190</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
                 <tr class="noop" title="Line 191" id="line191">
                     <td>191</td><td></td><td></td><td><code>        // process</code></td>

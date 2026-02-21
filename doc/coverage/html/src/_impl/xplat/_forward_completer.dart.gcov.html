@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>5</td><td>5</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>3</td><td>3</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -70,46 +70,37 @@
                     <td>3</td><td></td><td></td><td><code>import '../../exceptions/squadron_exception.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 4" id="line4">
-                    <td>4</td><td></td><td></td><td><code></code></td>
+                    <td>4</td><td></td><td></td><td><code>import '../../utils.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 5" id="line5">
-                    <td>5</td><td></td><td></td><td><code>class ForwardCompleter&lt;T&gt; {</code></td>
+                    <td>5</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 6" id="line6">
-                    <td>6</td><td></td><td></td><td><code>  final _res = Completer&lt;T&gt;();</code></td>
+                    <td>6</td><td></td><td></td><td><code>class ForwardCompleter&lt;T&gt; {</code></td>
                 </tr>
                 <tr class="noop" title="Line 7" id="line7">
-                    <td>7</td><td></td><td></td><td><code></code></td>
+                    <td>7</td><td></td><td></td><td><code>  final _res = Completer&lt;T&gt;();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>30</td><td><code>  Future&lt;T&gt; get future =&gt; _res.future;</code></td>
+                <tr class="noop" title="Line 8" id="line8">
+                    <td>8</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 9" id="line9">
-                    <td>9</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 9" id="line9">
+                    <td>9</td><td></td><td>30</td><td><code>  Future&lt;T&gt; get future =&gt; _res.future;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>10</td><td><code>  void success(T data) {</code></td>
+                <tr class="noop" title="Line 10" id="line10">
+                    <td>10</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 11" id="line11">
-                    <td>11</td><td></td><td>40</td><td><code>    if (!_res.isCompleted) _res.complete(data);</code></td>
+                    <td>11</td><td></td><td>30</td><td><code>  void success(T data) =&gt; _res.safeComplete(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 12" id="line12">
-                    <td>12</td><td></td><td></td><td><code>  }</code></td>
+                    <td>12</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>9</td><td><code>  void failure(SquadronException ex) =&gt; _res.safeCompleteError(ex);</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>3</td><td><code>  void failure(SquadronException ex) {</code></td>
-                </tr>
-                <tr class="lineCov" title="Line 15" id="line15">
-                    <td>15</td><td></td><td>12</td><td><code>    if (!_res.isCompleted) _res.completeError(ex);</code></td>
-                </tr>
-                <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>}</code></td>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

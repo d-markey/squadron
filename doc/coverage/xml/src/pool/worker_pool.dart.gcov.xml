@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86986303" lines-covered="127" lines-valid="146" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="worker_pool.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.86" lines-covered="129" lines-valid="150" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -918,7 +918,7 @@
             <code/>
         </line>
         <line number="279">
-            <code>  Timer? _timer;</code>
+            <code>  Timer _timer = const _InactiveTimer();</code>
         </line>
         <line number="280">
             <code/>
@@ -927,9 +927,9 @@
             <code>  void _schedule() {</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="282">
-            <code>    if (_timer?.isActive != true) {</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+        <line hits="8" number="282">
+            <code>    if (!_timer.isActive) {</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="12" number="283">
             <code>      _timer = Timer(Duration.zero, __schedule);</code>
@@ -1272,6 +1272,47 @@
             <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="382">
+            <code>}</code>
+        </line>
+        <line number="383">
+            <code/>
+        </line>
+        <line number="384">
+            <code>class _InactiveTimer implements Timer {</code>
+        </line>
+        <line hits="12" number="385">
+            <code>  const _InactiveTimer();</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="386">
+            <code/>
+        </line>
+        <line hits="4" number="387">
+            <code>  @override</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="388">
+            <code>  bool get isActive =&gt; false;</code>
+        </line>
+        <line number="389">
+            <code/>
+        </line>
+        <line hits="0" number="390">
+            <code>  @override</code>
+        </line>
+        <line number="391">
+            <code>  int get tick =&gt; 0;</code>
+        </line>
+        <line number="392">
+            <code/>
+        </line>
+        <line hits="0" number="393">
+            <code>  @override</code>
+        </line>
+        <line number="394">
+            <code>  void cancel() {}</code>
+        </line>
+        <line number="395">
             <code>}</code>
         </line>
     </lines>

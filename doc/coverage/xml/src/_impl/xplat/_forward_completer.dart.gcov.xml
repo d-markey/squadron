@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -11,50 +11,39 @@
             <code>import '../../exceptions/squadron_exception.dart';</code>
         </line>
         <line number="4">
-            <code/>
+            <code>import '../../utils.dart';</code>
         </line>
         <line number="5">
-            <code>class ForwardCompleter&lt;T&gt; {</code>
-        </line>
-        <line number="6">
-            <code>  final _res = Completer&lt;T&gt;();</code>
-        </line>
-        <line number="7">
             <code/>
         </line>
-        <line hits="30" number="8">
+        <line number="6">
+            <code>class ForwardCompleter&lt;T&gt; {</code>
+        </line>
+        <line number="7">
+            <code>  final _res = Completer&lt;T&gt;();</code>
+        </line>
+        <line number="8">
+            <code/>
+        </line>
+        <line hits="30" number="9">
             <code>  Future&lt;T&gt; get future =&gt; _res.future;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="9">
+        <line number="10">
             <code/>
         </line>
-        <line hits="10" number="10">
-            <code>  void success(T data) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="40" number="11">
-            <code>    if (!_res.isCompleted) _res.complete(data);</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+        <line hits="30" number="11">
+            <code>  void success(T data) =&gt; _res.safeComplete(data);</code>
+            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
-            <code>  }</code>
-        </line>
-        <line number="13">
             <code/>
         </line>
-        <line hits="3" number="14">
-            <code>  void failure(SquadronException ex) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+        <line hits="9" number="13">
+            <code>  void failure(SquadronException ex) =&gt; _res.safeCompleteError(ex);</code>
+            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="15">
-            <code>    if (!_res.isCompleted) _res.completeError(ex);</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="16">
-            <code>  }</code>
-        </line>
-        <line number="17">
+        <line number="14">
             <code>}</code>
         </line>
     </lines>

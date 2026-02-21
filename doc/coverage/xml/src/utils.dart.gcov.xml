@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="utils.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="5" lines-valid="5" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="utils.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -49,6 +49,40 @@
             <code>  }</code>
         </line>
         <line number="15">
+            <code>}</code>
+        </line>
+        <line number="16">
+            <code/>
+        </line>
+        <line number="17">
+            <code>extension CompleterSafeExt&lt;T&gt; on Completer&lt;T&gt; {</code>
+        </line>
+        <line hits="10" number="18">
+            <code>  void safeComplete([FutureOr&lt;T&gt;? value]) {</code>
+            <hit count="10" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20" number="19">
+            <code>    if (!isCompleted) complete(value);</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="20">
+            <code>  }</code>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line hits="4" number="22">
+            <code>  void safeCompleteError(Object error, [StackTrace? stackTrace]) {</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="8" number="23">
+            <code>    if (!isCompleted) completeError(error, stackTrace);</code>
+            <hit count="8" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="24">
+            <code>  }</code>
+        </line>
+        <line number="25">
             <code>}</code>
         </line>
     </lines>

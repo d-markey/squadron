@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-15</dd>
+                    <dd>2026-02-21</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>17</td><td>17</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>18</td><td>18</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -112,97 +112,106 @@
                     <td>17</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  /// The current capacity of this [PoolWorker].</code></td>
+                    <td>18</td><td></td><td></td><td><code>  static int _startSequence = 0;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>8</td><td><code>  int get capacity =&gt; _capacity;</code></td>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code></code></td>
+                    <td>20</td><td></td><td></td><td><code>  /// The current capacity of this [PoolWorker].</code></td>
                 </tr>
-                <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>  /// Whether this [PoolWorker] is stopped or idle.</code></td>
+                <tr class="lineCov" title="Line 21" id="line21">
+                    <td>21</td><td></td><td>8</td><td><code>  int get capacity =&gt; _capacity;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>6</td><td><code>  bool get isIdle =&gt; worker.isStopped || _capacity == _maxWorkload;</code></td>
+                <tr class="noop" title="Line 22" id="line22">
+                    <td>22</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code></code></td>
+                    <td>23</td><td></td><td></td><td><code>  /// Whether this [PoolWorker] is stopped or idle.</code></td>
                 </tr>
-                <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code>  /// Whether this [PoolWorker] is stopped.</code></td>
+                <tr class="lineCov" title="Line 24" id="line24">
+                    <td>24</td><td></td><td>6</td><td><code>  bool get isIdle =&gt; worker.isStopped || _capacity == _maxWorkload;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>12</td><td><code>  bool get isStopped =&gt; worker.isStopped;</code></td>
+                <tr class="noop" title="Line 25" id="line25">
+                    <td>25</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code></code></td>
+                    <td>26</td><td></td><td></td><td><code>  /// Whether this [PoolWorker] is stopped.</code></td>
                 </tr>
-                <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code>  /// Run the specified [task] in the [worker].</code></td>
+                <tr class="lineCov" title="Line 27" id="line27">
+                    <td>27</td><td></td><td>12</td><td><code>  bool get isStopped =&gt; worker.isStopped;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>4</td><td><code>  Future&lt;void&gt; run(WorkerTask task) {</code></td>
+                <tr class="noop" title="Line 28" id="line28">
+                    <td>28</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 29" id="line29">
-                    <td>29</td><td></td><td>12</td><td><code>    _lastStart = DateTime.now().millisecondsSinceEpoch;</code></td>
+                <tr class="noop" title="Line 29" id="line29">
+                    <td>29</td><td></td><td></td><td><code>  /// Run the specified [task] in the [worker].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>8</td><td><code>    _capacity--;</code></td>
+                    <td>30</td><td></td><td>4</td><td><code>  Future&lt;void&gt; run(WorkerTask task) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>16</td><td><code>    return task.run(worker).whenComplete(() {</code></td>
+                    <td>31</td><td></td><td>8</td><td><code>    _lastStart = _startSequence++;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>8</td><td><code>      _capacity++;</code></td>
+                    <td>32</td><td></td><td>8</td><td><code>    _capacity--;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>12</td><td><code>      if (_capacity == _maxWorkload) {</code></td>
+                    <td>33</td><td></td><td>16</td><td><code>    return task.run(worker).whenComplete(() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>4</td><td><code>        _lastStart = null;</code></td>
+                    <td>34</td><td></td><td>8</td><td><code>      _capacity++;</code></td>
                 </tr>
-                <tr class="noop" title="Line 35" id="line35">
-                    <td>35</td><td></td><td></td><td><code>      }</code></td>
+                <tr class="lineCov" title="Line 35" id="line35">
+                    <td>35</td><td></td><td>12</td><td><code>      if (_capacity == _maxWorkload) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 36" id="line36">
-                    <td>36</td><td></td><td></td><td><code>    });</code></td>
+                <tr class="lineCov" title="Line 36" id="line36">
+                    <td>36</td><td></td><td>4</td><td><code>        _lastStart = null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
-                    <td>37</td><td></td><td></td><td><code>  }</code></td>
+                    <td>37</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 38" id="line38">
-                    <td>38</td><td></td><td></td><td><code></code></td>
+                    <td>38</td><td></td><td></td><td><code>    });</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
-                    <td>39</td><td></td><td></td><td><code>  /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).</code></td>
+                    <td>39</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>4</td><td><code>  static int compareCapacity(PoolWorker a, PoolWorker b) {</code></td>
+                <tr class="noop" title="Line 40" id="line40">
+                    <td>40</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>21</td><td><code>    if (a.capacity != b.capacity) return a.capacity.compareTo(b.capacity);</code></td>
+                <tr class="noop" title="Line 41" id="line41">
+                    <td>41</td><td></td><td></td><td><code>  /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>8</td><td><code>    if (a._lastStart == null) return -1;</code></td>
+                    <td>42</td><td></td><td>4</td><td><code>  static int compareCapacity(PoolWorker a, PoolWorker b) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>2</td><td><code>    if (b._lastStart == null) return 1;</code></td>
+                    <td>43</td><td></td><td>21</td><td><code>    if (a.capacity != b.capacity) return a.capacity.compareTo(b.capacity);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>6</td><td><code>    return b._lastStart!.compareTo(a._lastStart!);</code></td>
+                    <td>44</td><td></td><td>12</td><td><code>    if (a._lastStart == b._lastStart) return 0;</code></td>
                 </tr>
-                <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>  }</code></td>
+                <tr class="lineCov" title="Line 45" id="line45">
+                    <td>45</td><td></td><td>2</td><td><code>    if (a._lastStart == null) return -1;</code></td>
                 </tr>
-                <tr class="noop" title="Line 46" id="line46">
-                    <td>46</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 46" id="line46">
+                    <td>46</td><td></td><td>2</td><td><code>    if (b._lastStart == null) return 1;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>3</td><td><code>  static WorkerStat getStats(PoolWorker w) =&gt; w.worker.getStats();</code></td>
+                    <td>47</td><td></td><td>6</td><td><code>    return b._lastStart!.compareTo(a._lastStart!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
-                    <td>48</td><td></td><td></td><td><code>}</code></td>
+                    <td>48</td><td></td><td></td><td><code>  }</code></td>
+                </tr>
+                <tr class="noop" title="Line 49" id="line49">
+                    <td>49</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 50" id="line50">
+                    <td>50</td><td></td><td>3</td><td><code>  static WorkerStat getStats(PoolWorker w) =&gt; w.worker.getStats();</code></td>
+                </tr>
+                <tr class="noop" title="Line 51" id="line51">
+                    <td>51</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>
