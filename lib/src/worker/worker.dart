@@ -34,7 +34,9 @@ abstract class Worker
   Worker(this._entryPoint,
       {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
       : _threadHook = threadHook,
-        _exceptionManager = exceptionManager;
+        _exceptionManager = exceptionManager {
+    _stats = _Stats(this);
+  }
 
   @override
   void release() {
@@ -59,7 +61,7 @@ abstract class Worker
   /// The [Worker]'s start arguments.
   List? getStartArgs();
 
-  late final _stats = _Stats(this);
+  late final _Stats _stats;
 
   bool get isStopped => _stats.isStopped;
 

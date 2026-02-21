@@ -139,15 +139,11 @@ final class _VmChannel implements Channel {
     late final StreamSubscription sub;
 
     void $success(dynamic data) {
-      sub.cancel().whenComplete(() {
-        if (!completer.isCompleted) completer.complete(data);
-      });
+      sub.cancel().whenComplete(() => completer.safeComplete(data));
     }
 
     void $failure(Object ex, [StackTrace? st]) {
-      sub.cancel().whenComplete(() {
-        if (!completer.isCompleted) completer.completeError(ex, st);
-      });
+      sub.cancel().whenComplete(() => completer.safeCompleteError(ex, st));
     }
 
     void $done() {

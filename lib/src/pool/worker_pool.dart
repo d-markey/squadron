@@ -276,10 +276,10 @@ abstract class WorkerPool<W extends Worker>
           {PerfCounter? counter}) =>
       _enqueue<T>(WorkerStreamTask<T, W>(task, counter)) as StreamTask<T>;
 
-  Timer? _timer;
+  Timer _timer = const _InactiveTimer();
 
   void _schedule() {
-    if (_timer?.isActive != true) {
+    if (!_timer.isActive) {
       _timer = Timer(Duration.zero, __schedule);
     }
   }
@@ -379,4 +379,17 @@ extension ConcurrencySettingsExt on WorkerPool {
   int get maxWorkers => concurrencySettings.maxWorkers;
   int get maxParallel => concurrencySettings.maxParallel;
   int get maxConcurrency => concurrencySettings.maxConcurrency;
+}
+
+class _InactiveTimer implements Timer {
+  const _InactiveTimer();
+
+  @override
+  bool get isActive => false;
+
+  @override
+  int get tick => 0;
+
+  @override
+  void cancel() {}
 }

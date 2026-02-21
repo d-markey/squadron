@@ -15,6 +15,8 @@ class PoolWorker<W extends Worker> {
   int? _lastStart;
   int _capacity;
 
+  static int _startSequence = 0;
+
   /// The current capacity of this [PoolWorker].
   int get capacity => _capacity;
 
@@ -26,7 +28,7 @@ class PoolWorker<W extends Worker> {
 
   /// Run the specified [task] in the [worker].
   Future<void> run(WorkerTask task) {
-    _lastStart = DateTime.now().millisecondsSinceEpoch;
+    _lastStart = _startSequence++;
     _capacity--;
     return task.run(worker).whenComplete(() {
       _capacity++;
@@ -39,6 +41,7 @@ class PoolWorker<W extends Worker> {
   /// Compares [PoolWorker] instances by capacity (descending) and last execution (ascending).
   static int compareCapacity(PoolWorker a, PoolWorker b) {
     if (a.capacity != b.capacity) return a.capacity.compareTo(b.capacity);
+    if (a._lastStart == b._lastStart) return 0;
     if (a._lastStart == null) return -1;
     if (b._lastStart == null) return 1;
     return b._lastStart!.compareTo(a._lastStart!);

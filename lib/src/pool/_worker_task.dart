@@ -3,6 +3,7 @@ import 'dart:async';
 import '../_impl/xplat/_time_stamp.dart';
 import '../exceptions/task_canceled_exception.dart';
 import '../stats/perf_counter.dart';
+import '../utils.dart';
 import '../worker/worker.dart';
 import 'task.dart';
 import 'worker_pool.dart';
@@ -58,6 +59,7 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
 
   @override
   void cancel([String? message]) {
+    if (_finished != null || _canceled != null) return;
     _canceled ??= microsecTimeStamp();
     _canceledException ??= TaskCanceledException(message);
     if (_scheduled == null) {
@@ -67,9 +69,9 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   }
 
   void _fail([Object? _]) {
-    _finished ??= microsecTimeStamp();
-    _counter?.update(_finished! - _scheduled!, false);
-    if (!_done.isCompleted) _done.complete();
+    final finished = _finished ??= microsecTimeStamp();
+    _counter?.update(finished - (_scheduled ?? finished), false);
+    _done.safeComplete();
   }
 
   Future<void> run(W worker) {
@@ -78,7 +80,7 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
       (res) {
         _finished ??= microsecTimeStamp();
         _counter?.update(_finished! - _scheduled!, res);
-        if (!_done.isCompleted) _done.complete();
+        _done.safeComplete();
       },
       onError: _fail,
     );

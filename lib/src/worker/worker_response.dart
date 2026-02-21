@@ -140,10 +140,11 @@ extension _LogEventSerializationExt on LogEvent {
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );
 
-  static Level _getLevel(int? value) {
-    if (value == null) return Level.debug;
-    return Level.values.where((l) => l.value == value).first;
-  }
+  static final _levelMap =
+      Map.fromEntries(Level.values.map((l) => MapEntry(l.value, l)));
+
+  static Level _getLevel(int? value) =>
+      _levelMap[value ?? Level.debug.value] ?? Level.debug;
 
   static String? _stringify(dynamic message) {
     if (message is Function) {

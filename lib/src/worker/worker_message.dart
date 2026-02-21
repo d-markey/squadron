@@ -1,7 +1,7 @@
 import '../_impl/xplat/_time_stamp.dart';
 
 /// Make [WorkerMessage] a `List` to minimize serialization overhead.
-extension type WorkerMessage(List data) {
+extension type WorkerMessage(List data) implements Object {
   /// [travelTime] is set by the receiving end and measures the time (in
   /// microseconds) it took between the moment the message was serialized and
   /// the moment it was deserialized.

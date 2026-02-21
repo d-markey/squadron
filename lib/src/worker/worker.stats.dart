@@ -24,8 +24,10 @@ class _Stats {
 
   void endWork([dynamic _]) {
     _workload--;
-    _idle = microsecTimeStamp();
     _totalWorkload++;
+    if (_workload == 0) {
+      _idle = microsecTimeStamp();
+    }
   }
 
   void failed() {

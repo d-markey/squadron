@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:web/web.dart' as web;
 
 import '../../squadron_singleton.dart';
+import '../../worker/worker_message.dart';
 
 String? getRootUrl() {
   if (web.window.isUndefinedOrNull) return null;
@@ -35,12 +36,24 @@ bool _isTransferable(JSAny js) {
 typedef ToJsFunc = JSAny? Function(Object?);
 typedef ToDartFunc = Object? Function(JSAny?);
 
+bool _isJSBaseType(JSAny? js) {
+  if (js.isUndefinedOrNull) return true;
+  js as JSAny;
+  return js.isA<JSNumber>() || js.isA<JSString>() || js.isA<JSBoolean>();
+}
+
 void $transferify(JSAny? message, JSArray transfer) {
+  if (_isJSBaseType(message)) return;
+
+  // slow path
+  message as JSAny;
   final registered = HashSet<JSAny>(equals: (a, b) => $is(a, b));
 
   late final void Function(JSAny?) squadronTransferify;
   squadronTransferify = (js) {
-    if (js.isUndefinedOrNull) return;
+    if (_isJSBaseType(js)) return;
+
+    // slow path
     js as JSAny;
 
     // for typed array, transfer the underlying buffer
@@ -114,11 +127,23 @@ JSAny? _toJSDate(Object? value) => (value == null)
     ? null
     : $JSDate.$fromUnixTimestamp((value as DateTime).millisecondsSinceEpoch);
 
-JSAny? $jsify(Object? message, JSArray? transfer) {
+void _noRegistration(JSAny js) {}
+
+JSAny? _getJSValue(Object dart) {
+  if (dart is num) return dart.toJS;
+  if (dart is String) return dart.toJS;
+  if (dart is bool) return dart.toJS;
+  // support BigInt & DateTime objects
+  if (dart is BigInt) return _toJSBigInt(dart);
+  if (dart is DateTime) return _toJSDate(dart);
+  return null;
+}
+
+JSArray $jsify(WorkerMessage message, JSArray? transfer) {
   final cache = HashMap<Object, JSAny>(equals: Squadron.identical);
 
   final $registerTransferable = (transfer == null)
-      ? ((JSAny js) {})
+      ? _noRegistration
       : ((JSAny js) {
           // for typed array, transfer the underlying buffer
           if (js.isA<JSTypedArray>()) {
@@ -133,10 +158,15 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
   late final ToJsFunc squadronJsify;
   squadronJsify = (obj) {
+    // fast path
     if (obj == null) return null;
+    final js = _getJSValue(obj);
+    if (js != null) return js;
+
+    // slow path
 
     // use cached object if available
-    var cached = cache[obj];
+    final cached = cache[obj];
     if (cached != null) return cached;
 
     // process non-TypedData List object recursively
@@ -156,10 +186,10 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
         jsifier = squadronJsify;
       }
 
-      final jsArray = JSArray();
+      final jsArray = JSArray(), len = obj.length;
       cache[obj] = jsArray;
-      for (var o in obj.map(jsifier)) {
-        jsArray.$add(o);
+      for (var i = 0; i < len; i++) {
+        jsArray.$add(jsifier(obj[i]));
       }
       return jsArray;
     }
@@ -196,13 +226,10 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
         vjsifier = squadronJsify;
       }
 
-      (JSAny?, JSAny?) jsifier(MapEntry e) =>
-          (kjsifier(e.key), vjsifier(e.value));
-
       final jsMap = $JSMap();
       cache[obj] = jsMap;
-      for (var o in obj.entries.map(jsifier)) {
-        jsMap.$add(o);
+      for (var o in obj.entries) {
+        jsMap.$set(kjsifier(o.key), vjsifier(o.value));
       }
       return jsMap;
     }
@@ -226,23 +253,13 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
 
       final jsSet = $JSSet();
       cache[obj] = jsSet;
-      for (var o in obj.map(jsifier)) {
-        jsSet.$add(o);
+      for (var o in obj) {
+        jsSet.$add(jsifier(o));
       }
       return jsSet;
     }
 
-    // support BigInt object
-    if (obj is BigInt) {
-      return _toJSBigInt(obj);
-    }
-
-    // support DateTime object
-    if (obj is DateTime) {
-      return _toJSDate(obj);
-    }
-
-    // delegate to Dart's jsify()
+    // otherwise, delegate to Dart's jsify()
     final res = obj.jsify();
 
     // cache result and update list of transferable objects
@@ -257,16 +274,42 @@ JSAny? $jsify(Object? message, JSArray? transfer) {
     return res;
   };
 
-  return squadronJsify(message);
+  return squadronJsify(message.data) as JSArray;
+}
+
+Object? _getDartValue(JSAny js) {
+  if (js.isA<JSNumber>()) return (js as JSNumber).dartify();
+  if (js.isA<JSString>()) return (js as JSString).toDart;
+  if (js.isA<JSBoolean>()) return (js as JSBoolean).toDart;
+  // support JS BigInt & Date objects
+  if (js.isA<JSBigInt>()) {
+    return BigInt.parse((js as JSBigInt).$toString().toDart);
+  }
+  if (js.isA<$JSDate>()) {
+    return DateTime.fromMillisecondsSinceEpoch((js as $JSDate).$getTime());
+  }
+  return null;
 }
 
 Object? $dartify(JSAny? message) {
+  // fast path
+  if (message.isUndefinedOrNull) return null;
+  message as JSAny;
+  final dart = _getDartValue(message);
+  if (dart != null) return dart;
+
+  // slow path
   final cache = HashMap<JSAny, Object>(equals: Squadron.identical);
 
   late final ToDartFunc squadronDartify;
   squadronDartify = (js) {
+    // fast path
     if (js.isUndefinedOrNull) return null;
     js as JSAny;
+    final dart = _getDartValue(js);
+    if (dart != null) return dart;
+
+    // slow path
 
     // use cached object if available
     final cached = cache[js];
@@ -307,16 +350,6 @@ Object? $dartify(JSAny? message) {
       return dartSet;
     }
 
-    // support JS BigInt object
-    if (js.isA<JSBigInt>()) {
-      return BigInt.parse((js as JSBigInt).$toString().toDart);
-    }
-
-    // support JS Date object
-    if (js.isA<$JSDate>()) {
-      return DateTime.fromMillisecondsSinceEpoch((js as $JSDate).$getTime());
-    }
-
     // delegate to Dart's dartify()
     final res = js.dartify();
 
@@ -333,13 +366,13 @@ Object? $dartify(JSAny? message) {
 
 extension $JSEventExt on web.Event? {
   static String? _getErrorEventMessage(web.Event? obj) =>
-      $dartify(obj?.getProperty(_$JSProps.message))?.toString();
+      $dartify(obj?.getProperty(_$kMessage))?.toString();
 
   static Object? _getErrorEventError(web.Event? obj) =>
-      $dartify(obj?.getProperty(_$JSProps.error));
+      $dartify(obj?.getProperty(_$kError));
 
   static Object? _getMessageEventData(web.Event? obj) =>
-      $dartify(obj?.getProperty(_$JSProps.data));
+      $dartify(obj?.getProperty(_$kData));
 
   Object get $dartError =>
       _getErrorEventError(this) ??
@@ -392,7 +425,6 @@ extension type $JSMap._(JSObject _) implements JSObject {
   external factory $JSMap();
   @JS('set')
   external $JSMap $set(JSAny? key, JSAny? value);
-  void $add((JSAny?, JSAny?) entry) => $set(entry.$1, entry.$2);
   @JS('entries')
   external $JSIterator $entries();
 }
@@ -407,12 +439,12 @@ extension type $JSSet._(JSObject _) implements JSObject {
 }
 
 extension $JSIteratorExt on $JSIterator {
-  $JSIteratorResult? $next() => callMethod(_$JSProps.next);
+  $JSIteratorResult? $next() => callMethod(_$kNext);
 }
 
 extension $JSIteratorResultExt on $JSIteratorResult {
-  bool get $done => getProperty(_$JSProps.done).isTruthy.toDart;
-  JSAny? get $value => getProperty(_$JSProps.value);
+  bool get $done => getProperty(_$kDone).isTruthy.toDart;
+  JSAny? get $value => getProperty(_$kValue);
 }
 
 extension $JSTypedArrayExt on JSAny {
@@ -421,14 +453,12 @@ extension $JSTypedArrayExt on JSAny {
   external JSAny get $buffer;
 }
 
-sealed class _$JSProps {
-  // events
-  static final message = 'message'.toJS;
-  static final error = 'error'.toJS;
-  static final data = 'data'.toJS;
+// events
+final _$kMessage = 'message'.toJS;
+final _$kError = 'error'.toJS;
+final _$kData = 'data'.toJS;
 
-  // iterators & results
-  static final next = 'next'.toJS;
-  static final done = 'done'.toJS;
-  static final value = 'value'.toJS;
-}
+// iterators & results
+final _$kNext = 'next'.toJS;
+final _$kDone = 'done'.toJS;
+final _$kValue = 'value'.toJS;

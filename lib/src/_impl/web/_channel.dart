@@ -13,6 +13,7 @@ import '../../exceptions/task_terminated_exception.dart';
 import '../../exceptions/worker_exception.dart';
 import '../../squadron_singleton.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
+import '../../utils.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
@@ -52,15 +53,15 @@ Future<Channel> openChannel(
   late web.Worker worker;
 
   void $failure(SquadronException ex) {
-    if (!ready.isCompleted) ready.completeError(ex);
-    if (!completer.isCompleted) completer.completeError(ex);
+    ready.safeCompleteError(ex);
+    completer.safeCompleteError(ex);
   }
 
   void $success(_WebChannel channel) {
     if (!ready.isCompleted) {
       throw SquadronErrorImpl.create('Invalid state: worker is not ready');
     }
-    if (!completer.isCompleted) completer.complete(channel);
+    completer.safeComplete(channel);
   }
 
   try {

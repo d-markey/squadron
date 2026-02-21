@@ -8,6 +8,7 @@ import 'dart:typed_data' as td;
 
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_patch.dart';
+import 'package:squadron/src/worker/worker_message.dart';
 import 'package:test/test.dart';
 import 'package:web/web.dart';
 
@@ -48,93 +49,104 @@ void execute(TestContext? tc) {
 
       tc.group('- JSIFY', () {
         tc.test('- int', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify(1, t);
-          expect(x.isA<JSNumber>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(WorkerMessage([1]), t);
+          expect(x.$at(0).isA<JSNumber>(), isTrue);
           expect(t.$length, 0);
         });
 
         tc.test('- double', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify(1.1, t);
-          expect(x.isA<JSNumber>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(WorkerMessage([1.1]), t);
+          expect(x.$at(0).isA<JSNumber>(), isTrue);
           expect(t.$length, 0);
         });
 
         tc.test('- String', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify('test', t);
-          expect(x.isA<JSString>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(WorkerMessage(['test']), t);
+          expect(x.$at(0).isA<JSString>(), isTrue);
           expect(t.$length, 0);
         });
 
         tc.test('- BigInt', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify(BigInt.two, t);
-          expect(x.isA<JSBigInt>(), isTrue);
-          expect((x as JSBigInt).toString(), '2');
+          final t = JSArray();
+          final x = $jsify(WorkerMessage([BigInt.two]), t);
+          expect(x.$at(0).isA<JSBigInt>(), isTrue);
+          expect((x.$at(0) as JSBigInt).toString(), '2');
           expect(t.$length, 0);
         });
 
         tc.test('- DateTime', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify(DateTime.fromMillisecondsSinceEpoch(42), t);
-          expect(x.isA<$JSDate>(), isTrue);
-          expect((x as $JSDate).$getTime(), 42);
+          final t = JSArray();
+          final x = $jsify(
+              WorkerMessage([DateTime.fromMillisecondsSinceEpoch(42)]), t);
+          expect(x.$at(0).isA<$JSDate>(), isTrue);
+          expect((x.$at(0) as $JSDate).$getTime(), 42);
           expect(t.$length, 0);
         });
 
         tc.test('- List', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify([1, 2, 3], t);
-          expect(x.isA<JSArray>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(WorkerMessage([1, 2, 3]), t);
+          expect(x.$at(0).dartify(), 1);
+          expect(x.$at(1).dartify(), 2);
+          expect(x.$at(2).dartify(), 3);
           expect(t.$length, 0);
         });
 
         tc.test('- Set', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify({1, 2, 3}, t);
-          expect(x.isA<$JSSet>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(
+              WorkerMessage([
+                {1, 2, 3}
+              ]),
+              t);
+          expect(x.$at(0).isA<$JSSet>(), isTrue);
           expect(t.$length, 0);
         });
 
         tc.test('- Map', () {
-          final t = <JSAny?>[].toJS;
-          final x = $jsify({'one': 1, 'two': 2, 'three': 3}, t);
-          expect(x.isA<$JSMap>(), isTrue);
+          final t = JSArray();
+          final x = $jsify(
+              WorkerMessage([
+                {'one': 1, 'two': 2, 'three': 3}
+              ]),
+              t);
+          expect(x.$at(0).isA<$JSMap>(), isTrue);
           expect(t.$length, 0);
         });
 
         tc.test('- Uint16List', () {
-          final t = <JSAny?>[].toJS;
+          final t = JSArray();
           final data = td.Uint16List.fromList([1, 2, 3]);
-          final x = $jsify(data, t);
-          expect(x, isNotNull);
+          final x = $jsify(WorkerMessage([data]), t);
+          expect(x.$at(0), isNotNull);
           expect(t.$length, 1);
           expect(t.$at(0).isA<JSArrayBuffer>(), isTrue);
           expect((t.$at(0) as JSArrayBuffer).$byteLength, data.length * 16 / 8);
         });
 
         tc.test('- Port', () {
-          final t = <JSAny?>[].toJS;
+          final t = JSArray();
           final channel = MessageChannel();
-          final x = $jsify(channel.port1, t);
-          expect(x.isA<MessagePort>(), isTrue);
+          final x = $jsify(WorkerMessage([channel.port1]), t);
+          expect(x.$at(0).isA<MessagePort>(), isTrue);
           expect(t.$length, 1);
           expect(t.$at(0).isA<MessagePort>(), isTrue);
         });
 
         tc.test('- Mixed list', () {
-          final t = <JSAny?>[].toJS;
+          final t = JSArray();
           final channel = MessageChannel();
           final data = td.Uint16List.fromList([1, 2, 3]);
-          final x = $jsify([
-            data,
-            [1, 2, 3],
-            channel.port1,
-          ], t);
-          expect(x.isA<JSArray>(), isTrue);
-          x as JSArray;
+          final x = $jsify(
+              WorkerMessage([
+                data,
+                [1, 2, 3],
+                channel.port1,
+              ]),
+              t);
           expect(x.$length, 3);
           expect(x.$at(0), isNotNull);
           expect(x.$at(1).isA<JSArray>(), isTrue);
@@ -147,12 +159,11 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Acyclic reference', () {
-          final t = <JSAny?>[].toJS;
+          final t = JSArray();
           final channel = MessageChannel();
           final data = td.Uint16List.fromList([0, 1, 2, 3]);
-          final x = $jsify([data, channel.port1, data, channel.port1], t);
-          expect(x.isA<JSArray>(), isTrue);
-          x as JSArray;
+          final x = $jsify(
+              WorkerMessage([data, channel.port1, data, channel.port1]), t);
           expect(x.$length, 4);
           expect(x.$at(0), isNotNull);
           expect(x.$at(1).isA<MessagePort>(), isTrue);
@@ -169,14 +180,13 @@ void execute(TestContext? tc) {
         });
 
         tc.test('- Cyclic reference', () {
-          final t = <JSAny?>[].toJS;
+          final t = JSArray();
           final channel = MessageChannel();
           final data = td.Uint16List.fromList([1, 2, 3]);
-          final message = [data, channel.port1, data, channel.port1];
-          message.add(message);
+          final message =
+              WorkerMessage([data, channel.port1, data, channel.port1]);
+          message.data.add(message);
           final x = $jsify(message, t);
-          expect(x.isA<JSArray>(), isTrue);
-          x as JSArray;
           expect(x.$length, 5);
           expect(x.$at(0), isNotNull);
           expect(x.$at(1).isA<MessagePort>(), isTrue);

@@ -13,3 +13,13 @@ extension ControllerSafeExt<T> on StreamController<T> {
     if (!isClosed) addError(error, stackTrace);
   }
 }
+
+extension CompleterSafeExt<T> on Completer<T> {
+  void safeComplete([FutureOr<T>? value]) {
+    if (!isCompleted) complete(value);
+  }
+
+  void safeCompleteError(Object error, [StackTrace? stackTrace]) {
+    if (!isCompleted) completeError(error, stackTrace);
+  }
+}

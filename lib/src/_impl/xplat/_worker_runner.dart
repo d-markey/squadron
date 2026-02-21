@@ -165,9 +165,15 @@ class WorkerRunner {
         // connection requests are handled by connect().
         throw SquadronErrorImpl.create(
             'Unexpected connection request: $request');
-      } else if (_operations == null) {
-        // commands are not available yet (maybe connect() wasn't called or awaited)
-        throw SquadronErrorImpl.create('Worker service is not ready');
+      }
+
+      // find the operation matching the request command
+      final cmd = request.command, op = _operations![cmd];
+      if (op == null) {
+        // unknown command, or commands are not available yet (maybe connect() wasn't called or awaited)
+        throw SquadronErrorImpl.create((_operations == null)
+            ? 'Worker service is not ready'
+            : 'Unknown command: $cmd');
       }
 
       // ==== other requests require a client to send the response ====
@@ -182,12 +188,6 @@ class WorkerRunner {
       // start monitoring execution
       final tokenRef = _begin(request);
       try {
-        // find the operation matching the request command
-        final cmd = request.command, op = _operations![cmd];
-        if (op == null) {
-          throw SquadronErrorImpl.create('Unknown command: $cmd');
-        }
-
         // process
         var result = op(request);
         if (result is Future) {

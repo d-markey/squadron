@@ -1,8 +1,5 @@
-final _latestUPDEpoch = DateTime.utc(2020, 02, 02); // universal palindrome date
-
 int microsecTimeStamp([DateTime? time]) =>
-    (time ?? DateTime.now()).toUtc().difference(_latestUPDEpoch).inMicroseconds;
+    time?.microsecondsSinceEpoch ?? DateTime.now().microsecondsSinceEpoch;
 
-DateTime? fromMicrosecTimeStamp(int? microsecs) => (microsecs == null)
-    ? null
-    : _latestUPDEpoch.add(Duration(microseconds: microsecs));
+DateTime? fromMicrosecTimeStamp(int? microsecs) =>
+    (microsecs == null) ? null : DateTime.fromMicrosecondsSinceEpoch(microsecs);
