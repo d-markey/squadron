@@ -690,6 +690,10 @@ org-dartlang-sdk:///lib/async/stream_pipe.dart
 org-dartlang-sdk:///lib/async/stream_transformers.dart
 org-dartlang-sdk:///lib/async/timer.dart
 org-dartlang-sdk:///lib/async/zone.dart
+org-dartlang-sdk:///lib/async/zone_api.dart
+org-dartlang-sdk:///lib/async/zone_delegate.dart
+org-dartlang-sdk:///lib/async/zone_root.dart
+org-dartlang-sdk:///lib/async/zone_specification.dart
 org-dartlang-sdk:///lib/collection/collection.dart
 org-dartlang-sdk:///lib/collection/collections.dart
 org-dartlang-sdk:///lib/collection/hash_map.dart

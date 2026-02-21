@@ -265,9 +265,7 @@ JSArray $jsify(WorkerMessage message, JSArray? transfer) {
     // cache result and update list of transferable objects
     if (res.isDefinedAndNotNull) {
       res as JSAny;
-      if (obj is! num && obj is! bool && obj is! String) {
-        cache[obj] = res;
-      }
+      cache[obj] = res;
       $registerTransferable(res);
     }
 
