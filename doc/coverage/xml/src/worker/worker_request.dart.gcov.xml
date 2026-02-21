@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-01-30" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -452,7 +452,7 @@
             <code>  /// In-place serialization of a [WorkerRequest].</code>
         </line>
         <line hits="11" number="139">
-            <code>  List wrapInPlace() {</code>
+            <code>  void wrapInPlace() {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="11" number="140">
@@ -471,84 +471,81 @@
             <code>    }</code>
         </line>
         <line number="144">
-            <code>    return data;</code>
-        </line>
-        <line number="145">
             <code>  }</code>
         </line>
-        <line number="146">
+        <line number="145">
             <code/>
         </line>
-        <line number="147">
+        <line number="146">
             <code>  static const int _connectCommand = -1;</code>
         </line>
-        <line number="148">
+        <line number="147">
             <code>  static const int _cancelStreamCommand = -2;</code>
         </line>
-        <line number="149">
+        <line number="148">
             <code>  static const int _cancelTokenCommand = -3;</code>
         </line>
-        <line number="150">
+        <line number="149">
             <code>  static const int _terminateCommand = -4;</code>
         </line>
-        <line number="151">
+        <line number="150">
             <code>}</code>
         </line>
-        <line number="152">
+        <line number="151">
             <code/>
         </line>
-        <line number="153">
+        <line number="152">
             <code>// 0 is reserved for travel time</code>
         </line>
-        <line number="154">
+        <line number="153">
             <code>const _$channel = 1;</code>
         </line>
-        <line number="155">
+        <line number="154">
             <code>const _$command = 2;</code>
         </line>
-        <line number="156">
+        <line number="155">
             <code>const _$args = 3;</code>
         </line>
-        <line number="157">
+        <line number="156">
             <code>const _$token = 4;</code>
         </line>
-        <line number="158">
+        <line number="157">
             <code>const _$streamId = 5;</code>
         </line>
-        <line number="159">
+        <line number="158">
             <code>const _$inspectResponse = 6;</code>
         </line>
-        <line number="160">
+        <line number="159">
             <code/>
         </line>
-        <line number="161">
+        <line number="160">
             <code>@internal</code>
         </line>
-        <line number="162">
+        <line number="161">
             <code>extension CancelationTokenExt on WorkerRequest {</code>
         </line>
-        <line hits="2" number="163">
+        <line hits="2" number="162">
             <code>  void overrideCancelToken(SquadronCancelationToken token) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="164">
+        <line hits="10" number="163">
             <code>    if (cancelToken == null || cancelToken!.id != token.id) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="165">
+        <line hits="0" number="164">
             <code>      throw SquadronErrorImpl.create('Cancelation token mismatch');</code>
         </line>
-        <line number="166">
+        <line number="165">
             <code>    }</code>
         </line>
-        <line hits="2" number="167">
+        <line hits="2" number="166">
             <code>    data[_$token] = token;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="168">
+        <line number="167">
             <code>  }</code>
         </line>
-        <line number="169">
+        <line number="168">
             <code>}</code>
         </line>
     </lines>

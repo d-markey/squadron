@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-01-30</dd>
+                    <dd>2026-02-15</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -385,7 +385,7 @@
                     <td>108</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerResponse].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 109" id="line109">
-                    <td>109</td><td></td><td>10</td><td><code>  List wrapInPlace() {</code></td>
+                    <td>109</td><td></td><td>10</td><td><code>  void wrapInPlace() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 110" id="line110">
                     <td>110</td><td></td><td>10</td><td><code>    final result = data[_$result];</code></td>
@@ -403,142 +403,139 @@
                     <td>114</td><td></td><td>25</td><td><code>    data[_$error] = (data[_$error] as SquadronException?)?.serialize();</code></td>
                 </tr>
                 <tr class="noop" title="Line 115" id="line115">
-                    <td>115</td><td></td><td></td><td><code>    return data;</code></td>
+                    <td>115</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 116" id="line116">
-                    <td>116</td><td></td><td></td><td><code>  }</code></td>
+                    <td>116</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 117" id="line117">
-                    <td>117</td><td></td><td></td><td><code>}</code></td>
+                    <td>117</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 118" id="line118">
-                    <td>118</td><td></td><td></td><td><code></code></td>
+                    <td>118</td><td></td><td></td><td><code>// 0 is reserved for travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 119" id="line119">
-                    <td>119</td><td></td><td></td><td><code>// 0 is reserved for travel time</code></td>
+                    <td>119</td><td></td><td></td><td><code>const _$result = 1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 120" id="line120">
-                    <td>120</td><td></td><td></td><td><code>const _$result = 1;</code></td>
+                    <td>120</td><td></td><td></td><td><code>const _$error = 2;</code></td>
                 </tr>
                 <tr class="noop" title="Line 121" id="line121">
-                    <td>121</td><td></td><td></td><td><code>const _$error = 2;</code></td>
+                    <td>121</td><td></td><td></td><td><code>const _$endOfStream = 3;</code></td>
                 </tr>
                 <tr class="noop" title="Line 122" id="line122">
-                    <td>122</td><td></td><td></td><td><code>const _$endOfStream = 3;</code></td>
+                    <td>122</td><td></td><td></td><td><code>const _$log = 4;</code></td>
                 </tr>
                 <tr class="noop" title="Line 123" id="line123">
-                    <td>123</td><td></td><td></td><td><code>const _$log = 4;</code></td>
+                    <td>123</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 124" id="line124">
-                    <td>124</td><td></td><td></td><td><code></code></td>
+                    <td>124</td><td></td><td></td><td><code>extension _LogEventSerializationExt on LogEvent {</code></td>
                 </tr>
-                <tr class="noop" title="Line 125" id="line125">
-                    <td>125</td><td></td><td></td><td><code>extension _LogEventSerializationExt on LogEvent {</code></td>
+                <tr class="lineCov" title="Line 125" id="line125">
+                    <td>125</td><td></td><td>20</td><td><code>  List serialize() =&gt; [</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 126" id="line126">
-                    <td>126</td><td></td><td>20</td><td><code>  List serialize() =&gt; [</code></td>
+                    <td>126</td><td></td><td>20</td><td><code>        level.value,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 127" id="line127">
-                    <td>127</td><td></td><td>20</td><td><code>        level.value,</code></td>
+                    <td>127</td><td></td><td>20</td><td><code>        _stringify(message),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 128" id="line128">
-                    <td>128</td><td></td><td>20</td><td><code>        _stringify(message),</code></td>
+                    <td>128</td><td></td><td>20</td><td><code>        microsecTimeStamp(time),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 129" id="line129">
-                    <td>129</td><td></td><td>20</td><td><code>        microsecTimeStamp(time),</code></td>
+                    <td>129</td><td></td><td>10</td><td><code>        error?.toString(),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 130" id="line130">
-                    <td>130</td><td></td><td>10</td><td><code>        error?.toString(),</code></td>
+                    <td>130</td><td></td><td>10</td><td><code>        stackTrace?.toString(),</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>10</td><td><code>        stackTrace?.toString(),</code></td>
+                <tr class="noop" title="Line 131" id="line131">
+                    <td>131</td><td></td><td></td><td><code>      ];</code></td>
                 </tr>
                 <tr class="noop" title="Line 132" id="line132">
-                    <td>132</td><td></td><td></td><td><code>      ];</code></td>
+                    <td>132</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 133" id="line133">
-                    <td>133</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 133" id="line133">
+                    <td>133</td><td></td><td>10</td><td><code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 134" id="line134">
-                    <td>134</td><td></td><td>10</td><td><code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code></td>
+                <tr class="noop" title="Line 134" id="line134">
+                    <td>134</td><td></td><td></td><td><code>      ? null</code></td>
                 </tr>
-                <tr class="noop" title="Line 135" id="line135">
-                    <td>135</td><td></td><td></td><td><code>      ? null</code></td>
+                <tr class="lineCov" title="Line 135" id="line135">
+                    <td>135</td><td></td><td>10</td><td><code>      : LogEvent(</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 136" id="line136">
-                    <td>136</td><td></td><td>10</td><td><code>      : LogEvent(</code></td>
+                    <td>136</td><td></td><td>30</td><td><code>          _getLevel((props[0] as num?)?.toInt()),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>30</td><td><code>          _getLevel((props[0] as num?)?.toInt()),</code></td>
+                    <td>137</td><td></td><td>10</td><td><code>          props[1],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>10</td><td><code>          props[1],</code></td>
+                    <td>138</td><td></td><td>30</td><td><code>          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>30</td><td><code>          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),</code></td>
+                    <td>139</td><td></td><td>10</td><td><code>          error: props[3],</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>10</td><td><code>          error: props[3],</code></td>
+                    <td>140</td><td></td><td>20</td><td><code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>20</td><td><code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code></td>
+                <tr class="noop" title="Line 141" id="line141">
+                    <td>141</td><td></td><td></td><td><code>        );</code></td>
                 </tr>
                 <tr class="noop" title="Line 142" id="line142">
-                    <td>142</td><td></td><td></td><td><code>        );</code></td>
+                    <td>142</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 143" id="line143">
+                    <td>143</td><td></td><td>10</td><td><code>  static Level _getLevel(int? value) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 144" id="line144">
-                    <td>144</td><td></td><td>10</td><td><code>  static Level _getLevel(int? value) {</code></td>
+                <tr class="noop" title="Line 144" id="line144">
+                    <td>144</td><td></td><td></td><td><code>    if (value == null) return Level.debug;</code></td>
                 </tr>
-                <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code>    if (value == null) return Level.debug;</code></td>
+                <tr class="lineCov" title="Line 145" id="line145">
+                    <td>145</td><td></td><td>50</td><td><code>    return Level.values.where((l) =&gt; l.value == value).first;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 146" id="line146">
-                    <td>146</td><td></td><td>50</td><td><code>    return Level.values.where((l) =&gt; l.value == value).first;</code></td>
+                <tr class="noop" title="Line 146" id="line146">
+                    <td>146</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 147" id="line147">
-                    <td>147</td><td></td><td></td><td><code>  }</code></td>
+                    <td>147</td><td></td><td></td><td><code></code></td>
                 </tr>
-                <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 148" id="line148">
+                    <td>148</td><td></td><td>10</td><td><code>  static String? _stringify(dynamic message) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 149" id="line149">
-                    <td>149</td><td></td><td>10</td><td><code>  static String? _stringify(dynamic message) {</code></td>
+                    <td>149</td><td></td><td>10</td><td><code>    if (message is Function) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 150" id="line150">
-                    <td>150</td><td></td><td>10</td><td><code>    if (message is Function) {</code></td>
+                <tr class="noop" title="Line 150" id="line150">
+                    <td>150</td><td></td><td></td><td><code>      try {</code></td>
                 </tr>
-                <tr class="noop" title="Line 151" id="line151">
-                    <td>151</td><td></td><td></td><td><code>      try {</code></td>
+                <tr class="lineCov" title="Line 151" id="line151">
+                    <td>151</td><td></td><td>4</td><td><code>        return message().toString();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 152" id="line152">
-                    <td>152</td><td></td><td>4</td><td><code>        return message().toString();</code></td>
+                <tr class="noop" title="Line 152" id="line152">
+                    <td>152</td><td></td><td></td><td><code>      } catch (ex) {</code></td>
                 </tr>
-                <tr class="noop" title="Line 153" id="line153">
-                    <td>153</td><td></td><td></td><td><code>      } catch (ex) {</code></td>
+                <tr class="lineNoCov" title="Line 153" id="line153">
+                    <td>153</td><td></td><td>0</td><td><code>        return 'Deferred message failed with error: $ex';</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 154" id="line154">
-                    <td>154</td><td></td><td>0</td><td><code>        return 'Deferred message failed with error: $ex';</code></td>
+                <tr class="noop" title="Line 154" id="line154">
+                    <td>154</td><td></td><td></td><td><code>      }</code></td>
                 </tr>
                 <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>      }</code></td>
+                    <td>155</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
-                <tr class="noop" title="Line 156" id="line156">
-                    <td>156</td><td></td><td></td><td><code>    } else {</code></td>
+                <tr class="lineCov" title="Line 156" id="line156">
+                    <td>156</td><td></td><td>10</td><td><code>      return message.toString();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 157" id="line157">
-                    <td>157</td><td></td><td>10</td><td><code>      return message.toString();</code></td>
+                <tr class="noop" title="Line 157" id="line157">
+                    <td>157</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>    }</code></td>
+                    <td>158</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 159" id="line159">
-                    <td>159</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code>}</code></td>
+                    <td>159</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

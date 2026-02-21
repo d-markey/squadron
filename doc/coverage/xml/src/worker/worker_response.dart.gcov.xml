@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-01-30" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9245283" lines-covered="49" lines-valid="53" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-15" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9245283" lines-covered="49" lines-valid="53" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -351,7 +351,7 @@
             <code>  /// In-place serialization of a [WorkerResponse].</code>
         </line>
         <line hits="10" number="109">
-            <code>  List wrapInPlace() {</code>
+            <code>  void wrapInPlace() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="110">
@@ -374,160 +374,157 @@
             <hit count="25" name="&lt;unnamed&gt;"/>
         </line>
         <line number="115">
-            <code>    return data;</code>
-        </line>
-        <line number="116">
             <code>  }</code>
         </line>
-        <line number="117">
+        <line number="116">
             <code>}</code>
         </line>
-        <line number="118">
+        <line number="117">
             <code/>
         </line>
-        <line number="119">
+        <line number="118">
             <code>// 0 is reserved for travel time</code>
         </line>
-        <line number="120">
+        <line number="119">
             <code>const _$result = 1;</code>
         </line>
-        <line number="121">
+        <line number="120">
             <code>const _$error = 2;</code>
         </line>
-        <line number="122">
+        <line number="121">
             <code>const _$endOfStream = 3;</code>
         </line>
-        <line number="123">
+        <line number="122">
             <code>const _$log = 4;</code>
         </line>
-        <line number="124">
+        <line number="123">
             <code/>
         </line>
-        <line number="125">
+        <line number="124">
             <code>extension _LogEventSerializationExt on LogEvent {</code>
         </line>
-        <line hits="20" number="126">
+        <line hits="20" number="125">
             <code>  List serialize() =&gt; [</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="127">
+        <line hits="20" number="126">
             <code>        level.value,</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="128">
+        <line hits="20" number="127">
             <code>        _stringify(message),</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="129">
+        <line hits="20" number="128">
             <code>        microsecTimeStamp(time),</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="130">
+        <line hits="10" number="129">
             <code>        error?.toString(),</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="131">
+        <line hits="10" number="130">
             <code>        stackTrace?.toString(),</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="132">
+        <line number="131">
             <code>      ];</code>
         </line>
-        <line number="133">
+        <line number="132">
             <code/>
         </line>
-        <line hits="10" number="134">
+        <line hits="10" number="133">
             <code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="135">
+        <line number="134">
             <code>      ? null</code>
         </line>
-        <line hits="10" number="136">
+        <line hits="10" number="135">
             <code>      : LogEvent(</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="137">
+        <line hits="30" number="136">
             <code>          _getLevel((props[0] as num?)?.toInt()),</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="138">
+        <line hits="10" number="137">
             <code>          props[1],</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="139">
+        <line hits="30" number="138">
             <code>          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="140">
+        <line hits="10" number="139">
             <code>          error: props[3],</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="141">
+        <line hits="20" number="140">
             <code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="142">
+        <line number="141">
             <code>        );</code>
         </line>
-        <line number="143">
+        <line number="142">
             <code/>
         </line>
-        <line hits="10" number="144">
+        <line hits="10" number="143">
             <code>  static Level _getLevel(int? value) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="145">
+        <line number="144">
             <code>    if (value == null) return Level.debug;</code>
         </line>
-        <line hits="50" number="146">
+        <line hits="50" number="145">
             <code>    return Level.values.where((l) =&gt; l.value == value).first;</code>
             <hit count="50" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="147">
+        <line number="146">
             <code>  }</code>
         </line>
-        <line number="148">
+        <line number="147">
             <code/>
         </line>
-        <line hits="10" number="149">
+        <line hits="10" number="148">
             <code>  static String? _stringify(dynamic message) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="150">
+        <line hits="10" number="149">
             <code>    if (message is Function) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="151">
+        <line number="150">
             <code>      try {</code>
         </line>
-        <line hits="4" number="152">
+        <line hits="4" number="151">
             <code>        return message().toString();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="153">
+        <line number="152">
             <code>      } catch (ex) {</code>
         </line>
-        <line hits="0" number="154">
+        <line hits="0" number="153">
             <code>        return 'Deferred message failed with error: $ex';</code>
         </line>
-        <line number="155">
+        <line number="154">
             <code>      }</code>
         </line>
-        <line number="156">
+        <line number="155">
             <code>    } else {</code>
         </line>
-        <line hits="10" number="157">
+        <line hits="10" number="156">
             <code>      return message.toString();</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="158">
+        <line number="157">
             <code>    }</code>
         </line>
-        <line number="159">
+        <line number="158">
             <code>  }</code>
         </line>
-        <line number="160">
+        <line number="159">
             <code>}</code>
         </line>
     </lines>
