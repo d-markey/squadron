@@ -1,24 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="_time_stamp.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="4" lines-valid="4" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_time_stamp.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="9" lines-valid="9" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
-        <line hits="11" number="1">
-            <code>int microsecTimeStamp([DateTime? time]) =&gt;</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line number="1">
+            <code>extension type Timestamp._(int _microseconds) {</code>
         </line>
-        <line hits="32" number="2">
-            <code>    time?.microsecondsSinceEpoch ?? DateTime.now().microsecondsSinceEpoch;</code>
-            <hit count="32" name="&lt;unnamed&gt;"/>
+        <line hits="44" number="2">
+            <code>  factory Timestamp.now() =&gt; Timestamp._(DateTime.now().microsecondsSinceEpoch);</code>
+            <hit count="44" name="&lt;unnamed&gt;"/>
         </line>
         <line number="3">
             <code/>
         </line>
-        <line hits="10" number="4">
-            <code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt;</code>
+        <line hits="20" number="4">
+            <code>  static Timestamp? from(dynamic value) =&gt; (value is num)</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="20" number="5">
+            <code>      ? Timestamp._(value.toInt())</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="10" number="6">
+            <code>      : ((value is DateTime)</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="5">
-            <code>    (microsecs == null) ? null : DateTime.fromMicrosecondsSinceEpoch(microsecs);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="20" number="7">
+            <code>          ? Timestamp._(value.microsecondsSinceEpoch)</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="8">
+            <code>          : null);</code>
+        </line>
+        <line number="9">
+            <code/>
+        </line>
+        <line hits="20" number="10">
+            <code>  int operator -(Timestamp other) =&gt; _microseconds - other._microseconds;</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line hits="6" number="12">
+            <code>  Duration elapsedSince(Timestamp other) =&gt;</code>
+            <hit count="6" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="12" number="13">
+            <code>      Duration(microseconds: this - other);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="14">
+            <code/>
+        </line>
+        <line hits="20" number="15">
+            <code>  DateTime toDateTime() =&gt; DateTime.fromMicrosecondsSinceEpoch(_microseconds);</code>
+            <hit count="20" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="16">
+            <code>}</code>
         </line>
     </lines>
     <config branch-coverage="true" description-file="false" function-coverage="true" genhtml_hi_limit="90" genhtml_med_limit="75" legend="false" no-sort="false" no-source="false" show-details="false"/>

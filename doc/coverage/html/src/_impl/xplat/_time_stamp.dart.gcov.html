@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-21</dd>
+                    <dd>2026-03-04</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>4</td><td>4</td><td class="high">100.0%</td>
+                            <th scope="row">Lines</th><td>9</td><td>9</td><td class="high">100.0%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -60,20 +60,53 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="lineCov" title="Line 1" id="line1">
-                    <td>1</td><td></td><td>11</td><td><code>int microsecTimeStamp([DateTime? time]) =&gt;</code></td>
+                <tr class="noop" title="Line 1" id="line1">
+                    <td>1</td><td></td><td></td><td><code>extension type Timestamp._(int _microseconds) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 2" id="line2">
-                    <td>2</td><td></td><td>32</td><td><code>    time?.microsecondsSinceEpoch ?? DateTime.now().microsecondsSinceEpoch;</code></td>
+                    <td>2</td><td></td><td>44</td><td><code>  factory Timestamp.now() =&gt; Timestamp._(DateTime.now().microsecondsSinceEpoch);</code></td>
                 </tr>
                 <tr class="noop" title="Line 3" id="line3">
                     <td>3</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 4" id="line4">
-                    <td>4</td><td></td><td>10</td><td><code>DateTime? fromMicrosecTimeStamp(int? microsecs) =&gt;</code></td>
+                    <td>4</td><td></td><td>20</td><td><code>  static Timestamp? from(dynamic value) =&gt; (value is num)</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 5" id="line5">
-                    <td>5</td><td></td><td>10</td><td><code>    (microsecs == null) ? null : DateTime.fromMicrosecondsSinceEpoch(microsecs);</code></td>
+                    <td>5</td><td></td><td>20</td><td><code>      ? Timestamp._(value.toInt())</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 6" id="line6">
+                    <td>6</td><td></td><td>10</td><td><code>      : ((value is DateTime)</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 7" id="line7">
+                    <td>7</td><td></td><td>20</td><td><code>          ? Timestamp._(value.microsecondsSinceEpoch)</code></td>
+                </tr>
+                <tr class="noop" title="Line 8" id="line8">
+                    <td>8</td><td></td><td></td><td><code>          : null);</code></td>
+                </tr>
+                <tr class="noop" title="Line 9" id="line9">
+                    <td>9</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 10" id="line10">
+                    <td>10</td><td></td><td>20</td><td><code>  int operator -(Timestamp other) =&gt; _microseconds - other._microseconds;</code></td>
+                </tr>
+                <tr class="noop" title="Line 11" id="line11">
+                    <td>11</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 12" id="line12">
+                    <td>12</td><td></td><td>6</td><td><code>  Duration elapsedSince(Timestamp other) =&gt;</code></td>
+                </tr>
+                <tr class="lineCov" title="Line 13" id="line13">
+                    <td>13</td><td></td><td>12</td><td><code>      Duration(microseconds: this - other);</code></td>
+                </tr>
+                <tr class="noop" title="Line 14" id="line14">
+                    <td>14</td><td></td><td></td><td><code></code></td>
+                </tr>
+                <tr class="lineCov" title="Line 15" id="line15">
+                    <td>15</td><td></td><td>20</td><td><code>  DateTime toDateTime() =&gt; DateTime.fromMicrosecondsSinceEpoch(_microseconds);</code></td>
+                </tr>
+                <tr class="noop" title="Line 16" id="line16">
+                    <td>16</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

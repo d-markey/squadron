@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-21</dd>
+                    <dd>2026-03-04</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Lines</th><td>43</td><td>46</td><td class="high">93.5%</td>
+                            <th scope="row">Lines</th><td>42</td><td>45</td><td class="high">93.3%</td>
                         </tr>
                         <tr>
                             <th scope="row">Functions</th><td>0</td><td>0</td><td class="high">-</td>
@@ -160,7 +160,7 @@
                     <td>33</td><td></td><td>20</td><td><code>      WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>10</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>34</td><td></td><td>10</td><td><code>        Timestamp.now(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code>        channelInfo, // 1 - channel</code></td>
@@ -196,7 +196,7 @@
                     <td>45</td><td></td><td>22</td><td><code>      WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>11</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>46</td><td></td><td>11</td><td><code>        Timestamp.now(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 47" id="line47">
                     <td>47</td><td></td><td></td><td><code>        channelInfo, // 1 - channel</code></td>
@@ -226,10 +226,10 @@
                     <td>55</td><td></td><td></td><td><code>  /// Creates a new stream cancelation request.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 56" id="line56">
-                    <td>56</td><td></td><td>12</td><td><code>  factory WorkerRequest.cancelStream(int streamId) =&gt; WorkerRequest._([</code></td>
+                    <td>56</td><td></td><td>12</td><td><code>  factory WorkerRequest.cancelStream(StreamId streamId) =&gt; WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 57" id="line57">
-                    <td>57</td><td></td><td>4</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>57</td><td></td><td>4</td><td><code>        Timestamp.now(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 58" id="line58">
                     <td>58</td><td></td><td></td><td><code>        null, // 1 - channel</code></td>
@@ -244,7 +244,7 @@
                     <td>61</td><td></td><td></td><td><code>        null, // 4 - cancelation token</code></td>
                 </tr>
                 <tr class="noop" title="Line 62" id="line62">
-                    <td>62</td><td></td><td></td><td><code>        streamId, // 5 - stream id</code></td>
+                    <td>62</td><td></td><td></td><td><code>        streamId.handle, // 5 - stream id</code></td>
                 </tr>
                 <tr class="noop" title="Line 63" id="line63">
                     <td>63</td><td></td><td></td><td><code>        null, // 6 - inspect response</code></td>
@@ -265,7 +265,7 @@
                     <td>68</td><td></td><td>4</td><td><code>      WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>2</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>69</td><td></td><td>2</td><td><code>        Timestamp.now(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
                     <td>70</td><td></td><td></td><td><code>        null, // 1 - channel</code></td>
@@ -298,7 +298,7 @@
                     <td>79</td><td></td><td>30</td><td><code>  factory WorkerRequest.stop() =&gt; WorkerRequest._([</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>10</td><td><code>        microsecTimeStamp(), // 0 - travel time</code></td>
+                    <td>80</td><td></td><td>10</td><td><code>        Timestamp.now(), // 0 - travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 81" id="line81">
                     <td>81</td><td></td><td></td><td><code>        null, // 1 - channel</code></td>
@@ -367,7 +367,7 @@
                     <td>102</td><td></td><td></td><td><code>  /// Stream id.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 103" id="line103">
-                    <td>103</td><td></td><td>8</td><td><code>  int? get streamId =&gt; data[_$streamId];</code></td>
+                    <td>103</td><td></td><td>12</td><td><code>  StreamId? get streamId =&gt; StreamId.from(data[_$streamId]);</code></td>
                 </tr>
                 <tr class="noop" title="Line 104" id="line104">
                     <td>104</td><td></td><td></td><td><code></code></td>
@@ -451,118 +451,115 @@
                     <td>130</td><td></td><td>30</td><td><code>    data[_$command] = (data[_$command] as num).toInt();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 131" id="line131">
-                    <td>131</td><td></td><td>24</td><td><code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code></td>
+                    <td>131</td><td></td><td>30</td><td><code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 132" id="line132">
-                    <td>132</td><td></td><td>30</td><td><code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code></td>
+                    <td>132</td><td></td><td>30</td><td><code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>30</td><td><code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code></td>
+                    <td>133</td><td></td><td>10</td><td><code>    data[_$inspectResponse] ??= false;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 134" id="line134">
-                    <td>134</td><td></td><td>10</td><td><code>    data[_$inspectResponse] ??= false;</code></td>
+                    <td>134</td><td></td><td>10</td><td><code>    data[_$args] ??= const [];</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 135" id="line135">
-                    <td>135</td><td></td><td>10</td><td><code>    data[_$args] ??= const [];</code></td>
+                <tr class="noop" title="Line 135" id="line135">
+                    <td>135</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 136" id="line136">
-                    <td>136</td><td></td><td></td><td><code>  }</code></td>
+                    <td>136</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 137" id="line137">
-                    <td>137</td><td></td><td></td><td><code></code></td>
+                    <td>137</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerRequest].</code></td>
                 </tr>
-                <tr class="noop" title="Line 138" id="line138">
-                    <td>138</td><td></td><td></td><td><code>  /// In-place serialization of a [WorkerRequest].</code></td>
+                <tr class="lineCov" title="Line 138" id="line138">
+                    <td>138</td><td></td><td>11</td><td><code>  void wrapInPlace() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
-                    <td>139</td><td></td><td>11</td><td><code>  void wrapInPlace() {</code></td>
+                    <td>139</td><td></td><td>11</td><td><code>    final token = data[_$token];</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 140" id="line140">
-                    <td>140</td><td></td><td>11</td><td><code>    final token = data[_$token];</code></td>
+                    <td>140</td><td></td><td>11</td><td><code>    if (token is SquadronCancelationToken) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 141" id="line141">
-                    <td>141</td><td></td><td>11</td><td><code>    if (token is SquadronCancelationToken) {</code></td>
+                    <td>141</td><td></td><td>4</td><td><code>      data[_$token] = token.serialize();</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 142" id="line142">
-                    <td>142</td><td></td><td>4</td><td><code>      data[_$token] = token.serialize();</code></td>
+                <tr class="noop" title="Line 142" id="line142">
+                    <td>142</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="noop" title="Line 143" id="line143">
-                    <td>143</td><td></td><td></td><td><code>    }</code></td>
+                    <td>143</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 144" id="line144">
-                    <td>144</td><td></td><td></td><td><code>  }</code></td>
+                    <td>144</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 145" id="line145">
-                    <td>145</td><td></td><td></td><td><code></code></td>
+                    <td>145</td><td></td><td></td><td><code>  static const int _connectCommand = -1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 146" id="line146">
-                    <td>146</td><td></td><td></td><td><code>  static const int _connectCommand = -1;</code></td>
+                    <td>146</td><td></td><td></td><td><code>  static const int _cancelStreamCommand = -2;</code></td>
                 </tr>
                 <tr class="noop" title="Line 147" id="line147">
-                    <td>147</td><td></td><td></td><td><code>  static const int _cancelStreamCommand = -2;</code></td>
+                    <td>147</td><td></td><td></td><td><code>  static const int _cancelTokenCommand = -3;</code></td>
                 </tr>
                 <tr class="noop" title="Line 148" id="line148">
-                    <td>148</td><td></td><td></td><td><code>  static const int _cancelTokenCommand = -3;</code></td>
+                    <td>148</td><td></td><td></td><td><code>  static const int _terminateCommand = -4;</code></td>
                 </tr>
                 <tr class="noop" title="Line 149" id="line149">
-                    <td>149</td><td></td><td></td><td><code>  static const int _terminateCommand = -4;</code></td>
+                    <td>149</td><td></td><td></td><td><code>}</code></td>
                 </tr>
                 <tr class="noop" title="Line 150" id="line150">
-                    <td>150</td><td></td><td></td><td><code>}</code></td>
+                    <td>150</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 151" id="line151">
-                    <td>151</td><td></td><td></td><td><code></code></td>
+                    <td>151</td><td></td><td></td><td><code>// 0 is reserved for travel time</code></td>
                 </tr>
                 <tr class="noop" title="Line 152" id="line152">
-                    <td>152</td><td></td><td></td><td><code>// 0 is reserved for travel time</code></td>
+                    <td>152</td><td></td><td></td><td><code>const _$channel = 1;</code></td>
                 </tr>
                 <tr class="noop" title="Line 153" id="line153">
-                    <td>153</td><td></td><td></td><td><code>const _$channel = 1;</code></td>
+                    <td>153</td><td></td><td></td><td><code>const _$command = 2;</code></td>
                 </tr>
                 <tr class="noop" title="Line 154" id="line154">
-                    <td>154</td><td></td><td></td><td><code>const _$command = 2;</code></td>
+                    <td>154</td><td></td><td></td><td><code>const _$args = 3;</code></td>
                 </tr>
                 <tr class="noop" title="Line 155" id="line155">
-                    <td>155</td><td></td><td></td><td><code>const _$args = 3;</code></td>
+                    <td>155</td><td></td><td></td><td><code>const _$token = 4;</code></td>
                 </tr>
                 <tr class="noop" title="Line 156" id="line156">
-                    <td>156</td><td></td><td></td><td><code>const _$token = 4;</code></td>
+                    <td>156</td><td></td><td></td><td><code>const _$streamId = 5;</code></td>
                 </tr>
                 <tr class="noop" title="Line 157" id="line157">
-                    <td>157</td><td></td><td></td><td><code>const _$streamId = 5;</code></td>
+                    <td>157</td><td></td><td></td><td><code>const _$inspectResponse = 6;</code></td>
                 </tr>
                 <tr class="noop" title="Line 158" id="line158">
-                    <td>158</td><td></td><td></td><td><code>const _$inspectResponse = 6;</code></td>
+                    <td>158</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 159" id="line159">
-                    <td>159</td><td></td><td></td><td><code></code></td>
+                    <td>159</td><td></td><td></td><td><code>@internal</code></td>
                 </tr>
                 <tr class="noop" title="Line 160" id="line160">
-                    <td>160</td><td></td><td></td><td><code>@internal</code></td>
+                    <td>160</td><td></td><td></td><td><code>extension CancelationTokenExt on WorkerRequest {</code></td>
                 </tr>
-                <tr class="noop" title="Line 161" id="line161">
-                    <td>161</td><td></td><td></td><td><code>extension CancelationTokenExt on WorkerRequest {</code></td>
+                <tr class="lineCov" title="Line 161" id="line161">
+                    <td>161</td><td></td><td>2</td><td><code>  void overrideCancelToken(SquadronCancelationToken token) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 162" id="line162">
-                    <td>162</td><td></td><td>2</td><td><code>  void overrideCancelToken(SquadronCancelationToken token) {</code></td>
+                    <td>162</td><td></td><td>10</td><td><code>    if (cancelToken == null || cancelToken!.id != token.id) {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 163" id="line163">
-                    <td>163</td><td></td><td>10</td><td><code>    if (cancelToken == null || cancelToken!.id != token.id) {</code></td>
+                <tr class="lineNoCov" title="Line 163" id="line163">
+                    <td>163</td><td></td><td>0</td><td><code>      throw SquadronErrorImpl.create('Cancelation token mismatch');</code></td>
                 </tr>
-                <tr class="lineNoCov" title="Line 164" id="line164">
-                    <td>164</td><td></td><td>0</td><td><code>      throw SquadronErrorImpl.create('Cancelation token mismatch');</code></td>
+                <tr class="noop" title="Line 164" id="line164">
+                    <td>164</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
-                <tr class="noop" title="Line 165" id="line165">
-                    <td>165</td><td></td><td></td><td><code>    }</code></td>
+                <tr class="lineCov" title="Line 165" id="line165">
+                    <td>165</td><td></td><td>2</td><td><code>    data[_$token] = token;</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 166" id="line166">
-                    <td>166</td><td></td><td>2</td><td><code>    data[_$token] = token;</code></td>
+                <tr class="noop" title="Line 166" id="line166">
+                    <td>166</td><td></td><td></td><td><code>  }</code></td>
                 </tr>
                 <tr class="noop" title="Line 167" id="line167">
-                    <td>167</td><td></td><td></td><td><code>  }</code></td>
-                </tr>
-                <tr class="noop" title="Line 168" id="line168">
-                    <td>168</td><td></td><td></td><td><code>}</code></td>
+                    <td>167</td><td></td><td></td><td><code>}</code></td>
                 </tr>
             </tbody>
         </table>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9347826" lines-covered="43" lines-valid="46" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="worker_request.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.93333334" lines-covered="42" lines-valid="45" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -106,7 +106,7 @@
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="34">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>        Timestamp.now(), // 0 - travel time</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="35">
@@ -145,7 +145,7 @@
             <hit count="22" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="11" number="46">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>        Timestamp.now(), // 0 - travel time</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
         <line number="47">
@@ -176,11 +176,11 @@
             <code>  /// Creates a new stream cancelation request.</code>
         </line>
         <line hits="12" number="56">
-            <code>  factory WorkerRequest.cancelStream(int streamId) =&gt; WorkerRequest._([</code>
+            <code>  factory WorkerRequest.cancelStream(StreamId streamId) =&gt; WorkerRequest._([</code>
             <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="4" number="57">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>        Timestamp.now(), // 0 - travel time</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="58">
@@ -196,7 +196,7 @@
             <code>        null, // 4 - cancelation token</code>
         </line>
         <line number="62">
-            <code>        streamId, // 5 - stream id</code>
+            <code>        streamId.handle, // 5 - stream id</code>
         </line>
         <line number="63">
             <code>        null, // 6 - inspect response</code>
@@ -219,7 +219,7 @@
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="69">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>        Timestamp.now(), // 0 - travel time</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="70">
@@ -254,7 +254,7 @@
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="80">
-            <code>        microsecTimeStamp(), // 0 - travel time</code>
+            <code>        Timestamp.now(), // 0 - travel time</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
         <line number="81">
@@ -327,9 +327,9 @@
         <line number="102">
             <code>  /// Stream id.</code>
         </line>
-        <line hits="8" number="103">
-            <code>  int? get streamId =&gt; data[_$streamId];</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+        <line hits="12" number="103">
+            <code>  StreamId? get streamId =&gt; StreamId.from(data[_$streamId]);</code>
+            <hit count="12" name="&lt;unnamed&gt;"/>
         </line>
         <line number="104">
             <code/>
@@ -422,130 +422,126 @@
             <code>    data[_$command] = (data[_$command] as num).toInt();</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="24" number="131">
-            <code>    data[_$streamId] = (data[_$streamId] as num?)?.toInt();</code>
-            <hit count="24" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="30" number="132">
+        <line hits="30" number="131">
             <code>    data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="133">
+        <line hits="30" number="132">
             <code>    data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="134">
+        <line hits="10" number="133">
             <code>    data[_$inspectResponse] ??= false;</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="135">
+        <line hits="10" number="134">
             <code>    data[_$args] ??= const [];</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="136">
+        <line number="135">
             <code>  }</code>
         </line>
-        <line number="137">
+        <line number="136">
             <code/>
         </line>
-        <line number="138">
+        <line number="137">
             <code>  /// In-place serialization of a [WorkerRequest].</code>
         </line>
-        <line hits="11" number="139">
+        <line hits="11" number="138">
             <code>  void wrapInPlace() {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="140">
+        <line hits="11" number="139">
             <code>    final token = data[_$token];</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="11" number="141">
+        <line hits="11" number="140">
             <code>    if (token is SquadronCancelationToken) {</code>
             <hit count="11" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="142">
+        <line hits="4" number="141">
             <code>      data[_$token] = token.serialize();</code>
             <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="143">
+        <line number="142">
             <code>    }</code>
         </line>
-        <line number="144">
+        <line number="143">
             <code>  }</code>
         </line>
-        <line number="145">
+        <line number="144">
             <code/>
         </line>
-        <line number="146">
+        <line number="145">
             <code>  static const int _connectCommand = -1;</code>
         </line>
-        <line number="147">
+        <line number="146">
             <code>  static const int _cancelStreamCommand = -2;</code>
         </line>
-        <line number="148">
+        <line number="147">
             <code>  static const int _cancelTokenCommand = -3;</code>
         </line>
-        <line number="149">
+        <line number="148">
             <code>  static const int _terminateCommand = -4;</code>
         </line>
-        <line number="150">
+        <line number="149">
             <code>}</code>
         </line>
-        <line number="151">
+        <line number="150">
             <code/>
         </line>
-        <line number="152">
+        <line number="151">
             <code>// 0 is reserved for travel time</code>
         </line>
-        <line number="153">
+        <line number="152">
             <code>const _$channel = 1;</code>
         </line>
-        <line number="154">
+        <line number="153">
             <code>const _$command = 2;</code>
         </line>
-        <line number="155">
+        <line number="154">
             <code>const _$args = 3;</code>
         </line>
-        <line number="156">
+        <line number="155">
             <code>const _$token = 4;</code>
         </line>
-        <line number="157">
+        <line number="156">
             <code>const _$streamId = 5;</code>
         </line>
-        <line number="158">
+        <line number="157">
             <code>const _$inspectResponse = 6;</code>
         </line>
-        <line number="159">
+        <line number="158">
             <code/>
         </line>
-        <line number="160">
+        <line number="159">
             <code>@internal</code>
         </line>
-        <line number="161">
+        <line number="160">
             <code>extension CancelationTokenExt on WorkerRequest {</code>
         </line>
-        <line hits="2" number="162">
+        <line hits="2" number="161">
             <code>  void overrideCancelToken(SquadronCancelationToken token) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="163">
+        <line hits="10" number="162">
             <code>    if (cancelToken == null || cancelToken!.id != token.id) {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="164">
+        <line hits="0" number="163">
             <code>      throw SquadronErrorImpl.create('Cancelation token mismatch');</code>
         </line>
-        <line number="165">
+        <line number="164">
             <code>    }</code>
         </line>
-        <line hits="2" number="166">
+        <line hits="2" number="165">
             <code>    data[_$token] = token;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="167">
+        <line number="166">
             <code>  }</code>
         </line>
-        <line number="168">
+        <line number="167">
             <code>}</code>
         </line>
     </lines>

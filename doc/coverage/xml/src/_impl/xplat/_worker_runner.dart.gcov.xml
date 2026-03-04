@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90140843" lines-covered="128" lines-valid="142" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_worker_runner.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.90140843" lines-covered="128" lines-valid="142" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -38,71 +38,71 @@
             <code>import '../../worker/worker_channel.dart';</code>
         </line>
         <line number="13">
-            <code>import '../../worker/worker_request.dart';</code>
+            <code>import '../../worker/worker_message.dart';</code>
         </line>
         <line number="14">
-            <code>import '../../worker_service.dart';</code>
+            <code>import '../../worker/worker_request.dart';</code>
         </line>
         <line number="15">
-            <code>import '_internal_logger.dart';</code>
+            <code>import '../../worker_service.dart';</code>
         </line>
         <line number="16">
-            <code/>
+            <code>import '_internal_logger.dart';</code>
         </line>
         <line number="17">
-            <code>class WorkerRunner {</code>
+            <code/>
         </line>
         <line number="18">
+            <code>class WorkerRunner {</code>
+        </line>
+        <line number="19">
             <code>  /// Constructs a new worker runner.</code>
         </line>
-        <line hits="10" number="19">
+        <line hits="10" number="20">
             <code>  WorkerRunner(this._terminate);</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="20">
-            <code/>
-        </line>
         <line number="21">
-            <code>  void Function(WorkerRunner) _terminate;</code>
+            <code/>
         </line>
         <line number="22">
-            <code/>
+            <code>  void Function(WorkerRunner) _terminate;</code>
         </line>
         <line number="23">
-            <code>  final internalLogger = InternalLogger();</code>
+            <code/>
         </line>
         <line number="24">
-            <code/>
+            <code>  final internalLogger = InternalLogger();</code>
         </line>
         <line number="25">
-            <code>  WorkerService? _service;</code>
+            <code/>
         </line>
         <line number="26">
-            <code>  OperationsMap? _operations;</code>
+            <code>  WorkerService? _service;</code>
         </line>
         <line number="27">
-            <code/>
+            <code>  OperationsMap? _operations;</code>
         </line>
         <line number="28">
-            <code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code>
+            <code/>
         </line>
         <line number="29">
-            <code/>
+            <code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code>
         </line>
         <line number="30">
-            <code>  bool _terminationRequested = false;</code>
-        </line>
-        <line number="31">
-            <code>  int _executing = 0;</code>
-        </line>
-        <line number="32">
             <code/>
         </line>
+        <line number="31">
+            <code>  bool _terminationRequested = false;</code>
+        </line>
+        <line number="32">
+            <code>  int _executing = 0;</code>
+        </line>
         <line number="33">
-            <code>  final _streamCancelers = &lt;int, StreamCanceler&gt;{};</code>
+            <code/>
         </line>
         <line number="34">
-            <code>  int _streamId = 0;</code>
+            <code>  final _streamCancelers = &lt;StreamId, StreamCanceler&gt;{};</code>
         </line>
         <line number="35">
             <code/>
@@ -904,7 +904,7 @@
             <code/>
         </line>
         <line number="271">
-            <code>    late final int streamId;</code>
+            <code>    late final StreamId streamId;</code>
         </line>
         <line number="272">
             <code/>
@@ -1055,12 +1055,12 @@
             <code>  /// callback.</code>
         </line>
         <line hits="5" number="316">
-            <code>  int _registerStreamCanceler(StreamCanceler canceler) {</code>
+            <code>  StreamId _registerStreamCanceler(StreamCanceler canceler) {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="317">
-            <code>    final streamId = ++_streamId;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line hits="5" number="317">
+            <code>    final streamId = StreamId.next();</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="318">
             <code>    _streamCancelers[streamId] = canceler;</code>
@@ -1079,7 +1079,7 @@
             <code>  /// Unregisters the stream canceled callback associated to the [streamId].</code>
         </line>
         <line hits="5" number="323">
-            <code>  void _unregisterStreamCanceler(int streamId) {</code>
+            <code>  void _unregisterStreamCanceler(StreamId streamId) {</code>
             <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="10" number="324">

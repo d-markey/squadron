@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-21</dd>
+                    <dd>2026-03-04</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -97,70 +97,70 @@
                     <td>12</td><td></td><td></td><td><code>import '../../worker/worker_channel.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
-                    <td>13</td><td></td><td></td><td><code>import '../../worker/worker_request.dart';</code></td>
+                    <td>13</td><td></td><td></td><td><code>import '../../worker/worker_message.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
-                    <td>14</td><td></td><td></td><td><code>import '../../worker_service.dart';</code></td>
+                    <td>14</td><td></td><td></td><td><code>import '../../worker/worker_request.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
-                    <td>15</td><td></td><td></td><td><code>import '_internal_logger.dart';</code></td>
+                    <td>15</td><td></td><td></td><td><code>import '../../worker_service.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 16" id="line16">
-                    <td>16</td><td></td><td></td><td><code></code></td>
+                    <td>16</td><td></td><td></td><td><code>import '_internal_logger.dart';</code></td>
                 </tr>
                 <tr class="noop" title="Line 17" id="line17">
-                    <td>17</td><td></td><td></td><td><code>class WorkerRunner {</code></td>
+                    <td>17</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
-                    <td>18</td><td></td><td></td><td><code>  /// Constructs a new worker runner.</code></td>
+                    <td>18</td><td></td><td></td><td><code>class WorkerRunner {</code></td>
                 </tr>
-                <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>10</td><td><code>  WorkerRunner(this._terminate);</code></td>
+                <tr class="noop" title="Line 19" id="line19">
+                    <td>19</td><td></td><td></td><td><code>  /// Constructs a new worker runner.</code></td>
                 </tr>
-                <tr class="noop" title="Line 20" id="line20">
-                    <td>20</td><td></td><td></td><td><code></code></td>
+                <tr class="lineCov" title="Line 20" id="line20">
+                    <td>20</td><td></td><td>10</td><td><code>  WorkerRunner(this._terminate);</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
-                    <td>21</td><td></td><td></td><td><code>  void Function(WorkerRunner) _terminate;</code></td>
+                    <td>21</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 22" id="line22">
-                    <td>22</td><td></td><td></td><td><code></code></td>
+                    <td>22</td><td></td><td></td><td><code>  void Function(WorkerRunner) _terminate;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
-                    <td>23</td><td></td><td></td><td><code>  final internalLogger = InternalLogger();</code></td>
+                    <td>23</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 24" id="line24">
-                    <td>24</td><td></td><td></td><td><code></code></td>
+                    <td>24</td><td></td><td></td><td><code>  final internalLogger = InternalLogger();</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
-                    <td>25</td><td></td><td></td><td><code>  WorkerService? _service;</code></td>
+                    <td>25</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 26" id="line26">
-                    <td>26</td><td></td><td></td><td><code>  OperationsMap? _operations;</code></td>
+                    <td>26</td><td></td><td></td><td><code>  WorkerService? _service;</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
-                    <td>27</td><td></td><td></td><td><code></code></td>
+                    <td>27</td><td></td><td></td><td><code>  OperationsMap? _operations;</code></td>
                 </tr>
                 <tr class="noop" title="Line 28" id="line28">
-                    <td>28</td><td></td><td></td><td><code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code></td>
+                    <td>28</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
-                    <td>29</td><td></td><td></td><td><code></code></td>
+                    <td>29</td><td></td><td></td><td><code>  final _cancelTokens = &lt;String, CancelationTokenReference&gt;{};</code></td>
                 </tr>
                 <tr class="noop" title="Line 30" id="line30">
-                    <td>30</td><td></td><td></td><td><code>  bool _terminationRequested = false;</code></td>
+                    <td>30</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
-                    <td>31</td><td></td><td></td><td><code>  int _executing = 0;</code></td>
+                    <td>31</td><td></td><td></td><td><code>  bool _terminationRequested = false;</code></td>
                 </tr>
                 <tr class="noop" title="Line 32" id="line32">
-                    <td>32</td><td></td><td></td><td><code></code></td>
+                    <td>32</td><td></td><td></td><td><code>  int _executing = 0;</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
-                    <td>33</td><td></td><td></td><td><code>  final _streamCancelers = &lt;int, StreamCanceler&gt;{};</code></td>
+                    <td>33</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 34" id="line34">
-                    <td>34</td><td></td><td></td><td><code>  int _streamId = 0;</code></td>
+                    <td>34</td><td></td><td></td><td><code>  final _streamCancelers = &lt;StreamId, StreamCanceler&gt;{};</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code></code></td>
@@ -871,7 +871,7 @@
                     <td>270</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="noop" title="Line 271" id="line271">
-                    <td>271</td><td></td><td></td><td><code>    late final int streamId;</code></td>
+                    <td>271</td><td></td><td></td><td><code>    late final StreamId streamId;</code></td>
                 </tr>
                 <tr class="noop" title="Line 272" id="line272">
                     <td>272</td><td></td><td></td><td><code></code></td>
@@ -1006,10 +1006,10 @@
                     <td>315</td><td></td><td></td><td><code>  /// callback.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 316" id="line316">
-                    <td>316</td><td></td><td>5</td><td><code>  int _registerStreamCanceler(StreamCanceler canceler) {</code></td>
+                    <td>316</td><td></td><td>5</td><td><code>  StreamId _registerStreamCanceler(StreamCanceler canceler) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 317" id="line317">
-                    <td>317</td><td></td><td>10</td><td><code>    final streamId = ++_streamId;</code></td>
+                    <td>317</td><td></td><td>5</td><td><code>    final streamId = StreamId.next();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 318" id="line318">
                     <td>318</td><td></td><td>10</td><td><code>    _streamCancelers[streamId] = canceler;</code></td>
@@ -1027,7 +1027,7 @@
                     <td>322</td><td></td><td></td><td><code>  /// Unregisters the stream canceled callback associated to the [streamId].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 323" id="line323">
-                    <td>323</td><td></td><td>5</td><td><code>  void _unregisterStreamCanceler(int streamId) {</code></td>
+                    <td>323</td><td></td><td>5</td><td><code>  void _unregisterStreamCanceler(StreamId streamId) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 324" id="line324">
                     <td>324</td><td></td><td>10</td><td><code>    _streamCancelers.remove(streamId);</code></td>

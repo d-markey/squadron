@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-02-21</dd>
+                    <dd>2026-03-04</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -193,7 +193,7 @@
                     <td>44</td><td></td><td></td><td><code>extension PerfCounterImpl on PerfCounter {</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
-                    <td>45</td><td></td><td></td><td><code>  /// Updates counter value with the duration indicated by [timeInMicroseconds].</code></td>
+                    <td>45</td><td></td><td></td><td><code>  /// Updates counter value with the duration indicated by [duration].</code></td>
                 </tr>
                 <tr class="noop" title="Line 46" id="line46">
                     <td>46</td><td></td><td></td><td><code>  /// 1. update the maximum elapsed time if required.</code></td>
@@ -205,19 +205,19 @@
                     <td>48</td><td></td><td></td><td><code>  /// 3. depending on [success], increment the total number of calls or errors by 1.</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>1</td><td><code>  void update(int timeInMicroseconds, bool success) {</code></td>
+                    <td>49</td><td></td><td>1</td><td><code>  void update(int microseconds, bool success) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 50" id="line50">
-                    <td>50</td><td></td><td>2</td><td><code>    if (timeInMicroseconds &gt; _maxTimeInMicroseconds) {</code></td>
+                    <td>50</td><td></td><td>2</td><td><code>    if (microseconds &gt; _maxTimeInMicroseconds) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>1</td><td><code>      _maxTimeInMicroseconds = timeInMicroseconds;</code></td>
+                    <td>51</td><td></td><td>1</td><td><code>      _maxTimeInMicroseconds = microseconds;</code></td>
                 </tr>
                 <tr class="noop" title="Line 52" id="line52">
                     <td>52</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 53" id="line53">
-                    <td>53</td><td></td><td>2</td><td><code>    _totalTimeInMicroseconds += timeInMicroseconds;</code></td>
+                    <td>53</td><td></td><td>2</td><td><code>    _totalTimeInMicroseconds += microseconds;</code></td>
                 </tr>
                 <tr class="noop" title="Line 54" id="line54">
                     <td>54</td><td></td><td></td><td><code>    if (success) {</code></td>

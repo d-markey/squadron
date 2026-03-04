@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-02-21" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.75" lines-covered="3" lines-valid="4" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="worker_message.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.85714287" lines-covered="6" lines-valid="7" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../_impl/xplat/_time_stamp.dart';</code>
@@ -8,54 +8,84 @@
             <code/>
         </line>
         <line number="3">
-            <code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code>
+            <code>extension type StreamId._(int handle) {</code>
         </line>
         <line number="4">
-            <code>extension type WorkerMessage(List data) implements Object {</code>
+            <code>  static int _nextId = 1;</code>
         </line>
         <line number="5">
-            <code>  /// [travelTime] is set by the receiving end and measures the time (in</code>
-        </line>
-        <line number="6">
-            <code>  /// microseconds) it took between the moment the message was serialized and</code>
-        </line>
-        <line number="7">
-            <code>  /// the moment it was deserialized.</code>
-        </line>
-        <line hits="0" number="8">
-            <code>  int? get travelTime =&gt; data[_$traveltime];</code>
-        </line>
-        <line number="9">
             <code/>
         </line>
-        <line hits="10" number="10">
+        <line hits="15" number="6">
+            <code>  factory StreamId.next() =&gt; StreamId._(_nextId++);</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="7">
+            <code/>
+        </line>
+        <line hits="5" number="8">
+            <code>  static StreamId? from(dynamic value) =&gt;</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="15" number="9">
+            <code>      (value is num) ? StreamId._(value.toInt()) : null;</code>
+            <hit count="15" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="10">
+            <code>}</code>
+        </line>
+        <line number="11">
+            <code/>
+        </line>
+        <line number="12">
+            <code>/// Make [WorkerMessage] a `List` to minimize serialization overhead.</code>
+        </line>
+        <line number="13">
+            <code>extension type WorkerMessage(List data) implements Object {</code>
+        </line>
+        <line number="14">
+            <code>  /// [travelTime] is set by the receiving end and measures the time (in</code>
+        </line>
+        <line number="15">
+            <code>  /// microseconds) it took between the moment the message was serialized and</code>
+        </line>
+        <line number="16">
+            <code>  /// the moment it was deserialized.</code>
+        </line>
+        <line hits="0" number="17">
+            <code>  int? get travelTime =&gt; data[_$traveltime];</code>
+        </line>
+        <line number="18">
+            <code/>
+        </line>
+        <line hits="10" number="19">
             <code>  void unwrapTravelTime() {</code>
             <hit count="10" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="11">
-            <code>    final ts = (data[_$traveltime] as num?)?.toInt();</code>
+        <line hits="20" number="20">
+            <code>    final ts = Timestamp.from(data[_$traveltime]);</code>
             <hit count="20" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="12">
+        <line number="21">
             <code>    if (ts != null) {</code>
         </line>
-        <line hits="30" number="13">
-            <code>      data[_$traveltime] = microsecTimeStamp() - ts;</code>
+        <line hits="30" number="22">
+            <code>      data[_$traveltime] = Timestamp.now() - ts;</code>
             <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="14">
+        <line number="23">
             <code>    }</code>
         </line>
-        <line number="15">
+        <line number="24">
             <code>  }</code>
         </line>
-        <line number="16">
+        <line number="25">
             <code>}</code>
         </line>
-        <line number="17">
+        <line number="26">
             <code/>
         </line>
-        <line number="18">
+        <line number="27">
             <code>const _$traveltime = 0;</code>
         </line>
     </lines>
