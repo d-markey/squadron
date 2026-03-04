@@ -57,7 +57,7 @@ final class _VmChannel implements Channel {
 
   /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
   @override
-  void cancelStream(int streamId) {
+  void cancelStream(StreamId streamId) {
     _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 

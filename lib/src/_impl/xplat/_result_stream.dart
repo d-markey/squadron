@@ -3,6 +3,7 @@ import 'dart:async';
 import '../../channel.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
+import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '_forward_stream_controller.dart';
@@ -14,7 +15,7 @@ class ResultStream {
     Stream<WorkerResponse> Function() sendRequest,
     bool streaming,
   ) {
-    final streamIdCompleter = streaming ? Completer<int?>() : null;
+    final streamIdCompleter = streaming ? Completer<StreamId?>() : null;
     final command = req.command, token = req.cancelToken;
 
     void $decodeStreamOfResponses(WorkerResponse res) {
@@ -40,7 +41,7 @@ class ResultStream {
       final error = res.error;
       if (error == null && !hasStreamId) {
         // the first result from a streaming operation is the stream ID
-        streamIdCompleter.complete((res.result as num).toInt());
+        streamIdCompleter.complete(StreamId.from(res.result));
       } else if (error != null) {
         _controller.safeAddError(error);
         if (!hasStreamId) {
@@ -81,8 +82,8 @@ class ResultStream {
       _controller.close();
     }
 
-    Future<int?> $getStreamId(StreamSubscription sub) {
-      streamIdCompleter as Completer<int?>;
+    Future<StreamId?> $getStreamId(StreamSubscription sub) {
+      streamIdCompleter as Completer<StreamId?>;
       var count = 0;
       if (sub.isPaused && !streamIdCompleter.isCompleted) {
         // if the subscription was paused and the streamId is not available,

@@ -2,17 +2,17 @@ part of 'worker.dart';
 
 class _Stats {
   _Stats(Worker w)
-      : _idle = microsecTimeStamp(),
+      : _idle = Timestamp.now(),
         _worker = w;
 
   final Worker _worker;
 
   void start() {
-    _idle = _started = microsecTimeStamp();
+    _idle = _started = Timestamp.now();
   }
 
   void stop() {
-    _stopped = microsecTimeStamp();
+    _stopped = Timestamp.now();
   }
 
   void beginWork() {
@@ -26,7 +26,7 @@ class _Stats {
     _workload--;
     _totalWorkload++;
     if (_workload == 0) {
-      _idle = microsecTimeStamp();
+      _idle = Timestamp.now();
     }
   }
 
@@ -35,13 +35,13 @@ class _Stats {
   }
 
   /// Start timestamp
-  int? _started;
+  Timestamp? _started;
 
   /// Stopped timestamp
-  int? _stopped;
+  Timestamp? _stopped;
 
   /// Idle timestamp.
-  int _idle;
+  Timestamp _idle;
 
   /// Current workload.
   int _workload = 0;
@@ -55,19 +55,17 @@ class _Stats {
   /// Total errors.
   int _totalErrors = 0;
 
-  Duration _getUpTime(int microsec) => (_started == null)
-      ? Duration.zero
-      : Duration(microseconds: microsec - _started!);
+  Duration _getUpTime(Timestamp timestamp) =>
+      (_started == null) ? Duration.zero : timestamp.elapsedSince(_started!);
 
-  Duration _getIdleTime(int microsec) => (_workload > 0)
-      ? Duration.zero
-      : Duration(microseconds: microsec - _idle);
+  Duration _getIdleTime(Timestamp timestamp) =>
+      (_workload > 0) ? Duration.zero : timestamp.elapsedSince(_idle);
 
   /// Indicates if the [Worker] has been stopped.
   bool get isStopped => _stopped != null;
 
   WorkerStat get snapshot {
-    final ts = microsecTimeStamp();
+    final ts = Timestamp.now();
     return WorkerStatImpl.create(
       _worker.runtimeType,
       _worker.hashCode,

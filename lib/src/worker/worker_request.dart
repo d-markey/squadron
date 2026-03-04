@@ -31,7 +31,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   factory WorkerRequest.userCommand(PlatformChannel channelInfo, int command,
           List args, SquadronCancelationToken? token, bool inspectResponse) =>
       WorkerRequest._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         channelInfo, // 1 - channel
         command, // 2 - command
         args, // 3 - args
@@ -43,7 +43,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new start request.
   factory WorkerRequest.start(PlatformChannel channelInfo, List args) =>
       WorkerRequest._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         channelInfo, // 1 - channel
         _connectCommand, // 2 - command
         args, // 3 - args
@@ -53,20 +53,20 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
       ]);
 
   /// Creates a new stream cancelation request.
-  factory WorkerRequest.cancelStream(int streamId) => WorkerRequest._([
-        microsecTimeStamp(), // 0 - travel time
+  factory WorkerRequest.cancelStream(StreamId streamId) => WorkerRequest._([
+        Timestamp.now(), // 0 - travel time
         null, // 1 - channel
         _cancelStreamCommand, // 2 - command
         null, // 3 - args
         null, // 4 - cancelation token
-        streamId, // 5 - stream id
+        streamId.handle, // 5 - stream id
         null, // 6 - inspect response
       ]);
 
   /// Creates a new cancelation request.
   factory WorkerRequest.cancel(SquadronCancelationToken token) =>
       WorkerRequest._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         null, // 1 - channel
         _cancelTokenCommand, // 2 - command
         null, // 3 - args
@@ -77,7 +77,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
 
   /// Creates a new termination request.
   factory WorkerRequest.stop() => WorkerRequest._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         null, // 1 - channel
         _terminateCommand, // 2 - command
         null, // 3 - args
@@ -100,7 +100,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   SquadronCancelationToken? get cancelToken => data[_$token];
 
   /// Stream id.
-  int? get streamId => data[_$streamId];
+  StreamId? get streamId => StreamId.from(data[_$streamId]);
 
   /// The [command]'s ID.
   int get command => data[_$command];
@@ -128,7 +128,6 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   void unwrapInPlace(InternalLogger? logger) {
     unwrapTravelTime();
     data[_$command] = (data[_$command] as num).toInt();
-    data[_$streamId] = (data[_$streamId] as num?)?.toInt();
     data[_$channel] = WorkerChannel.deserialize(data[_$channel], logger);
     data[_$token] = SquadronCancelationToken.deserialize(data[_$token]);
     data[_$inspectResponse] ??= false;

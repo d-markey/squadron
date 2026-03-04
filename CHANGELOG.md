@@ -1,3 +1,8 @@
+## 7.4.1
+
+- Moved log serialization into the `WorkerResponse.wrapInPlace` method.
+- Minor refactorings and optimization attempts, especially in `lib\src\_impl\web\_patch.dart`.
+
 ## 7.4.0
 
 - Add `Squadron.disableBrowserCache` to force browsers into reloading the code of Workers. When set to `true`, Squadron will append a query parameter to the Worker URL, passing a random number that should prevent browsers from using the cache.

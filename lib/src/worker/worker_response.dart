@@ -25,7 +25,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
   factory WorkerResponse.ready([bool status = true]) => WorkerResponse._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         status, // 1 - ready
         null, // 2 - error
         null, // 3 - end of stream
@@ -35,7 +35,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
   factory WorkerResponse.withResult(dynamic result) => WorkerResponse._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         result, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
@@ -46,7 +46,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   factory WorkerResponse.withError(SquadronException exception,
           [StackTrace? stackTrace]) =>
       WorkerResponse._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         null, // 1 - result
         exception, // 2 - error
         null, // 3 - end of stream
@@ -55,16 +55,16 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
 
   /// [WorkerResponse] with log event information.
   factory WorkerResponse.log(LogEvent message) => WorkerResponse._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
-        message.serialize(), // 4 - log message
+        message, // 4 - log message
       ]);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
   factory WorkerResponse.closeStream() => WorkerResponse._([
-        microsecTimeStamp(), // 0 - travel time
+        Timestamp.now(), // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         true, // 3 - end of stream
@@ -112,6 +112,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       data[_$result] = result.toList();
     }
     data[_$error] = (data[_$error] as SquadronException?)?.serialize();
+    data[_$log] = (data[_$log] as LogEvent?)?.serialize();
   }
 }
 
@@ -125,7 +126,7 @@ extension _LogEventSerializationExt on LogEvent {
   List serialize() => [
         level.value,
         _stringify(message),
-        microsecTimeStamp(time),
+        Timestamp.from(time),
         error?.toString(),
         stackTrace?.toString(),
       ];
@@ -135,7 +136,7 @@ extension _LogEventSerializationExt on LogEvent {
       : LogEvent(
           _getLevel((props[0] as num?)?.toInt()),
           props[1],
-          time: fromMicrosecTimeStamp((props[2] as num?)?.toInt()),
+          time: Timestamp.from(props[2])?.toDateTime(),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );

@@ -15,6 +15,7 @@ import '../../squadron_singleton.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../utils.dart';
 import '../../worker/worker_channel.dart';
+import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../xplat/_disconnected_channel.dart';

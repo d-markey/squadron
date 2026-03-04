@@ -1,5 +1,14 @@
 import '../_impl/xplat/_time_stamp.dart';
 
+extension type StreamId._(int handle) {
+  static int _nextId = 1;
+
+  factory StreamId.next() => StreamId._(_nextId++);
+
+  static StreamId? from(dynamic value) =>
+      (value is num) ? StreamId._(value.toInt()) : null;
+}
+
 /// Make [WorkerMessage] a `List` to minimize serialization overhead.
 extension type WorkerMessage(List data) implements Object {
   /// [travelTime] is set by the receiving end and measures the time (in
@@ -8,9 +17,9 @@ extension type WorkerMessage(List data) implements Object {
   int? get travelTime => data[_$traveltime];
 
   void unwrapTravelTime() {
-    final ts = (data[_$traveltime] as num?)?.toInt();
+    final ts = Timestamp.from(data[_$traveltime]);
     if (ts != null) {
-      data[_$traveltime] = microsecTimeStamp() - ts;
+      data[_$traveltime] = Timestamp.now() - ts;
     }
   }
 }

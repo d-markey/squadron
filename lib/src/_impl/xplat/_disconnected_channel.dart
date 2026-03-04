@@ -8,6 +8,7 @@ import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
+import '../../worker/worker_message.dart';
 
 @internal
 final class DisconnectedChannel implements Channel {
@@ -24,7 +25,7 @@ final class DisconnectedChannel implements Channel {
       throw SquadronErrorImpl.create('Channel is not connected');
 
   @override
-  void cancelStream(int streamId) => _disconnectedError();
+  void cancelStream(StreamId streamId) => _disconnectedError();
 
   @override
   void cancelToken(SquadronCancelationToken? token) => _disconnectedError();

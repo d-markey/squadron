@@ -81,9 +81,9 @@ void checkOutcome<X, Y>(String process, X a, X b, Y Function(X) test,
         expect(exa.toString(), exb.toString());
       } catch (_) {
         print(
-            '$process failed with inconsistent errors: for $a with $exa, for $b with $exb');
+            '$process failed with inconsistent errors:\n  - error "$exa" for $a\n  - error "$exb" for $b');
         if (platform.isWasm && process == 'subList (invalid range)') {
-          // ignore until https://github.com/dart-lang/sdk/issues/61045 is fixed
+          // ignored because of https://github.com/dart-lang/sdk/issues/61045
         } else {
           print('Stacktrace (a): $sta');
           print('Stacktrace (b): $stb');

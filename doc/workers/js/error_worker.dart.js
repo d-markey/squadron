@@ -5935,7 +5935,6 @@
       return value == null ? null : A.$JSDate_constructor_$fromUnixTimestamp(type$.DateTime._as(value).get$millisecondsSinceEpoch());
     },
     _noRegistration(js) {
-      A._asObject(js);
     },
     _getJSValue(dart) {
       if (typeof dart == "number")
@@ -6103,7 +6102,6 @@
       _._terminationRequested = false;
       _._executing = 0;
       _._streamCancelers = t3;
-      _._streamId = 0;
       _._installError = _._installCompleter = _._logForwarder = null;
     },
     WorkerRunner__checkOperations_closure: function WorkerRunner__checkOperations_closure() {
@@ -6538,9 +6536,22 @@
         t1 = !t1._is(b) && a === b;
       return t1;
     },
-    microsecTimeStamp(time) {
-      var t1 = time == null ? null : time.get$microsecondsSinceEpoch();
-      return t1 == null ? A.DateTime$now().get$microsecondsSinceEpoch() : t1;
+    Timestamp_constructor__(_microseconds) {
+      return _microseconds;
+    },
+    Timestamp_constructor_now() {
+      return A.Timestamp_constructor__(A.DateTime$now().get$microsecondsSinceEpoch());
+    },
+    Timestamp_from(value) {
+      var t1;
+      if (typeof value == "number")
+        t1 = A.Timestamp_constructor__(B.JSNumber_methods.toInt$0(value));
+      else
+        t1 = value instanceof A.DateTime ? A.Timestamp_constructor__(value.get$microsecondsSinceEpoch()) : null;
+      return t1;
+    },
+    Timestamp__(_this, other) {
+      return _this - other;
     },
     run(initializer) {
       return A.bootstrap(initializer, null);
@@ -6563,18 +6574,19 @@
     OperationsMap_get_keys(_this) {
       return _this.get$keys();
     },
+    StreamId_constructor__(handle) {
+      return handle;
+    },
+    StreamId_from(value) {
+      return typeof value == "number" ? A.StreamId_constructor__(B.JSNumber_methods.toInt$0(value)) : null;
+    },
     WorkerMessage_unwrapTravelTime(_this) {
-      var t1, ts;
+      var ts;
       if (0 >= _this.length)
         return A.ioore(_this, 0);
-      t1 = A._asNumQ(_this[0]);
-      ts = t1 == null ? null : B.JSNumber_methods.toInt$0(t1);
-      if (ts != null) {
-        t1 = A.microsecTimeStamp(null);
-        if (typeof t1 !== "number")
-          return t1.$sub();
-        J.$indexSet$ax(_this, 0, t1 - ts);
-      }
+      ts = A.Timestamp_from(_this[0]);
+      if (ts != null)
+        J.$indexSet$ax(_this, 0, A.Timestamp__(A.Timestamp_constructor_now(), ts));
     },
     WorkerRequest_constructor__(data) {
       return data;
@@ -6608,7 +6620,7 @@
     WorkerRequest_get_streamId(_this) {
       if (5 >= _this.length)
         return A.ioore(_this, 5);
-      return A._asIntQ(_this[5]);
+      return A.StreamId_from(_this[5]);
     },
     WorkerRequest_get_command(_this) {
       if (2 >= _this.length)
@@ -6638,16 +6650,12 @@
       return J.$eq$(A.WorkerRequest_get_command(_this), -4);
     },
     WorkerRequest_unwrapInPlace(_this, logger) {
-      var t1, t2;
+      var t1;
       A.WorkerMessage_unwrapTravelTime(_this);
       if (2 >= _this.length)
         return A.ioore(_this, 2);
       t1 = J.getInterceptor$ax(_this);
       t1.$indexSet(_this, 2, B.JSNumber_methods.toInt$0(A._asNum(_this[2])));
-      if (5 >= _this.length)
-        return A.ioore(_this, 5);
-      t2 = A._asNumQ(_this[5]);
-      t1.$indexSet(_this, 5, t2 == null ? null : B.JSNumber_methods.toInt$0(t2));
       if (1 >= _this.length)
         return A.ioore(_this, 1);
       t1.$indexSet(_this, 1, A.WorkerChannel_deserialize(A._asJSObjectQ(_this[1]), logger));
@@ -6672,19 +6680,19 @@
       return data;
     },
     WorkerResponse_constructor_ready() {
-      return A.WorkerResponse_constructor__([A.microsecTimeStamp(null), true, null, null, null]);
+      return A.WorkerResponse_constructor__([A.Timestamp_constructor_now(), true, null, null, null]);
     },
     WorkerResponse_constructor_withResult(result) {
-      return A.WorkerResponse_constructor__([A.microsecTimeStamp(null), result, null, null, null]);
+      return A.WorkerResponse_constructor__([A.Timestamp_constructor_now(), result, null, null, null]);
     },
     WorkerResponse_constructor_withError(exception) {
-      return A.WorkerResponse_constructor__([A.microsecTimeStamp(null), null, exception, null, null]);
+      return A.WorkerResponse_constructor__([A.Timestamp_constructor_now(), null, exception, null, null]);
     },
     WorkerResponse_constructor_log(message) {
-      return A.WorkerResponse_constructor__([A.microsecTimeStamp(null), null, null, null, A._LogEventSerializationExt_serialize(message)]);
+      return A.WorkerResponse_constructor__([A.Timestamp_constructor_now(), null, null, null, message]);
     },
     WorkerResponse_wrapInPlace(_this) {
-      var result, t1;
+      var result, t1, t2;
       if (1 >= _this.length)
         return A.ioore(_this, 1);
       result = _this[1];
@@ -6693,13 +6701,19 @@
       if (2 >= _this.length)
         return A.ioore(_this, 2);
       t1 = type$.nullable_SquadronException._as(_this[2]);
-      J.$indexSet$ax(_this, 2, t1 == null ? null : t1.serialize$0());
+      t1 = t1 == null ? null : t1.serialize$0();
+      t2 = J.getInterceptor$ax(_this);
+      t2.$indexSet(_this, 2, t1);
+      if (4 >= _this.length)
+        return A.ioore(_this, 4);
+      t1 = type$.nullable_LogEvent._as(_this[4]);
+      t2.$indexSet(_this, 4, t1 == null ? null : A._LogEventSerializationExt_serialize(t1));
     },
     _LogEventSerializationExt_serialize(_this) {
       var t5,
         t1 = _this.level,
         t2 = A._LogEventSerializationExt__stringify(_this.message),
-        t3 = A.microsecTimeStamp(_this.time),
+        t3 = A.Timestamp_from(_this.time),
         t4 = _this.error;
       t4 = t4 == null ? null : J.toString$0$(t4);
       t5 = _this.stackTrace;
@@ -7928,7 +7942,7 @@
     call$1(o) {
       return this.getTag(o);
     },
-    $signature: 10
+    $signature: 11
   };
   A.initHooks_closure0.prototype = {
     call$2(o, tag) {
@@ -7940,7 +7954,7 @@
     call$1(tag) {
       return this.prototypeForTag(A._asString(tag));
     },
-    $signature: 32
+    $signature: 37
   };
   A.JSSyntaxRegExp.prototype = {
     toString$0(_) {
@@ -8238,7 +8252,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 9
+    $signature: 8
   };
   A._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1(callback) {
@@ -8327,13 +8341,13 @@
     call$2(error, stackTrace) {
       this.bodyFunction.call$2(1, A.ExceptionAndStackTrace$(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 21
+    $signature: 32
   };
   A._wrapJsFunctionForAsync_closure.prototype = {
     call$2(errorCode, result) {
       this.$protected(A._asInt(errorCode), result);
     },
-    $signature: 15
+    $signature: 19
   };
   A.AsyncError.prototype = {
     toString$0(_) {
@@ -8376,7 +8390,7 @@
         _this._future._completeError$2(t2, t1);
       }
     },
-    $signature: 13
+    $signature: 14
   };
   A.Future_wait_handleError_closure.prototype = {
     call$0() {
@@ -8827,13 +8841,13 @@
     call$1(__wc0_formal) {
       this.joinedResult._completeWithResultOf$1(this.originalSource);
     },
-    $signature: 9
+    $signature: 8
   };
   A._Future__propagateToListeners_handleWhenCompleteCallback_closure0.prototype = {
     call$2(e, s) {
       this.joinedResult._completeErrorObject$1(A.AsyncError$(A._asObject(e), type$.StackTrace._as(s)));
     },
-    $signature: 11
+    $signature: 13
   };
   A._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0() {
@@ -10445,7 +10459,7 @@
       hash = hash + ((hash & 524287) << 10) & 536870911;
       return hash ^ hash >>> 6;
     },
-    $signature: 14
+    $signature: 21
   };
   A._BigIntImpl_hashCode_finish.prototype = {
     call$1(hash) {
@@ -10454,7 +10468,7 @@
       hash ^= hash >>> 11;
       return hash + ((hash & 16383) << 15) & 536870911;
     },
-    $signature: 22
+    $signature: 15
   };
   A.DateTime.prototype = {
     get$millisecondsSinceEpoch() {
@@ -11143,9 +11157,12 @@
   A.$jsify_closure.prototype = {
     call$1(js) {
       var t1;
-      A._asObject(js);
-      t1 = A.JSAnyUtilityExtension_instanceof(js, A.JSObjectUnsafeUtilExtension_callMethodVarArgs(A._asJSObject(A.JSObjectUnsafeUtilExtension___(A.globalContext(), "Object")), A.StringToJSString_get_toJS("getPrototypeOf"), [A._asJSObject(A.JSObjectUnsafeUtilExtension___(A.globalContext(), "Int8Array"))], type$.JavaScriptFunction));
-      if (t1) {
+      if (A.NullableUndefineableJSAnyExtension_get_isUndefinedOrNull(js))
+        return;
+      t1 = js == null;
+      if (t1)
+        A._asObject(js);
+      if (!t1 && A.JSAnyUtilityExtension_instanceof(js, A.JSObjectUnsafeUtilExtension_callMethodVarArgs(A._asJSObject(A.JSObjectUnsafeUtilExtension___(A.globalContext(), "Object")), A.StringToJSString_get_toJS("getPrototypeOf"), [A._asJSObject(A.JSObjectUnsafeUtilExtension___(A.globalContext(), "Int8Array"))], type$.JavaScriptFunction))) {
         js = A.getProperty(js, "buffer", type$.Object);
         t1 = this.cache;
         if (t1.containsKey$1(js))
@@ -11155,95 +11172,95 @@
       } else if (A._isTransferable(js))
         A._callMethodUnchecked1(this.transfer, "push", js, type$.int);
     },
-    $signature: 19
+    $signature: 10
   };
   A.$jsify_closure0.prototype = {
-    call$1(obj) {
+    call$1(dart) {
       var js, t1, t2, cached, jsifier, jsArray, len, i, kjsifier, vjsifier, t3, jsMap, jsSet, res, _this = this;
-      if (obj == null)
+      if (dart == null)
         return null;
-      js = A._getJSValue(obj);
+      js = A._getJSValue(dart);
       if (js != null)
         return js;
       t1 = _this.cache;
       t2 = J.getInterceptor$ax(t1);
-      cached = t2.$index(t1, obj);
+      cached = t2.$index(t1, dart);
       if (cached != null)
         return cached;
-      if (type$.List_dynamic._is(obj) && !type$.TypedData._is(obj)) {
-        if (type$.List_nullable_String._is(obj))
+      if (type$.List_dynamic._is(dart) && !type$.TypedData._is(dart)) {
+        if (type$.List_nullable_String._is(dart))
           jsifier = A._patch___toJSStr$closure();
-        else if (type$.List_nullable_bool._is(obj))
+        else if (type$.List_nullable_bool._is(dart))
           jsifier = A._patch___toJSBool$closure();
-        else if (type$.List_nullable_num._is(obj))
+        else if (type$.List_nullable_num._is(dart))
           jsifier = A._patch___toJSNum$closure();
-        else if (type$.List_nullable_BigInt._is(obj))
+        else if (type$.List_nullable_BigInt._is(dart))
           jsifier = A._patch___toJSBigInt$closure();
         else
-          jsifier = type$.List_nullable_DateTime._is(obj) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
+          jsifier = type$.List_nullable_DateTime._is(dart) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
         jsArray = A._callConstructorUnchecked0(A._getPropertyTrustType(A.staticInteropGlobalContext(), "Array", type$.Object), type$.JSArray_nullable_Object);
-        len = obj.length;
-        t2.$indexSet(t1, obj, jsArray);
+        len = dart.length;
+        t2.$indexSet(t1, dart, jsArray);
         for (t1 = type$.int, i = 0; i < len; ++i) {
-          if (!(i < obj.length))
-            return A.ioore(obj, i);
-          A._callMethodUnchecked1(jsArray, "push", jsifier.call$1(obj[i]), t1);
+          if (!(i < dart.length))
+            return A.ioore(dart, i);
+          A._callMethodUnchecked1(jsArray, "push", jsifier.call$1(dart[i]), t1);
         }
         return jsArray;
       }
-      if (type$.Map_dynamic_dynamic._is(obj)) {
-        if (type$.Map_of_nullable_String_and_dynamic._is(obj))
+      if (type$.Map_dynamic_dynamic._is(dart)) {
+        if (type$.Map_of_nullable_String_and_dynamic._is(dart))
           kjsifier = A._patch___toJSStr$closure();
-        else if (type$.Map_of_nullable_bool_and_dynamic._is(obj))
+        else if (type$.Map_of_nullable_bool_and_dynamic._is(dart))
           kjsifier = A._patch___toJSBool$closure();
-        else if (type$.Map_of_nullable_num_and_dynamic._is(obj))
+        else if (type$.Map_of_nullable_num_and_dynamic._is(dart))
           kjsifier = A._patch___toJSNum$closure();
-        else if (type$.Map_of_nullable_BigInt_and_dynamic._is(obj))
+        else if (type$.Map_of_nullable_BigInt_and_dynamic._is(dart))
           kjsifier = A._patch___toJSBigInt$closure();
         else
-          kjsifier = type$.Map_of_nullable_DateTime_and_dynamic._is(obj) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
-        if (type$.Map_of_dynamic_and_nullable_String._is(obj))
+          kjsifier = type$.Map_of_nullable_DateTime_and_dynamic._is(dart) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
+        if (type$.Map_of_dynamic_and_nullable_String._is(dart))
           vjsifier = A._patch___toJSStr$closure();
-        else if (type$.Map_of_dynamic_and_nullable_bool._is(obj))
+        else if (type$.Map_of_dynamic_and_nullable_bool._is(dart))
           vjsifier = A._patch___toJSBool$closure();
-        else if (type$.Map_of_dynamic_and_nullable_num._is(obj))
+        else if (type$.Map_of_dynamic_and_nullable_num._is(dart))
           vjsifier = A._patch___toJSNum$closure();
-        else if (type$.Map_of_dynamic_and_nullable_BigInt._is(obj))
+        else if (type$.Map_of_dynamic_and_nullable_BigInt._is(dart))
           vjsifier = A._patch___toJSBigInt$closure();
         else
-          vjsifier = type$.Map_of_dynamic_and_nullable_DateTime._is(obj) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
+          vjsifier = type$.Map_of_dynamic_and_nullable_DateTime._is(dart) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
         t3 = type$.JSObject;
         jsMap = A._callConstructorUnchecked0(A._getPropertyTrustType(A.staticInteropGlobalContext(), "Map", type$.Object), t3);
-        t2.$indexSet(t1, obj, jsMap);
-        for (t1 = J.get$iterator$ax(obj.get$entries()); t1.moveNext$0();) {
+        t2.$indexSet(t1, dart, jsMap);
+        for (t1 = J.get$iterator$ax(dart.get$entries()); t1.moveNext$0();) {
           t2 = t1.get$current();
           A._callMethodUnchecked2(jsMap, "set", kjsifier.call$1(t2.key), vjsifier.call$1(t2.value), t3);
         }
         return jsMap;
       }
-      if (obj instanceof A._LinkedHashSet) {
-        if (type$.Set_nullable_String._is(obj))
+      if (dart instanceof A._LinkedHashSet) {
+        if (type$.Set_nullable_String._is(dart))
           jsifier = A._patch___toJSStr$closure();
-        else if (type$.Set_nullable_bool._is(obj))
+        else if (type$.Set_nullable_bool._is(dart))
           jsifier = A._patch___toJSBool$closure();
-        else if (type$.Set_nullable_num._is(obj))
+        else if (type$.Set_nullable_num._is(dart))
           jsifier = A._patch___toJSNum$closure();
-        else if (type$.Set_nullable_BigInt._is(obj))
+        else if (type$.Set_nullable_BigInt._is(dart))
           jsifier = A._patch___toJSBigInt$closure();
         else
-          jsifier = type$.Set_nullable_DateTime._is(obj) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
+          jsifier = type$.Set_nullable_DateTime._is(dart) ? A._patch___toJSDate$closure() : _this.squadronJsify.readLocal$1$0(type$.nullable_Object_Function_nullable_Object);
         t3 = type$.JSObject;
         jsSet = A._callConstructorUnchecked0(A._getPropertyTrustType(A.staticInteropGlobalContext(), "Set", type$.Object), t3);
-        t2.$indexSet(t1, obj, jsSet);
-        for (t1 = obj.get$iterator(0); t1.moveNext$0();)
+        t2.$indexSet(t1, dart, jsSet);
+        for (t1 = dart.get$iterator(0); t1.moveNext$0();)
           A._callMethodUnchecked1(jsSet, "add", jsifier.call$1(t1.get$current()), t3);
         return jsSet;
       }
-      res = A.NullableObjectUtilExtension_jsify(obj);
+      res = A.NullableObjectUtilExtension_jsify(dart);
       if (A.NullableUndefineableJSAnyExtension_get_isDefinedAndNotNull(res)) {
         if (res == null)
           A._asObject(res);
-        t2.$indexSet(t1, obj, res);
+        t2.$indexSet(t1, dart, res);
         _this.$$registerTransferable.call$1(res);
       }
       return res;
@@ -11369,19 +11386,19 @@
     call$0() {
       return "Failed to post response " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 6
+    $signature: 5
   };
   A._WebWorkerChannel__inspectAndPostResponse_closure.prototype = {
     call$0() {
       return "Failed to post response " + A.S(this.res) + ": " + A.S(this.ex);
     },
-    $signature: 6
+    $signature: 5
   };
   A.JsWorkerRunnerExt_get_handle_closure.prototype = {
     call$1($event) {
       return A.JsWorkerRunnerExt_handle(this._this, A._asJSObject($event));
     },
-    $signature: 44
+    $signature: 22
   };
   A.InternalLogger.prototype = {};
   A._NoLogOutput.prototype = {
@@ -11725,7 +11742,7 @@
     call$0() {
       return "Connection failed: " + A.S(this.ex);
     },
-    $signature: 6
+    $signature: 5
   };
   A.WorkerRunner__getTokenRef_closure.prototype = {
     call$0() {
@@ -11794,7 +11811,7 @@
     call$1(e) {
       return type$.SquadronCanceledException._as(e).serialize$0();
     },
-    $signature: 28
+    $signature: 43
   };
   A.SquadronError.prototype = {
     serialize$0() {
@@ -12014,14 +12031,14 @@
       type$.List_dynamic._as(r);
       return null;
     },
-    $signature: 8
+    $signature: 9
   };
   A.ErrorService_operations_closure1.prototype = {
     call$1(r) {
       type$.List_dynamic._as(r);
       return null;
     },
-    $signature: 8
+    $signature: 9
   };
   A.ErrorService_operations_closure2.prototype = {
     call$1(r) {
@@ -12165,30 +12182,30 @@
       _static = hunkHelpers.installStaticTearOff,
       _instance = hunkHelpers.installInstanceTearOff,
       _static_2 = hunkHelpers._static_2;
-    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 5);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 5);
-    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 5);
+    _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 6);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 6);
+    _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 6);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(A, "collection___defaultHashCode$closure", "_defaultHashCode", 38);
-    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 10);
+    _static_1(A, "convert___defaultToEncodable$closure", "_defaultToEncodable", 11);
     _static_1(A, "_patch___toJSStr$closure", "_toJSStr", 1);
     _static_1(A, "_patch___toJSBool$closure", "_toJSBool", 1);
     _static_1(A, "_patch___toJSNum$closure", "_toJSNum", 1);
     _static_1(A, "_patch___toJSBigInt$closure", "_toJSBigInt", 1);
     _static_1(A, "_patch___toJSDate$closure", "_toJSDate", 1);
-    _static_1(A, "_patch___noRegistration$closure", "_noRegistration", 39);
+    _static_1(A, "_patch___noRegistration$closure", "_noRegistration", 10);
     var _;
     _instance_1_u(_ = A._WebWorkerChannel.prototype, "get$reply", "reply$1", 3);
     _instance_1_u(_, "get$inspectAndReply", "inspectAndReply$1", 3);
     _instance_1_u(_, "get$log", "log$1", 20);
     _static(A, "converter_Converter_identity$closure", 1, null, ["call$1$1", "call$1"], ["Converter_identity", function(x) {
       return A.Converter_identity(x, type$.dynamic);
-    }], 40, 0);
-    _static_1(A, "num_converter_NumConverter__toInt$closure", "NumConverter__toInt", 41);
-    _static_1(A, "num_converter_NumConverter__toDbl$closure", "NumConverter__toDbl", 42);
-    _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 43);
-    _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, null, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 37, 0, 0);
-    _static_2(A, "_platform__isSameInstance$closure", "isSameInstance", 29);
+    }], 39, 0);
+    _static_1(A, "num_converter_NumConverter__toInt$closure", "NumConverter__toInt", 40);
+    _static_1(A, "num_converter_NumConverter__toDbl$closure", "NumConverter__toDbl", 41);
+    _static_1(A, "squadron_canceled_exception__SquadronCanceledExceptionExt_deserialize$closure", "SquadronCanceledExceptionExt_deserialize", 42);
+    _instance(A.SquadronCancelationToken.prototype, "get$_checkToken", 0, 0, null, ["call$1", "call$0"], ["_checkToken$1", "_checkToken$0"], 29, 0, 0);
+    _static_2(A, "_platform__isSameInstance$closure", "isSameInstance", 28);
     _static_0(A, "_platform_web__unsendable$closure", "unsendable", 0);
   })();
   (function inheritance() {
@@ -12260,7 +12277,7 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List", Object: "Object", Map: "Map", JSObject: "JSObject"},
     mangledNames: {},
-    types: ["~()", "Object?(Object?)", "~(List<@>)", "~(@)", "Null()", "~(~())", "String()", "~(Object?,Object?)", "Null(List<@>)", "Null(@)", "@(@)", "Null(Object,StackTrace)", "bool(Object?)", "~(Object,StackTrace)", "int(int,int)", "~(int,@)", "Null(~())", "~(WorkerRunner)", "Null(JSObject)", "Null(Object)", "~(LogEvent)", "Null(@,StackTrace)", "int(int)", "bool(int)", "~(OutputEvent)", "CancelationTokenReference()", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "List<@>(SquadronCanceledException)", "bool(Object,Object)", "bool(Level)", "Future<String>(List<@>)", "@(String)", "@(@,String)", "@(List<@>)", "bool/(List<@>)", "ErrorService(List<@>)", "~([@])", "int(Object?)", "~(Object)", "0^(@)<Object?>", "int(@)", "double(@)", "SquadronCanceledException?(List<@>?)", "~(JSObject)"],
+    types: ["~()", "Object?(Object?)", "~(List<@>)", "~(@)", "Null()", "String()", "~(~())", "~(Object?,Object?)", "Null(@)", "Null(List<@>)", "~(Object?)", "@(@)", "bool(Object?)", "Null(Object,StackTrace)", "~(Object,StackTrace)", "int(int)", "Null(~())", "~(WorkerRunner)", "Null(JSObject)", "~(int,@)", "~(LogEvent)", "int(int,int)", "~(JSObject)", "bool(int)", "~(OutputEvent)", "CancelationTokenReference()", "SquadronCanceledException(CanceledException)", "String(SquadronCanceledException)", "bool(Object,Object)", "~([@])", "bool(Level)", "Future<String>(List<@>)", "Null(@,StackTrace)", "@(@,String)", "@(List<@>)", "bool/(List<@>)", "ErrorService(List<@>)", "@(String)", "int(Object?)", "0^(@)<Object?>", "int(@)", "double(@)", "SquadronCanceledException?(List<@>?)", "List<@>(SquadronCanceledException)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
@@ -12371,6 +12388,7 @@
       nullable_JSObject: findType("JSObject?"),
       nullable_Level: findType("Level?"),
       nullable_List_dynamic: findType("List<@>?"),
+      nullable_LogEvent: findType("LogEvent?"),
       nullable_Object: findType("Object?"),
       nullable_Object_Function_nullable_Object: findType("Object?(Object?)"),
       nullable_SquadronCancelationToken: findType("SquadronCancelationToken?"),

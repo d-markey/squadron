@@ -12,6 +12,7 @@ import 'exceptions/exception_manager.dart';
 import 'exceptions/task_terminated_exception.dart';
 import 'tokens/_squadron_cancelation_token.dart';
 import 'typedefs.dart';
+import 'worker/worker_message.dart';
 import 'worker/worker_request.dart';
 import 'worker/worker_response.dart';
 
@@ -42,7 +43,7 @@ abstract interface class Channel {
   Future<void> close();
 
   /// Sends a close stream [WorkerRequest] to the worker.
-  void cancelStream(int streamId);
+  void cancelStream(StreamId streamId);
 
   /// Sends a cancel token [WorkerRequest] to the worker.
   void cancelToken(SquadronCancelationToken? token);

@@ -35,6 +35,7 @@ bool _isTransferable(JSAny js) {
 
 typedef ToJsFunc = JSAny? Function(Object?);
 typedef ToDartFunc = Object? Function(JSAny?);
+typedef RegisterFunc = void Function(JSAny?);
 
 bool _isJSBaseType(JSAny? js) {
   if (js.isUndefinedOrNull) return true;
@@ -49,7 +50,7 @@ void $transferify(JSAny? message, JSArray transfer) {
   message as JSAny;
   final registered = HashSet<JSAny>(equals: (a, b) => $is(a, b));
 
-  late final void Function(JSAny?) squadronTransferify;
+  late final RegisterFunc squadronTransferify;
   squadronTransferify = (js) {
     if (_isJSBaseType(js)) return;
 
@@ -127,7 +128,7 @@ JSAny? _toJSDate(Object? value) => (value == null)
     ? null
     : $JSDate.$fromUnixTimestamp((value as DateTime).millisecondsSinceEpoch);
 
-void _noRegistration(JSAny js) {}
+void _noRegistration(JSAny? js) {}
 
 JSAny? _getJSValue(Object dart) {
   if (dart is num) return dart.toJS;
@@ -142,9 +143,11 @@ JSAny? _getJSValue(Object dart) {
 JSArray $jsify(WorkerMessage message, JSArray? transfer) {
   final cache = HashMap<Object, JSAny>(equals: Squadron.identical);
 
-  final $registerTransferable = (transfer == null)
+  final RegisterFunc $registerTransferable = (transfer == null)
       ? _noRegistration
-      : ((JSAny js) {
+      : ((JSAny? js) {
+          if (js.isUndefinedOrNull) return;
+          js as JSAny;
           // for typed array, transfer the underlying buffer
           if (js.isA<JSTypedArray>()) {
             js = js.$buffer;
@@ -157,115 +160,115 @@ JSArray $jsify(WorkerMessage message, JSArray? transfer) {
         });
 
   late final ToJsFunc squadronJsify;
-  squadronJsify = (obj) {
+  squadronJsify = (dart) {
     // fast path
-    if (obj == null) return null;
-    final js = _getJSValue(obj);
+    if (dart == null) return null;
+    final js = _getJSValue(dart);
     if (js != null) return js;
 
     // slow path
 
     // use cached object if available
-    final cached = cache[obj];
+    final cached = cache[dart];
     if (cached != null) return cached;
 
     // process non-TypedData List object recursively
-    if (obj is List && obj is! TypedData) {
+    if (dart is List && dart is! TypedData) {
       ToJsFunc jsifier;
-      if (obj is List<String?>) {
+      if (dart is List<String?>) {
         jsifier = _toJSStr;
-      } else if (obj is List<bool?>) {
+      } else if (dart is List<bool?>) {
         jsifier = _toJSBool;
-      } else if (obj is List<num?>) {
+      } else if (dart is List<num?>) {
         jsifier = _toJSNum;
-      } else if (obj is List<BigInt?>) {
+      } else if (dart is List<BigInt?>) {
         jsifier = _toJSBigInt;
-      } else if (obj is List<DateTime?>) {
+      } else if (dart is List<DateTime?>) {
         jsifier = _toJSDate;
       } else {
         jsifier = squadronJsify;
       }
 
-      final jsArray = JSArray(), len = obj.length;
-      cache[obj] = jsArray;
+      final jsArray = JSArray(), len = dart.length;
+      cache[dart] = jsArray;
       for (var i = 0; i < len; i++) {
-        jsArray.$add(jsifier(obj[i]));
+        jsArray.$add(jsifier(dart[i]));
       }
       return jsArray;
     }
 
     // process Map object recursively
-    if (obj is Map) {
+    if (dart is Map) {
       ToJsFunc kjsifier;
-      if (obj is Map<String?, dynamic>) {
+      if (dart is Map<String?, dynamic>) {
         kjsifier = _toJSStr;
-      } else if (obj is Map<bool?, dynamic>) {
+      } else if (dart is Map<bool?, dynamic>) {
         kjsifier = _toJSBool;
-      } else if (obj is Map<num?, dynamic>) {
+      } else if (dart is Map<num?, dynamic>) {
         kjsifier = _toJSNum;
-      } else if (obj is Map<BigInt?, dynamic>) {
+      } else if (dart is Map<BigInt?, dynamic>) {
         kjsifier = _toJSBigInt;
-      } else if (obj is Map<DateTime?, dynamic>) {
+      } else if (dart is Map<DateTime?, dynamic>) {
         kjsifier = _toJSDate;
       } else {
         kjsifier = squadronJsify;
       }
 
       ToJsFunc vjsifier;
-      if (obj is Map<dynamic, String?>) {
+      if (dart is Map<dynamic, String?>) {
         vjsifier = _toJSStr;
-      } else if (obj is Map<dynamic, bool?>) {
+      } else if (dart is Map<dynamic, bool?>) {
         vjsifier = _toJSBool;
-      } else if (obj is Map<dynamic, num?>) {
+      } else if (dart is Map<dynamic, num?>) {
         vjsifier = _toJSNum;
-      } else if (obj is Map<dynamic, BigInt?>) {
+      } else if (dart is Map<dynamic, BigInt?>) {
         vjsifier = _toJSBigInt;
-      } else if (obj is Map<dynamic, DateTime?>) {
+      } else if (dart is Map<dynamic, DateTime?>) {
         vjsifier = _toJSDate;
       } else {
         vjsifier = squadronJsify;
       }
 
       final jsMap = $JSMap();
-      cache[obj] = jsMap;
-      for (var o in obj.entries) {
-        jsMap.$set(kjsifier(o.key), vjsifier(o.value));
+      cache[dart] = jsMap;
+      for (var entry in dart.entries) {
+        jsMap.$set(kjsifier(entry.key), vjsifier(entry.value));
       }
       return jsMap;
     }
 
     // process Set object recursively
-    if (obj is Set) {
+    if (dart is Set) {
       ToJsFunc jsifier;
-      if (obj is Set<String?>) {
+      if (dart is Set<String?>) {
         jsifier = _toJSStr;
-      } else if (obj is Set<bool?>) {
+      } else if (dart is Set<bool?>) {
         jsifier = _toJSBool;
-      } else if (obj is Set<num?>) {
+      } else if (dart is Set<num?>) {
         jsifier = _toJSNum;
-      } else if (obj is Set<BigInt?>) {
+      } else if (dart is Set<BigInt?>) {
         jsifier = _toJSBigInt;
-      } else if (obj is Set<DateTime?>) {
+      } else if (dart is Set<DateTime?>) {
         jsifier = _toJSDate;
       } else {
         jsifier = squadronJsify;
       }
 
       final jsSet = $JSSet();
-      cache[obj] = jsSet;
-      for (var o in obj) {
+      cache[dart] = jsSet;
+      for (var o in dart) {
         jsSet.$add(jsifier(o));
       }
       return jsSet;
     }
 
     // otherwise, delegate to Dart's jsify()
-    final res = obj.jsify();
+    final res = dart.jsify();
 
     // cache result and update list of transferable objects
     if (res.isDefinedAndNotNull) {
       res as JSAny;
-      cache[obj] = res;
+      cache[dart] = res;
       $registerTransferable(res);
     }
 

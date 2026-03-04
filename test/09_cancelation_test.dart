@@ -263,7 +263,7 @@ void execute(TestContext? tc) {
                   onError: res.add, onDone: completer.complete);
             }
 
-            await Future.delayed(delay_80ms * 2);
+            await Future.delayed(delay_80ms * 2.5);
             p.cancelAll();
 
             await Future.wait(tasks);

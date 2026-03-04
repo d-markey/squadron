@@ -10,12 +10,12 @@ import 'worker_pool.dart';
 
 /// [WorkerTask] registered in the [WorkerPool].
 abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
-  WorkerTask(this._counter) : submitted = microsecTimeStamp();
+  WorkerTask(this._counter) : submitted = Timestamp.now();
 
-  final int submitted;
-  int? _scheduled;
-  int? _finished;
-  int? _canceled;
+  final Timestamp submitted;
+  Timestamp? _scheduled;
+  Timestamp? _finished;
+  Timestamp? _canceled;
 
   final PerfCounter? _counter;
 
@@ -36,14 +36,11 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   @override
   Duration get runningTime => _scheduled == null
       ? Duration.zero
-      : Duration(
-          microseconds:
-              (_canceled ?? _finished ?? microsecTimeStamp()) - _scheduled!);
+      : (_canceled ?? _finished ?? Timestamp.now()).elapsedSince(_scheduled!);
 
   @override
-  Duration get waitTime => Duration(
-      microseconds:
-          (_scheduled ?? _canceled ?? microsecTimeStamp()) - submitted);
+  Duration get waitTime =>
+      (_scheduled ?? _canceled ?? Timestamp.now()).elapsedSince(submitted);
 
   final _done = Completer<void>();
 
@@ -60,7 +57,7 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   @override
   void cancel([String? message]) {
     if (_finished != null || _canceled != null) return;
-    _canceled ??= microsecTimeStamp();
+    _canceled ??= Timestamp.now();
     _canceledException ??= TaskCanceledException(message);
     if (_scheduled == null) {
       // task will not be scheduled, make sure it reports as errored
@@ -69,16 +66,16 @@ abstract base class WorkerTask<T, W extends Worker> implements Task<T> {
   }
 
   void _fail([Object? _]) {
-    final finished = _finished ??= microsecTimeStamp();
+    final finished = _finished ??= Timestamp.now();
     _counter?.update(finished - (_scheduled ?? finished), false);
     _done.safeComplete();
   }
 
   Future<void> run(W worker) {
-    _scheduled ??= microsecTimeStamp();
+    _scheduled ??= Timestamp.now();
     return execute(worker).then(
       (res) {
-        _finished ??= microsecTimeStamp();
+        _finished ??= Timestamp.now();
         _counter?.update(_finished! - _scheduled!, res);
         _done.safeComplete();
       },

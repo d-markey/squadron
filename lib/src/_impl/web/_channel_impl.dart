@@ -81,7 +81,7 @@ final class _WebChannel implements Channel {
 
   /// Sends a close stream [WorkerRequest] to the [web.Worker].
   @override
-  void cancelStream(int streamId) {
+  void cancelStream(StreamId streamId) {
     _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 

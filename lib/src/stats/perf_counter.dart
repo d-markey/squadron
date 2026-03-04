@@ -42,15 +42,15 @@ class PerfCounter implements PerfCounterSnapshot {
 
 @internal
 extension PerfCounterImpl on PerfCounter {
-  /// Updates counter value with the duration indicated by [timeInMicroseconds].
+  /// Updates counter value with the duration indicated by [duration].
   /// 1. update the maximum elapsed time if required.
   /// 2. add specified time to the total elapsed time.
   /// 3. depending on [success], increment the total number of calls or errors by 1.
-  void update(int timeInMicroseconds, bool success) {
-    if (timeInMicroseconds > _maxTimeInMicroseconds) {
-      _maxTimeInMicroseconds = timeInMicroseconds;
+  void update(int microseconds, bool success) {
+    if (microseconds > _maxTimeInMicroseconds) {
+      _maxTimeInMicroseconds = microseconds;
     }
-    _totalTimeInMicroseconds += timeInMicroseconds;
+    _totalTimeInMicroseconds += microseconds;
     if (success) {
       _totalCount++;
     } else {

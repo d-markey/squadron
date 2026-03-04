@@ -8,9 +8,7 @@ import '_platform.dart';
 /// ID is requested. Workers should forward the cancelation token they received
 /// when calling other workers.
 @internal
-class TokenId {
-  TokenId._();
-
+abstract class TokenId {
   static int _id = 0;
 
   /// Provides the next ID.

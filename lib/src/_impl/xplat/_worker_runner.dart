@@ -10,6 +10,7 @@ import '../../tokens/_cancelation_token_ref.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../typedefs.dart';
 import '../../worker/worker_channel.dart';
+import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker_service.dart';
 import '_internal_logger.dart';
@@ -30,8 +31,7 @@ class WorkerRunner {
   bool _terminationRequested = false;
   int _executing = 0;
 
-  final _streamCancelers = <int, StreamCanceler>{};
-  int _streamId = 0;
+  final _streamCancelers = <StreamId, StreamCanceler>{};
 
   void Function(OutputEvent)? _logForwarder;
 
@@ -268,7 +268,7 @@ class WorkerRunner {
     late final StreamSubscription subscription;
     final done = Completer();
 
-    late final int streamId;
+    late final StreamId streamId;
 
     // send endOfStream to client
     Future<void> onDone() {
@@ -313,14 +313,14 @@ class WorkerRunner {
 
   /// Assigns a stream ID to the stream canceler callback and registers the
   /// callback.
-  int _registerStreamCanceler(StreamCanceler canceler) {
-    final streamId = ++_streamId;
+  StreamId _registerStreamCanceler(StreamCanceler canceler) {
+    final streamId = StreamId.next();
     _streamCancelers[streamId] = canceler;
     return streamId;
   }
 
   /// Unregisters the stream canceled callback associated to the [streamId].
-  void _unregisterStreamCanceler(int streamId) {
+  void _unregisterStreamCanceler(StreamId streamId) {
     _streamCancelers.remove(streamId);
   }
 
