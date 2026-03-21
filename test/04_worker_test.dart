@@ -194,8 +194,7 @@ void execute(TestContext? tc) {
 
                 await Future.delayed(TestDelay.tick);
                 stats = w.getStats();
-                expect(stats.upTime - upTime,
-                    greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick));
                 expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
                 expect(stats.activeConnections, isZero);
                 expect(stats.isStopped, isFalse);

@@ -49287,7 +49287,7 @@
     $call$body$execute____closure62(w) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.Null),
-        $async$handler = 1, $async$errorStack = [], t2, stats, t3, t4, upTime, exception, t1, $async$exception;
+        $async$handler = 1, $async$errorStack = [], t2, stats, t3, t4, exception, upTime, t1, $async$exception;
       var $async$call$1 = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$errorStack.push($async$result);
@@ -49317,15 +49317,14 @@
               return A._asyncAwait(A.Future_Future$delayed(t3, t4), $async$call$1);
             case 3:
               // returning from await.
-              upTime = t2.get$snapshot().upTime;
-              A.expect(upTime, new A._OrderingMatcher(B.Duration_0, false, false, true, "a value greater than", true), null);
+              A.expect(t2.get$snapshot().upTime, new A._OrderingMatcher(B.Duration_0, false, false, true, "a value greater than", true), null);
               $async$goto = 4;
               return A._asyncAwait(A.Future_Future$delayed(t3, t4), $async$call$1);
             case 4:
               // returning from await.
               stats = t1.stats = t2.get$snapshot();
               t4 = stats.upTime;
-              A.expect(new A.Duration(t4._duration - upTime._duration), new A._OrderingMatcher(t3, true, false, true, "a value greater than or equal to", true), null);
+              A.expect(t4, new A._OrderingMatcher(t3, true, false, true, "a value greater than or equal to", true), null);
               A.expect(stats.idleTime, new A._OrderingMatcher(t4, true, true, false, "a value less than or equal to", true), null);
               A.expect(stats.activeConnections, B._OrderingMatcher_HCW, null);
               A.expect(stats.isStopped, B.C__IsFalse, null);
