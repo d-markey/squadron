@@ -59,7 +59,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
         null, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
-        message, // 4 - log message
+        message.serialize(), // 4 - log message
       ]);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
@@ -112,7 +112,6 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
       data[_$result] = result.toList();
     }
     data[_$error] = (data[_$error] as SquadronException?)?.serialize();
-    data[_$log] = (data[_$log] as LogEvent?)?.serialize();
   }
 }
 
@@ -136,7 +135,7 @@ extension _LogEventSerializationExt on LogEvent {
       : LogEvent(
           _getLevel((props[0] as num?)?.toInt()),
           props[1],
-          time: Timestamp.from(props[2])?.toDateTime(),
+          time: Timestamp.from(props[2] as num?)?.toDateTime(),
           error: props[3],
           stackTrace: SquadronException.loadStackTrace(props[4]),
         );

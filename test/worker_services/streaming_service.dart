@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 
-import '../test_constants.dart';
+import '../test_delay.dart';
 import 'squadron_version.dart';
 
 class StreamingService with SquadronVersion implements WorkerService {
@@ -32,7 +32,7 @@ class StreamingService with SquadronVersion implements WorkerService {
             i++;
             controller.add(i);
           }
-          await Future.delayed(delay_20ms);
+          await Future.delayed(TestDelay.tick);
         }
       },
       onPause: () {

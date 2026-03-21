@@ -10,8 +10,9 @@ String get threadId => impl.threadId;
 class Squadron {
   Squadron._();
 
-  /// Gets the current platform type.
+  /// Gets the current platform information.
   static final platformType = impl.getPlatformType();
+  static final osType = impl.getOSType();
 
   /// Parse [url] and returns the corresponding [Uri].
   ///

@@ -12,6 +12,8 @@ Converter getPlatformConverter() => CastConverter.instance;
 
 SquadronPlatformType getPlatformType() => SquadronPlatformType.unknown;
 
+SquadronOSType getOSType() => SquadronOSType.unknown;
+
 Uri mapUrl(String url) => Uri.parse(url);
 
 @internal

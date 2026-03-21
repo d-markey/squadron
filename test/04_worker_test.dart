@@ -6,12 +6,12 @@ import 'dart:typed_data';
 import 'package:logger/web.dart';
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
-import 'package:using/using.dart';
 
 import 'src/memory_logger.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
-import 'test_constants.dart';
+import 'test_delay.dart';
+import 'test_extensions.dart';
 import 'worker_services/fraction.dart';
 import 'worker_services/installable_service_worker.dart';
 import 'worker_services/test_service_worker.dart';
@@ -141,138 +141,146 @@ void execute(TestContext? tc) {
     });
 
     tc.group('- SQUADRON WORKER - START/STOP', () {
-      tc.test('- Start & stop', () async {
-        await TestWorker(tc).useAsync((w) async {
-          expect(w.isConnected, isFalse);
-          var stats = w.getStats();
-          expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
+      tc.test(
+          '- Start & stop',
+          () => TestWorker(tc).runTest((w) async {
+                expect(w.isConnected, isFalse);
+                var stats = w.getStats();
+                expect(stats.upTime, Duration.zero);
+                expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
 
-          final channel = await w.start();
-          expect(channel, isNotNull);
-          expect(w.isConnected, isTrue);
+                await w.start();
+                expect(w.isConnected, isTrue);
 
-          await Future.delayed(delay_80ms * 2);
-          stats = w.getStats();
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
-          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
+                await TestDelay.pause(ticks: 1);
+                stats = w.getStats();
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
+                expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
 
-          w.stop();
-          stats = w.getStats();
-          expect(stats.isStopped, isTrue);
-          final upTime = stats.upTime;
-          expect(w.isConnected, isFalse);
-          expect(stats.activeConnections, isZero);
-          expect(stats.upTime, greaterThan(Duration.zero));
+                w.stop();
+                stats = w.getStats();
+                expect(stats.isStopped, isTrue);
+                final upTime = stats.upTime;
+                expect(w.isConnected, isFalse);
+                expect(stats.activeConnections, isZero);
+                expect(stats.upTime, greaterThan(Duration.zero));
 
-          await Future.delayed(delay_80ms);
-          stats = w.getStats();
-          expect(stats.upTime, upTime);
-          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
-        });
-      });
+                await TestDelay.pause(ticks: 1);
+                stats = w.getStats();
+                expect(stats.upTime, upTime);
+                expect(stats.idleTime, greaterThanOrEqualTo(TestDelay.tick));
+              }));
 
-      tc.test('- Start & terminate (sync)', () async {
-        await TestWorker(tc).useAsync((w) async {
-          expect(w.isConnected, isFalse);
-          var stats = w.getStats();
-          expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
+      tc.test(
+          '- Start & terminate (sync)',
+          () => TestWorker(tc).runTest((w) async {
+                expect(w.isConnected, isFalse);
+                var stats = w.getStats();
+                expect(stats.upTime, Duration.zero);
+                expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
 
-          final channel = await w.start();
-          expect(channel, isNotNull);
-          expect(w.isConnected, isTrue);
+                await w.start();
+                expect(w.isConnected, isTrue);
 
-          await Future.delayed(delay_80ms * 2);
-          stats = w.getStats();
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
+                await Future.delayed(TestDelay.tick);
+                var upTime = w.getStats().upTime;
+                expect(upTime, greaterThan(Duration.zero));
 
-          final duration = delay_80ms * 4;
-          Future.delayed(duration * 0.5, () {
-            w.terminate();
-            stats = w.getStats();
-            expect(stats.activeConnections, isZero);
-            expect(stats.isStopped, isTrue);
-            expect(w.isConnected, isFalse);
-          });
+                await Future.delayed(TestDelay.tick);
+                stats = w.getStats();
+                expect(stats.upTime - upTime,
+                    greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
 
-          try {
-            await w.cpu(ms: duration.inMilliseconds);
-            throw unexpectedSuccess('cpu completed after termination');
-          } on TaskTerminatedException {
-            // expected: the "cpu" task has been terminated
-          }
+                // terminate in 2 ticks
+                TestDelay.pause(
+                    ticks: 2,
+                    callback: () {
+                      w.terminate();
+                      stats = w.getStats();
+                      expect(stats.activeConnections, isZero);
+                      expect(stats.isStopped, isTrue);
+                      expect(w.isConnected, isFalse);
+                    });
 
-          stats = w.getStats();
-          final upTime = stats.upTime;
-          expect(stats.upTime, greaterThan(Duration.zero));
-          expect(stats.activeConnections, isZero);
+                try {
+                  // CPU run for 4 ticks
+                  await w.cpu(ms: TestDelay.tick.inMilliseconds * 4);
+                  throw unexpectedSuccess('cpu completed after termination');
+                } on TaskTerminatedException {
+                  // expected: the "cpu" task has been terminated
+                }
 
-          await Future.delayed(delay_80ms);
-          stats = w.getStats();
-          expect(stats.upTime, upTime);
-          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
-          expect(stats.activeConnections, isZero);
-        });
-      });
+                stats = w.getStats();
+                upTime = stats.upTime;
+                expect(stats.upTime, greaterThan(Duration.zero));
+                expect(stats.activeConnections, isZero);
 
-      tc.test('- Start & terminate (async)', () async {
-        await TestWorker(tc).useAsync((w) async {
-          expect(w.isConnected, isFalse);
-          var stats = w.getStats();
-          expect(stats.upTime, Duration.zero);
-          expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
+                await TestDelay.pause(ticks: 1);
+                stats = w.getStats();
+                expect(stats.upTime, upTime);
+                expect(stats.idleTime, greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.activeConnections, isZero);
+              }));
 
-          final channel = await w.start();
-          expect(channel, isNotNull);
-          expect(w.isConnected, isTrue);
+      tc.test(
+          '- Start & terminate (async)',
+          () => TestWorker(tc).runTest((w) async {
+                expect(w.isConnected, isFalse);
+                var stats = w.getStats();
+                expect(stats.upTime, Duration.zero);
+                expect(stats.idleTime, greaterThanOrEqualTo(Duration.zero));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
 
-          await Future.delayed(delay_80ms * 2);
-          stats = w.getStats();
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms));
-          expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
-          expect(stats.activeConnections, isZero);
-          expect(stats.isStopped, isFalse);
+                await w.start();
+                expect(w.isConnected, isTrue);
 
-          final duration = delay_80ms * 4;
-          Future.delayed(duration * 0.5, () {
-            w.terminate();
-            stats = w.getStats();
-            expect(stats.activeConnections, isZero);
-            expect(stats.isStopped, isTrue);
-            expect(w.isConnected, isFalse);
-          });
+                await TestDelay.pause(ticks: 1);
+                stats = w.getStats();
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.idleTime, lessThanOrEqualTo(stats.upTime));
+                expect(stats.activeConnections, isZero);
+                expect(stats.isStopped, isFalse);
 
-          try {
-            await w.io(ms: duration.inMilliseconds);
-            throw unexpectedSuccess('io completed after termination');
-          } on TaskTerminatedException {
-            // expected: the "io" task has been terminated
-          }
+                // terminate in 2 ticks
+                TestDelay.pause(
+                    ticks: 2,
+                    callback: () {
+                      w.terminate();
+                      stats = w.getStats();
+                      expect(stats.activeConnections, isZero);
+                      expect(stats.isStopped, isTrue);
+                      expect(w.isConnected, isFalse);
+                    });
 
-          stats = w.getStats();
-          final savedUpTime = stats.upTime;
-          expect(stats.upTime, greaterThan(Duration.zero));
-          expect(stats.activeConnections, isZero);
+                try {
+                  // run for 3 ticks
+                  await w.io(ms: TestDelay.tick.inMilliseconds * 3);
+                  throw unexpectedSuccess('io completed after termination');
+                } on TaskTerminatedException {
+                  // expected: the "io" task has been terminated
+                }
 
-          await Future.delayed(delay_80ms);
-          stats = w.getStats();
-          expect(stats.upTime, savedUpTime);
-          expect(stats.idleTime, greaterThanOrEqualTo(delay_80ms));
-          expect(stats.activeConnections, isZero);
-        });
-      });
+                stats = w.getStats();
+                final savedUpTime = stats.upTime;
+                expect(stats.upTime, greaterThan(Duration.zero));
+                expect(stats.activeConnections, isZero);
+
+                await TestDelay.pause(ticks: 1);
+                stats = w.getStats();
+                expect(stats.upTime, savedUpTime);
+                expect(stats.idleTime, greaterThanOrEqualTo(TestDelay.tick));
+                expect(stats.activeConnections, isZero);
+              }));
 
       tc.test('- Hook installation', () async {
         String? status;
@@ -280,325 +288,333 @@ void execute(TestContext? tc) {
           status = 'hook called';
         }
 
-        await TestWorker(tc, hook: hook).useAsync((w) async {
+        await TestWorker(tc, hook: hook).runTest((w) async {
           expect(status, isNull);
           await w.start();
           expect(status, matches('hook called'));
         });
       });
 
-      tc.test('- Service installation', () async {
-        await InstallableWorker(tc).useAsync((w) async {
-          final logger = MemoryLogger();
-          logger.level = Level.all;
-          w.channelLogger = logger;
-          await w.start();
+      tc.test(
+          '- Service installation',
+          () => InstallableWorker(tc).runTest((w) async {
+                final logger = MemoryLogger();
+                logger.level = Level.all;
+                w.channelLogger = logger;
+                await w.start();
 
-          expect(await w.isInstalled(), isTrue);
-          expect(await w.isUninstalled(), isFalse);
+                expect(await w.isInstalled(), isTrue);
+                expect(await w.isUninstalled(), isFalse);
 
-          // log forwarding is asynchronous, make sure they have time to arrive
-          await Future.delayed(delay_20ms);
-          expect(logger.logs, mentions('service installed'));
-          expect(logger.logs, doesNotMention('intended failure'));
+                // log forwarding is asynchronous, make sure they have time to arrive
+                await Future.delayed(TestDelay.tick);
+                expect(logger.logs, mentions('service installed'));
+                expect(logger.logs, doesNotMention('intended failure'));
 
-          // stopping the worker uninstalls the service
-          w.stop();
+                // stopping the worker uninstalls the service
+                w.stop();
 
-          // log forwarding is asynchronous, make sure they have time to arrive
-          await Future.delayed(delay_20ms);
-          expect(logger.logs, mentions('service uninstalled'));
-          expect(logger.logs, doesNotMention('intended failure'));
-        });
-      });
+                // log forwarding is asynchronous, make sure they have time to arrive
+                await Future.delayed(TestDelay.tick);
+                expect(logger.logs, mentions('service uninstalled'));
+                expect(logger.logs, doesNotMention('intended failure'));
+              }));
 
-      tc.test('- Cannot restart after stop', () async {
-        await TestWorker(tc).useAsync((w) async {
-          await w.start();
-          expect(w.getStats().isStopped, isFalse);
+      tc.test(
+          '- Cannot restart after stop',
+          () => TestWorker(tc).runTest((w) async {
+                expect(w.getStats().isStopped, isFalse);
 
-          await Future.delayed(delay_80ms);
+                await Future.delayed(TestDelay.tick);
 
-          w.stop();
-          expect(w.getStats().isStopped, isTrue);
+                w.stop();
+                expect(w.getStats().isStopped, isTrue);
 
-          await Future.delayed(delay_80ms);
+                await Future.delayed(TestDelay.tick);
 
-          try {
-            final res = await w.start();
-            throw unexpectedSuccess('start()', res);
-          } on WorkerException catch (ex) {
-            expect(ex, reports('worker is stopped'));
-          }
+                try {
+                  final res = await w.start();
+                  throw unexpectedSuccess('start()', res);
+                } on WorkerException catch (ex) {
+                  expect(ex, reports('worker is stopped'));
+                }
 
-          expect(w.getStats().activeConnections, isZero);
-        });
-      });
+                expect(w.getStats().activeConnections, isZero);
+              }));
     });
 
     tc.group('- SQUADRON WORKER - NON-STREAMING', () {
-      tc.test('- Platform type', () async {
-        await TestWorker(tc).useAsync((w) async {
-          // make sure platforms match with the test context
-          expect(Squadron.platformType, tc.runnerPlatform);
-          final workerPlatform = await w.getPlatformType();
-          expect(workerPlatform, tc.workerPlatform);
-        });
-      });
+      tc.test(
+          '- Platform type',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                // make sure platforms match with the test context
+                expect(Squadron.platformType, tc.runnerPlatform);
+                final workerPlatform = await w.getPlatformType();
+                expect(workerPlatform, tc.workerPlatform);
+              }));
 
-      tc.test('- Sending maps with BigInts', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final input = {
-            BigInt.one.toString(): BigInt.one,
-            BigInt.two.toString(): BigInt.two,
-          };
-          final res = await w.map(input);
-          expect(res, {
-            BigInt.one: BigInt.one.toString(),
-            BigInt.two: BigInt.two.toString(),
-          });
-        });
-      });
+      tc.test(
+          '- Sending maps with BigInts',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final input = {
+                  BigInt.one.toString(): BigInt.one,
+                  BigInt.two.toString(): BigInt.two,
+                };
+                final res = await w.map(input);
+                expect(res, {
+                  BigInt.one: BigInt.one.toString(),
+                  BigInt.two: BigInt.two.toString(),
+                });
+              }));
 
-      tc.test('- Sending sets with BigInts', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final input = {BigInt.one, BigInt.two};
-          final res = await w.set(input);
-          expect(res, {BigInt.two, BigInt.two * BigInt.two});
-        });
-      });
+      tc.test(
+          '- Sending sets with BigInts',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final input = {BigInt.one, BigInt.two};
+                final res = await w.set(input);
+                expect(res, {BigInt.two, BigInt.two * BigInt.two});
+              }));
 
-      tc.test('- Sending TypedData - different instances', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final a = Uint32List.fromList([1, 2, 3]);
-          final b = Uint32List.fromList([1, 2, 3]);
-          final res = await w.checkBuffers(a, b);
-          expect(res, isFalse);
-        });
-      });
+      tc.test(
+          '- Sending TypedData - different instances',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final a = Uint32List.fromList([1, 2, 3]);
+                final b = Uint32List.fromList([1, 2, 3]);
+                final res = await w.checkBuffers(a, b);
+                expect(res, isFalse);
+              }));
 
-      tc.test('- Sending TypedData - same instances', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final a = Uint32List.fromList([1, 2, 3]);
-          final res = await w.checkBuffers(a, a);
-          if (tc.workerPlatform.isVm) {
-            expect(res, isFalse);
-          } else if (tc.workerPlatform.isJs) {
-            // identity is retained when using JS worker
-            expect(res, isTrue);
-          } else if (tc.workerPlatform.isWasm) {
-            expect(res, isFalse);
-          }
-        });
-      });
+      tc.test(
+          '- Sending TypedData - same instances',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final a = Uint32List.fromList([1, 2, 3]);
+                final res = await w.checkBuffers(a, a);
+                if (tc.workerPlatform.isVm) {
+                  expect(res, isFalse);
+                } else if (tc.workerPlatform.isJs) {
+                  // identity is retained when using JS worker
+                  expect(res, isTrue);
+                } else if (tc.workerPlatform.isWasm) {
+                  expect(res, isFalse);
+                }
+              }));
 
-      tc.test('- Sending TypedData - same buffer', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final a = Float32List(8);
-          final b = a.buffer.asUint8List();
-          final res = await w.checkBuffers(a, b);
-          if (tc.workerPlatform.isVm) {
-            expect(res, isFalse);
-          } else if (tc.workerPlatform.isJs) {
-            if (tc.runnerPlatform.isJs) {
-              // identity is retained when using JS client + JS worker
-              expect(res, isTrue);
-            } else {
-              expect(res, isFalse);
-            }
-          } else if (tc.workerPlatform.isWasm) {
-            expect(res, isFalse);
-          }
-        });
-      });
+      tc.test(
+          '- Sending TypedData - same buffer',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final a = Float32List(8);
+                final b = a.buffer.asUint8List();
+                final res = await w.checkBuffers(a, b);
+                if (tc.workerPlatform.isVm) {
+                  expect(res, isFalse);
+                } else if (tc.workerPlatform.isJs) {
+                  if (tc.runnerPlatform.isJs) {
+                    // identity is retained when using JS client + JS worker
+                    expect(res, isTrue);
+                  } else {
+                    expect(res, isFalse);
+                  }
+                } else if (tc.workerPlatform.isWasm) {
+                  expect(res, isFalse);
+                }
+              }));
 
-      tc.test('- Identity - different instances', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final a = Fraction(1, 2);
-          final b = Fraction(1, 2);
-          final res = await w.checkFractions(a, b);
-          expect(res, isFalse);
-        });
-      });
+      tc.test(
+          '- Identity - different instances',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final a = Fraction(1, 2);
+                final b = Fraction(1, 2);
+                final res = await w.checkFractions(a, b);
+                expect(res, isFalse);
+              }));
 
-      tc.test('- Identity - same instances', () async {
-        await TestWorker(tc).useAsync((w) async {
-          final a = Fraction(1, 2);
-          final res = await w.checkFractions(a, a);
-          expect(res, isTrue);
-        });
-      });
+      tc.test(
+          '- Identity - same instances',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                final a = Fraction(1, 2);
+                final res = await w.checkFractions(a, a);
+                expect(res, isTrue);
+              }));
 
-      tc.test('- Sequential workloads', () async {
-        await TestWorker(tc).useAsync((w) async {
-          int taskId = 0;
-          final completedTasks = <int>[];
-          Future createTask(Duration duration) {
-            final id = ++taskId;
-            return w
-                .io(ms: duration.inMilliseconds)
-                .whenComplete(() => completedTasks.add(id));
-          }
+      tc.test(
+          '- Sequential workloads',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                var taskId = 0;
+                final completedTasks = <int>[];
 
-          var stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, isZero);
-          expect(stats.totalWorkload, isZero);
+                Future $createTask(Duration duration) {
+                  final id = ++taskId;
+                  return w
+                      .io(ms: duration.inMilliseconds)
+                      .whenComplete(() => completedTasks.add(id));
+                }
 
-          await createTask(delay_80ms); // task #1
+                var stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, isZero);
+                expect(stats.totalWorkload, isZero);
 
-          expect(completedTasks, contains(1)); // #1 has completed
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 1);
+                // task #1
+                await $createTask(TestDelay.tick);
 
-          final task = createTask(delay_80ms * 3); // task #2
+                // #1 has completed
+                expect(completedTasks, contains(1));
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 1);
 
-          expect(completedTasks, contains(1)); // #2 is pending
-          stats = w.getStats();
-          expect(stats.workload, 1);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 1);
+                // task #2
+                final task = $createTask(TestDelay.tick * 3);
 
-          await Future.delayed(delay_80ms);
+                // #2 is pending
+                expect(completedTasks, unorderedEquals([1]));
+                stats = w.getStats();
+                expect(stats.workload, 1);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 1);
 
-          expect(completedTasks, contains(1)); // #2 is still pending
-          stats = w.getStats();
-          expect(stats.workload, 1);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 1);
+                await TestDelay.pause(ticks: 1);
 
-          await task;
+                // 1 tick: #2 is still pending
+                expect(completedTasks, unorderedEquals([1]));
+                stats = w.getStats();
+                expect(stats.workload, 1);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 1);
 
-          expect(completedTasks, containsAll([1, 2])); // #2 has completed
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 2);
+                await task;
 
-          await createTask(delay_80ms); // task #3
+                // #2 has completed
+                expect(completedTasks, unorderedEquals([1, 2]));
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 2);
 
-          expect(completedTasks, containsAll([1, 2, 3])); // #3 has completed
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 3);
+                // task #3
+                await $createTask(TestDelay.tick);
 
-          w.stop();
+                // #3 has completed
+                expect(completedTasks, unorderedEquals([1, 2, 3]));
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 3);
 
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 1);
-          expect(stats.totalWorkload, 3);
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 5));
-        });
-      });
+                w.stop();
 
-      tc.test('- Parallel workloads', () async {
-        await TestWorker(tc).useAsync((w) async {
-          int taskId = 0;
-          final completedTasks = <int>[];
-          Future createTask(Duration duration) {
-            final id = ++taskId;
-            return w
-                .io(ms: duration.inMilliseconds + 50)
-                .whenComplete(() => completedTasks.add(id));
-          }
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 1);
+                expect(stats.totalWorkload, 3);
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 5));
+              }));
 
-          await w.start();
+      tc.test(
+          '- Parallel workloads',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                var taskId = 0;
+                final completedTasks = <int>[];
 
-          var stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, isZero);
-          expect(stats.totalWorkload, isZero);
+                Future $createTask(Duration duration) {
+                  final id = ++taskId;
+                  return w
+                      .io(ms: duration.inMilliseconds)
+                      .whenComplete(() => completedTasks.add(id));
+                }
 
-          var tasks = [
-            createTask(delay_80ms), // task 1
-            createTask(delay_80ms * 5), // task 2
-            createTask(delay_80ms * 3), // task 3
-          ];
+                var stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, isZero);
+                expect(stats.totalWorkload, isZero);
 
-          expect(completedTasks, isEmpty);
-          stats = w.getStats();
-          expect(stats.workload, 3);
-          expect(stats.maxWorkload, 3);
-          expect(stats.totalWorkload, isZero);
+                final tasks = [
+                  $createTask(TestDelay.tick), // task #1
+                  $createTask(TestDelay.tick * 5), // task #2
+                  $createTask(TestDelay.tick * 3), // task #3
+                ];
 
-          await Future.wait(tasks);
+                expect(completedTasks, isEmpty);
+                stats = w.getStats();
+                expect(stats.workload, 3);
+                expect(stats.maxWorkload, 3);
+                expect(stats.totalWorkload, isZero);
 
-          // all tasks have completed
-          expect(completedTasks, containsAll([1, 2, 3]));
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 3);
-          expect(stats.totalWorkload, 3);
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 5));
-          expect(stats.upTime, lessThanOrEqualTo(delay_80ms * 7));
+                await Future.wait(tasks);
 
-          /////////// time origin for next tasks ///////////
+                // all tasks have completed (~5 ticks elapsed)
+                stats = w.getStats();
+                expect(completedTasks, unorderedEquals([1, 2, 3]));
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 3);
+                expect(stats.totalWorkload, 3);
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 5));
 
-          completedTasks.clear();
-          createTask(delay_80ms * 9); // #4 complete at ~9 delays
-          createTask(delay_80ms * 5); // #5 complete at ~5 delays
-          createTask(delay_80ms * 3); // #6 complete at ~3 delays
+                /////////// time origin for next tasks ///////////
 
-          expect(completedTasks, isEmpty);
-          stats = w.getStats();
-          expect(stats.workload, 3);
-          expect(stats.maxWorkload, 3);
-          expect(stats.totalWorkload, 3);
+                completedTasks.clear();
+                $createTask(TestDelay.tick * 9); // #4 complete at ~9 ticks
+                $createTask(TestDelay.tick * 6); // #5 complete at ~6 ticks
+                $createTask(TestDelay.tick * 2); // #6 complete at ~2 ticks
 
-          // 1 delay: all tasks still pending
-          await Future.delayed(delay_80ms);
-          expect(completedTasks, isEmpty);
-          stats = w.getStats();
-          expect(stats.workload, 3);
-          expect(stats.maxWorkload, 3);
-          expect(stats.totalWorkload, 3);
+                expect(completedTasks, isEmpty);
+                stats = w.getStats();
+                expect(stats.workload, 3);
+                expect(stats.maxWorkload, 3);
+                expect(stats.totalWorkload, 3);
 
-          // 4 delays: #6 has completed
-          await Future.delayed(delay_80ms * 3);
-          expect(completedTasks, contains(6));
-          stats = w.getStats();
-          expect(stats.workload, 2);
-          expect(stats.maxWorkload, 3);
-          expect(stats.totalWorkload, 4);
+                await TestDelay.pause(ticks: 1);
+                // +1 --> ~1 tick: all tasks still pending
+                expect(completedTasks, isEmpty);
+                stats = w.getStats();
+                expect(stats.workload, 3);
+                expect(stats.maxWorkload, 3);
+                expect(stats.totalWorkload, 3);
 
-          createTask(delay_80ms * 5); // #7 completes at ~9 delays
-          createTask(delay_80ms * 3); // #8 completes at ~7 delays
+                await TestDelay.pause(ticks: 3);
+                // +3 --> ~4 ticks: #6 has completed
+                expect(completedTasks, unorderedEquals([6]));
+                stats = w.getStats();
+                expect(stats.workload, 2);
+                expect(stats.maxWorkload, 3);
+                expect(stats.totalWorkload, 4);
 
-          expect(completedTasks, contains(6));
-          stats = w.getStats();
-          expect(stats.workload, 4);
-          expect(stats.maxWorkload, 4);
-          expect(stats.totalWorkload, 4);
+                $createTask(TestDelay.tick * 5); // #7 completes at ~9 ticks
+                $createTask(TestDelay.tick * 4); // #8 completes at ~8 ticks
 
-          // 8 delays: #5 and #8 have completed
-          await Future.delayed(delay_80ms * 4);
-          expect(completedTasks, containsAll([5, 6, 8]));
-          stats = w.getStats();
-          expect(stats.workload, 2);
-          expect(stats.maxWorkload, 4);
-          expect(stats.totalWorkload, 6);
+                expect(completedTasks, unorderedEquals([6]));
+                stats = w.getStats();
+                expect(stats.workload, 4);
+                expect(stats.maxWorkload, 4);
+                expect(stats.totalWorkload, 4);
 
-          // 11 delays: all tasks have completed
-          await Future.delayed(delay_80ms * 3);
-          expect(completedTasks, containsAll([4, 5, 6, 7, 8]));
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 4);
-          expect(stats.totalWorkload, 8);
+                await TestDelay.pause(ticks: 3);
+                // +3 --> ~7 ticks: #5 has completed
+                expect(completedTasks, unorderedEquals([5, 6]));
+                stats = w.getStats();
+                expect(stats.workload, 3);
+                expect(stats.maxWorkload, 4);
+                expect(stats.totalWorkload, 5);
 
-          w.stop();
-          stats = w.getStats();
-          expect(stats.workload, isZero);
-          expect(stats.maxWorkload, 4);
-          expect(stats.totalWorkload, 8);
-          expect(stats.upTime, greaterThanOrEqualTo(delay_80ms * 16));
-          expect(stats.upTime, lessThan(delay_80ms * 19));
-        });
-      });
+                await TestDelay.pause(ticks: 3);
+                // +3 --> ~10 ticks: all tasks have completed
+                expect(completedTasks, unorderedEquals([4, 5, 6, 7, 8]));
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 4);
+                expect(stats.totalWorkload, 8);
+
+                // ~15 ticks in total (including the 5 ticks from the first batch)
+
+                w.stop();
+
+                stats = w.getStats();
+                expect(stats.workload, isZero);
+                expect(stats.maxWorkload, 4);
+                expect(stats.totalWorkload, 8);
+                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 15));
+              }));
     });
   });
 }

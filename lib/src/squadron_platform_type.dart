@@ -24,3 +24,14 @@ enum SquadronPlatformType {
   @override
   String toString() => label;
 }
+
+enum SquadronOSType {
+  unknown,
+  windows,
+  linux,
+  fuchsia,
+  macos,
+  android,
+  ios,
+  web
+}

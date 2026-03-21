@@ -4,10 +4,10 @@ import 'dart:math';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
-import 'package:using/using.dart';
 
 import 'src/test_context.dart';
 import 'src/utils.dart';
+import 'test_extensions.dart';
 import 'worker_services/fraction.dart';
 import 'worker_services/persons/city.dart';
 import 'worker_services/persons/country.dart';
@@ -34,18 +34,6 @@ void execute(TestContext? tc) {
 
   tc.launch(() {
     tc.group('- MARSHALING', () {
-      Future<Fraction> testSum(TestWorker testWorker,
-          {required bool marshalIn, required bool marshalOut}) async {
-        final res = await testWorker.fractionAdd(
-          Fraction(1, 2),
-          Fraction(1, 6),
-          marshalIn: marshalIn,
-          marshalOut: marshalOut,
-        );
-        expect(res, Fraction(2, 3));
-        return res;
-      }
-
       tc.group('- CONTEXT AWARENESS', () {
         tc.test('- Aware', () {
           final context1 = MarshalingContext();
@@ -87,80 +75,80 @@ void execute(TestContext? tc) {
         });
       });
 
-      tc.test('- Unmarshaled "non-native" types work in VM, fail on Web',
-          () async {
-        await TestWorker(tc).useAsync((w) async {
-          try {
-            final sum = await testSum(w, marshalIn: false, marshalOut: false);
-            if (tc.workerPlatform.isWeb) {
-              throw unexpectedSuccess(
-                  'unmarshalled call to fractionAdd()', sum);
-            }
-          } on SquadronException catch (ex) {
-            if (tc.workerPlatform.isVm) rethrow;
-            expect(
-              ex,
-              anyOf(
-                reports('TypeError'), // JavaScript
-                reports('not a subtype'), // Web Assembly
-                reports('Failed to post request'), // Web Assembly
-              ),
-            );
-          }
-        });
-      });
+      tc.test(
+          '- Unmarshaled "non-native" types work in VM, fail on Web',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                try {
+                  final sum =
+                      await testSum(w, marshalIn: false, marshalOut: false);
+                  if (tc.workerPlatform.isWeb) {
+                    throw unexpectedSuccess(
+                        'unmarshalled call to fractionAdd()', sum);
+                  }
+                } on SquadronException catch (ex) {
+                  if (tc.workerPlatform.isVm) rethrow;
+                  expect(
+                    ex,
+                    anyOf(
+                      reports('TypeError'), // JavaScript
+                      reports('not a subtype'), // Web Assembly
+                      reports('Failed to post request'), // Web Assembly
+                    ),
+                  );
+                }
+              }));
 
-      tc.test('- Unmarshaled "non-native" input types work in VM, fail on Web',
-          () async {
-        await TestWorker(tc).useAsync((w) async {
-          try {
-            final sum = await testSum(w, marshalIn: false, marshalOut: true);
-            if (tc.workerPlatform.isWeb) {
-              throw unexpectedSuccess(
-                  'unmarshalled call to fractionAdd()', sum);
-            }
-          } on SquadronException catch (ex) {
-            if (tc.workerPlatform.isVm) rethrow;
-            expect(
-              ex,
-              anyOf(
-                reports('TypeError'), // JavaScript
-                reports('not a subtype'), // Web Assembly
-                reports('Failed to post request'), // Web Assembly
-              ),
-            );
-          }
-        });
-      });
+      tc.test(
+          '- Unmarshaled "non-native" input types work in VM, fail on Web',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                try {
+                  final sum =
+                      await testSum(w, marshalIn: false, marshalOut: true);
+                  if (tc.workerPlatform.isWeb) {
+                    throw unexpectedSuccess(
+                        'unmarshalled call to fractionAdd()', sum);
+                  }
+                } on SquadronException catch (ex) {
+                  if (tc.workerPlatform.isVm) rethrow;
+                  expect(
+                    ex,
+                    anyOf(
+                      reports('TypeError'), // JavaScript
+                      reports('not a subtype'), // Web Assembly
+                      reports('Failed to post request'), // Web Assembly
+                    ),
+                  );
+                }
+              }));
 
-      tc.test('- Unmarshaled "non-native" output types work in VM, fail on Web',
-          () async {
-        await TestWorker(tc).useAsync((w) async {
-          try {
-            final sum = await testSum(w, marshalIn: true, marshalOut: false);
-            if (tc.workerPlatform.isWeb) {
-              throw unexpectedSuccess(
-                  'unmarshalled call to fractionAdd()', sum);
-            }
-          } catch (ex) {
-            if (tc.workerPlatform.isVm) rethrow;
-            expect(
-              ex,
-              anyOf(
-                reports('TypeError'), // JavaScript
-                reports('not a subtype'), // Web Assembly
-                reports('Failed to post response'), // Web Assembly
-              ),
-            );
-          }
-        });
-      });
+      tc.test(
+          '- Unmarshaled "non-native" output types work in VM, fail on Web',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                try {
+                  final sum =
+                      await testSum(w, marshalIn: true, marshalOut: false);
+                  if (tc.workerPlatform.isWeb) {
+                    throw unexpectedSuccess(
+                        'unmarshalled call to fractionAdd()', sum);
+                  }
+                } catch (ex) {
+                  if (tc.workerPlatform.isVm) rethrow;
+                  expect(
+                    ex,
+                    anyOf(
+                      reports('TypeError'), // JavaScript
+                      reports('not a subtype'), // Web Assembly
+                      reports('Failed to post response'), // Web Assembly
+                    ),
+                  );
+                }
+              }));
 
-      tc.test('- Marshaled "non-native" types always work', () async {
-        await TestWorker(tc).useAsync((w) async {
-          await testSum(w, marshalIn: true, marshalOut: true);
-        });
-      });
+      tc.test(
+          '- Marshaled "non-native" types always work',
+          () => TestWorker(tc).startAndRunTest((w) async {
+                await testSum(w, marshalIn: true, marshalOut: true);
+              }));
 
       final me = Person('ME', 'Myself', dob(), cityAFr, null, null);
       final p1 = Person('P', '1', dob(), cityAFr, null, null);
@@ -175,84 +163,93 @@ void execute(TestContext? tc) {
       final a = Person('A', 'a', dob(), cityAFr, null, null);
       final b = Person('B', 'b', dob(), cityAFr, null, null);
       final d = Person('D', 'd', dob(), cityABe, null, null);
-      // a friend of b
-      // b friend of a
-      // d friend of b
-      a.friends.add(b);
-      b.friends.add(a);
-      d.friends.add(b);
+      a.friends.add(b); // a friend of b
+      b.friends.add(a); // b friend of a
+      d.friends.add(b); // d friend of b
 
-      tc.test('- Person - Self', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(me, me), 'self');
-          expect(await w.getKindType(p1, p1), 'self');
-        });
-      });
+      tc.test(
+          '- Person - Self',
+          () => PersonWorker(tc).startAndRunTest((w) async {
+                expect(await w.getKindType(me, me), 'self');
+                expect(await w.getKindType(p1, p1), 'self');
+              }));
 
-      tc.test('- Person - Other', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(me, p1), 'other');
-          expect(await w.getKindType(me, c1), 'other');
-          expect(await w.getKindType(p1, p2), 'other');
-        });
-      });
+      tc.test(
+          '- Person - Other',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(me, p1), 'other');
+                expect(await w.getKindType(me, c1), 'other');
+                expect(await w.getKindType(p1, p2), 'other');
+              }));
 
-      tc.test('- Person - Parent', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(p1, c1), 'parent');
-          expect(await w.getKindType(p2, c1), 'parent');
-          expect(await w.getKindType(p1, c2), 'parent');
-          expect(await w.getKindType(p2, c2), 'parent');
-          expect(await w.getKindType(p1, c3), 'parent');
-          expect(await w.getKindType(p1, c4), 'parent');
-          expect(await w.getKindType(p3, c5), 'parent');
-        });
-      });
+      tc.test(
+          '- Person - Parent',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(p1, c1), 'parent');
+                expect(await w.getKindType(p2, c1), 'parent');
+                expect(await w.getKindType(p1, c2), 'parent');
+                expect(await w.getKindType(p2, c2), 'parent');
+                expect(await w.getKindType(p1, c3), 'parent');
+                expect(await w.getKindType(p1, c4), 'parent');
+                expect(await w.getKindType(p3, c5), 'parent');
+              }));
 
-      tc.test('- Person - Child', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(c1, p1), 'child');
-          expect(await w.getKindType(c1, p2), 'child');
-          expect(await w.getKindType(c2, p1), 'child');
-          expect(await w.getKindType(c2, p2), 'child');
-          expect(await w.getKindType(c3, p1), 'child');
-          expect(await w.getKindType(c4, p1), 'child');
-          expect(await w.getKindType(c5, p3), 'child');
-        });
-      });
+      tc.test(
+          '- Person - Child',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(c1, p1), 'child');
+                expect(await w.getKindType(c1, p2), 'child');
+                expect(await w.getKindType(c2, p1), 'child');
+                expect(await w.getKindType(c2, p2), 'child');
+                expect(await w.getKindType(c3, p1), 'child');
+                expect(await w.getKindType(c4, p1), 'child');
+                expect(await w.getKindType(c5, p3), 'child');
+              }));
 
-      tc.test('- Person - Sibling', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(c1, c2), 'sibling');
-          expect(await w.getKindType(c1, c3), 'sibling');
-          expect(await w.getKindType(c1, c4), 'sibling');
-          expect(await w.getKindType(c2, c1), 'sibling');
-          expect(await w.getKindType(c2, c3), 'sibling');
-          expect(await w.getKindType(c2, c4), 'sibling');
-          expect(await w.getKindType(c3, c1), 'sibling');
-          expect(await w.getKindType(c3, c2), 'sibling');
-          expect(await w.getKindType(c3, c4), 'sibling');
-          expect(await w.getKindType(c4, c1), 'sibling');
-          expect(await w.getKindType(c4, c2), 'sibling');
-          expect(await w.getKindType(c4, c3), 'sibling');
-        });
-      });
+      tc.test(
+          '- Person - Sibling',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(c1, c2), 'sibling');
+                expect(await w.getKindType(c1, c3), 'sibling');
+                expect(await w.getKindType(c1, c4), 'sibling');
+                expect(await w.getKindType(c2, c1), 'sibling');
+                expect(await w.getKindType(c2, c3), 'sibling');
+                expect(await w.getKindType(c2, c4), 'sibling');
+                expect(await w.getKindType(c3, c1), 'sibling');
+                expect(await w.getKindType(c3, c2), 'sibling');
+                expect(await w.getKindType(c3, c4), 'sibling');
+                expect(await w.getKindType(c4, c1), 'sibling');
+                expect(await w.getKindType(c4, c2), 'sibling');
+                expect(await w.getKindType(c4, c3), 'sibling');
+              }));
 
-      tc.test('- Person - Friend', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(a, b), 'friend'); // cyclical!
-          expect(await w.getKindType(b, d), 'friend');
-          expect(await w.getKindType(b, a), 'friend'); // cyclical!
-          expect(await w.getKindType(d, b), 'friend');
-        });
-      });
+      tc.test(
+          '- Person - Friend',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(a, b), 'friend'); // cyclical!
+                expect(await w.getKindType(b, d), 'friend');
+                expect(await w.getKindType(b, a), 'friend'); // cyclical!
+                expect(await w.getKindType(d, b), 'friend');
+              }));
 
-      tc.test('- Person - Friend of friend', () async {
-        await PersonWorker(tc).useAsync((w) async {
-          expect(await w.getKindType(a, d), 'friend-of-friend');
-          expect(await w.getKindType(d, a), 'friend-of-friend');
-        });
-      });
+      tc.test(
+          '- Person - Friend of friend',
+          () => PersonWorker(tc).runTest((w) async {
+                expect(await w.getKindType(a, d), 'friend-of-friend');
+                expect(await w.getKindType(d, a), 'friend-of-friend');
+              }));
     });
   });
+}
+
+Future<Fraction> testSum(TestWorker testWorker,
+    {required bool marshalIn, required bool marshalOut}) async {
+  final res = await testWorker.fractionAdd(
+    Fraction(1, 2),
+    Fraction(1, 6),
+    marshalIn: marshalIn,
+    marshalOut: marshalOut,
+  );
+  expect(res, Fraction(2, 3));
+  return res;
 }

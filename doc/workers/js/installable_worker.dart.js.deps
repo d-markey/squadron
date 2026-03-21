@@ -312,7 +312,7 @@ file:///C:/_Projects/github/squadron/lib/src/worker_client.dart
 file:///C:/_Projects/github/squadron/lib/src/worker_service.dart
 file:///C:/_Projects/github/squadron/lib/version.dart
 file:///C:/_Projects/github/squadron/test/src/test_logger.dart
-file:///C:/_Projects/github/squadron/test/test_constants.dart
+file:///C:/_Projects/github/squadron/test/test_delay.dart
 file:///C:/_Projects/github/squadron/test/worker_services/installable_service.dart
 file:///C:/_Projects/github/squadron/test/worker_services/squadron_version.dart
 file:///C:/_Projects/github/squadron/test/workers/js/installable_worker.dart

@@ -27,6 +27,8 @@ Converter getPlatformConverter() => _platformType.isJs
 
 SquadronPlatformType getPlatformType() => _platformType;
 
+SquadronOSType getOSType() => SquadronOSType.web;
+
 Uri mapUrl(String url) {
   if (url.startsWith('~')) {
     final root = getRootUrl();

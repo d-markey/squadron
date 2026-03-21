@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
-import 'package:using/using.dart';
 
 import 'src/test_context.dart';
 import 'src/utils.dart';
-import 'test_constants.dart';
+import 'test_concurrency.dart';
+import 'test_extensions.dart';
 import 'worker_services/local_client_worker.dart';
 import 'worker_services/local_workers/local_service.dart';
 
@@ -29,7 +29,7 @@ void execute(TestContext? tc) {
         tc.test('- Local Worker', () async {
           var id = localService.getId();
           expect(id, 'LocalService running as "$threadId"');
-          await LocalWorker.create(localService).useAsync((lw) async {
+          await LocalWorker.create(localService).runTest((lw) async {
             expect(
               await lw.channel!.sendRequest(LocalService.getIdCommand, []),
               'LocalService running as "$threadId"',
@@ -37,36 +37,33 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorker(tc, lw).useAsync((w) async {
-              final check = await w.checkIds();
-              final match = regExp.firstMatch(check)!;
-              expect(match.group(1), isNot(match.group(2)));
-            });
-          });
-        });
+        tc.test(
+            '- Squadron Worker',
+            () => LocalWorker.create(localService)
+                .runTest((lw) => LocalClientWorker(tc, lw).runTest((w) async {
+                      final check = await w.checkIds();
+                      final match = regExp.firstMatch(check)!;
+                      expect(match.group(1), isNot(match.group(2)));
+                    })));
 
-        tc.test('- Worker Pool', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorkerPool(tc, lw, concurrency_253)
-                .useAsync((p) async {
-              final tasks = <Future<String>>[];
-              for (var i = 0; i < p.maxConcurrency; i++) {
-                tasks.add(p.checkIds());
-              }
+        tc.test(
+            '- Worker Pool',
+            () => LocalWorker.create(localService).runTest((lw) =>
+                LocalClientWorkerPool(tc, lw, medium).runTest((p) async {
+                  final tasks = <Future<String>>[];
+                  for (var i = 0; i < p.maxConcurrency; i++) {
+                    tasks.add(p.checkIds());
+                  }
 
-              final results = await Future.wait(tasks);
-              for (var result in results) {
-                final match = regExp.firstMatch(result)!;
-                final wid = match.group(1);
-                expect(wid, isNotNull);
-                expect(wid, isNot(threadId));
-                expect(match.group(2), threadId);
-              }
-            });
-          });
-        });
+                  final results = await Future.wait(tasks);
+                  for (var result in results) {
+                    final match = regExp.firstMatch(result)!;
+                    final wid = match.group(1);
+                    expect(wid, isNotNull);
+                    expect(wid, isNot(threadId));
+                    expect(match.group(2), threadId);
+                  }
+                })));
       });
 
       tc.group('- Error handling', () {
@@ -78,7 +75,7 @@ void execute(TestContext? tc) {
             expect(ex, reports('Intentional exception'));
           }
 
-          await LocalWorker.create(localService).useAsync((lw) async {
+          await LocalWorker.create(localService).runTest((lw) async {
             try {
               final res = await lw.channel!
                   .sendRequest(LocalService.throwExceptionCommand, []);
@@ -89,27 +86,24 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorker(tc, lw).useAsync((w) async {
-              expect(await w.checkException(), isTrue);
-            });
-          });
-        });
+        tc.test(
+            '- Squadron Worker',
+            () => LocalWorker.create(localService)
+                .runTest((lw) => LocalClientWorker(tc, lw).runTest((w) async {
+                      expect(await w.checkException(), isTrue);
+                    })));
 
-        tc.test('- Worker Pool', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorkerPool(tc, lw, concurrency_253)
-                .useAsync((p) async {
-              final tasks = <Future<bool>>[];
-              for (var i = 0; i < p.maxConcurrency; i++) {
-                tasks.add(p.checkException());
-              }
+        tc.test(
+            '- Worker Pool',
+            () => LocalWorker.create(localService).runTest((lw) =>
+                LocalClientWorkerPool(tc, lw, medium).runTest((p) async {
+                  final tasks = <Future<bool>>[];
+                  for (var i = 0; i < p.maxConcurrency; i++) {
+                    tasks.add(p.checkException());
+                  }
 
-              expect(await Future.wait(tasks), everyElement(isTrue));
-            });
-          });
-        });
+                  expect(await Future.wait(tasks), everyElement(isTrue));
+                })));
       });
 
       tc.group('- Streaming', () {
@@ -117,7 +111,7 @@ void execute(TestContext? tc) {
           final list = await localService.sequence(19).toList();
           expect(list, Iterable.generate(19));
 
-          await LocalWorker.create(localService).useAsync((lw) async {
+          await LocalWorker.create(localService).runTest((lw) async {
             expect(
               await lw.channel!.sendStreamingRequest(
                   LocalService.sequenceCommand, [19]).toList(),
@@ -126,33 +120,31 @@ void execute(TestContext? tc) {
           });
         });
 
-        tc.test('- Squadron Worker', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorker(tc, lw).useAsync((w) async {
-              final res = await w.checkSequence(19).toList();
-              expect(res, hasLength(19));
-              expect(res.map((e) => e['ok']), everyElement(isTrue));
-            });
-          });
-        });
+        tc.test(
+            '- Squadron Worker',
+            () => LocalWorker.create(localService)
+                .runTest((lw) => LocalClientWorker(tc, lw).runTest((w) async {
+                      final res = await w.checkSequence(19).toList();
+                      expect(res, hasLength(19));
+                      expect(res.map((e) => e['ok']), everyElement(isTrue));
+                    })));
 
-        tc.test('- Worker Pool', () async {
-          await LocalWorker.create(localService).useAsync((lw) async {
-            await LocalClientWorkerPool(tc, lw, concurrency_253)
-                .useAsync((p) async {
-              final tasks = <Future<List<Map<String, dynamic>>>>[];
-              for (var i = 0; i < p.maxConcurrency; i++) {
-                tasks.add(p.checkSequence(i).toList());
-              }
+        tc.test(
+            '- Worker Pool',
+            () => LocalWorker.create(localService).runTest((lw) =>
+                LocalClientWorkerPool(tc, lw, medium).runTest((p) async {
+                  final tasks = <Future<List<Map<String, dynamic>>>>[];
+                  for (var i = 0; i < p.maxConcurrency; i++) {
+                    tasks.add(p.checkSequence(i).toList());
+                  }
 
-              final results = await Future.wait(tasks);
-              for (var i = 0; i < results.length; i++) {
-                expect(results[i], hasLength(i));
-                expect(results[i].map((e) => e['ok']), everyElement(isTrue));
-              }
-            });
-          });
-        });
+                  final results = await Future.wait(tasks);
+                  for (var i = 0; i < results.length; i++) {
+                    expect(results[i], hasLength(i));
+                    expect(
+                        results[i].map((e) => e['ok']), everyElement(isTrue));
+                  }
+                })));
       });
     });
   });

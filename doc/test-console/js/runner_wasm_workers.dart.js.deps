@@ -585,8 +585,10 @@ file:///C:/_Projects/github/squadron/test/src/test_runner.dart
 file:///C:/_Projects/github/squadron/test/src/test_suites.dart
 file:///C:/_Projects/github/squadron/test/src/test_timeout.dart
 file:///C:/_Projects/github/squadron/test/src/utils.dart
-file:///C:/_Projects/github/squadron/test/test_constants.dart
+file:///C:/_Projects/github/squadron/test/test_concurrency.dart
+file:///C:/_Projects/github/squadron/test/test_delay.dart
 file:///C:/_Projects/github/squadron/test/test_exception.dart
+file:///C:/_Projects/github/squadron/test/test_extensions.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service.dart
 file:///C:/_Projects/github/squadron/test/worker_services/cache_service_worker.dart
 file:///C:/_Projects/github/squadron/test/worker_services/error_service.dart

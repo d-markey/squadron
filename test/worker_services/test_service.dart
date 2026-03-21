@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:squadron/squadron.dart';
 
-import '../test_constants.dart';
+import '../test_delay.dart';
 import 'fraction.dart';
 import 'squadron_version.dart';
 
@@ -23,40 +23,28 @@ class TestService with SquadronVersion implements WorkerService {
     while (sw.elapsedMilliseconds < ms) {/* cpu */}
   }
 
-  Future<int> delayed_80ms(int n) async {
-    await Future.delayed(delay_80ms);
+  // Returns [n] after 4 [TestDelay.tick]s.
+  Future<int> delayedLong(int n) async {
+    await Future.delayed(TestDelay.tick * 4);
     return n;
   }
 
   FutureOr<bool> ping() => true;
 
-  Stream<int> finite_20ms(int count) async* {
+  // Stream one number 0, 1, 2... (up to [count]) every [TestDelay.tick].
+  Stream<int> finite(int count) async* {
     for (var i = 0; i < count; i++) {
-      await Future.delayed(delay_20ms);
+      await TestDelay.pause(ticks: 1);
       yield i;
     }
   }
 
-  Stream<int> infinite_20ms() async* {
+  // Stream one number 0, 1, 2... (up to infinity) every [TestDelay.tick].
+  Stream<int> infinite() async* {
     int i = 0;
     while (true) {
-      await Future.delayed(delay_20ms);
+      await TestDelay.pause(ticks: 1);
       yield i++;
-    }
-  }
-
-  Stream<int> clock(
-      {int frequency = 1 /* Hz */, CancelationToken? token}) async* {
-    var n = 0;
-    final ms = 1000 ~/ frequency;
-    if (ms == 0) {
-      throw Exception('Frequency is too high!');
-    }
-    final delay = Duration(milliseconds: ms);
-    while (token == null || !token.isCanceled) {
-      yield n;
-      n += 1;
-      await Future.delayed(delay);
     }
   }
 
@@ -64,8 +52,8 @@ class TestService with SquadronVersion implements WorkerService {
     bool stop = false;
     token.onCanceled.then((_) => stop = true);
     while (!stop) {
-      await Future.delayed(Duration
-          .zero); // necessary for the cancelation notification to come through
+      // necessary for the cancelation notification to come through
+      await Future.delayed(Duration.zero);
       for (var i = 0; i < 10000; i++) {/* cpu */}
     }
   }
@@ -74,6 +62,7 @@ class TestService with SquadronVersion implements WorkerService {
 
   FutureOr<int> getPendingInfiniteWithErrors() => _pendingInfiniteWithErrors;
 
+  // Stream 0, 1, error #2, 3, error #4, 5... (up to infinity) every [TestDelay.tick].
   Stream<int> infiniteWithErrors() {
     _pendingInfiniteWithErrors++;
     late final StreamController<int> controller;
@@ -89,12 +78,13 @@ class TestService with SquadronVersion implements WorkerService {
         if (future != null) {
           await future;
         }
-        controller.add(i);
         if (i > 0 && i % 2 == 0) {
           controller.addError(WorkerException('error #$i'));
+        } else {
+          controller.add(i);
         }
         i++;
-        await Future.delayed(delay_20ms);
+        await TestDelay.pause(ticks: 1);
       }
     }
 
@@ -149,10 +139,9 @@ class TestService with SquadronVersion implements WorkerService {
   static const pingCommand = 21;
   static const finiteCommand = 31;
   static const infiniteCommand = 32;
-  static const clockCommand = 33;
-  static const cancelableInfiniteCpuCommand = 34;
-  static const getPendingInfiniteWithErrorsCommand = 35;
-  static const infiniteWithErrorsCommand = 36;
+  static const cancelableInfiniteCpuCommand = 33;
+  static const getPendingInfiniteWithErrorsCommand = 34;
+  static const infiniteWithErrorsCommand = 35;
   static const fractionAddCommand = 41;
   static const platformTypeCommand = 51;
   static const mapCommand = 52;
@@ -167,12 +156,10 @@ class TestService with SquadronVersion implements WorkerService {
     SquadronVersion.versionCommand: (r) => getVersion(),
     ioCommand: (r) => io(ms: (r.args[0] as num).toInt()),
     cpuCommand: (r) => cpu(ms: (r.args[0] as num).toInt()),
-    delayedCommand: (r) => delayed_80ms((r.args[0] as num).toInt()),
+    delayedCommand: (r) => delayedLong((r.args[0] as num).toInt()),
     pingCommand: (r) => ping(),
-    finiteCommand: (r) => finite_20ms((r.args[0] as num).toInt()),
-    infiniteCommand: (r) => infinite_20ms(),
-    clockCommand: (r) =>
-        clock(frequency: (r.args[0] as num).toInt(), token: r.cancelToken),
+    finiteCommand: (r) => finite((r.args[0] as num).toInt()),
+    infiniteCommand: (r) => infinite(),
     cancelableInfiniteCpuCommand: (r) => cancelableInfiniteCpu(r.cancelToken!),
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
     infiniteWithErrorsCommand: (r) => infiniteWithErrors(),

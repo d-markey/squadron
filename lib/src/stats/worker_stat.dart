@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 
+import '../_impl/xplat/_time_stamp.dart';
+
 /// Base statistics for worker.
 class WorkerStat {
   WorkerStat._(
@@ -10,13 +12,14 @@ class WorkerStat {
     this.maxWorkload,
     this.totalWorkload,
     this.totalErrors,
+    this.initTime,
     this.upTime,
     this.idleTime,
     this.activeConnections,
   );
 
   /// Timestamp of this snapshot
-  final timestamp = DateTime.now().toUtc();
+  final timestamp = Timestamp.now();
 
   /// The worker's runtime type.
   final Type workerType;
@@ -38,6 +41,9 @@ class WorkerStat {
 
   /// Total errors raised during processing.
   final int totalErrors;
+
+  /// The worker's initialization time.
+  Duration? initTime;
 
   /// The worker's up-time.
   Duration upTime;
@@ -70,9 +76,20 @@ extension WorkerStatImpl on WorkerStat {
           int maxWorkload,
           int totalWorkload,
           int totalErrors,
+          Duration? initTime,
           Duration upTime,
           Duration idleTime,
           int activeConnections) =>
-      WorkerStat._(workerType, workerHashCode, isStopped, workload, maxWorkload,
-          totalWorkload, totalErrors, upTime, idleTime, activeConnections);
+      WorkerStat._(
+          workerType,
+          workerHashCode,
+          isStopped,
+          workload,
+          maxWorkload,
+          totalWorkload,
+          totalErrors,
+          initTime,
+          upTime,
+          idleTime,
+          activeConnections);
 }

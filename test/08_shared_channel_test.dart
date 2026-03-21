@@ -2,9 +2,9 @@
 
 import 'package:squadron/squadron.dart';
 import 'package:test/test.dart';
-import 'package:using/using.dart';
 
 import 'src/test_context.dart';
+import 'test_extensions.dart';
 import 'worker_services/cache_service_worker.dart';
 import 'worker_services/prime_service_worker.dart';
 import 'worker_services/primes.dart';
@@ -26,59 +26,58 @@ void execute(TestContext? tc) {
         Squadron.disableBrowserCache = false;
       });
 
-      tc.test('- Standalone cache worker', () async {
-        await CacheWorker(tc).useAsync((cache) async {
-          expect(await cache.get(1), isNull);
-          expect(await cache.containsKey(1), isFalse);
-          await cache.set(1, 'in cache');
-          expect(await cache.containsKey(1), isTrue);
-          expect(await cache.get(1), 'in cache');
-        });
-      });
+      tc.test(
+          '- Standalone cache worker',
+          () => CacheWorker(tc).startAndRunTest((cache) async {
+                expect(await cache.get(1), isNull);
+                expect(await cache.containsKey(1), isFalse);
+                await cache.set(1, 'in cache');
+                expect(await cache.containsKey(1), isTrue);
+                expect(await cache.get(1), 'in cache');
+              }));
 
-      tc.test('- Prime worker + cache worker', () async {
-        await CacheWorker(tc).useAsync((cache) async {
-          await cache.start();
+      tc.test(
+          '- Prime worker + cache worker',
+          () => CacheWorker(tc).startAndRunTest((cache) async {
+                var cacheStats = await cache.getCacheStats();
+                expect(cacheStats.hit, isZero);
+                expect(cacheStats.miss, isZero);
+                expect(cacheStats.expired, isZero);
+                expect(cacheStats.size, isZero);
+                expect(cacheStats.maxSize, isZero);
 
-          var cacheStats = await cache.getCacheStats();
-          expect(cacheStats.hit, isZero);
-          expect(cacheStats.miss, isZero);
-          expect(cacheStats.expired, isZero);
-          expect(cacheStats.size, isZero);
-          expect(cacheStats.maxSize, isZero);
+                await PrimeWorker(tc, cache).runTest((w) async {
+                  final sw = Stopwatch()..start();
+                  for (var prime in largePrimes) {
+                    expect(await w.isPrime(prime), isTrue);
+                  }
+                  final elapsedWithEmptyCache = sw.elapsedMicroseconds;
 
-          await PrimeWorker(tc, cache).useAsync((w) async {
-            final sw = Stopwatch()..start();
-            for (var prime in largePrimes) {
-              expect(await w.isPrime(prime), isTrue);
-            }
-            final elapsedWithEmptyCache = sw.elapsedMicroseconds;
+                  cacheStats = await cache.getCacheStats();
+                  final cacheSize = cacheStats.size;
+                  expect(cacheSize, isPositive);
+                  expect(cacheStats.hit, isZero);
+                  expect(cacheStats.miss, cacheSize);
+                  expect(cacheStats.expired, isZero);
+                  expect(cacheStats.maxSize, cacheSize);
 
-            cacheStats = await cache.getCacheStats();
-            final cacheSize = cacheStats.size;
-            expect(cacheSize, isPositive);
-            expect(cacheStats.hit, isZero);
-            expect(cacheStats.miss, cacheSize);
-            expect(cacheStats.expired, isZero);
-            expect(cacheStats.maxSize, cacheSize);
+                  sw.reset();
+                  for (var prime in largePrimes) {
+                    expect(await w.isPrime(prime), isTrue);
+                  }
+                  final elapsedWithFullCache = sw.elapsedMicroseconds;
 
-            sw.reset();
-            for (var prime in largePrimes) {
-              expect(await w.isPrime(prime), isTrue);
-            }
-            final elapsedWithFullCache = sw.elapsedMicroseconds;
+                  cacheStats = await cache.getCacheStats();
+                  expect(cacheStats.hit, cacheSize);
+                  expect(cacheStats.miss, cacheSize);
+                  expect(cacheStats.expired, isZero);
+                  expect(cacheStats.size, cacheSize);
+                  expect(cacheStats.maxSize, cacheSize);
 
-            cacheStats = await cache.getCacheStats();
-            expect(cacheStats.hit, cacheSize);
-            expect(cacheStats.miss, cacheSize);
-            expect(cacheStats.expired, isZero);
-            expect(cacheStats.size, cacheSize);
-            expect(cacheStats.maxSize, cacheSize);
-
-            expect(elapsedWithFullCache, lessThan(elapsedWithEmptyCache / 2));
-          });
-        });
-      });
+                  expect(elapsedWithFullCache,
+                      lessThan(elapsedWithEmptyCache / 2));
+                });
+              }));
     });
   });
 }

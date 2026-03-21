@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:squadron/squadron.dart';
 
 import '../src/test_logger.dart';
-import '../test_constants.dart';
+import '../test_delay.dart';
 import 'squadron_version.dart';
 
 class InstallableService
@@ -46,12 +46,12 @@ class InstallableService
   }
 
   Future<bool> isInstalled() async {
-    await Future.delayed(delay_20ms);
+    await Future.delayed(TestDelay.tick);
     return _installed;
   }
 
   Future<bool> isUninstalled() async {
-    await Future.delayed(delay_20ms);
+    await Future.delayed(TestDelay.tick);
     return _uninstalled;
   }
 

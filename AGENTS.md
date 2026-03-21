@@ -34,12 +34,13 @@ Squadron is a multi-threading library for Dart and Flutter. It provides a unifie
 
 ## Testing & Verification (CRITICAL)
 - **Recompilation**: Any change to code that is **imported by the worker binaries** requires recompilation of the test artifacts in `test/workers/`. 
-    - **Triggers**: Changes to `WorkerService`, `Channel`, `WorkerRequest`, `WorkerResponse`, and **any logic in `_impl/`** that is used by workers (even platform-specific web/native implementations).
-    - **No Recompile Needed**: Changes to client-side orchestration like the `Worker` class proxy, `WorkerPool`, or startup logic.
-- **Canonical Test Command**: Use `.\tool\run_tests.bat /b`.
-    - The `/b` flag triggers `tool/compile_tests.dart` which generates the `.js` and `.wasm` files required for web tests.
-    - **NEVER** rely solely on `dart test` after modifying core library code, as it will run web tests against stale worker binaries.
-- **Sequential Execution**: Tests are run with `-j 1` to avoid race conditions and resource exhaustion during worker process spawning.
+    - **Triggers**: Changes to (but not limited to) `WorkerService`, `Channel`, `WorkerRequest`, `WorkerResponse`, and **any logic in `_impl/`** that is used by workers (including platform-specific Web implementations).
+    - **No Recompile Needed**: Changes to client-side orchestration like the `Worker` class proxy, `WorkerPool`, or startup logic. Compilation is required on Web platforms only; native platforms do not require recompilation.
+- **Canonical Test Command**: **ALWAYS** use `.\tool\run_tests.bat` (Windows) or `./tool/run_tests.sh` (Linux).
+    - Use the `/b` (or `-b`) flag to trigger `tool/compile_tests.dart`, which generates the `.js` and `.wasm` files required for web tests.
+    - Additional arguments (e.g., `--name "some test"`) are passed directly to `dart test`.
+    - **NEVER** run `dart test` directly after modifying core library code, as it will run web tests against stale worker binaries.
+    - **Sequential Execution**: Tests are run with `-j 1` by the scripts to avoid race conditions and resource exhaustion during worker process spawning.
 
 ## Cancellation Logic
 - **CancellationToken**: Based on the `cancelation_token` package.

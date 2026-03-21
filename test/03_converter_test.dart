@@ -19,63 +19,6 @@ Future<void> main() => TestContext.run(
 
 const testScript = '03_converter_test.dart';
 
-final _listOfInts = [1, 2, 3, 4];
-final _listOfIntsWithIntegralDouble = [1, 2, 3.toDouble(), 4];
-final _listOfNullableInts = [1, 2, null, 4];
-
-final _listOfDoubles = [1.1, 2.2, 3.3, 3.4];
-final _listOfDoublesWithInt = [1.1, 2.2, 3.toInt(), 4.4];
-final _listOfNullableDoubles = [1.1, 2.2, null, 4.4];
-
-final _mapOfInts = {
-  'one': 1,
-  'two': 2,
-  'three': 3,
-};
-final _mapOfNullableInts = {
-  'one': 1,
-  '': null,
-  'three': 3,
-};
-final _mapOfIntsWithIntegralDouble = {
-  'one': 1,
-  'two': 2.toDouble(),
-  'three': 3,
-};
-
-bool _isTypeError(Object ex) {
-  if (ex is TypeError) return true;
-  if (ex is WorkerException) {
-    final msg = ex.message;
-    return msg.contains('TypeError') || msg.contains('not a subtype');
-  }
-  return false;
-}
-
-final _throwsTypeError = anyOf(
-    failsWith<TypeError>(),
-    allOf(
-      failsWith<WorkerException>(),
-      anyOf(reports('TypeError'), reports('not a subtype')),
-    ));
-final _isInfinite = anyOf(double.infinity, double.negativeInfinity);
-
-int _asInt(dynamic x) => x as int;
-
-void _unexpectedSuccessIfNonJs(String message, [dynamic res]) {
-  if (!Squadron.platformType.isJs) {
-    throw unexpectedSuccess(
-        'Unexpected success on ${Squadron.platformType.label}: $message', res);
-  }
-}
-
-void _unexpectedFailureIfJs(String message, [dynamic ex]) {
-  if (Squadron.platformType.isJs) {
-    throw unexpectedFailure(
-        'Unexpected failure on ${Squadron.platformType.label}: $message', ex);
-  }
-}
-
 void execute(TestContext? tc) {
   if (tc == null) return;
 
@@ -217,4 +160,61 @@ void execute(TestContext? tc) {
       });
     });
   });
+}
+
+final _listOfInts = [1, 2, 3, 4];
+final _listOfIntsWithIntegralDouble = [1, 2, 3.toDouble(), 4];
+final _listOfNullableInts = [1, 2, null, 4];
+
+final _listOfDoubles = [1.1, 2.2, 3.3, 3.4];
+final _listOfDoublesWithInt = [1.1, 2.2, 3.toInt(), 4.4];
+final _listOfNullableDoubles = [1.1, 2.2, null, 4.4];
+
+final _mapOfInts = {
+  'one': 1,
+  'two': 2,
+  'three': 3,
+};
+final _mapOfNullableInts = {
+  'one': 1,
+  '': null,
+  'three': 3,
+};
+final _mapOfIntsWithIntegralDouble = {
+  'one': 1,
+  'two': 2.toDouble(),
+  'three': 3,
+};
+
+bool _isTypeError(Object ex) {
+  if (ex is TypeError) return true;
+  if (ex is WorkerException) {
+    final msg = ex.message;
+    return msg.contains('TypeError') || msg.contains('not a subtype');
+  }
+  return false;
+}
+
+final _throwsTypeError = anyOf(
+    failsWith<TypeError>(),
+    allOf(
+      failsWith<WorkerException>(),
+      anyOf(reports('TypeError'), reports('not a subtype')),
+    ));
+final _isInfinite = anyOf(double.infinity, double.negativeInfinity);
+
+int _asInt(dynamic x) => x as int;
+
+void _unexpectedSuccessIfNonJs(String message, [dynamic res]) {
+  if (!Squadron.platformType.isJs) {
+    throw unexpectedSuccess(
+        'Unexpected success on ${Squadron.platformType.label}: $message', res);
+  }
+}
+
+void _unexpectedFailureIfJs(String message, [dynamic ex]) {
+  if (Squadron.platformType.isJs) {
+    throw unexpectedFailure(
+        'Unexpected failure on ${Squadron.platformType.label}: $message', ex);
+  }
 }

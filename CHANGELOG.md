@@ -1,3 +1,9 @@
+## 7.4.2
+
+- `send()` optimization: for non-cancellable tasks, synchronously return the future when the channel is already up and running. Otherwise, return the result asynchronously via `ForwardCompleter`.
+- Use `Stopwatch` instead of `Timestamp` for worker stats.
+- Improved tests.
+
 ## 7.4.1
 
 - Moved log serialization into the `WorkerResponse.wrapInPlace` method.

@@ -6,7 +6,6 @@ import 'package:using/using.dart';
 
 import '../_impl/xplat/_forward_completer.dart';
 import '../_impl/xplat/_forward_stream_controller.dart';
-import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
 import '../exceptions/exception_manager.dart';
 import '../exceptions/squadron_exception.dart';
@@ -34,7 +33,7 @@ abstract class Worker
   Worker(this._entryPoint,
       {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
       : _threadHook = threadHook,
-        _exceptionManager = exceptionManager {
+        exceptionManager = exceptionManager ?? ExceptionManager() {
     _stats = _Stats(this);
   }
 
@@ -52,9 +51,7 @@ abstract class Worker
   Logger? channelLogger;
 
   @override
-  ExceptionManager get exceptionManager =>
-      (_exceptionManager ??= ExceptionManager());
-  ExceptionManager? _exceptionManager;
+  final ExceptionManager exceptionManager;
 
   final PlatformThreadHook? _threadHook;
 
@@ -90,17 +87,43 @@ abstract class Worker
     CancelationToken? token,
     bool inspectRequest = false,
     bool inspectResponse = false,
-  }) async {
+  }) {
     token?.throwIfCanceled();
+    final channel = _channel;
+    return (channel != null && token == null)
+        ? _sendUncancelable(channel, command,
+            args: args,
+            inspectRequest: inspectRequest,
+            inspectResponse: inspectResponse)
+        : _sendAsync(command,
+            args: args,
+            token: token,
+            inspectRequest: inspectRequest,
+            inspectResponse: inspectResponse);
+  }
 
-    // get the channel, start the worker if necessary
-    final channel = _channel ?? await start();
+  Future<dynamic> _sendAsync(
+    int command, {
+    List args = const [],
+    CancelationToken? token,
+    bool inspectRequest = false,
+    bool inspectResponse = false,
+  }) async {
+    // start the worker and get the channel
+    final channel = await start();
+
+    if (token == null) {
+      return _sendUncancelable(channel, command,
+          args: args,
+          inspectRequest: inspectRequest,
+          inspectResponse: inspectResponse);
+    }
 
     final completer = ForwardCompleter();
 
-    final squadronToken = token?.wrap();
-    squadronToken?.onCanceled.then((ex) {
-      _channel?.cancelToken(squadronToken);
+    final squadronToken = token.wrap();
+    squadronToken.onCanceled.then((ex) {
+      channel.cancelToken(squadronToken);
       completer.failure(SquadronException.from(ex, null, command));
     });
 
@@ -122,6 +145,33 @@ abstract class Worker
     }
 
     return completer.future;
+  }
+
+  Future<dynamic> _sendUncancelable(
+    Channel channel,
+    int command, {
+    List args = const [],
+    bool inspectRequest = false,
+    bool inspectResponse = false,
+  }) {
+    _stats.beginWork();
+    try {
+      return channel
+          .sendRequest(
+        command,
+        args,
+        inspectRequest: inspectRequest,
+        inspectResponse: inspectResponse,
+      )
+          .catchError((ex, st) {
+        _stats.failed();
+        throw SquadronException.from(ex, st, command);
+      }).whenComplete(_stats.endWork);
+    } catch (ex, st) {
+      _stats.failed();
+      _stats.endWork();
+      throw SquadronException.from(ex, st, command);
+    }
   }
 
   /// Sends a streaming workload to the worker.
@@ -185,7 +235,7 @@ abstract class Worker
   /// Creates a [Channel] and starts the worker using the [_entryPoint].
   @override
   Future<Channel> start() {
-    if (isStopped) {
+    if (_stats.isStopped) {
       throw WorkerException('Invalid state: worker is stopped');
     }
 
@@ -209,7 +259,7 @@ abstract class Worker
   /// Stops this worker.
   @override
   void stop() {
-    if (!isStopped) {
+    if (!_stats.isStopped) {
       channelLogger?.d('Stop worker');
       _stats.stop();
       _openChannel = null;
