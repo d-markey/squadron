@@ -5,6 +5,7 @@ import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 import 'package:web/web.dart' as web;
 
+import '../../build_options.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../typedefs.dart';
@@ -65,7 +66,11 @@ final class _WebWorkerChannel implements WorkerChannel {
       _inspectAndPostResponse(WorkerResponse.withResult(data));
 
   @override
-  void log(LogEvent message) => _postResponse(WorkerResponse.log(message));
+  void log(LogEvent message) {
+    if (BuildOptions.withCrossWorkerLogging) {
+      _postResponse(WorkerResponse.log(message));
+    }
+  }
 
   /// Checks if [stream] can be streamed back to the worker client. Returns
   /// `true` for browser platforms.

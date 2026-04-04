@@ -4,26 +4,25 @@ import 'dart:isolate';
 import 'package:meta/meta.dart';
 
 import '../../converters/cast_converter.dart';
-import '../../converters/converter.dart';
 import '../../squadron_platform_type.dart';
 import '../../utils.dart';
 
 /// threadIDs may not be unique on VM...
 final threadId = Isolate.current.hashCode.hex;
 
-Converter getPlatformConverter() => CastConverter.instance;
+const platformConverter = CastConverter.instance;
 
-SquadronPlatformType getPlatformType() => SquadronPlatformType.vm;
+const platformType = SquadronPlatformType.vm;
 
-SquadronOSType getOSType() => switch (Platform.operatingSystem) {
-      'windows' => SquadronOSType.windows,
-      'linux' => SquadronOSType.linux,
-      'fuchsia' => SquadronOSType.fuchsia,
-      'macos' => SquadronOSType.macos,
-      'android' => SquadronOSType.android,
-      'ios' => SquadronOSType.ios,
-      _ => SquadronOSType.unknown
-    };
+final osType = switch (Platform.operatingSystem) {
+  'windows' => SquadronOSType.windows,
+  'linux' => SquadronOSType.linux,
+  'fuchsia' => SquadronOSType.fuchsia,
+  'macos' => SquadronOSType.macos,
+  'android' => SquadronOSType.android,
+  'ios' => SquadronOSType.ios,
+  _ => SquadronOSType.unknown
+};
 
 Uri mapUrl(String url) => Uri.parse(url);
 

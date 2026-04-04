@@ -355,7 +355,7 @@ Object? $dartify(JSAny? message) {
     final res = js.dartify();
 
     // cache result
-    if (res != null && res is! num && res is! bool && res is! String) {
+    if (res != null) {
       cache[js] = res;
     }
 

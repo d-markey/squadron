@@ -36,7 +36,7 @@ class TestContext {
     void Function(TestContext?) executor, {
     bool mixedContext = true,
   }) async {
-    final init = [TestContext.init(RunMode.launch, '~')];
+    var init = [TestContext.init(RunMode.launch, '~')];
     if (mixedContext) {
       final mixedTarget = _mixedTargets[Squadron.platformType];
       if (mixedTarget != null && mixedTarget != Squadron.platformType) {

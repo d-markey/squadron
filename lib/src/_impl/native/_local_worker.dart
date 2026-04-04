@@ -13,7 +13,7 @@ import '_worker_runner.dart';
 
 base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
   _VmLocalWorker._(this.service, this.operations, this.exceptionManager) {
-    final runner = WorkerRunner.use(this);
+    final runner = WorkerRunner.local(this);
     _port.listen(runner.handle);
     _channel = Channel.deserialize(
         _port.sendPort, runner.internalLogger, exceptionManager)!

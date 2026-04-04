@@ -39,7 +39,7 @@ class EntryPointUri with Releasable {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
       if (addRandomHash) url = _addRandomHash(url);
       final blob = web.Blob(
-        [wasmLoaderScript(url).toJS].toJS,
+        [_wasmLoaderScript(url).toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
       return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
@@ -57,7 +57,7 @@ class EntryPointUri with Releasable {
     return url.contains('?') ? '$url&h=$hash' : '$url?h=$hash';
   }
 
-  static String wasmLoaderScript(String url) => '''(async function() {
+  static String _wasmLoaderScript(String url) => '''(async function() {
   const workerUri = new URL("${url.replaceAll('"', '\\"')}", self.location.origin).href;
   try {
     let dart2wasm_runtime; let moduleInstance;
@@ -73,14 +73,13 @@ class EntryPointUri with Releasable {
     }
     try {
       await dart2wasm_runtime.invoke(moduleInstance);
-      //console.log(`Succesfully loaded and invoked \${workerUri}`);
+      // console.log(`Succesfully loaded and invoked \${workerUri}`);
     } catch (exception) {
       console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
       throw new Error(exception.message ?? 'Unknown error when invoking worker module');
     }
   } catch (ex) {
-    const ts = (Date.now() - Date.UTC(2020, 1, 2)) * 1000;
-    postMessage([ts, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
+    postMessage([null, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
   }
 })()''';
 }

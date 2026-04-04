@@ -90,7 +90,7 @@ void execute(TestContext? tc) {
         tc.test(
             '- sendRequest should clean up active connections',
             () => IssuesWorker(tc).startAndRunTest((w) async {
-                  final initialCount = w.getStats().activeConnections;
+                  final initialCount = w.activeConnections;
                   expect(initialCount, isZero);
 
                   // Make multiple sendRequest calls
@@ -102,7 +102,7 @@ void execute(TestContext? tc) {
                   await Future.delayed(const Duration(milliseconds: 100));
 
                   // Verify controllers were cleaned up
-                  final finalCount = w.getStats().activeConnections;
+                  final finalCount = w.activeConnections;
                   expect(finalCount, equals(initialCount),
                       reason:
                           'Memory leak detected: ${finalCount - initialCount} connections retained after 10 requests');
@@ -111,7 +111,7 @@ void execute(TestContext? tc) {
         tc.test(
             '- sendStreamingRequest should clean up active connections',
             () => IssuesWorker(tc).startAndRunTest((w) async {
-                  final initialCount = w.getStats().activeConnections;
+                  final initialCount = w.activeConnections;
                   expect(initialCount, isZero);
 
                   // Make a streaming request and fully consume it
@@ -121,7 +121,7 @@ void execute(TestContext? tc) {
                   // Give time for cleanup
                   await Future.delayed(const Duration(milliseconds: 100));
 
-                  final finalCount = w.getStats().activeConnections;
+                  final finalCount = w.activeConnections;
                   expect(finalCount, equals(initialCount),
                       reason:
                           'Memory leak detected: ${finalCount - initialCount} connections retained after streaming request');
@@ -130,7 +130,7 @@ void execute(TestContext? tc) {
         tc.test(
             '- Early canceled streams should clean up active connections',
             () => IssuesWorker(tc).startAndRunTest((w) async {
-                  final initialCount = w.getStats().activeConnections;
+                  final initialCount = w.activeConnections;
                   expect(initialCount, isZero);
 
                   // Create a streaming request but cancel it early by only taking first value
@@ -140,7 +140,7 @@ void execute(TestContext? tc) {
                   // Give time for cleanup after early cancellation
                   await Future.delayed(const Duration(milliseconds: 100));
 
-                  final finalCount = w.getStats().activeConnections;
+                  final finalCount = w.activeConnections;
                   expect(finalCount, equals(initialCount),
                       reason:
                           'Memory leak detected: ${finalCount - initialCount} connections retained after early stream cancellation');

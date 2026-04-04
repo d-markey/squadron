@@ -4,7 +4,7 @@ import '../typedefs.dart';
 abstract class Converter {
   const Converter();
 
-  static bool isNumber<T>() => (T == int || T == double);
+  static bool isNumber<T>() => (T == num || T == int || T == double);
 
   static bool isIdentity<T>(Cast<T> cast) => (cast == identity<T>);
 

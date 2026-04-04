@@ -11,8 +11,8 @@ class Squadron {
   Squadron._();
 
   /// Gets the current platform information.
-  static final platformType = impl.getPlatformType();
-  static final osType = impl.getOSType();
+  static const platformType = impl.platformType;
+  static final osType = impl.osType;
 
   /// Parse [url] and returns the corresponding [Uri].
   ///
@@ -24,7 +24,7 @@ class Squadron {
   static bool disableBrowserCache = false;
 
   static final identical = impl.isSameInstance;
-  static final _platformConverter = impl.getPlatformConverter();
+  static const _platformConverter = impl.platformConverter;
   static Converter _converter = _platformConverter;
 
   /// Gets the current converter.

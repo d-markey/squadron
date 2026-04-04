@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:meta/meta.dart';
 
+import '../../build_options.dart';
 import '../../converters/cast_converter.dart';
-import '../../converters/converter.dart';
 import '../../converters/num_converter.dart';
 import '../../squadron_platform_type.dart';
 import '../../utils.dart';
@@ -16,18 +16,15 @@ int getRandomHash() => _rnd.nextInt(0x100000000);
 // threadIDs may not be unique on Web...
 final threadId = getRandomHash().hex;
 
-const double _one = 1.0;
-final _platformType = (_one is int)
-    ? SquadronPlatformType.js // JavaScript
-    : SquadronPlatformType.wasm; // Web Assembly
+const platformType = BuildOptions.isWasm
+    ? SquadronPlatformType.wasm // Web Assembly
+    : SquadronPlatformType.js; // JavaScript
 
-Converter getPlatformConverter() => _platformType.isJs
-    ? CastConverter.instance // JavaScript
-    : NumConverter.instance; // Web Assembly
+const platformConverter = BuildOptions.isWasm
+    ? NumConverter.instance // Web Assembly
+    : CastConverter.instance; // JavaScript
 
-SquadronPlatformType getPlatformType() => _platformType;
-
-SquadronOSType getOSType() => SquadronOSType.web;
+final osType = SquadronOSType.web;
 
 Uri mapUrl(String url) {
   if (url.startsWith('~')) {

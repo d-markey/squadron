@@ -113,8 +113,8 @@ class ResultStream {
         if (streamId != null) {
           channel.cancelStream(streamId);
         }
-        await sub.cancel();
       }
+      await sub?.cancel();
     }
 
     void $closeWithError(Object error, [StackTrace? st]) {

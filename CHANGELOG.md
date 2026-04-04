@@ -1,3 +1,9 @@
+## 7.4.3
+
+- Remove deprecated artefacts.
+- Add build options to control internal + cross-worker logging and travel time.
+- Regroup tests to reduce the number of test files and minimize time spent compiling them.
+
 ## 7.4.2
 
 - `send()` optimization: for non-cancellable tasks, synchronously return the future when the channel is already up and running. Otherwise, return the result asynchronously via `ForwardCompleter`.

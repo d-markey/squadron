@@ -6,9 +6,6 @@ const localService = SquadronService.local();
 const vmService = SquadronService.vm();
 const sharedService = SharedServiceParam._();
 
-@Deprecated('Use sharedService instead.')
-const localWorker = SharedServiceParam._();
-
 class SharedServiceParam {
   const SharedServiceParam._();
 }

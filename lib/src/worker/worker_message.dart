@@ -1,3 +1,4 @@
+import '../build_options.dart';
 import '../_impl/xplat/_time_stamp.dart';
 
 extension type StreamId._(int handle) {
@@ -14,12 +15,15 @@ extension type WorkerMessage(List data) implements Object {
   /// [travelTime] is set by the receiving end and measures the time (in
   /// microseconds) it took between the moment the message was serialized and
   /// the moment it was deserialized.
-  int? get travelTime => data[_$traveltime];
+  int? get travelTime =>
+      BuildOptions.withTravelTime ? data[_$traveltime] : null;
 
   void unwrapTravelTime() {
-    final ts = Timestamp.from(data[_$traveltime]);
-    if (ts != null) {
-      data[_$traveltime] = Timestamp.now() - ts;
+    if (BuildOptions.withTravelTime) {
+      final ts = Timestamp.from(data[_$traveltime]);
+      if (ts != null) {
+        data[_$traveltime] = Timestamp.now()! - ts;
+      }
     }
   }
 }

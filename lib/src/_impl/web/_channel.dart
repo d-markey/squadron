@@ -5,6 +5,7 @@ import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 import 'package:web/web.dart' as web;
 
+import '../../build_options.dart';
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
@@ -42,6 +43,10 @@ Future<Channel> openChannel(
   List startArguments,
   PlatformThreadHook? hook,
 ) async {
+  if (!BuildOptions.withInternalLogging) {
+    logger = null;
+  }
+
   final completer = Completer<_WebChannel>();
   final ready = Completer<bool>();
   Channel? channel;
@@ -159,7 +164,8 @@ Future<Channel> openChannel(
     try {
       final channel = await completer.future;
       if (hook != null) {
-        await hook.call(worker);
+        final res = hook.call(worker);
+        if (res is Future) await res;
       }
       logger?.t('Created Web Worker for $entryPoint');
       return channel;

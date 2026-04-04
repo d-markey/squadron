@@ -90,13 +90,15 @@ void main(List<String> args) async {
   }
 }
 
-Compilation _build(MapEntry<String, ({String folder, int opt})> info,
-        String src, String sourceFolder, String outputFolder) =>
+Compilation _build(MapEntry<String, Setup> info, String src,
+        String sourceFolder, String outputFolder) =>
     Compilation(
       platform: info.key,
       optimizationLevel: info.value.opt,
       source: path.join(sourceFolder, info.value.folder, src),
       output: path.join(outputFolder, info.key, '$src.${info.key}'),
+      internalLogging: info.value.internalLogging,
+      crossWorkerLogging: info.value.crossWorkerLogging,
     );
 
 Future<int> _compile(Compilation compilation, Stopwatch sw) async {
@@ -145,19 +147,24 @@ sealed class Optimizations {
 }
 
 extension type Compilation._(List<String> _args) {
-  Compilation({
+  factory Compilation({
     required String platform,
     required int optimizationLevel,
     required String source,
     required String output,
-  }) : _args = List.unmodifiable([
-          'compile',
-          platform,
-          '-O$optimizationLevel',
-          source,
-          '-o',
-          output,
-        ]);
+    required bool internalLogging,
+    required bool crossWorkerLogging,
+  }) =>
+      Compilation._(List.unmodifiable([
+        'compile',
+        platform,
+        '-O$optimizationLevel',
+        source,
+        '-o',
+        output,
+        if (!internalLogging) '-Dsquadron.no_internal_logging=true',
+        if (!crossWorkerLogging) '-Dsquadron.no_cross_worker_logging=true',
+      ]));
 
   String get source => File(_args[3]).projectPath;
   String get output => File(_args[5]).projectPath;
@@ -201,65 +208,120 @@ const wasm = SquadronPlatformType.wasm;
 
 const workers = {
   'cache_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'echo_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'wasm', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.wasm(opt: Optimizations.aggressive),
   },
   'error_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.none), // no optim
-    'wasm': (folder: 'js', opt: Optimizations.none), // no optim
+    'js': Setup.js(
+      opt: Optimizations.none,
+      internalLogging: false,
+      crossWorkerLogging: false,
+    ), // no optim
+    'wasm': Setup.js(
+      opt: Optimizations.none,
+      internalLogging: false,
+      crossWorkerLogging: false,
+    ), // no optim
   },
   'installable_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'issues_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'local_client_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'log_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'not_a_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'person_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': Setup.js(opt: Optimizations.safe),
+    'wasm': Setup.js(opt: Optimizations.safe),
   },
   'prime_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'streaming_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.aggressive),
-    'wasm': (folder: 'js', opt: Optimizations.aggressive),
+    'js': Setup.js(opt: Optimizations.aggressive),
+    'wasm': Setup.js(opt: Optimizations.aggressive),
   },
   'test_worker.dart': {
-    'js': (folder: 'js', opt: Optimizations.safe),
-    'wasm': (folder: 'js', opt: Optimizations.safe),
+    'js': Setup.js(opt: Optimizations.safe),
+    'wasm': Setup.js(opt: Optimizations.safe),
   },
 };
 
 const runners = {
   'console.dart': {
-    'js': (folder: 'src', opt: Optimizations.def),
+    'js': Setup.console(),
   },
   'runner_js_workers.dart': {
-    'js': (folder: 'src', opt: Optimizations.def),
-    'wasm': (folder: 'src', opt: Optimizations.def),
+    'js': Setup.console(),
+    'wasm': Setup.console(),
   },
   'runner_wasm_workers.dart': {
-    'js': (folder: 'src', opt: Optimizations.def),
-    'wasm': (folder: 'src', opt: Optimizations.def),
+    'js': Setup.console(),
+    'wasm': Setup.console(),
   },
 };
+
+class Setup {
+  final String folder;
+  final int opt;
+  final bool internalLogging;
+  final bool crossWorkerLogging;
+
+  const Setup({
+    required this.folder,
+    required this.opt,
+    required this.internalLogging,
+    required this.crossWorkerLogging,
+  });
+
+  const Setup.js({
+    int opt = Optimizations.def,
+    bool internalLogging = true,
+    bool crossWorkerLogging = true,
+  }) : this(
+          folder: 'js',
+          opt: opt,
+          internalLogging: internalLogging,
+          crossWorkerLogging: crossWorkerLogging,
+        );
+
+  const Setup.wasm({
+    int opt = Optimizations.def,
+    bool internalLogging = true,
+    bool crossWorkerLogging = true,
+  }) : this(
+          folder: 'wasm',
+          opt: opt,
+          internalLogging: internalLogging,
+          crossWorkerLogging: crossWorkerLogging,
+        );
+
+  const Setup.console({
+    int opt = Optimizations.def,
+    bool internalLogging = true,
+    bool crossWorkerLogging = true,
+  }) : this(
+          folder: 'src',
+          opt: opt,
+          internalLogging: internalLogging,
+          crossWorkerLogging: crossWorkerLogging,
+        );
+}

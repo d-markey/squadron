@@ -63,10 +63,6 @@ abstract class Worker
   bool get isStopped => _stats.isStopped;
 
   /// [Worker] statistics.
-  @Deprecated('Use getStats()')
-  WorkerStat get stats => _stats.snapshot;
-
-  /// [Worker] statistics.
   WorkerStat getStats() => _stats.snapshot;
 
   /// Returns true if the [Worker] is connected i.e., it has a valid [Channel].

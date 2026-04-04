@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../build_options.dart';
 import '../_impl/xplat/_internal_logger.dart';
 import '../_impl/xplat/_time_stamp.dart';
 import '../exceptions/squadron_error.dart';
@@ -31,7 +32,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   factory WorkerRequest.userCommand(PlatformChannel channelInfo, int command,
           List args, SquadronCancelationToken? token, bool inspectResponse) =>
       WorkerRequest._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         channelInfo, // 1 - channel
         command, // 2 - command
         args, // 3 - args
@@ -43,7 +44,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new start request.
   factory WorkerRequest.start(PlatformChannel channelInfo, List args) =>
       WorkerRequest._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         channelInfo, // 1 - channel
         _connectCommand, // 2 - command
         args, // 3 - args
@@ -54,7 +55,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
 
   /// Creates a new stream cancelation request.
   factory WorkerRequest.cancelStream(StreamId streamId) => WorkerRequest._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - channel
         _cancelStreamCommand, // 2 - command
         null, // 3 - args
@@ -66,7 +67,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   /// Creates a new cancelation request.
   factory WorkerRequest.cancel(SquadronCancelationToken token) =>
       WorkerRequest._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - channel
         _cancelTokenCommand, // 2 - command
         null, // 3 - args
@@ -77,7 +78,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
 
   /// Creates a new termination request.
   factory WorkerRequest.stop() => WorkerRequest._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - channel
         _terminateCommand, // 2 - command
         null, // 3 - args

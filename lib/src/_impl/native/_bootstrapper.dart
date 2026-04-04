@@ -9,7 +9,7 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final workerPort = ReceivePort();
 
   final runner = WorkerRunner((r) {
-    r.internalLogger.t('Terminating Isolate');
+    r.internalLogger?.t('Terminating Isolate');
     workerPort.close();
     Isolate.current.kill(priority: Isolate.beforeNextEvent);
   });

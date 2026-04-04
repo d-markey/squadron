@@ -1,12 +1,14 @@
 // ignore_for_file: file_names
 
-part of '03_converter_test.dart';
+part of '03_converter_suite.dart';
 
 // ignore: non_constant_identifier_names
-void testContextAwareConverter(TestContext tc) {
-  tc.group('- ContextAwareConverter', () {
+void testNumConverter(TestContext tc) {
+  tc.group('- NumConverter', () {
+    final converter = NumConverter.instance;
+
     tc.group('- Integers', () {
-      final $toInt = NumConverter.instance.value<int>();
+      final $toInt = converter.value<int>();
       final $toNullableInt = Converter.allowNull($toInt);
 
       tc.test('- Converters are not identities', () {
@@ -66,7 +68,7 @@ void testContextAwareConverter(TestContext tc) {
     });
 
     tc.group('- Doubles', () {
-      final $toDbl = NumConverter.instance.value<double>();
+      final $toDbl = converter.value<double>();
       final $toNullableDbl = Converter.allowNull($toDbl);
 
       tc.test('- Converters are not identities', () {
@@ -121,11 +123,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers (cast conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfInts);
+
         await expectLater(() => data as List<int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.list<int>()(data);
-
         expect(res, isA<List<int>>());
         expect(res, _listOfInts);
       });
@@ -133,11 +133,8 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers (custom conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfInts);
-        await expectLater(() => data as List<int>, _throwsTypeError);
 
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.list<int>(_asInt)(data);
-
         expect(res, isA<List<int>>());
         expect(res, _listOfInts);
       });
@@ -145,11 +142,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Nullable integers', () async {
         final data = <dynamic>[];
         data.addAll(_listOfNullableInts);
+
         await expectLater(() => data as List<int?>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.nlist<int>(converter.value<int>())(data);
-
         expect(res, isA<List<int?>>());
         expect(res, _listOfNullableInts);
       });
@@ -157,11 +152,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers + integral double (cast conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfIntsWithIntegralDouble);
+
         await expectLater(() => data as List<int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.list<int>()(data);
-
         expect(res, isA<List<int>>());
         expect(res, _listOfIntsWithIntegralDouble);
       });
@@ -169,10 +162,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers + integral double (custom conversion)', () async {
         final data = <dynamic>[];
         data.addAll(_listOfIntsWithIntegralDouble);
-        await expectLater(() => data as List<int>, _throwsTypeError);
 
+        await expectLater(() => data as List<int>, _throwsTypeError);
         try {
-          final converter = ContextAwareConverter(NumConverter.instance);
           final res = converter.list<int>(_asInt)(data);
           expect(res, isA<List<int>>());
           expect(res, _listOfIntsWithIntegralDouble);
@@ -185,11 +177,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Doubles', () async {
         final data = <dynamic>[];
         data.addAll(_listOfDoubles);
+
         await expectLater(() => data as List<double>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.list<double>()(data);
-
         expect(res, isA<List<double>>());
         expect(res, _listOfDoubles);
       });
@@ -197,11 +187,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Nullable doubles', () async {
         final data = <dynamic>[];
         data.addAll(_listOfNullableDoubles);
+
         await expectLater(() => data as List<double?>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.nlist<double>(converter.value<double>())(data);
-
         expect(res, isA<List<double?>>());
         expect(res, _listOfNullableDoubles);
       });
@@ -209,11 +197,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Doubles + integer', () async {
         final data = <dynamic>[];
         data.addAll(_listOfDoublesWithInt);
+
         await expectLater(() => data as List<double>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.list<double>()(data);
-
         expect(res, isA<List<double>>());
         expect(res, _listOfDoublesWithInt);
       });
@@ -223,11 +209,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers (cast conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfInts);
+
         await expectLater(() => data as Set<int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.set<int>()(data);
-
         expect(res, isA<Set<int>>());
         expect(res, _listOfInts.toSet());
       });
@@ -235,11 +219,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers (custom conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfInts);
+
         await expectLater(() => data as Set<int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.set<int>()(data);
-
         expect(res, isA<Set<int>>());
         expect(res, _listOfInts.toSet());
       });
@@ -247,11 +229,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Nullable integers', () async {
         final data = <dynamic>{};
         data.addAll(_listOfNullableInts);
+
         await expectLater(() => data as Set<int?>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.nset<int>(converter.value<int>())(data);
-
         expect(res, isA<Set<int?>>());
         expect(res, _listOfNullableInts.toSet());
       });
@@ -259,10 +239,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers + integral double (cast conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfIntsWithIntegralDouble);
-        await expectLater(() => data as Set<int>, _throwsTypeError);
 
+        await expectLater(() => data as Set<int>, _throwsTypeError);
         try {
-          final converter = ContextAwareConverter(NumConverter.instance);
           final res = converter.set<int>()(data);
           expect(res, isA<Set<int>>());
           expect(res, _listOfIntsWithIntegralDouble.toSet());
@@ -275,10 +254,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Integers + integral double (custom conversion)', () async {
         final data = <dynamic>{};
         data.addAll(_listOfIntsWithIntegralDouble);
-        await expectLater(() => data as Set<int>, _throwsTypeError);
 
+        await expectLater(() => data as Set<int>, _throwsTypeError);
         try {
-          final converter = ContextAwareConverter(NumConverter.instance);
           final res = converter.set<int>(_asInt)(data);
           expect(res, isA<Set<int>>());
           expect(res, _listOfIntsWithIntegralDouble.toSet());
@@ -291,11 +269,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Doubles', () async {
         final data = <dynamic>{};
         data.addAll(_listOfDoubles);
+
         await expectLater(() => data as Set<double>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.set<double>()(data);
-
         expect(res, isA<Set<double>>());
         expect(res, _listOfDoubles.toSet());
       });
@@ -303,11 +279,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- Nullable doubles', () async {
         final data = <dynamic>{};
         data.addAll(_listOfNullableDoubles);
+
         await expectLater(() => data as Set<double?>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.nset<double>()(data);
-
         expect(res, isA<Set<double?>>());
         expect(res, _listOfNullableDoubles.toSet());
       });
@@ -318,7 +292,6 @@ void testContextAwareConverter(TestContext tc) {
 
         await expectLater(() => data as Set<double>, _throwsTypeError);
         try {
-          final converter = ContextAwareConverter(NumConverter.instance);
           final res = converter.set<double>()(data);
           expect(res, isA<Set<double>>());
           expect(res, _listOfDoublesWithInt.toSet());
@@ -333,11 +306,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- String / integer (cast conversion)', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfInts);
+
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.map<String, int>()(data);
-
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfInts);
       });
@@ -345,11 +316,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- String / integer (custom conversion)', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfInts);
+
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.map<String, int>(vcast: _asInt)(data);
-
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfInts);
       });
@@ -357,11 +326,9 @@ void testContextAwareConverter(TestContext tc) {
       tc.test('- String / nullable integer', () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfNullableInts);
+
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.nmap<String, int>()(data);
-
         expect(res, isA<Map<String, int?>>());
         expect(res, _mapOfNullableInts);
       });
@@ -370,11 +337,9 @@ void testContextAwareConverter(TestContext tc) {
           () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfIntsWithIntegralDouble);
+
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-
-        final converter = ContextAwareConverter(NumConverter.instance);
         final res = converter.map<String, int>()(data);
-
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfIntsWithIntegralDouble);
       });
@@ -383,10 +348,9 @@ void testContextAwareConverter(TestContext tc) {
           () async {
         final data = <dynamic, dynamic>{};
         data.addAll(_mapOfIntsWithIntegralDouble);
-        await expectLater(() => data as Map<String, int>, _throwsTypeError);
 
+        await expectLater(() => data as Map<String, int>, _throwsTypeError);
         try {
-          final converter = ContextAwareConverter(NumConverter.instance);
           final res = converter.map<String, int>(vcast: _asInt)(data);
           expect(res, isA<Map<String, int>>());
           expect(res, _mapOfIntsWithIntegralDouble);
@@ -402,7 +366,6 @@ void testContextAwareConverter(TestContext tc) {
         final a = <num>[1, 2, 3.0, 4, 5], b = <num>[1, 2, 3.0, 4, 5];
         expect(a, isNotA<List<int>>());
         expect(b, isNotA<List<int>>());
-        final converter = ContextAwareConverter(NumConverter.instance);
         final ca = converter.list<int>()(a);
         final cb = converter.list<int>()(b);
         expect(ca, isA<List<int>>());
@@ -415,13 +378,13 @@ void testContextAwareConverter(TestContext tc) {
         final a = <num>[1, 2, 3.0, 4, 5], b = a;
         expect(a, isNotA<List<int>>());
         expect(b, isNotA<List<int>>());
-        final converter = ContextAwareConverter(NumConverter.instance);
         final ca = converter.list<int>()(a);
         final cb = converter.list<int>()(b);
         expect(ca, isA<List<int>>());
         expect(cb, isA<List<int>>());
         expect(ca, cb);
-        expect(identical(ca, cb), isTrue);
+        // NumConverter is not context aware
+        expect(identical(ca, cb), isFalse);
       });
     });
   });

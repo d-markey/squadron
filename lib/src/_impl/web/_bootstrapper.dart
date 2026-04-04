@@ -16,7 +16,7 @@ void bootstrap(WorkerInitializer initializer, WorkerRequest? command) {
   final com = web.MessageChannel();
 
   final runner = WorkerRunner((r) {
-    r.internalLogger.t('Terminating Web Worker');
+    r.internalLogger?.t('Terminating Web Worker');
     com.port1.close();
     com.port2.close();
     self.close();

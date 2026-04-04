@@ -11,9 +11,6 @@ import 'worker/worker.dart';
 import 'worker/worker_request.dart';
 import 'worker_service.dart';
 
-@Deprecated('Use WorkerClient instead.')
-typedef LocalWorkerClient = WorkerClient;
-
 /// Base class used to communicate with a [Worker] over a [Channel].
 ///
 /// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.

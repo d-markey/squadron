@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:logger/web.dart';
 
+import '../build_options.dart';
 import '../_impl/xplat/_time_stamp.dart';
 import '../channel.dart';
 import '../exceptions/squadron_error.dart';
@@ -25,7 +26,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
   factory WorkerResponse.ready([bool status = true]) => WorkerResponse._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         status, // 1 - ready
         null, // 2 - error
         null, // 3 - end of stream
@@ -35,7 +36,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but
   /// not a [List], it will be converted to a [List] by [wrapInPlace].
   factory WorkerResponse.withResult(dynamic result) => WorkerResponse._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         result, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
@@ -46,7 +47,7 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   factory WorkerResponse.withError(SquadronException exception,
           [StackTrace? stackTrace]) =>
       WorkerResponse._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - result
         exception, // 2 - error
         null, // 3 - end of stream
@@ -55,16 +56,18 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
 
   /// [WorkerResponse] with log event information.
   factory WorkerResponse.log(LogEvent message) => WorkerResponse._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         null, // 3 - end of stream
-        message.serialize(), // 4 - log message
+        BuildOptions.withCrossWorkerLogging
+            ? message.serialize()
+            : null, // 4 - log message
       ]);
 
   /// Special [WorkerResponse] message to indicate the end of a stream.
   factory WorkerResponse.closeStream() => WorkerResponse._([
-        Timestamp.now(), // 0 - travel time
+        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         null, // 1 - result
         null, // 2 - error
         true, // 3 - end of stream
@@ -93,7 +96,9 @@ extension type WorkerResponse._(List data) implements WorkerMessage {
   /// used for log messages only).
   bool unwrapInPlace(Channel channel) {
     unwrapTravelTime();
-    final log = _LogEventSerializationExt.deserialize(data[_$log]);
+    final log = BuildOptions.withCrossWorkerLogging
+        ? _LogEventSerializationExt.deserialize(data[_$log])
+        : null;
     if (log != null) {
       channel.logger?.log(log.level, log.message,
           time: log.time, error: log.error, stackTrace: log.stackTrace);

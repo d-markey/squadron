@@ -66,18 +66,17 @@ void execute(TestContext? tc) {
 
                 final tasks = <Future>[];
                 for (var i = 0; i < count; i++) {
-                  tasks.add(p.io(ms: TestDelay.tick.inMilliseconds * 10));
+                  tasks.add(p.io(ms: TestDelay.tick.inMilliseconds * (10 + i)));
                 }
 
                 // let the pool kick off some tasks: it must be running at full speed
-                await Future.delayed(TestDelay.tick * 5);
+                await Future.delayed(TestDelay.tick * 6);
                 expect(p.size, p.maxWorkers);
 
                 // install the worker monitor
                 var stopped = 0;
                 final timer = Timer.periodic(TestDelay.resolution, (timer) {
-                  stopped +=
-                      p.stop((w) => w.getStats().idleTime > TestDelay.tick);
+                  stopped += p.stop((w) => w.idleTime > TestDelay.tick);
                 });
 
                 try {

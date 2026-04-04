@@ -118,7 +118,7 @@ void execute(TestContext? tc) {
       tc.test(
           '- Dart Exception',
           () => ErrorWorker(tc).startAndRunTest((w) async {
-                final errors = w.getStats().totalErrors;
+                final errors = w.totalErrors;
                 try {
                   final res = await w.throwException();
                   throw unexpectedSuccess('throwException()', res);
@@ -126,13 +126,13 @@ void execute(TestContext? tc) {
                   expect(ex, reports('intentional exception'));
                   expect(ex.stackTrace, hasCalled('throwException'));
                 }
-                expect(w.getStats().totalErrors, errors + 1);
+                expect(w.totalErrors, errors + 1);
               }));
 
       tc.test(
           '- WorkerException',
           () => ErrorWorker(tc).startAndRunTest((w) async {
-                final errors = w.getStats().totalErrors;
+                final errors = w.totalErrors;
                 try {
                   final res = await w.throwWorkerException();
                   throw unexpectedSuccess('throwWorkerException()', res);
@@ -140,39 +140,39 @@ void execute(TestContext? tc) {
                   expect(ex, reports('intentional worker exception'));
                   expect(ex.stackTrace, hasCalled('throwWorkerException'));
                 }
-                expect(w.getStats().totalErrors, errors + 1);
+                expect(w.totalErrors, errors + 1);
               }));
 
       tc.test(
           '- TaskTimeOutException',
           () => ErrorWorker(tc).startAndRunTest((w) async {
-                final errors = w.getStats().totalErrors;
+                final errors = w.totalErrors;
                 try {
                   final res = await w.throwTaskTimeOutException();
                   throw unexpectedSuccess('throwTaskTimeOutException()', res);
                 } on SquadronTimeoutException catch (ex) {
                   expect(ex, reports('intentional timeout exception'));
                 }
-                expect(w.getStats().totalErrors, errors + 1);
+                expect(w.totalErrors, errors + 1);
               }));
 
       tc.test(
           '- CanceledException',
           () => ErrorWorker(tc).startAndRunTest((w) async {
-                final errors = w.getStats().totalErrors;
+                final errors = w.totalErrors;
                 try {
                   final res = await w.throwCanceledException();
                   throw unexpectedSuccess('throwCanceledException()', res);
                 } on SquadronCanceledException catch (ex) {
                   expect(ex, reports('intentional canceled exception'));
                 }
-                expect(w.getStats().totalErrors, errors + 1);
+                expect(w.totalErrors, errors + 1);
               }));
 
       tc.test(
           '- TestException (unregistered)',
           () => ErrorWorker(tc).startAndRunTest((w) async {
-                final errors = w.getStats().totalErrors;
+                final errors = w.totalErrors;
                 try {
                   final res = await w.throwTestException();
                   throw unexpectedSuccess('throwTestException()', res);
@@ -181,7 +181,7 @@ void execute(TestContext? tc) {
                   expect(ex, reports('Failed to deserialize'));
                   expect(ex, reports('#TEST'));
                 }
-                expect(w.getStats().totalErrors, errors + 1);
+                expect(w.totalErrors, errors + 1);
               }));
 
       tc.test(
@@ -192,7 +192,7 @@ void execute(TestContext? tc) {
                     TestException.typeId,
                     TestException.deserialize,
                   );
-                  final errors = w.getStats().totalErrors;
+                  final errors = w.totalErrors;
                   try {
                     final res = await w.throwTestException();
                     throw unexpectedSuccess('throwTestException()', res);
@@ -201,7 +201,7 @@ void execute(TestContext? tc) {
                     expect(ex.stackTrace, hasCalled('throwTestException'));
                     expect(ex.command, ErrorService.throwTestExceptionCommand);
                   }
-                  expect(w.getStats().totalErrors, errors + 1);
+                  expect(w.totalErrors, errors + 1);
                 } finally {
                   w.exceptionManager.unregister(TestException.typeId);
                 }

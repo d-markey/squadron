@@ -5,6 +5,7 @@ import 'dart:isolate' as vm;
 import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 
+import '../../build_options.dart';
 import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
@@ -37,6 +38,10 @@ Future<Channel> openChannel(
   List startArguments,
   PlatformThreadHook? hook,
 ) async {
+  if (!BuildOptions.withInternalLogging) {
+    logger = null;
+  }
+
   final completer = Completer<_VmChannel>();
   Channel? channel;
 
@@ -125,7 +130,8 @@ Future<Channel> openChannel(
     final channel = await completer.future;
     channel._thread = isolate;
     if (hook != null) {
-      await hook.call(isolate);
+      final res = hook.call(isolate);
+      if (res is Future) await res;
     }
     logger?.t('Created Isolate');
     return channel;

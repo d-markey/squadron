@@ -189,7 +189,7 @@ void execute(TestContext? tc) {
                 expect(w.isConnected, isTrue);
 
                 await Future.delayed(TestDelay.tick);
-                var upTime = w.getStats().upTime;
+                var upTime = w.upTime;
                 expect(upTime, greaterThan(Duration.zero));
 
                 await Future.delayed(TestDelay.tick);
@@ -322,12 +322,12 @@ void execute(TestContext? tc) {
       tc.test(
           '- Cannot restart after stop',
           () => TestWorker(tc).runTest((w) async {
-                expect(w.getStats().isStopped, isFalse);
+                expect(w.isStopped, isFalse);
 
                 await Future.delayed(TestDelay.tick);
 
                 w.stop();
-                expect(w.getStats().isStopped, isTrue);
+                expect(w.isStopped, isTrue);
 
                 await Future.delayed(TestDelay.tick);
 
@@ -338,7 +338,7 @@ void execute(TestContext? tc) {
                   expect(ex, reports('worker is stopped'));
                 }
 
-                expect(w.getStats().activeConnections, isZero);
+                expect(w.activeConnections, isZero);
               }));
     });
 
@@ -350,6 +350,13 @@ void execute(TestContext? tc) {
                 expect(Squadron.platformType, tc.runnerPlatform);
                 final workerPlatform = await w.getPlatformType();
                 expect(workerPlatform, tc.workerPlatform);
+                if (BuildOptions.isJs) {
+                  expect(Squadron.platformType.isJs, isTrue);
+                } else if (BuildOptions.isWasm) {
+                  expect(Squadron.platformType.isWasm, isTrue);
+                } else {
+                  expect(Squadron.platformType.isVm, isTrue);
+                }
               }));
 
       tc.test(

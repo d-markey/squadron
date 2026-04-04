@@ -14,7 +14,7 @@ import '_worker_runner.dart';
 
 base class _WebLocalWorker<W> with Releasable implements LocalWorker<W> {
   _WebLocalWorker._(this.service, this.operations, this.exceptionManager) {
-    final runner = WorkerRunner.use(this);
+    final runner = WorkerRunner.local(this);
     _port.port1.onmessage = runner.handle.toJS;
     _channel = Channel.deserialize(
         _port.port2, runner.internalLogger, exceptionManager)

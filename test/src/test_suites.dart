@@ -1,17 +1,17 @@
-import '../00_jsify_dartify_test.dart' as jsify_dartify;
-import '../00_not_a_worker_test.dart' as not_a_worker;
-import '../01_web_worker_test.dart' as web_worker;
-import '../02_logging_test.dart' as logging;
-import '../03_converter_test.dart' as converter;
-import '../04_worker_test.dart' as worker;
-import '../05_worker_errors_test.dart' as worker_errors;
-import '../06_worker_streaming_test.dart' as streaming;
-import '../07_local_worker_test.dart' as local_worker;
-import '../08_shared_channel_test.dart' as shared_channel;
-import '../09_cancelation_test.dart' as cancelation;
-import '../10_marshaler_test.dart' as marshalers;
-import '../11_worker_pool_test.dart' as worker_pool;
-import '../12_issues_test.dart' as issues;
+import '../00_jsify_dartify_suite.dart' as jsify_dartify;
+import '../01_not_a_worker_suite.dart' as not_a_worker;
+import '../00_web_worker_suite.dart' as web_worker;
+import '../02_logging_suite.dart' as logging;
+import '../03_converter_suite.dart' as converter;
+import '../04_worker_suite.dart' as worker;
+import '../05_worker_errors_suite.dart' as worker_errors;
+import '../06_worker_streaming_suite.dart' as streaming;
+import '../07_local_worker_suite.dart' as local_worker;
+import '../08_shared_channel_suite.dart' as shared_channel;
+import '../09_cancelation_suite.dart' as cancelation;
+import '../10_marshaler_suite.dart' as marshalers;
+import '../11_worker_pool_suite.dart' as worker_pool;
+import '../12_issues_suite.dart' as issues;
 import 'test_context.dart';
 
 class TestSuite {

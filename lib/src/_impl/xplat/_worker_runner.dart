@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:logger/web.dart';
 
+import '../../build_options.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../local_worker/local_worker.dart';
@@ -21,7 +22,8 @@ class WorkerRunner {
 
   void Function(WorkerRunner) _terminate;
 
-  final internalLogger = InternalLogger();
+  final internalLogger =
+      BuildOptions.withInternalLogging ? InternalLogger() : null;
 
   WorkerService? _service;
   OperationsMap? _operations;
@@ -36,9 +38,9 @@ class WorkerRunner {
   void Function(OutputEvent)? _logForwarder;
 
   /// Constructs a new worker runner for a [localWorker].
-  factory WorkerRunner.use(LocalWorker localWorker) {
+  factory WorkerRunner.local(LocalWorker localWorker) {
     final runner = WorkerRunner((r) {
-      r.internalLogger.t('Terminating local Worker');
+      r.internalLogger?.t('Terminating local Worker');
       r._service = null;
       r._operations = null;
     });
@@ -77,7 +79,7 @@ class WorkerRunner {
         throw SquadronErrorImpl.create('Missing client for connection request');
       }
 
-      if (_logForwarder == null) {
+      if (BuildOptions.withCrossWorkerLogging && _logForwarder == null) {
         final logger = channel.log;
         _logForwarder = (event) => logger(event.origin);
         Logger.addOutputListener(_logForwarder!);
@@ -104,7 +106,7 @@ class WorkerRunner {
           final result = (service as ServiceInstaller).install();
           if (result is Future) await result;
         } catch (ex, st) {
-          internalLogger.e(() => 'Service installation failed: $ex');
+          internalLogger?.e(() => 'Service installation failed: $ex');
           channel.error(ex, st);
           channel.closeStream();
           _installError = SquadronException.from(ex, st);
@@ -113,7 +115,7 @@ class WorkerRunner {
         }
       }
     } catch (ex, st) {
-      internalLogger.e(() => 'Connection failed: $ex');
+      internalLogger?.e(() => 'Connection failed: $ex');
       channel?.error(ex, st);
       _exit();
     }
@@ -223,7 +225,7 @@ class WorkerRunner {
       if (channel != null) {
         channel.error(ex, st, request.command);
       } else {
-        internalLogger.e('Unhandled error: $ex');
+        internalLogger?.e('Unhandled error: $ex');
       }
     }
   }
@@ -351,7 +353,7 @@ class WorkerRunner {
         }
       }
     } catch (ex) {
-      internalLogger.e('Service uninstallation failed with error: $ex');
+      internalLogger?.e('Service uninstallation failed with error: $ex');
     } finally {
       _exit();
     }
@@ -362,9 +364,9 @@ class WorkerRunner {
     try {
       _terminate(this);
     } catch (ex) {
-      internalLogger.e('Worker termination failed with error: $ex');
+      internalLogger?.e('Worker termination failed with error: $ex');
     }
-    if (_logForwarder != null) {
+    if (BuildOptions.withCrossWorkerLogging && _logForwarder != null) {
       Logger.removeOutputListener(_logForwarder!);
     }
   }

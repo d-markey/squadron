@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 
+import '../../build_options.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/squadron_exception.dart';
 import '../../exceptions/worker_exception.dart';
@@ -49,7 +50,11 @@ final class _VmWorkerChannel implements WorkerChannel {
   void inspectAndReply(dynamic data) => reply(data);
 
   @override
-  void log(LogEvent message) => _postResponse(WorkerResponse.log(message));
+  void log(LogEvent message) {
+    if (BuildOptions.withCrossWorkerLogging) {
+      _postResponse(WorkerResponse.log(message));
+    }
+  }
 
   /// Checks if [stream] can be streamed back to the worker client. Returns
   /// `true` unless [stream] is a [ReceivePort].

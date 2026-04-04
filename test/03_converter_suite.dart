@@ -1,16 +1,20 @@
 // ignore_for_file: file_names
 
+import 'dart:math';
+
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/converters/lazy_in_place_list.dart';
+import 'package:squadron/src/converters/lazy_in_place_map.dart';
 import 'package:test/test.dart';
 
-import '03_converter_test__list_features.dart';
-import '03_converter_test__map_features.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 
-part '03_converter_test_cast.dart';
-part '03_converter_test_context_aware.dart';
-part '03_converter_test_num.dart';
+part '03_converter__list.dart';
+part '03_converter__map.dart';
+part '03_converter__cast.dart';
+part '03_converter__context_aware.dart';
+part '03_converter__num.dart';
 
 Future<void> main() => TestContext.run(
       execute,
