@@ -15,6 +15,7 @@ tool/
 doc/test-console/
 doc/coverage/
 doc/workers/
+doc/*.png
 
 # Code coverage tool.
 tool/jgenhtml/
