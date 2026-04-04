@@ -34,7 +34,9 @@ Works everywhere: **Desktop**, **Server**, **Mobile**, and **Browser** (JS & WAS
 
 ## 🚀 Why Squadron?
 
-Dart is single-threaded by nature. While `Isolate.run()` is great for one-off tasks, it creates overhead for frequent operations. **Squadron** provides:
+Dart is single-threaded by nature. While `Isolate.run()` is great for one-off tasks, it creates overhead for frequent operations, and is not available on browser platforms.
+
+**Squadron** provides:
 
 *   🔄 **Persistent Worker Pools**: Keep workers alive and ready to process tasks instantly.
 *   🌐 **Seamless Web Support**: Uniform API for Isolates (Native) and Web Workers (JS/Wasm).
