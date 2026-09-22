@@ -4,7 +4,7 @@
     let d2w_rt; let worker;
     try {
       const wasm = fetch('./wasm/runner_wasm_workers.dart.wasm');
-      d2w_rt = await import('./wasm/runner_wasm_workers.dart.mjs');
+      d2w_rt = await import('./runner_wasm_workers.dart.mjs');
       newRt = (typeof d2w_rt.compileStreaming === 'function');
       worker = await (newRt
         ? (await d2w_rt.compileStreaming(wasm)).instantiate({})
