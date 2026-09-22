@@ -1,6 +1,7 @@
 ## 7.4.4
 
 - Update WASM loader to use the latest version, while still supporting the legacy version. Fixes https://github.com/d-markey/squadron/issues/80.
+- Add built-in package skills (`squadron-worker`, `squadron-marshaling`, and `squadron-cancelation`) for AI agents.
 
 ## 7.4.3
 
