@@ -57,29 +57,36 @@ class EntryPointUri with Releasable {
     return url.contains('?') ? '$url&h=$hash' : '$url?h=$hash';
   }
 
-  static String _wasmLoaderScript(String url) => '''(async function() {
-  const workerUri = new URL("${url.replaceAll('"', '\\"')}", self.location.origin).href;
-  try {
-    let dart2wasm_runtime; let moduleInstance;
-    const runtimeUri = workerUri.replaceAll('.unopt', '').replaceAll('.wasm', '.mjs');
-    try {
-      const dartModule = WebAssembly.compileStreaming(fetch(workerUri));
-      dart2wasm_runtime = await import(runtimeUri);
-      moduleInstance = await dart2wasm_runtime.instantiate(dartModule, {});
-    } catch (exception) {
-      console.error(`Failed to fetch and instantiate wasm module \${workerUri}: \${exception}`);
-      console.error('See https://dart.dev/web/wasm for more information.');
-      throw new Error(exception.message ?? 'Unknown error when instantiating worker module');
-    }
-    try {
-      await dart2wasm_runtime.invoke(moduleInstance);
-      // console.log(`Succesfully loaded and invoked \${workerUri}`);
-    } catch (exception) {
-      console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
-      throw new Error(exception.message ?? 'Unknown error when invoking worker module');
-    }
-  } catch (ex) {
-    postMessage([null, null, ["\$!", `Failed to load Web Worker from \${workerUri}: \${ex}`, null, null], null, null]);
+  static String _wasmLoaderScript(String url) => '''(async function(){
+const workerUri=new URL("${url.replaceAll('"', '\\"')}",self.location.origin).href;
+let newRt=false;
+try{
+  let d2w_rt; let worker;
+  try{
+    const wasm=fetch(workerUri);
+    const rtUri=workerUri.replaceAll('.unopt','').replaceAll('.wasm','.mjs');
+    d2w_rt=await import(rtUri);
+    newRt=(typeof d2w_rt.compileStreaming==='function');
+    worker=await(newRt
+      ?(await d2w_rt.compileStreaming(wasm)).instantiate({})
+      :d2w_rt.instantiate(WebAssembly.compileStreaming(wasm),{})
+    );
+  }catch(exception){
+    console.error(
+      `Failed to fetch and instantiate wasm module \${workerUri}: \${exception}\n`+
+      "See https://dart.dev/web/wasm for more information."
+    );
+    throw new Error(exception.message??'Unknown error when instantiating worker module');
   }
+  try{
+    await (newRt?worker.invokeMain():d2w_rt.invoke(worker));
+    //console.log(`Succesfully loaded and invoked \${workerUri}`);
+  }catch(exception){
+    console.error(`Exception while invoking wasm module \${workerUri}: \${exception}`);
+    throw new Error(exception.message??'Unknown error when invoking worker module');
+  }
+}catch(ex){
+  postMessage([null,null,["\$!",`Failed to load Web Worker from \${workerUri} (\${newRt?'new':'legacy'} runtime): \${ex}`,null,null],null,null]);
+}
 })()''';
 }
