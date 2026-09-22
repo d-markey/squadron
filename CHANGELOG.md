@@ -1,3 +1,7 @@
+## 7.4.4
+
+- Update WASM loader to use the latest version, while still supporting the legacy version. Fixes https://github.com/d-markey/squadron/issues/80.
+
 ## 7.4.3
 
 - Remove deprecated artefacts.
@@ -38,7 +42,7 @@
 
 - Expose the count of active connections via the worker's stats.
 - Added tests from https://github.com/d-markey/squadron/pull/71 to check for memory leaks. Credits go to https://github.com/jpohhhh, thanks!
-- Properly close `ForwardStreamController` on VM to avoid memory leaks -- fixes https://github.com/d-markey/squadron/issues/70.
+- Properly close `ForwardStreamController` on VM to avoid memory leaks. Fixes https://github.com/d-markey/squadron/issues/70.
 
 ## 7.1.1
 
