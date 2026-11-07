@@ -67,10 +67,11 @@ void execute(TestContext? tc) {
                 final tasks = <Future>[];
                 for (var i = 0; i < count; i++) {
                   tasks.add(p.io(ms: TestDelay.tick.inMilliseconds * (10 + i)));
+                  // let the pool pick up the task
+                  await Future.delayed(Duration.zero);
                 }
 
-                // let the pool kick off some tasks: it must be running at full speed
-                await Future.delayed(TestDelay.tick * 6);
+                // the pool must be running at full speed
                 expect(p.size, p.maxWorkers);
 
                 // install the worker monitor

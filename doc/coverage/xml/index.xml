@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8572216" lines-covered="1555" lines-valid="1814" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="index" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8561191" lines-covered="1553" lines-valid="1814" testname="lcov.info" version="1.6">
     <sources>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="17" lines-valid="25" pathname="src/marshalers" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="11" lines-valid="11" pathname="src/annotations" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="46" lines-valid="63" pathname="src/tokens" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="58" lines-valid="66" pathname="src" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="174" lines-valid="210" pathname="src/_impl/native" prefix="/_Projects/github/squadron/lib/"/>
-        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="216" lines-valid="272" pathname="src/_impl/xplat" prefix="/_Projects/github/squadron/lib/"/>
+        <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="214" lines-valid="272" pathname="src/_impl/xplat" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="218" lines-valid="246" pathname="src/worker" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="124" lines-valid="157" pathname="src/exceptions" prefix="/_Projects/github/squadron/lib/"/>
         <source branches-hit="0" branches-valid="0" functions-hit="0" functions-valid="0" lines-hit="433" lines-valid="472" pathname="src/converters" prefix="/_Projects/github/squadron/lib/"/>

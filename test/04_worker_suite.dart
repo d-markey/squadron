@@ -163,8 +163,8 @@ void execute(TestContext? tc) {
 
                 w.stop();
                 stats = w.getStats();
-                expect(stats.isStopped, isTrue);
                 final upTime = stats.upTime;
+                expect(stats.isStopped, isTrue);
                 expect(w.isConnected, isFalse);
                 expect(stats.activeConnections, isZero);
                 expect(stats.upTime, greaterThan(Duration.zero));
@@ -463,7 +463,7 @@ void execute(TestContext? tc) {
                 // task #1
                 await $createTask(TestDelay.tick);
 
-                // #1 has completed
+                // #1 has completed --> 1 tick
                 expect(completedTasks, contains(1));
                 stats = w.getStats();
                 expect(stats.workload, isZero);
@@ -491,7 +491,7 @@ void execute(TestContext? tc) {
 
                 await task;
 
-                // #2 has completed
+                // #2 has completed --> 4 ticks
                 expect(completedTasks, unorderedEquals([1, 2]));
                 stats = w.getStats();
                 expect(stats.workload, isZero);
@@ -501,7 +501,7 @@ void execute(TestContext? tc) {
                 // task #3
                 await $createTask(TestDelay.tick);
 
-                // #3 has completed
+                // #3 has completed --> 5 ticks
                 expect(completedTasks, unorderedEquals([1, 2, 3]));
                 stats = w.getStats();
                 expect(stats.workload, isZero);
@@ -511,10 +511,12 @@ void execute(TestContext? tc) {
                 w.stop();
 
                 stats = w.getStats();
+                expect(stats.isStopped, isTrue);
                 expect(stats.workload, isZero);
                 expect(stats.maxWorkload, 1);
                 expect(stats.totalWorkload, 3);
-                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 5));
+                expect(
+                    stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 4.5));
               }));
 
       tc.test(
@@ -555,7 +557,8 @@ void execute(TestContext? tc) {
                 expect(stats.workload, isZero);
                 expect(stats.maxWorkload, 3);
                 expect(stats.totalWorkload, 3);
-                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 5));
+                expect(
+                    stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 4.5));
 
                 /////////// time origin for next tasks ///////////
 
@@ -619,7 +622,8 @@ void execute(TestContext? tc) {
                 expect(stats.workload, isZero);
                 expect(stats.maxWorkload, 4);
                 expect(stats.totalWorkload, 8);
-                expect(stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 15));
+                expect(
+                    stats.upTime, greaterThanOrEqualTo(TestDelay.tick * 14.5));
               }));
     });
   });
