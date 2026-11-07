@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7037037" lines-covered="38" lines-valid="54" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_result_stream.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.7407407" lines-covered="40" lines-valid="54" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -34,9 +34,9 @@
         <line number="11">
             <code>class ResultStream {</code>
         </line>
-        <line hits="10" number="12">
+        <line hits="1" number="12">
             <code>  ResultStream(</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code>    Channel channel,</code>
@@ -53,35 +53,35 @@
         <line number="17">
             <code>  ) {</code>
         </line>
-        <line hits="5" number="18">
+        <line hits="1" number="18">
             <code>    final streamIdCompleter = streaming ? Completer&lt;StreamId?&gt;() : null;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="19">
+        <line hits="2" number="19">
             <code>    final command = req.command, token = req.cancelToken;</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="20">
             <code/>
         </line>
-        <line hits="5" number="21">
+        <line hits="1" number="21">
             <code>    void $decodeStreamOfResponses(WorkerResponse res) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="22">
+        <line hits="1" number="22">
             <code>      if (!res.unwrapInPlace(channel)) return;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code/>
         </line>
-        <line hits="5" number="24">
+        <line hits="1" number="24">
             <code>      final hasStreamId = streamIdCompleter!.isCompleted;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="25">
+        <line hits="1" number="25">
             <code>      if (res.endOfStream) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="26">
             <code>        // handle endofStream</code>
@@ -116,9 +116,9 @@
         <line number="36">
             <code>        }</code>
         </line>
-        <line hits="8" number="37">
+        <line hits="2" number="37">
             <code>        _controller.close();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="38">
             <code>        return;</code>
@@ -129,9 +129,9 @@
         <line number="40">
             <code/>
         </line>
-        <line hits="5" number="41">
+        <line hits="1" number="41">
             <code>      final error = res.error;</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="42">
             <code>      if (error == null &amp;&amp; !hasStreamId) {</code>
@@ -139,16 +139,16 @@
         <line number="43">
             <code>        // the first result from a streaming operation is the stream ID</code>
         </line>
-        <line hits="15" number="44">
+        <line hits="3" number="44">
             <code>        streamIdCompleter.complete(StreamId.from(res.result));</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="45">
             <code>      } else if (error != null) {</code>
         </line>
-        <line hits="6" number="46">
+        <line hits="2" number="46">
             <code>        _controller.safeAddError(error);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="47">
             <code>        if (!hasStreamId) {</code>
@@ -174,9 +174,9 @@
         <line number="54">
             <code>        try {</code>
         </line>
-        <line hits="15" number="55">
+        <line hits="3" number="55">
             <code>          _controller.safeAdd(res.result);</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="56">
             <code>        } catch (ex, st) {</code>
@@ -193,18 +193,20 @@
         <line number="60">
             <code/>
         </line>
-        <line hits="2" number="61">
+        <line hits="1" number="61">
             <code>      final canceled = token?.exception;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="62">
             <code>      if (canceled != null) {</code>
         </line>
-        <line hits="0" number="63">
+        <line hits="2" number="63">
             <code>        _controller.safeAddError(canceled);</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="64">
+        <line hits="2" number="64">
             <code>        _controller.close();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="65">
             <code>      }</code>
@@ -215,27 +217,27 @@
         <line number="67">
             <code/>
         </line>
-        <line hits="10" number="68">
+        <line hits="1" number="68">
             <code>    void $decodeSingleResponse(WorkerResponse res) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="69">
+        <line hits="1" number="69">
             <code>      if (!res.unwrapInPlace(channel)) return;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="70">
             <code/>
         </line>
-        <line hits="10" number="71">
+        <line hits="1" number="71">
             <code>      final error = res.error;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="72">
             <code>      if (error != null) {</code>
         </line>
-        <line hits="6" number="73">
+        <line hits="2" number="73">
             <code>        _controller.safeAddError(error);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="74">
             <code>      } else {</code>
@@ -243,9 +245,9 @@
         <line number="75">
             <code>        try {</code>
         </line>
-        <line hits="30" number="76">
+        <line hits="3" number="76">
             <code>          _controller.safeAdd(res.result);</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="77">
             <code>        } catch (ex, st) {</code>
@@ -262,9 +264,9 @@
         <line number="81">
             <code/>
         </line>
-        <line hits="20" number="82">
+        <line hits="2" number="82">
             <code>      _controller.close();</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="83">
             <code>    }</code>
@@ -272,9 +274,9 @@
         <line number="84">
             <code/>
         </line>
-        <line hits="4" number="85">
+        <line hits="1" number="85">
             <code>    Future&lt;StreamId?&gt; $getStreamId(StreamSubscription sub) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="86">
             <code>      streamIdCompleter as Completer&lt;StreamId?&gt;;</code>
@@ -282,9 +284,9 @@
         <line number="87">
             <code>      var count = 0;</code>
         </line>
-        <line hits="5" number="88">
+        <line hits="2" number="88">
             <code>      if (sub.isPaused &amp;&amp; !streamIdCompleter.isCompleted) {</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="89">
             <code>        // if the subscription was paused and the streamId is not available,</code>
@@ -310,13 +312,13 @@
         <line number="96">
             <code>      // wait for the streamId...</code>
         </line>
-        <line hits="12" number="97">
+        <line hits="3" number="97">
             <code>      return streamIdCompleter.future.then((streamId) {</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="98">
+        <line hits="1" number="98">
             <code>        while (count &gt; 0) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="99">
             <code>          count--;</code>
@@ -342,13 +344,13 @@
         <line number="106">
             <code/>
         </line>
-        <line hits="10" number="107">
+        <line hits="1" number="107">
             <code>    Future&lt;void&gt; $onCancel() async {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="108">
+        <line hits="2" number="108">
             <code>      final sub = _controller.subscription;</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="109">
             <code>      if (streamIdCompleter != null &amp;&amp; sub != null) {</code>
@@ -359,26 +361,26 @@
         <line number="111">
             <code>        // we need to inform the worker that the stream has been canceled</code>
         </line>
-        <line hits="4" number="112">
+        <line hits="1" number="112">
             <code>        final streamId = await $getStreamId(sub);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="113">
             <code>        if (streamId != null) {</code>
         </line>
-        <line hits="4" number="114">
+        <line hits="1" number="114">
             <code>          channel.cancelStream(streamId);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="115">
             <code>        }</code>
         </line>
-        <line hits="4" number="116">
-            <code>        await sub.cancel();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="117">
+        <line number="116">
             <code>      }</code>
+        </line>
+        <line hits="1" number="117">
+            <code>      await sub?.cancel();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="118">
             <code>    }</code>
@@ -386,17 +388,17 @@
         <line number="119">
             <code/>
         </line>
-        <line hits="3" number="120">
+        <line hits="1" number="120">
             <code>    void $closeWithError(Object error, [StackTrace? st]) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="121">
+            <code>      _controller.safeAddError(SquadronException.from(error, st, command));</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="121">
-            <code>      _controller.safeAddError(SquadronException.from(error, st, command));</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6" number="122">
+        <line hits="2" number="122">
             <code>      _controller.close();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="123">
             <code>    }</code>
@@ -404,9 +406,9 @@
         <line number="124">
             <code/>
         </line>
-        <line hits="10" number="125">
+        <line hits="1" number="125">
             <code>    void $onListen() {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="126">
             <code>      try {</code>
@@ -414,16 +416,16 @@
         <line number="127">
             <code>        // do not send the request if the token is already canceled</code>
         </line>
-        <line hits="2" number="128">
+        <line hits="1" number="128">
             <code>        token?.throwIfCanceled();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="129">
             <code>        // send the request and start decoding responses</code>
         </line>
-        <line hits="40" number="130">
+        <line hits="4" number="130">
             <code>        _controller.attachSubscription(sendRequest().listen(</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="131">
             <code>          streaming ? $decodeStreamOfResponses : $decodeSingleResponse,</code>
@@ -431,9 +433,9 @@
         <line number="132">
             <code>          onError: $closeWithError,</code>
         </line>
-        <line hits="20" number="133">
+        <line hits="2" number="133">
             <code>          onDone: _controller.close,</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="134">
             <code>          cancelOnError: false,</code>
@@ -456,9 +458,9 @@
         <line number="140">
             <code/>
         </line>
-        <line hits="20" number="141">
+        <line hits="2" number="141">
             <code>    _controller = ForwardStreamController&lt;dynamic&gt;(</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="142">
             <code>      onListen: $onListen,</code>
@@ -481,16 +483,16 @@
         <line number="148">
             <code/>
         </line>
-        <line hits="30" number="149">
+        <line hits="3" number="149">
             <code>  Stream&lt;dynamic&gt; get stream =&gt; _controller.stream;</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="150">
             <code/>
         </line>
-        <line hits="30" number="151">
+        <line hits="3" number="151">
             <code>  Future&lt;void&gt; get done =&gt; _controller.done;</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="152">
             <code>}</code>

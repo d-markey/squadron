@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="3" lines-valid="3" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_forward_completer.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.0" lines-covered="0" lines-valid="3" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -25,23 +25,20 @@
         <line number="8">
             <code/>
         </line>
-        <line hits="30" number="9">
+        <line hits="0" number="9">
             <code>  Future&lt;T&gt; get future =&gt; _res.future;</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="30" number="11">
+        <line hits="0" number="11">
             <code>  void success(T data) =&gt; _res.safeComplete(data);</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
         </line>
-        <line hits="9" number="13">
+        <line hits="0" number="13">
             <code>  void failure(SquadronException ex) =&gt; _res.safeCompleteError(ex);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
         </line>
         <line number="14">
             <code>}</code>

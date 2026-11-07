@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="30" lines-valid="30" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_worker_stream_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="30" lines-valid="30" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -37,20 +37,20 @@
         <line number="12">
             <code>  /// Creates a new [StreamTask].</code>
         </line>
-        <line hits="8" number="13">
+        <line hits="2" number="13">
             <code>  WorkerStreamTask(this._producer, PerfCounter? counter) : super(counter) {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="14">
+        <line hits="3" number="14">
             <code>    _controller = ForwardStreamController&lt;T&gt;(onListen: () async {</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="15">
             <code>      try {</code>
         </line>
-        <line hits="4" number="16">
+        <line hits="1" number="16">
             <code>        if (canceledException != null) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="17">
             <code>          // the task was canceled</code>
@@ -62,13 +62,13 @@
         <line number="19">
             <code>        }</code>
         </line>
-        <line hits="8" number="20">
+        <line hits="2" number="20">
             <code>        final worker = await _worker.future;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="21">
+        <line hits="1" number="21">
             <code>        if (canceledException != null || worker == null) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="22">
             <code>          // the task was canceled</code>
@@ -83,25 +83,25 @@
         <line number="25">
             <code>          // otherwise, forward data from the worker</code>
         </line>
-        <line hits="20" number="26">
+        <line hits="5" number="26">
             <code>          _controller.attachSubscription(_producer(worker).listen(</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="27">
+        <line hits="2" number="27">
             <code>            _controller.safeAdd,</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="28">
+        <line hits="1" number="28">
             <code>            onError: (ex, st) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="29">
+            <code>                _controller.safeAddError(SquadronException.from(ex, st)),</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="29">
-            <code>                _controller.safeAddError(SquadronException.from(ex, st)),</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="8" number="30">
+        <line hits="2" number="30">
             <code>            onDone: _controller.close,</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="31">
             <code>            cancelOnError: false,</code>
@@ -115,9 +115,9 @@
         <line number="34">
             <code>      } catch (ex, st) {</code>
         </line>
-        <line hits="4" number="35">
+        <line hits="2" number="35">
             <code>        _closeWithError(SquadronException.from(ex, st));</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="36">
             <code>      }</code>
@@ -146,28 +146,28 @@
         <line number="44">
             <code/>
         </line>
-        <line hits="4" number="45">
+        <line hits="1" number="45">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="46">
+        <line hits="2" number="46">
             <code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="47">
             <code/>
         </line>
-        <line hits="2" number="48">
+        <line hits="1" number="48">
             <code>  void _closeWithError(SquadronException ex) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="49">
+            <code>    _controller.safeAddError(ex);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="49">
-            <code>    _controller.safeAddError(ex);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="50">
+        <line hits="2" number="50">
             <code>    _controller.close();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
             <code>  }</code>
@@ -175,34 +175,34 @@
         <line number="52">
             <code/>
         </line>
-        <line hits="2" number="53">
+        <line hits="1" number="53">
             <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="54">
             <code>  void cancel([String? message]) {</code>
         </line>
-        <line hits="2" number="55">
+        <line hits="1" number="55">
             <code>    super.cancel(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="56">
+        <line hits="2" number="56">
             <code>    if (!_worker.isCompleted) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="57">
             <code>      // task canceled before it got scheduled</code>
         </line>
-        <line hits="4" number="58">
+        <line hits="2" number="58">
             <code>      _worker.complete(null);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="59">
             <code>    }</code>
         </line>
-        <line hits="4" number="60">
+        <line hits="2" number="60">
             <code>    if (_controller.subscription != null) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="61">
             <code>      // task canceled after a listener subscribed to the stream</code>
@@ -220,38 +220,38 @@
         <line number="65">
             <code/>
         </line>
-        <line hits="4" number="66">
+        <line hits="1" number="66">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="67">
             <code>  Future&lt;bool&gt; execute(W worker) {</code>
         </line>
-        <line hits="4" number="68">
+        <line hits="1" number="68">
             <code>    if (canceledException == null) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="69">
             <code>      // run with worker</code>
         </line>
-        <line hits="8" number="70">
+        <line hits="2" number="70">
             <code>      _worker.complete(worker);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="71">
             <code>    }</code>
         </line>
-        <line hits="8" number="72">
+        <line hits="2" number="72">
             <code>    return _controller.done</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="12" number="73">
+        <line hits="3" number="73">
             <code>        .then((_) =&gt; canceledException == null)</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="74">
+        <line hits="1" number="74">
             <code>        .catchError((_) =&gt; false);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="75">
             <code>  }</code>

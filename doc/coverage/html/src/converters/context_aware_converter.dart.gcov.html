@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-03-04</dd>
+                    <dd>2026-11-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -85,10 +85,10 @@
                     <td>8</td><td></td><td></td><td><code>class ContextAwareConverter extends Converter {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 9" id="line9">
-                    <td>9</td><td></td><td>4</td><td><code>  ContextAwareConverter([Converter? converter])</code></td>
+                    <td>9</td><td></td><td>1</td><td><code>  ContextAwareConverter([Converter? converter])</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>3</td><td><code>      : _converter = converter ?? Squadron.converter;</code></td>
+                    <td>10</td><td></td><td>1</td><td><code>      : _converter = converter ?? Squadron.converter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
                     <td>11</td><td></td><td></td><td><code></code></td>
@@ -109,16 +109,16 @@
                     <td>16</td><td></td><td></td><td><code>  // non-nullable value</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>4</td><td><code>  @override</code></td>
+                    <td>17</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
                     <td>18</td><td></td><td></td><td><code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 19" id="line19">
-                    <td>19</td><td></td><td>8</td><td><code>    final op = _converter.value&lt;T&gt;();</code></td>
+                    <td>19</td><td></td><td>2</td><td><code>    final op = _converter.value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>7</td><td><code>    if (Converter.isNumber&lt;T&gt;() || Converter.isIdentity&lt;T&gt;(op)) {</code></td>
+                    <td>20</td><td></td><td>2</td><td><code>    if (Converter.isNumber&lt;T&gt;() || Converter.isIdentity&lt;T&gt;(op)) {</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code>      // no context needed for numbers / identity converters</code></td>
@@ -163,34 +163,34 @@
                     <td>34</td><td></td><td></td><td><code>  // list</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>4</td><td><code>  @override</code></td>
+                    <td>35</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 36" id="line36">
                     <td>36</td><td></td><td></td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>4</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
+                    <td>37</td><td></td><td>1</td><td><code>    final op = cast ?? value&lt;T&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>4</td><td><code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code></td>
+                    <td>38</td><td></td><td>1</td><td><code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>6</td><td><code>      final toList = _converter.list&lt;T&gt;(); // elements will be cast</code></td>
+                    <td>39</td><td></td><td>2</td><td><code>      final toList = _converter.list&lt;T&gt;(); // elements will be cast</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 40" id="line40">
-                    <td>40</td><td></td><td>3</td><td><code>      return (dynamic x) {</code></td>
+                    <td>40</td><td></td><td>1</td><td><code>      return (dynamic x) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 41" id="line41">
-                    <td>41</td><td></td><td>6</td><td><code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code></td>
+                    <td>41</td><td></td><td>2</td><td><code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code></td>
                 </tr>
                 <tr class="noop" title="Line 42" id="line42">
                     <td>42</td><td></td><td></td><td><code>        if (ref != null) return ref;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>3</td><td><code>        ref = toList(x);</code></td>
+                    <td>43</td><td></td><td>1</td><td><code>        ref = toList(x);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 44" id="line44">
-                    <td>44</td><td></td><td>6</td><td><code>        _arguments.setReference(x, ref);</code></td>
+                    <td>44</td><td></td><td>2</td><td><code>        _arguments.setReference(x, ref);</code></td>
                 </tr>
                 <tr class="noop" title="Line 45" id="line45">
                     <td>45</td><td></td><td></td><td><code>        return ref;</code></td>
@@ -202,19 +202,19 @@
                     <td>47</td><td></td><td></td><td><code>    } else {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>2</td><td><code>      return (dynamic x) {</code></td>
+                    <td>48</td><td></td><td>1</td><td><code>      return (dynamic x) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 49" id="line49">
-                    <td>49</td><td></td><td>4</td><td><code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code></td>
+                    <td>49</td><td></td><td>2</td><td><code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code></td>
                 </tr>
                 <tr class="noop" title="Line 50" id="line50">
                     <td>50</td><td></td><td></td><td><code>        if (ref != null) return ref;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 51" id="line51">
-                    <td>51</td><td></td><td>2</td><td><code>        ref = LazyInPlaceList(x, op); // elements will be converted upon access</code></td>
+                    <td>51</td><td></td><td>1</td><td><code>        ref = LazyInPlaceList(x, op); // elements will be converted upon access</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 52" id="line52">
-                    <td>52</td><td></td><td>4</td><td><code>        _arguments.setReference(x, ref);</code></td>
+                    <td>52</td><td></td><td>2</td><td><code>        _arguments.setReference(x, ref);</code></td>
                 </tr>
                 <tr class="noop" title="Line 53" id="line53">
                     <td>53</td><td></td><td></td><td><code>        return ref;</code></td>
@@ -457,7 +457,7 @@
                     <td>132</td><td></td><td></td><td><code>  // map</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 133" id="line133">
-                    <td>133</td><td></td><td>2</td><td><code>  @override</code></td>
+                    <td>133</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 134" id="line134">
                     <td>134</td><td></td><td></td><td><code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code></td>
@@ -466,13 +466,13 @@
                     <td>135</td><td></td><td></td><td><code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 136" id="line136">
-                    <td>136</td><td></td><td>2</td><td><code>    final kop = kcast ?? value&lt;K&gt;();</code></td>
+                    <td>136</td><td></td><td>1</td><td><code>    final kop = kcast ?? value&lt;K&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 137" id="line137">
-                    <td>137</td><td></td><td>2</td><td><code>    final vop = vcast ?? value&lt;V&gt;();</code></td>
+                    <td>137</td><td></td><td>1</td><td><code>    final vop = vcast ?? value&lt;V&gt;();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 138" id="line138">
-                    <td>138</td><td></td><td>4</td><td><code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code></td>
+                    <td>138</td><td></td><td>2</td><td><code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 139" id="line139">
                     <td>139</td><td></td><td>2</td><td><code>      final toMap = _converter.map&lt;K, V&gt;(); // elements will be cast</code></td>

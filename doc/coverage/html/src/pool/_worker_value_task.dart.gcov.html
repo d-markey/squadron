@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-03-04</dd>
+                    <dd>2026-11-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -94,7 +94,7 @@
                     <td>11</td><td></td><td></td><td><code>  /// Creates a new [ValueTask].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>8</td><td><code>  WorkerValueTask(this._computer, PerfCounter? counter) : super(counter);</code></td>
+                    <td>12</td><td></td><td>2</td><td><code>  WorkerValueTask(this._computer, PerfCounter? counter) : super(counter);</code></td>
                 </tr>
                 <tr class="noop" title="Line 13" id="line13">
                     <td>13</td><td></td><td></td><td><code></code></td>
@@ -121,22 +121,22 @@
                     <td>20</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 21" id="line21">
-                    <td>21</td><td></td><td>4</td><td><code>  @override</code></td>
+                    <td>21</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>8</td><td><code>  Future&lt;T&gt; get value =&gt; _result.future;</code></td>
+                    <td>22</td><td></td><td>2</td><td><code>  Future&lt;T&gt; get value =&gt; _result.future;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>2</td><td><code>  void _failure(SquadronException exception) {</code></td>
+                    <td>24</td><td></td><td>1</td><td><code>  void _failure(SquadronException exception) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 25" id="line25">
-                    <td>25</td><td></td><td>4</td><td><code>    if (!_result.isCompleted) {</code></td>
+                    <td>25</td><td></td><td>2</td><td><code>    if (!_result.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 26" id="line26">
-                    <td>26</td><td></td><td>4</td><td><code>      _result.completeError(exception);</code></td>
+                    <td>26</td><td></td><td>2</td><td><code>      _result.completeError(exception);</code></td>
                 </tr>
                 <tr class="noop" title="Line 27" id="line27">
                     <td>27</td><td></td><td></td><td><code>    }</code></td>
@@ -148,13 +148,13 @@
                     <td>29</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>4</td><td><code>  void _success(dynamic data) {</code></td>
+                    <td>30</td><td></td><td>1</td><td><code>  void _success(dynamic data) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 31" id="line31">
-                    <td>31</td><td></td><td>8</td><td><code>    if (!_result.isCompleted) {</code></td>
+                    <td>31</td><td></td><td>2</td><td><code>    if (!_result.isCompleted) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>8</td><td><code>      _result.complete(data);</code></td>
+                    <td>32</td><td></td><td>2</td><td><code>      _result.complete(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
                     <td>33</td><td></td><td></td><td><code>    }</code></td>
@@ -166,16 +166,16 @@
                     <td>35</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>2</td><td><code>  @override</code></td>
+                    <td>36</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 37" id="line37">
                     <td>37</td><td></td><td></td><td><code>  void cancel([String? message]) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>2</td><td><code>    super.cancel(message);</code></td>
+                    <td>38</td><td></td><td>1</td><td><code>    super.cancel(message);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 39" id="line39">
-                    <td>39</td><td></td><td>4</td><td><code>    _failure(canceledException!);</code></td>
+                    <td>39</td><td></td><td>2</td><td><code>    _failure(canceledException!);</code></td>
                 </tr>
                 <tr class="noop" title="Line 40" id="line40">
                     <td>40</td><td></td><td></td><td><code>  }</code></td>
@@ -184,7 +184,7 @@
                     <td>41</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 42" id="line42">
-                    <td>42</td><td></td><td>4</td><td><code>  @override</code></td>
+                    <td>42</td><td></td><td>1</td><td><code>  @override</code></td>
                 </tr>
                 <tr class="noop" title="Line 43" id="line43">
                     <td>43</td><td></td><td></td><td><code>  Future&lt;bool&gt; execute(W worker) async {</code></td>
@@ -193,13 +193,13 @@
                     <td>44</td><td></td><td></td><td><code>    try {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 45" id="line45">
-                    <td>45</td><td></td><td>4</td><td><code>      throwIfCanceled();</code></td>
+                    <td>45</td><td></td><td>1</td><td><code>      throwIfCanceled();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 46" id="line46">
-                    <td>46</td><td></td><td>8</td><td><code>      final res = await _computer(worker);</code></td>
+                    <td>46</td><td></td><td>2</td><td><code>      final res = await _computer(worker);</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>4</td><td><code>      _success(res);</code></td>
+                    <td>47</td><td></td><td>1</td><td><code>      _success(res);</code></td>
                 </tr>
                 <tr class="noop" title="Line 48" id="line48">
                     <td>48</td><td></td><td></td><td><code>      return true;</code></td>

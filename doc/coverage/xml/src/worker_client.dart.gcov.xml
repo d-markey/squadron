@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="worker_client.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="5" lines-valid="10" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="worker_client.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="5" lines-valid="10" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -41,152 +41,143 @@
             <code/>
         </line>
         <line number="14">
-            <code>@Deprecated('Use WorkerClient instead.')</code>
-        </line>
-        <line number="15">
-            <code>typedef LocalWorkerClient = WorkerClient;</code>
-        </line>
-        <line number="16">
-            <code/>
-        </line>
-        <line number="17">
             <code>/// Base class used to communicate with a [Worker] over a [Channel].</code>
         </line>
-        <line number="18">
+        <line number="15">
             <code>///</code>
         </line>
-        <line number="19">
+        <line number="16">
             <code>/// Typically, derived classes should add proxy methods sending [WorkerRequest]s to the worker.</code>
         </line>
-        <line number="20">
+        <line number="17">
             <code>class WorkerClient with Releasable implements WorkerService, Invoker {</code>
         </line>
-        <line number="21">
+        <line number="18">
             <code>  /// Create a client for a [Worker]. The [channel] passed to this client must have been obtained</code>
         </line>
-        <line number="22">
+        <line number="19">
             <code>  /// from the target [Worker].</code>
         </line>
-        <line hits="1" number="23">
+        <line hits="1" number="20">
             <code>  WorkerClient(this.channel);</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="21">
+            <code/>
+        </line>
+        <line number="22">
+            <code>  /// The [Channel] to communicate with the [Worker].</code>
+        </line>
+        <line number="23">
+            <code>  final Channel channel;</code>
         </line>
         <line number="24">
             <code/>
         </line>
-        <line number="25">
-            <code>  /// The [Channel] to communicate with the [Worker].</code>
-        </line>
-        <line number="26">
-            <code>  final Channel channel;</code>
-        </line>
-        <line number="27">
-            <code/>
-        </line>
-        <line hits="0" number="28">
+        <line hits="0" number="25">
             <code>  @override</code>
         </line>
-        <line number="29">
+        <line number="26">
             <code>  void release() {</code>
         </line>
-        <line hits="0" number="30">
+        <line hits="0" number="27">
             <code>    channel.close();</code>
         </line>
-        <line hits="0" number="31">
+        <line hits="0" number="28">
             <code>    super.release();</code>
         </line>
-        <line number="32">
+        <line number="29">
             <code>  }</code>
         </line>
-        <line number="33">
+        <line number="30">
             <code/>
         </line>
-        <line number="34">
+        <line number="31">
             <code>  /// Sends a command to the [Worker].</code>
         </line>
-        <line hits="1" number="35">
+        <line hits="1" number="32">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="36">
+        <line number="33">
             <code>  Future&lt;dynamic&gt; send(int command,</code>
         </line>
-        <line number="37">
+        <line number="34">
             <code>          {List args = const [],</code>
         </line>
-        <line number="38">
+        <line number="35">
             <code>          CancelationToken? token,</code>
         </line>
-        <line number="39">
+        <line number="36">
             <code>          bool inspectRequest = false,</code>
         </line>
-        <line number="40">
+        <line number="37">
             <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
-        <line hits="2" number="41">
+        <line hits="2" number="38">
             <code>      channel.sendRequest(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="42">
+        <line hits="0" number="39">
             <code>          token: token?.wrap(),</code>
         </line>
-        <line number="43">
+        <line number="40">
             <code>          inspectRequest: inspectRequest,</code>
         </line>
-        <line number="44">
+        <line number="41">
             <code>          inspectResponse: inspectResponse);</code>
         </line>
-        <line number="45">
+        <line number="42">
             <code/>
         </line>
-        <line number="46">
+        <line number="43">
             <code>  /// Sends a streaming command to the [Worker].</code>
         </line>
-        <line hits="1" number="47">
+        <line hits="1" number="44">
             <code>  @override</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="48">
+        <line number="45">
             <code>  Stream&lt;dynamic&gt; stream(int command,</code>
         </line>
-        <line number="49">
+        <line number="46">
             <code>          {List args = const [],</code>
         </line>
-        <line number="50">
+        <line number="47">
             <code>          CancelationToken? token,</code>
         </line>
-        <line number="51">
+        <line number="48">
             <code>          bool inspectRequest = false,</code>
         </line>
-        <line number="52">
+        <line number="49">
             <code>          bool inspectResponse = false}) =&gt;</code>
         </line>
-        <line hits="2" number="53">
+        <line hits="2" number="50">
             <code>      channel.sendStreamingRequest(command, args,</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="54">
+        <line hits="0" number="51">
             <code>          token: token?.wrap(),</code>
         </line>
-        <line number="55">
+        <line number="52">
             <code>          inspectRequest: inspectRequest,</code>
         </line>
-        <line number="56">
+        <line number="53">
             <code>          inspectResponse: inspectResponse);</code>
         </line>
-        <line number="57">
+        <line number="54">
             <code/>
         </line>
-        <line number="58">
+        <line number="55">
             <code>  /// Local worker clients do not need an [operations] map.</code>
         </line>
-        <line number="59">
+        <line number="56">
             <code>  @override</code>
         </line>
-        <line number="60">
+        <line number="57">
             <code>  final OperationsMap operations = WorkerService.noOperations;</code>
         </line>
-        <line number="61">
+        <line number="58">
             <code>}</code>
         </line>
     </lines>

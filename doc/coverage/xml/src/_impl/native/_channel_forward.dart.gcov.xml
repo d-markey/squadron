@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_channel_forward.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="6" lines-valid="12" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_channel_forward.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.5" lines-covered="6" lines-valid="12" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>part of '_channel.dart';</code>
@@ -22,20 +22,20 @@
         <line number="7">
             <code>  /// message channel</code>
         </line>
-        <line hits="3" number="8">
+        <line hits="1" number="8">
             <code>  _VmForwardChannel._(this._remote, this._com, Logger? logger,</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="9">
             <code>      ExceptionManager exceptionManager)</code>
         </line>
-        <line hits="6" number="10">
+        <line hits="2" number="10">
             <code>      : super._(_com.sendPort, logger, exceptionManager) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="9" number="11">
+        <line hits="3" number="11">
             <code>    _com.listen(_forward);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code>  }</code>
@@ -64,13 +64,13 @@
         <line number="20">
             <code>  /// Forwards [data] to the worker.</code>
         </line>
-        <line hits="3" number="21">
+        <line hits="1" number="21">
             <code>  void _forward(dynamic data) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="22">
+        <line hits="2" number="22">
             <code>    if (_closed.isCompleted) {</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="0" number="23">
             <code>      throw SquadronErrorImpl.create('Channel is closed');</code>
@@ -78,9 +78,9 @@
         <line number="24">
             <code>    }</code>
         </line>
-        <line hits="6" number="25">
+        <line hits="2" number="25">
             <code>    _remote.send(data);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="26">
             <code>  }</code>

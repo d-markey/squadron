@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_worker_value_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947368" lines-covered="17" lines-valid="19" package="src/pool" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_worker_value_task.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947368" lines-covered="17" lines-valid="19" package="src/pool" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -34,9 +34,9 @@
         <line number="11">
             <code>  /// Creates a new [ValueTask].</code>
         </line>
-        <line hits="8" number="12">
+        <line hits="2" number="12">
             <code>  WorkerValueTask(this._computer, PerfCounter? counter) : super(counter);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="13">
             <code/>
@@ -62,28 +62,28 @@
         <line number="20">
             <code/>
         </line>
-        <line hits="4" number="21">
+        <line hits="1" number="21">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="22">
+        <line hits="2" number="22">
             <code>  Future&lt;T&gt; get value =&gt; _result.future;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="23">
             <code/>
         </line>
-        <line hits="2" number="24">
+        <line hits="1" number="24">
             <code>  void _failure(SquadronException exception) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="25">
+            <code>    if (!_result.isCompleted) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="25">
-            <code>    if (!_result.isCompleted) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="4" number="26">
+        <line hits="2" number="26">
             <code>      _result.completeError(exception);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="27">
             <code>    }</code>
@@ -94,17 +94,17 @@
         <line number="29">
             <code/>
         </line>
-        <line hits="4" number="30">
+        <line hits="1" number="30">
             <code>  void _success(dynamic data) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="31">
+        <line hits="2" number="31">
             <code>    if (!_result.isCompleted) {</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="32">
+        <line hits="2" number="32">
             <code>      _result.complete(data);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="33">
             <code>    }</code>
@@ -115,20 +115,20 @@
         <line number="35">
             <code/>
         </line>
-        <line hits="2" number="36">
+        <line hits="1" number="36">
             <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="37">
             <code>  void cancel([String? message]) {</code>
         </line>
-        <line hits="2" number="38">
+        <line hits="1" number="38">
             <code>    super.cancel(message);</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="39">
+        <line hits="2" number="39">
             <code>    _failure(canceledException!);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="40">
             <code>  }</code>
@@ -136,9 +136,9 @@
         <line number="41">
             <code/>
         </line>
-        <line hits="4" number="42">
+        <line hits="1" number="42">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="43">
             <code>  Future&lt;bool&gt; execute(W worker) async {</code>
@@ -146,17 +146,17 @@
         <line number="44">
             <code>    try {</code>
         </line>
-        <line hits="4" number="45">
+        <line hits="1" number="45">
             <code>      throwIfCanceled();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="8" number="46">
+        <line hits="2" number="46">
             <code>      final res = await _computer(worker);</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="47">
+        <line hits="1" number="47">
             <code>      _success(res);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="48">
             <code>      return true;</code>

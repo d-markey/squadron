@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-03-04</dd>
+                    <dd>2026-11-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -82,22 +82,22 @@
                     <td>7</td><td></td><td></td><td><code>class ForwardStreamController&lt;T&gt; {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 8" id="line8">
-                    <td>8</td><td></td><td>10</td><td><code>  ForwardStreamController(</code></td>
+                    <td>8</td><td></td><td>1</td><td><code>  ForwardStreamController(</code></td>
                 </tr>
                 <tr class="noop" title="Line 9" id="line9">
                     <td>9</td><td></td><td></td><td><code>      {void Function()? onListen, FutureOr&lt;void&gt; Function()? onCancel}) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 10" id="line10">
-                    <td>10</td><td></td><td>20</td><td><code>    _controller = StreamController(</code></td>
+                    <td>10</td><td></td><td>2</td><td><code>    _controller = StreamController(</code></td>
                 </tr>
                 <tr class="noop" title="Line 11" id="line11">
                     <td>11</td><td></td><td></td><td><code>      onListen: onListen,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 12" id="line12">
-                    <td>12</td><td></td><td>10</td><td><code>      onPause: _pause,</code></td>
+                    <td>12</td><td></td><td>1</td><td><code>      onPause: _pause,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 13" id="line13">
-                    <td>13</td><td></td><td>10</td><td><code>      onResume: _resume,</code></td>
+                    <td>13</td><td></td><td>1</td><td><code>      onResume: _resume,</code></td>
                 </tr>
                 <tr class="noop" title="Line 14" id="line14">
                     <td>14</td><td></td><td></td><td><code>      onCancel: onCancel,</code></td>
@@ -118,19 +118,19 @@
                     <td>19</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 20" id="line20">
-                    <td>20</td><td></td><td>30</td><td><code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code></td>
+                    <td>20</td><td></td><td>3</td><td><code>  Stream&lt;T&gt; get stream =&gt; _controller.stream;</code></td>
                 </tr>
                 <tr class="noop" title="Line 21" id="line21">
                     <td>21</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 22" id="line22">
-                    <td>22</td><td></td><td>30</td><td><code>  Future&lt;void&gt; get done =&gt; _controller.done;</code></td>
+                    <td>22</td><td></td><td>3</td><td><code>  Future&lt;void&gt; get done =&gt; _controller.done;</code></td>
                 </tr>
                 <tr class="noop" title="Line 23" id="line23">
                     <td>23</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 24" id="line24">
-                    <td>24</td><td></td><td>30</td><td><code>  bool get isClosed =&gt; _controller.isClosed;</code></td>
+                    <td>24</td><td></td><td>3</td><td><code>  bool get isClosed =&gt; _controller.isClosed;</code></td>
                 </tr>
                 <tr class="noop" title="Line 25" id="line25">
                     <td>25</td><td></td><td></td><td><code></code></td>
@@ -142,37 +142,37 @@
                     <td>27</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 28" id="line28">
-                    <td>28</td><td></td><td>20</td><td><code>  StreamSubscription&lt;T&gt;? get subscription =&gt; _sub;</code></td>
+                    <td>28</td><td></td><td>2</td><td><code>  StreamSubscription&lt;T&gt;? get subscription =&gt; _sub;</code></td>
                 </tr>
                 <tr class="noop" title="Line 29" id="line29">
                     <td>29</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 30" id="line30">
-                    <td>30</td><td></td><td>30</td><td><code>  void safeAdd(T data) =&gt; _controller.safeAdd(data);</code></td>
+                    <td>30</td><td></td><td>3</td><td><code>  void safeAdd(T data) =&gt; _controller.safeAdd(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 31" id="line31">
                     <td>31</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 32" id="line32">
-                    <td>32</td><td></td><td>21</td><td><code>  void safeAddError(SquadronException ex) =&gt; _controller.safeAddError(ex);</code></td>
+                    <td>32</td><td></td><td>3</td><td><code>  void safeAddError(SquadronException ex) =&gt; _controller.safeAddError(ex);</code></td>
                 </tr>
                 <tr class="noop" title="Line 33" id="line33">
                     <td>33</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>10</td><td><code>  void close() {</code></td>
+                    <td>34</td><td></td><td>1</td><td><code>  void close() {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 35" id="line35">
-                    <td>35</td><td></td><td>20</td><td><code>    _controller.close();</code></td>
+                    <td>35</td><td></td><td>2</td><td><code>    _controller.close();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 36" id="line36">
-                    <td>36</td><td></td><td>10</td><td><code>    if (_sub != null) {</code></td>
+                    <td>36</td><td></td><td>1</td><td><code>    if (_sub != null) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>20</td><td><code>      _sub!.cancel();</code></td>
+                    <td>37</td><td></td><td>2</td><td><code>      _sub!.cancel();</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>10</td><td><code>      _sub = null;</code></td>
+                    <td>38</td><td></td><td>1</td><td><code>      _sub = null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
                     <td>39</td><td></td><td></td><td><code>    }</code></td>
@@ -250,10 +250,10 @@
                     <td>63</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 64" id="line64">
-                    <td>64</td><td></td><td>10</td><td><code>  void attachSubscription(StreamSubscription&lt;T&gt; sub) {</code></td>
+                    <td>64</td><td></td><td>1</td><td><code>  void attachSubscription(StreamSubscription&lt;T&gt; sub) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 65" id="line65">
-                    <td>65</td><td></td><td>10</td><td><code>    if (_sub != null) {</code></td>
+                    <td>65</td><td></td><td>1</td><td><code>    if (_sub != null) {</code></td>
                 </tr>
                 <tr class="lineNoCov" title="Line 66" id="line66">
                     <td>66</td><td></td><td>0</td><td><code>      throw SquadronErrorImpl.create(</code></td>
@@ -265,13 +265,13 @@
                     <td>68</td><td></td><td></td><td><code>    }</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 69" id="line69">
-                    <td>69</td><td></td><td>10</td><td><code>    _sub = sub;</code></td>
+                    <td>69</td><td></td><td>1</td><td><code>    _sub = sub;</code></td>
                 </tr>
                 <tr class="noop" title="Line 70" id="line70">
                     <td>70</td><td></td><td></td><td><code>    // pass pending pause events on to the subscription</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 71" id="line71">
-                    <td>71</td><td></td><td>20</td><td><code>    while (_pauses &gt; 0) {</code></td>
+                    <td>71</td><td></td><td>2</td><td><code>    while (_pauses &gt; 0) {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 72" id="line72">
                     <td>72</td><td></td><td>2</td><td><code>      _pauses--;</code></td>
@@ -286,10 +286,10 @@
                     <td>75</td><td></td><td></td><td><code>    // have the subscription handle pause/resume events from now on</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 76" id="line76">
-                    <td>76</td><td></td><td>30</td><td><code>    _controller.onPause = sub.pause;</code></td>
+                    <td>76</td><td></td><td>3</td><td><code>    _controller.onPause = sub.pause;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 77" id="line77">
-                    <td>77</td><td></td><td>30</td><td><code>    _controller.onResume = sub.resume;</code></td>
+                    <td>77</td><td></td><td>3</td><td><code>    _controller.onResume = sub.resume;</code></td>
                 </tr>
                 <tr class="noop" title="Line 78" id="line78">
                     <td>78</td><td></td><td></td><td><code>    // have the subscription handle the cancel event if the controller doesn't</code></td>
@@ -298,7 +298,7 @@
                     <td>79</td><td></td><td></td><td><code>    // handle it already</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 80" id="line80">
-                    <td>80</td><td></td><td>25</td><td><code>    _controller.onCancel ??= sub.cancel;</code></td>
+                    <td>80</td><td></td><td>3</td><td><code>    _controller.onCancel ??= sub.cancel;</code></td>
                 </tr>
                 <tr class="noop" title="Line 81" id="line81">
                     <td>81</td><td></td><td></td><td><code>  }</code></td>

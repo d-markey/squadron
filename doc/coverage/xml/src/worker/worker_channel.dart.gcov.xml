@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="worker_channel.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="2" lines-valid="2" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -151,16 +151,16 @@
         <line number="50">
             <code>  /// Deserializes a [Channel] from an opaque [channelInfo].</code>
         </line>
-        <line hits="10" number="51">
+        <line hits="1" number="51">
             <code>  static WorkerChannel? deserialize(PlatformChannel? channelInfo,</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="52">
             <code>          [Logger? logger]) =&gt;</code>
         </line>
-        <line hits="10" number="53">
+        <line hits="1" number="53">
             <code>      impl.deserialize(channelInfo, logger);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="54">
             <code>}</code>

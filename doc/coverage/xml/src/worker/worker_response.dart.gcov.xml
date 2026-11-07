@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.92727274" lines-covered="51" lines-valid="55" package="src/worker" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="worker_response.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.9285714" lines-covered="52" lines-valid="56" package="src/worker" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'dart:async';</code>
@@ -14,525 +14,538 @@
             <code/>
         </line>
         <line number="5">
-            <code>import '../_impl/xplat/_time_stamp.dart';</code>
+            <code>import '../build_options.dart';</code>
         </line>
         <line number="6">
-            <code>import '../channel.dart';</code>
+            <code>import '../_impl/xplat/_time_stamp.dart';</code>
         </line>
         <line number="7">
-            <code>import '../exceptions/squadron_error.dart';</code>
+            <code>import '../channel.dart';</code>
         </line>
         <line number="8">
-            <code>import '../exceptions/squadron_exception.dart';</code>
+            <code>import '../exceptions/squadron_error.dart';</code>
         </line>
         <line number="9">
-            <code>import 'worker_message.dart';</code>
+            <code>import '../exceptions/squadron_exception.dart';</code>
         </line>
         <line number="10">
-            <code/>
+            <code>import 'worker_message.dart';</code>
         </line>
         <line number="11">
-            <code>/// [WorkerResponse]s are used to communicate from [Worker]s to clients and</code>
+            <code/>
         </line>
         <line number="12">
-            <code>/// carry a single piece of data. [Future]-based services simply return a</code>
+            <code>/// [WorkerResponse]s are used to communicate from [Worker]s to clients and</code>
         </line>
         <line number="13">
-            <code>/// single [WorkerResponse] with the result. [Stream]ing services will return</code>
+            <code>/// carry a single piece of data. [Future]-based services simply return a</code>
         </line>
         <line number="14">
-            <code>/// one [WorkerResponse]s for each stream item and mmust send a</code>
+            <code>/// single [WorkerResponse] with the result. [Stream]ing services will return</code>
         </line>
         <line number="15">
-            <code>/// [WorkerResponse.closeStream] message to indicate completion.</code>
+            <code>/// one [WorkerResponse]s for each stream item and mmust send a</code>
         </line>
         <line number="16">
-            <code>/// [WorkerResponse]s can also send error messages and log events.</code>
+            <code>/// [WorkerResponse.closeStream] message to indicate completion.</code>
         </line>
         <line number="17">
+            <code>/// [WorkerResponse]s can also send error messages and log events.</code>
+        </line>
+        <line hits="1" number="18">
             <code>extension type WorkerResponse._(List data) implements WorkerMessage {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="18">
+        <line hits="1" number="19">
             <code>  factory WorkerResponse.from(List data) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="20" number="19">
+        <line hits="2" number="20">
             <code>    if (data.length != 5) {</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="0" number="20">
+        <line hits="0" number="21">
             <code>      throw SquadronErrorImpl.create('Invalid worker response');</code>
         </line>
-        <line number="21">
+        <line number="22">
             <code>    }</code>
         </line>
-        <line hits="10" number="22">
+        <line hits="1" number="23">
             <code>    return WorkerResponse._(data);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="23">
-            <code>  }</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="24">
-            <code/>
+            <code>  }</code>
         </line>
         <line number="25">
-            <code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code>
+            <code/>
         </line>
         <line number="26">
-            <code>  /// not a [List], it will be converted to a [List] by [wrapInPlace].</code>
-        </line>
-        <line hits="0" number="27">
-            <code>  factory WorkerResponse.ready([bool status = true]) =&gt; WorkerResponse._([</code>
-        </line>
-        <line hits="0" number="28">
-            <code>        Timestamp.now(), // 0 - travel time</code>
-        </line>
-        <line number="29">
-            <code>        status, // 1 - ready</code>
-        </line>
-        <line number="30">
-            <code>        null, // 2 - error</code>
-        </line>
-        <line number="31">
-            <code>        null, // 3 - end of stream</code>
-        </line>
-        <line number="32">
-            <code>        null, // 4 - log message</code>
-        </line>
-        <line number="33">
-            <code>      ]);</code>
-        </line>
-        <line number="34">
-            <code/>
-        </line>
-        <line number="35">
             <code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code>
         </line>
-        <line number="36">
+        <line number="27">
             <code>  /// not a [List], it will be converted to a [List] by [wrapInPlace].</code>
         </line>
-        <line hits="30" number="37">
+        <line hits="0" number="28">
+            <code>  factory WorkerResponse.ready([bool status = true]) =&gt; WorkerResponse._([</code>
+        </line>
+        <line hits="0" number="29">
+            <code>        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time</code>
+        </line>
+        <line number="30">
+            <code>        status, // 1 - ready</code>
+        </line>
+        <line number="31">
+            <code>        null, // 2 - error</code>
+        </line>
+        <line number="32">
+            <code>        null, // 3 - end of stream</code>
+        </line>
+        <line number="33">
+            <code>        null, // 4 - log message</code>
+        </line>
+        <line number="34">
+            <code>      ]);</code>
+        </line>
+        <line number="35">
+            <code/>
+        </line>
+        <line number="36">
+            <code>  /// [WorkerResponse] with a valid [result]. If [result] is an [Iterable] but</code>
+        </line>
+        <line number="37">
+            <code>  /// not a [List], it will be converted to a [List] by [wrapInPlace].</code>
+        </line>
+        <line hits="3" number="38">
             <code>  factory WorkerResponse.withResult(dynamic result) =&gt; WorkerResponse._([</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="38">
-            <code>        Timestamp.now(), // 0 - travel time</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="39">
-            <code>        result, // 1 - result</code>
+        <line hits="1" number="39">
+            <code>        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="40">
-            <code>        null, // 2 - error</code>
+            <code>        result, // 1 - result</code>
         </line>
         <line number="41">
-            <code>        null, // 3 - end of stream</code>
+            <code>        null, // 2 - error</code>
         </line>
         <line number="42">
-            <code>        null, // 4 - log message</code>
+            <code>        null, // 3 - end of stream</code>
         </line>
         <line number="43">
-            <code>      ]);</code>
+            <code>        null, // 4 - log message</code>
         </line>
         <line number="44">
-            <code/>
+            <code>      ]);</code>
         </line>
         <line number="45">
+            <code/>
+        </line>
+        <line number="46">
             <code>  /// [WorkerResponse] with an error message and an optional (string) [StackTrace].</code>
         </line>
-        <line hits="5" number="46">
+        <line hits="1" number="47">
             <code>  factory WorkerResponse.withError(SquadronException exception,</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="47">
+        <line number="48">
             <code>          [StackTrace? stackTrace]) =&gt;</code>
         </line>
-        <line hits="10" number="48">
+        <line hits="2" number="49">
             <code>      WorkerResponse._([</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="49">
-            <code>        Timestamp.now(), // 0 - travel time</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="50">
-            <code>        null, // 1 - result</code>
+        <line hits="1" number="50">
+            <code>        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="51">
-            <code>        exception, // 2 - error</code>
+            <code>        null, // 1 - result</code>
         </line>
         <line number="52">
-            <code>        null, // 3 - end of stream</code>
+            <code>        exception, // 2 - error</code>
         </line>
         <line number="53">
-            <code>        null, // 4 - log message</code>
-        </line>
-        <line number="54">
-            <code>      ]);</code>
-        </line>
-        <line number="55">
-            <code/>
-        </line>
-        <line number="56">
-            <code>  /// [WorkerResponse] with log event information.</code>
-        </line>
-        <line hits="30" number="57">
-            <code>  factory WorkerResponse.log(LogEvent message) =&gt; WorkerResponse._([</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="58">
-            <code>        Timestamp.now(), // 0 - travel time</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="59">
-            <code>        null, // 1 - result</code>
-        </line>
-        <line number="60">
-            <code>        null, // 2 - error</code>
-        </line>
-        <line number="61">
             <code>        null, // 3 - end of stream</code>
         </line>
-        <line number="62">
-            <code>        message, // 4 - log message</code>
-        </line>
-        <line number="63">
-            <code>      ]);</code>
-        </line>
-        <line number="64">
-            <code/>
-        </line>
-        <line number="65">
-            <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
-        </line>
-        <line hits="18" number="66">
-            <code>  factory WorkerResponse.closeStream() =&gt; WorkerResponse._([</code>
-            <hit count="18" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="6" number="67">
-            <code>        Timestamp.now(), // 0 - travel time</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="68">
-            <code>        null, // 1 - result</code>
-        </line>
-        <line number="69">
-            <code>        null, // 2 - error</code>
-        </line>
-        <line number="70">
-            <code>        true, // 3 - end of stream</code>
-        </line>
-        <line number="71">
+        <line number="54">
             <code>        null, // 4 - log message</code>
         </line>
-        <line number="72">
+        <line number="55">
             <code>      ]);</code>
         </line>
-        <line number="73">
+        <line number="56">
             <code/>
         </line>
-        <line number="74">
-            <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
+        <line number="57">
+            <code>  /// [WorkerResponse] with log event information.</code>
         </line>
-        <line hits="20" number="75">
-            <code>  bool get endOfStream =&gt; data[_$endOfStream];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+        <line hits="3" number="58">
+            <code>  factory WorkerResponse.log(LogEvent message) =&gt; WorkerResponse._([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="59">
+            <code>        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="60">
+            <code>        null, // 1 - result</code>
+        </line>
+        <line number="61">
+            <code>        null, // 2 - error</code>
+        </line>
+        <line number="62">
+            <code>        null, // 3 - end of stream</code>
+        </line>
+        <line number="63">
+            <code>        BuildOptions.withCrossWorkerLogging</code>
+        </line>
+        <line hits="1" number="64">
+            <code>            ? message.serialize()</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="65">
+            <code>            : null, // 4 - log message</code>
+        </line>
+        <line number="66">
+            <code>      ]);</code>
+        </line>
+        <line number="67">
+            <code/>
+        </line>
+        <line number="68">
+            <code>  /// Special [WorkerResponse] message to indicate the end of a stream.</code>
+        </line>
+        <line hits="3" number="69">
+            <code>  factory WorkerResponse.closeStream() =&gt; WorkerResponse._([</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="70">
+            <code>        BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="71">
+            <code>        null, // 1 - result</code>
+        </line>
+        <line number="72">
+            <code>        null, // 2 - error</code>
+        </line>
+        <line number="73">
+            <code>        true, // 3 - end of stream</code>
+        </line>
+        <line number="74">
+            <code>        null, // 4 - log message</code>
+        </line>
+        <line number="75">
+            <code>      ]);</code>
         </line>
         <line number="76">
             <code/>
         </line>
         <line number="77">
-            <code>  /// The [WorkerResponse] exception, if any.</code>
+            <code>  /// Flag indicating the end of the [Stream]ing operation.</code>
         </line>
-        <line hits="20" number="78">
-            <code>  SquadronException? get error =&gt; data[_$error];</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+        <line hits="2" number="78">
+            <code>  bool get endOfStream =&gt; data[_$endOfStream];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="79">
             <code/>
         </line>
         <line number="80">
+            <code>  /// The [WorkerResponse] exception, if any.</code>
+        </line>
+        <line hits="2" number="81">
+            <code>  SquadronException? get error =&gt; data[_$error];</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="82">
+            <code/>
+        </line>
+        <line number="83">
             <code>  /// Retrieves the result associated to this [WorkerResponse]. If the</code>
         </line>
-        <line number="81">
+        <line number="84">
             <code>  /// [WorkerResponse] contains an error, an the [error] exception is thrown.</code>
         </line>
-        <line hits="10" number="82">
+        <line hits="1" number="85">
             <code>  dynamic get result {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="83">
+        <line hits="1" number="86">
             <code>    final err = error;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="84">
+        <line number="87">
             <code>    if (err != null) {</code>
         </line>
-        <line number="85">
+        <line number="88">
             <code>      throw err;</code>
         </line>
-        <line number="86">
+        <line number="89">
             <code>    } else {</code>
         </line>
-        <line hits="10" number="87">
+        <line hits="1" number="90">
             <code>      return data[_$result];</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="88">
-            <code>    }</code>
-        </line>
-        <line number="89">
-            <code>  }</code>
-        </line>
-        <line number="90">
-            <code/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="91">
-            <code>  /// In-place deserialization of a [WorkerResponse] sent by the worker.</code>
-        </line>
-        <line number="92">
-            <code>  /// Returns `false` if the message requires no further processing (currently</code>
-        </line>
-        <line number="93">
-            <code>  /// used for log messages only).</code>
-        </line>
-        <line hits="10" number="94">
-            <code>  bool unwrapInPlace(Channel channel) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="95">
-            <code>    unwrapTravelTime();</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="96">
-            <code>    final log = _LogEventSerializationExt.deserialize(data[_$log]);</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="97">
-            <code>    if (log != null) {</code>
-        </line>
-        <line hits="19" number="98">
-            <code>      channel.logger?.log(log.level, log.message,</code>
-            <hit count="19" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="9" number="99">
-            <code>          time: log.time, error: log.error, stackTrace: log.stackTrace);</code>
-            <hit count="9" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="100">
-            <code>      return false;</code>
-        </line>
-        <line number="101">
-            <code>    } else {</code>
-        </line>
-        <line hits="40" number="102">
-            <code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code>
-            <hit count="40" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="103">
-            <code>      data[_$endOfStream] ??= false;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="104">
-            <code>      return true;</code>
-        </line>
-        <line number="105">
             <code>    }</code>
         </line>
-        <line number="106">
+        <line number="92">
             <code>  }</code>
         </line>
-        <line number="107">
+        <line number="93">
             <code/>
         </line>
-        <line number="108">
+        <line number="94">
+            <code>  /// In-place deserialization of a [WorkerResponse] sent by the worker.</code>
+        </line>
+        <line number="95">
+            <code>  /// Returns `false` if the message requires no further processing (currently</code>
+        </line>
+        <line number="96">
+            <code>  /// used for log messages only).</code>
+        </line>
+        <line hits="1" number="97">
+            <code>  bool unwrapInPlace(Channel channel) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="98">
+            <code>    unwrapTravelTime();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="99">
+            <code>    final log = BuildOptions.withCrossWorkerLogging</code>
+        </line>
+        <line hits="2" number="100">
+            <code>        ? _LogEventSerializationExt.deserialize(data[_$log])</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="101">
+            <code>        : null;</code>
+        </line>
+        <line number="102">
+            <code>    if (log != null) {</code>
+        </line>
+        <line hits="4" number="103">
+            <code>      channel.logger?.log(log.level, log.message,</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="104">
+            <code>          time: log.time, error: log.error, stackTrace: log.stackTrace);</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="105">
+            <code>      return false;</code>
+        </line>
+        <line number="106">
+            <code>    } else {</code>
+        </line>
+        <line hits="4" number="107">
+            <code>      data[_$error] = channel.exceptionManager.deserialize(data[_$error]);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="108">
+            <code>      data[_$endOfStream] ??= false;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="109">
+            <code>      return true;</code>
+        </line>
+        <line number="110">
+            <code>    }</code>
+        </line>
+        <line number="111">
+            <code>  }</code>
+        </line>
+        <line number="112">
+            <code/>
+        </line>
+        <line number="113">
             <code>  /// In-place serialization of a [WorkerResponse].</code>
         </line>
-        <line hits="10" number="109">
+        <line hits="1" number="114">
             <code>  void wrapInPlace() {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="10" number="110">
+        <line hits="1" number="115">
             <code>    final result = data[_$result];</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="13" number="111">
+        <line hits="2" number="116">
             <code>    if (result is Iterable &amp;&amp; result is! List) {</code>
-            <hit count="13" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="112">
+        <line hits="2" number="117">
             <code>      data[_$result] = result.toList();</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="113">
+        <line number="118">
             <code>    }</code>
         </line>
-        <line hits="25" number="114">
+        <line hits="3" number="119">
             <code>    data[_$error] = (data[_$error] as SquadronException?)?.serialize();</code>
-            <hit count="25" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="30" number="115">
-            <code>    data[_$log] = (data[_$log] as LogEvent?)?.serialize();</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="116">
-            <code>  }</code>
-        </line>
-        <line number="117">
-            <code>}</code>
-        </line>
-        <line number="118">
-            <code/>
-        </line>
-        <line number="119">
-            <code>// 0 is reserved for travel time</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="120">
-            <code>const _$result = 1;</code>
-        </line>
-        <line number="121">
-            <code>const _$error = 2;</code>
-        </line>
-        <line number="122">
-            <code>const _$endOfStream = 3;</code>
-        </line>
-        <line number="123">
-            <code>const _$log = 4;</code>
-        </line>
-        <line number="124">
-            <code/>
-        </line>
-        <line number="125">
-            <code>extension _LogEventSerializationExt on LogEvent {</code>
-        </line>
-        <line hits="20" number="126">
-            <code>  List serialize() =&gt; [</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="127">
-            <code>        level.value,</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="128">
-            <code>        _stringify(message),</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="129">
-            <code>        Timestamp.from(time),</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="130">
-            <code>        error?.toString(),</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="131">
-            <code>        stackTrace?.toString(),</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="132">
-            <code>      ];</code>
-        </line>
-        <line number="133">
-            <code/>
-        </line>
-        <line hits="10" number="134">
-            <code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="135">
-            <code>      ? null</code>
-        </line>
-        <line hits="10" number="136">
-            <code>      : LogEvent(</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="30" number="137">
-            <code>          _getLevel((props[0] as num?)?.toInt()),</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="138">
-            <code>          props[1],</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="30" number="139">
-            <code>          time: Timestamp.from(props[2])?.toDateTime(),</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="140">
-            <code>          error: props[3],</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="141">
-            <code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="142">
-            <code>        );</code>
-        </line>
-        <line number="143">
-            <code/>
-        </line>
-        <line hits="20" number="144">
-            <code>  static final _levelMap =</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="50" number="145">
-            <code>      Map.fromEntries(Level.values.map((l) =&gt; MapEntry(l.value, l)));</code>
-            <hit count="50" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="146">
-            <code/>
-        </line>
-        <line hits="10" number="147">
-            <code>  static Level _getLevel(int? value) =&gt;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="20" number="148">
-            <code>      _levelMap[value ?? Level.debug.value] ?? Level.debug;</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="149">
-            <code/>
-        </line>
-        <line hits="10" number="150">
-            <code>  static String? _stringify(dynamic message) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line hits="10" number="151">
-            <code>    if (message is Function) {</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="152">
-            <code>      try {</code>
-        </line>
-        <line hits="4" number="153">
-            <code>        return message().toString();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="154">
-            <code>      } catch (ex) {</code>
-        </line>
-        <line hits="0" number="155">
-            <code>        return 'Deferred message failed with error: $ex';</code>
-        </line>
-        <line number="156">
-            <code>      }</code>
-        </line>
-        <line number="157">
-            <code>    } else {</code>
-        </line>
-        <line hits="10" number="158">
-            <code>      return message.toString();</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="159">
-            <code>    }</code>
-        </line>
-        <line number="160">
             <code>  }</code>
         </line>
+        <line number="121">
+            <code>}</code>
+        </line>
+        <line number="122">
+            <code/>
+        </line>
+        <line number="123">
+            <code>// 0 is reserved for travel time</code>
+        </line>
+        <line number="124">
+            <code>const _$result = 1;</code>
+        </line>
+        <line number="125">
+            <code>const _$error = 2;</code>
+        </line>
+        <line number="126">
+            <code>const _$endOfStream = 3;</code>
+        </line>
+        <line number="127">
+            <code>const _$log = 4;</code>
+        </line>
+        <line number="128">
+            <code/>
+        </line>
+        <line number="129">
+            <code>extension _LogEventSerializationExt on LogEvent {</code>
+        </line>
+        <line hits="2" number="130">
+            <code>  List serialize() =&gt; [</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="131">
+            <code>        level.value,</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="132">
+            <code>        _stringify(message),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="133">
+            <code>        Timestamp.from(time),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="134">
+            <code>        error?.toString(),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="135">
+            <code>        stackTrace?.toString(),</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="136">
+            <code>      ];</code>
+        </line>
+        <line number="137">
+            <code/>
+        </line>
+        <line hits="1" number="138">
+            <code>  static LogEvent? deserialize(List? props) =&gt; (props == null)</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="139">
+            <code>      ? null</code>
+        </line>
+        <line hits="1" number="140">
+            <code>      : LogEvent(</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="141">
+            <code>          _getLevel((props[0] as num?)?.toInt()),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="142">
+            <code>          props[1],</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="3" number="143">
+            <code>          time: Timestamp.from(props[2] as num?)?.toDateTime(),</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="144">
+            <code>          error: props[3],</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="145">
+            <code>          stackTrace: SquadronException.loadStackTrace(props[4]),</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="146">
+            <code>        );</code>
+        </line>
+        <line number="147">
+            <code/>
+        </line>
+        <line hits="2" number="148">
+            <code>  static final _levelMap =</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="5" number="149">
+            <code>      Map.fromEntries(Level.values.map((l) =&gt; MapEntry(l.value, l)));</code>
+            <hit count="5" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="150">
+            <code/>
+        </line>
+        <line hits="1" number="151">
+            <code>  static Level _getLevel(int? value) =&gt;</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="2" number="152">
+            <code>      _levelMap[value ?? Level.debug.value] ?? Level.debug;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="153">
+            <code/>
+        </line>
+        <line hits="1" number="154">
+            <code>  static String? _stringify(dynamic message) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="1" number="155">
+            <code>    if (message is Function) {</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="156">
+            <code>      try {</code>
+        </line>
+        <line hits="2" number="157">
+            <code>        return message().toString();</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="158">
+            <code>      } catch (ex) {</code>
+        </line>
+        <line hits="0" number="159">
+            <code>        return 'Deferred message failed with error: $ex';</code>
+        </line>
+        <line number="160">
+            <code>      }</code>
+        </line>
         <line number="161">
+            <code>    } else {</code>
+        </line>
+        <line hits="1" number="162">
+            <code>      return message.toString();</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="163">
+            <code>    }</code>
+        </line>
+        <line number="164">
+            <code>  }</code>
+        </line>
+        <line number="165">
             <code>}</code>
         </line>
     </lines>

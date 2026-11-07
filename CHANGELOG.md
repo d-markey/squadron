@@ -1,3 +1,8 @@
+## 7.4.5
+
+- Update built-in package skill for cancellation (`squadron-cancelation`).
+- Add new package skill for worker affinity (`squadron-worker-affinity`).
+
 ## 7.4.4
 
 - Update WASM loader to use the latest version, while still supporting the legacy version. Fixes https://github.com/d-markey/squadron/issues/80.

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8" lines-covered="4" lines-valid="5" package="src/_impl/native" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.4" lines-covered="4" lines-valid="10" package="src/_impl/native" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
-            <code>import 'dart:isolate';</code>
+            <code>import 'dart:io';</code>
         </line>
         <line number="2">
-            <code/>
+            <code>import 'dart:isolate';</code>
         </line>
         <line number="3">
-            <code>import 'package:meta/meta.dart';</code>
-        </line>
-        <line number="4">
             <code/>
         </line>
+        <line number="4">
+            <code>import 'package:meta/meta.dart';</code>
+        </line>
         <line number="5">
-            <code>import '../../converters/cast_converter.dart';</code>
+            <code/>
         </line>
         <line number="6">
-            <code>import '../../converters/converter.dart';</code>
+            <code>import '../../converters/cast_converter.dart';</code>
         </line>
         <line number="7">
             <code>import '../../squadron_platform_type.dart';</code>
@@ -31,38 +31,68 @@
         <line number="10">
             <code>/// threadIDs may not be unique on VM...</code>
         </line>
-        <line hits="15" number="11">
+        <line hits="5" number="11">
             <code>final threadId = Isolate.current.hashCode.hex;</code>
-            <hit count="15" name="&lt;unnamed&gt;"/>
+            <hit count="5" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code/>
         </line>
-        <line hits="10" number="13">
-            <code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+        <line number="13">
+            <code>const platformConverter = CastConverter.instance;</code>
         </line>
         <line number="14">
             <code/>
         </line>
-        <line hits="12" number="15">
-            <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.vm;</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+        <line number="15">
+            <code>const platformType = SquadronPlatformType.vm;</code>
         </line>
         <line number="16">
             <code/>
         </line>
-        <line hits="0" number="17">
-            <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
-        </line>
-        <line number="18">
-            <code/>
-        </line>
-        <line hits="3" number="19">
-            <code>@internal</code>
+        <line hits="3" number="17">
+            <code>final osType = switch (Platform.operatingSystem) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="20">
+        <line hits="1" number="18">
+            <code>  'windows' =&gt; SquadronOSType.windows,</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line hits="0" number="19">
+            <code>  'linux' =&gt; SquadronOSType.linux,</code>
+        </line>
+        <line hits="0" number="20">
+            <code>  'fuchsia' =&gt; SquadronOSType.fuchsia,</code>
+        </line>
+        <line hits="0" number="21">
+            <code>  'macos' =&gt; SquadronOSType.macos,</code>
+        </line>
+        <line hits="0" number="22">
+            <code>  'android' =&gt; SquadronOSType.android,</code>
+        </line>
+        <line hits="0" number="23">
+            <code>  'ios' =&gt; SquadronOSType.ios,</code>
+        </line>
+        <line number="24">
+            <code>  _ =&gt; SquadronOSType.unknown</code>
+        </line>
+        <line number="25">
+            <code>};</code>
+        </line>
+        <line number="26">
+            <code/>
+        </line>
+        <line hits="0" number="27">
+            <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
+        </line>
+        <line number="28">
+            <code/>
+        </line>
+        <line hits="1" number="29">
+            <code>@internal</code>
+            <hit count="1" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="30">
             <code>bool isSameInstance(Object a, Object b) =&gt; identical(a, b);</code>
         </line>
     </lines>

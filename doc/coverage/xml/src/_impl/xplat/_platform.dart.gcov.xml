@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.2" lines-covered="1" lines-valid="5" package="src/_impl/xplat" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="_platform.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.25" lines-covered="1" lines-valid="4" package="src/_impl/xplat" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import 'package:meta/meta.dart';</code>
@@ -11,49 +11,52 @@
             <code>import '../../converters/cast_converter.dart';</code>
         </line>
         <line number="4">
-            <code>import '../../converters/converter.dart';</code>
-        </line>
-        <line number="5">
             <code>import '../../squadron_platform_type.dart';</code>
         </line>
-        <line number="6">
+        <line number="5">
             <code>import '../web/_platform.dart' if (dart.library.io) '../native/_platform.dart'</code>
         </line>
-        <line number="7">
+        <line number="6">
             <code>    as impl;</code>
         </line>
-        <line number="8">
+        <line number="7">
             <code/>
         </line>
-        <line hits="4" number="9">
+        <line hits="2" number="8">
             <code>String get threadId =&gt; impl.threadId;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
+        <line number="9">
+            <code/>
         </line>
         <line number="10">
-            <code/>
+            <code>const platformType = SquadronPlatformType.unknown;</code>
         </line>
-        <line hits="0" number="11">
-            <code>Converter getPlatformConverter() =&gt; CastConverter.instance;</code>
+        <line number="11">
+            <code/>
         </line>
         <line number="12">
+            <code>const platformConverter = CastConverter.instance;</code>
+        </line>
+        <line number="13">
             <code/>
         </line>
-        <line hits="0" number="13">
-            <code>SquadronPlatformType getPlatformType() =&gt; SquadronPlatformType.unknown;</code>
+        <line hits="0" number="14">
+            <code>final osType = SquadronOSType.unknown;</code>
         </line>
-        <line number="14">
+        <line number="15">
             <code/>
         </line>
-        <line hits="0" number="15">
+        <line hits="0" number="16">
             <code>Uri mapUrl(String url) =&gt; Uri.parse(url);</code>
         </line>
-        <line number="16">
+        <line number="17">
             <code/>
         </line>
-        <line hits="0" number="17">
+        <line hits="0" number="18">
             <code>@internal</code>
         </line>
-        <line number="18">
+        <line number="19">
             <code>bool isSameInstance(Object a, Object b) =&gt; identical(a, b);</code>
         </line>
     </lines>

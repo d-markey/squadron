@@ -31,11 +31,9 @@ class StreamingServiceWorker extends Worker
     with WorkerVersion
     implements StreamingService {
   StreamingServiceWorker(TestContext context,
-      {PlatformThreadHook? hook, ExceptionManager? exceptionManager})
+      {super.threadHook, super.exceptionManager})
       : super(
           context.entryPoints.streaming!,
-          threadHook: hook,
-          exceptionManager: exceptionManager,
         );
 
   @override

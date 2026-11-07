@@ -18,7 +18,7 @@
                     <dt>Test</dt>
                     <dd>lcov.info</dd>
                     <dt>Date</dt>
-                    <dd>2026-03-04</dd>
+                    <dd>2026-11-07</dd>
                     <dt class="legend">Legend</dt>
                     <dd class="legend">
                         <dl class="legend">
@@ -100,16 +100,16 @@
                     <td>13</td><td></td><td></td><td><code>class MarshalingContext {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 14" id="line14">
-                    <td>14</td><td></td><td>2</td><td><code>  MarshalingContext({bool contextAware = true})</code></td>
+                    <td>14</td><td></td><td>1</td><td><code>  MarshalingContext({bool contextAware = true})</code></td>
                 </tr>
                 <tr class="noop" title="Line 15" id="line15">
                     <td>15</td><td></td><td></td><td><code>      : _converter =</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 16" id="line16">
-                    <td>16</td><td></td><td>3</td><td><code>            contextAware ? ContextAwareConverter() : Squadron.converter,</code></td>
+                    <td>16</td><td></td><td>2</td><td><code>            contextAware ? ContextAwareConverter() : Squadron.converter,</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 17" id="line17">
-                    <td>17</td><td></td><td>2</td><td><code>        _objects = contextAware ? SerializationContext(identical) : null;</code></td>
+                    <td>17</td><td></td><td>1</td><td><code>        _objects = contextAware ? SerializationContext(identical) : null;</code></td>
                 </tr>
                 <tr class="noop" title="Line 18" id="line18">
                     <td>18</td><td></td><td></td><td><code></code></td>
@@ -157,10 +157,10 @@
                     <td>32</td><td></td><td></td><td><code>  /// Get the instance that was registered for the same [data].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 33" id="line33">
-                    <td>33</td><td></td><td>2</td><td><code>  T? getReference&lt;T extends Object&gt;(dynamic data) =&gt;</code></td>
+                    <td>33</td><td></td><td>1</td><td><code>  T? getReference&lt;T extends Object&gt;(dynamic data) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 34" id="line34">
-                    <td>34</td><td></td><td>4</td><td><code>      _objects?.getReference(data);</code></td>
+                    <td>34</td><td></td><td>2</td><td><code>      _objects?.getReference(data);</code></td>
                 </tr>
                 <tr class="noop" title="Line 35" id="line35">
                     <td>35</td><td></td><td></td><td><code></code></td>
@@ -169,10 +169,10 @@
                     <td>36</td><td></td><td></td><td><code>  /// Register [instance] for this [data].</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 37" id="line37">
-                    <td>37</td><td></td><td>2</td><td><code>  void setReference&lt;T extends Object&gt;(dynamic data, T instance) =&gt;</code></td>
+                    <td>37</td><td></td><td>1</td><td><code>  void setReference&lt;T extends Object&gt;(dynamic data, T instance) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 38" id="line38">
-                    <td>38</td><td></td><td>4</td><td><code>      _objects?.setReference(data, instance);</code></td>
+                    <td>38</td><td></td><td>2</td><td><code>      _objects?.setReference(data, instance);</code></td>
                 </tr>
                 <tr class="noop" title="Line 39" id="line39">
                     <td>39</td><td></td><td></td><td><code>}</code></td>
@@ -187,7 +187,7 @@
                     <td>42</td><td></td><td></td><td><code>extension ConverterExt on MarshalingContext? {</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 43" id="line43">
-                    <td>43</td><td></td><td>4</td><td><code>  Converter get converter =&gt; this?._converter ?? Squadron.converter;</code></td>
+                    <td>43</td><td></td><td>2</td><td><code>  Converter get converter =&gt; this?._converter ?? Squadron.converter;</code></td>
                 </tr>
                 <tr class="noop" title="Line 44" id="line44">
                     <td>44</td><td></td><td></td><td><code></code></td>
@@ -199,10 +199,10 @@
                     <td>46</td><td></td><td></td><td><code></code></td>
                 </tr>
                 <tr class="lineCov" title="Line 47" id="line47">
-                    <td>47</td><td></td><td>2</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt;</code></td>
+                    <td>47</td><td></td><td>1</td><td><code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) =&gt;</code></td>
                 </tr>
                 <tr class="lineCov" title="Line 48" id="line48">
-                    <td>48</td><td></td><td>4</td><td><code>      converter.list&lt;T&gt;(cast);</code></td>
+                    <td>48</td><td></td><td>2</td><td><code>      converter.list&lt;T&gt;(cast);</code></td>
                 </tr>
                 <tr class="noop" title="Line 49" id="line49">
                     <td>49</td><td></td><td></td><td><code></code></td>

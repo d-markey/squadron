@@ -82,11 +82,14 @@ abstract class SquadronMarshaler<T, S> {
   T unmarshal(S data, [MarshalingContext? context]);
 }
 ```
+
 *Rule:* `unmarshal(marshal(data))` must produce an instance of `T` equivalent to the original `data`. 
+
 * **Important Equivalence Note**: Because marshaling and unmarshaling create a brand-new instance across the thread boundary, `identical(original, unmarshaled)` will **always return `false`**, and the equality operator (`==`) will return `false` unless explicitly overloaded in your class `T`.
 
 ### Using `GenericMarshaler` & `MarshalingContext`
 For complex object graphs, deep structures, or circular references, Squadron provides `GenericMarshaler` and `MarshalingContext`.
+
 - **`MarshalingContext`**: Tracks object references during serialization and deserialization to prevent infinite loops (e.g., circular graphs or shared references) and preserve object identity within the same payload transfer.
 
 ### Example Marshaling Implementation:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.8947368" lines-covered="17" lines-valid="19" package="src" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="squadron_singleton.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.88235295" lines-covered="15" lines-valid="17" package="src" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '_impl/xplat/_platform.dart'</code>
@@ -39,175 +39,176 @@
             <code/>
         </line>
         <line number="13">
-            <code>  /// Gets the current platform type.</code>
+            <code>  /// Gets the current platform information.</code>
         </line>
-        <line hits="36" number="14">
-            <code>  static final platformType = impl.getPlatformType();</code>
-            <hit count="36" name="&lt;unnamed&gt;"/>
+        <line number="14">
+            <code>  static const platformType = impl.platformType;</code>
         </line>
-        <line number="15">
-            <code/>
+        <line hits="3" number="15">
+            <code>  static final osType = impl.osType;</code>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="16">
-            <code>  /// Parse [url] and returns the corresponding [Uri].</code>
+            <code/>
         </line>
         <line number="17">
-            <code>  ///</code>
+            <code>  /// Parse [url] and returns the corresponding [Uri].</code>
         </line>
         <line number="18">
-            <code>  /// On Web platforms, a leading '~' character will be replaced with the</code>
+            <code>  ///</code>
         </line>
         <line number="19">
-            <code>  /// current page's root URL. E.g. '~/workers' from '/path/to/index.html'</code>
+            <code>  /// On Web platforms, a leading '~' character will be replaced with the</code>
         </line>
         <line number="20">
+            <code>  /// current page's root URL. E.g. '~/workers' from '/path/to/index.html'</code>
+        </line>
+        <line number="21">
             <code>  /// will return '/path/to/workers'.</code>
         </line>
-        <line hits="0" number="21">
+        <line hits="0" number="22">
             <code>  static Uri uri(String url) =&gt; impl.mapUrl(url);</code>
         </line>
-        <line number="22">
-            <code/>
-        </line>
         <line number="23">
-            <code>  static bool disableBrowserCache = false;</code>
+            <code/>
         </line>
         <line number="24">
+            <code>  static bool disableBrowserCache = false;</code>
+        </line>
+        <line number="25">
             <code/>
         </line>
-        <line hits="8" number="25">
+        <line hits="2" number="26">
             <code>  static final identical = impl.isSameInstance;</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="30" number="26">
-            <code>  static final _platformConverter = impl.getPlatformConverter();</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
+        <line number="27">
+            <code>  static const _platformConverter = impl.platformConverter;</code>
         </line>
-        <line hits="30" number="27">
+        <line hits="2" number="28">
             <code>  static Converter _converter = _platformConverter;</code>
-            <hit count="30" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="28">
-            <code/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="29">
-            <code>  /// Gets the current converter.</code>
-        </line>
-        <line hits="20" number="30">
-            <code>  static Converter get converter =&gt; _converter;</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
-        </line>
-        <line number="31">
             <code/>
         </line>
+        <line number="30">
+            <code>  /// Gets the current converter.</code>
+        </line>
+        <line hits="2" number="31">
+            <code>  static Converter get converter =&gt; _converter;</code>
+            <hit count="2" name="&lt;unnamed&gt;"/>
+        </line>
         <line number="32">
-            <code>  /// Sets the current converter. If [value] is `null`, the default converter</code>
+            <code/>
         </line>
         <line number="33">
-            <code>  /// will be restored. If the converter was updated, handlers registered with</code>
+            <code>  /// Sets the current converter. If [value] is `null`, the default converter</code>
         </line>
         <line number="34">
+            <code>  /// will be restored. If the converter was updated, handlers registered with</code>
+        </line>
+        <line number="35">
             <code>  /// [onConverterChanged] will be notified of the change.</code>
         </line>
-        <line hits="1" number="35">
+        <line hits="1" number="36">
             <code>  static set converter(Converter? value) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="36">
+        <line number="37">
             <code>    value ??= _platformConverter;</code>
-            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="37">
+        <line hits="2" number="38">
             <code>    if (_converter != value) {</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="38">
+        <line number="39">
             <code>      _converter = value;</code>
         </line>
-        <line hits="3" number="39">
+        <line hits="3" number="40">
             <code>      for (var handler in _converterChangeHandlers.values) {</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="40">
+        <line number="41">
             <code>        try {</code>
         </line>
-        <line hits="1" number="41">
+        <line hits="1" number="42">
             <code>          handler();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="42">
+        <line number="43">
             <code>        } catch (_) {</code>
         </line>
-        <line number="43">
+        <line number="44">
             <code>          // ignore</code>
         </line>
-        <line number="44">
+        <line number="45">
             <code>        }</code>
         </line>
-        <line number="45">
+        <line number="46">
             <code>      }</code>
         </line>
-        <line number="46">
+        <line number="47">
             <code>    }</code>
         </line>
-        <line number="47">
+        <line number="48">
             <code>  }</code>
         </line>
-        <line number="48">
+        <line number="49">
             <code/>
         </line>
-        <line hits="3" number="49">
+        <line hits="3" number="50">
             <code>  static final _converterChangeHandlers = &lt;Object, void Function()&gt;{};</code>
             <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="50">
+        <line number="51">
             <code/>
         </line>
-        <line number="51">
+        <line number="52">
             <code>  /// Registers a callback that will be called whenever `converter` is changed.</code>
         </line>
-        <line number="52">
+        <line number="53">
             <code>  /// Returns an object that can be used to unregister the callback by passing</code>
         </line>
-        <line number="53">
+        <line number="54">
             <code>  /// it to [unregisterConverterChanged].</code>
         </line>
-        <line hits="1" number="54">
+        <line hits="1" number="55">
             <code>  static Object onConverterChanged(void Function() handler) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="1" number="55">
+        <line hits="1" number="56">
             <code>    final key = Object();</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="56">
+        <line hits="2" number="57">
             <code>    _converterChangeHandlers[key] = handler;</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="57">
+        <line number="58">
             <code>    return key;</code>
         </line>
-        <line number="58">
+        <line number="59">
             <code>  }</code>
         </line>
-        <line number="59">
+        <line number="60">
             <code/>
         </line>
-        <line number="60">
+        <line number="61">
             <code>  /// Unregisters a callback that was registered with [onConverterChanged].</code>
         </line>
-        <line hits="1" number="61">
+        <line hits="1" number="62">
             <code>  static void unregisterConverterChanged(Object key) {</code>
             <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="62">
+        <line hits="2" number="63">
             <code>    _converterChangeHandlers.remove(key);</code>
             <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line number="63">
+        <line number="64">
             <code>  }</code>
         </line>
-        <line number="64">
+        <line number="65">
             <code>}</code>
         </line>
     </lines>

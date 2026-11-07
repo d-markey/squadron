@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="context_aware_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.62376237" lines-covered="63" lines-valid="101" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="context_aware_converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="0.62376237" lines-covered="63" lines-valid="101" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../squadron_singleton.dart';</code>
@@ -25,13 +25,13 @@
         <line number="8">
             <code>class ContextAwareConverter extends Converter {</code>
         </line>
-        <line hits="4" number="9">
+        <line hits="1" number="9">
             <code>  ContextAwareConverter([Converter? converter])</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="10">
+        <line hits="1" number="10">
             <code>      : _converter = converter ?? Squadron.converter;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="11">
             <code/>
@@ -51,20 +51,20 @@
         <line number="16">
             <code>  // non-nullable value</code>
         </line>
-        <line hits="4" number="17">
+        <line hits="1" number="17">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="18">
             <code>  Cast&lt;T&gt; value&lt;T extends Object&gt;() {</code>
         </line>
-        <line hits="8" number="19">
+        <line hits="2" number="19">
             <code>    final op = _converter.value&lt;T&gt;();</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="20">
+        <line hits="2" number="20">
             <code>    if (Converter.isNumber&lt;T&gt;() || Converter.isIdentity&lt;T&gt;(op)) {</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="21">
             <code>      // no context needed for numbers / identity converters</code>
@@ -108,43 +108,43 @@
         <line number="34">
             <code>  // list</code>
         </line>
-        <line hits="4" number="35">
+        <line hits="1" number="35">
             <code>  @override</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="36">
             <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
         </line>
-        <line hits="4" number="37">
+        <line hits="1" number="37">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="38">
+        <line hits="1" number="38">
             <code>    if (Converter.isIdentity&lt;T&gt;(op)) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="39">
+        <line hits="2" number="39">
             <code>      final toList = _converter.list&lt;T&gt;(); // elements will be cast</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="40">
+        <line hits="1" number="40">
             <code>      return (dynamic x) {</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="41">
+        <line hits="2" number="41">
             <code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="42">
             <code>        if (ref != null) return ref;</code>
         </line>
-        <line hits="3" number="43">
+        <line hits="1" number="43">
             <code>        ref = toList(x);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="44">
+        <line hits="2" number="44">
             <code>        _arguments.setReference(x, ref);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="45">
             <code>        return ref;</code>
@@ -155,24 +155,24 @@
         <line number="47">
             <code>    } else {</code>
         </line>
-        <line hits="2" number="48">
+        <line hits="1" number="48">
             <code>      return (dynamic x) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="49">
+        <line hits="2" number="49">
             <code>        var ref = _arguments.getReference&lt;List&lt;T&gt;&gt;(x);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="50">
             <code>        if (ref != null) return ref;</code>
         </line>
-        <line hits="2" number="51">
+        <line hits="1" number="51">
             <code>        ref = LazyInPlaceList(x, op); // elements will be converted upon access</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="52">
+        <line hits="2" number="52">
             <code>        _arguments.setReference(x, ref);</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="53">
             <code>        return ref;</code>
@@ -436,9 +436,9 @@
         <line number="132">
             <code>  // map</code>
         </line>
-        <line hits="2" number="133">
+        <line hits="1" number="133">
             <code>  @override</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="134">
             <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code>
@@ -446,17 +446,17 @@
         <line number="135">
             <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
         </line>
-        <line hits="2" number="136">
+        <line hits="1" number="136">
             <code>    final kop = kcast ?? value&lt;K&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="137">
+        <line hits="1" number="137">
             <code>    final vop = vcast ?? value&lt;V&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="138">
+        <line hits="2" number="138">
             <code>    if (Converter.isIdentity&lt;K&gt;(kop) &amp;&amp; Converter.isIdentity&lt;V&gt;(vop)) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line hits="2" number="139">
             <code>      final toMap = _converter.map&lt;K, V&gt;(); // elements will be cast</code>

@@ -45,14 +45,13 @@ base class InstallableWorker extends Worker
     TestContext context, {
     bool throwOnInstall = false,
     bool throwOnUninstall = false,
-    ExceptionManager? exceptionManager,
+    super.exceptionManager,
   })  : args = [
           throwOnInstall,
           throwOnUninstall,
         ],
         super(
           context.entryPoints.installable!,
-          exceptionManager: exceptionManager,
         );
 
   InstallableWorker(TestContext context) : this._(context);

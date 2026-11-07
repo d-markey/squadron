@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-03-04" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="40" lines-valid="40" package="src/converters" testname="lcov.info" version="1.6">
+<?xml-stylesheet type="text/xsl" href="../../jgenhtml.xsl"?><coverage branch-rate="NaN" branches-covered="0" branches-valid="0" complexity="0" date="2026-11-07" filename="converter.dart" function-rate="NaN" functions-covered="0" functions-valid="0" line-rate="1.0" lines-covered="40" lines-valid="40" package="src/converters" testname="lcov.info" version="1.6">
     <lines>
         <line number="1">
             <code>import '../exceptions/worker_exception.dart';</code>
@@ -13,30 +13,30 @@
         <line number="4">
             <code>abstract class Converter {</code>
         </line>
-        <line hits="12" number="5">
+        <line hits="1" number="5">
             <code>  const Converter();</code>
-            <hit count="12" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="6">
             <code/>
         </line>
-        <line hits="11" number="7">
-            <code>  static bool isNumber&lt;T&gt;() =&gt; (T == int || T == double);</code>
-            <hit count="11" name="&lt;unnamed&gt;"/>
+        <line hits="4" number="7">
+            <code>  static bool isNumber&lt;T&gt;() =&gt; (T == num || T == int || T == double);</code>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="8">
             <code/>
         </line>
-        <line hits="10" number="9">
+        <line hits="2" number="9">
             <code>  static bool isIdentity&lt;T&gt;(Cast&lt;T&gt; cast) =&gt; (cast == identity&lt;T&gt;);</code>
-            <hit count="10" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="10">
             <code/>
         </line>
-        <line hits="20" number="11">
+        <line hits="2" number="11">
             <code>  static T identity&lt;T&gt;(dynamic x) =&gt; (x is T)</code>
-            <hit count="20" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="12">
             <code>      ? x</code>
@@ -52,9 +52,9 @@
         <line number="15">
             <code/>
         </line>
-        <line hits="8" number="16">
+        <line hits="2" number="16">
             <code>  static List&lt;T&gt; _castList&lt;T&gt;(dynamic x) =&gt; (x is List&lt;T&gt;)</code>
-            <hit count="8" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="17">
             <code>      ? x</code>
@@ -66,27 +66,27 @@
         <line number="19">
             <code/>
         </line>
-        <line hits="2" number="20">
+        <line hits="1" number="20">
             <code>  static Cast&lt;List&lt;T&gt;&gt; _mapList&lt;T&gt;(Cast&lt;T&gt; op) =&gt;</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="21">
+        <line hits="3" number="21">
             <code>      (x) =&gt; (x as Iterable).map(op).toList();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="22">
             <code/>
         </line>
-        <line hits="4" number="23">
+        <line hits="2" number="23">
             <code>  static Set&lt;T&gt; _castSet&lt;T&gt;(dynamic x) =&gt; (x is Set&lt;T&gt;)</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="24">
             <code>      ? x</code>
         </line>
-        <line hits="5" number="25">
+        <line hits="4" number="25">
             <code>      : ((x is Set) ? x.cast&lt;T&gt;() : (x as Iterable).cast&lt;T&gt;().toSet());</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="4" name="&lt;unnamed&gt;"/>
         </line>
         <line number="26">
             <code/>
@@ -102,13 +102,13 @@
         <line number="29">
             <code/>
         </line>
-        <line hits="4" number="30">
+        <line hits="1" number="30">
             <code>  static Map&lt;K, V&gt; _castMap&lt;K, V&gt;(dynamic x) =&gt;</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="5" number="31">
+        <line hits="2" number="31">
             <code>      (x is Map&lt;K, V&gt;) ? x : (x as Map).cast&lt;K, V&gt;();</code>
-            <hit count="5" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="32">
             <code/>
@@ -124,13 +124,13 @@
         <line number="35">
             <code/>
         </line>
-        <line hits="3" number="36">
+        <line hits="1" number="36">
             <code>  static Cast&lt;T?&gt; allowNull&lt;T extends Object&gt;(Cast&lt;T&gt; op) =&gt;</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="7" number="37">
+        <line hits="3" number="37">
             <code>      isIdentity(op) ? identity&lt;T?&gt; : ((x) =&gt; (x == null) ? null : op(x));</code>
-            <hit count="7" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
         <line number="38">
             <code/>
@@ -147,17 +147,17 @@
         <line number="42">
             <code>  // list (of non-nullable T)</code>
         </line>
-        <line hits="4" number="43">
+        <line hits="1" number="43">
             <code>  Cast&lt;List&lt;T&gt;&gt; list&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="44">
+        <line hits="1" number="44">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="45">
+        <line hits="2" number="45">
             <code>    return isIdentity&lt;T&gt;(op) ? _castList&lt;T&gt; : _mapList(op);</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="46">
             <code>  }</code>
@@ -189,17 +189,17 @@
         <line number="54">
             <code>  // set (of non-nullable T)</code>
         </line>
-        <line hits="2" number="55">
+        <line hits="1" number="55">
             <code>  Cast&lt;Set&lt;T&gt;&gt; set&lt;T extends Object&gt;([Cast&lt;T&gt;? cast]) {</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="2" number="56">
+        <line hits="1" number="56">
             <code>    final op = cast ?? value&lt;T&gt;();</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="3" number="57">
+        <line hits="2" number="57">
             <code>    return isIdentity&lt;T&gt;(op) ? _castSet&lt;T&gt; : _mapSet&lt;T&gt;(op);</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="58">
             <code>  }</code>
@@ -231,20 +231,20 @@
         <line number="66">
             <code>  // map (of non-nullable K, V)</code>
         </line>
-        <line hits="3" number="67">
+        <line hits="1" number="67">
             <code>  Cast&lt;Map&lt;K, V&gt;&gt; map&lt;K extends Object, V extends Object&gt;(</code>
-            <hit count="3" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="68">
             <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
         </line>
-        <line hits="6" number="69">
+        <line hits="2" number="69">
             <code>    final kop = kcast ?? value&lt;K&gt;(), vop = vcast ?? value&lt;V&gt;();</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="6" number="70">
+        <line hits="2" number="70">
             <code>    return (isIdentity&lt;K&gt;(kop) &amp;&amp; isIdentity&lt;V&gt;(vop))</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="71">
             <code>        ? _castMap&lt;K, V&gt;</code>
@@ -262,20 +262,20 @@
         <line number="75">
             <code>  // map (of non-nullable K, nullable V)</code>
         </line>
-        <line hits="2" number="76">
+        <line hits="1" number="76">
             <code>  Cast&lt;Map&lt;K, V?&gt;&gt; nmap&lt;K extends Object, V extends Object&gt;(</code>
-            <hit count="2" name="&lt;unnamed&gt;"/>
+            <hit count="1" name="&lt;unnamed&gt;"/>
         </line>
         <line number="77">
             <code>      {Cast&lt;K&gt;? kcast, Cast&lt;V&gt;? vcast}) {</code>
         </line>
-        <line hits="6" number="78">
+        <line hits="3" number="78">
             <code>    final kop = kcast ?? value&lt;K&gt;(), vop = allowNull(vcast ?? value&lt;V&gt;());</code>
-            <hit count="6" name="&lt;unnamed&gt;"/>
+            <hit count="3" name="&lt;unnamed&gt;"/>
         </line>
-        <line hits="4" number="79">
+        <line hits="2" number="79">
             <code>    return (isIdentity&lt;K&gt;(kop) &amp;&amp; isIdentity&lt;V?&gt;(vop))</code>
-            <hit count="4" name="&lt;unnamed&gt;"/>
+            <hit count="2" name="&lt;unnamed&gt;"/>
         </line>
         <line number="80">
             <code>        ? _castMap&lt;K, V?&gt;</code>

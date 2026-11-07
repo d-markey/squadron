@@ -14,15 +14,14 @@ import 'hello_world_worker.dart';
 class HelloWorldWorkerPool extends WorkerPool<HelloWorldWorker>
     implements HelloWorld {
   HelloWorldWorkerPool(EntryPoint entryPoint,
-      {PlatformThreadHook? threadHook,
-      ConcurrencySettings? concurrencySettings})
+      {PlatformThreadHook? threadHook, super.concurrencySettings})
       : super(
-            (ExceptionManager exceptionManager) => HelloWorldWorker(
-                  entryPoint,
-                  threadHook: threadHook,
-                  exceptionManager: exceptionManager,
-                ),
-            concurrencySettings: concurrencySettings);
+          (ExceptionManager exceptionManager) => HelloWorldWorker(
+            entryPoint,
+            threadHook: threadHook,
+            exceptionManager: exceptionManager,
+          ),
+        );
 
   /// Forward call to one of the pool's worker.
   @override

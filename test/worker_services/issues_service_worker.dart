@@ -51,8 +51,8 @@ base class IssuesWorkerPool extends WorkerPool<IssuesWorker>
 base class IssuesWorker extends Worker
     with WorkerVersion
     implements IssuesService {
-  IssuesWorker(TestContext context, {ExceptionManager? exceptionManager})
-      : super(context.entryPoints.issues!, exceptionManager: exceptionManager);
+  IssuesWorker(TestContext context, {super.exceptionManager})
+      : super(context.entryPoints.issues!);
 
   @override
   List? getStartArgs() => null;
