@@ -15,7 +15,9 @@ workers:
     outputs: tests
     targets:
       - compiler: js
+        source: test/workers/js/cache_worker.dart
       - compiler: wasm
+        source: test/workers/js/cache_worker.dart
   - source: test/worker_services/error_service.dart
     optimization-level: none
     outputs: tests
