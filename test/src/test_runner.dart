@@ -25,11 +25,6 @@ Future<TestContext?> init({SquadronPlatformType? workerPlatform}) async {
     workerPlatform ?? Squadron.platformType,
   );
 
-  if (context == null) {
-    Log.writeln('Failed to initialize a test context', [Log.red]);
-    return null;
-  }
-
   await displayVersions(context);
 
   return context;
@@ -41,11 +36,6 @@ Future<Iterable<({String label, int tests})>> discover() async {
     '~/..',
     Squadron.platformType,
   );
-
-  if (context == null) {
-    Log.writeln('Failed to initialize a test context', [Log.red]);
-    return const [];
-  }
 
   for (var testSuite in testSuites) {
     context.discover(testSuite.runner);
@@ -78,11 +68,6 @@ Future<void> displayVersions([TestContext? context]) async {
         '~/..',
         Squadron.platformType,
       );
-
-  if (ctx == null) {
-    Log.writeln('Failed to initialize a test context', [Log.red]);
-    return;
-  }
 
   await Future.wait([
     _displayVersion(

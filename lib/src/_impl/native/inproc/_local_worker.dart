@@ -3,12 +3,13 @@ import 'dart:isolate';
 import 'package:logger/web.dart';
 import 'package:using/using.dart';
 
-import '../../channel.dart';
-import '../../exceptions/exception_manager.dart';
-import '../../exceptions/task_terminated_exception.dart';
-import '../../local_worker/local_worker.dart';
-import '../../typedefs.dart';
-import '../xplat/_worker_runner.dart';
+import '../../../channel.dart';
+import '../../../exceptions/exception_manager.dart';
+import '../../../exceptions/task_terminated_exception.dart';
+import '../../../local_worker/local_worker.dart';
+import '../../../typedefs.dart';
+import '../../../utils.dart';
+import '../../xplat/_worker_runner.dart';
 import '_worker_runner.dart';
 
 base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
@@ -39,7 +40,7 @@ base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
   Channel? get channel => _channel;
 
   @override
-  Future<void> start() => Future.value();
+  Future<void> start() => noopFuture;
 
   @override
   void stop() {
@@ -49,7 +50,11 @@ base class _VmLocalWorker<W> with Releasable implements LocalWorker<W> {
   }
 
   @override
-  void terminate([TaskTerminatedException? ex]) => stop();
+  void terminate([TaskTerminatedException? ex]) {
+    ex ??= TaskTerminatedException('Local Worker has been terminated');
+    _channel?.terminate(ex);
+    stop();
+  }
 }
 
 /// Creates a [LocalWorker] on a native platform.

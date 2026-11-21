@@ -96,4 +96,4 @@ final class _WebWorkerChannel implements WorkerChannel {
 WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
     (channelInfo == null)
         ? null
-        : _WebWorkerChannel._(channelInfo as impl.PlatformChannel, logger);
+        : _WebWorkerChannel._(channelInfo as impl.WebPlatformChannel, logger);

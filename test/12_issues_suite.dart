@@ -12,11 +12,9 @@ import 'worker_services/issues_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '11_issues_test.dart';
+const testScript = '12_issues_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- GITHUB ISSUES', () {
       tc.group('- #8 - Exceptions from Streams must come through onError', () {

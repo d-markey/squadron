@@ -14,11 +14,9 @@ import 'worker_services/local_workers/local_service.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '07_local_worker_test.dart';
+const testScript = '07_local_worker_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     final localService = LocalServiceImpl();
     final regExp = RegExp(
@@ -26,6 +24,20 @@ void execute(TestContext? tc) {
 
     tc.group('- LOCAL WORKER', () {
       tc.group('- Identity', () {
+        tc.test('- Local Worker start', () async {
+          await LocalWorker.create(localService).runTest((lw) async {
+            await lw.start();
+            expect(lw.channel, isNotNull);
+          });
+        });
+
+        tc.test('- Local Worker terminate', () async {
+          await LocalWorker.create(localService).runTest((lw) async {
+            lw.terminate();
+            expect(lw.channel, isNull);
+          });
+        });
+
         tc.test('- Local Worker', () async {
           var id = localService.getId();
           expect(id, 'LocalService running as "$threadId"');

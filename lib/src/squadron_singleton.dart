@@ -6,6 +6,7 @@ import '_impl/xplat/_platform.dart'
 import 'converters/converter.dart';
 
 String get threadId => impl.threadId;
+int get numberOfProcessors => impl.numberOfProcessors;
 
 class Squadron {
   Squadron._();
@@ -13,13 +14,6 @@ class Squadron {
   /// Gets the current platform information.
   static const platformType = impl.platformType;
   static final osType = impl.osType;
-
-  /// Parse [url] and returns the corresponding [Uri].
-  ///
-  /// On Web platforms, a leading '~' character will be replaced with the
-  /// current page's root URL. E.g. '~/workers' from '/path/to/index.html'
-  /// will return '/path/to/workers'.
-  static Uri uri(String url) => impl.mapUrl(url);
 
   static bool disableBrowserCache = false;
 

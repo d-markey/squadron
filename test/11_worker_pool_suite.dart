@@ -21,11 +21,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '10_worker_pool_test.dart';
+const testScript = '11_worker_pool_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- SQUADRON WORKER - POOL', () {
       setUp(() {
@@ -34,6 +32,17 @@ void execute(TestContext? tc) {
 
       tearDown(() {
         Squadron.disableBrowserCache = false;
+      });
+
+      tc.test('- Concurrency settings', () {
+        final p = TestWorkerPool(tc, medium);
+        expect(identical(p.concurrencySettings, medium), isTrue);
+      });
+
+      tc.test('- Exception Manager', () {
+        final exceptionManager = ExceptionManager();
+        final p = TestWorkerPool(tc, null, exceptionManager);
+        expect(identical(p.exceptionManager, exceptionManager), isTrue);
       });
 
       tc.test(
@@ -58,11 +67,23 @@ void execute(TestContext? tc) {
 
       tc.test(
           '- Worker pool monitoring',
-          () => TestWorkerPool(tc, medium).startAndRunTest((p) async {
-                final count = 2 * p.maxConcurrency + 1;
+          () => TestWorkerPool(tc, medium).runTest((p) async {
+                var running = 0;
+
+                void $listener(WorkerStat stats, bool removed) {
+                  running += (removed ? -1 : 1);
+                }
+
+                p.registerWorkerPoolListener($listener);
+                expect(running, isZero);
+
+                await p.start();
 
                 // starting the pool must have instantiated minWorkers workers
+                expect(running, medium.minWorkers);
                 expect(p.size, p.minWorkers);
+
+                final count = 2 * p.maxConcurrency + 1;
 
                 final tasks = <Future>[];
                 for (var i = 0; i < count; i++) {
@@ -72,6 +93,7 @@ void execute(TestContext? tc) {
                 }
 
                 // the pool must be running at full speed
+                expect(running, medium.maxWorkers);
                 expect(p.size, p.maxWorkers);
 
                 // install the worker monitor
@@ -95,6 +117,7 @@ void execute(TestContext? tc) {
 
                   // and the pool should be back to minimum size
                   await Future.delayed(TestDelay.tick * 2);
+                  expect(running, medium.minWorkers);
                   expect(p.size, p.minWorkers);
                 } finally {
                   timer.cancel();
@@ -304,31 +327,39 @@ void execute(TestContext? tc) {
       tc.test(
           '- Restarted pool will serve new requests',
           () => TestWorkerPool(tc, twoIo).startAndRunTest((p) async {
-                expect(p.size, isPositive);
+                expect(p.size, isZero);
 
-                var n = await p.delayedLong(-1);
+                int n = 0;
+                final task = p.delayedLong(-1).then((v) => n = v);
+
+                await TestDelay.pause(ticks: 5);
+                expect(p.size, isPositive);
+                expect(n, 0);
+
+                await task;
                 expect(n, -1);
 
                 p.stop();
-
                 expect(p.stopped, isTrue);
 
-                await TestDelay.pause(ticks: 1);
+                await TestDelay.pause(ticks: 2);
                 expect(p.size, isZero);
 
                 try {
-                  n = await p.delayedLong(-1);
+                  n = await p.delayedLong(-2);
                   throw unexpectedSuccess('delayed()', n);
                 } on SquadronError catch (ex) {
                   expect(ex, reports('cannot accept new requests'));
                   expect(ex, reports('stopped'));
                 }
 
+                expect(n, -1);
+
                 // restart
                 p.start();
 
-                n = await p.delayedLong(-2);
-                expect(n, -2);
+                n = await p.delayedLong(-3);
+                expect(n, -3);
               }));
 
       tc.test(

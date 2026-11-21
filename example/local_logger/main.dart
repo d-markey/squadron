@@ -61,7 +61,7 @@ void main() async {
           threadId, 'Worker created with runtime type = ${worker.runtimeType}');
     }
 
-    pool = SampleWorkerPool(sample_isolate.start, localLoggingWorker,
+    pool = SampleWorkerPool(sample_isolate.entryPoint, localLoggingWorker,
         workerHook, concurrencySettings);
     await pool.start();
     loggingService.log(threadId, 'pool started');

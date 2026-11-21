@@ -6,6 +6,8 @@ class SerializationContext {
 
   final HashMap<Object, Object> _cache;
 
+  void clearContext() => _cache.clear();
+
   T? getReference<T extends Object>(Object data) {
     final ref = _cache[data];
     return (ref is T) ? ref : null;

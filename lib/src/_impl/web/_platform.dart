@@ -2,6 +2,7 @@ import 'dart:js_interop';
 import 'dart:math';
 
 import 'package:meta/meta.dart';
+import 'package:web/web.dart';
 
 import '../../build_options.dart';
 import '../../converters/cast_converter.dart';
@@ -16,6 +17,14 @@ int getRandomHash() => _rnd.nextInt(0x100000000);
 // threadIDs may not be unique on Web...
 final threadId = getRandomHash().hex;
 
+final numberOfProcessors = (() {
+  try {
+    return window.navigator.hardwareConcurrency;
+  } catch (_) {
+    return 1;
+  }
+})();
+
 const platformType = BuildOptions.isWasm
     ? SquadronPlatformType.wasm // Web Assembly
     : SquadronPlatformType.js; // JavaScript
@@ -25,16 +34,6 @@ const platformConverter = BuildOptions.isWasm
     : CastConverter.instance; // JavaScript
 
 final osType = SquadronOSType.web;
-
-Uri mapUrl(String url) {
-  if (url.startsWith('~')) {
-    final root = getRootUrl();
-    if (root != null) {
-      url = '$root${url.substring(1)}';
-    }
-  }
-  return Uri.parse(url).normalizePath();
-}
 
 @internal
 // ignore: invalid_runtime_check_with_js_interop_types

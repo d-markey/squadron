@@ -223,19 +223,21 @@ base class TestWorker extends Worker with WorkerVersion implements TestService {
   @override
   Future<Fraction> fractionAdd(Fraction a, Fraction b,
       {required bool marshalIn, required bool marshalOut}) async {
-    final cin = MarshalingContext();
-    final marshaler = const FractionMarshaler();
-    final marshal =
-        marshalIn ? (x) => marshaler.marshal(x, cin) : cin.value<Fraction>();
+    final marshaler = MarshalingContext();
+    final fractionMarshaler = const FractionMarshaler();
+    final marshal = marshalIn
+        ? (x) => fractionMarshaler.marshal(x, marshaler)
+        : marshaler.value<Fraction>();
     final res = await send(
       TestService.fractionAddCommand,
       args: [marshal(a), marshal(b), marshalIn, marshalOut],
       inspectRequest: true,
       inspectResponse: true,
     );
-    final cout = MarshalingContext();
+    marshaler.clearContext();
     final unmarshal = marshalOut
-        ? (x) => marshaler.unmarshal(cout.list<int>()(x), cout)
+        ? (x) =>
+            fractionMarshaler.unmarshal(marshaler.list<int>()(x), marshaler)
         : Squadron.converter.value<Fraction>();
     return unmarshal(res);
   }

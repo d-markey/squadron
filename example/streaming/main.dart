@@ -3,7 +3,7 @@ import 'package:squadron/squadron.dart';
 import 'clock.dart';
 
 void main() async {
-  final clock = ClockWorker(startWorker);
+  final clock = ClockWorker(entryPoint);
 
   await clock.start();
 

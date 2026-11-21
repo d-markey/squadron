@@ -2,8 +2,10 @@ import 'package:squadron/squadron.dart';
 
 import '../../worker_services/test_service.dart';
 
-void start(WorkerRequest command) {
-  run(
+final entryPoint = InProcEntryPoint(_start);
+
+void _start(WorkerRequest command) {
+  runWorkerService(
     (startReq) {
       switch (startReq.args[0]) {
         case TestService.startupThrows:
@@ -18,8 +20,10 @@ void start(WorkerRequest command) {
   );
 }
 
-void startWithMissingCommand(WorkerRequest command) {
-  run(
+final entryPointWithMissingCommand = InProcEntryPoint(_startWithMissingCommand);
+
+void _startWithMissingCommand(WorkerRequest command) {
+  runWorkerService(
     (startReq) {
       switch (startReq.args[0]) {
         case TestService.startupThrows:

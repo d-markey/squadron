@@ -17,11 +17,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '09_marshaler_test.dart';
+const testScript = '10_marshaler_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   final france = Country(1, 'France');
   final belgium = Country(2, 'Belgium');
 
@@ -57,7 +55,7 @@ void execute(TestContext? tc) {
         tc.test('- Unaware', () {
           final context1 = MarshalingContext(contextAware: false);
           expect(context1.isContextAware, isFalse);
-          final marshal = context1.converter.list<Object>(
+          final marshal = context1.list<Object>(
               (x) => const PersonMarshaler().marshal(x, context1));
 
           final context2 = MarshalingContext(contextAware: false);

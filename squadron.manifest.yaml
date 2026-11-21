@@ -1,0 +1,116 @@
+workers:
+  # tests
+  - source: test/workers/js/echo_worker.dart
+    optimization-level: aggressive
+    targets:
+      - compiler: js
+        output: test/workers/js/echo_worker.dart.js
+  - source: test/workers/wasm/echo_worker.dart
+    optimization-level: aggressive
+    targets:
+      - compiler: wasm
+        output: test/workers/wasm/echo_worker.dart.wasm
+  - source: test/worker_services/cache_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/error_service.dart
+    optimization-level: none
+    outputs: tests
+    defines:
+      no_internal_logging: true
+      no_cross_worker_logging: true
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/installable_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/issues_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/local_client_worker.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/log_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/workers/js/not_a_worker.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/persons/person_service.dart
+    optimization-level: safe
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/prime_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/streaming_service.dart
+    optimization-level: aggressive
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/worker_services/test_service.dart
+    optimization-level: safe
+    outputs: tests
+    targets:
+      - compiler: js
+      - compiler: wasm
+  # console runners
+  - source: test/src/console.dart
+    optimization-level: safe
+    outputs: test-console
+    targets:
+      - compiler: js
+  - source: test/src/runner_js_workers.dart
+    optimization-level: safe
+    outputs: test-console
+    targets:
+      - compiler: js
+      - compiler: wasm
+  - source: test/src/runner_wasm_workers.dart
+    optimization-level: safe
+    outputs: test-console
+    targets:
+      - compiler: js
+      - compiler: wasm
+  # example IPC worker
+  - source: example/hello_world/hello_world.dart
+    targets:
+      - compiler: exe
+        output: example/process_worker/hello_world_worker_process_entrypoint.exe
+
+outputs:
+  - tests:
+    - compiler: js
+      output: test/workers/js
+    - compiler: wasm
+      output: test/workers/wasm
+  - test-console:
+    - compiler: js
+      output: test/test-console/js
+    - compiler: wasm
+      output: test/test-console/wasm

@@ -32,19 +32,19 @@ extension TestEntryPointsExt on TestEntryPoints {
       throw UnsupportedError('Unsupported platform $platform');
     }
 
-    notAWorker = entrypoint_not_a_worker.start;
+    notAWorker = entrypoint_not_a_worker.entryPoint;
 
-    cache = entrypoint_cache.start;
-    installable = entrypoint_installable.start;
-    issues = entrypoint_issues.start;
-    local = entrypoint_local_client.start;
-    prime = entrypoint_prime.start;
+    cache = entrypoint_cache.entryPoint;
+    installable = entrypoint_installable.entryPoint;
+    issues = entrypoint_issues.entryPoint;
+    local = entrypoint_local_client.entryPoint;
+    prime = entrypoint_prime.entryPoint;
 
-    log = entrypoint_log.start;
-    streaming = entrypoint_streaming.start;
-    test = entrypoint_test.start;
-    person = entrypoint_person.start;
-    errors = entrypoint_error.start;
-    missingStartRequest = entrypoint_error.startWithMissingCommand;
+    log = entrypoint_log.entryPoint;
+    streaming = entrypoint_streaming.entryPoint;
+    test = entrypoint_test.entryPoint;
+    person = entrypoint_person.entryPoint;
+    errors = entrypoint_error.entryPoint;
+    missingStartRequest = entrypoint_error.entryPointWithMissingCommand;
   }
 }

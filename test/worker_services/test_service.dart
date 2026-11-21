@@ -23,9 +23,9 @@ class TestService with SquadronVersion implements WorkerService {
     while (sw.elapsedMilliseconds < ms) {/* cpu */}
   }
 
-  // Returns [n] after 4 [TestDelay.tick]s.
+  // Returns [n] after 20 [TestDelay.tick]s.
   Future<int> delayedLong(int n) async {
-    await Future.delayed(TestDelay.tick * 4);
+    await Future.delayed(TestDelay.tick * 20);
     return n;
   }
 
@@ -164,23 +164,23 @@ class TestService with SquadronVersion implements WorkerService {
     getPendingInfiniteWithErrorsCommand: (r) => getPendingInfiniteWithErrors(),
     infiniteWithErrorsCommand: (r) => infiniteWithErrors(),
     fractionAddCommand: (r) async {
-      final cin = MarshalingContext();
-      final marshalIn = cin.value<bool>()(r.args[2]);
-      final marshalOut = cin.value<bool>()(r.args[3]);
-      final toListOfInts = cin.list<int>();
-      final toFraction = cin.value<Fraction>();
+      final marshaler = MarshalingContext();
+      final marshalIn = marshaler.value<bool>()(r.args[2]);
+      final marshalOut = marshaler.value<bool>()(r.args[3]);
+      final toListOfInts = marshaler.list<int>();
+      final toFraction = marshaler.value<Fraction>();
       final fractionMarshaler = const FractionMarshaler();
       final a = marshalIn
-          ? fractionMarshaler.unmarshal(toListOfInts(r.args[0]), cin)
+          ? fractionMarshaler.unmarshal(toListOfInts(r.args[0]), marshaler)
           : toFraction(r.args[0]);
       final b = marshalIn
-          ? fractionMarshaler.unmarshal(toListOfInts(r.args[1]), cin)
+          ? fractionMarshaler.unmarshal(toListOfInts(r.args[1]), marshaler)
           : toFraction(r.args[1]);
       final res =
           await fractionAdd(a, b, marshalIn: marshalIn, marshalOut: marshalOut);
-      final cout = MarshalingContext();
+      marshaler.clearContext();
       return marshalOut
-          ? fractionMarshaler.marshal(res, cout)
+          ? fractionMarshaler.marshal(res, marshaler)
           : toFraction(res);
     },
     platformTypeCommand: (r) => getPlatformType().toString(),
@@ -188,12 +188,12 @@ class TestService with SquadronVersion implements WorkerService {
     setCommand: (r) => set(Squadron.converter.set<BigInt>()(r.args[0])),
     checkBufferCommand: (r) => checkBuffers(r.args[0], r.args[1]),
     checkFractionCommand: (r) {
-      final cin = MarshalingContext();
-      final toListOfInt = cin.list<int>();
-      final marshaler = const FractionMarshaler();
+      final marshaler = MarshalingContext();
+      final toListOfInt = marshaler.list<int>();
+      final fractionMarshaler = const FractionMarshaler();
       return checkFractions(
-        marshaler.unmarshal(toListOfInt(r.args[0]), cin),
-        marshaler.unmarshal(toListOfInt(r.args[1]), cin),
+        fractionMarshaler.unmarshal(toListOfInt(r.args[0]), marshaler),
+        fractionMarshaler.unmarshal(toListOfInt(r.args[1]), marshaler),
       );
     },
   });

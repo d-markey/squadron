@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:squadron/squadron.dart';
 import 'package:squadron/src/_impl/web/_uri_checker.dart';
+import 'package:squadron/src/_impl/web/_web_entry_point_uri.dart';
 import 'package:web/web.dart' as web;
 
 import 'test_entry_points.dart';
@@ -50,36 +51,38 @@ extension TestEntryPointsExt on TestEntryPoints {
         throw UnsupportedError('Unsupported platform $platform');
     }
 
-    native = Squadron.uri('$root/native_worker.js');
+    native = WebEntryPoint(mapUrl('$root/native_worker.js'));
 
-    notAWorker = Squadron.uri('$root/not_a_worker.dart.$ext');
-    echo = Squadron.uri('$root/echo_worker.dart.$ext?v=1');
-    cache = Squadron.uri('$root/cache_worker.dart.$ext?v=1');
-    installable = Squadron.uri('$root/installable_worker.dart.$ext');
-    issues = Squadron.uri('$root/issues_worker.dart.$ext');
-    local = Squadron.uri('$root/local_client_worker.dart.$ext');
-    prime = Squadron.uri('$root/prime_worker.dart.$ext');
-    log = Squadron.uri('$root/log_worker.dart.$ext?v=1');
-    streaming = Squadron.uri('$root/streaming_worker.dart.$ext');
-    test = Squadron.uri('$root/test_worker.dart.$ext');
-    person = Squadron.uri('$root/person_worker.dart.$ext');
-    errors = Squadron.uri('$root/error_worker.dart.$ext');
+    notAWorker = WebEntryPoint(mapUrl('$root/not_a_worker.dart.$ext'));
+    echo = WebEntryPoint(mapUrl('$root/echo_worker.dart.$ext?v=1'));
+    cache = WebEntryPoint(mapUrl('$root/cache_worker.dart.$ext?v=1'));
+    installable = WebEntryPoint(mapUrl('$root/installable_worker.dart.$ext'));
+    issues = WebEntryPoint(mapUrl('$root/issues_worker.dart.$ext'));
+    local = WebEntryPoint(mapUrl('$root/local_client_worker.dart.$ext'));
+    prime = WebEntryPoint(mapUrl('$root/prime_worker.dart.$ext'));
+    log = WebEntryPoint(mapUrl('$root/log_worker.dart.$ext?v=1'));
+    streaming = WebEntryPoint(mapUrl('$root/streaming_worker.dart.$ext'));
+    test = WebEntryPoint(mapUrl('$root/test_worker.dart.$ext'));
+    person = WebEntryPoint(mapUrl('$root/person_worker.dart.$ext'));
+    errors = WebEntryPoint(mapUrl('$root/error_worker.dart.$ext'));
 
     final js = 'onmessage = (e) => { postMessage(`ECHO "\${e.data}"`); };';
-    inMemory = Uri.parse(
+    inMemory = WebEntryPoint(
       'data:application/javascript;base64,${base64Encode(utf8.encode(js))}',
     );
 
-    await _checkWebWorkers(defined.cast<Uri>());
+    await _checkWebWorkers(defined.cast<WebEntryPoint>());
 
-    missingWorker = Squadron.uri('$root/missing_worker.dart.$ext');
+    missingWorker = WebEntryPoint(mapUrl('$root/missing_worker.dart.$ext'));
   }
 }
 
-Future _checkWebWorkers(Iterable<Uri> workerUrls) async {
+Future _checkWebWorkers(Iterable<WebEntryPoint> workerUrls) async {
   final messages = <String>[];
 
-  for (var workerUrl in workerUrls.where((u) => u.scheme != 'data')) {
+  for (var workerUrl in workerUrls
+      .map((e) => Uri.parse(e.url))
+      .where((u) => u.scheme != 'data')) {
     if (!await UriChecker.exists(workerUrl)) {
       web.console.error('Worker $workerUrl not found'.toJS);
       messages.add('Worker $workerUrl not found');

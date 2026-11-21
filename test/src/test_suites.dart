@@ -1,6 +1,6 @@
 import '../00_jsify_dartify_suite.dart' as jsify_dartify;
-import '../01_not_a_worker_suite.dart' as not_a_worker;
 import '../00_web_worker_suite.dart' as web_worker;
+import '../01_not_a_worker_suite.dart' as not_a_worker;
 import '../02_logging_suite.dart' as logging;
 import '../03_converter_suite.dart' as converter;
 import '../04_worker_suite.dart' as worker;
@@ -18,7 +18,7 @@ class TestSuite {
   const TestSuite(this.script, this.runner);
 
   final String script;
-  final void Function(TestContext?) runner;
+  final void Function(TestContext) runner;
 }
 
 const testSuites = [

@@ -2,9 +2,11 @@ import 'package:squadron/squadron.dart';
 
 import '../../worker_services/issues_service.dart';
 
-void start(WorkerRequest command) {
-  run(
-    (startReq) => IssuesService(),
+final entryPoint = InProcEntryPoint(_start);
+
+void _start(WorkerRequest command) {
+  runWorkerService(
+    (_) => IssuesService(),
     command,
   );
 }

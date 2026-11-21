@@ -15,11 +15,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '08_cancelation_test.dart';
+const testScript = '09_cancelation_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- CANCELATION', () {
       tc.group('- ValueTask', () {
@@ -96,7 +94,7 @@ void execute(TestContext? tc) {
                     );
                   }
 
-                  await TestDelay.pause(ticks: 5);
+                  await TestDelay.pause(ticks: 60);
                   p.cancelAll();
 
                   await Future.wait(tasks);

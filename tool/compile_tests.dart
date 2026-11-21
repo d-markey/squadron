@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' hide Platform;
+import 'dart:math' as math;
 
 import 'package:cancelation_token/cancelation_token.dart';
 import 'package:path/path.dart' as path;
@@ -10,11 +11,10 @@ import 'package:synchronize/synchronize.dart';
 import '_helpers.dart';
 
 final token = CancelableToken();
-final semaphore = Semaphore(3, maxCount: 3);
+late final Semaphore semaphore;
 
 void main(List<String> args) async {
   final sw = Stopwatch()..start();
-
   ProcessSignal.sigint.watch().listen((_) async {
     if (!token.isCanceled) {
       print('[${sw.elapsed}] Received Ctrl+C, aborting...');
@@ -23,6 +23,22 @@ void main(List<String> args) async {
   });
 
   args = overrideDefaultArgs(args, 'all', ['runners', 'js', 'wasm']);
+
+  int? procs;
+  for (var i = args.length - 1; i >= 0; i--) {
+    var arg = args[i];
+    if (arg.startsWith('--parallel=')) {
+      args.removeAt(i);
+      arg = arg.substring('--parallel='.length).trim();
+      procs ??= int.tryParse(arg);
+    } else if (arg.startsWith('-p=')) {
+      args.removeAt(i);
+      arg = arg.substring('-p='.length).trim();
+      procs ??= int.tryParse(arg);
+    }
+  }
+  procs ??= math.max(1, procs ?? (numberOfProcessors - 1));
+  semaphore = Semaphore(procs, maxCount: procs);
 
   final testRoot = path.join(projectRoot, 'test');
 
@@ -60,8 +76,15 @@ void main(List<String> args) async {
 
   reportUnknownArgs(args);
 
+  print(
+      '[${sw.elapsed}] Compiling ${workerPlatforms.join(', ')} - ${targets.length} targets $procs at a time');
+
   try {
-    final results = await Future.wait(targets.map((t) => _compile(t, sw)));
+    final results = await Future.wait(targets.indexed.map((t) => _compile(
+          t.$2,
+          '${t.$1}/${targets.length}',
+          sw,
+        )));
     final date = DateTime.now().toUtc();
     await Future.wait([
       if (compileRunners)
@@ -79,13 +102,15 @@ void main(List<String> args) async {
         : '[${sw.elapsed}] Unknown error $exitCode.');
     exit(exitCode);
   } on CanceledException {
-    print('[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
-    print('[${sw.elapsed}] Aborted');
+    stderr.writeln(
+        '[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
+    stderr.writeln('[${sw.elapsed}] Aborted');
     exit(1);
   } catch (ex, st) {
-    print('[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
-    print('[${sw.elapsed}] ${ex.runtimeType}: $ex');
-    print(st);
+    stderr.writeln(
+        '[${sw.elapsed}] Date/time: ${DateTime.now().toIso8601String()}');
+    stderr.writeln('[${sw.elapsed}] ${ex.runtimeType}: $ex');
+    stderr.writeln(st);
     exit(255);
   }
 }
@@ -101,23 +126,27 @@ Compilation _build(MapEntry<String, Setup> info, String src,
       crossWorkerLogging: info.value.crossWorkerLogging,
     );
 
-Future<int> _compile(Compilation compilation, Stopwatch sw) async {
+Future<int> _compile(
+    Compilation compilation, String progress, Stopwatch sw) async {
   final t = await semaphore.enter();
   try {
     token.throwIfCanceled();
+    print(
+        '[${sw.elapsed}] [$progress] *** dart ${compilation._args.join(' ')}');
     final process = await compilation.start();
     token.onCanceled.then((_) => process.kill());
     final (:exitCode, :output) = await process.result;
     final src = compilation.source, compiled = compilation.output;
     if (token.isCanceled) {
-      print('[${sw.elapsed}] * $src --> $compiled: cancelled ($exitCode)');
+      print(
+          '[${sw.elapsed}] [$progress] * $src --> $compiled: cancelled ($exitCode)');
       token.throwIfCanceled();
     } else if (exitCode == 0) {
-      print('[${sw.elapsed}] * $src --> $compiled: success');
+      print('[${sw.elapsed}] [$progress] * $src --> $compiled: success');
     } else {
       print([
-        '[${sw.elapsed}] * $src --> $compiled: error $exitCode',
-        ...output.map((l) => '[${sw.elapsed}]     $l'),
+        '[${sw.elapsed}] [$progress] * $src --> $compiled: error $exitCode',
+        ...output.map((l) => '[${sw.elapsed}] [$progress]     $l'),
       ].join('\n'));
     }
     return exitCode;
@@ -169,10 +198,12 @@ extension type Compilation._(List<String> _args) {
   String get source => File(_args[3]).projectPath;
   String get output => File(_args[5]).projectPath;
 
-  Future<Process> start() {
-    print('*** dart ${_args.join(' ')}');
-    return Process.start('dart', _args);
-  }
+  Future<Process> start() => Process.start(
+        'dart',
+        _args,
+        runInShell: true,
+        includeParentEnvironment: true,
+      );
 }
 
 extension on Process {

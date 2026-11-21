@@ -1,7 +1,7 @@
 part of '_channel.dart';
 
 /// [Channel] used to communicate between [Isolates]s. Creates a
-/// [vm.ReceivePort] to receive commands and forwards them to the worker's [vm.SendPort].
+/// [ReceivePort] to receive commands and forwards them to the worker's [SendPort].
 final class _VmForwardChannel extends _VmChannel {
   /// [_remote] is the worker's [web.MessagePort], [_com] is the intermediate
   /// message channel
@@ -12,10 +12,10 @@ final class _VmForwardChannel extends _VmChannel {
   }
 
   /// [web.MessagePort] to the worker.
-  final vm.SendPort _remote;
+  final SendPort _remote;
 
   /// [web.MessageChannel] used for forwarding messages.
-  final vm.ReceivePort _com;
+  final ReceivePort _com;
 
   /// Forwards [data] to the worker.
   void _forward(dynamic data) {

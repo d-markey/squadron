@@ -41,8 +41,9 @@ abstract class WorkerPool<W extends Worker>
   WorkerPool(this._workerFactory,
       {ConcurrencySettings? concurrencySettings,
       ExceptionManager? exceptionManager})
-      : concurrencySettings = concurrencySettings ?? ConcurrencySettings(),
-        _exceptionManager = exceptionManager ?? ExceptionManager();
+      : concurrencySettings =
+            concurrencySettings ?? const ConcurrencySettings(),
+        exceptionManager = exceptionManager ?? ExceptionManager();
 
   @override
   void release() {
@@ -56,9 +57,7 @@ abstract class WorkerPool<W extends Worker>
   Logger? channelLogger;
 
   @override
-  ExceptionManager get exceptionManager =>
-      (_exceptionManager ??= ExceptionManager());
-  ExceptionManager? _exceptionManager;
+  final ExceptionManager exceptionManager;
 
   /// Concurrency settings.
   final ConcurrencySettings concurrencySettings;
@@ -164,7 +163,7 @@ abstract class WorkerPool<W extends Worker>
   @override
   Future<void> start() {
     _stopped = false;
-    final needs = _getProvisionNeeds(_queue.isEmpty ? 1 : _queue.length);
+    final needs = _getProvisionNeeds(_queue.isEmpty ? 0 : _queue.length);
     return (needs > 0) ? _provisionWorkers(needs) : Future.value();
   }
 

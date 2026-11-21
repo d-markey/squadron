@@ -1,26 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:isolate' as vm;
+import 'dart:isolate';
 
 import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 
-import '../../build_options.dart';
-import '../../channel.dart';
-import '../../exceptions/exception_manager.dart';
-import '../../exceptions/squadron_error.dart';
-import '../../exceptions/squadron_exception.dart';
-import '../../exceptions/task_terminated_exception.dart';
-import '../../exceptions/worker_exception.dart';
-import '../../tokens/_squadron_cancelation_token.dart';
-import '../../utils.dart';
-import '../../worker/worker_message.dart';
-import '../../worker/worker_request.dart';
-import '../../worker/worker_response.dart';
-import '../xplat/_disconnected_channel.dart';
-import '../xplat/_forward_stream_controller.dart';
-import '../xplat/_result_stream.dart';
+import '../../../build_options.dart';
+import '../../../channel.dart';
+import '../../../exceptions/exception_manager.dart';
+import '../../../exceptions/squadron_error.dart';
+import '../../../exceptions/squadron_exception.dart';
+import '../../../exceptions/task_terminated_exception.dart';
+import '../../../exceptions/worker_exception.dart';
+import '../../../tokens/_squadron_cancelation_token.dart';
+import '../../../utils.dart';
+import '../../../worker/worker_message.dart';
+import '../../../worker/worker_request.dart';
+import '../../../worker/worker_response.dart';
+import '../../xplat/_disconnected_channel.dart';
+import '../../xplat/_forward_stream_controller.dart';
+import '../../xplat/_result_stream.dart';
 import '_typedefs.dart';
+import 'entry_point.dart';
 
 part '_channel_forward.dart';
 part '_channel_impl.dart';
@@ -32,11 +33,11 @@ part '_channel_impl.dart';
 /// worker [Isolate]'s main program has provided the [SendPort] via
 /// [WorkerChannel.connect].
 Future<Channel> openChannel(
-  EntryPoint entryPoint,
+  InProcEntryPoint entryPoint,
   ExceptionManager exceptionManager,
   Logger? logger,
   List startArguments,
-  PlatformThreadHook? hook,
+  InProcPlatformThreadHook? hook,
 ) async {
   if (!BuildOptions.withInternalLogging) {
     logger = null;
@@ -57,9 +58,9 @@ Future<Channel> openChannel(
     }
   }
 
-  final receiver = vm.ReceivePort();
-  final exitPort = vm.ReceivePort();
-  final errorPort = vm.ReceivePort();
+  final receiver = ReceivePort();
+  final exitPort = ReceivePort();
+  final errorPort = ReceivePort();
 
   exitPort.listen((message) {
     $failure(SquadronErrorImpl.create('Connection to worker failed'));
@@ -118,8 +119,8 @@ Future<Channel> openChannel(
 
   final startRequest = WorkerRequest.start(receiver.sendPort, startArguments);
   startRequest.wrapInPlace();
-  final isolate = await vm.Isolate.spawn(
-    entryPoint,
+  final isolate = await Isolate.spawn(
+    entryPoint.run,
     startRequest,
     errorsAreFatal: false,
     onExit: exitPort.sendPort,
@@ -137,7 +138,7 @@ Future<Channel> openChannel(
     return channel;
   } catch (ex) {
     logger?.e(() => 'Connection to Isolate failed: $ex');
-    isolate.kill(priority: vm.Isolate.beforeNextEvent);
+    isolate.kill(priority: Isolate.beforeNextEvent);
     rethrow;
   }
 }
@@ -149,7 +150,7 @@ int getActiveConnections(Channel channel) =>
 @internal
 void terminateChannel(Channel channel, TaskTerminatedException ex) {
   if (channel is _VmChannel) {
-    channel._thread?.kill(priority: vm.Isolate.immediate);
+    channel._thread?.kill(priority: Isolate.immediate);
     final pendingConnections = channel._activeConnections;
     for (var c in pendingConnections) {
       c.subscription?.cancel();
@@ -161,7 +162,7 @@ void terminateChannel(Channel channel, TaskTerminatedException ex) {
 
 /// Creates a [_VmChannel] from a [SendPort].
 Channel? deserialize(
-  PlatformChannel? channelInfo, [
+  InProcPlatformChannel? channelInfo, [
   Logger? logger,
   ExceptionManager? exceptionManager,
 ]) =>

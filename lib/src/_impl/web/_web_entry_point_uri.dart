@@ -4,12 +4,22 @@ import 'package:using/using.dart';
 import 'package:web/web.dart' as web;
 
 import '../../exceptions/squadron_error.dart';
-import '../../typedefs.dart';
+import '_patch.dart';
 import '_platform.dart';
-import '_typedefs.dart' as impl;
+import 'entry_point.dart';
 
-class EntryPointUri with Releasable {
-  EntryPointUri._(this.uri, {required bool revoke}) : _revoke = revoke;
+String mapUrl(String url) {
+  if (url.startsWith('~')) {
+    final root = getRootUrl();
+    if (root != null) {
+      url = '$root${url.substring(1)}';
+    }
+  }
+  return Uri.parse(url).normalizePath().toString();
+}
+
+class WebEntryPointUri with Releasable {
+  WebEntryPointUri._(this.uri, {required bool revoke}) : _revoke = revoke;
 
   final String uri;
   final bool _revoke;
@@ -22,19 +32,17 @@ class EntryPointUri with Releasable {
     super.release();
   }
 
-  factory EntryPointUri.from(EntryPoint workerEntrypoint,
+  factory WebEntryPointUri.from(WebEntryPoint workerEntrypoint,
       {required bool addRandomHash}) {
-    workerEntrypoint as impl.EntryPoint;
-
+    final uri = Uri.parse(workerEntrypoint.url);
     final fileName =
-        workerEntrypoint.pathSegments.lastOrNull?.toString().toLowerCase() ??
-            '';
+        uri.pathSegments.lastOrNull?.toString().toLowerCase() ?? '';
 
-    var url = workerEntrypoint.toString();
+    var url = workerEntrypoint.url;
     if (fileName.endsWith('.js')) {
       // a JavaScript worker
       if (addRandomHash) url = _addRandomHash(url);
-      return EntryPointUri._(url, revoke: false);
+      return WebEntryPointUri._(url, revoke: false);
     } else if (fileName.endsWith('.wasm')) {
       // blob containing the JavaScript code to load and invoke the Web Assembly worker
       if (addRandomHash) url = _addRandomHash(url);
@@ -42,11 +50,10 @@ class EntryPointUri with Releasable {
         [_wasmLoaderScript(url).toJS].toJS,
         web.BlobPropertyBag(type: 'application/javascript'),
       );
-      return EntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
-    } else if (workerEntrypoint.isScheme('data') ||
-        workerEntrypoint.isScheme('javascript')) {
+      return WebEntryPointUri._(web.URL.createObjectURL(blob), revoke: true);
+    } else if (uri.isScheme('data') || uri.isScheme('javascript')) {
       // something else, eg. inline JavaScript
-      return EntryPointUri._(url, revoke: false);
+      return WebEntryPointUri._(url, revoke: false);
     } else {
       throw SquadronErrorImpl.create('Invalid entry point URI');
     }

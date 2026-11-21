@@ -10,11 +10,9 @@ import 'worker_services/not_a_worker_service.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '00_not_a_worker_test.dart';
+const testScript = '01_not_a_worker_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- NOT A WORKER', () {
       tc.test(

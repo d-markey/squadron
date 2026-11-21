@@ -19,11 +19,9 @@ Future<void> main() => TestContext.run(
       mixedContext: false /* this test suite has no workers */,
     );
 
-const testScript = '00_jsify_dartify_test.dart';
+const testScript = '00_jsify_dartify_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- PATCH', () {
       tc.group('- JS TYPES', () {

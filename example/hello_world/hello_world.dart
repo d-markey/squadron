@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' as current_process show pid;
 
 import 'package:squadron/squadron.dart';
 
@@ -25,6 +26,6 @@ class HelloWorld {
     if (echo) {
       print('Saying hello to $name');
     }
-    return 'Hello, ${name.isEmpty ? 'World' : name} from thread $threadId!';
+    return 'Hello, ${name.isEmpty ? 'World' : name} from process ${current_process.pid.hex} [${current_process.pid}] / thread $threadId!';
   }
 }

@@ -7,13 +7,13 @@ import '../web/_platform.dart' if (dart.library.io) '../native/_platform.dart'
 
 String get threadId => impl.threadId;
 
+int get numberOfProcessors => impl.numberOfProcessors;
+
 const platformType = SquadronPlatformType.unknown;
 
 const platformConverter = CastConverter.instance;
 
 final osType = SquadronOSType.unknown;
-
-Uri mapUrl(String url) => Uri.parse(url);
 
 @internal
 bool isSameInstance(Object a, Object b) => identical(a, b);

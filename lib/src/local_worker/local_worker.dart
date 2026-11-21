@@ -4,7 +4,7 @@ import 'package:using/using.dart';
 
 import '../../squadron.dart';
 import '../_impl/xplat/_local_worker.dart'
-    if (dart.library.io) '../_impl/native/_local_worker.dart'
+    if (dart.library.io) '../_impl/native/inproc/_local_worker.dart'
     if (dart.library.html) '../_impl/web/_local_worker.dart'
     if (dart.library.js) '../_impl/web/_local_worker.dart'
     if (dart.library.js_interop) '../_impl/web/_local_worker.dart' as impl;

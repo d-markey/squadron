@@ -33,7 +33,7 @@ class TestContext {
   };
 
   static Future<void> run(
-    void Function(TestContext?) executor, {
+    void Function(TestContext) executor, {
     bool mixedContext = true,
   }) async {
     var init = [TestContext.init(RunMode.launch, '~')];
@@ -46,16 +46,12 @@ class TestContext {
     await Future.wait(init).then((contexts) => contexts.forEach(executor));
   }
 
-  static Future<TestContext?> init(RunMode runMode,
+  static Future<TestContext> init(RunMode runMode,
       [String? root, SquadronPlatformType? workerPlatform]) async {
     workerPlatform ??= impl.platform;
     final testContext = TestContext._(runMode, workerPlatform);
-    try {
-      await testContext.entryPoints.set(root, workerPlatform);
-      return testContext;
-    } catch (_) {
-      return null;
-    }
+    await testContext.entryPoints.set(root, workerPlatform);
+    return testContext;
   }
 
   final RunMode runMode;
@@ -158,7 +154,9 @@ class TestContext {
     if (runMode == RunMode.discover) {
       _knownGroups.add(result.testPath);
       body();
-    } else if (!_skipTest(skip, result)) {
+    } else if (_skipTest(skip, result)) {
+      env.group(description, body, skip: true);
+    } else {
       env.group(description, body);
     }
     _leave(result);

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:meta/meta.dart';
 
-import '../build_options.dart';
 import '../_impl/xplat/_internal_logger.dart';
 import '../_impl/xplat/_time_stamp.dart';
+import '../build_options.dart';
 import '../exceptions/squadron_error.dart';
 import '../tokens/_squadron_cancelation_token.dart';
 import '../typedefs.dart';
@@ -29,7 +31,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   }
 
   /// Creates a new request with the specified [command] ID and optional arguments.
-  factory WorkerRequest.userCommand(PlatformChannel channelInfo, int command,
+  factory WorkerRequest.userCommand(PlatformChannel? channelInfo, int command,
           List args, SquadronCancelationToken? token, bool inspectResponse) =>
       WorkerRequest._([
         BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
@@ -42,7 +44,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
       ]);
 
   /// Creates a new start request.
-  factory WorkerRequest.start(PlatformChannel channelInfo, List args) =>
+  factory WorkerRequest.start(PlatformChannel? channelInfo, List args) =>
       WorkerRequest._([
         BuildOptions.withTravelTime ? Timestamp.now() : null, // 0 - travel time
         channelInfo, // 1 - channel
@@ -91,7 +93,7 @@ extension type WorkerRequest._(List data) implements WorkerMessage {
   WorkerChannel? get channel => data[_$channel];
 
   /// The channel method to be used for sending data back.
-  void Function(dynamic)? get reply =>
+  FutureOr<void> Function(dynamic)? get reply =>
       inspectResponse ? channel?.inspectAndReply : channel?.reply;
 
   /// The client's channel info.

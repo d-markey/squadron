@@ -6,7 +6,7 @@ import 'vm.dart' as vm;
 
 void main() async {
   final pool = JobWorkerPool(
-    (mk) => JobWorker(vm.start),
+    (mk) => JobWorker(vm.entryPoint),
     concurrencySettings: ConcurrencySettings(
       minWorkers: 2,
       maxWorkers: 2,

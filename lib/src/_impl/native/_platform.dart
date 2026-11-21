@@ -10,6 +10,8 @@ import '../../utils.dart';
 /// threadIDs may not be unique on VM...
 final threadId = Isolate.current.hashCode.hex;
 
+final numberOfProcessors = Platform.numberOfProcessors;
+
 const platformConverter = CastConverter.instance;
 
 const platformType = SquadronPlatformType.vm;
@@ -23,8 +25,6 @@ final osType = switch (Platform.operatingSystem) {
   'ios' => SquadronOSType.ios,
   _ => SquadronOSType.unknown
 };
-
-Uri mapUrl(String url) => Uri.parse(url);
 
 @internal
 bool isSameInstance(Object a, Object b) => identical(a, b);

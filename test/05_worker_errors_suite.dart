@@ -18,11 +18,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '05_worker_errors_test.dart';
+const testScript = '05_worker_errors_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- SQUADRON WORKER - ERRORS', () {
       tc.test(

@@ -11,11 +11,9 @@ import 'worker_services/primes.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '07_shared_channel_test.dart';
+const testScript = '08_shared_channel_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- SHARED CHANNEL', () {
       setUp(() {

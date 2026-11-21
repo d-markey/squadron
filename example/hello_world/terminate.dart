@@ -12,7 +12,7 @@ void main() async {
 
   $log('Program running in main thread $threadId');
 
-  final worker = HelloWorldWorker(start);
+  final worker = HelloWorldWorker(vmEntryPoint);
   await worker.start();
 
   // kill in 3.5 seconds

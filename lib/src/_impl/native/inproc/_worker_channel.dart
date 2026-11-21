@@ -4,14 +4,14 @@ import 'dart:isolate';
 import 'package:logger/web.dart';
 import 'package:meta/meta.dart';
 
-import '../../build_options.dart';
-import '../../exceptions/squadron_error.dart';
-import '../../exceptions/squadron_exception.dart';
-import '../../exceptions/worker_exception.dart';
-import '../../typedefs.dart';
-import '../../worker/worker_channel.dart';
-import '../../worker/worker_response.dart';
-import '_typedefs.dart' as impl;
+import '../../../build_options.dart';
+import '../../../exceptions/squadron_error.dart';
+import '../../../exceptions/squadron_exception.dart';
+import '../../../exceptions/worker_exception.dart';
+import '../../../typedefs.dart';
+import '../../../worker/worker_channel.dart';
+import '../../../worker/worker_response.dart';
+import '_typedefs.dart';
 
 /// [WorkerChannel] implementation for the native world.
 final class _VmWorkerChannel implements WorkerChannel {
@@ -21,7 +21,7 @@ final class _VmWorkerChannel implements WorkerChannel {
 
   /// [SendPort] to communicate with the [Isolate] if the channel is owned by
   /// the worker owner. Otherwise, [SendPort] to return values to the client.
-  final impl.PlatformChannel _sendPort;
+  final InProcPlatformChannel _sendPort;
 
   void _postResponse(WorkerResponse res) {
     try {
@@ -80,4 +80,6 @@ final class _VmWorkerChannel implements WorkerChannel {
 WorkerChannel? deserialize(PlatformChannel? channelInfo, [Logger? logger]) =>
     (channelInfo == null)
         ? null
-        : _VmWorkerChannel._(channelInfo as impl.PlatformChannel, logger);
+        : (channelInfo is WorkerChannel)
+            ? channelInfo
+            : _VmWorkerChannel._(channelInfo as InProcPlatformChannel, logger);

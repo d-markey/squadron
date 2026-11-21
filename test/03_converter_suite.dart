@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:squadron/squadron.dart';
+import 'package:squadron/src/converters/identity_aware_binary_converter.dart';
 import 'package:squadron/src/converters/lazy_in_place_list.dart';
 import 'package:squadron/src/converters/lazy_in_place_map.dart';
 import 'package:test/test.dart';
@@ -10,10 +12,11 @@ import 'package:test/test.dart';
 import 'src/test_context.dart';
 import 'src/utils.dart';
 
-part '03_converter__list.dart';
-part '03_converter__map.dart';
 part '03_converter__cast.dart';
 part '03_converter__context_aware.dart';
+part '03_converter__identity_aware_binary.dart';
+part '03_converter__list.dart';
+part '03_converter__map.dart';
 part '03_converter__num.dart';
 
 Future<void> main() => TestContext.run(
@@ -21,11 +24,9 @@ Future<void> main() => TestContext.run(
       mixedContext: false /* this test suite has no workers */,
     );
 
-const testScript = '03_converter_test.dart';
+const testScript = '03_converter_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- LAZY COLLECTIONS', () {
       tc.group('- Lazy list', () {
@@ -60,6 +61,7 @@ void execute(TestContext? tc) {
       testCastConverter(tc);
       testNumConverter(tc);
       testContextAwareConverter(tc);
+      testIdentityAwareBinaryConverter(tc);
 
       tc.test('- Change default converter', () {
         final defaultConverter = Squadron.converter;

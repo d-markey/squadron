@@ -1,3 +1,6 @@
+export 'src/_impl/native/inproc/entry_point.dart' show InProcEntryPoint;
+export 'src/_impl/native/ipc/entry_point.dart' show IpcEntryPoint;
+export 'src/_impl/web/entry_point.dart' show WebEntryPoint;
 export 'src/annotations/squadron_method.dart';
 export 'src/annotations/squadron_service.dart';
 export 'src/annotations/target_platform.dart';
@@ -41,8 +44,11 @@ export 'src/squadron_singleton.dart';
 export 'src/stats/perf_counter.dart' hide PerfCounterImpl;
 export 'src/stats/perf_counter_snapshot.dart';
 export 'src/stats/worker_stat.dart' hide WorkerStatImpl;
+export 'src/transport/channel_multiplexer.dart';
+export 'src/transport/stream_transport.dart';
 export 'src/typedefs.dart';
 export 'src/utils.dart';
+export 'src/worker/entry_point.dart';
 export 'src/worker/worker.dart';
 export 'src/worker/worker_channel.dart';
 export 'src/worker/worker_request.dart' hide CancelationTokenExt;

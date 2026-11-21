@@ -24,10 +24,20 @@ class MarshalingContext {
   /// received from / sent to the worker
   final Converter _converter;
 
+  /// Serialization context that contains the payloads to be serialized
   final SerializationContext? _objects;
 
   /// Whether this context is context-aware.
   bool get isContextAware => _objects != null;
+
+  // Clears the context so the marshaler can be reused for a different
+  // "session", eg. marshal-in / clear-context / marshal-out.
+  void clearContext() {
+    if (_converter is ContextAwareConverter) {
+      _converter.clearContext();
+    }
+    _objects?.clearContext();
+  }
 
   /// Get the instance that was registered for the same [data].
   T? getReference<T extends Object>(dynamic data) =>

@@ -8,7 +8,7 @@ final class _WebChannel implements Channel {
   /// [web.MessagePort] to return values to the client.
   final web.MessagePort _sendPort;
 
-  PlatformThread? _thread;
+  WebPlatformThread? _thread;
   final _activeConnections = <StreamController<WorkerResponse>>[];
 
   @override
@@ -24,7 +24,7 @@ final class _WebChannel implements Channel {
 
   /// [Channel] serialization in JavaScript world returns the [web.MessagePort].
   @override
-  PlatformChannel serialize() => _sendPort;
+  WebPlatformChannel serialize() => _sendPort;
 
   /// [Channel] sharing in JavaScript world returns a [_WebForwardChannel].
   @override
@@ -236,5 +236,5 @@ final class _WebChannel implements Channel {
 }
 
 extension on WorkerRequest {
-  PlatformChannel? get messagePort => (channelInfo as PlatformChannel?);
+  WebPlatformChannel? get messagePort => (channelInfo as WebPlatformChannel?);
 }

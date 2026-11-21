@@ -18,11 +18,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '04_worker_test.dart';
+const testScript = '04_worker_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- SQUADRON PLATFORMS', () {
       tc.test('- VM', () {
@@ -141,6 +139,12 @@ void execute(TestContext? tc) {
     });
 
     tc.group('- SQUADRON WORKER - START/STOP', () {
+      tc.test('- Exception manager', () {
+        final exceptionManager = ExceptionManager();
+        final w = TestWorker(tc, exceptionManager: exceptionManager);
+        assert(identical(w.exceptionManager, exceptionManager), isTrue);
+      });
+
       tc.test(
           '- Start & stop',
           () => TestWorker(tc).runTest((w) async {

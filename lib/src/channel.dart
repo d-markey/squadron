@@ -12,6 +12,7 @@ import 'exceptions/exception_manager.dart';
 import 'exceptions/task_terminated_exception.dart';
 import 'tokens/_squadron_cancelation_token.dart';
 import 'typedefs.dart';
+import 'worker/entry_point.dart';
 import 'worker/worker_message.dart';
 import 'worker/worker_request.dart';
 import 'worker/worker_response.dart';

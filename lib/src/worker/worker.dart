@@ -18,6 +18,7 @@ import '../tokens/_squadron_cancelation_token.dart';
 import '../typedefs.dart';
 import '../worker/worker_request.dart';
 import '../worker_service.dart';
+import 'entry_point.dart';
 
 part 'worker.stats.dart';
 

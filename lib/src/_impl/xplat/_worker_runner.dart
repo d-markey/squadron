@@ -66,7 +66,7 @@ class WorkerRunner {
   /// or a [MessagePort] (browser). [initializer] is called to build the
   /// [WorkerService] associated to the worker. The runner's [_service] map
   /// will be set with operations from the service.
-  void connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
+  Future<void> connect(WorkerRequest? startRequest, PlatformChannel channelInfo,
       WorkerInitializer initializer) async {
     late final WorkerChannel? channel;
     try {
@@ -204,9 +204,10 @@ class WorkerRunner {
             replyWithError(exception, stackTrace, cmd);
           }
 
-          void post(data) {
+          Future<void> post(data) async {
             try {
-              reply(data);
+              final res = reply(data);
+              if (res is Future) await res;
             } catch (ex, st) {
               $postError(ex, st);
             }
@@ -215,7 +216,8 @@ class WorkerRunner {
           await _pipe(result, channel, post, $postError, token);
         } else {
           // result is a value: send to the client
-          reply(result);
+          final res = reply(result);
+          if (res is Future) await res;
         }
       } finally {
         // stop monitoring execution

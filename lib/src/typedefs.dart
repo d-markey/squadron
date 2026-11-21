@@ -8,7 +8,6 @@ import '_impl/xplat/_typedefs.dart'
 import 'worker/worker_request.dart';
 import 'worker_service.dart';
 
-typedef EntryPoint = impl.EntryPoint;
 typedef PlatformChannel = impl.PlatformChannel;
 typedef PlatformThread = impl.PlatformThread;
 typedef PlatformThreadHook = impl.PlatformThreadHook;

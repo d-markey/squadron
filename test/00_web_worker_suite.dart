@@ -6,7 +6,8 @@ library;
 import 'dart:async';
 import 'dart:js_interop';
 
-import 'package:squadron/src/_impl/web/_entry_point_uri.dart';
+import 'package:squadron/src/_impl/web/_web_entry_point_uri.dart';
+import 'package:squadron/src/_impl/web/entry_point.dart';
 import 'package:squadron/src/_impl/xplat/_disconnected_channel.dart';
 import 'package:squadron/src/exceptions/squadron_error.dart';
 import 'package:squadron/src/worker/worker_response.dart';
@@ -19,16 +20,14 @@ import 'src/utils.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '01_web_worker_test.dart';
+const testScript = '00_web_worker_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- WEB WORKER', () {
       tc.test('- Add random hash - without version', () {
-        final webEntryPoint = EntryPointUri.from(
-          Uri.parse('test/worker.js'),
+        final webEntryPoint = WebEntryPointUri.from(
+          WebEntryPoint('test/worker.js'),
           addRandomHash: true,
         );
         expect(webEntryPoint.uri, contains('?h='));
@@ -40,8 +39,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Add random hash - with version', () {
-        final webEntryPoint = EntryPointUri.from(
-          Uri.parse('test/worker.js?v=1'),
+        final webEntryPoint = WebEntryPointUri.from(
+          WebEntryPoint('test/worker.js?v=1'),
           addRandomHash: true,
         );
         expect(webEntryPoint.uri, contains('?v=1&h='));
@@ -55,8 +54,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- JavaScript Web Worker', () async {
-        final ep =
-            EntryPointUri.from(tc.entryPoints.native!, addRandomHash: true);
+        final ep = WebEntryPointUri.from(tc.entryPoints.native as WebEntryPoint,
+            addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -81,8 +80,9 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- JavaScript Web Worker (in-memory)', () async {
-        final ep =
-            EntryPointUri.from(tc.entryPoints.inMemory!, addRandomHash: true);
+        final ep = WebEntryPointUri.from(
+            tc.entryPoints.inMemory as WebEntryPoint,
+            addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -107,8 +107,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Dart Web Worker', () async {
-        final ep =
-            EntryPointUri.from(tc.entryPoints.echo!, addRandomHash: true);
+        final ep = WebEntryPointUri.from(tc.entryPoints.echo as WebEntryPoint,
+            addRandomHash: true);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -139,8 +139,8 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Missing Web Worker (JavaScript)', () async {
-        final ep =
-            EntryPointUri.from(Uri.parse('not_found.js'), addRandomHash: false);
+        final ep = WebEntryPointUri.from(WebEntryPoint('not_found.js'),
+            addRandomHash: false);
         final w = web.Worker(ep.uri.toJS);
 
         try {
@@ -161,7 +161,7 @@ void execute(TestContext? tc) {
       });
 
       tc.test('- Missing Web Worker (WebAssembly)', () async {
-        final ep = EntryPointUri.from(Uri.parse('not_found.wasm'),
+        final ep = WebEntryPointUri.from(WebEntryPoint('not_found.wasm'),
             addRandomHash: false);
         final w = web.Worker(ep.uri.toJS);
 

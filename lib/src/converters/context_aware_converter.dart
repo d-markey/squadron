@@ -13,6 +13,10 @@ class ContextAwareConverter extends Converter {
   // use Squadron.identical to handle JS objects
   final _arguments = SerializationContext(Squadron.identical);
 
+  void clearContext() {
+    _arguments.clearContext();
+  }
+
   // non-nullable value
   @override
   Cast<T> value<T extends Object>() {

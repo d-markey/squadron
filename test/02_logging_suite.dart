@@ -12,11 +12,9 @@ import 'worker_services/log_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '02_logging_test.dart';
+const testScript = '02_logging_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- LOGGING', () {
       final logger = MemoryLogger();

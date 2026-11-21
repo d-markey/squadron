@@ -28,11 +28,11 @@ class PersonService with SquadronVersion implements WorkerService {
   late final operations = OperationsMap({
     SquadronVersion.versionCommand: (r) => getVersion(),
     getKindTypeCommand: (r) {
-      final cin = MarshalingContext();
-      final marshaler = const PersonMarshaler();
+      final marshaler = MarshalingContext();
+      final personMarshaler = const PersonMarshaler();
       return getKindType(
-        marshaler.unmarshal(r.args[0], cin),
-        marshaler.unmarshal(r.args[1], cin),
+        personMarshaler.unmarshal(r.args[0], marshaler),
+        personMarshaler.unmarshal(r.args[1], marshaler),
       );
     },
   });

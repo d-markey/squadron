@@ -9,4 +9,6 @@ WorkerService _initializer(WorkerRequest startRequest) {
   return SampleServiceImpl(identityClient);
 }
 
-void start(WorkerRequest command) => run(_initializer, command);
+final entryPoint = InProcEntryPoint(_start);
+
+void _start(WorkerRequest command) => runWorkerService(_initializer, command);

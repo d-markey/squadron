@@ -15,17 +15,19 @@ import '../../exceptions/worker_exception.dart';
 import '../../squadron_singleton.dart';
 import '../../tokens/_squadron_cancelation_token.dart';
 import '../../utils.dart';
+import '../../worker/entry_point.dart';
 import '../../worker/worker_channel.dart';
 import '../../worker/worker_message.dart';
 import '../../worker/worker_request.dart';
 import '../../worker/worker_response.dart';
 import '../xplat/_disconnected_channel.dart';
 import '../xplat/_result_stream.dart';
-import '_entry_point_uri.dart';
 import '_event_buffer.dart';
 import '_patch.dart';
 import '_typedefs.dart';
 import '_uri_checker.dart';
+import '_web_entry_point_uri.dart';
+import 'entry_point.dart';
 
 part '_channel_forward.dart';
 part '_channel_impl.dart';
@@ -41,8 +43,13 @@ Future<Channel> openChannel(
   ExceptionManager exceptionManager,
   Logger? logger,
   List startArguments,
-  PlatformThreadHook? hook,
+  WebPlatformThreadHook? hook,
 ) async {
+  if (entryPoint is! WebEntryPoint) {
+    throw UnsupportedError(
+        'Unsupported Web entry point: ${entryPoint.runtimeType}');
+  }
+
   if (!BuildOptions.withInternalLogging) {
     logger = null;
   }
@@ -52,7 +59,7 @@ Future<Channel> openChannel(
   Channel? channel;
 
   final com = web.MessageChannel();
-  final webEntryPoint = EntryPointUri.from(
+  final webEntryPoint = WebEntryPointUri.from(
     entryPoint,
     addRandomHash: Squadron.disableBrowserCache,
   );
@@ -79,14 +86,16 @@ Future<Channel> openChannel(
       logger?.e(() => 'Connection to Web Worker failed: $error');
       $failure(error);
 
-      UriChecker.exists(entryPoint).then((found) {
+      final uri = Uri.parse(webEntryPoint.uri);
+      UriChecker.exists(uri).then((found) {
         try {
           final msg = (e != null)
-              ? '$entryPoint => ${err.runtimeType} $err [${e.filename}(${e.lineno})]'
-              : '$entryPoint => ${err.runtimeType} $err';
+              ? '${webEntryPoint.uri} => ${err.runtimeType} $err [${e.filename}(${e.lineno})]'
+              : '${webEntryPoint.uri} => ${err.runtimeType} $err';
           logger?.e(() => 'Unhandled error from Web Worker: $msg.');
           if (!found) {
-            logger?.e(() => 'It seems no Web Worker lives at $entryPoint.');
+            logger?.e(
+                () => 'It seems no Web Worker lives at ${webEntryPoint.uri}.');
           }
         } catch (_) {
           // ignore
@@ -196,7 +205,7 @@ void terminateChannel(Channel channel, TaskTerminatedException ex) {
     channel._thread?.terminate();
     final pendingConnections = channel._activeConnections;
     for (var c in pendingConnections) {
-      c.addError(ex);
+      c.safeAddError(ex);
       c.close();
     }
   }
@@ -204,7 +213,7 @@ void terminateChannel(Channel channel, TaskTerminatedException ex) {
 
 /// Creates a [_WebChannel] from a [web.MessagePort].
 Channel? deserialize(
-  PlatformChannel? channelInfo, [
+  WebPlatformChannel? channelInfo, [
   Logger? logger,
   ExceptionManager? exceptionManager,
 ]) =>

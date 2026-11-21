@@ -4,8 +4,8 @@ import 'package:meta/meta.dart';
 
 import '../../pool/task.dart';
 import '../../utils.dart';
-import '../native/_debug.dart' if (dart.library.js_interop) '../web/_debug.dart'
-    as dbg;
+import '../native/inproc/_debug.dart'
+    if (dart.library.js_interop) '../web/_debug.dart' as dbg;
 
 extension on Object? {
   String get objectId => '$runtimeType(${hashCode.hex})';

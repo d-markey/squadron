@@ -15,11 +15,9 @@ import 'worker_services/test_service_worker.dart';
 
 Future<void> main() => TestContext.run(execute);
 
-const testScript = '06_worker_streaming_test.dart';
+const testScript = '06_worker_streaming_suite.dart';
 
-void execute(TestContext? tc) {
-  if (tc == null) return;
-
+void execute(TestContext tc) {
   tc.launch(() {
     tc.group('- SQUADRON WORKER - STREAMING', () {
       tc.test(

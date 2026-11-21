@@ -4,7 +4,7 @@ import '../../worker_services/cache_service.dart';
 import '../../worker_services/prime_service.dart';
 
 void main() {
-  run(
+  runWorkerService(
     (startReq) {
       final channel = startReq.args.isEmpty ? null : startReq.args[0];
       final cacheChannel = Channel.deserialize(channel);

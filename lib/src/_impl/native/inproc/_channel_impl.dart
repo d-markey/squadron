@@ -4,11 +4,11 @@ part of '_channel.dart';
 final class _VmChannel implements Channel {
   _VmChannel._(this._sendPort, this.logger, this.exceptionManager);
 
-  /// [vm.SendPort] to communicate with the [vm.Isolate] if the channel is owned by
-  /// the worker owner. Otherwise, [vm.SendPort] to return values to the client.
-  final vm.SendPort _sendPort;
+  /// [SendPort] to communicate with the [Isolate] if the channel is owned by
+  /// the worker owner. Otherwise, [SendPort] to return values to the client.
+  final SendPort _sendPort;
 
-  PlatformThread? _thread;
+  InProcPlatformThread? _thread;
   final _activeConnections = <ForwardStreamController<WorkerResponse>>[];
 
   @override
@@ -22,14 +22,14 @@ final class _VmChannel implements Channel {
   @override
   Future<void> get closed => _closed.future;
 
-  /// [Channel] serialization in Native world returns the [vm.SendPort].
+  /// [Channel] serialization in Native world returns the [SendPort].
   @override
-  PlatformChannel serialize() => _sendPort;
+  InProcPlatformChannel serialize() => _sendPort;
 
   /// [Channel] sharing in native world returns a [_VmForwardChannel].
   @override
-  Channel share() => _VmForwardChannel._(
-      _sendPort, vm.ReceivePort(), logger, exceptionManager);
+  Channel share() =>
+      _VmForwardChannel._(_sendPort, ReceivePort(), logger, exceptionManager);
 
   void _postRequest(WorkerRequest req, {bool force = false}) {
     if (_closed.isCompleted && !force) {
@@ -45,7 +45,7 @@ final class _VmChannel implements Channel {
     }
   }
 
-  /// Sends a termination [WorkerRequest] to the [vm.Isolate].
+  /// Sends a termination [WorkerRequest] to the [Isolate].
   @override
   Future<void> close() {
     if (!_closed.isCompleted) {
@@ -55,13 +55,13 @@ final class _VmChannel implements Channel {
     return _closed.future;
   }
 
-  /// Sends a close stream [WorkerRequest] to the [vm.Isolate].
+  /// Sends a close stream [WorkerRequest] to the [Isolate].
   @override
   void cancelStream(StreamId streamId) {
     _postRequest(WorkerRequest.cancelStream(streamId), force: true);
   }
 
-  /// Sends a cancel token [WorkerRequest] to the [vm.Isolate].
+  /// Sends a cancel token [WorkerRequest] to the [Isolate].
   @override
   void cancelToken(SquadronCancelationToken? token) {
     if (token != null) {
@@ -79,7 +79,7 @@ final class _VmChannel implements Channel {
   }
 
   Stream<dynamic> _getResponseStream(
-    vm.ReceivePort port,
+    ReceivePort port,
     WorkerRequest req,
     void Function(WorkerRequest) post, {
     required bool streaming,
@@ -125,8 +125,8 @@ final class _VmChannel implements Channel {
     return res.stream;
   }
 
-  /// creates a [vm.ReceivePort] and a [WorkerRequest] and sends it to the
-  /// [vm.Isolate]. This method expects a single value from the [Isolate]
+  /// creates a [ReceivePort] and a [WorkerRequest] and sends it to the
+  /// [Isolate]. This method expects a single value from the [Isolate]
   @override
   Future<dynamic> sendRequest(
     int command,
@@ -154,7 +154,7 @@ final class _VmChannel implements Channel {
       });
     }
 
-    final receiver = vm.ReceivePort();
+    final receiver = ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
     sub = _getResponseStream(receiver, req, _postRequest, streaming: false)
@@ -162,9 +162,9 @@ final class _VmChannel implements Channel {
     return completer.future;
   }
 
-  /// Creates a [vm.ReceivePort] and a [WorkerRequest] and sends it to the
-  /// [vm.Isolate]. This method expects a stream of values from the [vm.Isolate].
-  /// The [vm.Isolate] must send a [WorkerResponse.endOfStream] to close the
+  /// Creates a [ReceivePort] and a [WorkerRequest] and sends it to the
+  /// [Isolate]. This method expects a stream of values from the [Isolate].
+  /// The [Isolate] must send a [WorkerResponse.endOfStream] to close the
   /// [Stream].
   @override
   Stream<dynamic> sendStreamingRequest(
@@ -174,7 +174,7 @@ final class _VmChannel implements Channel {
     bool inspectRequest = false,
     bool inspectResponse = false,
   }) {
-    final receiver = vm.ReceivePort();
+    final receiver = ReceivePort();
     final req = WorkerRequest.userCommand(
         receiver.sendPort, command, args, token, inspectResponse);
     return _getResponseStream(receiver, req, _postRequest, streaming: true);

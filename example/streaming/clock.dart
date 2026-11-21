@@ -42,7 +42,9 @@ class ClockWorker extends Worker implements Clock {
 
 Cast<int> get _toInt => Squadron.converter.value<int>();
 
-void startWorker(WorkerRequest command) => run(
+const entryPoint = InProcEntryPoint(_start);
+
+void _start(WorkerRequest command) => runWorkerService(
       (_) => ClockWorkerService(),
       command,
     );

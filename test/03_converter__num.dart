@@ -5,10 +5,10 @@ part of '03_converter_suite.dart';
 // ignore: non_constant_identifier_names
 void testNumConverter(TestContext tc) {
   tc.group('- NumConverter', () {
-    final converter = NumConverter.instance;
+    final numConverter = NumConverter.instance;
 
     tc.group('- Integers', () {
-      final $toInt = converter.value<int>();
+      final $toInt = numConverter.value<int>();
       final $toNullableInt = Converter.allowNull($toInt);
 
       tc.test('- Converters are not identities', () {
@@ -68,7 +68,7 @@ void testNumConverter(TestContext tc) {
     });
 
     tc.group('- Doubles', () {
-      final $toDbl = converter.value<double>();
+      final $toDbl = numConverter.value<double>();
       final $toNullableDbl = Converter.allowNull($toDbl);
 
       tc.test('- Converters are not identities', () {
@@ -125,7 +125,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfInts);
 
         await expectLater(() => data as List<int>, _throwsTypeError);
-        final res = converter.list<int>()(data);
+        final res = numConverter.list<int>()(data);
         expect(res, isA<List<int>>());
         expect(res, _listOfInts);
       });
@@ -134,7 +134,7 @@ void testNumConverter(TestContext tc) {
         final data = <dynamic>[];
         data.addAll(_listOfInts);
 
-        final res = converter.list<int>(_asInt)(data);
+        final res = numConverter.list<int>(_asInt)(data);
         expect(res, isA<List<int>>());
         expect(res, _listOfInts);
       });
@@ -144,7 +144,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfNullableInts);
 
         await expectLater(() => data as List<int?>, _throwsTypeError);
-        final res = converter.nlist<int>(converter.value<int>())(data);
+        final res = numConverter.nlist<int>(numConverter.value<int>())(data);
         expect(res, isA<List<int?>>());
         expect(res, _listOfNullableInts);
       });
@@ -154,7 +154,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfIntsWithIntegralDouble);
 
         await expectLater(() => data as List<int>, _throwsTypeError);
-        final res = converter.list<int>()(data);
+        final res = numConverter.list<int>()(data);
         expect(res, isA<List<int>>());
         expect(res, _listOfIntsWithIntegralDouble);
       });
@@ -165,7 +165,7 @@ void testNumConverter(TestContext tc) {
 
         await expectLater(() => data as List<int>, _throwsTypeError);
         try {
-          final res = converter.list<int>(_asInt)(data);
+          final res = numConverter.list<int>(_asInt)(data);
           expect(res, isA<List<int>>());
           expect(res, _listOfIntsWithIntegralDouble);
           _unexpectedSuccessIfNonJs('integral double to int', res);
@@ -179,7 +179,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfDoubles);
 
         await expectLater(() => data as List<double>, _throwsTypeError);
-        final res = converter.list<double>()(data);
+        final res = numConverter.list<double>()(data);
         expect(res, isA<List<double>>());
         expect(res, _listOfDoubles);
       });
@@ -189,7 +189,8 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfNullableDoubles);
 
         await expectLater(() => data as List<double?>, _throwsTypeError);
-        final res = converter.nlist<double>(converter.value<double>())(data);
+        final res =
+            numConverter.nlist<double>(numConverter.value<double>())(data);
         expect(res, isA<List<double?>>());
         expect(res, _listOfNullableDoubles);
       });
@@ -199,7 +200,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfDoublesWithInt);
 
         await expectLater(() => data as List<double>, _throwsTypeError);
-        final res = converter.list<double>()(data);
+        final res = numConverter.list<double>()(data);
         expect(res, isA<List<double>>());
         expect(res, _listOfDoublesWithInt);
       });
@@ -211,7 +212,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfInts);
 
         await expectLater(() => data as Set<int>, _throwsTypeError);
-        final res = converter.set<int>()(data);
+        final res = numConverter.set<int>()(data);
         expect(res, isA<Set<int>>());
         expect(res, _listOfInts.toSet());
       });
@@ -221,7 +222,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfInts);
 
         await expectLater(() => data as Set<int>, _throwsTypeError);
-        final res = converter.set<int>()(data);
+        final res = numConverter.set<int>()(data);
         expect(res, isA<Set<int>>());
         expect(res, _listOfInts.toSet());
       });
@@ -231,7 +232,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfNullableInts);
 
         await expectLater(() => data as Set<int?>, _throwsTypeError);
-        final res = converter.nset<int>(converter.value<int>())(data);
+        final res = numConverter.nset<int>(numConverter.value<int>())(data);
         expect(res, isA<Set<int?>>());
         expect(res, _listOfNullableInts.toSet());
       });
@@ -242,7 +243,7 @@ void testNumConverter(TestContext tc) {
 
         await expectLater(() => data as Set<int>, _throwsTypeError);
         try {
-          final res = converter.set<int>()(data);
+          final res = numConverter.set<int>()(data);
           expect(res, isA<Set<int>>());
           expect(res, _listOfIntsWithIntegralDouble.toSet());
           _unexpectedSuccessIfNonJs('integral double to int', res);
@@ -257,7 +258,7 @@ void testNumConverter(TestContext tc) {
 
         await expectLater(() => data as Set<int>, _throwsTypeError);
         try {
-          final res = converter.set<int>(_asInt)(data);
+          final res = numConverter.set<int>(_asInt)(data);
           expect(res, isA<Set<int>>());
           expect(res, _listOfIntsWithIntegralDouble.toSet());
           _unexpectedSuccessIfNonJs('integral double to int', res);
@@ -271,7 +272,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfDoubles);
 
         await expectLater(() => data as Set<double>, _throwsTypeError);
-        final res = converter.set<double>()(data);
+        final res = numConverter.set<double>()(data);
         expect(res, isA<Set<double>>());
         expect(res, _listOfDoubles.toSet());
       });
@@ -281,7 +282,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_listOfNullableDoubles);
 
         await expectLater(() => data as Set<double?>, _throwsTypeError);
-        final res = converter.nset<double>()(data);
+        final res = numConverter.nset<double>()(data);
         expect(res, isA<Set<double?>>());
         expect(res, _listOfNullableDoubles.toSet());
       });
@@ -292,7 +293,7 @@ void testNumConverter(TestContext tc) {
 
         await expectLater(() => data as Set<double>, _throwsTypeError);
         try {
-          final res = converter.set<double>()(data);
+          final res = numConverter.set<double>()(data);
           expect(res, isA<Set<double>>());
           expect(res, _listOfDoublesWithInt.toSet());
           _unexpectedSuccessIfNonJs('integral double to int', res);
@@ -308,7 +309,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_mapOfInts);
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-        final res = converter.map<String, int>()(data);
+        final res = numConverter.map<String, int>()(data);
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfInts);
       });
@@ -318,7 +319,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_mapOfInts);
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-        final res = converter.map<String, int>(vcast: _asInt)(data);
+        final res = numConverter.map<String, int>(vcast: _asInt)(data);
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfInts);
       });
@@ -328,7 +329,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_mapOfNullableInts);
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-        final res = converter.nmap<String, int>()(data);
+        final res = numConverter.nmap<String, int>()(data);
         expect(res, isA<Map<String, int?>>());
         expect(res, _mapOfNullableInts);
       });
@@ -339,7 +340,7 @@ void testNumConverter(TestContext tc) {
         data.addAll(_mapOfIntsWithIntegralDouble);
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
-        final res = converter.map<String, int>()(data);
+        final res = numConverter.map<String, int>()(data);
         expect(res, isA<Map<String, int>>());
         expect(res, _mapOfIntsWithIntegralDouble);
       });
@@ -351,7 +352,7 @@ void testNumConverter(TestContext tc) {
 
         await expectLater(() => data as Map<String, int>, _throwsTypeError);
         try {
-          final res = converter.map<String, int>(vcast: _asInt)(data);
+          final res = numConverter.map<String, int>(vcast: _asInt)(data);
           expect(res, isA<Map<String, int>>());
           expect(res, _mapOfIntsWithIntegralDouble);
           _unexpectedSuccessIfNonJs('integral double to int', res);
@@ -366,8 +367,8 @@ void testNumConverter(TestContext tc) {
         final a = <num>[1, 2, 3.0, 4, 5], b = <num>[1, 2, 3.0, 4, 5];
         expect(a, isNotA<List<int>>());
         expect(b, isNotA<List<int>>());
-        final ca = converter.list<int>()(a);
-        final cb = converter.list<int>()(b);
+        final ca = numConverter.list<int>()(a);
+        final cb = numConverter.list<int>()(b);
         expect(ca, isA<List<int>>());
         expect(cb, isA<List<int>>());
         expect(ca, cb);
@@ -378,8 +379,8 @@ void testNumConverter(TestContext tc) {
         final a = <num>[1, 2, 3.0, 4, 5], b = a;
         expect(a, isNotA<List<int>>());
         expect(b, isNotA<List<int>>());
-        final ca = converter.list<int>()(a);
-        final cb = converter.list<int>()(b);
+        final ca = numConverter.list<int>()(a);
+        final cb = numConverter.list<int>()(b);
         expect(ca, isA<List<int>>());
         expect(cb, isA<List<int>>());
         expect(ca, cb);

@@ -19,7 +19,7 @@ class CountryMarshaler extends SquadronMarshaler<Country, List> {
   Country unmarshal(List data, [MarshalingContext? context]) {
     var res = context?.getReference<Country>(data);
     if (res != null) return res;
-    final toInt = context.converter.value<int>();
+    final toInt = context.value<int>();
     final country = Country(toInt(data[0]), data[1]);
     // set reference now before any further unmarshaling
     context?.setReference(data, country);

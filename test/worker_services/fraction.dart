@@ -51,7 +51,7 @@ class FractionMarshaler extends SquadronMarshaler<Fraction, List<int>> {
   Fraction unmarshal(List<int> data, [MarshalingContext? context]) {
     var ref = context?.getReference<Fraction>(data);
     if (ref != null) return ref;
-    final list = context.converter.list<int>()(data);
+    final list = context.list<int>()(data);
     ref = Fraction._(list[0], list[1]);
     context?.setReference(data, ref);
     return ref;

@@ -17,7 +17,9 @@ class SquadronService {
     this.targetPlatform = TargetPlatform.all,
     String? baseUrl,
     this.version,
+    String? process,
   })  : baseUrl = baseUrl ?? '',
+        process = process ?? '',
         local = false;
 
   const SquadronService.web({bool pool = true, String? baseUrl, int? version})
@@ -28,14 +30,15 @@ class SquadronService {
           version: version,
         );
 
-  const SquadronService.vm({bool pool = true})
-      : this(pool: pool, targetPlatform: TargetPlatform.vm);
+  const SquadronService.vm({bool pool = true, String? process})
+      : this(pool: pool, targetPlatform: TargetPlatform.vm, process: process);
 
   const SquadronService.local()
       : pool = false,
         local = true,
         targetPlatform = TargetPlatform.none,
         baseUrl = '',
+        process = '',
         version = null;
 
   /// Controls code generation of a [WorkerPool] exposing the target service
@@ -57,4 +60,8 @@ class SquadronService {
   /// For Web-based workers, indicates the Worker's [version]. When provided, this
   /// number will be included in the worker's URL as a query parameter.
   final int? version;
+
+  /// For process-based workers, indicates the process executable/command line.
+  /// When empty (default), the worker runs in-process (e.g. as an Isolate).
+  final String process;
 }

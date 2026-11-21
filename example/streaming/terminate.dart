@@ -9,7 +9,7 @@ void main() async {
 
   void log(Object message) => print('[$threadId] [${sw.elapsed}] $message');
 
-  final clock = ClockWorker(startWorker);
+  final clock = ClockWorker(entryPoint);
 
   await clock.start();
 

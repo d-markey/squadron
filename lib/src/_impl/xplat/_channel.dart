@@ -7,6 +7,7 @@ import '../../channel.dart';
 import '../../exceptions/exception_manager.dart';
 import '../../exceptions/squadron_error.dart';
 import '../../exceptions/task_terminated_exception.dart';
+import '../../worker/entry_point.dart';
 import "_typedefs.dart";
 
 Future<Channel> openChannel(

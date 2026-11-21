@@ -7,7 +7,7 @@ void main() async {
   print('Program running in main thread $threadId');
 
   final workerPool = HelloWorldWorkerPool(
-    start,
+    vmEntryPoint,
     concurrencySettings: ConcurrencySettings.threeCpuThreads,
   );
   await workerPool.start();

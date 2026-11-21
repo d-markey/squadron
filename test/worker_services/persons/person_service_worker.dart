@@ -55,11 +55,11 @@ base class PersonWorker extends Worker
 
   @override
   Future<String> getKindType(Person person, Person other) async {
-    final cin = MarshalingContext();
-    final marshaler = const PersonMarshaler();
+    final marshaler = MarshalingContext();
+    final personMarshaler = const PersonMarshaler();
     return await send(PersonService.getKindTypeCommand, args: [
-      marshaler.marshal(person, cin),
-      marshaler.marshal(other, cin),
+      personMarshaler.marshal(person, marshaler),
+      personMarshaler.marshal(other, marshaler),
     ]);
   }
 }

@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:web/web.dart' as web;
 
-typedef EntryPoint = Uri;
-typedef PlatformThread = web.Worker;
-typedef PlatformChannel = web.MessagePort;
-typedef PlatformThreadHook = FutureOr<void> Function(PlatformThread);
+typedef WebPlatformThread = web.Worker;
+typedef WebPlatformChannel = web.MessagePort;
+typedef WebPlatformThreadHook = FutureOr<void> Function(WebPlatformThread);
+
+typedef PlatformThread = WebPlatformThread;
+typedef PlatformChannel = WebPlatformChannel;
+typedef PlatformThreadHook = WebPlatformThreadHook;
