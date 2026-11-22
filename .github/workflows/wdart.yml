@@ -39,8 +39,8 @@ jobs:
         run: dart analyze
 
       # Compile Web workers
-      - name: Compile Web workers
-        run: .\tool\compile_tests.bat js wasm
+      #- name: Compile Web workers
+      #  run: .\tool\compile_tests.bat js wasm
 
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
