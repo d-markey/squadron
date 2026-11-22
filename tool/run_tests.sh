@@ -26,11 +26,11 @@ done
 pushd "$(dirname "$0")/.." > /dev/null
 
 # rebuild workers if requested
-if [[ "$__REBUILD__" == "1" ]]; then
+#if [[ "$__REBUILD__" == "1" ]]; then
   # now useless with build hooks
   #dart run squadron_build_hook:standalone_build
   #dart run ./tool/compile_tests.dart js wasm
-fi
+#fi
 
 # run tests
 if [[ "$__COV__" == "1" ]]; then
