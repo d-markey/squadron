@@ -59,7 +59,6 @@ COPY .\test\%~1\*.js .\doc\%~1
 COPY .\test\%~1\*.mjs .\doc\%~1
 COPY .\test\%~1\*.wasm .\doc\%~1
 COPY .\test\%~1\*.map .\doc\%~1
-COPY .\test\%~1\*.deps .\doc\%~1
 
 EXIT /B 0
 

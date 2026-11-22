@@ -42,9 +42,12 @@ void main(List<String> args) async {
 
 final _wasmExts = [
   RegExp(r'.*\.dart\.mjs$'),
+  RegExp(r'.*\.dart\.support\.js$'),
   RegExp(r'.*\.dart\.wasm$'),
+  RegExp(r'.*\.dart\.wasm\.d$'),
   RegExp(r'.*\.dart\.wasm\.map$'),
   RegExp(r'.*\.dart\.unopt\.wasm$'),
+  RegExp(r'.*\.dart\.unopt\.wasm\.d$'),
   RegExp(r'.*\.dart\.unopt\.wasm\.map$'),
 ];
 final _jsExts = [

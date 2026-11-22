@@ -3,7 +3,10 @@
 **.dart.js.deps
 **.dart.js.map
 **.dart.mjs
+**.dart.support.js
 **.dart.wasm
+**.dart.wasm.d
 **.dart.wasm.map
 **.dart.unopt.wasm
+**.dart.unopt.wasm.d
 **.dart.unopt.wasm.map

@@ -10,4 +10,4 @@ build/
 pubspec.lock
 test/coverage
 
-*.dart.support.js
+**.dart.support.js

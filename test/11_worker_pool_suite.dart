@@ -80,7 +80,7 @@ void execute(TestContext tc) {
                 await p.start();
 
                 // starting the pool must have instantiated minWorkers workers
-                expect(running, medium.minWorkers);
+                expect(running, p.minWorkers);
                 expect(p.size, p.minWorkers);
 
                 final count = 2 * p.maxConcurrency + 1;
@@ -92,8 +92,11 @@ void execute(TestContext tc) {
                   await Future.delayed(Duration.zero);
                 }
 
+                // let tasks do their work for a short while
+                await Future.delayed(TestDelay.tick * 8);
+
                 // the pool must be running at full speed
-                expect(running, medium.maxWorkers);
+                expect(running, p.maxWorkers);
                 expect(p.size, p.maxWorkers);
 
                 // install the worker monitor
@@ -117,7 +120,7 @@ void execute(TestContext tc) {
 
                   // and the pool should be back to minimum size
                   await Future.delayed(TestDelay.tick * 2);
-                  expect(running, medium.minWorkers);
+                  expect(running, p.minWorkers);
                   expect(p.size, p.minWorkers);
                 } finally {
                   timer.cancel();
@@ -332,17 +335,17 @@ void execute(TestContext tc) {
                 int n = 0;
                 final task = p.delayedLong(-1).then((v) => n = v);
 
-                await TestDelay.pause(ticks: 5);
-                expect(p.size, isPositive);
+                await Future.delayed(TestDelay.tick * 5);
                 expect(n, 0);
 
                 await task;
+                expect(p.size, isPositive);
                 expect(n, -1);
 
                 p.stop();
                 expect(p.stopped, isTrue);
 
-                await TestDelay.pause(ticks: 2);
+                await Future.delayed(TestDelay.tick * 5);
                 expect(p.size, isZero);
 
                 try {

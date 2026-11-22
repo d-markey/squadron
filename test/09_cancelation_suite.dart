@@ -94,7 +94,7 @@ void execute(TestContext tc) {
                     );
                   }
 
-                  await TestDelay.pause(ticks: 60);
+                  await Future.delayed(TestDelay.tick * 40);
                   p.cancelAll();
 
                   await Future.wait(tasks);
