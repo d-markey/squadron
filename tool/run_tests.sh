@@ -27,7 +27,8 @@ pushd "$(dirname "$0")/.." > /dev/null
 
 # rebuild workers if requested
 if [[ "$__REBUILD__" == "1" ]]; then
-  dart run ./tool/compile_tests.dart js wasm
+  dart run squadron_build_hook:standalone_build
+  #dart run ./tool/compile_tests.dart js wasm
 fi
 
 # run tests
