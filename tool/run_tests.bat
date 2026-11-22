@@ -44,7 +44,8 @@ GOTO parse
 :endparse
 
 IF "%__REBUILD__%" == "1" (
-    CALL dart run squadron_build_hook:standalone_build
+    REM now useless with build hooks
+    REM CALL dart run squadron_build_hook:standalone_build
     REM CALL dart run .\tool\compile_tests.dart js wasm --parallel=2
 )
 
