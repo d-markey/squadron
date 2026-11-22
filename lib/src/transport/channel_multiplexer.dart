@@ -50,65 +50,79 @@ class MultiplexedMessage {
 
 class ChannelMultiplexer {
   ChannelMultiplexer(this._transport) {
-    _subscription = _transport.messages.listen(_handleIncomingMessage);
+    _subscription = _transport.messages.listen(
+      _handleIncomingMessage,
+      onError: _messageController.addError,
+    );
   }
 
   final StreamTransport _transport;
   final IdentityAwareBinaryConverter _converter =
       IdentityAwareBinaryConverter();
 
-  final _messageController = StreamController<MultiplexedMessage>.broadcast();
+  final _messageController =
+      StreamController<MultiplexedMessage>.broadcast(sync: true);
   late final StreamSubscription<Uint8List> _subscription;
 
   Stream<MultiplexedMessage> get messages => _messageController.stream;
 
   void _handleIncomingMessage(Uint8List frame) {
-    if (frame.isEmpty) return;
-    int offset = 0;
+    try {
+      if (frame.isEmpty) return;
+      int offset = 0;
 
-    // Read ChannelID (ULEB128)
-    int channelId = 0;
-    int shift = 0;
-    while (offset < frame.length) {
-      int byte = frame[offset++];
-      channelId |= (byte & 0x7F) << shift;
-      if ((byte & 0x80) == 0) break;
-      shift += 7;
-    }
-
-    if (offset >= frame.length) {
-      throw FormatException('Truncated envelope: missing MessageType');
-    }
-
-    // Read MessageType (1 byte)
-    final typeValue = frame[offset++];
-    final type = MessageType.fromValue(typeValue);
-
-    ControlSignal? controlSignal;
-    Uint8List dataBytes;
-
-    if (type == MessageType.controlSignal) {
-      if (offset >= frame.length) {
-        throw FormatException('Truncated envelope: missing ControlSignal');
+      // Read ChannelID (ULEB128)
+      int channelId = 0;
+      int shift = 0;
+      int bytesRead = 0;
+      while (offset < frame.length) {
+        int byte = frame[offset++];
+        bytesRead++;
+        if (bytesRead > 9) {
+          throw FormatException('ULEB128 integer too large or corrupt stream');
+        }
+        channelId |= (byte & 0x7F) << shift;
+        if ((byte & 0x80) == 0) break;
+        shift += 7;
       }
-      final signalValue = frame[offset++];
-      controlSignal = ControlSignal.fromValue(signalValue);
-      dataBytes = Uint8List.sublistView(frame, offset);
-    } else {
-      dataBytes = Uint8List.sublistView(frame, offset);
-    }
 
-    dynamic payload;
-    if (dataBytes.isNotEmpty) {
-      payload = _converter.deserialize(dataBytes);
-    }
+      if (bytesRead == 0 ||
+          (offset <= frame.length && (frame[offset - 1] & 0x80) != 0)) {
+        throw FormatException('Truncated or invalid ULEB128 integer');
+      }
 
-    _messageController.add(MultiplexedMessage(
-      channelId: channelId,
-      type: type,
-      controlSignal: controlSignal,
-      payload: payload,
-    ));
+      // Read MessageType (1 byte)
+      final typeValue = frame[offset++];
+      final type = MessageType.fromValue(typeValue);
+
+      ControlSignal? controlSignal;
+      Uint8List dataBytes;
+
+      if (type == MessageType.controlSignal) {
+        if (offset >= frame.length) {
+          throw FormatException('Truncated envelope: missing ControlSignal');
+        }
+        final signalValue = frame[offset++];
+        controlSignal = ControlSignal.fromValue(signalValue);
+        dataBytes = Uint8List.sublistView(frame, offset);
+      } else {
+        dataBytes = Uint8List.sublistView(frame, offset);
+      }
+
+      dynamic payload;
+      if (dataBytes.isNotEmpty) {
+        payload = _converter.deserialize(dataBytes);
+      }
+
+      _messageController.add(MultiplexedMessage(
+        channelId: channelId,
+        type: type,
+        controlSignal: controlSignal,
+        payload: payload,
+      ));
+    } catch (err, st) {
+      _messageController.addError(err, st);
+    }
   }
 
   Future<void> send(int channelId, MessageType type,

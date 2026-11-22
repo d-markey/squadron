@@ -30,12 +30,17 @@ class IdentityAwareBinaryConverter {
   static int _readUleb128(Uint8List bytes, _ReaderOffset offset) {
     int result = 0;
     int shift = 0;
+    int bytesRead = 0;
     while (true) {
       if (offset.value >= bytes.length) {
         throw FormatException(
             'Unexpected end of binary data while reading ULEB128');
       }
       int byte = bytes[offset.value++];
+      bytesRead++;
+      if (bytesRead > 9) {
+        throw FormatException('ULEB128 integer too large or corrupt stream');
+      }
       result |= (byte & 0x7F) << shift;
       if ((byte & 0x80) == 0) {
         break;

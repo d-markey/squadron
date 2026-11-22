@@ -14,7 +14,7 @@ class StreamTransport {
   final Stream<List<int>> _input;
   final StreamSink<List<int>> _output;
 
-  final _controller = StreamController<Uint8List>.broadcast();
+  final _controller = StreamController<Uint8List>.broadcast(sync: true);
   final _buffer = BytesBuilder();
   late final StreamSubscription<List<int>> _subscription;
   bool _closed = false;
@@ -39,49 +39,61 @@ class StreamTransport {
   }
 
   void _processBuffer() {
-    final bytes = _buffer.toBytes();
-    int offset = 0;
+    try {
+      final bytes = _buffer.toBytes();
+      int offset = 0;
 
-    while (offset < bytes.length) {
-      // Try to read ULEB128 length prefix
-      int length = 0;
-      int shift = 0;
-      int bytesRead = 0;
-      bool hasLength = false;
+      while (offset < bytes.length) {
+        // Try to read ULEB128 length prefix
+        int length = 0;
+        int shift = 0;
+        int bytesRead = 0;
+        bool hasLength = false;
 
-      for (int i = offset; i < bytes.length; i++) {
-        int byte = bytes[i];
-        bytesRead++;
-        length |= (byte & 0x7F) << shift;
-        if ((byte & 0x80) == 0) {
-          hasLength = true;
+        for (int i = offset; i < bytes.length; i++) {
+          int byte = bytes[i];
+          bytesRead++;
+          if (bytesRead > 9) {
+            throw FormatException(
+                'ULEB128 integer too large or corrupt stream');
+          }
+          length |= (byte & 0x7F) << shift;
+          if ((byte & 0x80) == 0) {
+            hasLength = true;
+            break;
+          }
+          shift += 7;
+        }
+
+        if (!hasLength) {
+          // Incomplete length prefix, wait for more data
           break;
         }
-        shift += 7;
+
+        int headerSize = bytesRead;
+        if (offset + headerSize + length > bytes.length) {
+          // Incomplete message payload, wait for more data
+          break;
+        }
+
+        // Extract message payload
+        final payload = Uint8List.sublistView(
+            bytes, offset + headerSize, offset + headerSize + length);
+        _controller.add(payload);
+        offset += headerSize + length;
       }
 
-      if (!hasLength) {
-        // Incomplete length prefix, wait for more data
-        break;
+      // Keep remaining unread bytes in buffer
+      _buffer.clear();
+      if (offset < bytes.length) {
+        _buffer.add(Uint8List.sublistView(bytes, offset));
       }
-
-      int headerSize = bytesRead;
-      if (offset + headerSize + length > bytes.length) {
-        // Incomplete message payload, wait for more data
-        break;
+    } catch (err, st) {
+      if (!_closed) {
+        _closed = true;
+        _controller.addError(err, st);
+        Future.microtask(close);
       }
-
-      // Extract message payload
-      final payload = Uint8List.sublistView(
-          bytes, offset + headerSize, offset + headerSize + length);
-      _controller.add(payload);
-      offset += headerSize + length;
-    }
-
-    // Keep remaining unread bytes in buffer
-    _buffer.clear();
-    if (offset < bytes.length) {
-      _buffer.add(Uint8List.sublistView(bytes, offset));
     }
   }
 

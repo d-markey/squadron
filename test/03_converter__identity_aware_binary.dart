@@ -135,5 +135,11 @@ void testIdentityAwareBinaryConverter(TestContext tc) {
       expect(decoded[1], isA<Uint8List>());
       expect(identical(decoded[0], decoded[1]), isTrue);
     });
+
+    tc.test('- Reject corrupt ULEB128 (infinite 0x80)', () {
+      final corruptData = Uint8List.fromList([0x04, ...List.filled(11, 0x80)]);
+      expect(() => converter.deserialize(corruptData),
+          throwsA(isA<FormatException>()));
+    });
   });
 }

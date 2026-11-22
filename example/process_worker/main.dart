@@ -25,7 +25,7 @@ void main(List<String> args) async {
   final worker = HelloWorldWorkerPool(entrypoint,
       threadHook: $printWorkerProcessId,
       concurrencySettings:
-          ConcurrencySettings(minWorkers: 1, maxWorkers: 2, maxParallel: 2));
+          ConcurrencySettings(minWorkers: 1, maxWorkers: 2, maxParallel: 3));
   print('Starting worker pool...');
   try {
     await worker.start();
